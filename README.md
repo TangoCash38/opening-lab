@@ -21,6 +21,27 @@ Strict chess opening memory training — Learn & Practice modes, animated board,
 
 Demo unlocks use `localStorage` (`src/lib/unlocks.ts`).
 
+## Deploy to Vercel
+
+**One-click import (recommended):**
+
+[https://vercel.com/new/clone?repository-url=https://github.com/TangoCash38/opening-lab](https://vercel.com/new/clone?repository-url=https://github.com/TangoCash38/opening-lab)
+
+Or:
+
+1. Open [vercel.com/new](https://vercel.com/new)
+2. Import **`TangoCash38/opening-lab`**
+3. Framework: **Other** / Vite (Nitro outputs `.vercel/output` via `npm run build`)
+4. Build command: `npm run build`
+5. Output: handled by the Nitro Vercel preset (no extra config needed)
+
+CLI (if you have a token):
+
+```bash
+npx vercel login
+npx vercel --prod
+```
+
 ## Project structure
 
 ```text
@@ -57,8 +78,6 @@ npm run build
 npm run typecheck
 ```
 
-## GitHub export notes
+## GitHub
 
-- Ignore `node_modules/`, `.vercel/`, `screenshots/`
-- No secrets required for the chess demo
-- PWA manifest: `/manifest.webmanifest`
+https://github.com/TangoCash38/opening-lab
