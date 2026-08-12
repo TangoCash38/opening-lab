@@ -1,10 +1,24 @@
 export type Side = "w" | "b";
 
+/** Metadata for punishment / blunder-drill lines. */
+export type PunishmentMeta = {
+  /** 0-based index in `plies` of the opponent's intentional mistake */
+  mistakePlyIndex: number;
+  /** Short banner shown right after the mistake is played */
+  banner: string;
+  /** Optional longer prompt under the banner */
+  prompt?: string;
+  /** Explanation card after the user lands the punishing sequence */
+  successExplanation: string;
+};
+
 export type OpeningLine = {
   id: string;
   name: string;
   plies: string[];
   side: Side;
+  /** When set, train mode shows blunder / punishment UI */
+  punishment?: PunishmentMeta;
 };
 
 export type Pack = {
@@ -21,6 +35,8 @@ export type Pack = {
   price: string | null;
   blurb: string;
   lines: OpeningLine[];
+  /** Optional badge shown on the pack card (e.g. "Deep Lines") */
+  badge?: string;
 };
 
 export type ComingSoon = { name: string; blurb: string };
@@ -1032,6 +1048,46 @@ export const PACKS: Pack[] = [
           "e4", "e5", "Nf3", "Nc6", "Nc3", "Nf6", "d4", "exd4", "Nxd4",
         ],
         side: "w",
+      },
+    ],
+  },
+  {
+    id: "ruy-deep",
+    name: "Ruy Lopez: Extended & Punishments",
+    eco: "C84–C96",
+    side: "White",
+    section: "special",
+    isFree: false,
+    isPremium: true,
+    price: "£3.99",
+    badge: "Deep Lines",
+    blurb: "22-ply main line · punish hasty …d5",
+    lines: [
+      {
+        id: "rd1",
+        name: "Line 1 · Chigoran main (deep)",
+        plies: [
+          "e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7",
+          "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3", "Na5", "Bc2", "c5",
+          "d4", "Qc7",
+        ],
+        side: "w",
+      },
+      {
+        id: "rd2",
+        name: "Line 2 · Punish 7…d5",
+        plies: [
+          "e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7",
+          "Re1", "b5", "Bb3", "d5", "exd5", "Nxd5", "Nxe5",
+        ],
+        side: "w",
+        punishment: {
+          mistakePlyIndex: 13,
+          banner: "⚠️ Opponent Blundered! Find the best punishment move.",
+          prompt: "Black plays a hasty 7…d5! Find the punishing sequence.",
+          successExplanation:
+            "Nxe5! exploits the pinned knight on c6 and wins a key central pawn.",
+        },
       },
     ],
   },
