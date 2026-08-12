@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.npm/
+.node_modules.lock
+
+# Build / deploy
+dist/
+.output/
+.vercel/
+.tanstack/
+.nitro/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
+
+# Local agent / sandbox artifacts (not part of the app)
+.grok/
+artifacts/
+attachments/
+screenshots/
+tmp/
+/tmp/
+
+# TypeScript
+*.tsbuildinfo
+
+# Sandbox-only
+.project_id
+AGENTS.md
+
