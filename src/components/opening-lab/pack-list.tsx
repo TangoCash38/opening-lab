@@ -99,11 +99,15 @@ function PackCard({
             >
               {pack.side}
             </span>
-            {pack.section === "special" && (
+            {pack.badge ? (
+              <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
+                {pack.badge}
+              </span>
+            ) : pack.section === "special" ? (
               <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
                 New
               </span>
-            )}
+            ) : null}
           </div>
           <div className="mt-1.5 text-[0.72rem] text-fg-subtle">
             {locked
@@ -201,7 +205,7 @@ export function PackList({ onStartLine }: Props) {
         Train openings the strict way
       </h1>
       <p className="mb-5 text-[0.95rem] text-fg-muted">
-        Pick a pack, follow the line, build muscle memory. Tap ⓘ for how pricing
+        Pick a pack, follow the line, build muscle memory. Tap ℹ for how pricing
         and modes work.
       </p>
 
