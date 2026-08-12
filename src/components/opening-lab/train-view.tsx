@@ -2,6 +2,11 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { Chess, type Square, type Move } from "chess.js";
 import type { OpeningLine, Pack } from "@/data/packs";
 import {
+  isMistakeJustPlayed,
+  nextPunishmentBannerState,
+  type PunishmentBannerState,
+} from "@/lib/punishment";
+import {
   soundBad,
   soundMove,
   soundOk,
@@ -41,6 +46,7 @@ export function TrainView({ pack, line, onBack }: Props) {
   );
   const [hintsReady, setHintsReady] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [banner, setBanner] = useState<PunishmentBannerState>({ kind: "idle" });
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -111,6 +117,7 @@ export function TrainView({ pack, line, onBack }: Props) {
       setPlyIndex(0);
       setSelected(null);
       setWrongUntil(null);
+      setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
       setStatus({
         text:
           (nextMode ?? mode) === "learn" ? "Your move (hint on)" : "Your move",
@@ -164,14 +171,56 @@ export function TrainView({ pack, line, onBack }: Props) {
     setSlide(null);
     setBusy(false);
 
+    // Punishment drill: opponent just played the intentional blunder
+    if (
+      line.punishment &&
+      isMistakeJustPlayed(
+        line.punishment.mistakePlyIndex,
+        pending.nextPly,
+        pending.userMove,
+      )
+    ) {
+      setBanner(
+        nextPunishmentBannerState(
+          { kind: "idle" },
+          {
+            type: "mistake_played",
+            banner: line.punishment.banner,
+            prompt: line.punishment.prompt,
+          },
+        ),
+      );
+      setStatus({
+        text: line.punishment.prompt ?? "Find the punishment",
+        cls: "warn",
+      });
+      if (mode === "learn") scheduleHints();
+      else setHintsReady(true);
+      return;
+    }
+
     if (pending.nextPly >= line.plies.length) {
-      setStatus({ text: "Line complete — well done!", cls: "done" });
+      if (line.punishment) {
+        setBanner(
+          nextPunishmentBannerState(
+            { kind: "idle" },
+            {
+              type: "line_complete",
+              explanation: line.punishment.successExplanation,
+            },
+          ),
+        );
+        setStatus({ text: "Punishment found — well done!", cls: "done" });
+      } else {
+        setStatus({ text: "Line complete — well done!", cls: "done" });
+      }
       soundWin();
       return;
     }
 
     if (pending.userMove) {
       soundOk();
+      // Keep blunder banner visible through the punish sequence
       setStatus({ text: "Good", cls: "ok" });
       setHintsReady(false);
     } else {
@@ -182,7 +231,7 @@ export function TrainView({ pack, line, onBack }: Props) {
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line.plies.length, mode, scheduleHints]);
+  }, [line.plies.length, line.punishment, mode, scheduleHints]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -308,9 +357,11 @@ export function TrainView({ pack, line, onBack }: Props) {
       ? "text-success font-semibold"
       : status.cls === "bad"
         ? "text-danger font-semibold"
-        : status.cls === "done"
-          ? "text-accent font-bold"
-          : "text-fg-muted";
+        : status.cls === "warn"
+          ? "text-danger font-semibold"
+          : status.cls === "done"
+            ? "text-accent font-bold"
+            : "text-fg-muted";
 
   return (
     <div>
@@ -345,6 +396,36 @@ export function TrainView({ pack, line, onBack }: Props) {
       >
         {hint || "\u00a0"}
       </div>
+
+      {banner.kind === "blunder" && (
+        <div
+          role="status"
+          className="mb-2.5 rounded-xl border border-[color-mix(in_srgb,var(--color-danger)_28%,transparent)] bg-[var(--color-danger-soft)] px-3 py-2.5 text-center"
+        >
+          <div className="text-[0.82rem] font-bold text-[var(--color-danger)]">
+            {banner.message}
+          </div>
+          {banner.prompt ? (
+            <div className="mt-1 text-[0.72rem] font-medium text-fg-muted">
+              {banner.prompt}
+            </div>
+          ) : null}
+        </div>
+      )}
+
+      {banner.kind === "success" && (
+        <div
+          role="status"
+          className="mb-2.5 rounded-xl border border-[color-mix(in_srgb,var(--color-success)_30%,transparent)] bg-[var(--color-success-soft)] px-3 py-2.5 text-center"
+        >
+          <div className="text-[0.82rem] font-bold text-[var(--color-success)]">
+            Punishment secured
+          </div>
+          <div className="mt-1 text-[0.78rem] font-medium text-fg-muted">
+            {banner.message}
+          </div>
+        </div>
+      )}
 
       <ChessBoard
         game={game}
