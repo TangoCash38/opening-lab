@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Lock } from "lucide-react";
+import { ChevronDown, Lock } from "lucide-react";
 import { COMING, PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackFree, packPrice } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
@@ -185,6 +185,51 @@ function ComingCard({ name, blurb }: { name: string; blurb: string }) {
   );
 }
 
+function AccordionSection({
+  title,
+  count,
+  defaultOpen = true,
+  children,
+}: {
+  title: string;
+  count: number;
+  defaultOpen?: boolean;
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <div className="mb-1">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="mb-2.5 mt-6 flex w-full items-center justify-between gap-2 text-left first:mt-1"
+        aria-expanded={open}
+      >
+        <span className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+          {title} ({count} Packs)
+        </span>
+        <ChevronDown
+          className={`size-4 shrink-0 text-fg-subtle transition-transform duration-200 ${
+            open ? "rotate-0" : "-rotate-90"
+          }`}
+          strokeWidth={2.5}
+          aria-hidden
+        />
+      </button>
+      {open ? <div>{children}</div> : null}
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="mb-2.5 mt-6 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle first:mt-1">
+      {children}
+    </p>
+  );
+}
+
 export function PackList({ onStartLine }: Props) {
   const { canAccess, buyPack, buyAllAccess } = useUnlocks();
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -209,27 +254,29 @@ export function PackList({ onStartLine }: Props) {
         and modes work.
       </p>
 
-      <SectionLabel>White openings</SectionLabel>
-      {white.map((p) => (
-        <PackCard
-          key={p.id}
-          pack={p}
-          unlocked={canAccess(p)}
-          onStartLine={onStartLine}
-          onRequestUnlock={requestUnlock}
-        />
-      ))}
+      <AccordionSection title="⚪ White Openings" count={white.length}>
+        {white.map((p) => (
+          <PackCard
+            key={p.id}
+            pack={p}
+            unlocked={canAccess(p)}
+            onStartLine={onStartLine}
+            onRequestUnlock={requestUnlock}
+          />
+        ))}
+      </AccordionSection>
 
-      <SectionLabel>Black openings</SectionLabel>
-      {black.map((p) => (
-        <PackCard
-          key={p.id}
-          pack={p}
-          unlocked={canAccess(p)}
-          onStartLine={onStartLine}
-          onRequestUnlock={requestUnlock}
-        />
-      ))}
+      <AccordionSection title="⚫ Black Openings" count={black.length}>
+        {black.map((p) => (
+          <PackCard
+            key={p.id}
+            pack={p}
+            unlocked={canAccess(p)}
+            onStartLine={onStartLine}
+            onRequestUnlock={requestUnlock}
+          />
+        ))}
+      </AccordionSection>
 
       <SectionLabel>Special packs</SectionLabel>
       {special.map((p) => (
@@ -263,13 +310,5 @@ export function PackList({ onStartLine }: Props) {
         />
       )}
     </div>
-  );
-}
-
-function SectionLabel({ children }: { children: ReactNode }) {
-  return (
-    <p className="mb-2.5 mt-6 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle first:mt-1">
-      {children}
-    </p>
   );
 }
