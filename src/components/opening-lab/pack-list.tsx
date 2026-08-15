@@ -34,7 +34,7 @@ function PackCard({
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
-  const { masteryOf } = useProgress();
+  const { masteryOf, isComplete } = useProgress();
   const free = isPackFree(pack);
   const price = packPrice(pack);
   const locked = !unlocked;
@@ -139,14 +139,23 @@ function PackCard({
         <div className="border-t border-border px-3 pb-4 pt-2.5">
           {pack.lines.map((line, i) => {
             const mastery = masteryOf(line.id);
+            const complete = isComplete(line.id);
             return (
               <button
                 key={line.id}
                 type="button"
-                className="mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] border-success/35 bg-success-soft/55 px-3 py-2.5 text-left active:scale-[0.99]"
+                className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
+                  complete
+                    ? "border-success/35 bg-success-soft/55"
+                    : "border-danger bg-danger-soft"
+                }`}
                 onClick={() => onStartLine(pack, line)}
               >
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-success text-sm font-bold text-white">
+                <span
+                  className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
+                    complete ? "bg-success" : "bg-danger"
+                  }`}
+                >
                   {i + 1}
                 </span>
                 <div className="min-w-0">
@@ -157,8 +166,14 @@ function PackCard({
                   <div className="mt-0.5 text-[0.72rem] text-fg-muted">
                     {line.plies.slice(0, 6).join(" ")} …
                   </div>
-                  <p className="mt-0.5 text-[0.72rem] font-semibold text-success">
-                    Open — train any time
+                  <p
+                    className={`mt-0.5 text-[0.72rem] font-semibold ${
+                      complete ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {complete
+                      ? "Complete — train any time"
+                      : "Practice with no mistakes to complete"}
                   </p>
                 </div>
               </button>

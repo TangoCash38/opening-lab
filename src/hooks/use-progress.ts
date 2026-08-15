@@ -5,8 +5,10 @@ import {
   getLineProgress,
   getMastery,
   getProgressStore,
+  isLineComplete,
   isLineDue,
   markLineComplete,
+  markLineLearned,
   markPracticeFail,
   subscribeProgress,
   type LineProgress,
@@ -44,6 +46,16 @@ export function useProgress() {
     setStore(getProgressStore());
   }, []);
 
+  const markLearned = useCallback((lineId: string) => {
+    markLineLearned(lineId);
+    setStore(getProgressStore());
+  }, []);
+
+  const isComplete = useCallback(
+    (lineId: string) => isLineComplete(line(lineId)),
+    [line],
+  );
+
   const failPractice = useCallback((lineId: string) => {
     markPracticeFail(lineId);
     setStore(getProgressStore());
@@ -71,6 +83,8 @@ export function useProgress() {
     masteryOf,
     dueOf,
     complete,
+    markLearned,
+    isComplete,
     failPractice,
     dueQueue,
     unused,

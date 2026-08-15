@@ -31,7 +31,7 @@ export function OpeningLabApp() {
     false /* onboard after mount */
   );
 
-  const { complete, failPractice, dueQueue } = useProgress();
+  const { complete, markLearned, failPractice, dueQueue } = useProgress();
   const { canAccess } = useUnlocks();
 
   useEffect(() => {
@@ -165,6 +165,7 @@ export function OpeningLabApp() {
             initialMode={active.mode}
             onBack={goHome}
             onLineComplete={() => complete(active.line.id)}
+            onLearnDone={() => markLearned(active.line.id)}
             onPracticeFail={() => failPractice(active.line.id)}
             onTrainNext={trainNext}
             hasNextDue={queue.length > 0}

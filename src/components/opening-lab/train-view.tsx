@@ -20,6 +20,7 @@ type Mode = "learn" | "practice";
 type Props = {
   initialMode?: Mode;
   onLineComplete?: () => void;
+  onLearnDone?: () => void;
   onPracticeFail?: () => void;
   onTrainNext?: () => void;
   hasNextDue?: boolean;
@@ -66,9 +67,10 @@ function buildNotationPairs(plies: string[], playedCount: number): NotationPair[
   return pairs;
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onPracticeFail, onTrainNext, hasNextDue }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
+  const practiceMissedRef = useRef(false);
   const [game, setGame] = useState(() => new Chess());
   const [plyIndex, setPlyIndex] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
@@ -161,6 +163,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         cls: "",
       });
       completedRef.current = false;
+      practiceMissedRef.current = false;
       setSession((s) => s + 1);
     },
     [clearAllTimers, mode],
@@ -248,10 +251,36 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             },
           ),
         );
-        setStatus({ text: "Punishment found — well done!", cls: "done" });
-      } else {
-        setStatus({ text: "Line complete — well done!", cls: "done" });
       }
+
+      if (mode === "learn") {
+        setStatus({
+          text: "Learn done — now Practice with no mistakes",
+          cls: "done",
+        });
+        soundWin();
+        if (!completedRef.current) {
+          completedRef.current = true;
+          onLearnDone?.();
+        }
+        return;
+      }
+
+      if (practiceMissedRef.current) {
+        setStatus({
+          text: "Finished, but you missed a move — Practice again to go green",
+          cls: "done",
+        });
+        soundWin();
+        return;
+      }
+
+      setStatus({
+        text: line.punishment
+          ? "Punishment found — well done!"
+          : "Line complete — well done!",
+        cls: "done",
+      });
       soundWin();
       if (!completedRef.current) {
         completedRef.current = true;
@@ -273,7 +302,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line.plies.length, line.punishment, mode, scheduleHints, onLineComplete]);
+  }, [line.plies.length, line.punishment, mode, scheduleHints, onLineComplete, onLearnDone]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -366,7 +395,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setStatus({ text: "Wrong move — try again", cls: "bad" });
       setSelected(null);
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
-      if (mode === "practice") onPracticeFail?.();
+      if (mode === "practice") {
+        practiceMissedRef.current = true;
+        onPracticeFail?.();
+      }
       wrongTimer.current = setTimeout(() => setWrongUntil(null), 450);
       return;
     }

@@ -18,6 +18,10 @@ export type LineProgress = {
   dueAt: string | null;
   failCount: number;
   recentFails: string[];
+  /** True only after a Practice run finished with zero mistakes. */
+  cleanPractice: boolean;
+  /** True after Learn mode is finished (does not complete the line). */
+  learned: boolean;
 };
 
 export type ProgressStore = {
@@ -36,6 +40,8 @@ const EMPTY_LINE: LineProgress = {
   dueAt: null,
   failCount: 0,
   recentFails: [],
+  cleanPractice: false,
+  learned: false,
 };
 
 const EMPTY_STORE: ProgressStore = {
@@ -84,6 +90,32 @@ function pruneFails(fails: string[], now: Date): string[] {
   });
 }
 
+function normalizeLine(raw: Partial<LineProgress> | undefined | null): LineProgress {
+  if (!raw || typeof raw !== "object") return { ...EMPTY_LINE };
+  return {
+    timesCompleted: Number(raw.timesCompleted) || 0,
+    lastTrainedAt: raw.lastTrainedAt ?? null,
+    currentStreak: Number(raw.currentStreak) || 0,
+    bestStreak: Number(raw.bestStreak) || 0,
+    interval: Number(raw.interval) || 0,
+    dueAt: raw.dueAt ?? null,
+    failCount: Number(raw.failCount) || 0,
+    recentFails: Array.isArray(raw.recentFails) ? raw.recentFails : [],
+    // Missing flags (old Learn completions) must not count as complete.
+    cleanPractice: raw.cleanPractice === true,
+    learned: raw.learned === true,
+  };
+}
+
+function normalizeLines(raw: unknown): Record<string, LineProgress> {
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, LineProgress> = {};
+  for (const [id, line] of Object.entries(raw as Record<string, Partial<LineProgress>>)) {
+    out[id] = normalizeLine(line);
+  }
+  return out;
+}
+
 function read(): ProgressStore {
   if (typeof window === "undefined") return { ...EMPTY_STORE, lines: {} };
   try {
@@ -91,7 +123,7 @@ function read(): ProgressStore {
     if (!raw) return { ...EMPTY_STORE, lines: {} };
     const parsed = JSON.parse(raw) as Partial<ProgressStore>;
     return {
-      lines: parsed.lines && typeof parsed.lines === "object" ? parsed.lines : {},
+      lines: normalizeLines(parsed.lines),
       globalStreak: Number(parsed.globalStreak) || 0,
       globalBestStreak: Number(parsed.globalBestStreak) || 0,
       lastGlobalDay: parsed.lastGlobalDay ?? null,
@@ -112,13 +144,21 @@ export function getProgressStore(): ProgressStore {
 }
 
 export function getLineProgress(lineId: string): LineProgress {
-  return read().lines[lineId] ?? { ...EMPTY_LINE };
+  return normalizeLine(read().lines[lineId]);
+}
+
+export function isLineComplete(p: LineProgress): boolean {
+  return p.cleanPractice === true;
 }
 
 export function getMastery(p: LineProgress, now = new Date()): Mastery {
   const recent = pruneFails(p.recentFails, now);
+  if (!p.cleanPractice) {
+    if (recent.length >= 2) return "weak";
+    if (p.learned || p.lastTrainedAt) return "learning";
+    return "new";
+  }
   if (recent.length >= 2) return "weak";
-  if (p.timesCompleted === 0) return "new";
   if (p.dueAt && new Date(p.dueAt).getTime() <= now.getTime()) return "due";
   if (p.timesCompleted < 2 || p.interval <= 1) return "learning";
   return "fresh";
@@ -165,12 +205,26 @@ export function markLineComplete(lineId: string, now = new Date()): LineProgress
     interval,
     dueAt: addDays(now, interval).toISOString(),
     recentFails: pruneFails(prev.recentFails, now),
+    cleanPractice: true,
   };
 
   store.lines[lineId] = updated;
   store.globalStreak = globalStreak;
   store.globalBestStreak = Math.max(store.globalBestStreak, globalStreak);
   store.lastGlobalDay = today;
+  write(store);
+  return updated;
+}
+
+export function markLineLearned(lineId: string, now = new Date()): LineProgress {
+  const store = read();
+  const prev = store.lines[lineId] ?? { ...EMPTY_LINE };
+  const updated: LineProgress = {
+    ...prev,
+    learned: true,
+    lastTrainedAt: now.toISOString(),
+  };
+  store.lines[lineId] = updated;
   write(store);
   return updated;
 }
@@ -211,7 +265,7 @@ export function buildDueQueue(
     items.push({
       packId: c.packId,
       lineId: c.lineId,
-      mode: p.timesCompleted === 0 ? "learn" : "practice",
+      mode: !p.cleanPractice && !p.learned ? "learn" : "practice",
       weak: mastery === "weak",
     });
   }
@@ -225,7 +279,7 @@ export function firstUnusedLineId(
   const store = read();
   for (const c of candidates) {
     const p = store.lines[c.lineId];
-    if (!p || p.timesCompleted === 0) return c;
+    if (!p || !p.cleanPractice) return c;
   }
   return null;
 }
