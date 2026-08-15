@@ -6,8 +6,10 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { useProgress } from "@/hooks/use-progress";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
+import { SubscribeModal } from "./subscribe-modal";
 import { TodayStrip } from "./today-strip";
 import { MasteryChip } from "./mastery-chip";
+import { HomeHero } from "./home-hero";
 
 type TrainMode = "learn" | "practice";
 
@@ -23,13 +25,15 @@ function PackCard({
   unlocked,
   onStartLine,
   onRequestUnlock,
+  defaultOpen = false,
 }: {
   pack: Pack;
   unlocked: boolean;
   onStartLine: Props["onStartLine"];
   onRequestUnlock: (pack: Pack) => void;
+  defaultOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const { masteryOf } = useProgress();
   const free = isPackFree(pack);
   const price = packPrice(pack);
@@ -255,8 +259,10 @@ function AccordionSection({
 export function PackList({ onStartLine, onTrainDue }: Props) {
   const { canAccess, buyPack, subscribe } = useUnlocks();
   const [modal, setModal] = useState<ModalTarget | null>(null);
+  const [showSub, setShowSub] = useState(false);
 
-  const white = PACKS.filter((p) => p.section === "white");
+  const scotch = PACKS.find((p) => p.id === "scotch");
+  const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = PACKS.filter((p) => p.section === "black");
   const special = PACKS.filter((p) => p.section === "special");
 
@@ -268,18 +274,27 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
 
   return (
     <div>
-      <h1 className="mb-2 font-display text-[1.65rem] font-bold tracking-tight">
-        Train openings the strict way
-      </h1>
-      <p className="mb-5 text-[0.95rem] text-fg-muted">
-        Pick a pack, follow the line, build muscle memory. Tap ℹ for how pricing
-        and modes work.
-      </p>
+      <HomeHero
+        onStartScotch={() => {
+          if (scotch?.lines[0]) onStartLine(scotch, scotch.lines[0], "learn");
+        }}
+        onSubscribe={() => setShowSub(true)}
+      />
 
       <TodayStrip onStartLine={onStartLine} onTrainDue={onTrainDue} />
 
-      <p className="mb-3 text-[0.88rem] font-semibold text-fg">
-        Packs start closed. Tap a stack to expand it.
+      {scotch ? (
+        <PackCard
+          pack={scotch}
+          unlocked={canAccess(scotch)}
+          onStartLine={onStartLine}
+          onRequestUnlock={requestUnlock}
+          defaultOpen
+        />
+      ) : null}
+
+      <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
+        More packs · pay as you go or Lab+. Tap a stack to expand.
       </p>
 
       <AccordionSection title="White openings" count={white.length}>
@@ -323,6 +338,20 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
           <ComingCard key={c.name} name={c.name} blurb={c.blurb} />
         ))}
       </AccordionSection>
+
+      {showSub && (
+        <SubscribeModal
+          onClose={() => setShowSub(false)}
+          onSubscribeMonthly={() => {
+            subscribe("monthly");
+            setShowSub(false);
+          }}
+          onSubscribeYearly={() => {
+            subscribe("yearly");
+            setShowSub(false);
+          }}
+        />
+      )}
 
       {modal && (
         <UnlockModal

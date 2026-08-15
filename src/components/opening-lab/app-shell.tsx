@@ -35,7 +35,8 @@ export function OpeningLabApp() {
   const { canAccess } = useUnlocks();
 
   useEffect(() => {
-    if (!hasSeenOnboarding()) setShowOnboarding(true);
+    /* Home shows the free Scotch board first. No blocking overlay. */
+    if (!hasSeenOnboarding()) markOnboardingSeen();
   }, []);
 
   const startLine = (
