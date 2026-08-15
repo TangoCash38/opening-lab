@@ -33,3 +33,11 @@ export function isPackPremium(pack: Pack): boolean {
 export function isPayAsYouGoPack(pack: Pack): boolean {
   return isPackPremium(pack);
 }
+
+/** Parse a display price like £1 or £1.99 into Stripe pence. */
+export function priceToPence(price: string): number | null {
+  const n = Number(price.replace(/[^0-9.]/g, ""));
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return Math.round(n * 100);
+}
+

@@ -1,15 +1,22 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ChevronDown, Lock } from "lucide-react";
 import { COMING, PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackFree, packPrice } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useProgress } from "@/hooks/use-progress";
+import {
+  confirmCheckoutSession,
+  fetchPaymentsEnabled,
+  startCheckout,
+  type CheckoutKind,
+} from "@/lib/checkout";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { TodayStrip } from "./today-strip";
 import { MasteryChip } from "./mastery-chip";
 import { HomeHero } from "./home-hero";
+import { LegalFooter } from "./legal-footer";
 
 type TrainMode = "learn" | "practice";
 
@@ -272,26 +279,108 @@ function AccordionSection({
 }
 
 export function PackList({ onStartLine, onTrainDue }: Props) {
-  const { canAccess, buyPack, subscribe } = useUnlocks();
+  const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
   const [modal, setModal] = useState<ModalTarget | null>(null);
   const [showSub, setShowSub] = useState(false);
+  const [payBusy, setPayBusy] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+  const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
 
-  const scotch = PACKS.find((p) => p.id === "scotch");
   const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = PACKS.filter((p) => p.section === "black");
   const special = PACKS.filter((p) => p.section === "special");
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("paid") !== "1") return;
+    const sessionId = params.get("session_id");
+    if (!sessionId) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await confirmCheckoutSession(sessionId);
+        if (cancelled) return;
+        if (!result.ok) {
+          setUnlockNotice("Payment not confirmed yet");
+          return;
+        }
+        if (result.kind === "pack" && result.packId) {
+          buyPack(result.packId);
+        } else if (result.kind === "monthly" || result.kind === "yearly") {
+          subscribe(result.kind);
+        } else if (result.plan === "monthly" || result.plan === "yearly") {
+          subscribe(result.plan);
+        }
+        setUnlockNotice("Unlocked");
+      } catch {
+        if (!cancelled) setUnlockNotice("Could not confirm payment");
+      } finally {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("paid");
+        url.searchParams.delete("session_id");
+        window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [buyPack, subscribe]);
+
   const requestUnlock = (pack: Pack) => {
     const price = packPrice(pack);
     if (!price) return;
+    setPayError(null);
     setModal({ pack, price });
+  };
+
+  const pay = async (kind: CheckoutKind, packId?: string) => {
+    setPayError(null);
+    setPayBusy(true);
+    try {
+      const live =
+        paymentsEnabled === true
+          ? true
+          : paymentsEnabled === false
+            ? false
+            : await fetchPaymentsEnabled();
+      if (live) {
+        const url = await startCheckout(kind, packId);
+        window.location.href = url;
+        return;
+      }
+      if (kind === "pack" && packId) buyPack(packId);
+      else if (kind === "monthly" || kind === "yearly") subscribe(kind);
+      setModal(null);
+      setShowSub(false);
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : "Payment failed");
+    } finally {
+      setPayBusy(false);
+    }
   };
 
   return (
     <div>
+      {unlockNotice ? (
+        <p
+          className={`mb-3 rounded-xl px-4 py-2.5 text-center text-[0.85rem] font-semibold ${
+            unlockNotice === "Unlocked"
+              ? "bg-success-soft text-success"
+              : "bg-danger-soft text-danger"
+          }`}
+          role="status"
+        >
+          {unlockNotice}
+        </p>
+      ) : null}
+
       <HomeHero
         onStartLine={onStartLine}
-        onSubscribe={() => setShowSub(true)}
+        onSubscribe={() => {
+          setPayError(null);
+          setShowSub(true);
+        }}
       />
 
       <TodayStrip onStartLine={onStartLine} onTrainDue={onTrainDue} />
@@ -342,17 +431,22 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
         ))}
       </AccordionSection>
 
+      <LegalFooter />
+
       {showSub && (
         <SubscribeModal
-          onClose={() => setShowSub(false)}
+          onClose={() => {
+            if (!payBusy) setShowSub(false);
+          }}
           onSubscribeMonthly={() => {
-            subscribe("monthly");
-            setShowSub(false);
+            void pay("monthly");
           }}
           onSubscribeYearly={() => {
-            subscribe("yearly");
-            setShowSub(false);
+            void pay("yearly");
           }}
+          paymentsEnabled={paymentsEnabled}
+          busy={payBusy}
+          error={payError}
         />
       )}
 
@@ -360,19 +454,21 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
         <UnlockModal
           packName={modal.pack.name}
           price={modal.price}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            if (!payBusy) setModal(null);
+          }}
           onUnlockPack={() => {
-            buyPack(modal.pack.id);
-            setModal(null);
+            void pay("pack", modal.pack.id);
           }}
           onSubscribeMonthly={() => {
-            subscribe("monthly");
-            setModal(null);
+            void pay("monthly");
           }}
           onSubscribeYearly={() => {
-            subscribe("yearly");
-            setModal(null);
+            void pay("yearly");
           }}
+          paymentsEnabled={paymentsEnabled}
+          busy={payBusy}
+          error={payError}
         />
       )}
     </div>

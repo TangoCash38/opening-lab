@@ -14,6 +14,9 @@ type Props = {
   onUnlockPack: () => void;
   onSubscribeMonthly: () => void;
   onSubscribeYearly: () => void;
+  paymentsEnabled?: boolean | null;
+  busy?: boolean;
+  error?: string | null;
 };
 
 export function UnlockModal({
@@ -23,6 +26,9 @@ export function UnlockModal({
   onUnlockPack,
   onSubscribeMonthly,
   onSubscribeYearly,
+  paymentsEnabled = false,
+  busy = false,
+  error = null,
 }: Props) {
   return (
     <div
@@ -30,7 +36,8 @@ export function UnlockModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="unlock-title"
-      onClick={onClose}
+      aria-busy={busy}
+      onClick={busy ? undefined : onClose}
       style={{
         paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
       }}
@@ -59,7 +66,8 @@ export function UnlockModal({
           <button
             type="button"
             onClick={onClose}
-            className="grid size-9 place-items-center rounded-full bg-bg-subtle text-fg-muted"
+            disabled={busy}
+            className="grid size-9 place-items-center rounded-full bg-bg-subtle text-fg-muted disabled:opacity-50"
             aria-label="Close"
           >
             <X className="size-4" />
@@ -70,7 +78,8 @@ export function UnlockModal({
           <button
             type="button"
             onClick={onUnlockPack}
-            className="flex w-full items-center justify-between rounded-xl border-[1.5px] border-border bg-bg-elevated px-4 py-3.5 text-left active:scale-[0.99]"
+            disabled={busy}
+            className="flex w-full items-center justify-between rounded-xl border-[1.5px] border-border bg-bg-elevated px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
           >
             <span>
               <span className="block text-[0.72rem] font-semibold uppercase tracking-wide text-fg-subtle">
@@ -89,7 +98,8 @@ export function UnlockModal({
           <button
             type="button"
             onClick={onSubscribeMonthly}
-            className="flex w-full items-center justify-between rounded-xl bg-accent px-4 py-3.5 text-left text-accent-fg active:scale-[0.99]"
+            disabled={busy}
+            className="flex w-full items-center justify-between rounded-xl bg-accent px-4 py-3.5 text-left text-accent-fg active:scale-[0.99] disabled:opacity-60"
           >
             <span>
               <span className="block text-[0.92rem] font-bold">
@@ -105,7 +115,8 @@ export function UnlockModal({
           <button
             type="button"
             onClick={onSubscribeYearly}
-            className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99]"
+            disabled={busy}
+            className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
           >
             <span>
               <span className="block text-[0.92rem] font-bold text-accent">
@@ -118,9 +129,23 @@ export function UnlockModal({
             <span className="text-base font-bold text-accent">{PRICE_YEARLY}</span>
           </button>
 
-          <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-            Demo unlock stores access on this device. No card charged.
-          </p>
+          {error ? (
+            <p className="m-0 text-center text-[0.75rem] font-semibold text-danger" role="alert">
+              {error}
+            </p>
+          ) : busy ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              Opening checkout…
+            </p>
+          ) : paymentsEnabled === true ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              You will pay securely with Stripe.
+            </p>
+          ) : paymentsEnabled === false ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              Demo unlock stores access on this device. No card charged.
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

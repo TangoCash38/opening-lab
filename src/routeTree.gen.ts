@@ -11,7 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
+import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.session'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +29,121 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
+  id: '/api/checkout',
+  path: '/api/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPaymentsRoute = ApiPaymentsRouteImport.update({
+  id: '/api/payments',
+  path: '/api/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckoutSessionRoute = ApiCheckoutSessionRouteImport.update({
+  id: '/session',
+  path: '/session',
+  getParentRoute: () => ApiCheckoutRoute,
+} as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/api/checkout': typeof ApiCheckoutRouteWithChildren
+  '/api/payments': typeof ApiPaymentsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/checkout/session': typeof ApiCheckoutSessionRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/api/checkout': typeof ApiCheckoutRouteWithChildren
+  '/api/payments': typeof ApiPaymentsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/checkout/session': typeof ApiCheckoutSessionRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
+  '/api/checkout': typeof ApiCheckoutRouteWithChildren
+  '/api/payments': typeof ApiPaymentsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/checkout/session': typeof ApiCheckoutSessionRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/api/auth/$'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/privacy'
+    | '/terms'
+    | '/api/checkout'
+    | '/api/payments'
+    | '/api/auth/$'
+    | '/api/checkout/session'
+    | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/api/auth/$'
-  id: '__root__' | '/' | '/login' | '/api/auth/$'
+  to:
+    | '/'
+    | '/login'
+    | '/privacy'
+    | '/terms'
+    | '/api/checkout'
+    | '/api/payments'
+    | '/api/auth/$'
+    | '/api/checkout/session'
+    | '/api/stripe/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/privacy'
+    | '/terms'
+    | '/api/checkout'
+    | '/api/payments'
+    | '/api/auth/$'
+    | '/api/checkout/session'
+    | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  PrivacyRoute: typeof PrivacyRoute
+  TermsRoute: typeof TermsRoute
+  ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
+  ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +162,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkout': {
+      id: '/api/checkout'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/payments': {
+      id: '/api/payments'
+      path: '/api/payments'
+      fullPath: '/api/payments'
+      preLoaderRoute: typeof ApiPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -82,13 +197,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/checkout/session': {
+      id: '/api/checkout/session'
+      path: '/session'
+      fullPath: '/api/checkout/session'
+      preLoaderRoute: typeof ApiCheckoutSessionRouteImport
+      parentRoute: typeof ApiCheckoutRoute
+    }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface ApiCheckoutRouteChildren {
+  ApiCheckoutSessionRoute: typeof ApiCheckoutSessionRoute
+}
+
+const ApiCheckoutRouteChildren: ApiCheckoutRouteChildren = {
+  ApiCheckoutSessionRoute: ApiCheckoutSessionRoute,
+}
+
+const ApiCheckoutRouteWithChildren = ApiCheckoutRoute._addFileChildren(
+  ApiCheckoutRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
+  ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
+  ApiPaymentsRoute: ApiPaymentsRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

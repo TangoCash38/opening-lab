@@ -1,3 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { LegalFooter } from "./legal-footer";
+
 type Props = { onBack: () => void };
 
 export function GuideView({ onBack }: Props) {
@@ -56,9 +59,19 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Account">
-        Use the profile icon (top right) to sign in. Unlocks on this device are
-        stored locally for the demo.
+        Use the profile icon (top right) to sign in. After you pay, unlocks
+        apply on this device. See our{" "}
+        <Link to="/privacy" className="font-semibold text-accent">
+          Privacy Policy
+        </Link>{" "}
+        and{" "}
+        <Link to="/terms" className="font-semibold text-accent">
+          Terms
+        </Link>
+        .
       </Block>
+
+      <LegalFooter />
     </div>
   );
 }
