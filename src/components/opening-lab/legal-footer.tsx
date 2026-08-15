@@ -16,10 +16,10 @@ export function LegalFooter() {
         ·
       </span>
       <a
-        href="mailto:hello@openinglab.co.uk"
+        href="mailto:support@openinglab.co.uk"
         className="font-semibold text-fg-muted no-underline"
       >
-        hello@openinglab.co.uk
+        support@openinglab.co.uk
       </a>
     </footer>
   );

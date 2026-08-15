@@ -87,8 +87,8 @@ function Terms() {
       <LegalSection title="Contact">
         <p>
           Questions:{" "}
-          <a href="mailto:hello@openinglab.co.uk" className="text-accent">
-            hello@openinglab.co.uk
+          <a href="mailto:support@openinglab.co.uk" className="text-accent">
+            support@openinglab.co.uk
           </a>
           .
         </p>

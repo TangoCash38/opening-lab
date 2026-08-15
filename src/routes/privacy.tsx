@@ -21,8 +21,8 @@ function Privacy() {
             www.openinglab.co.uk
           </a>
           . Email:{" "}
-          <a href="mailto:hello@openinglab.co.uk" className="text-accent">
-            hello@openinglab.co.uk
+          <a href="mailto:support@openinglab.co.uk" className="text-accent">
+            support@openinglab.co.uk
           </a>
           .
         </p>
@@ -90,8 +90,8 @@ function Privacy() {
       <LegalSection title="Contact">
         <p>
           Email{" "}
-          <a href="mailto:hello@openinglab.co.uk" className="text-accent">
-            hello@openinglab.co.uk
+          <a href="mailto:support@openinglab.co.uk" className="text-accent">
+            support@openinglab.co.uk
           </a>
           .
         </p>
