@@ -40,23 +40,32 @@
 
   html {
     -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    overscroll-behavior-y: none;
+    touch-action: pan-y pinch-zoom;
+    overscroll-behavior-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
   }
 
   body {
     margin: 0;
     min-height: 100dvh;
+    height: auto;
     font-family: var(--font-sans);
     background: var(--color-bg);
     color: var(--color-fg);
     line-height: 1.5;
-    touch-action: manipulation;
+    touch-action: pan-y pinch-zoom;
     -webkit-user-select: none;
     user-select: none;
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .home-board,
+  .home-board button {
+    touch-action: pan-y;
   }
 
   input,

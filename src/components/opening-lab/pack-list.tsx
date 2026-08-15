@@ -290,23 +290,11 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
   return (
     <div>
       <HomeHero
-        onStartScotch={() => {
-          if (scotch?.lines[0]) onStartLine(scotch, scotch.lines[0], "learn");
-        }}
+        onStartLine={onStartLine}
         onSubscribe={() => setShowSub(true)}
       />
 
       <TodayStrip onStartLine={onStartLine} onTrainDue={onTrainDue} />
-
-      {scotch ? (
-        <PackCard
-          pack={scotch}
-          unlocked={canAccess(scotch)}
-          onStartLine={onStartLine}
-          onRequestUnlock={requestUnlock}
-          defaultOpen
-        />
-      ) : null}
 
       <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
         More packs · pay as you go or Lab+. Tap a stack to expand.

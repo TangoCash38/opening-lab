@@ -1,17 +1,22 @@
 import { useMemo } from "react";
 import { Chess } from "chess.js";
-import { PACKS } from "@/data/packs";
+import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { LAB_PLUS_LABEL, PRICE_MONTHLY } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { useProgress } from "@/hooks/use-progress";
 import { ChessBoard } from "./chess-board";
+import { MasteryChip } from "./mastery-chip";
+
+type TrainMode = "learn" | "practice";
 
 type Props = {
-  onStartScotch: () => void;
+  onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onSubscribe: () => void;
 };
 
-export function HomeHero({ onStartScotch, onSubscribe }: Props) {
+export function HomeHero({ onStartLine, onSubscribe }: Props) {
   const { subscribed } = useUnlocks();
+  const { masteryOf, isComplete } = useProgress();
   const scotch = PACKS.find((p) => p.id === "scotch");
   const line = scotch?.lines[0];
 
@@ -20,6 +25,10 @@ export function HomeHero({ onStartScotch, onSubscribe }: Props) {
     const g = new Chess();
     return g.moves({ verbose: true }).find((m) => m.san === "e4") ?? null;
   }, []);
+
+  const startFirst = () => {
+    if (scotch && line) onStartLine(scotch, line, "learn");
+  };
 
   return (
     <section className="mb-5">
@@ -40,11 +49,11 @@ export function HomeHero({ onStartScotch, onSubscribe }: Props) {
             Scotch Gambit
           </h2>
           <p className="mt-0.5 text-[0.82rem] text-fg-muted">
-            {line?.name ?? "Line 1"} · 10 lines · yours forever
+            {scotch?.lines.length ?? 10} lines · yours forever
           </p>
         </div>
 
-        <div className="px-2">
+        <div className="home-board px-2">
           <ChessBoard
             game={game}
             flip={false}
@@ -54,15 +63,15 @@ export function HomeHero({ onStartScotch, onSubscribe }: Props) {
             showHints
             lastMove={null}
             slide={null}
-            onSquare={() => onStartScotch()}
+            onSquare={startFirst}
             interactive
           />
         </div>
 
-        <div className="space-y-2.5 px-4 pb-4">
+        <div className="space-y-2.5 px-4 pb-3 pt-1">
           <button
             type="button"
-            onClick={onStartScotch}
+            onClick={startFirst}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
             Start free Scotch Line 1
@@ -81,6 +90,56 @@ export function HomeHero({ onStartScotch, onSubscribe }: Props) {
             </p>
           )}
         </div>
+
+        {scotch ? (
+          <div className="border-t border-border px-3 pb-4 pt-3">
+            <p className="mb-2 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
+              Scotch lines
+            </p>
+            {scotch.lines.map((item, i) => {
+              const complete = isComplete(item.id);
+              const mastery = masteryOf(item.id);
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
+                    complete
+                      ? "border-success/35 bg-success-soft/55"
+                      : "border-danger bg-danger-soft"
+                  }`}
+                  onClick={() => onStartLine(scotch, item, "learn")}
+                >
+                  <span
+                    className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
+                      complete ? "bg-success" : "bg-danger"
+                    }`}
+                  >
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
+                      <span className="min-w-0 break-words">{item.name}</span>
+                      <MasteryChip mastery={mastery} />
+                    </div>
+                    <div className="mt-0.5 text-[0.72rem] text-fg-muted">
+                      {item.plies.slice(0, 6).join(" ")} …
+                    </div>
+                    <p
+                      className={`mt-0.5 text-[0.72rem] font-semibold ${
+                        complete ? "text-success" : "text-danger"
+                      }`}
+                    >
+                      {complete
+                        ? "Complete — train any time"
+                        : "Practice with no mistakes to complete"}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </section>
   );
