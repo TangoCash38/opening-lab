@@ -1,1 +1,498 @@
-PLACEHOLDER
+export type Side = "w" | "b";
+
+/** Metadata for punishment / blunder-drill lines. */
+export type PunishmentMeta = {
+  /** 0-based index in `plies` of the opponent's intentional mistake */
+  mistakePlyIndex: number;
+  /** Short banner shown right after the mistake is played */
+  banner: string;
+  /** Optional longer prompt under the banner */
+  prompt?: string;
+  /** Explanation card after the user lands the punishing sequence */
+  successExplanation: string;
+};
+
+export type OpeningLine = {
+  id: string;
+  name: string;
+  plies: string[];
+  side: Side;
+  /** When set, train mode shows blunder / punishment UI */
+  punishment?: PunishmentMeta;
+};
+
+export type Pack = {
+  id: string;
+  name: string;
+  eco: string;
+  side: "White" | "Black" | "Mixed";
+  section: "white" | "black" | "special";
+  /** Scotch Gambit only — all other packs are paid */
+  isFree: boolean;
+  /** Paid packs (everything except Scotch) */
+  isPremium: boolean;
+  /** Display price when paid; null when free */
+  price: string | null;
+  blurb: string;
+  lines: OpeningLine[];
+  /** Optional badge shown on the pack card (e.g. "Deep Lines") */
+  badge?: string;
+};
+
+export type ComingSoon = { name: string; blurb: string };
+
+/** All lines validated with chess.js (legal SAN sequences). */
+export const PACKS: Pack[] = [
+  {
+    id: "scotch",
+    name: "Scotch Gambit",
+    eco: "C44",
+    side: "White",
+    section: "white",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "10 lines · 4…Nf6 main, declines & Bxf7+ punish",
+    lines: [
+      {
+        id: "s1",
+        name: "Line 1 · 4…Nf6 (main)",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bc5", "Be3", "O-O", "Nxc6", "bxc6", "Bxc5", "Nxc5"],
+        side: "w",
+      },
+      {
+        id: "s2",
+        name: "Line 2 · 4…Bc5 solid …Nf6",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
+        side: "w",
+      },
+      {
+        id: "s3",
+        name: "Line 3 · If …dxc3 (Bxf7+)",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3", "Nf6"],
+        side: "w",
+      },
+      {
+        id: "s4",
+        name: "Line 4 · If …d3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d3", "O-O", "dxc2", "Qxc2", "Bc5", "Nc3", "d6", "Bg5", "Nge7", "Rad1", "O-O", "Nd5", "Be6"],
+        side: "w",
+      },
+      {
+        id: "s5",
+        name: "Line 5 · If 4…Bb4+",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "O-O", "cxb2", "Bxb2", "Nf6", "e5", "Ne4", "a3", "Ba5", "Qd5", "Qe7"],
+        side: "w",
+      },
+      {
+        id: "s6",
+        name: "Line 6 · If 4…Be7",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "c3", "Nf6", "e5", "Ne4", "cxd4", "d5", "Bb5", "O-O", "Nc3", "Bf5", "O-O", "f6"],
+        side: "w",
+      },
+      {
+        id: "s7",
+        name: "Line 7 · If 4…d6",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "Nxd4", "Nf6", "Nc3", "Be7", "O-O", "O-O", "h3", "Nxd4", "Qxd4", "Be6", "Bxe6", "fxe6"],
+        side: "w",
+      },
+      {
+        id: "s8",
+        name: "Line 8 · Max Lange path",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4", "Re1+", "Be6", "Ng5", "Qd5", "Nc3", "Qf5"],
+        side: "w",
+      },
+      {
+        id: "s9",
+        name: "Line 9 · 4…Bc5 Ng5 attack",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d6", "Qxd4", "Be6"],
+        side: "w",
+      },
+      {
+        id: "s10",
+        name: "Line 10 · If …Nxe4 after O-O",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
+        side: "w",
+      },
+    ],
+  },
+  {
+    id: "italian",
+    name: "Italian Game",
+    eco: "C50–C54",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "10 lines · Giuoco, Evans, Two Knights, Fried Liver",
+    lines: [
+      { id: "i1", name: "Line 1 · Giuoco Piano (main)", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "d5", "Bf6", "Re1", "Ne7"], side: "w" },
+      { id: "i2", name: "Line 2 · Giuoco Pianissimo", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "O-O", "d6", "c3", "a6", "Bb3", "Ba7", "Nbd2", "O-O", "h3", "h6", "Re1", "Be6"], side: "w" },
+      { id: "i3", name: "Line 3 · Two Knights …Na5", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2", "h6", "Nf3", "e4", "Ne5", "Bd6"], side: "w" },
+      { id: "i4", name: "Line 4 · Evans Gambit", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxb4", "c3", "Ba5", "d4", "exd4", "O-O", "d6", "cxd4", "Bb6", "Nc3", "Nf6", "e5", "dxe5"], side: "w" },
+      { id: "i5", name: "Line 5 · Hungarian …Be7", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Be7", "d4", "d6", "dxe5", "dxe5", "Qxd8+", "Bxd8", "Nc3", "Nf6", "Bg5", "O-O", "O-O-O", "h6", "Bh4", "Be7"], side: "w" },
+      { id: "i6", name: "Line 6 · Fried Liver", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "Qe4", "c6", "a3", "Na6"], side: "w" },
+      { id: "i7", name: "Line 7 · Traxler / Wilkes-Barre", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "Bc5", "Nxf7", "Bxf2+", "Kf1", "Qe7", "Nxh8", "d5", "exd5", "Nd4", "d6", "Qxd6", "Nf7", "Qc5"], side: "w" },
+      { id: "i8", name: "Line 8 · Quiet Italian …h6", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "c3", "d6", "O-O", "h6", "Nbd2", "O-O", "Bb3", "a6", "h3", "Re8", "Re1", "Be6"], side: "w" },
+      { id: "i9", name: "Line 9 · Centre Attack", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "Bg4"], side: "w" },
+      { id: "i10", name: "Line 10 · Two Knights main path", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "a4", "a5", "c3", "Be6", "Nbd2", "Qd7", "Nf1", "Rfe8"], side: "w" },
+    ],
+  },
+  {
+    id: "ruy",
+    name: "Ruy Lopez",
+    eco: "C60–C99",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "10 lines · Closed, Berlin, Open, Marshall ideas",
+    lines: [
+      { id: "r1", name: "Line 1 · Closed Spanish main", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3", "Na5", "Bc2", "c5"], side: "w" },
+      { id: "r2", name: "Line 2 · Berlin Defence", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Nxe4", "d4", "Nd6", "Bxc6", "dxc6", "dxe5", "Nf5", "Qxd8+", "Kxd8", "Nc3", "Ke8", "h3", "Be7"], side: "w" },
+      { id: "r3", name: "Line 3 · Exchange Variation", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Bxc6", "dxc6", "O-O", "f6", "d4", "exd4", "Nxd4", "c5", "Nb3", "Qxd1", "Rxd1", "Bd6", "Be3", "Ne7"], side: "w" },
+      { id: "r4", name: "Line 4 · Open Spanish", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Nxe4", "d4", "b5", "Bb3", "d5", "dxe5", "Be6", "c3", "Bc5", "Nbd2", "O-O"], side: "w" },
+      { id: "r5", name: "Line 5 · Marshall Attack ideas", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "O-O", "c3", "d5", "exd5", "Nxd5", "Nxe5", "Nxe5"], side: "w" },
+      { id: "r6", name: "Line 6 · Schliemann", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "f5", "Nc3", "fxe4", "Nxe4", "d5", "Nxe5", "dxe4", "Nxc6", "Qd5", "c4", "Qd6", "Nxa7+", "Bd7", "Bxd7+", "Qxd7"], side: "w" },
+      { id: "r7", name: "Line 7 · Classical …Bc5", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "Ne4", "O-O", "d5", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "f6"], side: "w" },
+      { id: "r8", name: "Line 8 · Steinitz Deferred", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "d6", "c3", "Bd7", "d4", "Nf6", "O-O", "Be7", "Re1", "O-O", "Nbd2", "Re8", "Nf1", "Bf8"], side: "w" },
+      { id: "r9", name: "Line 9 · Bird’s Defence", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "c6", "Bc4", "Nf6", "Re1", "d6", "c3", "Be7", "cxd4", "d5", "exd5", "Nxd5"], side: "w" },
+      { id: "r10", name: "Line 10 · Arkhangelsk ideas", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "b5", "Bb3", "Bb7", "d3", "Be7", "a4", "O-O", "Re1", "d6", "c3", "Na5"], side: "w" },
+    ],
+  },
+  {
+    id: "open-sicilian",
+    name: "Open Sicilian",
+    eco: "B20–B99",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "5 lines · Najdorf, Dragon, Classical, Scheveningen, Sveshnikov",
+    lines: [
+      { id: "os1", name: "Line 1 · Najdorf Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "e5", "Nb3", "Be6", "f3", "Be7", "Qd2", "O-O", "O-O-O", "Nbd7"], side: "w" },
+      { id: "os2", name: "Line 2 · Dragon Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6", "Be3", "Bg7", "f3", "O-O", "Qd2", "Nc6", "Bc4", "Bd7", "O-O-O", "Rc8"], side: "w" },
+      { id: "os3", name: "Line 3 · Classical Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "Nc6", "Bg5", "e6", "Qd2", "Be7", "O-O-O", "O-O", "f4", "Nxd4", "Qxd4", "a6"], side: "w" },
+      { id: "os4", name: "Line 4 · Scheveningen Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "e6", "Be2", "Be7", "O-O", "O-O", "f4", "Nc6", "Be3", "a6", "a4", "Qc7"], side: "w" },
+      { id: "os5", name: "Line 5 · Sveshnikov Variation", plies: ["e4", "c5", "Nf3", "Nc6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "e5", "Ndb5", "d6", "Bg5", "a6", "Na3", "b5", "Bxf6", "gxf6", "Nd5", "f5"], side: "w" },
+    ],
+  },
+  {
+    id: "french-as-white",
+    name: "French Defense (as White)",
+    eco: "C00–C19",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "5 lines · Advance, Milner-Barry, Winawer, Tarrasch, Exchange",
+    lines: [
+      { id: "fw1", name: "Line 1 · Main Line Advance", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "O-O", "Ne7", "Rb1", "Nec6"], side: "w" },
+      { id: "fw2", name: "Line 2 · Milner-Barry Gambit", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "Bd3", "cxd4", "cxd4", "Bd7", "O-O", "Nxd4", "Nxd4", "Qxd4", "Nc3", "Qxe5"], side: "w" },
+      { id: "fw3", name: "Line 3 · Winawer Variation", plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Qg4", "Qc7", "Qxg7", "Rg8", "Qxh7", "cxd4", "Ne2", "Nbc6"], side: "w" },
+      { id: "fw4", name: "Line 4 · Tarrasch Variation", plies: ["e4", "e6", "d4", "d5", "Nd2", "c5", "exd5", "exd5", "Ngf3", "Nc6", "Bb5", "Bd6", "dxc5", "Bxc5", "O-O", "Ne7", "Nb3", "Bd6", "Re1", "O-O"], side: "w" },
+      { id: "fw5", name: "Line 5 · Exchange Variation", plies: ["e4", "e6", "d4", "d5", "exd5", "exd5", "Nf3", "Bd6", "Bd3", "Nc6", "c3", "Nge7", "O-O", "Bg4", "Re1", "Qd7", "Nbd2", "O-O-O", "b4", "Rde8"], side: "w" },
+    ],
+  },
+  {
+    id: "caro-as-white",
+    name: "Caro-Kann (as White)",
+    eco: "B10–B19",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "5 lines · Advance, Tal, Classical, Two Knights, Fantasy",
+    lines: [
+      { id: "caw1", name: "Line 1 · Advance Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Qxd4", "Nc6"], side: "w" },
+      { id: "caw2", name: "Line 2 · Advance Tal Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "h4", "h6", "g4", "Bd7", "h5", "e6", "f4", "c5", "c3", "Nc6", "Nf3", "Qb6", "Na3", "cxd4"], side: "w" },
+      { id: "caw3", name: "Line 3 · Classical Variation", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6"], side: "w" },
+      { id: "caw4", name: "Line 4 · Two Knights Variation", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Ne2", "O-O", "c3", "Qc7"], side: "w" },
+      { id: "caw5", name: "Line 5 · Fantasy Variation", plies: ["e4", "c6", "d4", "d5", "f3", "dxe4", "fxe4", "e5", "Nf3", "Be6", "c3", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Be3", "O-O", "Nbd2", "Qc7"], side: "w" },
+    ],
+  },
+  {
+    id: "queens-gambit",
+    name: "Queen’s Gambit",
+    eco: "D06–D69",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "5 lines · QGA, QGD, Slav, Semi-Slav, Exchange",
+    lines: [
+      { id: "qg1", name: "Line 1 · Accepted (QGA)", plies: ["d4", "d5", "c4", "dxc4", "Nf3", "Nf6", "e3", "e6", "Bxc4", "c5", "O-O", "a6", "Bb3", "Nc6", "Nc3", "cxd4", "exd4", "Be7", "Re1", "O-O"], side: "w" },
+      { id: "qg2", name: "Line 2 · Declined (QGD) Main", plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "Nbd7", "Rc1", "c6", "Bd3", "dxc4", "Bxc4", "Nd5", "Bxe7", "Qxe7"], side: "w" },
+      { id: "qg3", name: "Line 3 · Slav Defense", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"], side: "w" },
+      { id: "qg4", name: "Line 4 · Semi-Slav Defense", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "e3", "Nbd7", "Bd3", "dxc4", "Bxc4", "b5", "Bd3", "Bb7", "O-O", "a6", "e4", "c5"], side: "w" },
+      { id: "qg5", name: "Line 5 · Exchange Variation", plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "cxd5", "exd5", "Bg5", "c6", "e3", "Be7", "Bd3", "Nbd7", "Nf3", "O-O", "O-O", "Re8", "Qc2", "Nf8"], side: "w" },
+    ],
+  },
+  {
+    id: "london",
+    name: "London System",
+    eco: "D00 / A45–A48",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "5 lines · Pyramid, Jobava, vs …c5, KID setup, Dutch",
+    lines: [
+      { id: "lon1", name: "Line 1 · Standard Pyramid Setup", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nf3", "e6", "Nbd2", "Bd6", "Bg3", "O-O", "Bd3", "Re8", "Ne5", "Qc7", "f4", "b6"], side: "w" },
+      { id: "lon2", name: "Line 2 · Jobava London", plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "a6", "dxc5", "Nc6", "Nf3", "Bg4", "Be2", "e6", "O-O", "Bxc5", "a3", "O-O", "b4", "Bd6"], side: "w" },
+      { id: "lon3", name: "Line 3 · Vs. Early …c5", plies: ["d4", "Nf6", "Bf4", "c5", "e3", "Qb6", "Nc3", "Nc6", "Nf3", "cxd4", "exd4", "a6", "a3", "e6", "Bd3", "Be7", "O-O", "O-O", "Re1", "d6"], side: "w" },
+      { id: "lon4", name: "Line 4 · Vs. King’s Indian Setup", plies: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Qe7", "Nbd2", "Re8"], side: "w" },
+      { id: "lon5", name: "Line 5 · Vs. Dutch Defense", plies: ["d4", "f5", "Bf4", "Nf6", "e3", "e6", "Nf3", "b6", "h3", "Bb7", "Bd3", "Be7", "O-O", "O-O", "c4", "Ne4", "Nc3", "Nxc3", "bxc3", "d6"], side: "w" },
+    ],
+  },
+  {
+    id: "vienna-game",
+    name: "Vienna Game & Gambit",
+    eco: "C25–C29",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · Vienna Gambit, quiet game, fork trick",
+    lines: [
+      { id: "vg1", name: "Line 1 · Vienna Gambit", plies: ["e4", "e5", "Nc3", "Nf6", "f4", "d5", "fxe5", "Nxe4", "Nf3", "Be7", "d4", "O-O", "Bd3", "f5", "exf6", "Nxf6", "O-O", "Nc6", "Ne2", "Bg4"], side: "w" },
+      { id: "vg2", name: "Line 2 · Vienna Game quiet", plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nc6", "d3", "Na5", "Nge2", "Nxc4", "dxc4", "Bc5", "O-O", "d6", "Qd3", "Be6", "b3", "O-O", "Be3", "Bxe3"], side: "w" },
+      { id: "vg3", name: "Line 3 · Fork trick 3.Bc4 Nxe4", plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nxe4", "Qh5", "Nd6", "Bb3", "Nc6", "Nb5", "g6", "Qf3", "f5", "Qd5", "Qe7", "Nxc7+", "Kd8", "Nxa8", "b6"], side: "w" },
+    ],
+  },
+  {
+    id: "kings-gambit",
+    name: "King's Gambit",
+    eco: "C30–C39",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · Kieseritzky Gambit · classical attacking lines",
+    lines: [
+      { id: "kg1", name: "Line 1 · Kieseritzky Gambit", plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"], side: "w" },
+      { id: "kg2", name: "Line 2 · King's Gambit Accepted main", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Nd7", "g3", "fxg3"], side: "w" },
+      { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2"], side: "w" },
+    ],
+  },
+  {
+    id: "sicilian",
+    name: "Sicilian Defence",
+    eco: "B20–B99",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "10 lines · Najdorf, Dragon, Taimanov, Alapin",
+    lines: [
+      { id: "si1", name: "Line 1 · Najdorf …e5", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be2", "e5", "Nb3", "Be7", "O-O", "O-O", "Be3", "Be6", "Qd2", "Nbd7"], side: "b" },
+      { id: "si2", name: "Line 2 · Najdorf vs 6.Bg5", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Bg5", "e6", "f4", "Qb6", "Qd2", "Qxb2", "Rb1", "Qa3", "f5", "Nc6"], side: "b" },
+      { id: "si3", name: "Line 3 · Najdorf Classical", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "e5", "Nb3", "Be6", "f3", "Be7", "Qd2", "O-O", "O-O-O", "Nbd7"], side: "b" },
+      { id: "si4", name: "Line 4 · Accelerated Dragon", plies: ["e4", "c5", "Nf3", "Nc6", "d4", "cxd4", "Nxd4", "g6", "Nc3", "Bg7", "Be3", "Nf6", "Bc4", "O-O", "Bb3", "a5", "O-O", "d6", "h3", "Nxd4"], side: "b" },
+      { id: "si5", name: "Line 5 · Taimanov", plies: ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nc6", "Nc3", "Qc7", "Be2", "a6", "O-O", "Nf6", "Be3", "Bb4", "Na4", "Be7", "Nxc6", "bxc6"], side: "b" },
+      { id: "si6", name: "Line 6 · Moscow 3.Bb5+", plies: ["e4", "c5", "Nf3", "d6", "Bb5+", "Bd7", "Bxd7+", "Qxd7", "c4", "Nc6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6", "f3", "Bg7", "Be3", "O-O"], side: "b" },
+      { id: "si7", name: "Line 7 · Dragon Yugoslav setup", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6", "Be3", "Bg7", "f3", "O-O", "Qd2", "Nc6", "Bc4", "Bd7", "O-O-O", "Rc8"], side: "b" },
+      { id: "si8", name: "Line 8 · Alapin …d5", plies: ["e4", "c5", "c3", "d5", "exd5", "Qxd5", "d4", "Nf6", "Nf3", "Bg4", "Be2", "e6", "O-O", "Nc6", "Be3", "cxd4", "cxd4", "Be7", "Nc3", "Qa5"], side: "b" },
+      { id: "si9", name: "Line 9 · Grand Prix as Black", plies: ["e4", "c5", "Nc3", "Nc6", "f4", "g6", "Nf3", "Bg7", "Bb5", "Nd4", "Nxd4", "cxd4", "Ne2", "Qb6", "d3", "Nf6", "O-O", "O-O", "Kh1", "d6"], side: "b" },
+      { id: "si10", name: "Line 10 · Rossolimo …g6", plies: ["e4", "c5", "Nf3", "Nc6", "Bb5", "g6", "O-O", "Bg7", "Re1", "e5", "Bxc6", "dxc6", "d3", "Qe7", "a4", "Nf6", "Nbd2", "O-O", "Nc4", "Nd7"], side: "b" },
+    ],
+  },
+  {
+    id: "french",
+    name: "French Defence",
+    eco: "C00–C19",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "8 lines · Winawer, Tarrasch, Advance, Classical",
+    lines: [
+      { id: "f1", name: "Line 1 · Winawer main", plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Qg4", "Qc7", "Qxg7", "Rg8", "Qxh7", "cxd4", "Ne2", "Nbc6"], side: "b" },
+      { id: "f2", name: "Line 2 · Tarrasch …c5", plies: ["e4", "e6", "d4", "d5", "Nd2", "c5", "exd5", "Qxd5", "Ngf3", "cxd4", "Bc4", "Qd6", "O-O", "Nf6", "Nb3", "Nc6", "Nbxd4", "Nxd4", "Nxd4", "a6"], side: "b" },
+      { id: "f3", name: "Line 3 · Advance …Qb6", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "O-O", "Ne7", "Rb1", "Nec6"], side: "b" },
+      { id: "f4", name: "Line 4 · Classical 4.Bg5", plies: ["e4", "e6", "d4", "d5", "Nc3", "Nf6", "Bg5", "Be7", "e5", "Nfd7", "Bxe7", "Qxe7", "f4", "a6", "Nf3", "c5", "dxc5", "Nc6", "Qd2", "Nxc5"], side: "b" },
+      { id: "f5", name: "Line 5 · Steinitz 5.f4", plies: ["e4", "e6", "d4", "d5", "Nc3", "Nf6", "e5", "Nfd7", "f4", "c5", "Nf3", "Nc6", "Be3", "a6", "Qd2", "b5", "dxc5", "Bxc5", "Bxc5", "Nxc5"], side: "b" },
+      { id: "f6", name: "Line 6 · Exchange", plies: ["e4", "e6", "d4", "d5", "exd5", "exd5", "Nf3", "Bd6", "Bd3", "Ne7", "O-O", "O-O", "Bg5", "Nbc6", "c3", "f6", "Bh4", "Bf5", "Re1", "Qd7"], side: "b" },
+      { id: "f7", name: "Line 7 · Rubinstein", plies: ["e4", "e6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nd7", "Nf3", "Ngf6", "Nxf6+", "Nxf6", "Bd3", "c5", "dxc5", "Bxc5", "O-O", "O-O", "Qe2", "b6"], side: "b" },
+      { id: "f8", name: "Line 8 · Tarrasch Closed", plies: ["e4", "e6", "d4", "d5", "Nd2", "Nf6", "e5", "Nfd7", "Bd3", "c5", "c3", "Nc6", "Ne2", "cxd4", "cxd4", "f6", "exf6", "Nxf6", "O-O", "Bd6"], side: "b" },
+    ],
+  },
+  {
+    id: "caro",
+    name: "Caro-Kann",
+    eco: "B10–B19",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "8 lines · Classical, Advance, Panov, Two Knights",
+    lines: [
+      { id: "ck1", name: "Line 1 · Classical 4…Bf5", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6"], side: "b" },
+      { id: "ck2", name: "Line 2 · Advance 3…Bf5", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Bxd4", "Nc6"], side: "b" },
+      { id: "ck3", name: "Line 3 · Panov-Botvinnik", plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "c4", "Nf6", "Nc3", "e6", "Nf3", "Be7", "cxd5", "Nxd5", "Bd3", "O-O", "O-O", "Nc6", "Re1", "Bf6"], side: "b" },
+      { id: "ck4", name: "Line 4 · 4…Nd7 system", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nd7", "Ng5", "Ngf6", "Bd3", "e6", "N1f3", "Bd6", "Qe2", "h6", "Ne4", "Nxe4", "Qxe4", "Nf6"], side: "b" },
+      { id: "ck5", name: "Line 5 · 4…Nf6 Exchange", plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "Bd3", "Nc6", "c3", "Nf6", "Bf4", "Bg4", "Nf3", "e6", "Nbd2", "Bd6", "Bxd6", "Qxd6", "O-O", "O-O"], side: "b" },
+      { id: "ck6", name: "Line 6 · Two Knights …Bg4", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Ne2", "O-O", "c3", "Qc7"], side: "b" },
+      { id: "ck7", name: "Line 7 · Advance …c5", plies: ["e4", "c6", "d4", "d5", "e5", "c5", "dxc5", "e6", "Nf3", "Bxc5", "Bd3", "Nc6", "O-O", "Nge7", "Bf4", "Ng6", "Bg3", "O-O", "Nbd2", "f6"], side: "b" },
+      { id: "ck8", name: "Line 8 · Classical 5.Bc4", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Bc4", "e6", "Nf3", "Nd7", "Ng3", "Bg6", "h4", "h6", "h5", "Bh7", "Qe2", "Ngf6"], side: "b" },
+    ],
+  },
+  {
+    id: "kings-indian",
+    name: "King’s Indian",
+    eco: "E60–E99",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "8 lines · Classical, Sämisch, Fianchetto, Bayonet, Grünfeld",
+    lines: [
+      { id: "ki1", name: "Line 1 · Classical main", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "Ne1", "Nd7", "Be3", "f5"], side: "b" },
+      { id: "ki2", name: "Line 2 · Sämisch", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f3", "O-O", "Be3", "c5", "Nge2", "Nc6", "d5", "Ne5", "Ng3", "h5", "Be2", "h4"], side: "b" },
+      { id: "ki3", name: "Line 3 · Fianchetto", plies: ["d4", "Nf6", "c4", "g6", "g3", "Bg7", "Bg2", "O-O", "Nc3", "d6", "Nf3", "Nbd7", "O-O", "e5", "e4", "c6", "h3", "Qb6", "Re1", "exd4"], side: "b" },
+      { id: "ki4", name: "Line 4 · Averbakh ideas", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Be2", "O-O", "Bg5", "c5", "d5", "h6", "Bh4", "e6", "Nf3", "exd5", "cxd5", "g5"], side: "b" },
+      { id: "ki5", name: "Line 5 · Grünfeld Exchange", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "d5", "cxd5", "Nxd5", "e4", "Nxc3", "bxc3", "Bg7", "Nf3", "c5", "Rb1", "O-O", "Be2", "Nc6", "d5", "Ne5"], side: "b" },
+      { id: "ki6", name: "Line 6 · Classical 6…e5", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "d5", "a5", "Bg5", "h6", "Bh4", "Na6", "Nd2", "Qe8"], side: "b" },
+      { id: "ki7", name: "Line 7 · Bayonet Attack", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "Nh5", "Re1", "f5"], side: "b" },
+      { id: "ki8", name: "Line 8 · Four Pawns setup", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f4", "O-O", "Nf3", "c5", "d5", "e6", "Be2", "exd5", "cxd5", "Re8", "e5", "dxe5"], side: "b" },
+    ],
+  },
+  {
+    id: "nimzo-indian",
+    name: "Nimzo-Indian Defence",
+    eco: "E20–E59",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · Classical, Rubinstein, Sämisch",
+    lines: [
+      { id: "ni1", name: "Line 1 · Classical main", plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "Qc2", "O-O", "a3", "Bxc3+", "Qxc3", "b6", "Bg5", "Bb7", "e3", "d6", "f3", "Nbd7", "Bd3", "c5"], side: "b" },
+      { id: "ni2", name: "Line 2 · Rubinstein 4.e3", plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Bd3", "d5", "Nf3", "c5", "O-O", "dxc4", "Bxc4", "Nbd7", "a3", "cxd4", "axb4", "dxc3"], side: "b" },
+      { id: "ni3", name: "Line 3 · Sämisch 4.a3", plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "a3", "Bxc3+", "bxc3", "c5", "e3", "Nc6", "Bd3", "O-O", "Ne2", "d6", "O-O", "e5", "Ng3", "Re8"], side: "b" },
+    ],
+  },
+  {
+    id: "scandinavian",
+    name: "Scandinavian Defence",
+    eco: "B01",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · …d5 on move 1 · Qa5 main line",
+    lines: [
+      { id: "sc1", name: "Line 1 · Main line …Qa5", plies: ["e4", "d5", "exd5", "Qxd5", "Nc3", "Qa5", "d4", "Nf6", "Nf3", "Bf5", "Bd2", "e6", "Bc4", "Bb4", "a3", "Bxc3", "Bxc3", "Qb6", "O-O", "Nbd7"], side: "b" },
+      { id: "sc2", name: "Line 2 · Modern …Nf6", plies: ["e4", "d5", "exd5", "Nf6", "d4", "Nxd5", "Nf3", "Bf5", "Be2", "e6", "O-O", "Be7", "c4", "Nb6", "Nc3", "O-O", "Be3", "Nc6", "Qd2", "Qd7"], side: "b" },
+      { id: "sc3", name: "Line 3 · …Qd6 system", plies: ["e4", "d5", "exd5", "Qxd5", "Nc3", "Qd6", "d4", "Nf6", "Nf3", "a6", "Be3", "Nc6", "Qd2", "Bf5", "O-O-O", "e6", "Bf4", "Qd7", "a3", "Be7"], side: "b" },
+    ],
+  },
+  {
+    id: "pirc-defence",
+    name: "Pirc Defence",
+    eco: "B07–B09",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · Hypermodern …d6 & …g6 vs 1.e4",
+    lines: [
+      { id: "pd1", name: "Line 1 · Classical system", plies: ["e4", "d6", "d4", "Nf6", "Nc3", "g6", "Nf3", "Bg7", "Be2", "O-O", "O-O", "c6", "a4", "Nbd7", "Re1", "e5", "h3", "exd4", "Nxd4", "Re8"], side: "b" },
+      { id: "pd2", name: "Line 2 · Austrian Attack setup", plies: ["e4", "d6", "d4", "Nf6", "Nc3", "g6", "f4", "Bg7", "Nf3", "O-O", "Bd3", "Nc6", "e5", "dxe5", "fxe5", "Nh5", "Be3", "Bg4", "Be2", "f6"], side: "b" },
+      { id: "pd3", name: "Line 3 · 150 Attack ideas", plies: ["e4", "d6", "d4", "Nf6", "Nc3", "g6", "Be3", "Bg7", "Qd2", "c6", "f3", "b5", "Nge2", "Nbd7", "Bh6", "Bxh6", "Qxh6", "Bb7", "O-O-O", "Qa5"], side: "b" },
+    ],
+  },
+  {
+    id: "slav-defence",
+    name: "Slav Defence",
+    eco: "D10–D19",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · Solid …c6 · main line & exchange",
+    lines: [
+      { id: "sd1", name: "Line 1 · Main line", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"], side: "b" },
+      { id: "sd2", name: "Line 2 · Exchange Variation", plies: ["d4", "d5", "c4", "c6", "cxd5", "cxd5", "Nc3", "Nf6", "Nf3", "Nc6", "Bf4", "Bf5", "e3", "e6", "Qb3", "Bb4", "Bb5", "O-O", "O-O", "Bxc3"], side: "b" },
+      { id: "sd3", name: "Line 3 · Semi-Slav bridge", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "e3", "Nbd7", "Bd3", "dxc4", "Bxc4", "b5", "Bd3", "Bb7", "O-O", "a6", "e4", "c5"], side: "b" },
+    ],
+  },
+  {
+    id: "dutch-defence",
+    name: "Dutch Defence",
+    eco: "A80–A99",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · …f5 systems · Classical & Leningrad",
+    lines: [
+      { id: "dd1", name: "Line 1 · Classical Dutch", plies: ["d4", "f5", "g3", "Nf6", "Bg2", "e6", "Nf3", "Be7", "O-O", "O-O", "c4", "d6", "Nc3", "Qe8", "Re1", "Qh5", "e4", "fxe4", "Nxe4", "Nxe4"], side: "b" },
+      { id: "dd2", name: "Line 2 · Leningrad Dutch", plies: ["d4", "f5", "g3", "Nf6", "Bg2", "g6", "Nf3", "Bg7", "O-O", "O-O", "c4", "d6", "Nc3", "Nc6", "d5", "Ne5", "Nxe5", "dxe5", "e4", "f4"], side: "b" },
+      { id: "dd3", name: "Line 3 · Stonewall setup", plies: ["d4", "f5", "c4", "e6", "g3", "Nf6", "Bg2", "d5", "Nf3", "c6", "O-O", "Bd6", "b3", "Qe7", "Bb2", "O-O", "Nbd2", "Nbd7", "Ne5", "Ne4"], side: "b" },
+    ],
+  },
+  {
+    id: "modern-defence",
+    name: "Modern Defence",
+    eco: "B06",
+    side: "Black",
+    section: "black",
+    isFree: false,
+    isPremium: true,
+    price: "£1",
+    blurb: "3 lines · …g6 without early …Nf6 · flexible hypermodern",
+    lines: [
+      { id: "md1", name: "Line 1 · Modern main", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "d6", "Be3", "a6", "Qd2", "b5", "O-O-O", "Nd7", "h4", "h5", "Nh3", "Bb7", "f3", "c5", "dxc5", "Nxc5"], side: "b" },
+      { id: "md2", name: "Line 2 · Averbakh system", plies: ["e4", "g6", "d4", "Bg7", "c4", "d6", "Nc3", "Nf6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5"], side: "b" },
+      { id: "md3", name: "Line 3 · …c6 & …d5 ideas", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "c6", "f4", "d5", "e5", "h5", "Nf3", "Nh6", "Be3", "Bg4", "Be2", "e6", "Qd2", "Nf5", "Bf2", "h4"], side: "b" },
+    ],
+  },
+  {
+    id: "club-weapons",
+    name: "Club Weapons",
+    eco: "Various",
+    side: "Mixed",
+    section: "special",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "10 lines · London, Jobava, gambits & club systems",
+    lines: [
+      { id: "cw1", name: "Line 1 · London System", plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "c3", "e6", "Nbd2", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "f4", "Qc7"], side: "w" },
+      { id: "cw2", name: "Line 2 · Jobava London", plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "Nc6", "Nf3", "cxd4", "exd4", "a6", "a3", "Bf5", "Be2", "e6", "O-O", "Be7", "Ne5", "O-O"], side: "w" },
+      { id: "cw3", name: "Line 3 · Grand Prix Attack", plies: ["e4", "c5", "Nc3", "Nc6", "f4", "g6", "Nf3", "Bg7", "Bb5", "Nd4", "O-O", "Nxb5", "Nxb5", "a6", "Nc3", "d6", "d3", "Nf6", "Qe1", "O-O"], side: "w" },
+      { id: "cw4", name: "Line 4 · Danish Gambit", plies: ["e4", "e5", "d4", "exd4", "c3", "dxc3", "Bc4", "cxb2", "Bxb2", "Nf6", "e5", "d5", "exf6", "dxc4", "Qxd8+", "Kxd8", "fxg7", "Bb4+", "Nc3", "Rg8"], side: "w" },
+      { id: "cw5", name: "Line 5 · Blackmar-Diemer", plies: ["d4", "d5", "e4", "dxe4", "Nc3", "Nf6", "f3", "exf3", "Nxf3", "Bg4", "h3", "Bxf3", "Qxf3", "c6", "Be3", "e6", "O-O-O", "Bb4", "Ne2", "Nbd7"], side: "w" },
+      { id: "cw6", name: "Line 6 · Advance vs Caro", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "O-O", "Nbc6", "c4", "Nxd4", "Bxd4", "Nc6"], side: "w" },
+      { id: "cw7", name: "Line 7 · English Four Knights", plies: ["c4", "e5", "Nc3", "Nf6", "g3", "d5", "cxd5", "Nxd5", "Bg2", "Nb6", "Nf3", "Nc6", "O-O", "Be7", "a3", "O-O", "b4", "Be6", "d3", "f5"], side: "w" },
+      { id: "cw8", name: "Line 8 · French Advance", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "O-O", "Ne7", "Rb1", "Nec6"], side: "w" },
+      { id: "cw9", name: "Line 9 · Trompowsky", plies: ["d4", "Nf6", "Bg5", "Ne4", "Bf4", "c5", "f3", "Qa5+", "c3", "Nf6", "Nd2", "Qb6", "Nc4", "Qd8", "dxc5", "Nc6", "e4", "e5", "Be3", "Be7"], side: "w" },
+      { id: "cw10", name: "Line 10 · Four Knights Scotch", plies: ["e4", "e5", "Nf3", "Nc6", "Nc3", "Nf6", "d4", "exd4", "Nxd4", "Bb4", "Nxc6", "bxc6", "Bd3", "d5", "exd5", "cxd5", "O-O", "O-O", "Bg5", "c6"], side: "w" },
+    ],
+  },
+];
+
+export const COMING: ComingSoon[] = [
+  { name: "Classic Games", blurb: "Legendary master games as strict lines" },
+  { name: "Longer Games", blurb: "Deep middlegame continuations" },
+  { name: "Spot the Mate", blurb: "Mate patterns from set positions" },
+];

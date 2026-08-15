@@ -315,6 +315,7 @@ export function ChessBoard({
         p.sq === slide.from &&
         p.code === slide.piece
       );
+      const isHintFromPiece = !!(showHints && expected?.from === p.sq && !isMover);
 
       const visualSq = isMover && glideOn && slide ? slide.to : p.sq;
       const { row, col } = squareToRC(visualSq, flip);
@@ -325,7 +326,7 @@ export function ChessBoard({
           data-piece-id={p.id}
           data-piece-sq={visualSq}
           data-moving={isMover ? "1" : undefined}
-          className="piece-abs"
+          className={`piece-abs${isHintFromPiece ? " piece-hint-from" : ""}`}
           style={{
             left: `${col * 12.5}%`,
             top: `${row * 12.5}%`,
@@ -344,7 +345,7 @@ export function ChessBoard({
         </div>
       );
     });
-  }, [pieces, slide, glideOn, flip]);
+  }, [pieces, slide, glideOn, flip, showHints, expected?.from]);
 
   return (
     <div className="relative mx-auto mb-4 w-full max-w-[420px] touch-none">

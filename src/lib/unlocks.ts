@@ -1,28 +1,33 @@
 /**
  * Client-side unlock store (localStorage).
- * Demo-ready for GitHub export — swap for real payments later.
+ * Demo-ready — swap for real Play Billing later.
  */
 
-const STORAGE_KEY = "opening-lab:unlocks:v1";
+const STORAGE_KEY = "opening-lab:unlocks:v2";
+
+export type SubPlan = "monthly" | "yearly";
 
 export type UnlockState = {
-  /** Unlocks every pack + future content */
-  allAccess: boolean;
-  /** Individually purchased pack ids */
   packs: string[];
+  plan: SubPlan | null;
+  expiresAt: number | null;
 };
 
-const DEFAULT: UnlockState = { allAccess: false, packs: [] };
+const DEFAULT: UnlockState = { packs: [], plan: null, expiresAt: null };
+
+const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
 function read(): UnlockState {
   if (typeof window === "undefined") return DEFAULT;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT;
-    const parsed = JSON.parse(raw) as UnlockState;
+    const parsed = JSON.parse(raw) as Partial<UnlockState>;
     return {
-      allAccess: !!parsed.allAccess,
       packs: Array.isArray(parsed.packs) ? parsed.packs : [],
+      plan: parsed.plan === "monthly" || parsed.plan === "yearly" ? parsed.plan : null,
+      expiresAt: typeof parsed.expiresAt === "number" ? parsed.expiresAt : null,
     };
   } catch {
     return DEFAULT;
@@ -39,10 +44,14 @@ export function getUnlocks(): UnlockState {
   return read();
 }
 
+export function isSubscriptionActive(state: UnlockState = read()): boolean {
+  return !!state.plan && typeof state.expiresAt === "number" && Date.now() < state.expiresAt;
+}
+
 export function isPackUnlocked(packId: string, isFree: boolean): boolean {
   if (isFree) return true;
   const s = read();
-  return s.allAccess || s.packs.includes(packId);
+  return isSubscriptionActive(s) || s.packs.includes(packId);
 }
 
 export function unlockPack(packId: string) {
@@ -53,8 +62,13 @@ export function unlockPack(packId: string) {
   }
 }
 
-export function unlockAllAccess() {
-  write({ ...read(), allAccess: true });
+export function startSubscription(plan: SubPlan) {
+  const now = Date.now();
+  write({
+    ...read(),
+    plan,
+    expiresAt: now + (plan === "yearly" ? YEAR_MS : MONTH_MS),
+  });
 }
 
 export function subscribeUnlocks(cb: () => void) {

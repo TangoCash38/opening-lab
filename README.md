@@ -17,7 +17,8 @@ Strict chess opening memory training — Learn & Practice modes, animated board,
 | **Scotch Gambit** (10 lines) | Free |
 | 5-line packs | **£1** |
 | 8–10 line packs | **£1.99** |
-| **All-Access Pass** | **£9.99** |
+| **Opening Lab+** | **£4.99 / month** or **£29.99 / year** |
+| Pay as you go | **£1** or **£1.99** per pack, keep forever |
 
 Demo unlocks use `localStorage` (`src/lib/unlocks.ts`).
 
@@ -49,7 +50,7 @@ src/
   components/opening-lab/
     app-shell.tsx       # Native-style header + views
     pack-list.tsx       # Packs, locks, prices
-    unlock-modal.tsx    # Unlock / All-Access
+    unlock-modal.tsx    # Pay as you go / Lab+
     train-view.tsx      # Learn / Practice
     chess-board.tsx     # Sliding pieces
     chess-pieces.tsx
@@ -57,7 +58,7 @@ src/
     mini-board.tsx
   data/
     packs.ts            # Lines + isFree / isPremium / price
-    pricing.ts          # £1 / £1.99 / £9.99
+    pricing.ts          # £1 / £1.99 / Lab+ £4.99 mo · £29.99 yr
   hooks/use-unlocks.ts
   lib/unlocks.ts
   routes/

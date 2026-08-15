@@ -25,14 +25,13 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Premium packs & pricing">
-        Every other pack is premium:
-        <br />• <strong>5-line packs</strong> — £1
-        <br />• <strong>Longer packs</strong> (8–10 lines) — £1.99
-        <br />• <strong>All-Access Pass</strong> — £9.99 (every pack + future
-        games)
+        Scotch is free. Everything else is pay as you go, or Lab+:
+        <br />• <strong>Pay as you go</strong> — £1 or £1.99 per pack, yours
+        forever
+        <br />• <strong>Opening Lab+</strong> — £4.99 a month, or £29.99 a year
+        for every pack
         <br />
-        Locked packs show a lock icon and price badge. Tap to unlock for this
-        device.
+        If a Lab+ plan ends, packs you bought stay unlocked.
       </Block>
 
       <Block title="White & Black sections">
@@ -48,6 +47,12 @@ export function GuideView({ onBack }: Props) {
       <Block title="Practice mode">
         No hints. Play your side only. Wrong squares flash red until you find
         the book move.
+      </Block>
+
+      <Block title="Today and reviews">
+        Home shows your streak and how many lines are due. Finish a line and
+        it comes back in 1, then 3, then 7, then 21 days. A miss in Practice
+        resets that line to tomorrow and can mark it Weak.
       </Block>
 
       <Block title="Account">

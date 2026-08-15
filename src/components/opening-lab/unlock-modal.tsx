@@ -1,12 +1,19 @@
 import { Lock, X } from "lucide-react";
-import { ALL_ACCESS_LABEL, ALL_ACCESS_PRICE } from "@/data/pricing";
+import {
+  LAB_PLUS_LABEL,
+  PRICE_MONTHLY,
+  PRICE_MONTHLY_NOTE,
+  PRICE_YEARLY,
+  PRICE_YEARLY_NOTE,
+} from "@/data/pricing";
 
 type Props = {
   packName: string;
   price: string;
   onClose: () => void;
   onUnlockPack: () => void;
-  onUnlockAll: () => void;
+  onSubscribeMonthly: () => void;
+  onSubscribeYearly: () => void;
 };
 
 export function UnlockModal({
@@ -14,7 +21,8 @@ export function UnlockModal({
   price,
   onClose,
   onUnlockPack,
-  onUnlockAll,
+  onSubscribeMonthly,
+  onSubscribeYearly,
 }: Props) {
   return (
     <div
@@ -44,7 +52,7 @@ export function UnlockModal({
                 Unlock {packName}
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
-                Train every line in this pack on this device.
+                Pay as you go for this pack, or unlock everything with Lab+.
               </p>
             </div>
           </div>
@@ -59,26 +67,20 @@ export function UnlockModal({
         </div>
 
         <div className="space-y-3 px-5 py-5">
-          <p className="m-0 text-[0.92rem] leading-relaxed text-fg">
-            Unlock <strong>{packName}</strong> for{" "}
-            <strong className="text-accent">{price}</strong>
-            {" "}OR get the{" "}
-            <strong>{ALL_ACCESS_LABEL}</strong> for{" "}
-            <strong className="text-accent">{ALL_ACCESS_PRICE}</strong>
-            {" "}(Unlocks All Packs + Future Games).
-          </p>
-
           <button
             type="button"
             onClick={onUnlockPack}
-            className="flex w-full items-center justify-between rounded-xl bg-accent px-4 py-3.5 text-left text-accent-fg active:scale-[0.99]"
+            className="flex w-full items-center justify-between rounded-xl border-[1.5px] border-border bg-bg-elevated px-4 py-3.5 text-left active:scale-[0.99]"
           >
             <span>
-              <span className="block text-[0.92rem] font-bold">
-                Unlock {packName}
+              <span className="block text-[0.72rem] font-semibold uppercase tracking-wide text-fg-subtle">
+                Pay as you go
               </span>
-              <span className="block text-[0.75rem] opacity-90">
-                This pack only
+              <span className="block text-[0.92rem] font-bold">
+                {packName} forever
+              </span>
+              <span className="block text-[0.75rem] text-fg-muted">
+                This pack only. Yours to keep.
               </span>
             </span>
             <span className="text-base font-bold">{price}</span>
@@ -86,20 +88,34 @@ export function UnlockModal({
 
           <button
             type="button"
-            onClick={onUnlockAll}
-            className="flex w-full items-center justify-between rounded-xl border-2 border-accent/30 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99]"
+            onClick={onSubscribeMonthly}
+            className="flex w-full items-center justify-between rounded-xl bg-accent px-4 py-3.5 text-left text-accent-fg active:scale-[0.99]"
+          >
+            <span>
+              <span className="block text-[0.92rem] font-bold">
+                {LAB_PLUS_LABEL} monthly
+              </span>
+              <span className="block text-[0.75rem] opacity-90">
+                Every pack · {PRICE_MONTHLY_NOTE}
+              </span>
+            </span>
+            <span className="text-base font-bold">{PRICE_MONTHLY}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onSubscribeYearly}
+            className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99]"
           >
             <span>
               <span className="block text-[0.92rem] font-bold text-accent">
-                {ALL_ACCESS_LABEL}
+                {LAB_PLUS_LABEL} yearly
               </span>
               <span className="block text-[0.75rem] text-fg-muted">
-                All packs + future games
+                Every pack · {PRICE_YEARLY_NOTE}
               </span>
             </span>
-            <span className="text-base font-bold text-accent">
-              {ALL_ACCESS_PRICE}
-            </span>
+            <span className="text-base font-bold text-accent">{PRICE_YEARLY}</span>
           </button>
 
           <p className="m-0 text-center text-[0.72rem] text-fg-subtle">

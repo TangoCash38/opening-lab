@@ -18,6 +18,11 @@ import { ChessBoard, type SlideAnim } from "./chess-board";
 type Mode = "learn" | "practice";
 
 type Props = {
+  initialMode?: Mode;
+  onLineComplete?: () => void;
+  onPracticeFail?: () => void;
+  onTrainNext?: () => void;
+  hasNextDue?: boolean;
   pack: Pack;
   line: OpeningLine;
   onBack: () => void;
@@ -61,8 +66,9 @@ function buildNotationPairs(plies: string[], playedCount: number): NotationPair[
   return pairs;
 }
 
-export function TrainView({ pack, line, onBack }: Props) {
-  const [mode, setMode] = useState<Mode>("learn");
+export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onPracticeFail, onTrainNext, hasNextDue }: Props) {
+  const [mode, setMode] = useState<Mode>(initialMode);
+  const completedRef = useRef(false);
   const [game, setGame] = useState(() => new Chess());
   const [plyIndex, setPlyIndex] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
@@ -154,6 +160,7 @@ export function TrainView({ pack, line, onBack }: Props) {
           (nextMode ?? mode) === "learn" ? "Your move (hint on)" : "Your move",
         cls: "",
       });
+      completedRef.current = false;
       setSession((s) => s + 1);
     },
     [clearAllTimers, mode],
@@ -246,6 +253,10 @@ export function TrainView({ pack, line, onBack }: Props) {
         setStatus({ text: "Line complete — well done!", cls: "done" });
       }
       soundWin();
+      if (!completedRef.current) {
+        completedRef.current = true;
+        onLineComplete?.();
+      }
       return;
     }
 
@@ -262,7 +273,7 @@ export function TrainView({ pack, line, onBack }: Props) {
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line.plies.length, line.punishment, mode, scheduleHints]);
+  }, [line.plies.length, line.punishment, mode, scheduleHints, onLineComplete]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -355,6 +366,7 @@ export function TrainView({ pack, line, onBack }: Props) {
       setStatus({ text: "Wrong move — try again", cls: "bad" });
       setSelected(null);
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
+      if (mode === "practice") onPracticeFail?.();
       wrongTimer.current = setTimeout(() => setWrongUntil(null), 450);
       return;
     }
@@ -535,8 +547,12 @@ export function TrainView({ pack, line, onBack }: Props) {
           onClick={onBack}
           className="rounded-full bg-accent px-4 py-2 text-[0.82rem] font-semibold text-accent-fg active:scale-95"
         >
-          Done
-        </button>
+          Done</button>
+        {status.cls === "done" ? (
+          <button type="button" onClick={onTrainNext ?? onBack} className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95">
+            Train next due
+          </button>
+        ) : null}
       </div>
     </div>
   );
