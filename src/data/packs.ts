@@ -522,7 +522,7 @@ export const PACKS: Pack[] = [
       {
         id: "f9",
         name: "Model · Tal–Botvinnik, 1960",
-        plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Qg4", "Qc7", "Qxg7", "Rg8", "Qxh7", "cxd4", "Kd1", "Nbc6", "Nf3", "Bd7"],
+        plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Qc7", "Qg4", "f5", "Qg3", "Ne7", "Qxg7", "Rg8", "Qxh7", "cxd4", "Kd1", "Bd7"],
         side: "b",
         players: {
           white: "Mikhail Tal",
@@ -554,7 +554,7 @@ export const PACKS: Pack[] = [
       {
         id: "ck9",
         name: "Model · Spassky–Karpov, 1974",
-        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6", "Bf4", "Ngf6", "O-O-O", "Be7"],
+        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "Nf3", "Nd7", "Bd3", "e6", "O-O", "Ngf6", "c4", "Bd6", "b3", "O-O", "Bb2", "Qc7"],
         side: "b",
         players: {
           white: "Boris Spassky",
