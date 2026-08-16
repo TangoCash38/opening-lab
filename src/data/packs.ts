@@ -52,7 +52,7 @@ export const PACKS: Pack[] = [
     isFree: true,
     isPremium: false,
     price: null,
-    blurb: "10 lines · 4…Nf6 main, declines & Bxf7+ punish",
+    blurb: "11 lines · 4…Nf6 main, declines, Bxf7+ & Mamedov–Anand",
     lines: [
       {
         id: "s1",
@@ -112,6 +112,12 @@ export const PACKS: Pack[] = [
         id: "s10",
         name: "Line 10 · If …Nxe4 after O-O",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
+        side: "w",
+      },
+      {
+        id: "s11",
+        name: "Model · Mamedov–Anand, 2022",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d5", "O-O", "dxe4", "c3", "Re8"],
         side: "w",
       },
     ],

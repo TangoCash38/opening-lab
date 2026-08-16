@@ -23,7 +23,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Free pack">
-        <strong>Scotch Gambit</strong> is free — all 10 lines unlock with no
+        <strong>Scotch Gambit</strong> is free — all 11 lines unlock with no
         purchase. Use it to learn the app and train every day.
       </Block>
 
