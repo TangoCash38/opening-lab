@@ -63,7 +63,7 @@ export function TodayStrip({ onStartLine, onTrainDue }: Props) {
             <div className="text-[0.75rem] text-fg-subtle">
               {dueCount === 0
                 ? "No reviews waiting"
-                : "Weak lines jump the queue"}
+                : "Missed Practice lines come first"}
             </div>
           </div>
         </div>

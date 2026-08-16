@@ -152,19 +152,16 @@ export function isLineComplete(p: LineProgress): boolean {
 }
 
 export function getMastery(p: LineProgress, now = new Date()): Mastery {
+  // Complete lines stay green-only. Chip is hidden; never Weak/Due.
+  if (p.cleanPractice) return "fresh";
   const recent = pruneFails(p.recentFails, now);
-  if (!p.cleanPractice) {
-    if (recent.length >= 2) return "weak";
-    if (p.learned || p.lastTrainedAt) return "learning";
-    return "new";
-  }
   if (recent.length >= 2) return "weak";
-  if (p.dueAt && new Date(p.dueAt).getTime() <= now.getTime()) return "due";
-  if (p.timesCompleted < 2 || p.interval <= 1) return "learning";
-  return "fresh";
+  if (p.learned || p.lastTrainedAt) return "learning";
+  return "new";
 }
 
 export function isLineDue(p: LineProgress, now = new Date()): boolean {
+  if (p.cleanPractice) return false;
   const mastery = getMastery(p, now);
   if (mastery === "weak") return true;
   if (mastery === "due") return true;

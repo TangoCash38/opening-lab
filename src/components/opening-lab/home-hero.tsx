@@ -120,7 +120,7 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
                       <span className="min-w-0 break-words">{item.name}</span>
-                      <MasteryChip mastery={mastery} />
+                      {!complete ? <MasteryChip mastery={mastery} /> : null}
                     </div>
                     {item.players ? (
                       <div className="mt-0.5 text-[0.72rem] text-fg-muted">
