@@ -359,7 +359,7 @@ export const PACKS: Pack[] = [
     price: "£1",
     blurb: "4 lines · Vienna Gambit, quiet game, fork trick & Steinitz–Paulsen",
     lines: [
-      { id: "vg1", name: "Line 1 · Vienna Gambit", plies: ["e4", "e5", "Nc3", "Nf6", "f4", "d5", "fxe5", "Nxe4", "Nf3", "Be7", "d4", "O-O", "Bd3", "f5", "exf6", "Nxf6", "O-O", "Nc6", "Ne2", "Bg4"], side: "w" },
+      { id: "vg1", name: "Line 1 · Vienna Gambit", plies: ["e4", "e5", "Nc3", "Nf6", "f4", "d5", "fxe5", "Nxe4", "Nf3", "Be7", "d4", "O-O", "Bd3", "f5", "exf6", "Bxf6", "O-O", "Nc6", "Ne2", "Bg4"], side: "w" },
       { id: "vg2", name: "Line 2 · Vienna Game quiet", plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nc6", "d3", "Na5", "Nge2", "Nxc4", "dxc4", "Bc5", "O-O", "d6", "Qd3", "Be6", "b3", "O-O", "Be3", "Bxe3"], side: "w" },
       { id: "vg3", name: "Line 3 · Fork trick 3.Bc4 Nxe4", plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nxe4", "Qh5", "Nd6", "Bb3", "Nc6", "Nb5", "g6", "Qf3", "f5", "Qd5", "Qe7", "Nxc7+", "Kd8", "Nxa8", "b6"], side: "w" },
       {
