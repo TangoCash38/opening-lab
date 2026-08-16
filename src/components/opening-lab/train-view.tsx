@@ -463,6 +463,34 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
       </div>
 
+      {line.players ? (
+        <div className="mt-2.5">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl bg-tag-white-bg px-3 py-2">
+              <div className="text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-tag-white-fg/70">
+                White
+              </div>
+              <div className="mt-0.5 text-[0.85rem] font-semibold text-tag-white-fg">
+                {line.players.white}
+              </div>
+            </div>
+            <div className="rounded-xl bg-tag-black-bg px-3 py-2">
+              <div className="text-[0.65rem] font-semibold uppercase tracking-[0.08em] text-tag-black-fg/70">
+                Black
+              </div>
+              <div className="mt-0.5 text-[0.85rem] font-semibold text-tag-black-fg">
+                {line.players.black}
+              </div>
+            </div>
+          </div>
+          {line.players.event ? (
+            <div className="mt-1.5 text-center text-[0.72rem] text-fg-subtle">
+              {line.players.event}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
       <div className="my-3.5 flex gap-1.5 rounded-full bg-bg-subtle p-1">
         <ModeTab active={mode === "learn"} onClick={() => changeMode("learn")}>
           Learn

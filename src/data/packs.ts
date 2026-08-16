@@ -12,6 +12,12 @@ export type PunishmentMeta = {
   successExplanation: string;
 };
 
+export type ModelPlayers = {
+  white: string;
+  black: string;
+  event?: string;
+};
+
 export type OpeningLine = {
   id: string;
   name: string;
@@ -19,6 +25,8 @@ export type OpeningLine = {
   side: Side;
   /** When set, train mode shows blunder / punishment UI */
   punishment?: PunishmentMeta;
+  /** Named model game — who sat each side */
+  players?: ModelPlayers;
 };
 
 export type Pack = {
@@ -119,6 +127,11 @@ export const PACKS: Pack[] = [
         name: "Model · Mamedov–Anand, 2022",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d5", "O-O", "dxe4", "c3", "Re8"],
         side: "w",
+        players: {
+          white: "Rauf Mamedov",
+          black: "Viswanathan Anand",
+          event: "European Club Cup 2022",
+        },
       },
     ],
   },

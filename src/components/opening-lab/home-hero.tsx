@@ -122,6 +122,11 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
                       <span className="min-w-0 break-words">{item.name}</span>
                       <MasteryChip mastery={mastery} />
                     </div>
+                    {item.players ? (
+                      <div className="mt-0.5 text-[0.72rem] text-fg-muted">
+                        White {item.players.white} · Black {item.players.black}
+                      </div>
+                    ) : null}
                     <div className="mt-0.5 text-[0.72rem] text-fg-muted">
                       {item.plies.slice(0, 6).join(" ")} …
                     </div>

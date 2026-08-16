@@ -170,6 +170,11 @@ function PackCard({
                     <span className="min-w-0 break-words">{line.name}</span>
                     <MasteryChip mastery={mastery} />
                   </div>
+                  {line.players ? (
+                    <div className="mt-0.5 text-[0.72rem] text-fg-muted">
+                      White {line.players.white} · Black {line.players.black}
+                    </div>
+                  ) : null}
                   <div className="mt-0.5 text-[0.72rem] text-fg-muted">
                     {line.plies.slice(0, 6).join(" ")} …
                   </div>
