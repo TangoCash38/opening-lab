@@ -54,7 +54,7 @@ export const PACKS: Pack[] = [
   {
     id: "scotch",
     name: "Scotch Gambit",
-    eco: "C44",
+    eco: "C44 / C55–C56",
     side: "White",
     section: "white",
     isFree: true,
@@ -65,7 +65,7 @@ export const PACKS: Pack[] = [
       {
         id: "s1",
         name: "Line 1 · 4…Nf6 (main)",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bc5", "Be3", "O-O", "Nxc6", "bxc6", "Bxc5", "Nxc5"],
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5", "f3", "Ng5"],
         side: "w",
       },
       {
@@ -83,7 +83,7 @@ export const PACKS: Pack[] = [
       {
         id: "s4",
         name: "Line 4 · If …d3",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d3", "O-O", "dxc2", "Qxc2", "Bc5", "Nc3", "d6", "Bg5", "Nge7", "Rad1", "O-O", "Nd5", "Be6"],
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "d3", "b4", "Bb6", "a4", "a6", "O-O", "Nf6", "Qxd3", "d6", "Bg5", "O-O"],
         side: "w",
       },
       {
@@ -138,7 +138,7 @@ export const PACKS: Pack[] = [
   {
     id: "italian",
     name: "Italian Game",
-    eco: "C50–C54",
+    eco: "C50–C59",
     side: "White",
     section: "white",
     isFree: false,
