@@ -155,7 +155,7 @@ export const PACKS: Pack[] = [
       { id: "i7", name: "Line 7 · Traxler / Wilkes-Barre", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "Bc5", "Nxf7", "Bxf2+", "Kf1", "Qe7", "Nxh8", "d5", "exd5", "Nd4", "d6", "Qxd6", "Nf7", "Qc5"], side: "w" },
       { id: "i8", name: "Line 8 · Quiet Italian …h6", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "c3", "d6", "O-O", "h6", "Nbd2", "O-O", "Bb3", "a6", "h3", "Re8", "Re1", "Be6"], side: "w" },
       { id: "i9", name: "Line 9 · Centre Attack", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "Bg4"], side: "w" },
-      { id: "i10", name: "Line 10 · Two Knights main path", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "a4", "a5", "c3", "Be6", "Nbd2", "Qd7", "Nf1", "Rfe8"], side: "w" },
+      { id: "i10", name: "Line 10 · Two Knights 4.d3", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "a4", "a5", "c3", "Be6", "Nbd2", "Qd7", "Nf1", "Rfe8"], side: "w" },
       {
         id: "i11",
         name: "Model · Steinitz–von Bardeleben, 1895",
@@ -387,7 +387,7 @@ export const PACKS: Pack[] = [
     blurb: "4 lines · Kieseritzky Gambit · Anderssen–Kieseritzky Immortal",
     lines: [
       { id: "kg1", name: "Line 1 · Kieseritzky Gambit", plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"], side: "w" },
-      { id: "kg2", name: "Line 2 · King's Gambit Accepted main", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Nd7", "g3", "fxg3"], side: "w" },
+      { id: "kg2", name: "Line 2 · Cunningham 3…Be7", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Nd7", "g3", "fxg3"], side: "w" },
       { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2"], side: "w" },
       {
         id: "kg4",
@@ -579,7 +579,7 @@ export const PACKS: Pack[] = [
       { id: "ki2", name: "Line 2 · Sämisch", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f3", "O-O", "Be3", "c5", "Nge2", "Nc6", "d5", "Ne5", "Ng3", "h5", "Be2", "h4"], side: "b" },
       { id: "ki3", name: "Line 3 · Fianchetto", plies: ["d4", "Nf6", "c4", "g6", "g3", "Bg7", "Bg2", "O-O", "Nc3", "d6", "Nf3", "Nbd7", "O-O", "e5", "e4", "c6", "h3", "Qb6", "Re1", "exd4"], side: "b" },
       { id: "ki4", name: "Line 4 · Averbakh ideas", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Be2", "O-O", "Bg5", "c5", "d5", "h6", "Bh4", "e6", "Nf3", "exd5", "cxd5", "g5"], side: "b" },
-      { id: "ki5", name: "Line 5 · Grünfeld Exchange", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "d5", "cxd5", "Nxd5", "e4", "Nxc3", "bxc3", "Bg7", "Nf3", "c5", "Rb1", "O-O", "Be2", "Nc6", "d5", "Ne5"], side: "b" },
+      { id: "ki5", name: "Line 5 · If they play …d5 (Grünfeld)", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "d5", "cxd5", "Nxd5", "e4", "Nxc3", "bxc3", "Bg7", "Nf3", "c5", "Rb1", "O-O", "Be2", "Nc6", "d5", "Ne5"], side: "b" },
       { id: "ki6", name: "Line 6 · Classical 6…e5", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "d5", "a5", "Bg5", "h6", "Bh4", "Na6", "Nd2", "Qe8"], side: "b" },
       { id: "ki7", name: "Line 7 · Bayonet Attack", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "Nh5", "Re1", "f5"], side: "b" },
       { id: "ki8", name: "Line 8 · Four Pawns setup", plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f4", "O-O", "Nf3", "c5", "d5", "e6", "Be2", "exd5", "cxd5", "Re8", "e5", "dxe5"], side: "b" },
@@ -807,7 +807,7 @@ export const PACKS: Pack[] = [
     blurb: "4 lines · …g6 without early …Nf6 · Kavalek–Suttles",
     lines: [
       { id: "md1", name: "Line 1 · Modern main", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "d6", "Be3", "a6", "Qd2", "b5", "O-O-O", "Nd7", "h4", "h5", "Nh3", "Bb7", "f3", "c5", "dxc5", "Nxc5"], side: "b" },
-      { id: "md2", name: "Line 2 · Averbakh system", plies: ["e4", "g6", "d4", "Bg7", "c4", "d6", "Nc3", "Nf6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5"], side: "b" },
+      { id: "md2", name: "Line 2 · Into the Bayonet", plies: ["e4", "g6", "d4", "Bg7", "c4", "d6", "Nc3", "Nf6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5"], side: "b" },
       { id: "md3", name: "Line 3 · …c6 & …d5 ideas", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "c6", "f4", "d5", "e5", "h5", "Nf3", "Nh6", "Be3", "Bg4", "Be2", "e6", "Qd2", "Nf5", "Bf2", "h4"], side: "b" },
       {
         id: "md4",
