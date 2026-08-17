@@ -14,6 +14,7 @@ import {
   soundWin,
 } from "@/lib/sounds";
 import { ChessBoard, type SlideAnim } from "./chess-board";
+import { LineCompleteBurst } from "./line-complete-burst";
 
 type Mode = "learn" | "practice";
 
@@ -85,6 +86,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const [busy, setBusy] = useState(false);
   const [banner, setBanner] = useState<PunishmentBannerState>({ kind: "idle" });
   const [nudgeTest, setNudgeTest] = useState(false);
+  const [celebrate, setCelebrate] = useState(false);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -116,6 +118,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       hintTimer.current = null;
     }
   }, [clearReplyTimer]);
+
+  const stopCelebrate = useCallback(() => setCelebrate(false), []);
 
   const expectedMove = useCallback(
     (g: Chess, idx: number): Move | null => {
@@ -165,6 +169,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       });
       completedRef.current = false;
       practiceMissedRef.current = false;
+      setCelebrate(false);
       setSession((s) => s + 1);
     },
     [clearAllTimers, mode],
@@ -287,6 +292,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       soundWin();
       if (!completedRef.current) {
         completedRef.current = true;
+        setCelebrate(true);
         onLineComplete?.();
       }
       return;
@@ -549,19 +555,27 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       )}
 
-      <ChessBoard
-        game={game}
-        flip={line.side === "b"}
-        selected={selected}
-        wrongUntil={wrongUntil}
-        expected={exp}
-        showHints={showHints}
-        lastMove={lastMove}
-        slide={slide}
-        onSlideComplete={onSlideComplete}
-        onSquare={onSquare}
-        interactive={!busy && !slide}
-      />
+      <div className="relative">
+        <ChessBoard
+          game={game}
+          flip={line.side === "b"}
+          selected={selected}
+          wrongUntil={wrongUntil}
+          expected={exp}
+          showHints={showHints}
+          lastMove={lastMove}
+          slide={slide}
+          onSlideComplete={onSlideComplete}
+          onSquare={onSquare}
+          interactive={!busy && !slide}
+        />
+        {celebrate ? (
+          <LineCompleteBurst
+            pieceCode={line.side === "b" ? "k" : "K"}
+            onFinished={stopCelebrate}
+          />
+        ) : null}
+      </div>
 
       {/* Move history notation strip — horizontal, scrollable */}
       <div
