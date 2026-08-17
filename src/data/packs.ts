@@ -343,7 +343,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "8 lines · …c5, …Qb6, …Bf5 & Jobava fights",
+    blurb: "8 lines · fight the London",
     badge: "Search pack",
     lines: [
       { id: "vl1", name: "Line 1 · …c5 …Qb6, they trade queens", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qxb6", "axb6", "Ngf3", "Bf5", "Be2", "e6", "O-O", "Be7"], side: "b" },
@@ -605,14 +605,14 @@ export const PACKS: Pack[] = [
   },
   {
     id: "classic-games",
-    name: "Classic Games",
+    name: "GM Classic Games",
     eco: "Various",
     side: "Mixed",
     section: "special",
     isFree: false,
     isPremium: true,
-    price: "£1.99",
-    blurb: "25 lines · named master games as strict drills",
+    price: "£3.99",
+    blurb: "25 separate lines · named master games as strict drills",
     badge: "Bundle",
     lines: [
       {
@@ -894,7 +894,4 @@ export const PACKS: Pack[] = [
   },
 ];
 
-export const COMING: ComingSoon[] = [
-  { name: "Longer Games", blurb: "Deep middlegame continuations" },
-  { name: "Spot the Mate", blurb: "Mate patterns from set positions" },
-];
+export const COMING: ComingSoon[] = [];

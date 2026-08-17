@@ -431,6 +431,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const hint = showHints && exp ? `Play: ${line.plies[plyIndex]}` : "";
 
   const notationPairs = buildNotationPairs(line.plies, plyIndex);
+  const n = pack.lines.findIndex((l) => l.id === line.id) + 1;
 
   // Keep the active (last-played) move visible in the horizontal strip
   useEffect(() => {
@@ -461,7 +462,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       >
         ← Packs
       </button>
-      <h2 className="m-0 font-display text-[1.25rem] font-bold">{line.name}</h2>
+      <h2 className="m-0 font-display text-[1.25rem] font-bold">
+        Line {n} of {pack.lines.length}
+      </h2>
+      <div className="mt-0.5 text-[0.95rem] font-semibold">{line.name}</div>
       <div className="text-[0.78rem] text-fg-subtle">
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
       </div>

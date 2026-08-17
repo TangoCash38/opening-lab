@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { ChevronDown, Lock } from "lucide-react";
-import { COMING, PACKS, type OpeningLine, type Pack } from "@/data/packs";
+import { useEffect, useState } from "react";
+import { Lock } from "lucide-react";
+import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackFree, packPrice } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useProgress } from "@/hooks/use-progress";
@@ -24,6 +24,14 @@ type Props = {
 };
 
 type ModalTarget = { pack: Pack; price: string };
+
+function QuietLabel({ children }: { children: string }) {
+  return (
+    <p className="mb-2 mt-5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
+      {children}
+    </p>
+  );
+}
 
 function PackCard({
   pack,
@@ -60,14 +68,8 @@ function PackCard({
       <button
         type="button"
         className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5 px-4 py-3.5 text-left"
-        onClick={() => {
-          if (locked) {
-            onRequestUnlock(pack);
-            return;
-          }
-          setOpen((v) => !v);
-        }}
-        aria-expanded={unlocked ? open : undefined}
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
       >
         <div className="relative">
           <MiniBoard />
@@ -93,6 +95,9 @@ function PackCard({
           </div>
           <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
+            <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
+              {pack.lines.length} lines
+            </span>
             {free ? (
               <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
                 Free
@@ -131,20 +136,20 @@ function PackCard({
             ) : null}
           </div>
           <div className="mt-1.5 text-[0.72rem] text-fg-subtle">
-            {locked
-              ? "Tap to unlock"
-              : open
-                ? "Tap to hide"
+            {open
+              ? "Tap to hide"
+              : locked
+                ? "Tap to see the lines"
                 : "Tap to show lines"}
           </div>
         </div>
       </button>
 
-      {open && !locked && (
+      {open && (
         <div className="border-t border-border px-3 pb-4 pt-2.5">
           {pack.lines.map((line, i) => {
             const mastery = masteryOf(line.id);
-            const complete = isComplete(line.id);
+            const complete = !locked && isComplete(line.id);
             return (
               <button
                 key={line.id}
@@ -154,7 +159,10 @@ function PackCard({
                     ? "border-success/35 bg-success-soft/55"
                     : "border-danger bg-danger-soft"
                 }`}
-                onClick={() => onStartLine(pack, line)}
+                onClick={() => {
+                  if (locked) onRequestUnlock(pack);
+                  else onStartLine(pack, line);
+                }}
               >
                 <span
                   className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
@@ -166,25 +174,26 @@ function PackCard({
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
                     <span className="min-w-0 break-words">{line.name}</span>
-                    {!complete ? <MasteryChip mastery={mastery} /> : null}
+                    {!locked && !complete ? (
+                      <MasteryChip mastery={mastery} />
+                    ) : null}
                   </div>
                   {line.players ? (
                     <div className="mt-0.5 text-[0.72rem] text-fg-muted">
                       White {line.players.white} · Black {line.players.black}
                     </div>
                   ) : null}
-                  <div className="mt-0.5 text-[0.72rem] text-fg-muted">
-                    {line.plies.slice(0, 6).join(" ")} …
-                  </div>
-                  <p
-                    className={`mt-0.5 text-[0.72rem] font-semibold ${
-                      complete ? "text-success" : "text-danger"
-                    }`}
-                  >
-                    {complete
-                      ? "Complete — train any time"
-                      : "Test with no mistakes to complete"}
-                  </p>
+                  {!locked ? (
+                    <p
+                      className={`mt-0.5 text-[0.72rem] font-semibold ${
+                        complete ? "text-success" : "text-danger"
+                      }`}
+                    >
+                      {complete
+                        ? "Complete — train any time"
+                        : "Test with no mistakes to complete"}
+                    </p>
+                  ) : null}
                 </div>
               </button>
             );
@@ -208,79 +217,6 @@ function PackCard({
   );
 }
 
-function ComingCard({ name, blurb }: { name: string; blurb: string }) {
-  return (
-    <div className="mb-3.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-border bg-bg-elevated opacity-85 shadow-[var(--shadow-card)]">
-      <div className="grid grid-cols-[auto_1fr] items-center gap-3.5 px-4 py-3.5">
-        <MiniBoard />
-        <div>
-          <div className="text-[0.95rem] font-bold">{name}</div>
-          <div className="mt-0.5 text-xs text-fg-subtle">{blurb}</div>
-          <div className="mt-1.5">
-            <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
-              Coming soon
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AccordionSection({
-  title,
-  count,
-  noun = "packs",
-  children,
-}: {
-  title: string;
-  count: number;
-  noun?: string;
-  children: ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="mb-3">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className={`flex w-full items-center justify-between gap-3 rounded-[calc(var(--radius-card)+2px)] border-[1.5px] px-4 py-3.5 text-left shadow-[var(--shadow-card)] active:scale-[0.99] ${
-          open
-            ? "mb-2.5 border-accent/35 bg-bg-elevated"
-            : "border-border bg-bg-elevated"
-        }`}
-        aria-expanded={open}
-      >
-        <span className="min-w-0">
-          <span className="block text-[0.95rem] font-bold tracking-tight">
-            {title}
-          </span>
-          <span className="mt-0.5 block text-[0.78rem] font-medium text-accent">
-            {open
-              ? `Showing ${count} ${count === 1 ? noun.replace(/s$/, "") : noun} · tap to close`
-              : `${count} ${count === 1 ? noun.replace(/s$/, "") : noun} inside · tap to expand`}
-          </span>
-        </span>
-        <span
-          className={`grid size-9 shrink-0 place-items-center rounded-full ${
-            open ? "bg-accent text-accent-fg" : "bg-bg-subtle text-fg"
-          }`}
-          aria-hidden
-        >
-          <ChevronDown
-            className={`size-5 transition-transform duration-200 ${
-              open ? "rotate-180" : "rotate-0"
-            }`}
-            strokeWidth={2.5}
-          />
-        </span>
-      </button>
-      {open ? <div>{children}</div> : null}
-    </div>
-  );
-}
-
 export function PackList({ onStartLine }: Props) {
   const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -293,7 +229,7 @@ export function PackList({ onStartLine }: Props) {
   const black = PACKS.filter((p) => p.section === "black" && p.id !== "vs-london");
   const classicGames = PACKS.find((p) => p.id === "classic-games");
   const vsLondon = PACKS.find((p) => p.id === "vs-london");
-  const special = PACKS.filter((p) => p.section === "special" && p.id !== "classic-games");
+  const clubWeapons = PACKS.find((p) => p.id === "club-weapons");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -389,7 +325,7 @@ export function PackList({ onStartLine }: Props) {
       />
 
       <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-        More packs · pay as you go or Lab+. Tap a stack to expand.
+        More packs · pay as you go or Lab+.
       </p>
 
       {classicGames ? (
@@ -410,47 +346,44 @@ export function PackList({ onStartLine }: Props) {
         />
       ) : null}
 
-      <AccordionSection title="White openings" count={white.length}>
-        {white.map((p) => (
-          <PackCard
-            key={p.id}
-            pack={p}
-            unlocked={canAccess(p)}
-            onStartLine={onStartLine}
-            onRequestUnlock={requestUnlock}
-          />
-        ))}
-      </AccordionSection>
+      {white.length ? (
+        <>
+          <QuietLabel>White</QuietLabel>
+          {white.map((p) => (
+            <PackCard
+              key={p.id}
+              pack={p}
+              unlocked={canAccess(p)}
+              onStartLine={onStartLine}
+              onRequestUnlock={requestUnlock}
+            />
+          ))}
+        </>
+      ) : null}
 
-      <AccordionSection title="Black openings" count={black.length}>
-        {black.map((p) => (
-          <PackCard
-            key={p.id}
-            pack={p}
-            unlocked={canAccess(p)}
-            onStartLine={onStartLine}
-            onRequestUnlock={requestUnlock}
-          />
-        ))}
-      </AccordionSection>
+      {black.length ? (
+        <>
+          <QuietLabel>Black</QuietLabel>
+          {black.map((p) => (
+            <PackCard
+              key={p.id}
+              pack={p}
+              unlocked={canAccess(p)}
+              onStartLine={onStartLine}
+              onRequestUnlock={requestUnlock}
+            />
+          ))}
+        </>
+      ) : null}
 
-      <AccordionSection title="Special packs" count={special.length}>
-        {special.map((p) => (
-          <PackCard
-            key={p.id}
-            pack={p}
-            unlocked={canAccess(p)}
-            onStartLine={onStartLine}
-            onRequestUnlock={requestUnlock}
-          />
-        ))}
-      </AccordionSection>
-
-      <AccordionSection title="Coming soon" count={COMING.length} noun="packs">
-        {COMING.map((c) => (
-          <ComingCard key={c.name} name={c.name} blurb={c.blurb} />
-        ))}
-      </AccordionSection>
+      {clubWeapons ? (
+        <PackCard
+          pack={clubWeapons}
+          unlocked={canAccess(clubWeapons)}
+          onStartLine={onStartLine}
+          onRequestUnlock={requestUnlock}
+        />
+      ) : null}
 
       <LegalFooter />
 

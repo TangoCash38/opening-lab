@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { LAB_PLUS_LABEL, PRICE_MONTHLY } from "@/data/pricing";
@@ -19,6 +19,7 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
   const { masteryOf, isComplete } = useProgress();
   const scotch = PACKS.find((p) => p.id === "scotch");
   const line = scotch?.lines[0];
+  const [linesOpen, setLinesOpen] = useState(false);
 
   const game = useMemo(() => new Chess(), []);
   const expected = useMemo(() => {
@@ -92,57 +93,70 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
         </div>
 
         {scotch ? (
-          <div className="border-t border-border px-3 pb-4 pt-3">
-            <p className="mb-2 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
-              Scotch lines
-            </p>
-            {scotch.lines.map((item, i) => {
-              const complete = isComplete(item.id);
-              const mastery = masteryOf(item.id);
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
-                    complete
-                      ? "border-success/35 bg-success-soft/55"
-                      : "border-danger bg-danger-soft"
-                  }`}
-                  onClick={() => onStartLine(scotch, item, "learn")}
-                >
-                  <span
-                    className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
-                      complete ? "bg-success" : "bg-danger"
-                    }`}
-                  >
-                    {i + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
-                      <span className="min-w-0 break-words">{item.name}</span>
-                      {!complete ? <MasteryChip mastery={mastery} /> : null}
+          <div className="border-t border-border">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+              onClick={() => setLinesOpen((v) => !v)}
+              aria-expanded={linesOpen}
+            >
+              <span>
+                <span className="block text-[0.88rem] font-bold">
+                  Scotch lines · {scotch.lines.length}
+                </span>
+                <span className="mt-0.5 block text-[0.72rem] text-fg-subtle">
+                  {linesOpen ? "Tap to hide" : "Tap to show"}
+                </span>
+              </span>
+            </button>
+            {linesOpen
+              ? scotch.lines.map((item, i) => {
+                  const complete = isComplete(item.id);
+                  const mastery = masteryOf(item.id);
+                  return (
+                    <div key={item.id} className="px-3">
+                      <button
+                        type="button"
+                        className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
+                          complete
+                            ? "border-success/35 bg-success-soft/55"
+                            : "border-danger bg-danger-soft"
+                        }`}
+                        onClick={() => onStartLine(scotch, item, "learn")}
+                      >
+                        <span
+                          className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
+                            complete ? "bg-success" : "bg-danger"
+                          }`}
+                        >
+                          {i + 1}
+                        </span>
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
+                            <span className="min-w-0 break-words">{item.name}</span>
+                            {!complete ? <MasteryChip mastery={mastery} /> : null}
+                          </div>
+                          {item.players ? (
+                            <div className="mt-0.5 text-[0.72rem] text-fg-muted">
+                              White {item.players.white} · Black {item.players.black}
+                            </div>
+                          ) : null}
+                          <p
+                            className={`mt-0.5 text-[0.72rem] font-semibold ${
+                              complete ? "text-success" : "text-danger"
+                            }`}
+                          >
+                            {complete
+                              ? "Complete — train any time"
+                              : "Test with no mistakes to complete"}
+                          </p>
+                        </div>
+                      </button>
                     </div>
-                    {item.players ? (
-                      <div className="mt-0.5 text-[0.72rem] text-fg-muted">
-                        White {item.players.white} · Black {item.players.black}
-                      </div>
-                    ) : null}
-                    <div className="mt-0.5 text-[0.72rem] text-fg-muted">
-                      {item.plies.slice(0, 6).join(" ")} …
-                    </div>
-                    <p
-                      className={`mt-0.5 text-[0.72rem] font-semibold ${
-                        complete ? "text-success" : "text-danger"
-                      }`}
-                    >
-                      {complete
-                        ? "Complete — train any time"
-                        : "Test with no mistakes to complete"}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
+                  );
+                })
+              : null}
+            {linesOpen ? <div className="pb-2.5" /> : null}
           </div>
         ) : null}
       </div>

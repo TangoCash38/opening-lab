@@ -11,6 +11,8 @@ export const PRICE_YEARLY_NOTE = "a year · best value";
 export const PRICE_FOCUSED = "£1";
 /** 8–10+ line packs */
 export const PRICE_FULL = "£1.99";
+/** Classic Games bundle */
+export const PRICE_BUNDLE = "£3.99";
 
 export const FREE_PACK_IDS = new Set(["scotch"]);
 
