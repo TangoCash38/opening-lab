@@ -49,6 +49,7 @@
     "@tanstack/react-start": "^1.168.0",
     "@tanstack/react-table": "^8.21.0",
     "@tanstack/router-plugin": "^1.168.0",
+    "@vercel/analytics": "^1.5.0",
     "better-auth": "^1.6.0",
     "chess.js": "^1.4.0",
     "class-variance-authority": "^0.7.1",
@@ -94,5 +95,5 @@
     "typescript-eslint": "^8.56.1",
     "vite": "^8.2.0"
   },
-  "description": "Strict chess opening memory training \u2014 Learn & Practice modes"
+  "description": "Strict chess opening memory training — Learn & Practice modes"
 }
