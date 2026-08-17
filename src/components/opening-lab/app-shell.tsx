@@ -66,14 +66,6 @@ export function OpeningLabApp() {
     return resolved;
   };
 
-  const startDueQueue = () => {
-    const items = resolveQueue(dueQueue(accessibleCandidates(canAccess)));
-    if (items.length === 0) return;
-    const [first, ...rest] = items;
-    setQueue(rest);
-    startLine(first!.pack, first!.line, first!.mode);
-  };
-
   const trainNext = () => {
     if (queue.length > 0) {
       const [next, ...rest] = queue;
@@ -154,7 +146,7 @@ export function OpeningLabApp() {
         }}
       >
         {view === "home" && (
-          <PackList onStartLine={startLine} onTrainDue={startDueQueue} />
+          <PackList onStartLine={startLine} />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}
         {view === "train" && active && (

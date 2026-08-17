@@ -13,7 +13,6 @@ import {
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
-import { TodayStrip } from "./today-strip";
 import { MasteryChip } from "./mastery-chip";
 import { HomeHero } from "./home-hero";
 import { LegalFooter } from "./legal-footer";
@@ -22,7 +21,6 @@ type TrainMode = "learn" | "practice";
 
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
-  onTrainDue: () => void;
 };
 
 type ModalTarget = { pack: Pack; price: string };
@@ -283,7 +281,7 @@ function AccordionSection({
   );
 }
 
-export function PackList({ onStartLine, onTrainDue }: Props) {
+export function PackList({ onStartLine }: Props) {
   const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
   const [modal, setModal] = useState<ModalTarget | null>(null);
   const [showSub, setShowSub] = useState(false);
@@ -293,7 +291,8 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
 
   const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = PACKS.filter((p) => p.section === "black");
-  const special = PACKS.filter((p) => p.section === "special");
+  const classicGames = PACKS.find((p) => p.id === "classic-games");
+  const special = PACKS.filter((p) => p.section === "special" && p.id !== "classic-games");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -388,11 +387,18 @@ export function PackList({ onStartLine, onTrainDue }: Props) {
         }}
       />
 
-      <TodayStrip onStartLine={onStartLine} onTrainDue={onTrainDue} />
-
       <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
         More packs · pay as you go or Lab+. Tap a stack to expand.
       </p>
+
+      {classicGames ? (
+        <PackCard
+          pack={classicGames}
+          unlocked={canAccess(classicGames)}
+          onStartLine={onStartLine}
+          onRequestUnlock={requestUnlock}
+        />
+      ) : null}
 
       <AccordionSection title="White openings" count={white.length}>
         {white.map((p) => (
