@@ -290,8 +290,9 @@ export function PackList({ onStartLine }: Props) {
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
 
   const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
-  const black = PACKS.filter((p) => p.section === "black");
+  const black = PACKS.filter((p) => p.section === "black" && p.id !== "vs-london");
   const classicGames = PACKS.find((p) => p.id === "classic-games");
+  const vsLondon = PACKS.find((p) => p.id === "vs-london");
   const special = PACKS.filter((p) => p.section === "special" && p.id !== "classic-games");
 
   useEffect(() => {
@@ -395,6 +396,15 @@ export function PackList({ onStartLine }: Props) {
         <PackCard
           pack={classicGames}
           unlocked={canAccess(classicGames)}
+          onStartLine={onStartLine}
+          onRequestUnlock={requestUnlock}
+        />
+      ) : null}
+
+      {vsLondon ? (
+        <PackCard
+          pack={vsLondon}
+          unlocked={canAccess(vsLondon)}
           onStartLine={onStartLine}
           onRequestUnlock={requestUnlock}
         />
