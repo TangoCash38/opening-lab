@@ -1,6 +1,6 @@
 # Opening Lab
 
-Strict chess opening memory training — Learn & Practice modes, animated board, free Scotch Gambit plus premium packs.
+Strict chess opening memory training — Practice & Test modes, animated board, free Scotch Gambit plus premium packs.
 
 ## Stack
 
@@ -51,7 +51,7 @@ src/
     app-shell.tsx       # Native-style header + views
     pack-list.tsx       # Packs, locks, prices
     unlock-modal.tsx    # Pay as you go / Lab+
-    train-view.tsx      # Learn / Practice
+    train-view.tsx      # Practice / Test
     chess-board.tsx     # Sliding pieces
     chess-pieces.tsx
     guide-view.tsx

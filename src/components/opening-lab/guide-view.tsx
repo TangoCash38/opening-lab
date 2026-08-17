@@ -23,8 +23,8 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Free pack">
-        <strong>Scotch Gambit</strong> is free — all 11 lines unlock with no
-        purchase. Use it to learn the app and train every day.
+        <strong>Scotch Gambit</strong> is free — all 10 theory lines unlock
+        with no purchase. Use it to learn the app and train every day.
       </Block>
 
       <Block title="Premium packs & pricing">
@@ -42,20 +42,20 @@ export function GuideView({ onBack }: Props) {
         train replies as Black. Special packs mix practical club systems.
       </Block>
 
-      <Block title="Learn mode">
-        Green hints show the next move. The opponent replies automatically.
-        Follow the exact line.
-      </Block>
-
       <Block title="Practice mode">
-        No hints. Play your side only. Wrong squares flash red until you find
-        the book move.
+        Green hints show the next move. The opponent replies automatically.
+        Follow the exact line. Practice does not complete the line.
       </Block>
 
-      <Block title="Today and reviews">
-        Home shows your streak and how many lines are due. Finish a line and
-        it comes back in 1, then 3, then 7, then 21 days. A miss in Practice
-        resets that line to tomorrow and can mark it Weak.
+      <Block title="Test mode">
+        No hints. Play your side only. Wrong squares flash red until you find
+        the book move. A clean Test (zero mistakes) turns the line green.
+      </Block>
+
+      <Block title="Reviews">
+        A clean Test schedules the line again in 1, then 3, then 7, then 21
+        days. A miss in Test resets that line to tomorrow and can mark it
+        Weak.
       </Block>
 
       <Block title="Account">

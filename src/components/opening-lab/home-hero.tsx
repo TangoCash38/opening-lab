@@ -137,7 +137,7 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
                     >
                       {complete
                         ? "Complete — train any time"
-                        : "Practice with no mistakes to complete"}
+                        : "Test with no mistakes to complete"}
                     </p>
                   </div>
                 </button>

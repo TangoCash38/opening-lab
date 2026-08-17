@@ -84,6 +84,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const [hintsReady, setHintsReady] = useState(true);
   const [busy, setBusy] = useState(false);
   const [banner, setBanner] = useState<PunishmentBannerState>({ kind: "idle" });
+  const [nudgeTest, setNudgeTest] = useState(false);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -159,7 +160,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
       setStatus({
         text:
-          (nextMode ?? mode) === "learn" ? "Your move (hint on)" : "Your move",
+          (nextMode ?? mode) === "learn" ? "Your move (Practice)" : "Your move",
         cls: "",
       });
       completedRef.current = false;
@@ -170,6 +171,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   );
 
   const changeMode = (m: Mode) => {
+    if (m === "practice") setNudgeTest(false);
     setMode(m);
     resetLine(m);
   };
@@ -254,8 +256,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       }
 
       if (mode === "learn") {
+        setNudgeTest(true);
         setStatus({
-          text: "Learn done — now Practice with no mistakes",
+          text: "Practice done — now Test with no hints",
           cls: "done",
         });
         soundWin();
@@ -268,7 +271,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
       if (practiceMissedRef.current) {
         setStatus({
-          text: "Finished, but you missed a move — Practice again to go green",
+          text: "Finished, but you missed a move — Test again to go green",
           cls: "done",
         });
         soundWin();
@@ -296,7 +299,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setHintsReady(false);
     } else {
       setStatus({
-        text: mode === "learn" ? "Your move (hint on)" : "Your move",
+        text: mode === "learn" ? "Your move (Practice)" : "Your move",
         cls: "",
       });
       if (mode === "learn") scheduleHints();
@@ -493,13 +496,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
       <div className="my-3.5 flex gap-1.5 rounded-full bg-bg-subtle p-1">
         <ModeTab active={mode === "learn"} onClick={() => changeMode("learn")}>
-          Learn
+          Practice
         </ModeTab>
         <ModeTab
           active={mode === "practice"}
           onClick={() => changeMode("practice")}
+          nudge={nudgeTest}
         >
-          Practice
+          Test
         </ModeTab>
       </div>
 
@@ -608,7 +612,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           className="rounded-full bg-accent px-4 py-2 text-[0.82rem] font-semibold text-accent-fg active:scale-95"
         >
           Done</button>
-        {status.cls === "done" ? (
+        {status.cls === "done" && mode === "learn" ? (
+          <button
+            type="button"
+            onClick={() => changeMode("practice")}
+            className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
+          >
+            Start Test
+          </button>
+        ) : null}
+        {status.cls === "done" && mode === "practice" ? (
           <button type="button" onClick={onTrainNext ?? onBack} className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95">
             Train next due
           </button>
@@ -622,19 +635,23 @@ function ModeTab({
   active,
   onClick,
   children,
+  nudge,
 }: {
   active: boolean;
   onClick: () => void;
   children: ReactNode;
+  nudge?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
-        active
-          ? "bg-bg-elevated text-fg shadow-sm"
-          : "bg-transparent text-fg-muted"
+        nudge
+          ? "mode-tab-nudge"
+          : active
+            ? "bg-bg-elevated text-fg shadow-sm"
+            : "bg-transparent text-fg-muted"
       }`}
     >
       {children}
