@@ -15,6 +15,7 @@ type Props = {
   onSubscribeMonthly: () => void;
   onSubscribeYearly: () => void;
   paymentsEnabled?: boolean | null;
+  needsAccount?: boolean;
   busy?: boolean;
   error?: string | null;
 };
@@ -27,6 +28,7 @@ export function UnlockModal({
   onSubscribeMonthly,
   onSubscribeYearly,
   paymentsEnabled = false,
+  needsAccount = false,
   busy = false,
   error = null,
 }: Props) {
@@ -136,6 +138,10 @@ export function UnlockModal({
           ) : busy ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
               Opening checkout…
+            </p>
+          ) : needsAccount ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              Sign in so this stays on your account.
             </p>
           ) : paymentsEnabled === true ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">

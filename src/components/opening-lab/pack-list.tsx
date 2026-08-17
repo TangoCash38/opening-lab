@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackFree, packPrice } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { useProgress } from "@/hooks/use-progress";
 import {
+  clearPendingCheckout,
   confirmCheckoutSession,
   fetchPaymentsEnabled,
+  readPendingCheckout,
+  savePendingCheckout,
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
@@ -219,11 +223,14 @@ function PackCard({
 
 export function PackList({ onStartLine }: Props) {
   const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
+  const { user, isPending } = useCurrentUserState();
+  const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
   const [showSub, setShowSub] = useState(false);
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
+  const resumedCheckout = useRef(false);
 
   const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = PACKS.filter((p) => p.section === "black" && p.id !== "vs-london");
@@ -275,6 +282,11 @@ export function PackList({ onStartLine }: Props) {
     setModal({ pack, price });
   };
 
+  const goToSignIn = (kind: CheckoutKind, packId?: string) => {
+    savePendingCheckout({ kind, packId });
+    window.location.href = "/login?next=checkout";
+  };
+
   const pay = async (kind: CheckoutKind, packId?: string) => {
     setPayError(null);
     setPayBusy(true);
@@ -286,6 +298,14 @@ export function PackList({ onStartLine }: Props) {
             ? false
             : await fetchPaymentsEnabled();
       if (live) {
+        if (isPending) {
+          setPayError("Please wait…");
+          return;
+        }
+        if (!signedIn) {
+          goToSignIn(kind, packId);
+          return;
+        }
         const url = await startCheckout(kind, packId);
         window.location.href = url;
         return;
@@ -295,11 +315,27 @@ export function PackList({ onStartLine }: Props) {
       setModal(null);
       setShowSub(false);
     } catch (err) {
-      setPayError(err instanceof Error ? err.message : "Payment failed");
+      const message = err instanceof Error ? err.message : "Payment failed";
+      if (message === "Sign in required") {
+        goToSignIn(kind, packId);
+        return;
+      }
+      setPayError(message);
     } finally {
       setPayBusy(false);
     }
   };
+
+  useEffect(() => {
+    if (resumedCheckout.current) return;
+    if (isPending || !signedIn || paymentsEnabled !== true) return;
+    if (new URLSearchParams(window.location.search).get("paid") === "1") return;
+    const pending = readPendingCheckout();
+    if (!pending) return;
+    resumedCheckout.current = true;
+    clearPendingCheckout();
+    void pay(pending.kind, pending.packId);
+  }, [isPending, signedIn, paymentsEnabled]);
 
   return (
     <div>
@@ -399,6 +435,7 @@ export function PackList({ onStartLine }: Props) {
             void pay("yearly");
           }}
           paymentsEnabled={paymentsEnabled}
+          needsAccount={paymentsEnabled === true && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
         />
@@ -421,6 +458,7 @@ export function PackList({ onStartLine }: Props) {
             void pay("yearly");
           }}
           paymentsEnabled={paymentsEnabled}
+          needsAccount={paymentsEnabled === true && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
         />

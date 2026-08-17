@@ -15,8 +15,8 @@ export type UnlockState = {
 
 const DEFAULT: UnlockState = { packs: [], plan: null, expiresAt: null };
 
-const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
-const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+export const MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+export const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
 function read(): UnlockState {
   if (typeof window === "undefined") return DEFAULT;
@@ -24,11 +24,7 @@ function read(): UnlockState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT;
     const parsed = JSON.parse(raw) as Partial<UnlockState>;
-    return {
-      packs: Array.isArray(parsed.packs) ? parsed.packs : [],
-      plan: parsed.plan === "monthly" || parsed.plan === "yearly" ? parsed.plan : null,
-      expiresAt: typeof parsed.expiresAt === "number" ? parsed.expiresAt : null,
-    };
+    return normalizeUnlockState(parsed);
   } catch {
     return DEFAULT;
   }
@@ -40,8 +36,24 @@ function write(state: UnlockState) {
   window.dispatchEvent(new CustomEvent("opening-lab:unlocks"));
 }
 
+export function normalizeUnlockState(parsed: Partial<UnlockState> | null | undefined): UnlockState {
+  return {
+    packs: Array.isArray(parsed?.packs)
+      ? parsed.packs.filter((id): id is string => typeof id === "string" && !!id)
+      : [],
+    plan: parsed?.plan === "monthly" || parsed?.plan === "yearly" ? parsed.plan : null,
+    expiresAt: typeof parsed?.expiresAt === "number" && Number.isFinite(parsed.expiresAt)
+      ? parsed.expiresAt
+      : null,
+  };
+}
+
 export function getUnlocks(): UnlockState {
   return read();
+}
+
+export function replaceUnlocks(state: UnlockState) {
+  write(normalizeUnlockState(state));
 }
 
 export function isSubscriptionActive(state: UnlockState = read()): boolean {
@@ -80,4 +92,29 @@ export function subscribeUnlocks(cb: () => void) {
     window.removeEventListener("opening-lab:unlocks", handler);
     window.removeEventListener("storage", handler);
   };
+}
+
+export async function fetchAccountUnlocks(): Promise<UnlockState | null> {
+  const res = await fetch("/api/unlocks", { credentials: "same-origin" });
+  if (res.status === 401) return null;
+  if (!res.ok) throw new Error("Could not load unlocks");
+  return normalizeUnlockState((await res.json()) as Partial<UnlockState>);
+}
+
+export async function claimAccountUnlocks(
+  state: UnlockState,
+): Promise<UnlockState | null> {
+  const res = await fetch("/api/unlocks/claim", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      packs: state.packs,
+      plan: state.plan,
+      expiresAt: state.expiresAt,
+    }),
+  });
+  if (res.status === 401) return null;
+  if (!res.ok) throw new Error("Could not save unlocks");
+  return normalizeUnlockState((await res.json()) as Partial<UnlockState>);
 }

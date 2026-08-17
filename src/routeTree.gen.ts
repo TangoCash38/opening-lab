@@ -18,6 +18,8 @@ import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.session'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
+import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
+import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +66,16 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   path: '/api/stripe/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiUnlocksRoute = ApiUnlocksRouteImport.update({
+  id: '/api/unlocks',
+  path: '/api/unlocks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUnlocksClaimRoute = ApiUnlocksClaimRouteImport.update({
+  id: '/claim',
+  path: '/claim',
+  getParentRoute: () => ApiUnlocksRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +87,8 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +100,8 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +114,8 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +129,8 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/stripe/webhook'
+    | '/api/unlocks'
+    | '/api/unlocks/claim'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +142,8 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/stripe/webhook'
+    | '/api/unlocks'
+    | '/api/unlocks/claim'
   id:
     | '__root__'
     | '/'
@@ -133,6 +155,8 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/stripe/webhook'
+    | '/api/unlocks'
+    | '/api/unlocks/claim'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,6 +168,7 @@ export interface RootRouteChildren {
   ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+  ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -211,6 +236,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/unlocks': {
+      id: '/api/unlocks'
+      path: '/api/unlocks'
+      fullPath: '/api/unlocks'
+      preLoaderRoute: typeof ApiUnlocksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/unlocks/claim': {
+      id: '/api/unlocks/claim'
+      path: '/claim'
+      fullPath: '/api/unlocks/claim'
+      preLoaderRoute: typeof ApiUnlocksClaimRouteImport
+      parentRoute: typeof ApiUnlocksRoute
+    }
   }
 }
 
@@ -226,6 +265,18 @@ const ApiCheckoutRouteWithChildren = ApiCheckoutRoute._addFileChildren(
   ApiCheckoutRouteChildren,
 )
 
+interface ApiUnlocksRouteChildren {
+  ApiUnlocksClaimRoute: typeof ApiUnlocksClaimRoute
+}
+
+const ApiUnlocksRouteChildren: ApiUnlocksRouteChildren = {
+  ApiUnlocksClaimRoute: ApiUnlocksClaimRoute,
+}
+
+const ApiUnlocksRouteWithChildren = ApiUnlocksRoute._addFileChildren(
+  ApiUnlocksRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
@@ -235,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPaymentsRoute: ApiPaymentsRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+  ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

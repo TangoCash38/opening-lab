@@ -70,7 +70,9 @@ function Login() {
             <h1 className="font-display text-xl font-bold">
               {user ? "Account" : "Sign in"}
             </h1>
-            <p className="text-sm text-fg-muted">Opening Lab</p>
+            <p className="text-sm text-fg-muted">
+              {user ? "Opening Lab" : "Sign in so this stays on your account."}
+            </p>
           </div>
         </div>
 
