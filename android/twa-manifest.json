@@ -20,8 +20,8 @@
     "path": "./upload-keystore.jks",
     "alias": "upload"
   },
-  "appVersionCode": 4,
-  "appVersion": "1.0.3",
+  "appVersionCode": 5,
+  "appVersion": "1.0.4",
   "shortcuts": [],
   "generatorApp": "opening-lab-twa",
   "webManifestUrl": "https://www.openinglab.co.uk/manifest.webmanifest",
