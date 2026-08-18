@@ -455,7 +455,7 @@ export const PACKS: Pack[] = [
     badge: "Search pack",
     lines: [
       { id: "vl1", name: "Line 1 · …c5 …Qb6, they trade queens", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qxb6", "axb6", "Ngf3", "Bf5", "Be2", "e6", "O-O", "Be7"], side: "b" },
-      { id: "vl2", name: "Line 2 · If they keep queens (7.Qc2)", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "e5", "dxe5", "Nxe5", "Ngf3", "Bd6", "Be2", "O-O"], side: "b" },
+      { id: "vl2", name: "Line 2 · If they keep queens (7.Qc2)", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "e5", "dxe5", "Nd7", "Ngf3", "Ndxe5", "Be2", "Bd6"], side: "b" },
       { id: "vl3", name: "Line 3 · If 6.dxc5", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "dxc5", "Qxc5", "Ngf3", "e6", "Be2", "Be7", "O-O", "O-O", "a3", "Bd6"], side: "b" },
       { id: "vl4", name: "Line 4 · Bf5 mirror", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Bf5", "Nf3", "e6", "Nbd2", "Nc6", "Be2", "Be7", "O-O", "O-O", "Ne5", "Nxe5", "Bxe5", "Nd7"], side: "b" },
       { id: "vl5", name: "Line 5 · Bd6, trade their bishop", plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "e6", "e3", "c5", "c3", "Bd6", "Bg3", "O-O", "Nbd2", "Qc7", "Bd3", "Nbd7", "O-O", "e5", "dxe5", "Nxe5"], side: "b" },
