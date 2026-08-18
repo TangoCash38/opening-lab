@@ -7,34 +7,55 @@ export const Route = createFileRoute("/login")({
   component: Login,
 });
 
+type Mode = "signin" | "signup";
+
 function Login() {
   const { user, isPending } = useCurrentUserState();
+  const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [offerCreate, setOfferCreate] = useState(false);
+  const [offerSignIn, setOfferSignIn] = useState(false);
   const [busy, setBusy] = useState(false);
+
+  function switchMode(next: Mode) {
+    setMode(next);
+    setError(null);
+    setOfferCreate(false);
+    setOfferSignIn(false);
+  }
 
   async function handleSignIn(event?: FormEvent) {
     event?.preventDefault();
     setError(null);
+    setOfferCreate(false);
+    setOfferSignIn(false);
     setBusy(true);
     try {
       const { error: err } = await authClient.signIn.email({ email, password });
       if (err) {
-        setError("Could not sign in. Check the email and password.");
+        const mapped = mapSignInError(err);
+        setError(mapped.message);
+        setOfferCreate(mapped.offerCreate);
         return;
       }
       window.location.href = "/";
     } catch {
-      setError("Could not sign in. Check the email and password.");
+      setError(
+        "Could not reach Opening Lab. Check your connection and try again.",
+      );
     } finally {
       setBusy(false);
     }
   }
 
-  async function handleCreateAccount() {
+  async function handleCreateAccount(event?: FormEvent) {
+    event?.preventDefault();
     setError(null);
+    setOfferCreate(false);
+    setOfferSignIn(false);
     setBusy(true);
     try {
       const displayName = name.trim() || email.split("@")[0] || "Player";
@@ -44,15 +65,15 @@ function Login() {
         name: displayName,
       });
       if (err) {
-        setError(
-          "Could not create account. Try a different email or a longer password.",
-        );
+        const mapped = mapCreateAccountError(err);
+        setError(mapped.message);
+        setOfferSignIn(mapped.offerSignIn);
         return;
       }
       window.location.href = "/";
     } catch {
       setError(
-        "Could not create account. Try a different email or a longer password.",
+        "Could not reach Opening Lab. Check your connection and try again.",
       );
     } finally {
       setBusy(false);
@@ -68,10 +89,14 @@ function Login() {
           </div>
           <div>
             <h1 className="font-display text-xl font-bold">
-              {user ? "Account" : "Sign in"}
+              {user ? "Account" : mode === "signup" ? "Create account" : "Sign in"}
             </h1>
             <p className="text-sm text-fg-muted">
-              {user ? "Opening Lab" : "Sign in so this stays on your account."}
+              {user
+                ? "Opening Lab"
+                : mode === "signup"
+                  ? "New here? Create an account so this stays with you."
+                  : "Sign in so this stays on your account."}
             </p>
           </div>
         </div>
@@ -97,19 +122,24 @@ function Login() {
             </button>
           </div>
         ) : (
-          <form className="space-y-3" onSubmit={handleSignIn}>
-            <label className="block space-y-1">
-              <span className="text-sm font-semibold text-fg">Name</span>
-              <input
-                type="text"
-                name="name"
-                autoComplete="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Optional"
-                className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
-              />
-            </label>
+          <form
+            className="space-y-3"
+            onSubmit={mode === "signup" ? handleCreateAccount : handleSignIn}
+          >
+            {mode === "signup" ? (
+              <label className="block space-y-1">
+                <span className="text-sm font-semibold text-fg">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Optional"
+                  className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
+                />
+              </label>
+            ) : null}
             <label className="block space-y-1">
               <span className="text-sm font-semibold text-fg">Email</span>
               <input
@@ -122,29 +152,77 @@ function Login() {
                 className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
               />
             </label>
-            <PasswordField value={password} onChange={setPassword} />
+            <PasswordField
+              value={password}
+              onChange={setPassword}
+              autoComplete={
+                mode === "signup" ? "new-password" : "current-password"
+              }
+            />
 
             {error ? (
-              <p className="text-sm text-danger" role="alert">
-                {error}
-              </p>
+              <div className="space-y-2" role="alert">
+                <p className="text-sm text-danger">{error}</p>
+                {offerCreate ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => switchMode("signup")}
+                    className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+                  >
+                    No account for this email? Create account
+                  </button>
+                ) : null}
+                {offerSignIn ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => switchMode("signin")}
+                    className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+                  >
+                    Already have an account? Sign in
+                  </button>
+                ) : null}
+              </div>
             ) : null}
 
-            <button
-              type="submit"
-              disabled={busy}
-              className="w-full rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg shadow-sm transition hover:opacity-95 active:scale-[0.98] disabled:opacity-60"
-            >
-              {busy ? "Please wait…" : "Sign in"}
-            </button>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => void handleCreateAccount()}
-              className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm font-semibold text-fg shadow-sm transition hover:bg-bg-subtle active:scale-[0.98] disabled:opacity-60"
-            >
-              Create account
-            </button>
+            {mode === "signin" ? (
+              <>
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg shadow-sm transition hover:opacity-95 active:scale-[0.98] disabled:opacity-60"
+                >
+                  {busy ? "Please wait…" : "Sign in"}
+                </button>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => switchMode("signup")}
+                  className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm font-semibold text-fg shadow-sm transition hover:bg-bg-subtle active:scale-[0.98] disabled:opacity-60"
+                >
+                  Create account
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg shadow-sm transition hover:opacity-95 active:scale-[0.98] disabled:opacity-60"
+                >
+                  {busy ? "Please wait…" : "Create account"}
+                </button>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => switchMode("signin")}
+                  className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm font-semibold text-fg shadow-sm transition hover:bg-bg-subtle active:scale-[0.98] disabled:opacity-60"
+                >
+                  Already have an account? Sign in
+                </button>
+              </>
+            )}
           </form>
         )}
 
@@ -157,6 +235,102 @@ function Login() {
       </div>
     </main>
   );
+}
+
+type AuthErrorLike = {
+  status?: number;
+  statusText?: string;
+  code?: string;
+  message?: string;
+};
+
+function readAuthError(err: unknown): AuthErrorLike {
+  if (!err || typeof err !== "object") return {};
+  const rec = err as Record<string, unknown>;
+  return {
+    status: typeof rec.status === "number" ? rec.status : undefined,
+    statusText: typeof rec.statusText === "string" ? rec.statusText : undefined,
+    code: typeof rec.code === "string" ? rec.code : undefined,
+    message: typeof rec.message === "string" ? rec.message : undefined,
+  };
+}
+
+function errorBlob(err: AuthErrorLike): string {
+  return `${err.code ?? ""} ${err.message ?? ""} ${err.statusText ?? ""}`;
+}
+
+function isUnavailable(err: AuthErrorLike): boolean {
+  if (err.status === 503 || err.status === 502 || err.status === 500) return true;
+  return /DATABASE_URL|unavailable|internal server/i.test(errorBlob(err));
+}
+
+function mapSignInError(err: unknown): { message: string; offerCreate: boolean } {
+  const info = readAuthError(err);
+  if (isUnavailable(info)) {
+    return {
+      message: "Sign-in is temporarily unavailable. Try again in a moment.",
+      offerCreate: false,
+    };
+  }
+  if (/invalid origin/i.test(errorBlob(info))) {
+    return {
+      message:
+        "This page is on the wrong site. Open www.openinglab.co.uk and try again.",
+      offerCreate: false,
+    };
+  }
+  if (
+    info.status === 403 ||
+    /EMAIL_NOT_VERIFIED|not verified/i.test(errorBlob(info))
+  ) {
+    return {
+      message:
+        "This email is not verified yet. Check your inbox, then try again.",
+      offerCreate: false,
+    };
+  }
+  return {
+    message: "Could not sign in. Check the email and password.",
+    offerCreate: true,
+  };
+}
+
+function mapCreateAccountError(err: unknown): {
+  message: string;
+  offerSignIn: boolean;
+} {
+  const info = readAuthError(err);
+  if (isUnavailable(info)) {
+    return {
+      message:
+        "Account creation is temporarily unavailable. Try again in a moment.",
+      offerSignIn: false,
+    };
+  }
+  const blob = errorBlob(info);
+  if (/USER_ALREADY_EXISTS|already exists/i.test(blob)) {
+    return {
+      message: "An account with this email already exists.",
+      offerSignIn: true,
+    };
+  }
+  if (/PASSWORD_TOO_SHORT|too short/i.test(blob)) {
+    return {
+      message: "Password must be at least 8 characters.",
+      offerSignIn: false,
+    };
+  }
+  if (/PASSWORD_TOO_LONG|too long/i.test(blob)) {
+    return {
+      message: "Password is too long. Use 128 characters or fewer.",
+      offerSignIn: false,
+    };
+  }
+  return {
+    message:
+      "Could not create account. Try a different email or a longer password.",
+    offerSignIn: false,
+  };
 }
 
 function hidePasswordIfLeavingGroup(
@@ -173,9 +347,11 @@ function hidePasswordIfLeavingGroup(
 function PasswordField({
   value,
   onChange,
+  autoComplete,
 }: {
   value: string;
   onChange: (next: string) => void;
+  autoComplete: "current-password" | "new-password";
 }) {
   const [visible, setVisible] = useState(false);
 
@@ -191,8 +367,9 @@ function PasswordField({
         <input
           type={visible ? "text" : "password"}
           name="password"
-          autoComplete="current-password"
+          autoComplete={autoComplete}
           required
+          minLength={8}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="w-full rounded-full border border-border bg-bg-elevated py-3 pl-4 pr-[5.75rem] text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
