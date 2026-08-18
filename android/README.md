@@ -1,8 +1,8 @@
 # Opening Lab — Android (Play)
 
-This folder is a **Trusted Web Activity** wrapper. The Play app is not a
-rewrite of Opening Lab: it opens https://www.openinglab.co.uk inside Chrome
-in full-screen app mode. If Chrome is missing or never takes over, the site loads in an in-app WebView instead of a random browser window.
+This folder is the Play wrapper. The Play app is not a rewrite of Opening Lab:
+it opens https://www.openinglab.co.uk in a **single in-app WebView**. Chrome / TWA
+is not launched, so there is no splash handoff and the app works with or without Chrome.
 
 | | |
 |---|---|
@@ -13,7 +13,7 @@ in full-screen app mode. If Chrome is missing or never takes over, the site load
 | targetSdk / compileSdk | **36** (Android 16 — required for new Play submissions from 31 Aug 2026) |
 | Theme | `#2f5d50` |
 | Splash / background | `#f4efe6` |
-| Fallback | In-app WebView (`WebViewFallbackActivity`) if no TWA provider |
+| Surface | In-app WebView only (no TWA / Chrome handoff) |
 | Billing | `com.android.vending.BILLING` is declared so Play Console can create products. Checkout is still website Stripe; Digital Goods / Play Billing Library are not implemented. |
 
 Launcher icons come from `public/icons/icon-512.png` and

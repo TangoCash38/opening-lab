@@ -315,7 +315,7 @@ export function PackList({ onStartLine }: Props) {
   }, [isPending, signedIn, paymentsEnabled, playApp]);
 
   return (
-    <div>
+    <div className="pack-list">
       {unlockNotice ? (
         <p
           className={`mb-3 rounded-xl px-4 py-2.5 text-center text-[0.85rem] font-semibold ${

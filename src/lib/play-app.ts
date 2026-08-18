@@ -1,12 +1,15 @@
 /**
- * Detect the Google Play Trusted Web Activity wrap (package uk.co.openinglab).
+ * Detect the Google Play app wrap (package uk.co.openinglab).
  *
- * A normal mobile Chrome visit to www.openinglab.co.uk is display-mode:browser
- * and has no android-app:// referrer / Digital Goods API — that is not Play.
+ * The Play wrapper is an in-app WebView that appends OpeningLabPlay to its
+ * user-agent. A normal mobile Chrome visit to www.openinglab.co.uk is
+ * display-mode:browser, has no OpeningLabPlay token, and has no
+ * android-app:// referrer / Digital Goods API — that is not Play.
  * Remember a positive hit in sessionStorage only (not localStorage), so a later
  * Chrome tab on the same phone still gets website Stripe.
  */
 export const PLAY_PACKAGE = "uk.co.openinglab";
+export const PLAY_UA_TOKEN = "OpeningLabPlay";
 
 export const PLAY_STORE_NOTICE =
   "Packs and Lab+ will unlock through Google Play. For now Scotch is free to train. You can buy on the website if you want.";
@@ -36,6 +39,10 @@ export function hasDigitalGoodsApi(
   return typeof win?.getDigitalGoodsService === "function";
 }
 
+export function isPlayUserAgent(ua: string): boolean {
+  return typeof ua === "string" && ua.includes(PLAY_UA_TOKEN);
+}
+
 export function isAndroidStandaloneDisplay(
   win: Window | undefined = typeof window === "undefined" ? undefined : window,
 ): boolean {
@@ -57,11 +64,13 @@ export function detectPlayApp(input: {
   hasDigitalGoods?: boolean;
   androidStandalone?: boolean;
   remembered?: boolean;
+  userAgent?: string;
 }): boolean {
   if (input.remembered) return true;
   if (isPlayReferrer(input.referrer ?? "")) return true;
   if (input.hasDigitalGoods) return true;
-  // TWA typical: standalone/fullscreen on Android. Regular Chrome tabs are "browser".
+  if (isPlayUserAgent(input.userAgent ?? "")) return true;
+  // TWA / standalone PWA on Android. Regular Chrome tabs are "browser".
   if (input.androidStandalone) return true;
   return false;
 }
@@ -84,7 +93,7 @@ function rememberPlayApp() {
   }
 }
 
-/** True only inside the Play/TWA wrap. False on the website (desktop or phone Chrome). */
+/** True only inside the Play app wrap. False on the website (desktop or phone Chrome). */
 export function isPlayApp(): boolean {
   if (typeof window === "undefined") return false;
   const hit = detectPlayApp({
@@ -92,6 +101,7 @@ export function isPlayApp(): boolean {
     hasDigitalGoods: hasDigitalGoodsApi(window),
     androidStandalone: isAndroidStandaloneDisplay(window),
     remembered: rememberedPlayApp(),
+    userAgent: window.navigator?.userAgent ?? "",
   });
   if (hit) rememberPlayApp();
   return hit;

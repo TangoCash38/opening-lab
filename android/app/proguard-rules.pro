@@ -1,6 +1,5 @@
-# Trusted Web Activity — keep android-browser-helper entry points.
--keep class com.google.androidbrowserhelper.** { *; }
+# In-app WebView wrapper
 -keep class uk.co.openinglab.** { *; }
--keep class androidx.browser.** { *; }
 -keepclassmembers class * extends android.webkit.WebViewClient { *; }
 -keepclassmembers class * extends android.webkit.WebChromeClient { *; }
+-keepclassmembers class android.webkit.WebView { *; }

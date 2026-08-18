@@ -99,8 +99,8 @@ export function OpeningLabApp() {
   };
 
   return (
-    <div className="app-shell min-h-dvh overflow-x-hidden bg-bg text-fg">
-      <header className="app-header sticky top-0 z-30 border-b border-border/80 bg-[rgba(251,248,242,.94)] backdrop-blur-xl backdrop-saturate-150">
+    <div className="app-shell bg-bg text-fg">
+      <header className="app-header z-30 border-b border-border/80">
         <div
           className="mx-auto flex max-w-[520px] items-center gap-2 px-3 pb-2.5"
           style={{ paddingTop: "max(0.65rem, env(safe-area-inset-top, 0px))" }}
@@ -140,7 +140,7 @@ export function OpeningLabApp() {
       </header>
 
       <main
-        className="mx-auto max-w-[520px] overflow-x-hidden px-4 pt-5"
+        className="app-main mx-auto w-full max-w-[520px] px-4 pt-5"
         style={{
           paddingBottom: "max(3rem, env(safe-area-inset-bottom, 0px))",
         }}
