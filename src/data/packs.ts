@@ -164,7 +164,7 @@ export const PACKS: Pack[] = [
       { id: "r3", name: "Line 3 · Exchange Variation", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Bxc6", "dxc6", "O-O", "f6", "d4", "exd4", "Nxd4", "c5", "Nb3", "Qxd1", "Rxd1", "Bd6", "Be3", "Ne7"], side: "w" },
       { id: "r4", name: "Line 4 · Open Spanish", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Nxe4", "d4", "b5", "Bb3", "d5", "dxe5", "Be6", "c3", "Bc5", "Nbd2", "O-O"], side: "w" },
       { id: "r5", name: "Line 5 · Marshall Attack ideas", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "O-O", "c3", "d5", "exd5", "Nxd5", "Nxe5", "Nxe5"], side: "w" },
-      { id: "r6", name: "Line 6 · Schliemann", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "f5", "Nc3", "fxe4", "Nxe4", "d5", "Nxe5", "dxe4", "Nxc6", "Qd5", "c4", "Qd6", "Nxa7+", "Bd7", "Bxd7+", "Qxd7"], side: "w" },
+      { id: "r6", name: "Line 6 · Schliemann", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "f5", "Nc3", "fxe4", "Nxe4", "d5", "Nxe5", "dxe4", "Nxc6", "Qd5", "c4", "Qd6", "Nxa7+", "Bd7", "Bxd7+", "Qxd7", "Nb5"], side: "w" },
       { id: "r7", name: "Line 7 · Classical …Bc5", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "Ne4", "O-O", "d5", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "f6"], side: "w" },
       { id: "r8", name: "Line 8 · Steinitz Deferred", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "d6", "c3", "Bd7", "d4", "Nf6", "O-O", "Be7", "Re1", "O-O", "Nbd2", "Re8", "Nf1", "Bf8"], side: "w" },
       { id: "r9", name: "Line 9 · Bird’s Defence", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "c6", "Bc4", "Nf6", "Re1", "d6", "c3", "Be7", "cxd4", "d5", "exd5", "Nxd5"], side: "w" },
@@ -290,7 +290,7 @@ export const PACKS: Pack[] = [
     lines: [
       { id: "kg1", name: "Line 1 · Kieseritzky Gambit", plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"], side: "w" },
       { id: "kg2", name: "Line 2 · Cunningham 3…Be7", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Re8", "Bxf4", "c6"], side: "w" },
-      { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2"], side: "w" },
+      { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2", "Bxe7"], side: "w" },
       { id: "kg4", name: "Line 4 · Fischer 3…d6", plies: ["e4", "e5", "f4", "exf4", "Nf3", "d6", "d4", "g5", "h4", "g4", "Ng1", "Bh6", "Nc3", "c6", "Nge2", "Qf6", "g3", "f3", "Nf4", "Ne7"], side: "w" },
       { id: "kg5", name: "Line 5 · Abbazia 3…d5", plies: ["e4", "e5", "f4", "exf4", "Nf3", "d5", "exd5", "Nf6", "Bb5+", "c6", "dxc6", "Nxc6", "d4", "Bd6", "O-O", "O-O", "c4", "Bg4", "Nc3", "Re8"], side: "w" },
     ],
@@ -434,7 +434,7 @@ export const PACKS: Pack[] = [
     lines: [
       { id: "al1", name: "Line 1 · 2…d5 3.exd5 Qxd5", plies: ["e4", "c5", "c3", "d5", "exd5", "Qxd5", "d4", "Nf6", "Nf3", "e6", "Be3", "cxd4", "cxd4", "Nc6", "Nc3", "Qd6", "Bd3", "Be7", "O-O", "O-O"], side: "w" },
       { id: "al2", name: "Line 2 · 2…d5 3.exd5 Nf6", plies: ["e4", "c5", "c3", "d5", "exd5", "Nf6", "d4", "cxd4", "Nf3", "Nxd5", "cxd4", "e6", "Nc3", "Nc6", "Bd3", "Be7", "O-O", "O-O", "Re1", "Nf6"], side: "w" },
-      { id: "al3", name: "Line 3 · 2…Nf6 main", plies: ["e4", "c5", "c3", "Nf6", "e5", "Nd5", "d4", "cxd4", "Nf3", "Nc6", "cxd4", "d6", "Bc4", "Nb6", "Bb3", "dxe5", "Nxe5", "Nxe5", "dxe5", "Qxd1+"], side: "w" },
+      { id: "al3", name: "Line 3 · 2…Nf6 main", plies: ["e4", "c5", "c3", "Nf6", "e5", "Nd5", "d4", "cxd4", "Nf3", "Nc6", "cxd4", "d6", "Bc4", "Nb6", "Bb3", "dxe5", "Nxe5", "Nxe5", "dxe5", "Qxd1+", "Kxd1"], side: "w" },
       { id: "al4", name: "Line 4 · 2…e6", plies: ["e4", "c5", "c3", "e6", "d4", "d5", "exd5", "exd5", "Nf3", "Nc6", "Bb5", "Bd6", "dxc5", "Bxc5", "O-O", "Ne7", "Nbd2", "O-O", "Nb3", "Bd6"], side: "w" },
       { id: "al5", name: "Line 5 · 2…d6", plies: ["e4", "c5", "c3", "d6", "d4", "Nf6", "Bd3", "g6", "Nf3", "Bg7", "O-O", "O-O", "h3", "Nc6", "Re1", "e5", "dxc5", "dxc5", "Na3", "Be6"], side: "w" },
       { id: "al6", name: "Line 6 · 2…g6", plies: ["e4", "c5", "c3", "g6", "d4", "cxd4", "cxd4", "d5", "e5", "Nc6", "Nc3", "Bg7", "Bb5", "Nh6", "h3", "O-O", "Nf3", "f6", "O-O", "fxe5"], side: "w" },
