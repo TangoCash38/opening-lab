@@ -78,7 +78,7 @@ launch.
     "namespace": "android_app",
     "package_name": "uk.co.openinglab",
     "sha256_cert_fingerprints": [
-      "PASTE_PLAY_APP_SIGNING_SHA256_HERE"
+      "EF:A6:4D:F4:DB:2A:49:88:86:15:D1:9C:BE:3E:24:9C:16:1F:4B:F7:5F:9E:E0:15:88:D3:75:19:0D:B7:12:8F"
     ]
   }
 }]
