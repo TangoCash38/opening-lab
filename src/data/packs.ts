@@ -65,7 +65,7 @@ export const PACKS: Pack[] = [
       {
         id: "s1",
         name: "Line 1 · 4…Nf6 (main)",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5", "f3", "Ng5"],
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5", "f3", "Ng5", "f4", "Ne4", "Be3"],
         side: "w",
       },
       {
@@ -112,7 +112,7 @@ export const PACKS: Pack[] = [
       },
       {
         id: "s9",
-        name: "Line 9 · 5.Ng5 …Nh6",
+        name: "Line 9 · Sarratt (5.Ng5 …Nh6)",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d6", "Qxd4", "Be6"],
         side: "w",
       },
@@ -133,9 +133,9 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "10 lines · Giuoco, Evans, Two Knights & Fried Liver",
+    blurb: "11 lines · Giuoco, Evans, Two Knights & Fried Liver",
     lines: [
-      { id: "i1", name: "Line 1 · Giuoco Piano (main)", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "d5", "Bf6", "Re1", "Ne7"], side: "w" },
+      { id: "i1", name: "Line 1 · Greco / Møller Attack", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "d5", "Bf6", "Re1", "Ne7"], side: "w" },
       { id: "i2", name: "Line 2 · Giuoco Pianissimo", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "O-O", "d6", "c3", "a6", "Bb3", "Ba7", "Nbd2", "O-O", "h3", "h6", "Re1", "Be6"], side: "w" },
       { id: "i3", name: "Line 3 · Two Knights …Na5", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2", "h6", "Nf3", "e4", "Ne5", "Bd6"], side: "w" },
       { id: "i4", name: "Line 4 · Evans Gambit", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxb4", "c3", "Ba5", "d4", "exd4", "O-O", "d6", "cxd4", "Bb6", "Nc3", "Nf6", "e5", "dxe5"], side: "w" },
@@ -145,6 +145,7 @@ export const PACKS: Pack[] = [
       { id: "i8", name: "Line 8 · Quiet Italian …h6", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "c3", "d6", "O-O", "h6", "Nbd2", "O-O", "Bb3", "a6", "h3", "Re8", "Re1", "Be6"], side: "w" },
       { id: "i9", name: "Line 9 · Centre Attack", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "Bg4"], side: "w" },
       { id: "i10", name: "Line 10 · Two Knights 4.d3", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "a4", "a5", "c3", "Be6", "Nbd2", "Qd7", "Nf1", "Rfe8"], side: "w" },
+      { id: "i11", name: "Line 11 · Traxler 5.Bxf7+", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "Bc5", "Bxf7+", "Ke7", "Bb3", "Rf8", "O-O", "d6", "Nc3", "Qe8", "d3", "h6", "Nf3", "Bg4"], side: "w" },
     ],
   },
   {
@@ -179,7 +180,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "5 lines · Najdorf, Dragon, Classical & Scheveningen",
+    blurb: "5-line White survey · Najdorf, Dragon, Classical, Scheveningen & Sveshnikov",
     lines: [
       { id: "os1", name: "Line 1 · Najdorf Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "e5", "Nb3", "Be6", "f3", "Be7", "Qd2", "O-O", "O-O-O", "Nbd7"], side: "w" },
       { id: "os2", name: "Line 2 · Dragon Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6", "Be3", "Bg7", "f3", "O-O", "Qd2", "Nc6", "Bc4", "Bd7", "O-O-O", "Rc8"], side: "w" },
@@ -197,9 +198,9 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "5 lines · Advance, Milner-Barry, Winawer & Tarrasch",
+    blurb: "5-line White survey · Advance, Milner-Barry, Winawer, Tarrasch & Exchange",
     lines: [
-      { id: "fw1", name: "Line 1 · Main Line Advance", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "O-O", "Ne7", "Rb1", "Nec6"], side: "w" },
+      { id: "fw1", name: "Line 1 · Advance 6.a3 …c4", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "O-O", "Ne7", "Rb1", "Nec6"], side: "w" },
       { id: "fw2", name: "Line 2 · Milner-Barry Gambit", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "Bd3", "cxd4", "cxd4", "Bd7", "O-O", "Nxd4", "Nxd4", "Qxd4", "Nc3", "Qxe5"], side: "w" },
       { id: "fw3", name: "Line 3 · Winawer Variation", plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Qg4", "Qc7", "Qxg7", "Rg8", "Qxh7", "cxd4", "Ne2", "Nbc6"], side: "w" },
       { id: "fw4", name: "Line 4 · Tarrasch Variation", plies: ["e4", "e6", "d4", "d5", "Nd2", "c5", "exd5", "exd5", "Ngf3", "Nc6", "Bb5", "Bd6", "dxc5", "Bxc5", "O-O", "Ne7", "Nb3", "Bd6", "Re1", "O-O"], side: "w" },
@@ -215,7 +216,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "5 lines · Advance, Tal, Classical & Two Knights",
+    blurb: "5-line White survey · Advance, Tal, Classical, Two Knights & Fantasy",
     lines: [
       { id: "caw1", name: "Line 1 · Advance Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Qxd4", "Nc6"], side: "w" },
       { id: "caw2", name: "Line 2 · Advance Tal Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "h4", "h6", "g4", "Bd7", "h5", "e6", "f4", "c5", "c3", "Nc6", "Nf3", "Qb6", "Na3", "cxd4"], side: "w" },
@@ -285,11 +286,13 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · Kieseritzky Gambit",
+    blurb: "5 lines · Kieseritzky, Cunningham, Falkbeer, Fischer & Abbazia",
     lines: [
       { id: "kg1", name: "Line 1 · Kieseritzky Gambit", plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"], side: "w" },
       { id: "kg2", name: "Line 2 · Cunningham 3…Be7", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Qxd5", "Bxf4", "c6"], side: "w" },
       { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2"], side: "w" },
+      { id: "kg4", name: "Line 4 · Fischer 3…d6", plies: ["e4", "e5", "f4", "exf4", "Nf3", "d6", "d4", "g5", "h4", "g4", "Ng1", "Bh6", "Nc3", "c6", "Nge2", "Qf6", "g3", "f3", "Nf4", "Ne7"], side: "w" },
+      { id: "kg5", name: "Line 5 · Abbazia 3…d5", plies: ["e4", "e5", "f4", "exf4", "Nf3", "d5", "exd5", "Nf6", "Bb5+", "c6", "dxc6", "Nxc6", "d4", "Bd6", "O-O", "O-O", "c4", "Bg4", "Nc3", "Re8"], side: "w" },
     ],
   },
   {
@@ -350,8 +353,8 @@ export const PACKS: Pack[] = [
       { id: "kia3", name: "Line 3 · vs …d5 Classical", plies: ["Nf3", "d5", "g3", "Nf6", "Bg2", "e6", "O-O", "Be7", "d3", "O-O", "Nbd2", "c5", "e4", "Nc6", "Re1", "b5", "e5", "Nd7", "Nf1", "a5"], side: "w" },
       { id: "kia4", name: "Line 4 · vs …c6", plies: ["Nf3", "d5", "g3", "c6", "Bg2", "Bg4", "O-O", "Nd7", "d3", "e6", "Nbd2", "Ngf6", "e4", "Be7", "h3", "Bh5", "Qe1", "O-O", "e5", "Ne8"], side: "w" },
       { id: "kia5", name: "Line 5 · vs …Nf6", plies: ["Nf3", "Nf6", "g3", "d5", "Bg2", "c6", "O-O", "Bf5", "d3", "e6", "Nbd2", "h6", "Qe1", "Be7", "e4", "Bh7", "Qe2", "O-O", "e5", "Nfd7"], side: "w" },
-      { id: "kia6", name: "Line 6 · Yugoslav …c5 …d6", plies: ["e4", "c5", "Nf3", "d6", "d3", "Nc6", "g3", "g6", "Bg2", "Bg7", "O-O", "Nf6", "Nbd2", "O-O", "Re1", "e5", "c3", "h6", "a4", "Be6"], side: "w" },
-      { id: "kia7", name: "Line 7 · Early …Bg4", plies: ["Nf3", "d5", "g3", "Nf6", "Bg2", "c6", "O-O", "Bg4", "d3", "Nbd7", "Nbd2", "e6", "e4", "Be7", "h3", "Bh5", "Qe1", "O-O", "Nh4", "Bg6"], side: "w" },
+      { id: "kia6", name: "Line 6 · Closed Sicilian KIA", plies: ["e4", "c5", "Nf3", "d6", "d3", "Nc6", "g3", "g6", "Bg2", "Bg7", "O-O", "Nf6", "Nbd2", "O-O", "Re1", "e5", "c3", "h6", "a4", "Be6"], side: "w" },
+      { id: "kia7", name: "Line 7 · Yugoslav (…c6 …Bg4)", plies: ["Nf3", "d5", "g3", "Nf6", "Bg2", "c6", "O-O", "Bg4", "d3", "Nbd7", "Nbd2", "e6", "e4", "Be7", "h3", "Bh5", "Qe1", "O-O", "Nh4", "Bg6"], side: "w" },
       { id: "kia8", name: "Line 8 · Closed French setup", plies: ["Nf3", "e6", "g3", "d5", "Bg2", "Nf6", "O-O", "Be7", "d3", "O-O", "Nbd2", "c5", "e4", "Nc6", "Re1", "Qc7", "e5", "Nd7", "Qe2", "b5"], side: "w" },
     ],
   },
@@ -409,7 +412,7 @@ export const PACKS: Pack[] = [
     blurb: "8 lines · 4.Nxd4 classical Scotch",
     lines: [
       { id: "sg1", name: "Line 1 · 4…Nf6 Mieses", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nxc6", "bxc6", "e5", "Qe7", "Qe2", "Nd5", "c4", "Nb6", "Nc3", "Qe6", "Qe4", "g6"], side: "w" },
-      { id: "sg2", name: "Line 2 · 4…Bc5 Classical", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Nb3", "Bb6", "a4", "a6", "Nc3", "Nf6", "Bg5", "h6", "Bh4", "d6", "Nd5", "g5"], side: "w" },
+      { id: "sg2", name: "Line 2 · Potter (5.Nb3)", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Nb3", "Bb6", "a4", "a6", "Nc3", "Nf6", "Bg5", "h6", "Bh4", "d6", "Nd5", "g5"], side: "w" },
       { id: "sg3", name: "Line 3 · 4…Qh4", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Qh4", "Nc3", "Bb4", "Be2", "Qxe4", "Nb5", "Bxc3+", "bxc3", "Kd8", "O-O", "Nf6", "Re1", "d6"], side: "w" },
       { id: "sg4", name: "Line 4 · 4…Nxd4", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nxd4", "Qxd4", "Qf6", "e5", "Qb6", "Qxb6", "axb6", "Nc3", "Bb4", "Bd2", "Ne7", "a3", "Bxc3"], side: "w" },
       { id: "sg5", name: "Line 5 · 4…Bb4+", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bb4+", "c3", "Be7", "Nxc6", "bxc6", "Bd3", "d6", "O-O", "Nf6", "Nd2", "O-O", "Re1", "Re8"], side: "w" },
@@ -556,7 +559,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · Classical, Rubinstein & Sämisch",
+    blurb: "3-line survey · Classical, Rubinstein & Sämisch",
     lines: [
       { id: "ni1", name: "Line 1 · Classical main", plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "Qc2", "O-O", "a3", "Bxc3+", "Qxc3", "b6", "Bg5", "Bb7", "e3", "d6", "f3", "Nbd7", "Bd3", "c5"], side: "b" },
       { id: "ni2", name: "Line 2 · Rubinstein 4.e3", plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Bd3", "d5", "Nf3", "c5", "O-O", "dxc4", "Bxc4", "Nbd7", "a3", "cxd4", "axb4", "dxc3"], side: "b" },
@@ -593,7 +596,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · …d5 on move 1 · Qa5 main line",
+    blurb: "3-line survey · …d5 on move 1 · Qa5 main line",
     lines: [
       { id: "sc1", name: "Line 1 · Main line …Qa5", plies: ["e4", "d5", "exd5", "Qxd5", "Nc3", "Qa5", "d4", "Nf6", "Nf3", "Bf5", "Bd2", "e6", "Bc4", "Bb4", "a3", "Bxc3", "Bxc3", "Qb6", "O-O", "Nbd7"], side: "b" },
       { id: "sc2", name: "Line 2 · Modern …Nf6", plies: ["e4", "d5", "exd5", "Nf6", "d4", "Nxd5", "Nf3", "Bf5", "Be2", "e6", "O-O", "Be7", "c4", "Nb6", "Nc3", "O-O", "Be3", "Nc6", "Qd2", "Qd7"], side: "b" },
@@ -609,7 +612,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · Hypermodern …d6 & …g6 vs 1.e4",
+    blurb: "3-line survey · Hypermodern …d6 & …g6 vs 1.e4",
     lines: [
       { id: "pd1", name: "Line 1 · Classical system", plies: ["e4", "d6", "d4", "Nf6", "Nc3", "g6", "Nf3", "Bg7", "Be2", "O-O", "O-O", "c6", "a4", "Nbd7", "Re1", "e5", "h3", "exd4", "Nxd4", "Re8"], side: "b" },
       { id: "pd2", name: "Line 2 · Austrian Attack setup", plies: ["e4", "d6", "d4", "Nf6", "Nc3", "g6", "f4", "Bg7", "Nf3", "O-O", "Bd3", "Nc6", "e5", "dxe5", "fxe5", "Nh5", "Be3", "Bg4", "Be2", "f6"], side: "b" },
@@ -625,11 +628,11 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · Solid …c6 · main line & exchange",
+    blurb: "3-line survey · Solid …c6 · main line, exchange & Chebanenko",
     lines: [
       { id: "sd1", name: "Line 1 · Main line", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"], side: "b" },
       { id: "sd2", name: "Line 2 · Exchange Variation", plies: ["d4", "d5", "c4", "c6", "cxd5", "cxd5", "Nc3", "Nf6", "Nf3", "Nc6", "Bf4", "Bf5", "e3", "e6", "Qb3", "Bb4", "Bb5", "O-O", "O-O", "Bxc3"], side: "b" },
-      { id: "sd3", name: "Line 3 · Semi-Slav bridge", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "e3", "Nbd7", "Bd3", "dxc4", "Bxc4", "b5", "Bd3", "Bb7", "O-O", "a6", "e4", "c5"], side: "b" },
+      { id: "sd3", name: "Line 3 · Chebanenko 4…a6", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "a6", "e3", "b5", "b3", "Bg4", "Be2", "e6", "O-O", "Nbd7", "h3", "Bh5", "Bb2", "Be7"], side: "b" },
     ],
   },
   {
@@ -662,7 +665,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · …f5 systems · Classical & Leningrad",
+    blurb: "3-line survey · …f5 systems · Classical & Leningrad",
     lines: [
       { id: "dd1", name: "Line 1 · Classical Dutch", plies: ["d4", "f5", "g3", "Nf6", "Bg2", "e6", "Nf3", "Be7", "O-O", "O-O", "c4", "d6", "Nc3", "Qe8", "Re1", "Qh5", "e4", "fxe4", "Nxe4", "Nxe4"], side: "b" },
       { id: "dd2", name: "Line 2 · Leningrad Dutch", plies: ["d4", "f5", "g3", "Nf6", "Bg2", "g6", "Nf3", "Bg7", "O-O", "O-O", "c4", "d6", "Nc3", "Nc6", "d5", "Ne5", "Nxe5", "dxe5", "e4", "f4"], side: "b" },
@@ -678,7 +681,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1",
-    blurb: "3 lines · …g6 without early …Nf6",
+    blurb: "3-line survey · …g6 without early …Nf6",
     lines: [
       { id: "md1", name: "Line 1 · Modern main", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "d6", "Be3", "a6", "Qd2", "b5", "O-O-O", "Nd7", "h4", "h5", "Nh3", "Bb7", "f3", "c5", "dxc5", "Nxc5"], side: "b" },
       { id: "md2", name: "Line 2 · Averbakh 3.c4 …e5", plies: ["e4", "g6", "d4", "Bg7", "c4", "d6", "Nc3", "e5", "Nge2", "Nc6", "Be3", "Nge7", "d5", "Nd4", "Nxd4", "exd4", "Bxd4", "Bxd4", "Qxd4", "O-O"], side: "b" },
@@ -743,7 +746,7 @@ export const PACKS: Pack[] = [
       { id: "mb3", name: "Line 3 · Taimanov 7.Bd3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Bd3", "Bg7", "Nge2", "O-O", "O-O", "a6", "a4", "Nbd7"], side: "b" },
       { id: "mb4", name: "Line 4 · Flick-Knife 8.Bb5+", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "f4", "Bg7", "Bb5+", "Nfd7", "a4", "O-O", "Nf3", "Na6"], side: "b" },
       { id: "mb5", name: "Line 5 · …a6 …b5 plan", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Nf3", "a6", "h3", "b5", "Bd3", "Bg7", "O-O", "O-O"], side: "b" },
-      { id: "mb6", name: "Line 6 · 8.h3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Nf3", "Bg7", "h3", "O-O", "Bd3", "a6", "a4", "Nbd7"], side: "b" },
+      { id: "mb6", name: "Line 6 · Classical with h3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Nf3", "Bg7", "h3", "O-O", "Bd3", "a6", "a4", "Nbd7"], side: "b" },
       { id: "mb7", name: "Line 7 · Knight’s Tour 7.Nd2", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nf3", "exd5", "cxd5", "d6", "Nc3", "g6", "Nd2", "Bg7", "e4", "O-O", "Be2", "Re8", "O-O", "Nbd7"], side: "b" },
       { id: "mb8", name: "Line 8 · Four Pawns 8.Nf3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "f4", "Bg7", "Nf3", "O-O", "Be2", "Re8", "Nd2", "Nbd7"], side: "b" },
     ],
@@ -799,7 +802,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "10 lines · London, Jobava, Smith-Morra & Alapin",
+    blurb: "10 club tasters · some have a full pack",
     lines: [
       { id: "cw1", name: "Line 1 · London System", plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "c3", "e6", "Nbd2", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "f4", "Qc7"], side: "w" },
       { id: "cw2", name: "Line 2 · Jobava London", plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "Nc6", "Nf3", "cxd4", "exd4", "a6", "a3", "Bf5", "Be2", "e6", "O-O", "Be7", "Ne5", "O-O"], side: "w" },
