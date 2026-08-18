@@ -840,7 +840,7 @@ export const PACKS: Pack[] = [
         },
       },
       {
-        id: "i11",
+        id: "i12",
         name: "Model · Steinitz–von Bardeleben, 1895",
         plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "d5", "exd5", "Nxd5", "O-O", "Be6", "Bg5", "Be7", "Bxd5", "Bxd5"],
         side: "w",
@@ -928,7 +928,7 @@ export const PACKS: Pack[] = [
         },
       },
       {
-        id: "kg4",
+        id: "kg6",
         name: "Model · Anderssen–Kieseritzky, 1851",
         plies: ["e4", "e5", "f4", "exf4", "Bc4", "Qh4+", "Kf1", "b5", "Bxb5", "Nf6", "Nf3", "Qh6", "d3", "Nh5", "Nh4", "Qg5", "Nf5", "c6", "g4", "Nf6", "Rg1", "cxb5"],
         side: "w",
