@@ -4,6 +4,7 @@
 import { PACKS } from "@/data/packs";
 import { getSql } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/verify.server";
+import { notifyPaidUnlock } from "@/lib/email.server";
 import {
   MONTH_MS,
   YEAR_MS,
@@ -158,7 +159,7 @@ export async function applyPurchase(
         : Date.now() + (plan === "yearly" ? YEAR_MS : MONTH_MS);
   }
 
-  return upsertMerged(
+  const unlocks = await upsertMerged(
     userId,
     packs,
     plan,
@@ -166,6 +167,18 @@ export async function applyPurchase(
     input.stripeCustomerId,
     input.stripeSubscriptionId,
   );
+  // After the paid row is saved. Retries are no-ops (notice columns).
+  // Never throw — checkout / webhook must still succeed if mail fails.
+  try {
+    await notifyPaidUnlock({
+      userId,
+      kind: input.kind,
+      packId: input.packId,
+    });
+  } catch {
+    console.error("[email] purchase notice failed");
+  }
+  return unlocks;
 }
 
 export async function claimUnlocksForUser(

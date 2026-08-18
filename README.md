@@ -22,6 +22,19 @@ Strict chess opening memory training — Practice & Test modes, animated board, 
 
 Demo unlocks use `localStorage` (`src/lib/unlocks.ts`).
 
+## Email (welcome + purchases)
+
+On Vercel, set **`RESEND_API_KEY`** so Opening Lab can send:
+
+- Welcome after someone creates an email account
+- Lab+ welcome after they subscribe
+- Pack confirmation after they buy a pack
+
+From: `Opening Lab <support@openinglab.co.uk>`.  
+Without the key the site still works; emails are skipped.
+
+Optional fallback if you already have a mailbox: `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`.
+
 ## Deploy to Vercel
 
 **One-click import (recommended):**
