@@ -13,7 +13,7 @@ in full-screen app mode.
 | targetSdk / compileSdk | **36** (Android 16 — required for new Play submissions from 31 Aug 2026) |
 | Theme | `#2f5d50` |
 | Splash / background | `#f4efe6` |
-| Billing | Website Stripe (Play Billing is a later step) |
+| Billing | `com.android.vending.BILLING` is declared so Play Console can create products. Checkout is still website Stripe; Digital Goods / Play Billing Library are not implemented. |
 
 Launcher icons come from `public/icons/icon-512.png` and
 `icon-512-maskable.png`.
@@ -95,5 +95,5 @@ keytool -list -v -keystore upload-keystore.jks -alias upload
 
 ## Out of scope (this commit)
 
-- Play Billing / Digital Goods — website Stripe stays
+- Play Billing Library / Digital Goods / Stripe checkout — not implemented; only the BILLING permission is declared
 - Rewriting the web app, packs, or auth
