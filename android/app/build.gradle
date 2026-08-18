@@ -21,7 +21,7 @@ def twaManifest = [
     shortcuts: [],
     splashScreenFadeOutDuration: 300,
     generatorApp: 'opening-lab-twa',
-    fallbackType: 'customtabs',
+    fallbackType: 'webview',
     enableSiteSettingsShortcut: 'true',
     orientation: 'portrait-primary',
 ]
@@ -40,8 +40,8 @@ android {
         applicationId "uk.co.openinglab"
         minSdk 24
         targetSdk 36
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
 
         resValue "string", "appName", twaManifest.name
         resValue "string", "launcherName", twaManifest.launcherName

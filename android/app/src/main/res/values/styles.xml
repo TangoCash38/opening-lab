@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Opaque launch screen. Do not use the application translucent theme here:
+         if Chrome never takes over, a translucent window leaves only the piece graphic. -->
+    <style name="Theme.OpeningLab.Launcher" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/navigationColor</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <!-- In-app WebView fallback (no Chrome / TWA hang). Same cream + green chrome as the site. -->
+    <style name="Theme.OpeningLab.WebView" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/navigationColor</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+</resources>
