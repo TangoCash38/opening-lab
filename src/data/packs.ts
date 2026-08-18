@@ -112,7 +112,7 @@ export const PACKS: Pack[] = [
       },
       {
         id: "s9",
-        name: "Line 9 · Ng5, if …d6",
+        name: "Line 9 · 5.Ng5 …Nh6",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d6", "Qxd4", "Be6"],
         side: "w",
       },
@@ -288,7 +288,7 @@ export const PACKS: Pack[] = [
     blurb: "3 lines · Kieseritzky Gambit",
     lines: [
       { id: "kg1", name: "Line 1 · Kieseritzky Gambit", plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"], side: "w" },
-      { id: "kg2", name: "Line 2 · Cunningham 3…Be7", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Nd7", "g3", "fxg3"], side: "w" },
+      { id: "kg2", name: "Line 2 · Cunningham 3…Be7", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Qxd5", "Bxf4", "c6"], side: "w" },
       { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2"], side: "w" },
     ],
   },
@@ -373,7 +373,7 @@ export const PACKS: Pack[] = [
       { id: "tr5", name: "Line 5 · 2…g6", plies: ["d4", "Nf6", "Bg5", "g6", "Bxf6", "exf6", "c4", "Bg7", "Nc3", "O-O", "e3", "d6", "Bd3", "f5", "Nge2", "Nd7", "O-O", "Nf6", "b4", "c6"], side: "w" },
       { id: "tr6", name: "Line 6 · 2…c6", plies: ["d4", "Nf6", "Bg5", "c6", "Bxf6", "exf6", "c3", "d5", "e3", "Bd6", "Bd3", "O-O", "Nd2", "Re8", "Qc2", "g6", "Ne2", "Nd7", "O-O", "Nf8"], side: "w" },
       { id: "tr7", name: "Line 7 · 2…d6", plies: ["d4", "Nf6", "Bg5", "d6", "Bxf6", "exf6", "e3", "g6", "g3", "Bg7", "Bg2", "O-O", "Ne2", "Nd7", "O-O", "f5", "c4", "Nf6", "Nbc3", "c6"], side: "w" },
-      { id: "tr8", name: "Line 8 · 2…Ne4 3.Bf4 main", plies: ["d4", "Nf6", "Bg5", "Ne4", "Bf4", "c5", "f3", "Qa5+", "c3", "Nf6", "d5", "Qb6", "Bc1", "e6", "e4", "exd5", "exd5", "Bd6", "Qe2+", "Kd8"], side: "w" },
+      { id: "tr8", name: "Line 8 · 2…Ne4 3.Bf4 main", plies: ["d4", "Nf6", "Bg5", "Ne4", "Bf4", "c5", "f3", "Qa5+", "c3", "Nf6", "d5", "Qb6", "Bc1", "e6", "c4", "exd5", "cxd5", "Bd6", "e4", "O-O"], side: "w" },
     ],
   },
   {
@@ -415,7 +415,7 @@ export const PACKS: Pack[] = [
       { id: "sg5", name: "Line 5 · 4…Bb4+", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bb4+", "c3", "Be7", "Nxc6", "bxc6", "Bd3", "d6", "O-O", "Nf6", "Nd2", "O-O", "Re1", "Re8"], side: "w" },
       { id: "sg6", name: "Line 6 · Scotch Four Knights", plies: ["e4", "e5", "Nf3", "Nc6", "Nc3", "Nf6", "d4", "exd4", "Nxd4", "Bb4", "Nxc6", "bxc6", "Bd3", "d5", "exd5", "cxd5", "O-O", "O-O", "Bg5", "c6"], side: "w" },
       { id: "sg7", name: "Line 7 · 4…Bc5 5.Be3", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3", "Qf6", "c3", "Nge7", "Bc4", "Ne5", "Be2", "Qg6", "O-O", "d6", "f3", "O-O"], side: "w" },
-      { id: "sg8", name: "Line 8 · 4…Nf6 5.Nxc6 Ba6", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nxc6", "bxc6", "e5", "Qe7", "Qe2", "Nd5", "c4", "Ba6", "b3", "g6", "g3", "Bg7"], side: "w" },
+      { id: "sg8", name: "Line 8 · Mieses 8…Ba6", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nxc6", "bxc6", "e5", "Qe7", "Qe2", "Nd5", "c4", "Ba6", "b3", "g6", "g3", "Bg7"], side: "w" },
     ],
   },
   {
@@ -723,8 +723,8 @@ export const PACKS: Pack[] = [
       { id: "ak4", name: "Line 4 · Chase Variation", plies: ["e4", "Nf6", "e5", "Nd5", "c4", "Nb6", "c5", "Nd5", "Bc4", "e6", "d4", "d6", "cxd6", "cxd6", "Nf3", "Nc6", "O-O", "Be7", "Qe2", "O-O"], side: "b" },
       { id: "ak5", name: "Line 5 · Scandinavian-style …d5", plies: ["e4", "Nf6", "Nc3", "d5", "exd5", "Nxd5", "Bc4", "Nb6", "Bb3", "Nc6", "Nf3", "Bf5", "O-O", "e6", "d4", "Be7", "Be3", "O-O", "a4", "a5"], side: "b" },
       { id: "ak6", name: "Line 6 · vs 2.Nc3 3.e5", plies: ["e4", "Nf6", "Nc3", "d5", "e5", "Nfd7", "d4", "e6", "f4", "c5", "Nf3", "Nc6", "Be3", "cxd4", "Nxd4", "Bc5", "Qd2", "O-O", "O-O-O", "a6"], side: "b" },
-      { id: "ak7", name: "Line 7 · vs 2.e5 Nd5 3.c4", plies: ["e4", "Nf6", "e5", "Nd5", "c4", "Nb6", "d4", "d6", "f4", "dxe5", "fxe5", "Nc6", "Be3", "Bf5", "Nc3", "e6", "Nf3", "Qd7", "Be2", "O-O-O"], side: "b" },
-      { id: "ak8", name: "Line 8 · vs 2.e5 Nd5 3.d4 (Voronezh)", plies: ["e4", "Nf6", "e5", "Nd5", "d4", "d6", "c4", "Nb6", "exd6", "cxd6", "Nc3", "g6", "Be3", "Bg7", "Rc1", "O-O", "b3", "e5", "dxe5", "dxe5"], side: "b" },
+      { id: "ak7", name: "Line 7 · Four Pawns …Qd7", plies: ["e4", "Nf6", "e5", "Nd5", "c4", "Nb6", "d4", "d6", "f4", "dxe5", "fxe5", "Nc6", "Be3", "Bf5", "Nc3", "e6", "Nf3", "Qd7", "Be2", "O-O-O"], side: "b" },
+      { id: "ak8", name: "Line 8 · Voronezh Exchange", plies: ["e4", "Nf6", "e5", "Nd5", "d4", "d6", "c4", "Nb6", "exd6", "cxd6", "Nc3", "g6", "Be3", "Bg7", "Rc1", "O-O", "b3", "e5", "dxe5", "dxe5"], side: "b" },
     ],
   },
   {
@@ -743,7 +743,7 @@ export const PACKS: Pack[] = [
       { id: "mb3", name: "Line 3 · Taimanov 7.Bd3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Bd3", "Bg7", "Nge2", "O-O", "O-O", "a6", "a4", "Nbd7"], side: "b" },
       { id: "mb4", name: "Line 4 · Flick-Knife 8.Bb5+", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "f4", "Bg7", "Bb5+", "Nfd7", "a4", "O-O", "Nf3", "Na6"], side: "b" },
       { id: "mb5", name: "Line 5 · …a6 …b5 plan", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Nf3", "a6", "h3", "b5", "Bd3", "Bg7", "O-O", "O-O"], side: "b" },
-      { id: "mb6", name: "Line 6 · 8.Bf4", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Nf3", "Bg7", "h3", "O-O", "Bd3", "a6", "a4", "Nbd7"], side: "b" },
+      { id: "mb6", name: "Line 6 · 8.h3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "Nf3", "Bg7", "h3", "O-O", "Bd3", "a6", "a4", "Nbd7"], side: "b" },
       { id: "mb7", name: "Line 7 · Knight’s Tour 7.Nd2", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nf3", "exd5", "cxd5", "d6", "Nc3", "g6", "Nd2", "Bg7", "e4", "O-O", "Be2", "Re8", "O-O", "Nbd7"], side: "b" },
       { id: "mb8", name: "Line 8 · Four Pawns 8.Nf3", plies: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "e4", "g6", "f4", "Bg7", "Nf3", "O-O", "Be2", "Re8", "Nd2", "Nbd7"], side: "b" },
     ],
