@@ -14,10 +14,10 @@ import {
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
+import { LineRow, PackExpandHint } from "./pack-lines";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
-import { MasteryChip } from "./mastery-chip";
 import { HomeHero } from "./home-hero";
 import { LegalFooter } from "./legal-footer";
 
@@ -71,22 +71,23 @@ function PackCard({
     >
       <button
         type="button"
-        className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5 px-4 py-3.5 text-left"
+        className="flex w-full flex-col px-4 pb-3 pt-3.5 text-left"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
-        <div className="relative">
-          <MiniBoard />
-          {locked && (
-            <span
-              className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-fg text-bg-elevated shadow-sm"
-              aria-hidden
-            >
-              <Lock className="size-3.5" strokeWidth={2.5} />
-            </span>
-          )}
-        </div>
-        <div>
+        <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
+          <div className="relative">
+            <MiniBoard />
+            {locked && (
+              <span
+                className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-fg text-bg-elevated shadow-sm"
+                aria-hidden
+              >
+                <Lock className="size-3.5" strokeWidth={2.5} />
+              </span>
+            )}
+          </div>
+          <div>
           <div className="flex items-center gap-2">
             <div className="text-[0.95rem] font-bold">{pack.name}</div>
             {locked && (
@@ -139,14 +140,9 @@ function PackCard({
               </span>
             ) : null}
           </div>
-          <div className="mt-1.5 text-[0.72rem] text-fg-subtle">
-            {open
-              ? "Tap to hide"
-              : locked
-                ? "Tap to see the lines"
-                : "Tap to show lines"}
           </div>
         </div>
+        <PackExpandHint open={open} free={pack.id === "scotch"} />
       </button>
 
       {open && (
@@ -155,51 +151,19 @@ function PackCard({
             const mastery = masteryOf(line.id);
             const complete = !locked && isComplete(line.id);
             return (
-              <button
+              <LineRow
                 key={line.id}
-                type="button"
-                className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
-                  complete
-                    ? "border-success/35 bg-success-soft/55"
-                    : "border-danger bg-danger-soft"
-                }`}
+                index={i}
+                line={line}
+                complete={complete}
+                mastery={mastery}
+                locked={locked}
+                showFree={pack.id === "scotch"}
                 onClick={() => {
                   if (locked) onRequestUnlock(pack);
                   else onStartLine(pack, line);
                 }}
-              >
-                <span
-                  className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
-                    complete ? "bg-success" : "bg-danger"
-                  }`}
-                >
-                  {i + 1}
-                </span>
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
-                    <span className="min-w-0 break-words">{line.name}</span>
-                    {!locked && !complete ? (
-                      <MasteryChip mastery={mastery} />
-                    ) : null}
-                  </div>
-                  {line.players ? (
-                    <div className="mt-0.5 text-[0.72rem] text-fg-muted">
-                      White {line.players.white} · Black {line.players.black}
-                    </div>
-                  ) : null}
-                  {!locked ? (
-                    <p
-                      className={`mt-0.5 text-[0.72rem] font-semibold ${
-                        complete ? "text-success" : "text-danger"
-                      }`}
-                    >
-                      {complete
-                        ? "Complete — train any time"
-                        : "Test with no mistakes to complete"}
-                    </p>
-                  ) : null}
-                </div>
-              </button>
+              />
             );
           })}
         </div>

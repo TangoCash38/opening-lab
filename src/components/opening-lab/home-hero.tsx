@@ -5,7 +5,7 @@ import { LAB_PLUS_LABEL, PRICE_MONTHLY } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useProgress } from "@/hooks/use-progress";
 import { ChessBoard } from "./chess-board";
-import { MasteryChip } from "./mastery-chip";
+import { LineRow, PackExpandHint } from "./pack-lines";
 
 type TrainMode = "learn" | "practice";
 
@@ -96,18 +96,14 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
           <div className="border-t border-border">
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+              className="w-full px-3 py-3 text-left"
               onClick={() => setLinesOpen((v) => !v)}
               aria-expanded={linesOpen}
             >
-              <span>
-                <span className="block text-[0.88rem] font-bold">
-                  Scotch lines · {scotch.lines.length}
-                </span>
-                <span className="mt-0.5 block text-[0.72rem] text-fg-subtle">
-                  {linesOpen ? "Tap to hide" : "Tap to show"}
-                </span>
+              <span className="block px-1 text-[0.88rem] font-bold">
+                Scotch lines · {scotch.lines.length}
               </span>
+              <PackExpandHint open={linesOpen} free />
             </button>
             {linesOpen
               ? scotch.lines.map((item, i) => {
@@ -115,43 +111,15 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
                   const mastery = masteryOf(item.id);
                   return (
                     <div key={item.id} className="px-3">
-                      <button
-                        type="button"
-                        className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
-                          complete
-                            ? "border-success/35 bg-success-soft/55"
-                            : "border-danger bg-danger-soft"
-                        }`}
+                      <LineRow
+                        index={i}
+                        line={item}
+                        complete={complete}
+                        mastery={mastery}
+                        locked={false}
+                        showFree
                         onClick={() => onStartLine(scotch, item, "learn")}
-                      >
-                        <span
-                          className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
-                            complete ? "bg-success" : "bg-danger"
-                          }`}
-                        >
-                          {i + 1}
-                        </span>
-                        <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
-                            <span className="min-w-0 break-words">{item.name}</span>
-                            {!complete ? <MasteryChip mastery={mastery} /> : null}
-                          </div>
-                          {item.players ? (
-                            <div className="mt-0.5 text-[0.72rem] text-fg-muted">
-                              White {item.players.white} · Black {item.players.black}
-                            </div>
-                          ) : null}
-                          <p
-                            className={`mt-0.5 text-[0.72rem] font-semibold ${
-                              complete ? "text-success" : "text-danger"
-                            }`}
-                          >
-                            {complete
-                              ? "Complete — train any time"
-                              : "Test with no mistakes to complete"}
-                          </p>
-                        </div>
-                      </button>
+                      />
                     </div>
                   );
                 })
