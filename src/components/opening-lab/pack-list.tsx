@@ -14,10 +14,12 @@ import {
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
+import { isPlayApp } from "@/lib/play-app";
 import { LineRow, PackExpandHint } from "./pack-lines";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
+import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
 import { LegalFooter } from "./legal-footer";
 
@@ -88,58 +90,58 @@ function PackCard({
             )}
           </div>
           <div>
-          <div className="flex items-center gap-2">
-            <div className="text-[0.95rem] font-bold">{pack.name}</div>
-            {locked && (
-              <Lock
-                className="size-3.5 shrink-0 text-fg-subtle"
-                strokeWidth={2.5}
-                aria-label="Locked"
-              />
-            )}
-          </div>
-          <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
-              {pack.lines.length} lines
-            </span>
-            {free ? (
-              <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
-                Free
+            <div className="flex items-center gap-2">
+              <div className="text-[0.95rem] font-bold">{pack.name}</div>
+              {locked && (
+                <Lock
+                  className="size-3.5 shrink-0 text-fg-subtle"
+                  strokeWidth={2.5}
+                  aria-label="Locked"
+                />
+              )}
+            </div>
+            <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
+                {pack.lines.length} lines
               </span>
-            ) : unlocked ? (
-              <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
-                Unlocked
-              </span>
-            ) : (
-              <>
-                <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
-                  Pay as you go
+              {free ? (
+                <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
+                  Free
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated">
-                  <Lock className="size-3" strokeWidth={2.5} aria-hidden />
-                  {price}
+              ) : unlocked ? (
+                <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
+                  Unlocked
                 </span>
-              </>
-            )}
-            <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
-              {pack.eco}
-            </span>
-            <span
-              className={`rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${sideClass}`}
-            >
-              {pack.side}
-            </span>
-            {pack.badge ? (
-              <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
-                {pack.badge}
+              ) : (
+                <>
+                  <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
+                    Pay as you go
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated">
+                    <Lock className="size-3" strokeWidth={2.5} aria-hidden />
+                    {price}
+                  </span>
+                </>
+              )}
+              <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
+                {pack.eco}
               </span>
-            ) : pack.section === "special" ? (
-              <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
-                New
+              <span
+                className={`rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${sideClass}`}
+              >
+                {pack.side}
               </span>
-            ) : null}
-          </div>
+              {pack.badge ? (
+                <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
+                  {pack.badge}
+                </span>
+              ) : pack.section === "special" ? (
+                <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
+                  New
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
         <PackExpandHint open={open} free={pack.id === "scotch"} />
@@ -194,7 +196,12 @@ export function PackList({ onStartLine }: Props) {
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
+  const [playApp, setPlayApp] = useState(false);
   const resumedCheckout = useRef(false);
+
+  useEffect(() => {
+    setPlayApp(isPlayApp());
+  }, []);
 
   const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = PACKS.filter((p) => p.section === "black" && p.id !== "vs-london");
@@ -252,6 +259,11 @@ export function PackList({ onStartLine }: Props) {
   };
 
   const pay = async (kind: CheckoutKind, packId?: string) => {
+    if (playApp || isPlayApp()) {
+      setPayError(null);
+      setPayBusy(false);
+      return;
+    }
     setPayError(null);
     setPayBusy(true);
     try {
@@ -292,6 +304,7 @@ export function PackList({ onStartLine }: Props) {
 
   useEffect(() => {
     if (resumedCheckout.current) return;
+    if (playApp || isPlayApp()) return;
     if (isPending || !signedIn || paymentsEnabled !== true) return;
     if (new URLSearchParams(window.location.search).get("paid") === "1") return;
     const pending = readPendingCheckout();
@@ -299,7 +312,7 @@ export function PackList({ onStartLine }: Props) {
     resumedCheckout.current = true;
     clearPendingCheckout();
     void pay(pending.kind, pending.packId);
-  }, [isPending, signedIn, paymentsEnabled]);
+  }, [isPending, signedIn, paymentsEnabled, playApp]);
 
   return (
     <div>
@@ -314,6 +327,12 @@ export function PackList({ onStartLine }: Props) {
         >
           {unlockNotice}
         </p>
+      ) : null}
+
+      {playApp ? (
+        <div className="mb-3">
+          <PlayStoreNotice />
+        </div>
       ) : null}
 
       <HomeHero
@@ -402,6 +421,7 @@ export function PackList({ onStartLine }: Props) {
           needsAccount={paymentsEnabled === true && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
+          playApp={playApp}
         />
       )}
 
@@ -425,6 +445,7 @@ export function PackList({ onStartLine }: Props) {
           needsAccount={paymentsEnabled === true && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
+          playApp={playApp}
         />
       )}
     </div>

@@ -1,3 +1,5 @@
+import { isPlayApp } from "@/lib/play-app";
+
 export type CheckoutKind = "monthly" | "yearly" | "pack";
 
 export type CheckoutSessionResult = {
@@ -14,10 +16,10 @@ export async function fetchPaymentsEnabled(): Promise<boolean> {
   return data.enabled === true;
 }
 
-export async function startCheckout(
-  kind: CheckoutKind,
-  packId?: string,
-): Promise<string> {
+export async function startCheckout(kind: CheckoutKind, packId?: string): Promise<string> {
+  if (isPlayApp()) {
+    throw new Error("Google Play checkout is not available yet");
+  }
   const res = await fetch("/api/checkout", {
     method: "POST",
     credentials: "same-origin",
@@ -34,13 +36,10 @@ export async function startCheckout(
   return data.url;
 }
 
-export async function confirmCheckoutSession(
-  sessionId: string,
-): Promise<CheckoutSessionResult> {
-  const res = await fetch(
-    `/api/checkout/session?session_id=${encodeURIComponent(sessionId)}`,
-    { credentials: "same-origin" },
-  );
+export async function confirmCheckoutSession(sessionId: string): Promise<CheckoutSessionResult> {
+  const res = await fetch(`/api/checkout/session?session_id=${encodeURIComponent(sessionId)}`, {
+    credentials: "same-origin",
+  });
   const data = (await res.json().catch(() => ({}))) as CheckoutSessionResult;
   if (!res.ok) return { ok: false };
   return data;

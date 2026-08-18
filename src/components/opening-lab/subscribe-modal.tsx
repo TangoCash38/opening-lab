@@ -6,6 +6,7 @@ import {
   PRICE_YEARLY,
   PRICE_YEARLY_NOTE,
 } from "@/data/pricing";
+import { PlayStoreNotice } from "./play-store-notice";
 
 type Props = {
   onClose: () => void;
@@ -15,6 +16,7 @@ type Props = {
   needsAccount?: boolean;
   busy?: boolean;
   error?: string | null;
+  playApp?: boolean;
 };
 
 export function SubscribeModal({
@@ -25,6 +27,7 @@ export function SubscribeModal({
   needsAccount = false,
   busy = false,
   error = null,
+  playApp = false,
 }: Props) {
   return (
     <div
@@ -44,15 +47,13 @@ export function SubscribeModal({
       >
         <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
           <div>
-            <h2
-              id="sub-title"
-              className="m-0 font-display text-lg font-bold leading-snug"
-            >
+            <h2 id="sub-title" className="m-0 font-display text-lg font-bold leading-snug">
               {LAB_PLUS_LABEL}
             </h2>
             <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
-              Every pack, plus new lines we add. Cancel anytime. Packs you
-              already bought stay yours.
+              {playApp
+                ? "Lab+ is not for sale in the Play app yet."
+                : "Every pack, plus new lines we add. Cancel anytime. Packs you already bought stay yours."}
             </p>
           </div>
           <button
@@ -67,59 +68,64 @@ export function SubscribeModal({
         </div>
 
         <div className="space-y-3 px-5 py-5">
-          <button
-            type="button"
-            onClick={onSubscribeMonthly}
-            disabled={busy}
-            className="flex w-full items-center justify-between rounded-xl bg-accent px-4 py-3.5 text-left text-accent-fg active:scale-[0.99] disabled:opacity-60"
-          >
-            <span>
-              <span className="block text-[0.92rem] font-bold">Monthly</span>
-              <span className="block text-[0.75rem] opacity-90">
-                All packs + updates · {PRICE_MONTHLY_NOTE}
-              </span>
-            </span>
-            <span className="text-base font-bold">{PRICE_MONTHLY}</span>
-          </button>
+          {playApp ? (
+            <PlayStoreNotice />
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={onSubscribeMonthly}
+                disabled={busy}
+                className="flex w-full items-center justify-between rounded-xl bg-accent px-4 py-3.5 text-left text-accent-fg active:scale-[0.99] disabled:opacity-60"
+              >
+                <span>
+                  <span className="block text-[0.92rem] font-bold">Monthly</span>
+                  <span className="block text-[0.75rem] opacity-90">
+                    All packs + updates · {PRICE_MONTHLY_NOTE}
+                  </span>
+                </span>
+                <span className="text-base font-bold">{PRICE_MONTHLY}</span>
+              </button>
 
-          <button
-            type="button"
-            onClick={onSubscribeYearly}
-            disabled={busy}
-            className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
-          >
-            <span>
-              <span className="block text-[0.92rem] font-bold text-accent">
-                Yearly
-              </span>
-              <span className="block text-[0.75rem] text-fg-muted">
-                All packs + updates · {PRICE_YEARLY_NOTE}
-              </span>
-            </span>
-            <span className="text-base font-bold text-accent">{PRICE_YEARLY}</span>
-          </button>
+              <button
+                type="button"
+                onClick={onSubscribeYearly}
+                disabled={busy}
+                className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
+              >
+                <span>
+                  <span className="block text-[0.92rem] font-bold text-accent">Yearly</span>
+                  <span className="block text-[0.75rem] text-fg-muted">
+                    All packs + updates · {PRICE_YEARLY_NOTE}
+                  </span>
+                </span>
+                <span className="text-base font-bold text-accent">{PRICE_YEARLY}</span>
+              </button>
 
-          {error ? (
-            <p className="m-0 text-center text-[0.75rem] font-semibold text-danger" role="alert">
-              {error}
-            </p>
-          ) : busy ? (
-            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              Opening checkout…
-            </p>
-          ) : needsAccount ? (
-            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              Sign in so this stays on your account.
-            </p>
-          ) : paymentsEnabled === true ? (
-            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              You will pay securely with Stripe.
-            </p>
-          ) : paymentsEnabled === false ? (
-            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              Demo unlock on this device. No card charged yet.
-            </p>
-          ) : null}
+              {error ? (
+                <p
+                  className="m-0 text-center text-[0.75rem] font-semibold text-danger"
+                  role="alert"
+                >
+                  {error}
+                </p>
+              ) : busy ? (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">Opening checkout…</p>
+              ) : needsAccount ? (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+                  Sign in so this stays on your account.
+                </p>
+              ) : paymentsEnabled === true ? (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+                  You will pay securely with Stripe.
+                </p>
+              ) : paymentsEnabled === false ? (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+                  Demo unlock on this device. No card charged yet.
+                </p>
+              ) : null}
+            </>
+          )}
         </div>
       </div>
     </div>
