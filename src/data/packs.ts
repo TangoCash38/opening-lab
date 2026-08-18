@@ -113,7 +113,7 @@ export const PACKS: Pack[] = [
       {
         id: "s9",
         name: "Line 9 · Sarratt (5.Ng5 …Nh6)",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d6", "Qxd4", "Be6"],
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d6", "Qc4+", "Be6", "Qb5", "Rb8"],
         side: "w",
       },
       {
