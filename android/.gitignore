@@ -1,0 +1,24 @@
+# Local SDK path
+local.properties
+
+# Signing — never commit keys or passwords
+keystore.properties
+*.jks
+*.keystore
+upload-keystore.jks
+
+# Gradle / Android build
+.gradle/
+build/
+app/build/
+captures/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# IDE
+.idea/
+*.iml
+.DS_Store

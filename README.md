@@ -82,3 +82,9 @@ npm run typecheck
 ## GitHub
 
 https://github.com/TangoCash38/opening-lab
+
+## Google Play (Android)
+
+The Play listing is a Trusted Web Activity that opens the live site. Project
+and build steps: [`android/README.md`](android/README.md).
+

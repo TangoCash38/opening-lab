@@ -1,0 +1,118 @@
+import groovy.xml.MarkupBuilder
+
+plugins {
+    id 'com.android.application'
+}
+
+def twaManifest = [
+    applicationId: 'uk.co.openinglab',
+    hostName: 'www.openinglab.co.uk',
+    launchUrl: '/',
+    name: 'Opening Lab',
+    launcherName: 'Opening Lab',
+    themeColor: '#2F5D50',
+    themeColorDark: '#2F5D50',
+    navigationColor: '#2F5D50',
+    navigationColorDark: '#2F5D50',
+    navigationDividerColor: '#00000000',
+    navigationDividerColorDark: '#00000000',
+    backgroundColor: '#F4EFE6',
+    enableNotifications: true,
+    shortcuts: [],
+    splashScreenFadeOutDuration: 300,
+    generatorApp: 'opening-lab-twa',
+    fallbackType: 'customtabs',
+    enableSiteSettingsShortcut: 'true',
+    orientation: 'portrait-primary',
+]
+
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
+android {
+    compileSdk 36
+    namespace "uk.co.openinglab"
+
+    defaultConfig {
+        applicationId "uk.co.openinglab"
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0.0"
+
+        resValue "string", "appName", twaManifest.name
+        resValue "string", "launcherName", twaManifest.launcherName
+
+        def launchUrl = "https://" + twaManifest.hostName + twaManifest.launchUrl
+        resValue "string", "launchUrl", launchUrl
+        resValue "string", "webManifestUrl", "https://www.openinglab.co.uk/manifest.webmanifest"
+        resValue "string", "fullScopeUrl", "https://www.openinglab.co.uk/"
+        resValue "string", "hostName", twaManifest.hostName
+
+        resValue "color", "colorPrimary", twaManifest.themeColor
+        resValue "color", "colorPrimaryDark", twaManifest.themeColorDark
+        resValue "color", "navigationColor", twaManifest.navigationColor
+        resValue "color", "navigationColorDark", twaManifest.navigationColorDark
+        resValue "color", "navigationDividerColor", twaManifest.navigationDividerColor
+        resValue "color", "navigationDividerColorDark", twaManifest.navigationDividerColorDark
+        resValue "color", "backgroundColor", twaManifest.backgroundColor
+
+        resValue "string", "providerAuthority", twaManifest.applicationId + '.fileprovider'
+        resValue "bool", "enableNotification", twaManifest.enableNotifications.toString()
+        resValue "integer", "splashScreenFadeOutDuration", twaManifest.splashScreenFadeOutDuration.toString()
+        resValue "string", "generatorApp", twaManifest.generatorApp
+        resValue "string", "fallbackType", twaManifest.fallbackType
+        resValue "bool", "enableSiteSettingsShortcut", twaManifest.enableSiteSettingsShortcut
+        resValue "string", "orientation", twaManifest.orientation
+    }
+
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            release {
+                storeFile rootProject.file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+tasks.register('generateShortcutsFile') {
+    def shortcutsFile = new File("$projectDir/src/main/res/xml", "shortcuts.xml")
+    def xmlWriter = new StringWriter()
+    def xmlMarkup = new MarkupBuilder(new IndentPrinter(xmlWriter, " ", true))
+    xmlMarkup.'shortcuts'('xmlns:android': 'http://schemas.android.com/apk/res/android') {
+    }
+    shortcutsFile.parentFile.mkdirs()
+    shortcutsFile.text = xmlWriter.toString() + '\n'
+}
+
+preBuild.dependsOn(generateShortcutsFile)
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.2'
+}
