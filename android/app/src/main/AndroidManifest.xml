@@ -23,7 +23,6 @@
             android:hardwareAccelerated="true"
             android:label="@string/launcherName"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.OpeningLab.Launcher"
             android:windowSoftInputMode="adjustResize">
 
