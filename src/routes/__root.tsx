@@ -50,7 +50,7 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       /* Dynamic PWA manifest for install / home-screen */
       { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
+      { rel: "apple-touch-icon", href: "/icons/icon-192.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",

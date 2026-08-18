@@ -31,17 +31,28 @@ function Privacy() {
       <LegalSection title="What we collect">
         <p>We keep this small:</p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>Your account email, if you sign in.</li>
           <li>
-            Payment is handled by Stripe. We never see your full card number.
+            Your account email is stored on our servers if you sign in.
           </li>
           <li>
-            Training progress (lines you have learned, streaks, and unlocks)
-            stays on your device.
+            Packs you buy and Lab+ are stored on your account so they follow
+            you to another phone when you sign in.
           </li>
           <li>
-            Necessary cookies so the site can stay signed in and work properly.
-            We do not use advertising cookies.
+            Training progress (which lines are green) stays on your device.
+          </li>
+          <li>
+            Website payments go through Stripe. We never see your full card
+            number.
+          </li>
+          <li>
+            If you later install from Google Play, Google handles that store
+            payment. Play purchases (when offered) are taken by Google.
+          </li>
+          <li>
+            Necessary cookies so you can stay signed in and the site can work.
+            Vercel Analytics records page views. We do not use advertising
+            cookies.
           </li>
         </ul>
       </LegalSection>
@@ -61,20 +72,31 @@ function Privacy() {
             after if you ask us to delete it so we can finish the request.
           </li>
           <li>
-            Payments: Stripe keeps payment records as the law requires. We do
-            not store card numbers.
+            Packs and Lab+ on your account: while you have an account, and as
+            long as we need the record for tax or legal reasons.
           </li>
           <li>
-            Progress on your device: until you clear your browser data.
+            Payments: Stripe keeps website payment records as the law requires.
+            We do not store card numbers. Play purchases (when offered) are
+            recorded by Google.
+          </li>
+          <li>
+            Progress on your device: until you clear your browser or app data.
           </li>
         </ul>
       </LegalSection>
 
-      <LegalSection title="Stripe">
+      <LegalSection title="Payments">
         <p>
-          Stripe is our payment processor. When you pay, you send card details
-          to Stripe, not to us. Stripe acts as a processor for that payment.
-          See Stripe’s own privacy policy for how they handle card data.
+          Website payments go through Stripe. When you pay on the website, you
+          send card details to Stripe, not to us. We never see your full card
+          number. Stripe acts as a processor for that payment. See Stripe’s
+          own privacy policy for how they handle card data.
+        </p>
+        <p>
+          If you later install Opening Lab from Google Play, Google handles
+          that store payment. Play purchases (when offered) are taken by
+          Google, not by us.
         </p>
       </LegalSection>
 

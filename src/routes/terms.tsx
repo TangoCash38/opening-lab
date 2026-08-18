@@ -23,8 +23,10 @@ function Terms() {
 
       <LegalSection title="Prices (GBP)">
         <ul className="list-disc space-y-1 pl-5">
-          <li>Scotch Gambit is free.</li>
-          <li>Other packs are £1 or £1.99, one-time.</li>
+          <li>Scotch is free.</li>
+          <li>
+            Other packs are £1 or £1.99, one-time. They stay on your account.
+          </li>
           <li>
             Opening Lab+ is £4.99 a month or £29.99 a year and unlocks every
             pack while the plan is active.
@@ -34,32 +36,33 @@ function Terms() {
 
       <LegalSection title="Opening Lab+">
         <p>
-          You can cancel Lab+ at any time. When a plan ends, Lab+ access ends.
-          Packs you already bought stay unlocked on that device.
+          You can cancel Lab+ at any time. When a plan ends, Lab+ access ends
+          and packs you have not bought lock again. Packs you already bought
+          stay unlocked on your account.
         </p>
       </LegalSection>
 
       <LegalSection title="Pay as you go packs">
         <p>
-          A pack is a one-time digital purchase. It stays on the device you
-          used to buy it. If Lab+ ends, those packs still stay.
+          A pack is a one-time digital purchase. It stays on your account, so
+          it follows you to another phone when you sign in. If Lab+ ends,
+          those packs still stay.
         </p>
       </LegalSection>
 
       <LegalSection title="Cooling-off (UK)">
         <p>
-          You have 14 days to cancel a digital purchase you have not used.
-          Once you start training a paid line, you agree the digital content
-          has started and that 14-day right no longer applies to that
-          purchase.
+          You have 14 days to cancel a digital purchase if you have not used
+          the digital content. Once you start training a paid line, that
+          14-day right ends for that purchase.
         </p>
       </LegalSection>
 
       <LegalSection title="Changes">
         <p>
           We may add, change, or remove packs and lines. We will not take away
-          a pack you already paid for on that device, except where we must for
-          legal reasons.
+          a pack you already paid for on your account, except where we must
+          for legal reasons.
         </p>
       </LegalSection>
 
