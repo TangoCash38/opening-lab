@@ -341,6 +341,26 @@ async function claimLabPlusNotice(userId: string): Promise<boolean> {
   return rows.length > 0;
 }
 
+
+export async function sendLineFeedbackEmail(input: {
+  packId: string;
+  packName: string;
+  lineId: string;
+  lineName: string;
+  message: string;
+}): Promise<void> {
+  const body =
+    `Pack: ${input.packName} (${input.packId})\n` +
+    `Line: ${input.lineName} (${input.lineId})\n\n` +
+    input.message;
+  await sendMail({
+    to: REPLY_TO,
+    subject: `Line comment: ${input.packName} · ${input.lineName}`,
+    text: layoutText(body),
+    html: layoutHtml(escapeHtml(body).replace(/\n/g, "<br>")),
+  });
+}
+
 export async function notifyPaidUnlock(input: {
   userId: string;
   kind: "pack" | "monthly" | "yearly";

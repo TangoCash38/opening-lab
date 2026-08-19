@@ -15,6 +15,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
+import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.session'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
@@ -51,6 +52,11 @@ const ApiPaymentsRoute = ApiPaymentsRouteImport.update({
   path: '/api/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFeedbackRoute = ApiFeedbackRouteImport.update({
+  id: '/api/feedback',
+  path: '/api/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/payments': typeof ApiPaymentsRoute
+  '/api/feedback': typeof ApiFeedbackRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/payments': typeof ApiPaymentsRoute
+  '/api/feedback': typeof ApiFeedbackRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/payments': typeof ApiPaymentsRoute
+  '/api/feedback': typeof ApiFeedbackRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/checkout'
     | '/api/payments'
+    | '/api/feedback'
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/stripe/webhook'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/checkout'
     | '/api/payments'
+    | '/api/feedback'
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/stripe/webhook'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/checkout'
     | '/api/payments'
+    | '/api/feedback'
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/stripe/webhook'
@@ -166,6 +178,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiPaymentsRoute: typeof ApiPaymentsRoute
+  ApiFeedbackRoute: typeof ApiFeedbackRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
@@ -213,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/api/payments'
       fullPath: '/api/payments'
       preLoaderRoute: typeof ApiPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/feedback': {
+      id: '/api/feedback'
+      path: '/api/feedback'
+      fullPath: '/api/feedback'
+      preLoaderRoute: typeof ApiFeedbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiPaymentsRoute: ApiPaymentsRoute,
+  ApiFeedbackRoute: ApiFeedbackRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,

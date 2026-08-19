@@ -3,6 +3,7 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { LAB_PLUS_LABEL, PRICE_MONTHLY } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { isWebsiteReviewFree } from "@/lib/review-free";
 import { useProgress } from "@/hooks/use-progress";
 import { ChessBoard } from "./chess-board";
 import { LineRow, PackExpandHint } from "./pack-lines";
@@ -77,7 +78,7 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
           >
             Start free Scotch Line 1
           </button>
-          {!subscribed ? (
+          {!isWebsiteReviewFree() && !subscribed ? (
             <button
               type="button"
               onClick={onSubscribe}
