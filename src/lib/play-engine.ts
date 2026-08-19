@@ -163,7 +163,7 @@ function searchBest(fen: string, thinkMs: number): EngineMove | null {
   };
 
   let best = rootMoves[0]!;
-  const maxDepth = 3;
+  const maxDepth = 4;
   for (let depth = 1; depth <= maxDepth; depth++) {
     aborted = false;
     let alpha = -50_000;
@@ -189,7 +189,7 @@ function createLiteEngine(): PlayEngine {
   return {
     async pickMove(fen, thinkMs) {
       if (dead) return null;
-      const budget = Math.min(1000, Math.max(280, thinkMs));
+      const budget = Math.min(1200, Math.max(600, thinkMs));
       await new Promise<void>((resolve) => {
         window.setTimeout(resolve, 16);
       });
