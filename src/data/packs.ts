@@ -60,7 +60,7 @@ export const PACKS: Pack[] = [
     isFree: true,
     isPremium: false,
     price: null,
-    blurb: "12 lines · 4…Nf6 main, declines, 3…Nxd4 & 3…Nf6",
+    blurb: "12 lines · 4…Nf6 main, declines, Lolli & 3…Nxd4 4.Nxe5",
     lines: [
       {
         id: "s1",
@@ -130,8 +130,8 @@ export const PACKS: Pack[] = [
       },
       {
         id: "s13",
-        name: "Line 12 · If 3…Nf6 4.Nxe5",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "Nf6", "Nxe5", "Nxe5", "dxe5", "Nxe4", "Qd5", "Nc5", "Nc3", "c6", "Qd4", "d6", "exd6", "Ne6", "Qe4", "Qxd6"],
+        name: "Line 12 · If 3…Nxd4 4.Nxe5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "Nxd4", "Nxe5", "Nc6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Bc4", "Be6", "Bxe6", "fxe6", "Nc3", "Nf6", "Bg5", "Be7"],
         side: "w",
       },
     ],
