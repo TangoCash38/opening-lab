@@ -422,7 +422,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
   useEffect(() => {
     if (!playingOn || !engineReady) return;
-    if (busy || slide || engineBusy) return;
+    // Do not read engineBusy here or list it as a dep: setEngineBusy(true)
+    // would re-run this effect, cancel the search, and lock the board.
+    if (busy || slide) return;
     if (isUserTurn(game)) return;
     if (game.isGameOver()) return;
     const engine = engineRef.current;
@@ -491,7 +493,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     game,
     busy,
     slide,
-    engineBusy,
     session,
     isUserTurn,
     beginSlide,
