@@ -13,9 +13,17 @@ import {
   soundSelect,
   soundWin,
 } from "@/lib/sounds";
-import { ChessBoard, type SlideAnim } from "./chess-board";
+import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
+
+type PlayEngine = {
+  pickMove: (
+    fen: string,
+    thinkMs: number,
+  ) => Promise<{ from: string; to: string; promotion?: "q" | "r" | "b" | "n" } | null>;
+  dispose: () => void;
+};
 
 type Mode = "learn" | "practice";
 
@@ -33,6 +41,7 @@ type Props = {
 
 const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
+const ENGINE_THINK_MS = 520;
 
 function fenPieceAt(g: Chess, sq: Square): string | null {
   const p = g.get(sq);
@@ -69,6 +78,13 @@ function buildNotationPairs(plies: string[], playedCount: number): NotationPair[
   return pairs;
 }
 
+function playOnGameOverText(g: Chess, userSide: "w" | "b"): string {
+  if (g.isCheckmate()) {
+    return g.turn() !== userSide ? "Checkmate — you win" : "Checkmate";
+  }
+  return "Draw";
+}
+
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
@@ -88,12 +104,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const [banner, setBanner] = useState<PunishmentBannerState>({ kind: "idle" });
   const [nudgeTest, setNudgeTest] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
+  const [playingOn, setPlayingOn] = useState(false);
+  const [engineReady, setEngineReady] = useState(false);
+  const [engineBusy, setEngineBusy] = useState(false);
+  const [pendingPromo, setPendingPromo] = useState<{
+    from: Square;
+    to: Square;
+  } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notationStripRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
+  const playingOnRef = useRef(false);
+  const engineRef = useRef<PlayEngine | null>(null);
   const pendingCommit = useRef<{
     nextGame: Chess;
     nextPly: number;
@@ -121,6 +146,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   }, [clearReplyTimer]);
 
   const stopCelebrate = useCallback(() => setCelebrate(false), []);
+
+  const dropEngine = useCallback(() => {
+    engineRef.current?.dispose();
+    engineRef.current = null;
+    playingOnRef.current = false;
+    setPlayingOn(false);
+    setEngineReady(false);
+    setEngineBusy(false);
+    setPendingPromo(null);
+  }, []);
 
   const expectedMove = useCallback(
     (g: Chess, idx: number): Move | null => {
@@ -154,6 +189,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     (nextMode?: Mode) => {
       clearAllTimers();
       pendingCommit.current = null;
+      dropEngine();
       setSlide(null);
       setBusy(false);
       setLastMove(null);
@@ -173,7 +209,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setCelebrate(false);
       setSession((s) => s + 1);
     },
-    [clearAllTimers, mode],
+    [clearAllTimers, dropEngine, mode],
   );
 
   const changeMode = (m: Mode) => {
@@ -219,6 +255,26 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setLastMove(pending.move);
     setSlide(null);
     setBusy(false);
+
+    // Play-on never writes book progress (no complete / learned / fail / SM-2).
+    if (playingOnRef.current) {
+      const g = pending.nextGame;
+      if (g.isGameOver()) {
+        setStatus({
+          text: playOnGameOverText(g, line.side),
+          cls: "ok",
+        });
+        if (g.isCheckmate()) soundWin();
+        return;
+      }
+      if (pending.userMove) {
+        soundOk();
+        setStatus({ text: "…", cls: "" });
+      } else {
+        setStatus({ text: "Your move — playing on", cls: "" });
+      }
+      return;
+    }
 
     // Punishment drill: opponent just played the intentional blunder
     if (
@@ -312,10 +368,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line.plies.length, line.punishment, mode, scheduleHints, onLineComplete, onLearnDone]);
+  }, [line.plies.length, line.punishment, line.side, mode, scheduleHints, onLineComplete, onLearnDone]);
 
   useEffect(() => {
     clearReplyTimer();
+    if (playingOn) return;
     if (busy || slide) return;
     if (plyIndex >= line.plies.length) return;
     if (isUserTurn(game)) return;
@@ -355,6 +412,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     busy,
     slide,
     session,
+    playingOn,
     line.plies.length,
     isUserTurn,
     expectedMove,
@@ -362,41 +420,106 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     beginSlide,
   ]);
 
-  const onSquare = (sq: Square) => {
-    if (busy || slide) return;
-    if (plyIndex >= line.plies.length) return;
-    if (!isUserTurn(game)) return;
+  useEffect(() => {
+    if (!playingOn || !engineReady) return;
+    if (busy || slide || engineBusy) return;
+    if (isUserTurn(game)) return;
+    if (game.isGameOver()) return;
+    const engine = engineRef.current;
+    if (!engine) return;
 
-    const piece = game.get(sq);
+    let cancelled = false;
+    const fenNow = game.fen();
+    const idx = plyIndex;
+    setEngineBusy(true);
+    setStatus({ text: "…", cls: "" });
 
-    if (selected) {
-      if (selected === sq) {
-        setSelected(null);
-        return;
-      }
-      const legal = game
-        .moves({ square: selected, verbose: true })
-        .find((m) => m.to === sq);
-      if (legal) {
-        tryPlay(selected, sq, legal.promotion);
-        return;
-      }
-      if (piece && piece.color === game.turn()) {
-        setSelected(sq);
-        soundSelect();
-        return;
-      }
-      setSelected(null);
+    engine
+      .pickMove(fenNow, ENGINE_THINK_MS)
+      .then((mv) => {
+        if (cancelled || !playingOnRef.current) return;
+        if (!mv) {
+          setEngineBusy(false);
+          setStatus({
+            text: "Computer unavailable on this phone",
+            cls: "bad",
+          });
+          return;
+        }
+        const g = new Chess(fenNow);
+        const pieceCode = fenPieceAt(g, mv.from as Square);
+        const next = new Chess(fenNow);
+        const ok = next.move({
+          from: mv.from,
+          to: mv.to,
+          promotion: mv.promotion || "q",
+        });
+        if (!pieceCode || !ok) {
+          setEngineBusy(false);
+          setStatus({
+            text: "Computer unavailable on this phone",
+            cls: "bad",
+          });
+          return;
+        }
+        setEngineBusy(false);
+        beginSlide(
+          mv.from as Square,
+          mv.to as Square,
+          pieceCode,
+          next,
+          idx + 1,
+          false,
+        );
+      })
+      .catch(() => {
+        if (cancelled || !playingOnRef.current) return;
+        setEngineBusy(false);
+        setStatus({
+          text: "Computer unavailable on this phone",
+          cls: "bad",
+        });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    playingOn,
+    engineReady,
+    plyIndex,
+    game,
+    busy,
+    slide,
+    engineBusy,
+    session,
+    isUserTurn,
+    beginSlide,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      playingOnRef.current = false;
+      engineRef.current?.dispose();
+      engineRef.current = null;
+    };
+  }, []);
+
+  const tryPlay = (from: Square, to: Square, promotion?: string) => {
+    if (playingOnRef.current) {
+      const pieceCode = fenPieceAt(game, from);
+      if (!pieceCode) return;
+      const next = new Chess(game.fen());
+      const move = next.move({
+        from,
+        to,
+        promotion: promotion || "q",
+      });
+      if (!move) return;
+      beginSlide(from, to, pieceCode, next, plyIndex + 1, true);
       return;
     }
 
-    if (piece && piece.color === game.turn()) {
-      setSelected(sq);
-      soundSelect();
-    }
-  };
-
-  const tryPlay = (from: Square, to: Square, promotion?: string) => {
     const exp = expectedMove(game, plyIndex);
     if (!exp) return;
     if (exp.from !== from || exp.to !== to) {
@@ -427,9 +550,91 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     beginSlide(from, to, pieceCode, next, plyIndex + 1, true);
   };
 
-  const exp = expectedMove(game, plyIndex);
-  const userTurn = isUserTurn(game) && !busy && !slide;
+  const onSquare = (sq: Square) => {
+    if (busy || slide || engineBusy) return;
+    if (pendingPromo) return;
+    if (!playingOn && plyIndex >= line.plies.length) return;
+    if (!isUserTurn(game)) return;
+
+    const piece = game.get(sq);
+
+    if (selected) {
+      if (selected === sq) {
+        setSelected(null);
+        return;
+      }
+      const legalMoves = game.moves({ square: selected, verbose: true });
+      const legal = legalMoves.find((m) => m.to === sq);
+      if (legal) {
+        if (playingOn && legalMoves.some((m) => m.to === sq && m.promotion)) {
+          setPendingPromo({ from: selected, to: sq });
+          setSelected(null);
+          return;
+        }
+        tryPlay(selected, sq, legal.promotion);
+        return;
+      }
+      if (piece && piece.color === game.turn()) {
+        setSelected(sq);
+        soundSelect();
+        return;
+      }
+      setSelected(null);
+      return;
+    }
+
+    if (piece && piece.color === game.turn()) {
+      setSelected(sq);
+      soundSelect();
+    }
+  };
+
+  const startPlayOn = () => {
+    if (playingOnRef.current) return;
+    playingOnRef.current = true;
+    setPlayingOn(true);
+    setCelebrate(false);
+    setBanner({ kind: "idle" });
+    setSelected(null);
+    setPendingPromo(null);
+    setEngineBusy(false);
+    setEngineReady(false);
+    setStatus({ text: "…", cls: "" });
+
+    void (async () => {
+      try {
+        const { loadPlayEngine } = await import("@/lib/play-engine");
+        const engine = await loadPlayEngine();
+        if (!playingOnRef.current) {
+          engine.dispose();
+          return;
+        }
+        engineRef.current = engine;
+        setEngineReady(true);
+        if (game.isGameOver()) {
+          setStatus({
+            text: playOnGameOverText(game, line.side),
+            cls: "ok",
+          });
+          return;
+        }
+        if (isUserTurn(game)) {
+          setStatus({ text: "Your move — playing on", cls: "" });
+        }
+      } catch {
+        if (!playingOnRef.current) return;
+        setStatus({
+          text: "Computer unavailable on this phone",
+          cls: "bad",
+        });
+      }
+    })();
+  };
+
+  const exp = playingOn ? null : expectedMove(game, plyIndex);
+  const userTurn = isUserTurn(game) && !busy && !slide && !engineBusy;
   const showHints =
+    !playingOn &&
     mode === "learn" &&
     userTurn &&
     hintsReady &&
@@ -437,7 +642,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
   const hint = showHints && exp ? `Play: ${line.plies[plyIndex]}` : "";
 
-  const notationPairs = buildNotationPairs(line.plies, plyIndex);
+  const historySans = playingOn ? game.history() : line.plies;
+  const historyCount = playingOn ? game.history().length : plyIndex;
+  const notationPairs = buildNotationPairs(historySans, historyCount);
   const n = pack.lines.findIndex((l) => l.id === line.id) + 1;
 
   // Keep the active (last-played) move visible in the horizontal strip
@@ -459,6 +666,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           : status.cls === "done"
             ? "text-accent font-bold"
             : "text-fg-muted";
+
+  const bookDone = status.cls === "done" && !playingOn;
 
   return (
     <div>
@@ -568,7 +777,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           slide={slide}
           onSlideComplete={onSlideComplete}
           onSquare={onSquare}
-          interactive={!busy && !slide}
+          interactive={!busy && !slide && !engineBusy && !pendingPromo}
+          promotion={
+            pendingPromo
+              ? {
+                  color: line.side,
+                  onPick: (piece: PromotionPiece) => {
+                    const dest = pendingPromo;
+                    setPendingPromo(null);
+                    tryPlay(dest.from, dest.to, piece);
+                  },
+                  onCancel: () => setPendingPromo(null),
+                }
+              : null
+          }
         />
         {celebrate ? (
           <LineCompleteBurst
@@ -617,6 +839,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         {status.text}
       </div>
 
+      {playingOn ? (
+        <div className="mb-2 text-center text-[0.72rem] text-fg-subtle">
+          Playing on — not testing the book.
+        </div>
+      ) : null}
+
       <div className="mt-2 flex flex-wrap justify-center gap-2">
         <button
           type="button"
@@ -631,7 +859,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           className="rounded-full bg-accent px-4 py-2 text-[0.82rem] font-semibold text-accent-fg active:scale-95"
         >
           Done</button>
-        {status.cls === "done" && mode === "learn" ? (
+        {bookDone && mode === "learn" ? (
           <button
             type="button"
             onClick={() => changeMode("practice")}
@@ -640,9 +868,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             Start Test
           </button>
         ) : null}
-        {status.cls === "done" && mode === "practice" ? (
+        {bookDone && mode === "practice" ? (
           <button type="button" onClick={onTrainNext ?? onBack} className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95">
             Train next due
+          </button>
+        ) : null}
+        {bookDone ? (
+          <button
+            type="button"
+            onClick={startPlayOn}
+            className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
+          >
+            Play on
           </button>
         ) : null}
       </div>
