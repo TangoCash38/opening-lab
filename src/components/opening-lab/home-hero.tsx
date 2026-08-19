@@ -78,7 +78,7 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
           >
             Start free Scotch Line 1
           </button>
-          {!isWebsiteReviewFree() && !subscribed ? (
+          {isWebsiteReviewFree() ? null : !subscribed ? (
             <button
               type="button"
               onClick={onSubscribe}
