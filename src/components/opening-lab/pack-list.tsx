@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
-import { isPackFree, packPrice } from "@/data/pricing";
+import { packPrice } from "@/data/pricing";
+import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { useProgress } from "@/hooks/use-progress";
@@ -54,7 +55,7 @@ function PackCard({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const { masteryOf, isComplete } = useProgress();
-  const free = isPackFree(pack);
+  const free = packLooksFree(pack);
   const price = packPrice(pack);
   const locked = !unlocked;
 
@@ -144,7 +145,7 @@ function PackCard({
             </div>
           </div>
         </div>
-        <PackExpandHint open={open} free={pack.id === "scotch"} />
+        <PackExpandHint open={open} free={free} />
       </button>
 
       {open && (
@@ -160,7 +161,7 @@ function PackCard({
                 complete={complete}
                 mastery={mastery}
                 locked={locked}
-                showFree={pack.id === "scotch"}
+                showFree={free}
                 onClick={() => {
                   if (locked) onRequestUnlock(pack);
                   else onStartLine(pack, line);
@@ -333,7 +334,11 @@ export function PackList({ onStartLine }: Props) {
         <div className="mb-3">
           <PlayStoreNotice />
         </div>
-      ) : null}
+      ) : (
+        <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
+          All packs are free while we check the lines. If a move is wrong, tell us on that line.
+        </p>
+      )}
 
       <HomeHero
         onStartLine={onStartLine}
@@ -344,7 +349,7 @@ export function PackList({ onStartLine }: Props) {
       />
 
       <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-        More packs · pay as you go or Lab+.
+        {playApp ? "More packs · pay as you go or Lab+." : "More packs"}
       </p>
 
       {classicGames ? (

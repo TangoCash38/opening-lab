@@ -15,6 +15,7 @@ import {
 } from "@/lib/sounds";
 import { ChessBoard, type SlideAnim } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
+import { LineFeedback } from "./line-feedback";
 
 type Mode = "learn" | "practice";
 
@@ -645,6 +646,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           </button>
         ) : null}
       </div>
+      <LineFeedback pack={pack} line={line} />
     </div>
   );
 }
