@@ -41,7 +41,7 @@ type Props = {
 
 const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
-const ENGINE_THINK_MS = 520;
+const ENGINE_THINK_MS = 900;
 
 function fenPieceAt(g: Chess, sq: Square): string | null {
   const p = g.get(sq);
