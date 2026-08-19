@@ -125,7 +125,7 @@ export const PACKS: Pack[] = [
       {
         id: "s12",
         name: "Line 11 · If 3…Nxd4 4.Nxe5",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "Nxd4", "Nxe5", "Nc6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Bc4", "Be6", "Bxe6", "fxe6", "Nc3", "Nf6", "Bg5", "Be7"],
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "Nxd4", "Nxe5", "Nc6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Be3", "Nf6", "Nc3", "Bd6", "f3", "Be6", "O-O-O", "Ke7"],
         side: "w",
       },
     ],
