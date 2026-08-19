@@ -17,6 +17,14 @@ export type SlideAnim = {
   piece: string;
 };
 
+export type PromotionPiece = "q" | "r" | "b" | "n";
+
+export type PromotionPrompt = {
+  color: "w" | "b";
+  onPick: (piece: PromotionPiece) => void;
+  onCancel?: () => void;
+};
+
 type Props = {
   game: Chess;
   flip: boolean;
@@ -29,6 +37,8 @@ type Props = {
   onSlideComplete?: () => void;
   onSquare: (sq: Square) => void;
   interactive: boolean;
+  /** Play-on only. Book Practice/Test keep auto-queen. */
+  promotion?: PromotionPrompt | null;
 };
 
 type PlacedPiece = {
@@ -65,6 +75,13 @@ function newId(code: string, sq: Square) {
   return `${code}-${sq}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
+  { key: "q", label: "Q" },
+  { key: "r", label: "R" },
+  { key: "b", label: "B" },
+  { key: "n", label: "N" },
+];
+
 export function ChessBoard({
   game,
   flip,
@@ -77,6 +94,7 @@ export function ChessBoard({
   onSlideComplete,
   onSquare,
   interactive,
+  promotion,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -387,6 +405,35 @@ export function ChessBoard({
           </div>
         </div>
       </div>
+      {promotion ? (
+        <div
+          className="promo-picker"
+          role="dialog"
+          aria-label="Choose promotion"
+          onClick={() => promotion.onCancel?.()}
+        >
+          <div
+            className="promo-picker-row"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {PROMO_PIECES.map((p) => {
+              const code = promotion.color === "w" ? p.key.toUpperCase() : p.key;
+              return (
+                <button
+                  key={p.key}
+                  type="button"
+                  className="promo-picker-btn"
+                  onClick={() => promotion.onPick(p.key)}
+                  aria-label={`Promote to ${p.label}`}
+                >
+                  <ChessPiece code={code} />
+                  <span>{p.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
