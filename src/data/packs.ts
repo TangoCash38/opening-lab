@@ -312,7 +312,7 @@ export const PACKS: Pack[] = [
     price: "£1.99",
     blurb: "8 lines · Four Knights, Botvinnik, Symmetrical & Mikenas",
     lines: [
-      { id: "en1", name: "Line 1 · Four Knights 4.e3", plies: ["c4", "e5", "Nc3", "Nf6", "Nf3", "Nc6", "e3", "Bb4", "Qc2", "O-O", "Nd5", "Re8", "a3", "Bf8", "Bd3", "g6", "Nxf6+", "Qxf6", "b4", "d6"], side: "w" },
+      { id: "en1", name: "Line 1 · Four Knights Stean 7.Qf5", plies: ["c4", "e5", "Nc3", "Nf6", "Nf3", "Nc6", "e3", "Bb4", "Qc2", "O-O", "Nd5", "Re8", "Qf5", "d6", "Nxf6+", "gxf6", "Qh5", "e4", "Rg1", "d5", "a3", "Bf8", "d4"], side: "w" },
       { id: "en2", name: "Line 2 · Closed Botvinnik", plies: ["c4", "e5", "Nc3", "Nc6", "g3", "g6", "Bg2", "Bg7", "e4", "d6", "Nge2", "Nf6", "d3", "O-O", "O-O", "a6", "h3", "Rb8", "Be3", "b5"], side: "w" },
       { id: "en3", name: "Line 3 · Symmetrical Fianchetto", plies: ["c4", "c5", "Nc3", "Nc6", "g3", "g6", "Bg2", "Bg7", "Nf3", "Nf6", "O-O", "O-O", "d4", "cxd4", "Nxd4", "Nxd4", "Qxd4", "d6", "Qd3", "a6"], side: "w" },
       { id: "en4", name: "Line 4 · Agincourt / …e6", plies: ["c4", "e6", "Nf3", "d5", "g3", "Nf6", "Bg2", "Be7", "O-O", "O-O", "b3", "c5", "Bb2", "Nc6", "e3", "b6", "Nc3", "Bb7", "cxd5", "Nxd5"], side: "w" },
