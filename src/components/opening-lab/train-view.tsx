@@ -749,6 +749,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             : "text-fg-muted";
 
   const bookDone = status.cls === "done" && !playingOn;
+  // Play on + strength pills only after a clean Test (zero misses).
+  const showPlayOn =
+    bookDone && mode === "practice" && !practiceMissedRef.current;
 
   return (
     <div>
@@ -927,7 +930,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       ) : null}
 
-      {bookDone ? (
+      {showPlayOn ? (
         <div className="mb-2">
           <div className="mb-1.5 text-center text-[0.72rem] font-semibold text-fg-subtle">
             Play computer
@@ -979,7 +982,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             Train next due
           </button>
         ) : null}
-        {bookDone ? (
+        {showPlayOn ? (
           <button
             type="button"
             onClick={startPlayOn}
