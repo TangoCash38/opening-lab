@@ -21,6 +21,7 @@ import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.se
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
+import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +83,11 @@ const ApiUnlocksClaimRoute = ApiUnlocksClaimRouteImport.update({
   path: '/claim',
   getParentRoute: () => ApiUnlocksRoute,
 } as any)
+const ApiPlaySubscribeRoute = ApiPlaySubscribeRouteImport.update({
+  id: '/api/play/subscribe',
+  path: '/api/play/subscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/api/play/subscribe': typeof ApiPlaySubscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/api/play/subscribe': typeof ApiPlaySubscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/api/play/subscribe': typeof ApiPlaySubscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/api/stripe/webhook'
     | '/api/unlocks'
     | '/api/unlocks/claim'
+    | '/api/play/subscribe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/api/stripe/webhook'
     | '/api/unlocks'
     | '/api/unlocks/claim'
+    | '/api/play/subscribe'
   id:
     | '__root__'
     | '/'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/api/stripe/webhook'
     | '/api/unlocks'
     | '/api/unlocks/claim'
+    | '/api/play/subscribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
+  ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -270,6 +283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUnlocksClaimRouteImport
       parentRoute: typeof ApiUnlocksRoute
     }
+    '/api/play/subscribe': {
+      id: '/api/play/subscribe'
+      path: '/api/play/subscribe'
+      fullPath: '/api/play/subscribe'
+      preLoaderRoute: typeof ApiPlaySubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
+  ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

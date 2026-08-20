@@ -41,6 +41,7 @@ public class LauncherActivity extends Activity {
     private WebView webView;
     private View splash;
     private boolean splashHidden;
+    private PlayBilling playBilling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +159,10 @@ public class LauncherActivity extends Activity {
             splash.animate().cancel();
             splash = null;
         }
+        if (playBilling != null) {
+            playBilling.destroy();
+            playBilling = null;
+        }
         if (webView != null) {
             webView.stopLoading();
             ViewGroup parent = (ViewGroup) webView.getParent();
@@ -243,6 +248,9 @@ public class LauncherActivity extends Activity {
                 return handleUri(Uri.parse(url));
             }
         });
+
+        playBilling = new PlayBilling(this);
+        playBilling.attach(view);
     }
 
     private boolean handleUri(Uri uri) {

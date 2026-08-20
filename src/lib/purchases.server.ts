@@ -23,6 +23,8 @@ export type PurchaseApply = {
   expiresAt?: number | null;
   stripeCustomerId?: string | null;
   stripeSubscriptionId?: string | null;
+  playPurchaseToken?: string | null;
+  playOrderId?: string | null;
 };
 
 type PurchaseRow = {
@@ -101,13 +103,16 @@ async function upsertMerged(
   expiresAt: number | null,
   stripeCustomerId?: string | null,
   stripeSubscriptionId?: string | null,
+  playPurchaseToken?: string | null,
+  playOrderId?: string | null,
 ): Promise<UnlockState> {
   const sql = await getSql();
   await sql.query(
     `insert into purchases (
        user_id, packs, plan, expires_at,
-       stripe_customer_id, stripe_subscription_id, updated_at
-     ) values ($1, $2::text[], $3, $4, $5, $6, now())
+       stripe_customer_id, stripe_subscription_id,
+       play_purchase_token, play_order_id, updated_at
+     ) values ($1, $2::text[], $3, $4, $5, $6, $7, $8, now())
      on conflict (user_id) do update set
        packs = (
          select coalesce(array_agg(distinct p), '{}')
@@ -127,6 +132,8 @@ async function upsertMerged(
        end,
        stripe_customer_id = coalesce(excluded.stripe_customer_id, purchases.stripe_customer_id),
        stripe_subscription_id = coalesce(excluded.stripe_subscription_id, purchases.stripe_subscription_id),
+       play_purchase_token = coalesce(excluded.play_purchase_token, purchases.play_purchase_token),
+       play_order_id = coalesce(excluded.play_order_id, purchases.play_order_id),
        updated_at = now()`,
     [
       userId,
@@ -135,6 +142,8 @@ async function upsertMerged(
       expiresAt != null ? new Date(expiresAt) : null,
       stripeCustomerId ?? null,
       stripeSubscriptionId ?? null,
+      playPurchaseToken ?? null,
+      playOrderId ?? null,
     ],
   );
   return getUnlocksForUser(userId);
@@ -166,6 +175,8 @@ export async function applyPurchase(
     expiresAt,
     input.stripeCustomerId,
     input.stripeSubscriptionId,
+    input.playPurchaseToken,
+    input.playOrderId,
   );
   // After the paid row is saved. Retries are no-ops (notice columns).
   // Never throw — checkout / webhook must still succeed if mail fails.
@@ -199,6 +210,35 @@ export async function claimUnlocksForUser(
     expiresAt = Math.min(expiresAt, cap);
   }
   return upsertMerged(userId, packs, plan, plan ? expiresAt : null);
+}
+
+
+export async function userIdForPlayToken(token: string): Promise<string | null> {
+  const sql = await getSql();
+  const rows = await sql.query<{ user_id: string }>(
+    "select user_id from purchases where play_purchase_token = $1 limit 1",
+    [token],
+  );
+  return rows[0]?.user_id ?? null;
+}
+
+/** Persist a Play token without granting Lab+. Used when Publisher API creds are missing. */
+export async function savePlayPurchaseToken(
+  userId: string,
+  token: string,
+  orderId?: string | null,
+): Promise<void> {
+  const sql = await getSql();
+  await sql.query(
+    `insert into purchases (
+       user_id, play_purchase_token, play_order_id, updated_at
+     ) values ($1, $2, $3, now())
+     on conflict (user_id) do update set
+       play_purchase_token = coalesce(excluded.play_purchase_token, purchases.play_purchase_token),
+       play_order_id = coalesce(excluded.play_order_id, purchases.play_order_id),
+       updated_at = now()`,
+    [userId, token, orderId ?? null],
+  );
 }
 
 export async function unlocksGetResponse(request: Request): Promise<Response> {

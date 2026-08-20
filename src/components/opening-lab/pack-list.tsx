@@ -16,6 +16,11 @@ import {
   type CheckoutKind,
 } from "@/lib/checkout";
 import { isPlayApp } from "@/lib/play-app";
+import {
+  hasPlayBillingBridge,
+  restorePlayLabPlus,
+  startPlayLabPlusYearly,
+} from "@/lib/play-billing";
 import { LineRow, PackExpandHint } from "./pack-lines";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
@@ -259,9 +264,80 @@ export function PackList({ onStartLine }: Props) {
     window.location.href = "/login?next=checkout";
   };
 
+  const playYearly = async () => {
+    setPayError(null);
+    setPayBusy(true);
+    try {
+      if (isPending) {
+        setPayError("Please wait…");
+        return;
+      }
+      if (!signedIn) {
+        goToSignIn("yearly");
+        return;
+      }
+      if (!hasPlayBillingBridge()) {
+        setPayError("This app build cannot open Google Play Billing yet.");
+        return;
+      }
+      const unlocks = await startPlayLabPlusYearly();
+      if (!unlocks) return;
+      subscribe("yearly");
+      setModal(null);
+      setShowSub(false);
+      setUnlockNotice("Unlocked");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Payment failed";
+      if (message === "Sign in required") {
+        goToSignIn("yearly");
+        return;
+      }
+      setPayError(message);
+    } finally {
+      setPayBusy(false);
+    }
+  };
+
+  const playRestore = async () => {
+    setPayError(null);
+    setPayBusy(true);
+    try {
+      if (isPending) {
+        setPayError("Please wait…");
+        return;
+      }
+      if (!signedIn) {
+        goToSignIn("yearly");
+        return;
+      }
+      if (!hasPlayBillingBridge()) {
+        setPayError("This app build cannot open Google Play Billing yet.");
+        return;
+      }
+      await restorePlayLabPlus();
+      subscribe("yearly");
+      setModal(null);
+      setShowSub(false);
+      setUnlockNotice("Unlocked");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Could not restore Lab+";
+      if (message === "Sign in required") {
+        goToSignIn("yearly");
+        return;
+      }
+      setPayError(message);
+    } finally {
+      setPayBusy(false);
+    }
+  };
+
   const pay = async (kind: CheckoutKind, packId?: string) => {
     if (playApp || isPlayApp()) {
-      setPayError(null);
+      if (kind === "yearly") {
+        await playYearly();
+        return;
+      }
+      setPayError("Packs stay on the website. Use Lab+ yearly here.");
       setPayBusy(false);
       return;
     }
@@ -305,7 +381,15 @@ export function PackList({ onStartLine }: Props) {
 
   useEffect(() => {
     if (resumedCheckout.current) return;
-    if (playApp || isPlayApp()) return;
+    if (playApp || isPlayApp()) {
+      if (isPending || !signedIn) return;
+      const pending = readPendingCheckout();
+      if (!pending || pending.kind !== "yearly") return;
+      resumedCheckout.current = true;
+      clearPendingCheckout();
+      void playYearly();
+      return;
+    }
     if (isPending || !signedIn || paymentsEnabled !== true) return;
     if (new URLSearchParams(window.location.search).get("paid") === "1") return;
     const pending = readPendingCheckout();
@@ -341,6 +425,7 @@ export function PackList({ onStartLine }: Props) {
       )}
 
       <HomeHero
+        playApp={playApp}
         onStartLine={onStartLine}
         onSubscribe={() => {
           setPayError(null);
@@ -349,7 +434,7 @@ export function PackList({ onStartLine }: Props) {
       />
 
       <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-        {playApp ? "More packs · pay as you go or Lab+." : "More packs"}
+        {playApp ? "More packs · Lab+ yearly on Google Play." : "More packs"}
       </p>
 
       {classicGames ? (
@@ -422,8 +507,11 @@ export function PackList({ onStartLine }: Props) {
           onSubscribeYearly={() => {
             void pay("yearly");
           }}
+          onRestore={() => {
+            void playRestore();
+          }}
           paymentsEnabled={paymentsEnabled}
-          needsAccount={paymentsEnabled === true && !signedIn && !isPending}
+          needsAccount={(playApp || paymentsEnabled === true) && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
           playApp={playApp}
@@ -446,8 +534,11 @@ export function PackList({ onStartLine }: Props) {
           onSubscribeYearly={() => {
             void pay("yearly");
           }}
+          onRestore={() => {
+            void playRestore();
+          }}
           paymentsEnabled={paymentsEnabled}
-          needsAccount={paymentsEnabled === true && !signedIn && !isPending}
+          needsAccount={(playApp || paymentsEnabled === true) && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
           playApp={playApp}
