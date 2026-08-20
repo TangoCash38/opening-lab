@@ -17,10 +17,13 @@ import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 
+type PlayLevel = "beginner" | "intermediate" | "advanced";
+
 type PlayEngine = {
   pickMove: (
     fen: string,
     thinkMs: number,
+    level?: PlayLevel,
   ) => Promise<{ from: string; to: string; promotion?: "q" | "r" | "b" | "n" } | null>;
   dispose: () => void;
 };
@@ -42,6 +45,20 @@ type Props = {
 const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
 const ENGINE_THINK_MS = 900;
+
+const PLAY_THINK_MS: Record<PlayLevel, number> = {
+  beginner: 400,
+  intermediate: ENGINE_THINK_MS,
+  advanced: 1200,
+};
+
+const PLAY_LEVEL_LABEL: Record<PlayLevel, string> = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
+};
+
+const PLAY_LEVELS: PlayLevel[] = ["beginner", "intermediate", "advanced"];
 
 function fenPieceAt(g: Chess, sq: Square): string | null {
   const p = g.get(sq);
@@ -144,6 +161,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     from: Square;
     to: Square;
   } | null>(null);
+  const [playLevel, setPlayLevel] = useState<PlayLevel | null>("intermediate");
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -152,6 +170,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
   const playingOnRef = useRef(false);
   const engineRef = useRef<PlayEngine | null>(null);
+  const playLevelRef = useRef<PlayLevel>("intermediate");
+  const thinkMsRef = useRef(ENGINE_THINK_MS);
   const pendingCommit = useRef<{
     nextGame: Chess;
     nextPly: number;
@@ -188,6 +208,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setEngineReady(false);
     setEngineBusy(false);
     setPendingPromo(null);
+    setPlayLevel("intermediate");
   }, []);
 
   const expectedMove = useCallback(
@@ -490,7 +511,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     };
 
     engine
-      .pickMove(fenNow, ENGINE_THINK_MS)
+      .pickMove(fenNow, thinkMsRef.current, playLevelRef.current)
       .then((mv) => {
         if (cancelled || !playingOnRef.current) return;
         if (mv) {
@@ -536,6 +557,34 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       engineRef.current = null;
     };
   }, []);
+
+  const playFromTo = (from: Square, to: Square) => {
+    if (from === to) return;
+    if (busy || slide || engineBusy) return;
+    if (pendingPromo) return;
+    if (!playingOn && plyIndex >= line.plies.length) return;
+    if (!isUserTurn(game)) return;
+
+    const legalMoves = game.moves({ square: from, verbose: true });
+    const legal = legalMoves.find((m) => m.to === to);
+    if (legal) {
+      if (playingOn && legalMoves.some((m) => m.to === to && m.promotion)) {
+        setPendingPromo({ from, to });
+        setSelected(null);
+        return;
+      }
+      tryPlay(from, to, legal.promotion);
+      return;
+    }
+
+    const destPiece = game.get(to);
+    if (destPiece && destPiece.color === game.turn()) {
+      setSelected(to);
+      soundSelect();
+      return;
+    }
+    setSelected(null);
+  };
 
   const tryPlay = (from: Square, to: Square, promotion?: string) => {
     if (playingOnRef.current) {
@@ -595,23 +644,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         setSelected(null);
         return;
       }
-      const legalMoves = game.moves({ square: selected, verbose: true });
-      const legal = legalMoves.find((m) => m.to === sq);
-      if (legal) {
-        if (playingOn && legalMoves.some((m) => m.to === sq && m.promotion)) {
-          setPendingPromo({ from: selected, to: sq });
-          setSelected(null);
-          return;
-        }
-        tryPlay(selected, sq, legal.promotion);
-        return;
-      }
-      if (piece && piece.color === game.turn()) {
-        setSelected(sq);
-        soundSelect();
-        return;
-      }
-      setSelected(null);
+      playFromTo(selected, sq);
       return;
     }
 
@@ -623,6 +656,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
   const startPlayOn = () => {
     if (playingOnRef.current) return;
+    const level: PlayLevel = playLevel ?? "intermediate";
+    playLevelRef.current = level;
+    thinkMsRef.current = PLAY_THINK_MS[level];
     playingOnRef.current = true;
     setPlayingOn(true);
     setCelebrate(false);
@@ -651,11 +687,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       try {
         engine =
           typeof mod.loadPlayEngine === "function"
-            ? await mod.loadPlayEngine()
-            : mod.createLiteEngine();
+            ? await mod.loadPlayEngine(level)
+            : mod.createLiteEngine(level);
       } catch {
         // Module loaded — always play, even if the smoke search threw.
-        engine = mod.createLiteEngine();
+        engine = mod.createLiteEngine(level);
       }
       if (!playingOnRef.current) {
         engine.dispose();
@@ -822,6 +858,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           slide={slide}
           onSlideComplete={onSlideComplete}
           onSquare={onSquare}
+          onPlay={playFromTo}
           interactive={!busy && !slide && !engineBusy && !pendingPromo}
           promotion={
             pendingPromo
@@ -887,6 +924,30 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       {playingOn ? (
         <div className="mb-2 text-center text-[0.72rem] text-fg-subtle">
           Playing on — not testing the book.
+        </div>
+      ) : null}
+
+      {bookDone ? (
+        <div className="mb-2">
+          <div className="mb-1.5 text-center text-[0.72rem] font-semibold text-fg-subtle">
+            Play computer
+          </div>
+          <div
+            className="strength-pick"
+            role="group"
+            aria-label="Computer strength"
+          >
+            {PLAY_LEVELS.map((lvl) => (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => setPlayLevel(lvl)}
+                className={`strength-btn${playLevel === lvl ? " is-on" : ""}`}
+              >
+                {PLAY_LEVEL_LABEL[lvl]}
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
 

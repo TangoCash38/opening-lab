@@ -13,8 +13,23 @@ export type EngineMove = {
   promotion?: "q" | "r" | "b" | "n";
 };
 
+export type PlayLevel = "beginner" | "intermediate" | "advanced";
+
+export const PLAY_STRENGTH: Record<
+  PlayLevel,
+  { thinkMs: number; depth: number; randomize: boolean }
+> = {
+  beginner: { thinkMs: 400, depth: 2, randomize: true },
+  intermediate: { thinkMs: 900, depth: 4, randomize: false },
+  advanced: { thinkMs: 1200, depth: 5, randomize: false },
+};
+
 export type PlayEngine = {
-  pickMove: (fen: string, thinkMs: number) => Promise<EngineMove | null>;
+  pickMove: (
+    fen: string,
+    thinkMs: number,
+    level?: PlayLevel,
+  ) => Promise<EngineMove | null>;
   dispose: () => void;
 };
 
@@ -103,6 +118,21 @@ function toEngineMove(m: Move): EngineMove {
   return { from: m.from, to: m.to };
 }
 
+function resolveLevel(level?: PlayLevel): PlayLevel {
+  if (level === "beginner" || level === "advanced" || level === "intermediate") {
+    return level;
+  }
+  return "intermediate";
+}
+
+function thinkBudget(thinkMs: number, level: PlayLevel): number {
+  const fallback = PLAY_STRENGTH[level].thinkMs;
+  const raw = Number.isFinite(thinkMs) && thinkMs > 0 ? thinkMs : fallback;
+  if (level === "beginner") return Math.min(600, Math.max(200, raw));
+  if (level === "advanced") return Math.min(1600, Math.max(800, raw));
+  return Math.min(1200, Math.max(600, raw));
+}
+
 /** Always a legal capture, else the first legal move. Never throws. */
 function legalFallback(fen: string): EngineMove | null {
   try {
@@ -116,7 +146,12 @@ function legalFallback(fen: string): EngineMove | null {
   }
 }
 
-function searchBest(fen: string, thinkMs: number): EngineMove | null {
+function searchBest(
+  fen: string,
+  thinkMs: number,
+  depthLimit: number,
+  randomize: boolean,
+): EngineMove | null {
   const chess = new Chess(fen);
   const rootMoves = orderMoves(chess.moves({ verbose: true }));
   if (rootMoves.length === 0) return null;
@@ -176,33 +211,49 @@ function searchBest(fen: string, thinkMs: number): EngineMove | null {
   };
 
   let best = rootMoves[0]!;
-  const maxDepth = 4;
+  let rootScores: { m: Move; score: number }[] = [];
+  const maxDepth = Math.max(1, Math.min(6, depthLimit));
   for (let depth = 1; depth <= maxDepth; depth++) {
     aborted = false;
     let alpha = -50_000;
     let local = best;
+    const thisScores: { m: Move; score: number }[] = [];
     for (const m of rootMoves) {
       if (Date.now() >= deadline && depth > 1) break;
       chess.move(m);
       const score = -search(depth - 1, -50_000, -alpha);
       chess.undo();
+      thisScores.push({ m, score });
       if (!aborted && score > alpha) {
         alpha = score;
         local = m;
       }
     }
-    if (!aborted || depth === 1) best = local;
+    if (!aborted || depth === 1) {
+      best = local;
+      rootScores = thisScores;
+    }
     if (Date.now() >= deadline) break;
+  }
+
+  if (randomize && rootScores.length > 1) {
+    const bestScore = Math.max(...rootScores.map((s) => s.score));
+    const pool = rootScores.filter((s) => s.score >= bestScore - 160);
+    const choice = pool[Math.floor(Math.random() * pool.length)] ?? { m: best };
+    return toEngineMove(choice.m);
   }
   return toEngineMove(best);
 }
 
-export function createLiteEngine(): PlayEngine {
+export function createLiteEngine(level: PlayLevel = "intermediate"): PlayEngine {
   let dead = false;
+  const defaultLevel = resolveLevel(level);
   return {
-    async pickMove(fen, thinkMs) {
+    async pickMove(fen, thinkMs, lvl) {
       if (dead) return legalFallback(fen);
-      const budget = Math.min(1200, Math.max(600, thinkMs));
+      const used = resolveLevel(lvl ?? defaultLevel);
+      const spec = PLAY_STRENGTH[used];
+      const budget = thinkBudget(thinkMs, used);
       await new Promise<void>((resolve) => {
         const later =
           typeof globalThis.setTimeout === "function"
@@ -212,7 +263,7 @@ export function createLiteEngine(): PlayEngine {
       });
       if (dead) return legalFallback(fen);
       try {
-        return searchBest(fen, budget) ?? legalFallback(fen);
+        return searchBest(fen, budget, spec.depth, spec.randomize) ?? legalFallback(fen);
       } catch {
         return legalFallback(fen);
       }
@@ -232,13 +283,15 @@ const START_FEN =
  * legal move. Callers should only treat a rejected dynamic import as
  * "Computer unavailable on this phone".
  */
-export async function loadPlayEngine(): Promise<PlayEngine> {
-  const engine = createLiteEngine();
+export async function loadPlayEngine(
+  level: PlayLevel = "intermediate",
+): Promise<PlayEngine> {
+  const engine = createLiteEngine(level);
   try {
-    // Probe with the raw 80ms budget, not pickMove's 600ms clamp — a
+    // Probe with the raw 80ms budget, not pickMove's think clamp — a
     // depth-4 start-position search on the main thread used to abort the
     // whole load on some WebViews and look like an ancient phone.
-    searchBest(START_FEN, 80);
+    searchBest(START_FEN, 80, 2, false);
   } catch {
     // Search may throw. Engine still plays via legalFallback.
   }

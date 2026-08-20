@@ -239,6 +239,15 @@
     filter: drop-shadow(0 3px 3px rgba(28, 25, 21, 0.24));
   }
 
+  .piece-abs[data-dragging="1"] {
+    opacity: 0;
+  }
+
+  .board-play,
+  .board-play button {
+    touch-action: none;
+  }
+
   .chess-piece-img {
     display: block;
     width: 94%;
@@ -555,4 +564,42 @@
 .promo-picker-btn:active {
   transform: scale(0.96);
   background: var(--color-border);
+}
+
+.piece-drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 80;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: left, top;
+  filter: drop-shadow(0 6px 10px rgba(28, 25, 21, 0.38));
+}
+
+.strength-pick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.strength-btn {
+  min-height: 2.75rem;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: var(--color-bg-subtle);
+  color: var(--color-fg-muted);
+}
+
+.strength-btn.is-on {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+
+.strength-btn:active {
+  transform: scale(0.95);
 }
