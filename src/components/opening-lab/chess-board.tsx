@@ -282,13 +282,13 @@ export function ChessBoard({
         >
           {isLegal && !fenOcc && interactive && (
             <span
-              className="legal-dot absolute left-1/2 top-1/2 z-[1] size-[26%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/40 ring-2 ring-accent/20"
+              className="legal-dot absolute left-1/2 top-1/2 z-[1] size-[26%] -translate-x-1/2 -translate-y-1/2 rounded-full"
               aria-hidden
             />
           )}
           {isLegal && fenOcc && interactive && (
             <span
-              className="pointer-events-none absolute inset-[6%] z-[1] rounded-full border-[3px] border-accent/55"
+              className="legal-capture pointer-events-none absolute inset-[6%] z-[1] rounded-full"
               aria-hidden
             />
           )}
