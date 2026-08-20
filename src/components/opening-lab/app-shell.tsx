@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { CircleHelp, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
+import { isPackVisible, readRequestedPackId } from "@/lib/catalog";
 import { soundSelect } from "@/lib/sounds";
 import { SignedIn, SignedOut } from "@/lib/auth/gates";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -34,24 +35,42 @@ export function OpeningLabApp() {
   const { complete, markLearned, failPractice, dueQueue } = useProgress();
   const { canAccess } = useUnlocks();
 
+  const goHome = () => {
+    setQueue([]);
+    setActive(null);
+    setView("home");
+  };
+
   useEffect(() => {
     /* Home shows the free Scotch board first. No blocking overlay. */
     if (!hasSeenOnboarding()) markOnboardingSeen();
   }, []);
+
+  useEffect(() => {
+    const packId = readRequestedPackId();
+    if (packId && !isPackVisible(packId)) {
+      goHome();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (view === "train" && active && !isPackVisible(active.pack)) {
+      goHome();
+    }
+  }, [view, active]);
 
   const startLine = (
     pack: Pack,
     line: OpeningLine,
     mode: TrainMode = "learn",
   ) => {
+    if (!isPackVisible(pack)) {
+      goHome();
+      return;
+    }
     setActive({ pack, line, mode });
     setView("train");
     soundSelect();
-  };
-
-  const goHome = () => {
-    setQueue([]);
-    setView("home");
   };
 
   const resolveQueue = (
@@ -61,7 +80,9 @@ export function OpeningLabApp() {
     for (const item of items) {
       const pack = PACKS.find((p) => p.id === item.packId);
       const line = pack?.lines.find((l) => l.id === item.lineId);
-      if (pack && line) resolved.push({ pack, line, mode: item.mode });
+      if (pack && line && isPackVisible(pack)) {
+        resolved.push({ pack, line, mode: item.mode });
+      }
     }
     return resolved;
   };
@@ -89,7 +110,7 @@ export function OpeningLabApp() {
   const scotchLine1 = useMemo(() => {
     const pack = PACKS.find((p) => p.id === "scotch");
     const line = pack?.lines.find((l) => l.id === "s1") ?? pack?.lines[0];
-    if (!pack || !line) return null;
+    if (!pack || !line || !isPackVisible(pack)) return null;
     return { pack, line };
   }, []);
 
@@ -149,7 +170,7 @@ export function OpeningLabApp() {
           <PackList onStartLine={startLine} />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}
-        {view === "train" && active && (
+        {view === "train" && active && isPackVisible(active.pack) && (
           <TrainView
             key={`${active.pack.id}-${active.line.id}-${active.mode}`}
             pack={active.pack}

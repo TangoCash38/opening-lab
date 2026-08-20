@@ -1,6 +1,7 @@
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { isPackVisible, visiblePacks } from "@/lib/catalog";
 
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: "learn" | "practice") => void;
@@ -11,7 +12,7 @@ export function accessibleCandidates(
   canAccess: (pack: Pack) => boolean,
 ): { packId: string; lineId: string }[] {
   const out: { packId: string; lineId: string }[] = [];
-  for (const pack of PACKS) {
+  for (const pack of visiblePacks(PACKS)) {
     if (!canAccess(pack)) continue;
     for (const line of pack.lines) out.push({ packId: pack.id, lineId: line.id });
   }
@@ -21,7 +22,7 @@ export function accessibleCandidates(
 function findLine(packId: string, lineId: string): { pack: Pack; line: OpeningLine } | null {
   const pack = PACKS.find((p) => p.id === packId);
   const line = pack?.lines.find((l) => l.id === lineId);
-  if (!pack || !line) return null;
+  if (!pack || !line || !isPackVisible(pack)) return null;
   return { pack, line };
 }
 
