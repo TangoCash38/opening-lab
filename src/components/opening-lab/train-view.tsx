@@ -931,10 +931,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       ) : null}
 
       {showPlayOn ? (
-        <div className="mb-2">
-          <div className="mb-1.5 text-center text-[0.72rem] font-semibold text-fg-subtle">
-            Play computer
-          </div>
+        <div className="play-on-bar">
           <div
             className="strength-pick"
             role="group"
@@ -946,15 +943,23 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
                 type="button"
                 onClick={() => setPlayLevel(lvl)}
                 className={`strength-btn${playLevel === lvl ? " is-on" : ""}`}
+                aria-pressed={playLevel === lvl}
               >
                 {PLAY_LEVEL_LABEL[lvl]}
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            onClick={startPlayOn}
+            className="play-on-btn"
+          >
+            Play on
+          </button>
         </div>
       ) : null}
 
-      <div className="mt-2 flex flex-wrap justify-center gap-2">
+      <div className="trainer-actions">
         <button
           type="button"
           onClick={() => resetLine()}
@@ -980,15 +985,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         {bookDone && mode === "practice" ? (
           <button type="button" onClick={onTrainNext ?? onBack} className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95">
             Train next due
-          </button>
-        ) : null}
-        {showPlayOn ? (
-          <button
-            type="button"
-            onClick={startPlayOn}
-            className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
-          >
-            Play on
           </button>
         ) : null}
       </div>

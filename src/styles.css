@@ -574,22 +574,39 @@
   filter: drop-shadow(0 6px 10px rgba(28, 25, 21, 0.38));
 }
 
+/* Compact Play-on row: small strength chips + one primary CTA. */
+.play-on-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0 0.45rem;
+  min-width: 0;
+}
+
 .strength-pick {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-end;
+  gap: 0.22rem;
 }
 
 .strength-btn {
-  min-height: 2.75rem;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 2rem;
   border: none;
   border-radius: 9999px;
-  padding: 0.55rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 700;
+  padding: 0.28rem 0.4rem;
+  font-size: clamp(0.58rem, 2.5vw, 0.7rem);
+  font-weight: 650;
+  letter-spacing: 0.01em;
   background: var(--color-bg-subtle);
   color: var(--color-fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .strength-btn.is-on {
@@ -599,4 +616,36 @@
 
 .strength-btn:active {
   transform: scale(0.95);
+}
+
+.play-on-btn {
+  flex: 0 0 auto;
+  min-height: 2rem;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  white-space: nowrap;
+}
+
+.play-on-btn:active {
+  transform: scale(0.96);
+}
+
+.trainer-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  min-width: 0;
+}
+
+.trainer-actions > button {
+  flex: 0 1 auto;
+  min-width: 0;
 }
