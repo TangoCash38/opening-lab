@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { isPackFree } from "@/data/pricing";
+import { isPackVisible } from "@/lib/catalog";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import type { Pack } from "@/data/packs";
 import { fetchPaymentsEnabled } from "@/lib/checkout";
@@ -106,7 +107,8 @@ export function useUnlocks() {
 
   const canAccess = useCallback(
     (pack: Pack) =>
-      isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack)),
+      isPackVisible(pack) &&
+      (isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack))),
     [state.packs, state.plan, state.expiresAt],
   );
 

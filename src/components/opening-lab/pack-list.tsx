@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
+import { visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -209,11 +210,14 @@ export function PackList({ onStartLine }: Props) {
     setPlayApp(isPlayApp());
   }, []);
 
-  const white = PACKS.filter((p) => p.section === "white" && p.id !== "scotch");
-  const black = PACKS.filter((p) => p.section === "black" && p.id !== "vs-london");
-  const classicGames = PACKS.find((p) => p.id === "classic-games");
-  const vsLondon = PACKS.find((p) => p.id === "vs-london");
-  const clubWeapons = PACKS.find((p) => p.id === "club-weapons");
+  const catalog = visiblePacks(PACKS);
+  const white = catalog.filter((p) => p.section === "white" && p.id !== "scotch");
+  const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london");
+  const classicGames = catalog.find((p) => p.id === "classic-games");
+  const vsLondon = catalog.find((p) => p.id === "vs-london");
+  const clubWeapons = catalog.find((p) => p.id === "club-weapons");
+  const morePacks =
+    !!classicGames || !!vsLondon || !!clubWeapons || white.length > 0 || black.length > 0;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -420,7 +424,7 @@ export function PackList({ onStartLine }: Props) {
         </div>
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
-          All packs are free while we check the lines. If a move is wrong, tell us on that line.
+          Only Scotch is on while we check the rest. If a move is wrong, tell us on that line.
         </p>
       )}
 
@@ -433,9 +437,11 @@ export function PackList({ onStartLine }: Props) {
         }}
       />
 
-      <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-        {playApp ? "More packs · Lab+ yearly on Google Play." : "More packs"}
-      </p>
+      {morePacks ? (
+        <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
+          {playApp ? "More packs · Lab+ yearly on Google Play." : "More packs"}
+        </p>
+      ) : null}
 
       {classicGames ? (
         <PackCard

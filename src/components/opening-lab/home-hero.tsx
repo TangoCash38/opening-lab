@@ -3,6 +3,7 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { LAB_PLUS_LABEL, PRICE_MONTHLY, PRICE_YEARLY } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { visiblePacks } from "@/lib/catalog";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import { useProgress } from "@/hooks/use-progress";
 import { ChessBoard } from "./chess-board";
@@ -19,7 +20,7 @@ type Props = {
 export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
   const { subscribed } = useUnlocks();
   const { masteryOf, isComplete } = useProgress();
-  const scotch = PACKS.find((p) => p.id === "scotch");
+  const scotch = visiblePacks(PACKS).find((p) => p.id === "scotch");
   const line = scotch?.lines[0];
   const [linesOpen, setLinesOpen] = useState(false);
 
