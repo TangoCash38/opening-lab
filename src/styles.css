@@ -192,16 +192,13 @@
       inset 0 0 16px rgba(181, 69, 58, 0.28);
   }
 
+  /* Quiet brown dim — not yellow. Yellow is only for choosing a move. */
   .sq-last-from,
   .sq-last-to {
-    background-color: #f7f769;
-    background-image: none;
-  }
-
-  .sq-dark.sq-last-from,
-  .sq-dark.sq-last-to {
-    background-color: #baca44;
-    background-image: none;
+    background-image: linear-gradient(
+      rgba(78, 56, 28, 0.12),
+      rgba(78, 56, 28, 0.12)
+    );
   }
 
   .legal-dot {
