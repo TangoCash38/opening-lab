@@ -280,15 +280,6 @@ export function ChessBoard({
             .filter(Boolean)
             .join(" ")}
         >
-          <span
-            className="pointer-events-none absolute inset-0 opacity-40"
-            style={{
-              background: light
-                ? "linear-gradient(145deg, rgba(255,255,255,.35) 0%, transparent 42%, rgba(0,0,0,.06) 100%)"
-                : "linear-gradient(145deg, rgba(255,255,255,.12) 0%, transparent 45%, rgba(0,0,0,.18) 100%)",
-            }}
-            aria-hidden
-          />
           {isLegal && !fenOcc && interactive && (
             <span
               className="legal-dot absolute left-1/2 top-1/2 z-[1] size-[26%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/40 ring-2 ring-accent/20"
