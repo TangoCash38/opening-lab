@@ -3,6 +3,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
 import type { Chess, Square, Move } from "chess.js";
@@ -36,6 +37,8 @@ type Props = {
   slide: SlideAnim | null;
   onSlideComplete?: () => void;
   onSquare: (sq: Square) => void;
+  /** Drag-drop from→to. Same book / play-on rules as click-to-click. */
+  onPlay?: (from: Square, to: Square) => void;
   interactive: boolean;
   /** Play-on only. Book Practice/Test keep auto-queen. */
   promotion?: PromotionPrompt | null;
@@ -45,6 +48,19 @@ type PlacedPiece = {
   id: string;
   code: string;
   sq: Square;
+};
+
+type DragState = {
+  pointerId: number;
+  from: Square;
+  code: string;
+  startX: number;
+  startY: number;
+  x: number;
+  y: number;
+  moved: boolean;
+  squarePx: number;
+  canDrag: boolean;
 };
 
 function squareToRC(sq: Square, flip: boolean) {
@@ -75,12 +91,35 @@ function newId(code: string, sq: Square) {
   return `${code}-${sq}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function squareFromElement(el: EventTarget | null): Square | null {
+  if (!(el instanceof Element)) return null;
+  const hit = el.closest("[data-sq]");
+  if (hit instanceof HTMLElement && hit.dataset.sq) {
+    return hit.dataset.sq as Square;
+  }
+  return null;
+}
+
+function squareFromPoint(x: number, y: number): Square | null {
+  if (typeof document === "undefined" || !document.elementsFromPoint) {
+    const top = document.elementFromPoint?.(x, y) ?? null;
+    return squareFromElement(top);
+  }
+  for (const el of document.elementsFromPoint(x, y)) {
+    const sq = squareFromElement(el);
+    if (sq) return sq;
+  }
+  return null;
+}
+
 const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
   { key: "q", label: "Q" },
   { key: "r", label: "R" },
   { key: "b", label: "B" },
   { key: "n", label: "N" },
 ];
+
+const DRAG_PX = 8;
 
 export function ChessBoard({
   game,
@@ -93,11 +132,21 @@ export function ChessBoard({
   slide,
   onSlideComplete,
   onSquare,
+  onPlay,
   interactive,
   promotion,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
+  const onSquareRef = useRef(onSquare);
+  onSquareRef.current = onSquare;
+  const onPlayRef = useRef(onPlay);
+  onPlayRef.current = onPlay;
+
+  const surfaceRef = useRef<HTMLDivElement | null>(null);
+  const dragRef = useRef<DragState | null>(null);
+  const ignoreClickRef = useRef(false);
+  const [drag, setDrag] = useState<DragState | null>(null);
 
   const fenBoard = game.fen().split(" ")[0]!;
 
@@ -228,9 +277,105 @@ export function ChessBoard({
     };
   }, [slide?.from, slide?.to, slide?.piece]);
 
-  const legalTargets = selected
-    ? new Set(game.moves({ square: selected, verbose: true }).map((m) => m.to))
+  useLayoutEffect(() => {
+    const el = surfaceRef.current;
+    if (!el) return;
+    const blockScroll = (e: TouchEvent) => {
+      if (dragRef.current?.moved) e.preventDefault();
+    };
+    el.addEventListener("touchmove", blockScroll, { passive: false });
+    return () => el.removeEventListener("touchmove", blockScroll);
+  }, []);
+
+  const dragOrigin = drag?.moved ? drag.from : null;
+  const origin = selected ?? dragOrigin;
+  const legalTargets = origin
+    ? new Set(game.moves({ square: origin, verbose: true }).map((m) => m.to))
     : new Set<string>();
+
+  const clearDrag = () => {
+    dragRef.current = null;
+    setDrag(null);
+  };
+
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!interactive) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (dragRef.current) return;
+
+    const sq =
+      squareFromElement(e.target) ?? squareFromPoint(e.clientX, e.clientY);
+    if (!sq) return;
+
+    const piece = game.get(sq);
+    const canDrag = !!(piece && piece.color === game.turn());
+    const placed = parsePieces(fenBoard).find((p) => p.sq === sq);
+    const rect = surfaceRef.current?.getBoundingClientRect();
+    const next: DragState = {
+      pointerId: e.pointerId,
+      from: sq,
+      code: placed?.code ?? "",
+      startX: e.clientX,
+      startY: e.clientY,
+      x: e.clientX,
+      y: e.clientY,
+      moved: false,
+      squarePx: rect ? rect.width / 8 : 48,
+      canDrag,
+    };
+    dragRef.current = next;
+    ignoreClickRef.current = true;
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // Capture is optional — point-up still resolves via coordinates.
+    }
+    if (canDrag) e.preventDefault();
+  };
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d || d.pointerId !== e.pointerId) return;
+    d.x = e.clientX;
+    d.y = e.clientY;
+    if (!d.moved) {
+      const dx = e.clientX - d.startX;
+      const dy = e.clientY - d.startY;
+      if (!d.canDrag || dx * dx + dy * dy < DRAG_PX * DRAG_PX) return;
+      d.moved = true;
+    }
+    setDrag({ ...d });
+    if (d.moved) e.preventDefault();
+  };
+
+  const finishPointer = (e: ReactPointerEvent<HTMLDivElement>, cancel: boolean) => {
+    const d = dragRef.current;
+    if (!d || d.pointerId !== e.pointerId) return;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {
+      // already released
+    }
+    clearDrag();
+    if (cancel || !interactive) return;
+
+    if (d.moved && d.canDrag) {
+      const dest = squareFromPoint(e.clientX, e.clientY);
+      if (dest && dest !== d.from) {
+        onPlayRef.current?.(d.from, dest);
+      }
+      return;
+    }
+    onSquareRef.current(d.from);
+  };
+
+  const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    finishPointer(e, false);
+  };
+
+  const onPointerCancel = (e: ReactPointerEvent<HTMLDivElement>) => {
+    finishPointer(e, true);
+  };
 
   const squares: ReactNode[] = [];
   for (let r = 0; r < 8; r++) {
@@ -242,7 +387,7 @@ export function ChessBoard({
       const sq = `${file}${rank}` as Square;
       const light = (rr + cc) % 2 === 0;
 
-      const isSelected = selected === sq;
+      const isSelected = selected === sq || dragOrigin === sq;
       const isWrong = wrongUntil === sq;
       const isFrom = showHints && expected?.from === sq;
       const isTo = showHints && expected?.to === sq;
@@ -260,7 +405,13 @@ export function ChessBoard({
           type="button"
           data-sq={sq}
           disabled={!interactive}
-          onClick={() => interactive && onSquare(sq)}
+          onClick={() => {
+            if (ignoreClickRef.current) {
+              ignoreClickRef.current = false;
+              return;
+            }
+            if (interactive) onSquare(sq);
+          }}
           aria-label={fenOcc ? `${sq} ${pieceName(fenRow[cc]!)}` : sq}
           className={[
             "relative select-none overflow-hidden",
@@ -325,6 +476,7 @@ export function ChessBoard({
         p.code === slide.piece
       );
       const isHintFromPiece = !!(showHints && expected?.from === p.sq && !isMover);
+      const isDragging = !!(drag?.moved && p.sq === drag.from);
 
       const visualSq = isMover && glideOn && slide ? slide.to : p.sq;
       const { row, col } = squareToRC(visualSq, flip);
@@ -335,6 +487,7 @@ export function ChessBoard({
           data-piece-id={p.id}
           data-piece-sq={visualSq}
           data-moving={isMover ? "1" : undefined}
+          data-dragging={isDragging ? "1" : undefined}
           className={`piece-abs${isHintFromPiece ? " piece-hint-from" : ""}`}
           style={{
             left: `${col * 12.5}%`,
@@ -354,7 +507,7 @@ export function ChessBoard({
         </div>
       );
     });
-  }, [pieces, slide, glideOn, flip, showHints, expected?.from]);
+  }, [pieces, slide, glideOn, flip, showHints, expected?.from, drag]);
 
   return (
     <div className="relative mx-auto mb-4 w-full max-w-[420px] touch-none">
@@ -375,8 +528,14 @@ export function ChessBoard({
           }}
         >
           <div
-            className="relative aspect-square w-full rounded-lg"
-            style={{ boxShadow: "inset 0 0 0 1px rgba(0,0,0,.2)" }}
+            ref={surfaceRef}
+            className="board-play relative aspect-square w-full rounded-lg"
+            style={{ boxShadow: "inset 0 0 0 1px rgba(0,0,0,.2)", touchAction: "none" }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerCancel}
+            onLostPointerCapture={onPointerCancel}
           >
             {/* Squares receive all pointer events */}
             <div
@@ -396,6 +555,24 @@ export function ChessBoard({
           </div>
         </div>
       </div>
+      {drag?.moved && drag.code ? (
+        <div
+          className="piece-drag-ghost"
+          style={{
+            left: drag.x,
+            top: drag.y,
+            width: drag.squarePx,
+            height: drag.squarePx,
+            marginLeft: -drag.squarePx / 2,
+            marginTop: -drag.squarePx / 2,
+          }}
+          aria-hidden
+        >
+          <span className="piece-abs-inner">
+            <ChessPiece code={drag.code} />
+          </span>
+        </div>
+      ) : null}
       {promotion ? (
         <div
           className="promo-picker"
