@@ -751,6 +751,76 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   };
 
 
+  const jumpToPly = (nextPly: number) => {
+    if (busy || slide) return;
+
+    const onPlay = playingOnRef.current;
+    const currentPly = onPlay ? game.history().length : plyIndex;
+    const floor = onPlay ? line.plies.length : line.side === "w" ? 0 : 1;
+    const target = Math.max(floor, Math.min(nextPly, currentPly));
+    if (target >= currentPly) {
+      setSelected(null);
+      return;
+    }
+
+    // Board-only. Do not write progress / SM-2, and do not clear a recorded miss.
+    replyGenRef.current += 1;
+    clearAllTimers();
+    pendingCommit.current = null;
+    setEngineBusy(false);
+    setSlide(null);
+    setBusy(false);
+    setSelected(null);
+    setPendingPromo(null);
+    setWrongUntil(null);
+    setCelebrate(false);
+
+    const next = onPlay
+      ? replaySans(game.history(), target)
+      : replaySans(line.plies, target);
+
+    setGame(next);
+    setPlyIndex(target);
+    setLastMove(lastMoveSquares(next));
+
+    if (
+      !onPlay &&
+      line.punishment &&
+      target === line.punishment.mistakePlyIndex + 1
+    ) {
+      setBanner(
+        nextPunishmentBannerState(
+          { kind: "idle" },
+          {
+            type: "mistake_played",
+            banner: line.punishment.banner,
+            prompt: line.punishment.prompt,
+          },
+        ),
+      );
+      setStatus({
+        text: line.punishment.prompt ?? "Find the punishment",
+        cls: "warn",
+      });
+      if (mode === "learn") scheduleHints();
+      else setHintsReady(true);
+      return;
+    }
+
+    setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
+    if (onPlay) {
+      setHintsReady(false);
+      setStatus({ text: "Your move — playing on", cls: "" });
+      return;
+    }
+    setStatus({
+      text: mode === "learn" ? "Your move (Practice)" : "Your move",
+      cls: "",
+    });
+    if (mode === "learn") scheduleHints();
+    else setHintsReady(true);
+  };
+
   const takeBack = () => {
     if (busy || slide) return;
 
@@ -794,63 +864,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       return;
     }
 
-    // Board-only. Do not write progress / SM-2, and do not clear a recorded miss.
-    replyGenRef.current += 1;
-    clearAllTimers();
-    pendingCommit.current = null;
-    setEngineBusy(false);
-    setSlide(null);
-    setBusy(false);
-    setSelected(null);
-    setPendingPromo(null);
-    setWrongUntil(null);
-    setCelebrate(false);
-
-    const nextPly = currentPly - undo;
-    const next = onPlay
-      ? replaySans(game.history(), nextPly)
-      : replaySans(line.plies, nextPly);
-
-    setGame(next);
-    setPlyIndex(nextPly);
-    setLastMove(lastMoveSquares(next));
-
-    if (
-      !onPlay &&
-      line.punishment &&
-      nextPly === line.punishment.mistakePlyIndex + 1
-    ) {
-      setBanner(
-        nextPunishmentBannerState(
-          { kind: "idle" },
-          {
-            type: "mistake_played",
-            banner: line.punishment.banner,
-            prompt: line.punishment.prompt,
-          },
-        ),
-      );
-      setStatus({
-        text: line.punishment.prompt ?? "Find the punishment",
-        cls: "warn",
-      });
-      if (mode === "learn") scheduleHints();
-      else setHintsReady(true);
-      return;
-    }
-
-    setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
-    if (onPlay) {
-      setHintsReady(false);
-      setStatus({ text: "Your move — playing on", cls: "" });
-      return;
-    }
-    setStatus({
-      text: mode === "learn" ? "Your move (Practice)" : "Your move",
-      cls: "",
-    });
-    if (mode === "learn") scheduleHints();
-    else setHintsReady(true);
+    jumpToPly(currentPly - undo);
   };
 
   const exp = playingOn ? null : expectedMove(game, plyIndex);
@@ -1055,7 +1069,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             <span
               key={pair.num}
               ref={pair.active ? activeMoveRef : undefined}
-              className={`shrink-0 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[0.78rem] tabular-nums ${
+              role="button"
+              tabIndex={0}
+              onClick={() =>
+                jumpToPly(pair.black ? pair.num * 2 : pair.num * 2 - 1)
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  jumpToPly(pair.black ? pair.num * 2 : pair.num * 2 - 1);
+                }
+              }}
+              className={`shrink-0 cursor-pointer whitespace-nowrap rounded-md px-1.5 py-0.5 text-[0.78rem] tabular-nums ${
                 pair.active
                   ? "bg-accent/12 font-bold text-accent"
                   : "text-fg-muted"
