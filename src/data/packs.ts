@@ -70,8 +70,8 @@ export const PACKS: Pack[] = [
       },
       {
         id: "s2",
-        name: "Line 2 · 4…Bc5 solid …Nf6",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
+        name: "Line 2 · London 4…Bc5 5.c3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "d5", "Bf6", "Re1", "O-O", "Rxe4"],
         side: "w",
       },
       {
@@ -123,9 +123,9 @@ export const PACKS: Pack[] = [
         side: "w",
       },
       {
-        id: "s12",
-        name: "Line 11 · If 3…Nxd4 4.Nxe5",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "Nxd4", "Nxe5", "Nc6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Be3", "Nf6", "Nc3", "Bd6", "f3", "Be6", "O-O-O", "Ke7"],
+        id: "s13",
+        name: "Line 12 · Dubois–Réti 5.Ng5 Qh5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Qh5", "Qe7", "O-O", "Ne5", "Bb3", "a5", "Nf3", "d6", "Nxe5", "Qxe5"],
         side: "w",
       },
     ],
