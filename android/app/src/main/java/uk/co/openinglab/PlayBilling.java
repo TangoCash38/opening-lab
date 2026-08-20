@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import android.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
