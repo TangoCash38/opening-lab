@@ -88,7 +88,7 @@ function orderMoves(moves: Move[]): Move[] {
       let s = 0;
       if (m.captured) s += 10 * (VAL[m.captured] ?? 0) - (VAL[m.piece] ?? 0);
       if (m.promotion) s += VAL[m.promotion] ?? 0;
-      if (m.flags.includes("k") || m.flags.includes("q")) s += 40;
+      if (m.flags?.includes("k") || m.flags?.includes("q")) s += 40;
       return { m, s };
     })
     .sort((a, b) => b.s - a.s)
@@ -101,6 +101,19 @@ function toEngineMove(m: Move): EngineMove {
     return { from: m.from, to: m.to, promotion: promo };
   }
   return { from: m.from, to: m.to };
+}
+
+/** Always a legal capture, else the first legal move. Never throws. */
+function legalFallback(fen: string): EngineMove | null {
+  try {
+    const g = new Chess(fen);
+    const moves = g.moves({ verbose: true });
+    if (moves.length === 0) return null;
+    const capture = moves.find((m) => m.captured);
+    return toEngineMove(capture ?? moves[0]!);
+  } catch {
+    return null;
+  }
 }
 
 function searchBest(fen: string, thinkMs: number): EngineMove | null {
@@ -184,24 +197,24 @@ function searchBest(fen: string, thinkMs: number): EngineMove | null {
   return toEngineMove(best);
 }
 
-function createLiteEngine(): PlayEngine {
+export function createLiteEngine(): PlayEngine {
   let dead = false;
   return {
     async pickMove(fen, thinkMs) {
-      if (dead) return null;
+      if (dead) return legalFallback(fen);
       const budget = Math.min(1200, Math.max(600, thinkMs));
       await new Promise<void>((resolve) => {
-        window.setTimeout(resolve, 16);
+        const later =
+          typeof globalThis.setTimeout === "function"
+            ? globalThis.setTimeout
+            : window.setTimeout;
+        later(resolve, 16);
       });
-      if (dead) return null;
+      if (dead) return legalFallback(fen);
       try {
-        return searchBest(fen, budget);
+        return searchBest(fen, budget) ?? legalFallback(fen);
       } catch {
-        const g = new Chess(fen);
-        const moves = g.moves({ verbose: true });
-        if (moves.length === 0) return null;
-        const capture = moves.find((m) => m.captured);
-        return toEngineMove(capture ?? moves[0]!);
+        return legalFallback(fen);
       }
     },
     dispose() {
@@ -210,18 +223,24 @@ function createLiteEngine(): PlayEngine {
   };
 }
 
+const START_FEN =
+  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+/**
+ * Always returns a playable engine. A smoke search that throws or returns
+ * null is ignored — pickMove already falls back to a legal capture / first
+ * legal move. Callers should only treat a rejected dynamic import as
+ * "Computer unavailable on this phone".
+ */
 export async function loadPlayEngine(): Promise<PlayEngine> {
-  if (typeof window === "undefined") {
-    throw new Error("engine is browser-only");
-  }
   const engine = createLiteEngine();
-  const smoke = await engine.pickMove(
-    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    80,
-  );
-  if (!smoke?.from || !smoke.to) {
-    engine.dispose();
-    throw new Error("engine smoke test failed");
+  try {
+    // Probe with the raw 80ms budget, not pickMove's 600ms clamp — a
+    // depth-4 start-position search on the main thread used to abort the
+    // whole load on some WebViews and look like an ancient phone.
+    searchBest(START_FEN, 80);
+  } catch {
+    // Search may throw. Engine still plays via legalFallback.
   }
   return engine;
 }

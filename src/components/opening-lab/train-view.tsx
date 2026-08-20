@@ -85,6 +85,39 @@ function playOnGameOverText(g: Chess, userSide: "w" | "b"): string {
   return "Draw";
 }
 
+type PlayableReply = {
+  from: Square;
+  to: Square;
+  pieceCode: string;
+  next: Chess;
+};
+
+/** Capture if one exists, else the first legal move. Used when search fails. */
+function firstPlayableReply(fen: string): PlayableReply | null {
+  try {
+    const g = new Chess(fen);
+    const moves = g.moves({ verbose: true });
+    if (moves.length === 0) return null;
+    const m = moves.find((mv) => mv.captured) ?? moves[0]!;
+    const pieceCode = fenPieceAt(g, m.from as Square);
+    const next = new Chess(fen);
+    const ok = next.move({
+      from: m.from,
+      to: m.to,
+      promotion: m.promotion || "q",
+    });
+    if (!pieceCode || !ok) return null;
+    return {
+      from: m.from as Square,
+      to: m.to as Square,
+      pieceCode,
+      next,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
@@ -436,51 +469,48 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setEngineBusy(true);
     setStatus({ text: "…", cls: "" });
 
+    const applyReply = (from: Square, to: Square, pieceCode: string, next: Chess) => {
+      setEngineBusy(false);
+      beginSlide(from, to, pieceCode, next, idx + 1, false);
+    };
+
+    const playFallback = () => {
+      if (cancelled || !playingOnRef.current) return;
+      const fb = firstPlayableReply(fenNow);
+      if (fb) {
+        applyReply(fb.from, fb.to, fb.pieceCode, fb.next);
+        return;
+      }
+      setEngineBusy(false);
+      const g = new Chess(fenNow);
+      setStatus({
+        text: playOnGameOverText(g, line.side),
+        cls: "ok",
+      });
+    };
+
     engine
       .pickMove(fenNow, ENGINE_THINK_MS)
       .then((mv) => {
         if (cancelled || !playingOnRef.current) return;
-        if (!mv) {
-          setEngineBusy(false);
-          setStatus({
-            text: "Computer unavailable on this phone",
-            cls: "bad",
+        if (mv) {
+          const g = new Chess(fenNow);
+          const pieceCode = fenPieceAt(g, mv.from as Square);
+          const next = new Chess(fenNow);
+          const ok = next.move({
+            from: mv.from,
+            to: mv.to,
+            promotion: mv.promotion || "q",
           });
-          return;
+          if (pieceCode && ok) {
+            applyReply(mv.from as Square, mv.to as Square, pieceCode, next);
+            return;
+          }
         }
-        const g = new Chess(fenNow);
-        const pieceCode = fenPieceAt(g, mv.from as Square);
-        const next = new Chess(fenNow);
-        const ok = next.move({
-          from: mv.from,
-          to: mv.to,
-          promotion: mv.promotion || "q",
-        });
-        if (!pieceCode || !ok) {
-          setEngineBusy(false);
-          setStatus({
-            text: "Computer unavailable on this phone",
-            cls: "bad",
-          });
-          return;
-        }
-        setEngineBusy(false);
-        beginSlide(
-          mv.from as Square,
-          mv.to as Square,
-          pieceCode,
-          next,
-          idx + 1,
-          false,
-        );
+        playFallback();
       })
       .catch(() => {
-        if (cancelled || !playingOnRef.current) return;
-        setEngineBusy(false);
-        setStatus({
-          text: "Computer unavailable on this phone",
-          cls: "bad",
-        });
+        playFallback();
       });
 
     return () => {
@@ -496,6 +526,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     session,
     isUserTurn,
     beginSlide,
+    line.side,
   ]);
 
   useEffect(() => {
@@ -603,31 +634,44 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setStatus({ text: "…", cls: "" });
 
     void (async () => {
+      let mod: typeof import("@/lib/play-engine");
       try {
-        const { loadPlayEngine } = await import("@/lib/play-engine");
-        const engine = await loadPlayEngine();
-        if (!playingOnRef.current) {
-          engine.dispose();
-          return;
-        }
-        engineRef.current = engine;
-        setEngineReady(true);
-        if (game.isGameOver()) {
-          setStatus({
-            text: playOnGameOverText(game, line.side),
-            cls: "ok",
-          });
-          return;
-        }
-        if (isUserTurn(game)) {
-          setStatus({ text: "Your move — playing on", cls: "" });
-        }
+        mod = await import("@/lib/play-engine");
       } catch {
+        // Only a rejected module load means this phone cannot run the engine.
         if (!playingOnRef.current) return;
         setStatus({
           text: "Computer unavailable on this phone",
           cls: "bad",
         });
+        return;
+      }
+
+      let engine: PlayEngine;
+      try {
+        engine =
+          typeof mod.loadPlayEngine === "function"
+            ? await mod.loadPlayEngine()
+            : mod.createLiteEngine();
+      } catch {
+        // Module loaded — always play, even if the smoke search threw.
+        engine = mod.createLiteEngine();
+      }
+      if (!playingOnRef.current) {
+        engine.dispose();
+        return;
+      }
+      engineRef.current = engine;
+      setEngineReady(true);
+      if (game.isGameOver()) {
+        setStatus({
+          text: playOnGameOverText(game, line.side),
+          cls: "ok",
+        });
+        return;
+      }
+      if (isUserTurn(game)) {
+        setStatus({ text: "Your move — playing on", cls: "" });
       }
     })();
   };
