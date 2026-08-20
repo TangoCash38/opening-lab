@@ -14,7 +14,7 @@ is not launched, so there is no splash handoff and the app works with or without
 | Theme | `#2f5d50` |
 | Splash / background | `#f4efe6` |
 | Surface | In-app WebView only (no TWA / Chrome handoff) |
-| Billing | `com.android.vending.BILLING` is declared so Play Console can create products. Checkout is still website Stripe; Digital Goods / Play Billing Library are not implemented. |
+| Billing | Play Billing Library 7.1.1 + `com.android.vending.BILLING`. Lab+ **yearly only** (`lab_plus_yearly`, yearly base plan, GBP). Packs stay on the website (Stripe). Digital Goods does not work in this raw System WebView. |
 
 Launcher icons come from `public/icons/icon-512.png` and
 `icon-512-maskable.png`.
@@ -94,7 +94,24 @@ Print a local upload-key fingerprint (after you have created the keystore):
 keytool -list -v -keystore upload-keystore.jks -alias upload
 ```
 
-## Out of scope (this commit)
+## Play product (Console)
 
-- Play Billing Library / Digital Goods / Stripe checkout — not implemented; only the BILLING permission is declared
-- Rewriting the web app, packs, or auth
+Create a **subscription** product:
+
+| | |
+|---|---|
+| Product ID | `lab_plus_yearly` |
+| Base plan | Yearly |
+| Price | GBP (match the website Lab+ yearly price, £29.99) |
+
+Purchases will fail in Console until the merchant card / bank check on **16 September 2026**. The app shows “Lab+ isn’t on sale in the store yet” instead of crashing.
+
+Server verify uses Android Publisher API only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` is set on the host (Vercel). Never put that JSON in the repo.
+
+App version for the next AAB: **versionCode 7 / versionName 1.0.6**. Do not upload an AAB from this note alone.
+
+## Out of scope
+
+- Digital Goods API (raw System WebView)
+- Monthly Lab+ on Play
+- Pack IAP on Play (packs stay on the website)

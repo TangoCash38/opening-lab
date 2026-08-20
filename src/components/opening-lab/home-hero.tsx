@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
-import { LAB_PLUS_LABEL, PRICE_MONTHLY } from "@/data/pricing";
+import { LAB_PLUS_LABEL, PRICE_MONTHLY, PRICE_YEARLY } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import { useProgress } from "@/hooks/use-progress";
@@ -13,9 +13,10 @@ type TrainMode = "learn" | "practice";
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onSubscribe: () => void;
+  playApp?: boolean;
 };
 
-export function HomeHero({ onStartLine, onSubscribe }: Props) {
+export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
   const { subscribed } = useUnlocks();
   const { masteryOf, isComplete } = useProgress();
   const scotch = PACKS.find((p) => p.id === "scotch");
@@ -84,7 +85,9 @@ export function HomeHero({ onStartLine, onSubscribe }: Props) {
               onClick={onSubscribe}
               className="min-h-12 w-full rounded-2xl border-2 border-accent/35 bg-success-soft px-4 py-3 text-[0.92rem] font-bold text-accent active:scale-[0.99]"
             >
-              {LAB_PLUS_LABEL} · {PRICE_MONTHLY}/mo for all packs + updates
+              {playApp
+                ? `${LAB_PLUS_LABEL} · ${PRICE_YEARLY}/year for all packs`
+                : `${LAB_PLUS_LABEL} · ${PRICE_MONTHLY}/mo for all packs + updates`}
             </button>
           ) : (
             <p className="m-0 text-center text-[0.82rem] font-semibold text-success">

@@ -98,6 +98,7 @@ https://github.com/TangoCash38/opening-lab
 
 ## Google Play (Android)
 
-The Play listing is a Trusted Web Activity that opens the live site. Project
-and build steps: [`android/README.md`](android/README.md).
+The Play app is a raw System WebView (not Chrome TWA). Lab+ yearly uses
+native Play Billing (`lab_plus_yearly`). Packs stay on the website (Stripe).
+Project and build steps: [`android/README.md`](android/README.md).
 

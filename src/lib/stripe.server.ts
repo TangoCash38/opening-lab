@@ -140,6 +140,10 @@ async function persistPaidSession(
 }
 
 export async function createCheckoutSession(request: Request): Promise<Response> {
+  const ua = request.headers.get("user-agent") ?? "";
+  if (ua.includes("OpeningLabPlay")) {
+    return json({ error: "Use Google Play Billing in the app" }, 400);
+  }
   if (!paymentsAreEnabled()) {
     return json({ error: "Payments are not configured" }, 503);
   }

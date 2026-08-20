@@ -7,12 +7,21 @@
  * android-app:// referrer / Digital Goods API — that is not Play.
  * Remember a positive hit in sessionStorage only (not localStorage), so a later
  * Chrome tab on the same phone still gets website Stripe.
+ *
+ * Play Console: create subscription product `lab_plus_yearly` with a yearly
+ * base plan in GBP. Packs stay on the website (Stripe). Digital Goods will
+ * not work in this raw System WebView — native BillingClient is required.
  */
 export const PLAY_PACKAGE = "uk.co.openinglab";
 export const PLAY_UA_TOKEN = "OpeningLabPlay";
 
+/** Play Console subscription product ID. Yearly base plan only, GBP. */
+export const PLAY_SKU_YEARLY = "lab_plus_yearly";
+
 export const PLAY_STORE_NOTICE =
-  "Packs and Lab+ will unlock through Google Play. For now Scotch is free to train. You can buy on the website if you want.";
+  "Scotch is free. Packs stay on the website. Lab+ yearly is billed by Google Play.";
+
+export const PLAY_SKU_NOT_ON_SALE = "Lab+ isn’t on sale in the store yet";
 
 const SESSION_KEY = "opening-lab:is-play-app";
 

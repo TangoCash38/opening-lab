@@ -6,7 +6,6 @@ import {
   PRICE_YEARLY,
   PRICE_YEARLY_NOTE,
 } from "@/data/pricing";
-import { PlayStoreNotice } from "./play-store-notice";
 
 type Props = {
   packName: string;
@@ -15,6 +14,7 @@ type Props = {
   onUnlockPack: () => void;
   onSubscribeMonthly: () => void;
   onSubscribeYearly: () => void;
+  onRestore?: () => void;
   paymentsEnabled?: boolean | null;
   needsAccount?: boolean;
   busy?: boolean;
@@ -29,6 +29,7 @@ export function UnlockModal({
   onUnlockPack,
   onSubscribeMonthly,
   onSubscribeYearly,
+  onRestore,
   paymentsEnabled = false,
   needsAccount = false,
   busy = false,
@@ -62,7 +63,7 @@ export function UnlockModal({
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
                 {playApp
-                  ? "This pack stays locked in the Play app for now."
+                  ? "This pack is sold on the website. Lab+ yearly unlocks every pack here."
                   : "Pay as you go for this pack, or unlock everything with Lab+."}
               </p>
             </div>
@@ -80,7 +81,54 @@ export function UnlockModal({
 
         <div className="space-y-3 px-5 py-5">
           {playApp ? (
-            <PlayStoreNotice />
+            <>
+              <button
+                type="button"
+                onClick={onSubscribeYearly}
+                disabled={busy}
+                className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
+              >
+                <span>
+                  <span className="block text-[0.92rem] font-bold text-accent">
+                    {LAB_PLUS_LABEL} yearly
+                  </span>
+                  <span className="block text-[0.75rem] text-fg-muted">
+                    Every pack · {PRICE_YEARLY_NOTE}
+                  </span>
+                </span>
+                <span className="text-base font-bold text-accent">{PRICE_YEARLY}</span>
+              </button>
+              {onRestore ? (
+                <button
+                  type="button"
+                  onClick={onRestore}
+                  disabled={busy}
+                  className="w-full rounded-xl border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted disabled:opacity-60"
+                >
+                  Restore Lab+
+                </button>
+              ) : null}
+              {error ? (
+                <p
+                  className="m-0 text-center text-[0.75rem] font-semibold text-danger"
+                  role="alert"
+                >
+                  {error}
+                </p>
+              ) : busy ? (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+                  Opening Google Play…
+                </p>
+              ) : needsAccount ? (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+                  Sign in so this stays on your account.
+                </p>
+              ) : (
+                <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+                  Billed by Google. Auto-renews until you cancel in Google Play.
+                </p>
+              )}
+            </>
           ) : (
             <>
               <button

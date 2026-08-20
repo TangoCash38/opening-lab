@@ -42,6 +42,15 @@ function Terms() {
         </p>
       </LegalSection>
 
+      <LegalSection title="Google Play">
+        <p>
+          In the Opening Lab app from Google Play, Lab+ is a yearly
+          subscription billed by Google. It auto-renews until you cancel in
+          Google Play. Packs are sold on the website only. Website Lab+ and
+          pack purchases use Stripe, not Google Play.
+        </p>
+      </LegalSection>
+
       <LegalSection title="Pay as you go packs">
         <p>
           A pack is a one-time digital purchase. It stays on your account, so
