@@ -135,6 +135,38 @@ function firstPlayableReply(fen: string): PlayableReply | null {
   }
 }
 
+
+function replaySans(sans: string[], count: number): Chess {
+  const g = new Chess();
+  for (let i = 0; i < count; i++) {
+    const san = sans[i];
+    if (!san || !g.move(san)) break;
+  }
+  return g;
+}
+
+function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
+  const hist = g.history({ verbose: true });
+  const m = hist[hist.length - 1];
+  if (!m) return null;
+  return { from: m.from as Square, to: m.to as Square };
+}
+
+/** Plies one Take back tap removes. 0 = at start of the line / Play on. */
+function takeBackPlyCount(
+  playingOn: boolean,
+  plyIndex: number,
+  bookLen: number,
+  userSide: "w" | "b",
+  userToMove: boolean,
+): number {
+  const floor = playingOn ? bookLen : userSide === "w" ? 0 : 1;
+  if (plyIndex <= floor) return 0;
+  // Computer moved first in Play on — no user ply to undo yet.
+  if (playingOn && userToMove && plyIndex - floor < 2) return 0;
+  return Math.min(userToMove ? 2 : 1, plyIndex - floor);
+}
+
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
@@ -178,6 +210,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     move: { from: Square; to: Square };
     userMove: boolean;
   } | null>(null);
+  const replyGenRef = useRef(0);
 
   const clearReplyTimer = useCallback(() => {
     if (replyTimer.current) {
@@ -243,6 +276,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     (nextMode?: Mode) => {
       clearAllTimers();
       pendingCommit.current = null;
+      replyGenRef.current += 1;
       dropEngine();
       setSlide(null);
       setBusy(false);
@@ -436,7 +470,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     const idx = plyIndex;
     const fenNow = game.fen();
 
+    const gen = replyGenRef.current;
     replyTimer.current = setTimeout(() => {
+      if (gen !== replyGenRef.current) return;
       const g = new Chess(fenNow);
       const exp = expectedMove(g, idx);
       if (!exp) return;
@@ -485,18 +521,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     if (!engine) return;
 
     let cancelled = false;
+    const gen = replyGenRef.current;
     const fenNow = game.fen();
     const idx = plyIndex;
     setEngineBusy(true);
     setStatus({ text: "…", cls: "" });
 
     const applyReply = (from: Square, to: Square, pieceCode: string, next: Chess) => {
+      if (cancelled || gen !== replyGenRef.current) return;
       setEngineBusy(false);
       beginSlide(from, to, pieceCode, next, idx + 1, false);
     };
 
     const playFallback = () => {
-      if (cancelled || !playingOnRef.current) return;
+      if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
       const fb = firstPlayableReply(fenNow);
       if (fb) {
         applyReply(fb.from, fb.to, fb.pieceCode, fb.next);
@@ -513,7 +551,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     engine
       .pickMove(fenNow, thinkMsRef.current, playLevelRef.current)
       .then((mv) => {
-        if (cancelled || !playingOnRef.current) return;
+        if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
         if (mv) {
           const g = new Chess(fenNow);
           const pieceCode = fenPieceAt(g, mv.from as Square);
@@ -712,6 +750,109 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     })();
   };
 
+
+  const takeBack = () => {
+    if (busy || slide) return;
+
+    // Rejected book try never landed — just clear the pick / red flash.
+    if (wrongUntil || status.cls === "bad") {
+      if (wrongTimer.current) {
+        clearTimeout(wrongTimer.current);
+        wrongTimer.current = null;
+      }
+      setSelected(null);
+      setPendingPromo(null);
+      setWrongUntil(null);
+      setStatus({
+        text: playingOnRef.current
+          ? "Your move — playing on"
+          : mode === "learn"
+            ? "Your move (Practice)"
+            : "Your move",
+        cls: "",
+      });
+      return;
+    }
+
+    if (pendingPromo) {
+      setPendingPromo(null);
+      setSelected(null);
+      return;
+    }
+
+    const onPlay = playingOnRef.current;
+    const currentPly = onPlay ? game.history().length : plyIndex;
+    const undo = takeBackPlyCount(
+      onPlay,
+      currentPly,
+      line.plies.length,
+      line.side,
+      isUserTurn(game),
+    );
+    if (undo <= 0) {
+      setSelected(null);
+      return;
+    }
+
+    // Board-only. Do not write progress / SM-2, and do not clear a recorded miss.
+    replyGenRef.current += 1;
+    clearAllTimers();
+    pendingCommit.current = null;
+    setEngineBusy(false);
+    setSlide(null);
+    setBusy(false);
+    setSelected(null);
+    setPendingPromo(null);
+    setWrongUntil(null);
+    setCelebrate(false);
+
+    const nextPly = currentPly - undo;
+    const next = onPlay
+      ? replaySans(game.history(), nextPly)
+      : replaySans(line.plies, nextPly);
+
+    setGame(next);
+    setPlyIndex(nextPly);
+    setLastMove(lastMoveSquares(next));
+
+    if (
+      !onPlay &&
+      line.punishment &&
+      nextPly === line.punishment.mistakePlyIndex + 1
+    ) {
+      setBanner(
+        nextPunishmentBannerState(
+          { kind: "idle" },
+          {
+            type: "mistake_played",
+            banner: line.punishment.banner,
+            prompt: line.punishment.prompt,
+          },
+        ),
+      );
+      setStatus({
+        text: line.punishment.prompt ?? "Find the punishment",
+        cls: "warn",
+      });
+      if (mode === "learn") scheduleHints();
+      else setHintsReady(true);
+      return;
+    }
+
+    setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
+    if (onPlay) {
+      setHintsReady(false);
+      setStatus({ text: "Your move — playing on", cls: "" });
+      return;
+    }
+    setStatus({
+      text: mode === "learn" ? "Your move (Practice)" : "Your move",
+      cls: "",
+    });
+    if (mode === "learn") scheduleHints();
+    else setHintsReady(true);
+  };
+
   const exp = playingOn ? null : expectedMove(game, plyIndex);
   const userTurn = isUserTurn(game) && !busy && !slide && !engineBusy;
   const showHints =
@@ -752,6 +893,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   // Play on + strength pills only after a clean Test (zero misses).
   const showPlayOn =
     bookDone && mode === "practice" && !practiceMissedRef.current;
+
+
+  const canTakeBack =
+    !busy &&
+    !slide &&
+    (Boolean(wrongUntil) ||
+      status.cls === "bad" ||
+      Boolean(pendingPromo) ||
+      takeBackPlyCount(
+        playingOn,
+        playingOn ? game.history().length : plyIndex,
+        line.plies.length,
+        line.side,
+        isUserTurn(game),
+      ) > 0);
 
   return (
     <div>
@@ -966,6 +1122,15 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
         >
           Reset
+        </button>
+        <button
+          type="button"
+          onClick={takeBack}
+          disabled={!canTakeBack}
+          aria-label="Take back"
+          className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
+        >
+          Take back
         </button>
         <button
           type="button"
