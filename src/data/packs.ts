@@ -23,11 +23,39 @@ export type OpeningLine = {
   name: string;
   plies: string[];
   side: Side;
+  /**
+   * `"punish"` = spot-the-move drill. Auto-play both sides through
+   * Black's error, then the user plays `plies[pausePly]`.
+   * Omitted = normal book line.
+   */
+  kind?: "punish";
+  /**
+   * 0-based index in `plies` of the punish answer (user to move).
+   * Auto-play is `plies[0..pausePly)` — prefix + this answer ply.
+   */
+  pausePly?: number;
   /** When set, train mode shows blunder / punishment UI */
   punishment?: PunishmentMeta;
   /** Named model game — who sat each side */
   players?: ModelPlayers;
 };
+
+/** True when the line is a spot-the-punish drill. */
+export function isPunishLine(line: Pick<OpeningLine, "kind">): boolean {
+  return line.kind === "punish";
+}
+
+/**
+ * Index of the user's punish move. Auto-play stops just before this ply
+ * (after Black's error, user to move). Defaults to the last ply.
+ */
+export function punishPausePly(line: OpeningLine): number {
+  const last = Math.max(0, line.plies.length - 1);
+  if (typeof line.pausePly === "number" && Number.isFinite(line.pausePly)) {
+    return Math.max(0, Math.min(Math.floor(line.pausePly), last));
+  }
+  return last;
+}
 
 export type Pack = {
   id: string;
