@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import { isPunishLine, type OpeningLine } from "@/data/packs";
+import type { OpeningLine } from "@/data/packs";
 import type { Mastery } from "@/lib/progress";
 import { MasteryChip } from "./mastery-chip";
 
@@ -81,11 +81,6 @@ export function LineRow({
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
           <span className="min-w-0 break-words">{line.name}</span>
-          {isPunishLine(line) ? (
-            <span className="rounded-full bg-accent/14 px-1.5 py-0.5 text-[0.65rem] font-semibold text-accent">
-              Spot the move
-            </span>
-          ) : null}
           {showFree ? (
             <span className="rounded-full bg-success-soft px-1.5 py-0.5 text-[0.65rem] font-semibold text-success">
               Free
