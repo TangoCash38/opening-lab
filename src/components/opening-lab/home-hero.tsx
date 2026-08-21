@@ -37,7 +37,7 @@ export function HomeHero({ onStartLine }: Props) {
         Train openings the strict way
       </h1>
       <p className="mb-4 text-[0.95rem] text-fg-muted">
-        Scotch Gambit, Italian Game, and Ruy Lopez are free. Follow the yellow
+        Scotch Gambit, Italian Game, Ruy Lopez, and King’s Gambit are free. Follow the yellow
         hint. Wrong moves are rejected.
       </p>
 

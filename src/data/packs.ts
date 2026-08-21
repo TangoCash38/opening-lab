@@ -63,9 +63,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch, Italian, and Ruy — all other packs are paid */
+  /** Scotch, Italian, Ruy, and King’s Gambit — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch, Italian, and Ruy) */
+  /** Paid packs (everything except Scotch, Italian, Ruy, and King’s Gambit) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -362,20 +362,46 @@ export const PACKS: Pack[] = [
   },
   {
     id: "kings-gambit",
-    name: "King's Gambit",
+    name: "King’s Gambit",
     eco: "C30–C39",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
-    price: "£1",
-    blurb: "5 lines · Kieseritzky, Cunningham, Falkbeer, Fischer & Abbazia",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "5 book lines",
+    closedLabel: "Free · 5 book lines",
     lines: [
-      { id: "kg1", name: "Line 1 · Kieseritzky Gambit", plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"], side: "w" },
-      { id: "kg2", name: "Line 2 · Cunningham 3…Be7", plies: ["e4", "e5", "f4", "exf4", "Nf3", "Be7", "Bc4", "Bh4+", "Kf1", "d5", "exd5", "Nf6", "d4", "O-O", "Nc3", "Nxd5", "Nxd5", "Re8", "Bxf4", "c6"], side: "w" },
-      { id: "kg3", name: "Line 3 · Falkbeer Counter-Gambit", plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2", "Bxe7"], side: "w" },
-      { id: "kg4", name: "Line 4 · Fischer 3…d6", plies: ["e4", "e5", "f4", "exf4", "Nf3", "d6", "d4", "g5", "h4", "g4", "Ng1", "Bh6", "Nc3", "c6", "Nge2", "Qf6", "g3", "f3", "Nf4", "Ne7"], side: "w" },
-      { id: "kg5", name: "Line 5 · Abbazia 3…d5", plies: ["e4", "e5", "f4", "exf4", "Nf3", "d5", "exd5", "Nf6", "Bb5+", "c6", "dxc6", "Nxc6", "d4", "Bd6", "O-O", "O-O", "c4", "Bg4", "Nc3", "Re8"], side: "w" },
+      {
+        id: "kg1",
+        name: "Line 1 · Kieseritzky 5.Ne5",
+        plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "h4", "g4", "Ne5", "Nf6", "d4", "d6", "Nd3", "Nxe4", "Bxf4", "Bg7", "Nc3", "Nxc3", "bxc3", "O-O"],
+        side: "w",
+      },
+      {
+        id: "kg2",
+        name: "Line 2 · Fischer 3…d6",
+        plies: ["e4", "e5", "f4", "exf4", "Nf3", "d6", "d4", "g5", "h4", "g4", "Ng1", "Bh6", "Nc3", "c6", "Nge2", "Qf6", "g3", "f3", "Nf4", "Qe7"],
+        side: "w",
+      },
+      {
+        id: "kg3",
+        name: "Line 3 · Abbazia 3…d5",
+        plies: ["e4", "e5", "f4", "exf4", "Nf3", "d5", "exd5", "Nf6", "Bb5+", "c6", "dxc6", "Nxc6", "d4", "Bd6", "O-O", "O-O", "c3", "h6", "Bd3", "Re8"],
+        side: "w",
+      },
+      {
+        id: "kg4",
+        name: "Line 4 · Falkbeer 2…d5",
+        plies: ["e4", "e5", "f4", "d5", "exd5", "e4", "d3", "Nf6", "dxe4", "Nxe4", "Nf3", "Bc5", "Qe2", "Bf5", "Nc3", "Qe7", "Be3", "Nxc3", "Bxc5", "Nxe2", "Bxe7", "Nxf4", "Ba3"],
+        side: "w",
+      },
+      {
+        id: "kg5",
+        name: "Line 5 · Bishop’s Gambit 3.Bc4",
+        plies: ["e4", "e5", "f4", "exf4", "Bc4", "Qh4+", "Kf1", "Nf6", "Nf3", "Qh6", "d4", "d6", "Nc3", "Nc6", "e5", "Nh5", "Nd5", "Kd8", "Rg1", "Bg4"],
+        side: "w",
+      },
     ],
   },
   {
