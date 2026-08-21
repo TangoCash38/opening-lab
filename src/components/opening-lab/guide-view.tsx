@@ -27,7 +27,9 @@ export function GuideView({ onBack }: Props) {
         <br />
         <strong>Italian Game</strong> — 5 book lines + 3 traps.
         <br />
-        Both are free.
+        <strong>Ruy Lopez</strong> — 5 book lines + 2 traps.
+        <br />
+        All three are free.
       </Block>
 
       <Block title="White & Black / Special packs">

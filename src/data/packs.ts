@@ -63,9 +63,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch and Italian — all other packs are paid */
+  /** Scotch, Italian, and Ruy — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch and Italian) */
+  /** Paid packs (everything except Scotch, Italian, and Ruy) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -204,21 +204,54 @@ export const PACKS: Pack[] = [
     eco: "C60–C99",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
-    price: "£1.99",
-    blurb: "10 lines · Closed, Berlin, Open & Marshall",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "5 book lines + 2 traps",
+    closedLabel: "Free · 5 book lines + 2 traps",
     lines: [
-      { id: "r1", name: "Line 1 · Closed Spanish main", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3", "Na5", "Bc2", "c5"], side: "w" },
-      { id: "r2", name: "Line 2 · Berlin Defence", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Nxe4", "d4", "Nd6", "Bxc6", "dxc6", "dxe5", "Nf5", "Qxd8+", "Kxd8", "Nc3", "Ke8", "h3", "Be7"], side: "w" },
-      { id: "r3", name: "Line 3 · Exchange Variation", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Bxc6", "dxc6", "O-O", "f6", "d4", "exd4", "Nxd4", "c5", "Nb3", "Qxd1", "Rxd1", "Bd6", "Be3", "Ne7"], side: "w" },
-      { id: "r4", name: "Line 4 · Open Spanish", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Nxe4", "d4", "b5", "Bb3", "d5", "dxe5", "Be6", "c3", "Bc5", "Nbd2", "O-O"], side: "w" },
-      { id: "r5", name: "Line 5 · Marshall Attack ideas", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "O-O", "c3", "d5", "exd5", "Nxd5", "Nxe5", "Nxe5"], side: "w" },
-      { id: "r6", name: "Line 6 · Schliemann", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "f5", "Nc3", "fxe4", "Nxe4", "d5", "Nxe5", "dxe4", "Nxc6", "Qd5", "c4", "Qd6", "Nxa7+", "Bd7", "Bxd7+", "Qxd7", "Nb5"], side: "w" },
-      { id: "r7", name: "Line 7 · Classical …Bc5", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "Ne4", "O-O", "d5", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "f6"], side: "w" },
-      { id: "r8", name: "Line 8 · Steinitz Deferred", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "d6", "c3", "Bd7", "d4", "Nf6", "O-O", "Be7", "Re1", "O-O", "Nbd2", "Re8", "Nf1", "Bf8"], side: "w" },
-      { id: "r9", name: "Line 9 · Bird’s Defence", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "c6", "Bc4", "Nf6", "Re1", "d6", "c3", "Be7", "cxd4", "d5", "exd5", "Nxd5"], side: "w" },
-      { id: "r10", name: "Line 10 · Arkhangelsk ideas", plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "b5", "Bb3", "Bb7", "d3", "Be7", "a4", "O-O", "Re1", "d6", "c3", "Na5"], side: "w" },
+      {
+        id: "r1",
+        name: "Line 1 · Closed Spanish 9.h3 Na5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3", "Na5", "Bc2", "c5", "d4", "Qc7", "Nbd2"],
+        side: "w",
+      },
+      {
+        id: "r2",
+        name: "Line 2 · Berlin Defence",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Nxe4", "d4", "Nd6", "Bxc6", "dxc6", "dxe5", "Nf5", "Qxd8+", "Kxd8", "Nc3", "Ke8", "h3", "Be6"],
+        side: "w",
+      },
+      {
+        id: "r3",
+        name: "Line 3 · Exchange 4.Bxc6",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Bxc6", "dxc6", "O-O", "f6", "d4", "exd4", "Nxd4", "c5", "Nb3", "Qxd1", "Rxd1", "Be6", "Bf4", "c4"],
+        side: "w",
+      },
+      {
+        id: "r4",
+        name: "Line 4 · Open Spanish 5…Nxe4",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Nxe4", "d4", "b5", "Bb3", "d5", "dxe5", "Be6", "c3", "Bc5", "Nbd2", "O-O", "Bc2"],
+        side: "w",
+      },
+      {
+        id: "r5",
+        name: "Line 5 · Marshall Attack 8…d5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "O-O", "c3", "d5", "exd5", "Nxd5", "Nxe5", "Nxe5", "Rxe5", "c6", "d4", "Bd6", "Re1"],
+        side: "w",
+      },
+      {
+        id: "r6",
+        name: "Trap · Tarrasch 12.Nxe6",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Nxe4", "d4", "b5", "Bb3", "d5", "dxe5", "Be6", "c3", "Be7", "Re1", "O-O", "Nd4", "Qd7", "Nxe6", "fxe6", "Rxe4", "Rf7", "Rf4"],
+        side: "w",
+      },
+      {
+        id: "r7",
+        name: "Trap · Dresden 11.Nxe5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "d6", "d4", "Bd7", "Nc3", "Nf6", "O-O", "Be7", "Re1", "O-O", "Bxc6", "Bxc6", "dxe5", "dxe5", "Qxd8", "Raxd8", "Nxe5", "Bb4", "Nxc6", "bxc6"],
+        side: "w",
+      },
     ],
   },
   {
