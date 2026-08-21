@@ -44,10 +44,9 @@ function Terms() {
 
       <LegalSection title="Google Play">
         <p>
-          In the Opening Lab app from Google Play, Lab+ is a yearly
-          subscription billed by Google. It auto-renews until you cancel in
-          Google Play. Packs are sold on the website only. Website Lab+ and
-          pack purchases use Stripe, not Google Play.
+          In the Opening Lab app from Google Play, Scotch is free. Lab+ is a
+          yearly subscription billed by Google. It auto-renews until you
+          cancel in Google Play.
         </p>
       </LegalSection>
 

@@ -101,7 +101,7 @@ export async function confirmPlaySubscribe(input: {
   if (!res.ok) {
     throw new Error(data.error ?? "Could not confirm Lab+");
   }
-  const unlocks = normalizeUnlockState(data);
+  const unlocks = normalizeUnlockState({ ...data, playBilled: true });
   replaceUnlocks(unlocks);
   return unlocks;
 }

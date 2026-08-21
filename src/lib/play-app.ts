@@ -23,6 +23,30 @@ export const PLAY_STORE_NOTICE =
 
 export const PLAY_SKU_NOT_ON_SALE = "Lab+ isn’t on sale in the store yet";
 
+export type PlayWrapUnlocks = {
+  packs: string[];
+  plan: "monthly" | "yearly" | null;
+  expiresAt: number | null;
+  playBilled?: boolean;
+};
+
+/** Play wrap may only honour Play-billed Lab+ yearly — never website Stripe packs/plan. */
+export function isPlayBilledLabPlusActive(state: PlayWrapUnlocks): boolean {
+  return (
+    state.playBilled === true &&
+    state.plan === "yearly" &&
+    typeof state.expiresAt === "number" &&
+    Date.now() < state.expiresAt
+  );
+}
+
+export function playWrapAccountUnlocks<T extends PlayWrapUnlocks>(state: T): T {
+  if (isPlayBilledLabPlusActive(state)) {
+    return { ...state, packs: [], plan: "yearly", playBilled: true };
+  }
+  return { ...state, packs: [], plan: null, expiresAt: null, playBilled: false };
+}
+
 const SESSION_KEY = "opening-lab:is-play-app";
 
 type DigitalGoodsWindow = Window & {
