@@ -3,7 +3,7 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { LAB_PLUS_LABEL, PRICE_MONTHLY, PRICE_YEARLY } from "@/data/pricing";
 import { useUnlocks } from "@/hooks/use-unlocks";
-import { visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, visiblePacks } from "@/lib/catalog";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import { useProgress } from "@/hooks/use-progress";
 import { ChessBoard } from "./chess-board";
@@ -20,9 +20,11 @@ type Props = {
 export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
   const { subscribed } = useUnlocks();
   const { masteryOf, isComplete } = useProgress();
-  const scotch = visiblePacks(PACKS).find((p) => p.id === "scotch");
+  const catalog = visiblePacks(PACKS);
+  const scotch = catalog.find((p) => p.id === "scotch");
   const line = scotch?.lines[0];
   const [linesOpen, setLinesOpen] = useState(false);
+  const offerLabPlus = !playApp || catalogOffersLabPlus(catalog);
 
   const game = useMemo(() => new Chess(), []);
   const expected = useMemo(() => {
@@ -80,7 +82,7 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
           >
             Start free Scotch Line 1
           </button>
-          {isWebsiteReviewFree() ? null : !subscribed ? (
+          {isWebsiteReviewFree() || !offerLabPlus ? null : !subscribed ? (
             <button
               type="button"
               onClick={onSubscribe}

@@ -115,3 +115,8 @@ export function isPlayApp(): boolean {
   if (hit) rememberPlayApp();
   return hit;
 }
+
+/** Same as isPlayApp — OpeningLabPlay user agent / android-app referrer wrap. */
+export function isPlayWrap(): boolean {
+  return isPlayApp();
+}

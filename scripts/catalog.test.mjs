@@ -15,3 +15,16 @@ test("catalog only shows Scotch while other packs stay in packs.ts", () => {
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 });
+
+test("Lab+ offer gate is visible pack count or any locked pack, not a forever hide", () => {
+  assert.match(src, /export function catalogOffersLabPlus/);
+  assert.match(src, /packs\.length > 1/);
+  assert.match(src, /packs\.some\(\(pack\) => !pack\.isFree\)/);
+
+  const packList = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
+  const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
+  const playApp = readFileSync(join(root, "src/lib/play-app.ts"), "utf8");
+  assert.match(packList, /catalogOffersLabPlus/);
+  assert.match(hero, /catalogOffersLabPlus/);
+  assert.match(playApp, /export function isPlayWrap/);
+});

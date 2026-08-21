@@ -14,6 +14,17 @@ export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T
   return packs.filter((pack) => isPackVisible(pack));
 }
 
+/**
+ * Lab+ is worth offering when a reviewer can see more than one pack
+ * or any locked pack. Scotch-only catalogs unlock nothing extra.
+ * Gate on visible count / locked packs — not a forever hide.
+ */
+export function catalogOffersLabPlus(
+  packs: readonly Pick<Pack, "id" | "isFree">[],
+): boolean {
+  return packs.length > 1 || packs.some((pack) => !pack.isFree);
+}
+
 /** Deep-link pack id from ?pack= / ?packId= or #pack/ / #train/. */
 export function readRequestedPackId(
   search = typeof window === "undefined" ? "" : window.location.search,
