@@ -7,11 +7,11 @@ import test from "node:test";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
 
-test("catalog shows Scotch, Italian, and Ruy while other packs stay in packs.ts", () => {
+test("catalog shows Scotch, Italian, Ruy, and King’s Gambit while other packs stay in packs.ts", () => {
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["scotch", "italian", "ruy"]);
+  assert.deepEqual(ids, ["scotch", "italian", "ruy", "kings-gambit"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 });
@@ -35,7 +35,7 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(playApp, /export function isPlayWrap/);
 });
 
-test("Help and home name all three free openings and do not pitch Lab+", () => {
+test("Help and home name all four free openings and do not pitch Lab+", () => {
   const guide = readFileSync(
     join(root, "src/components/opening-lab/guide-view.tsx"),
     "utf8",
@@ -48,13 +48,14 @@ test("Help and home name all three free openings and do not pitch Lab+", () => {
   assert.match(guide, /Scotch Gambit/);
   assert.match(guide, /Italian Game/);
   assert.match(guide, /Ruy Lopez/);
-  assert.match(guide, /All three are free/);
+  assert.match(guide, /King’s Gambit/);
+  assert.match(guide, /All four are free/);
   assert.doesNotMatch(guide, /Lab\+/);
   assert.doesNotMatch(guide, /£4\.99/);
   assert.doesNotMatch(guide, /£29\.99/);
   assert.doesNotMatch(guide, /Pay as you go/);
   assert.doesNotMatch(guide, /Premium packs/);
 
-  assert.match(hero, /Scotch Gambit, Italian Game, and Ruy Lopez are free/);
+  assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, and King’s Gambit are free/);
   assert.doesNotMatch(hero, /Lab\+/);
 });
