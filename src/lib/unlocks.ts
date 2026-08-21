@@ -2,6 +2,7 @@
  * Client-side unlock store (localStorage).
  * Demo-ready — swap for real Play Billing later.
  */
+import { isPlayApp, isPlayBilledLabPlusActive } from "@/lib/play-app";
 
 const STORAGE_KEY = "opening-lab:unlocks:v2";
 
@@ -11,6 +12,8 @@ export type UnlockState = {
   packs: string[];
   plan: SubPlan | null;
   expiresAt: number | null;
+  /** True when Lab+ yearly was granted from Google Play (`lab_plus_yearly`). */
+  playBilled?: boolean;
 };
 
 const DEFAULT: UnlockState = { packs: [], plan: null, expiresAt: null };
@@ -45,6 +48,7 @@ export function normalizeUnlockState(parsed: Partial<UnlockState> | null | undef
     expiresAt: typeof parsed?.expiresAt === "number" && Number.isFinite(parsed.expiresAt)
       ? parsed.expiresAt
       : null,
+    playBilled: parsed?.playBilled === true,
   };
 }
 
@@ -63,6 +67,9 @@ export function isSubscriptionActive(state: UnlockState = read()): boolean {
 export function isPackUnlocked(packId: string, isFree: boolean): boolean {
   if (isFree) return true;
   const s = read();
+  if (isPlayApp()) {
+    return isPlayBilledLabPlusActive(s);
+  }
   return isSubscriptionActive(s) || s.packs.includes(packId);
 }
 
@@ -76,10 +83,12 @@ export function unlockPack(packId: string) {
 
 export function startSubscription(plan: SubPlan) {
   const now = Date.now();
+  const prev = read();
   write({
-    ...read(),
+    ...prev,
     plan,
     expiresAt: now + (plan === "yearly" ? YEAR_MS : MONTH_MS),
+    playBilled: isPlayApp() && plan === "yearly" ? true : prev.playBilled,
   });
 }
 

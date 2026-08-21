@@ -200,7 +200,12 @@ export async function playSubscribeResponse(request: Request): Promise<Response>
     if (owner === userId) {
       const existing = await getUnlocksForUser(userId);
       if (existing.plan === "yearly" && existing.expiresAt && existing.expiresAt > Date.now()) {
-        return json(existing);
+        return json({
+          packs: [],
+          plan: "yearly",
+          expiresAt: existing.expiresAt,
+          playBilled: true,
+        });
       }
     }
   } catch {
@@ -263,7 +268,12 @@ export async function playSubscribeResponse(request: Request): Promise<Response>
       playPurchaseToken: purchaseToken,
       playOrderId: verified.orderId || orderId || null,
     });
-    return json(unlocks);
+    return json({
+      packs: [],
+      plan: unlocks.plan,
+      expiresAt: unlocks.expiresAt,
+      playBilled: true,
+    });
   } catch (err) {
     console.error("[play] grant failed", err);
     return json({ error: "Could not save Lab+" }, 500);

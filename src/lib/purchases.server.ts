@@ -5,6 +5,7 @@ import { PACKS } from "@/data/packs";
 import { getSql } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/verify.server";
 import { notifyPaidUnlock } from "@/lib/email.server";
+import { isPlayUserAgent, playWrapAccountUnlocks } from "@/lib/play-app";
 import {
   MONTH_MS,
   YEAR_MS,
@@ -34,6 +35,7 @@ type PurchaseRow = {
   expires_at: Date | string | null;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
+  play_purchase_token?: string | null;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -62,11 +64,18 @@ function normalizePacks(value: unknown): string[] {
 
 function rowToUnlocks(row: PurchaseRow | undefined): UnlockState {
   if (!row) return { ...EMPTY };
+  const plan = asPlan(row.plan);
   return {
     packs: normalizePacks(row.packs),
-    plan: asPlan(row.plan),
+    plan,
     expiresAt: asExpiryMs(row.expires_at),
+    playBilled: Boolean(row.play_purchase_token) && plan === "yearly",
   };
+}
+
+function unlocksForRequest(request: Request, unlocks: UnlockState): UnlockState {
+  const ua = request.headers.get("user-agent") ?? "";
+  return isPlayUserAgent(ua) ? playWrapAccountUnlocks(unlocks) : unlocks;
 }
 
 export async function signedInUserId(request?: Request): Promise<string | null> {
@@ -90,7 +99,7 @@ export async function signedInUserId(request?: Request): Promise<string | null> 
 export async function getUnlocksForUser(userId: string): Promise<UnlockState> {
   const sql = await getSql();
   const rows = await sql.query<PurchaseRow>(
-    "select user_id, packs, plan, expires_at, stripe_customer_id, stripe_subscription_id from purchases where user_id = $1",
+    "select user_id, packs, plan, expires_at, stripe_customer_id, stripe_subscription_id, play_purchase_token from purchases where user_id = $1",
     [userId],
   );
   return rowToUnlocks(rows[0]);
@@ -245,7 +254,7 @@ export async function unlocksGetResponse(request: Request): Promise<Response> {
   const userId = await signedInUserId(request);
   if (!userId) return json({ error: "Sign in required" }, 401);
   try {
-    return json(await getUnlocksForUser(userId));
+    return json(unlocksForRequest(request, await getUnlocksForUser(userId)));
   } catch (err) {
     console.error("[purchases] load failed", err);
     return json({ error: "Could not load unlocks" }, 500);
@@ -255,6 +264,16 @@ export async function unlocksGetResponse(request: Request): Promise<Response> {
 export async function unlocksClaimResponse(request: Request): Promise<Response> {
   const userId = await signedInUserId(request);
   if (!userId) return json({ error: "Sign in required" }, 401);
+
+  const ua = request.headers.get("user-agent") ?? "";
+  if (isPlayUserAgent(ua)) {
+    try {
+      return json(unlocksForRequest(request, await getUnlocksForUser(userId)));
+    } catch (err) {
+      console.error("[purchases] play claim skipped", err);
+      return json({ error: "Could not load unlocks" }, 500);
+    }
+  }
 
   let body: { packs?: unknown; plan?: unknown; expiresAt?: unknown };
   try {

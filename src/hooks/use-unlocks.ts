@@ -4,6 +4,7 @@ import { isPackVisible } from "@/lib/catalog";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import type { Pack } from "@/data/packs";
 import { fetchPaymentsEnabled } from "@/lib/checkout";
+import { isPlayApp, isPlayBilledLabPlusActive, playWrapAccountUnlocks } from "@/lib/play-app";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import {
   claimAccountUnlocks,
@@ -46,6 +47,14 @@ function syncAccountUnlocks(userId: string): Promise<void> {
   if (accountSyncUserId === userId && accountSyncPromise) return accountSyncPromise;
   accountSyncUserId = userId;
   accountSyncPromise = (async () => {
+    if (isPlayApp()) {
+      writeClaimedUser(userId);
+      const account = await fetchAccountUnlocks();
+      const local = getUnlocks();
+      const source = account && isPlayBilledLabPlusActive(account) ? account : local;
+      replaceUnlocks(playWrapAccountUnlocks(source));
+      return;
+    }
     const last = readClaimedUser();
     const local = getUnlocks();
     const canClaim = last == null || last === userId;
@@ -103,13 +112,17 @@ export function useUnlocks() {
     };
   }, []);
 
-  const subscribed = isSubscriptionActive(state);
+  const subscribed = isPlayApp() ? isPlayBilledLabPlusActive(state) : isSubscriptionActive(state);
 
   const canAccess = useCallback(
-    (pack: Pack) =>
-      isPackVisible(pack) &&
-      (isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack))),
-    [state.packs, state.plan, state.expiresAt],
+    (pack: Pack) => {
+      if (!isPackVisible(pack)) return false;
+      if (isPlayApp()) {
+        return isPackFree(pack) || isPlayBilledLabPlusActive(state);
+      }
+      return isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack));
+    },
+    [state.packs, state.plan, state.expiresAt, state.playBilled],
   );
 
   const buyPack = useCallback((packId: string) => {
