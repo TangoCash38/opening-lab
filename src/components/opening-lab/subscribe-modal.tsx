@@ -52,7 +52,7 @@ export function SubscribeModal({
             </h2>
             <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
               {playApp
-                ? "Unlock every pack for a year. Packs stay on the website."
+                ? "Unlock every pack for a year."
                 : "Every pack, plus new lines we add. Cancel anytime. Packs you already bought stay yours."}
             </p>
           </div>

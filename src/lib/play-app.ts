@@ -9,7 +9,7 @@
  * Chrome tab on the same phone still gets website Stripe.
  *
  * Play Console: create subscription product `lab_plus_yearly` with a yearly
- * base plan in GBP. Packs stay on the website (Stripe). Digital Goods will
+ * base plan in GBP. Digital Goods will
  * not work in this raw System WebView — native BillingClient is required.
  */
 export const PLAY_PACKAGE = "uk.co.openinglab";
@@ -19,7 +19,7 @@ export const PLAY_UA_TOKEN = "OpeningLabPlay";
 export const PLAY_SKU_YEARLY = "lab_plus_yearly";
 
 export const PLAY_STORE_NOTICE =
-  "Scotch is free. Packs stay on the website. Lab+ yearly is billed by Google Play.";
+  "Scotch is free. Lab+ yearly is billed by Google Play.";
 
 export const PLAY_SKU_NOT_ON_SALE = "Lab+ isn’t on sale in the store yet";
 

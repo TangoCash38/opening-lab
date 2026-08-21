@@ -341,7 +341,7 @@ export function PackList({ onStartLine }: Props) {
         await playYearly();
         return;
       }
-      setPayError("Packs stay on the website. Use Lab+ yearly here.");
+      setPayError("Lab+ yearly is how you unlock packs here.");
       setPayBusy(false);
       return;
     }

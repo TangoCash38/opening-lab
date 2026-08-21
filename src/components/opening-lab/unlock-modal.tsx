@@ -63,7 +63,7 @@ export function UnlockModal({
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
                 {playApp
-                  ? "This pack is sold on the website. Lab+ yearly unlocks every pack here."
+                  ? "Lab+ yearly unlocks every pack here."
                   : "Pay as you go for this pack, or unlock everything with Lab+."}
               </p>
             </div>
