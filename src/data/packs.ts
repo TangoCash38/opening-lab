@@ -21,9 +21,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch, Italian, Ruy, and King’s Gambit — all other packs are paid */
+  /** Scotch, Italian, Ruy, King’s Gambit, and Vienna Game — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch, Italian, Ruy, and King’s Gambit) */
+  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, and Vienna Game) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -304,18 +304,52 @@ export const PACKS: Pack[] = [
   },
   {
     id: "vienna-game",
-    name: "Vienna Game & Gambit",
+    name: "Vienna Game",
     eco: "C25–C29",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
-    price: "£1",
-    blurb: "3 lines · Vienna Gambit, quiet game & fork trick",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "5 book lines + 1 trap",
+    closedLabel: "Free · 5 book lines + 1 trap",
     lines: [
-      { id: "vg1", name: "Line 1 · Vienna Gambit", plies: ["e4", "e5", "Nc3", "Nf6", "f4", "d5", "fxe5", "Nxe4", "Nf3", "Be7", "d4", "O-O", "Bd3", "f5", "exf6", "Bxf6", "O-O", "Nc6", "Ne2", "Bg4"], side: "w" },
-      { id: "vg2", name: "Line 2 · Vienna Game quiet", plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nc6", "d3", "Na5", "Nge2", "Nxc4", "dxc4", "Bc5", "O-O", "d6", "Qd3", "Be6", "b3", "O-O", "Be3", "Bxe3"], side: "w" },
-      { id: "vg3", name: "Line 3 · Frankenstein-Dracula 4.Qh5", plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nxe4", "Qh5", "Nd6", "Bb3", "Nc6", "Nb5", "g6", "Qf3", "f5", "Qd5", "Qe7", "Nxc7+", "Kd8", "Nxa8", "b6"], side: "w" },
+      {
+        id: "vg1",
+        name: "Line 1 · Vienna Gambit 3.f4",
+        plies: ["e4", "e5", "Nc3", "Nf6", "f4", "d5", "fxe5", "Nxe4", "Nf3", "Be7", "d4", "O-O", "Bd3", "f5", "exf6", "Bxf6", "O-O", "Nc6", "Nxe4", "dxe4"],
+        side: "w",
+      },
+      {
+        id: "vg2",
+        name: "Line 2 · Vienna 3.Bc4",
+        plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nc6", "d3", "Na5", "Nge2", "Nxc4", "dxc4", "Bc5", "O-O", "d6", "b3", "Be6", "Qd3", "Nd7", "Be3", "f6"],
+        side: "w",
+      },
+      {
+        id: "vg3",
+        name: "Line 3 · Mieses 3.g3",
+        plies: ["e4", "e5", "Nc3", "Nf6", "g3", "d5", "exd5", "Nxd5", "Bg2", "Nxc3", "bxc3", "Bc5", "Nf3", "Nc6", "d3", "O-O", "O-O", "f6", "a4", "Be6"],
+        side: "w",
+      },
+      {
+        id: "vg4",
+        name: "Line 4 · Frankenstein-Dracula 4.Qh5",
+        plies: ["e4", "e5", "Nc3", "Nf6", "Bc4", "Nxe4", "Qh5", "Nd6", "Bb3", "Nc6", "Nb5", "g6", "Qf3", "f5", "Qd5", "Qe7", "Nxc7+", "Kd8", "Nxa8", "b6"],
+        side: "w",
+      },
+      {
+        id: "vg5",
+        name: "Line 5 · Vienna 2…Nc6",
+        plies: ["e4", "e5", "Nc3", "Nc6", "f4", "exf4", "Nf3", "g5", "g3", "g4", "Nh4", "Nd4", "Nd5", "f3", "c3", "Ne6", "h3", "h5", "Nf5", "c6"],
+        side: "w",
+      },
+      {
+        id: "vg6",
+        name: "Trap · Würzburger 12.b3",
+        plies: ["e4", "e5", "Nc3", "Nf6", "f4", "d5", "fxe5", "Nxe4", "d3", "Qh4+", "g3", "Nxg3", "Nf3", "Qh5", "Nxd5", "Bg4", "Nf4", "Bxf3", "Nxh5", "Bxd1", "hxg3", "Bxc2", "b3"],
+        side: "w",
+      },
     ],
   },
   {
