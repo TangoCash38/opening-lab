@@ -7,11 +7,11 @@ import test from "node:test";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
 
-test("catalog only shows Scotch while other packs stay in packs.ts", () => {
+test("catalog shows Scotch and Italian while other packs stay in packs.ts", () => {
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["scotch"]);
+  assert.deepEqual(ids, ["scotch", "italian"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 });
@@ -22,6 +22,8 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(src, /export function playVisiblePacks/);
   assert.match(src, /packs\.some\(hasPaidPlaySkuPath\)/);
   assert.doesNotMatch(src, /packs\.length > 1/);
+  assert.match(src, /PLAY_PACK_SKUS: Readonly<Record<string, string>> = \{\}/);
+
 
   const packList = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
   const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
