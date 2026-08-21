@@ -24,39 +24,13 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.doesNotMatch(src, /packs\.length > 1/);
   assert.match(src, /PLAY_PACK_SKUS: Readonly<Record<string, string>> = \{\}/);
 
-
   const packList = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
   const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
   const playApp = readFileSync(join(root, "src/lib/play-app.ts"), "utf8");
   assert.match(packList, /catalogOffersLabPlus/);
   assert.match(packList, /playVisiblePacks/);
-  assert.match(hero, /catalogOffersLabPlus/);
+  assert.doesNotMatch(hero, /catalogOffersLabPlus/);
+  assert.doesNotMatch(hero, /LAB_PLUS_LABEL/);
+  assert.doesNotMatch(hero, /Lab\+ is on/);
   assert.match(playApp, /export function isPlayWrap/);
-});
-
-test("Help and home say both visible packs are free and do not pitch Lab+", () => {
-  const guide = readFileSync(
-    join(root, "src/components/opening-lab/guide-view.tsx"),
-    "utf8",
-  );
-  const hero = readFileSync(
-    join(root, "src/components/opening-lab/home-hero.tsx"),
-    "utf8",
-  );
-
-  assert.match(guide, /Scotch Gambit/);
-  assert.match(guide, /Italian Game/);
-  assert.match(guide, /are\s+free/);
-  assert.doesNotMatch(guide, /Lab\+/);
-  assert.doesNotMatch(guide, /£4\.99/);
-  assert.doesNotMatch(guide, /£29\.99/);
-  assert.doesNotMatch(guide, /every pack/i);
-  assert.doesNotMatch(guide, /Pay as you go/);
-  assert.doesNotMatch(guide, /Premium packs/);
-  assert.doesNotMatch(guide, /After you pay/);
-
-  assert.match(hero, /Scotch Gambit and Italian Game are free/);
-  assert.match(hero, /catalogOffersLabPlus\(catalog\)/);
-  assert.doesNotMatch(hero, /!playApp \|\| catalogOffersLabPlus/);
-  assert.doesNotMatch(hero, /Free Scotch Gambit is ready/);
 });

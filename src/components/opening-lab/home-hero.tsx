@@ -1,11 +1,8 @@
 import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
-import { LAB_PLUS_LABEL, PRICE_MONTHLY, PRICE_YEARLY } from "@/data/pricing";
-import { useUnlocks } from "@/hooks/use-unlocks";
-import { catalogOffersLabPlus, visiblePacks } from "@/lib/catalog";
-import { isWebsiteReviewFree } from "@/lib/review-free";
 import { useProgress } from "@/hooks/use-progress";
+import { visiblePacks } from "@/lib/catalog";
 import { ChessBoard } from "./chess-board";
 import { LineRow, PackExpandHint } from "./pack-lines";
 
@@ -17,14 +14,12 @@ type Props = {
   playApp?: boolean;
 };
 
-export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
-  const { subscribed } = useUnlocks();
+export function HomeHero({ onStartLine }: Props) {
   const { masteryOf, isComplete } = useProgress();
   const catalog = visiblePacks(PACKS);
   const scotch = catalog.find((p) => p.id === "scotch");
   const line = scotch?.lines[0];
   const [linesOpen, setLinesOpen] = useState(false);
-  const offerLabPlus = catalogOffersLabPlus(catalog);
 
   const game = useMemo(() => new Chess(), []);
   const expected = useMemo(() => {
@@ -42,8 +37,8 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
         Train openings the strict way
       </h1>
       <p className="mb-4 text-[0.95rem] text-fg-muted">
-        Scotch Gambit and Italian Game are free. Follow the yellow hint.
-        Wrong moves are rejected.
+        Scotch Gambit and Italian Game are free. Follow the yellow hint. Wrong
+        moves are rejected.
       </p>
 
       <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
@@ -55,7 +50,7 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
             Scotch Gambit
           </h2>
           <p className="mt-0.5 text-[0.82rem] text-fg-muted">
-            5 main lines and 2 traps · yours forever
+            5 book lines + 2 traps
           </p>
         </div>
 
@@ -82,21 +77,6 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
           >
             Start free Scotch Line 1
           </button>
-          {isWebsiteReviewFree() || !offerLabPlus ? null : !subscribed ? (
-            <button
-              type="button"
-              onClick={onSubscribe}
-              className="min-h-12 w-full rounded-2xl border-2 border-accent/35 bg-success-soft px-4 py-3 text-[0.92rem] font-bold text-accent active:scale-[0.99]"
-            >
-              {playApp
-                ? `${LAB_PLUS_LABEL} · ${PRICE_YEARLY}/year for all packs`
-                : `${LAB_PLUS_LABEL} · ${PRICE_MONTHLY}/mo for all packs + updates`}
-            </button>
-          ) : (
-            <p className="m-0 text-center text-[0.82rem] font-semibold text-success">
-              Lab+ is on · every pack unlocked
-            </p>
-          )}
         </div>
 
         {scotch ? (

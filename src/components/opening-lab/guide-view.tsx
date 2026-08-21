@@ -22,14 +22,16 @@ export function GuideView({ onBack }: Props) {
         opening; wrong moves are rejected so the line sticks.
       </Block>
 
-      <Block title="Free packs">
-        <strong>Scotch Gambit</strong> and <strong>Italian Game</strong> are
-        free. Train both with no purchase.
+      <Block title="Free openings">
+        <strong>Scotch Gambit</strong> — 5 book lines + 2 traps.
+        <br />
+        <strong>Italian Game</strong> — 5 book lines + 3 traps.
+        <br />
+        Both are free.
       </Block>
 
-      <Block title="White & Black sections">
-        White packs train as White (you move first in the line). Black packs
-        train replies as Black. Special packs mix practical club systems.
+      <Block title="White & Black / Special packs">
+        Each pack trains one opening. You play the book side.
       </Block>
 
       <Block title="Practice mode">
@@ -43,13 +45,11 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Reviews">
-        A clean Test schedules the line again in 1, then 3, then 7, then 21
-        days. A miss in Test resets that line to tomorrow and can mark it
-        Weak.
+        A clean Test turns the line green. You can train it again anytime.
       </Block>
 
       <Block title="Account">
-        Use the profile icon (top right) to sign in. See our{" "}
+        Use the profile icon (top right) to sign in. See{" "}
         <Link to="/privacy" className="font-semibold text-accent">
           Privacy Policy
         </Link>{" "}
