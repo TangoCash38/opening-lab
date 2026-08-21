@@ -7,15 +7,19 @@ import { MasteryChip } from "./mastery-chip";
 export function PackExpandHint({
   open,
   free = false,
+  closedLabel,
 }: {
   open: boolean;
   free?: boolean;
+  closedLabel?: string;
 }) {
   const label = open
     ? "Tap to hide"
-    : free
-      ? "Free · tap to see lines"
-      : "Tap to see lines";
+    : closedLabel
+      ? closedLabel
+      : free
+        ? "Free · tap to see lines"
+        : "Tap to see lines";
 
   return (
     <span

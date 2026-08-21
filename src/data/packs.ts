@@ -63,13 +63,15 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch Gambit only — all other packs are paid */
+  /** Scotch and Italian — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch) */
+  /** Paid packs (everything except Scotch and Italian) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
   blurb: string;
+  /** Collapsed card hint, e.g. "Free · 5 book lines + 3 traps" */
+  closedLabel?: string;
   lines: OpeningLine[];
   /** Optional badge shown on the pack card (e.g. "Deep Lines") */
   badge?: string;
@@ -140,22 +142,60 @@ export const PACKS: Pack[] = [
     eco: "C50–C59",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
-    price: "£1.99",
-    blurb: "11 lines · Giuoco, Evans, Two Knights & Fried Liver",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "5 book lines + 3 traps",
+    closedLabel: "Free · 5 book lines + 3 traps",
     lines: [
-      { id: "i1", name: "Line 1 · Greco / Møller Attack", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "d5", "Bf6", "Re1", "Ne7"], side: "w" },
-      { id: "i2", name: "Line 2 · Giuoco Pianissimo", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "O-O", "d6", "c3", "a6", "Bb3", "Ba7", "Nbd2", "O-O", "h3", "h6", "Re1", "Be6"], side: "w" },
-      { id: "i3", name: "Line 3 · Two Knights …Na5", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2", "h6", "Nf3", "e4", "Ne5", "Bd6"], side: "w" },
-      { id: "i4", name: "Line 4 · Evans Gambit", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxb4", "c3", "Ba5", "d4", "exd4", "O-O", "d6", "cxd4", "Bb6", "Nc3", "Nf6", "e5", "dxe5"], side: "w" },
-      { id: "i5", name: "Line 5 · Hungarian …Be7", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Be7", "d4", "d6", "dxe5", "dxe5", "Qxd8+", "Bxd8", "Nc3", "Nf6", "Bg5", "O-O", "O-O-O", "h6", "Bh4", "Be7"], side: "w" },
-      { id: "i6", name: "Line 6 · Fried Liver", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "Qe4", "c6", "a3", "Na6"], side: "w" },
-      { id: "i7", name: "Line 7 · Traxler / Wilkes-Barre", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "Bc5", "Nxf7", "Bxf2+", "Kf1", "Qe7", "Nxh8", "d5", "exd5", "Nd4", "d6", "Qxd6", "Nf7", "Qc5"], side: "w" },
-      { id: "i8", name: "Line 8 · Quiet Italian …h6", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "c3", "d6", "O-O", "h6", "Nbd2", "O-O", "Bb3", "a6", "h3", "Re8", "Re1", "Be6"], side: "w" },
-      { id: "i9", name: "Line 9 · Centre Attack", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6", "Nc3", "O-O", "Be3", "Bg4"], side: "w" },
-      { id: "i10", name: "Line 10 · Two Knights 4.d3", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "a4", "a5", "c3", "Be6", "Nbd2", "Qd7", "Nf1", "Rfe8"], side: "w" },
-      { id: "i11", name: "Line 11 · Traxler 5.Bxf7+", plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "Bc5", "Bxf7+", "Ke7", "Bb3", "Rf8", "O-O", "d6", "Nc3", "Qe8", "d3", "h6", "Nf3", "Bg4"], side: "w" },
+      {
+        id: "i1",
+        name: "Line 1 · Giuoco Pianissimo 5.d3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d3", "d6", "O-O", "a6", "a4", "h6", "b4", "Ba7", "Nbd2", "O-O", "h3", "Ne7"],
+        side: "w",
+      },
+      {
+        id: "i2",
+        name: "Line 2 · Classical 5.d4 6.e5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6", "Be3", "Bg4", "Nc3", "O-O"],
+        side: "w",
+      },
+      {
+        id: "i3",
+        name: "Line 3 · Evans Gambit 4.b4",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxb4", "c3", "Ba5", "d4", "exd4", "O-O", "d6", "cxd4", "Bb6", "Nc3", "Na5", "Bd3", "Ne7"],
+        side: "w",
+      },
+      {
+        id: "i4",
+        name: "Line 4 · Two Knights 4.d3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "a4", "Be6", "Bxe6", "fxe6", "a5", "h6", "a6", "bxa6"],
+        side: "w",
+      },
+      {
+        id: "i5",
+        name: "Line 5 · Two Knights …Na5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2", "h6", "Nf3", "e4", "Ne5", "Bd6", "d4", "exd3", "Nxd3"],
+        side: "w",
+      },
+      {
+        id: "i6",
+        name: "Trap · Fried Liver 6.Nxf7",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
+        side: "w",
+      },
+      {
+        id: "i7",
+        name: "Trap · Traxler 5.Bxf7+",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "Bc5", "Bxf7+", "Ke7", "Bb3", "Qe8", "d3", "d6", "Nf3", "Bg4", "Be3", "Qg6", "Bxc5", "dxc5", "Nbd2"],
+        side: "w",
+      },
+      {
+        id: "i8",
+        name: "Trap · Lolli 6.d4",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "d4", "Nxd4", "c3", "b5", "Bd3", "h6", "Nxf7", "Kxf7", "cxd4", "exd4"],
+        side: "w",
+      },
     ],
   },
   {
