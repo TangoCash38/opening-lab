@@ -1,16 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Chess, type Square, type Move } from "chess.js";
 import {
-  isPunishLine,
-  punishPausePly,
   type OpeningLine,
   type Pack,
 } from "@/data/packs";
-import {
-  isMistakeJustPlayed,
-  nextPunishmentBannerState,
-  type PunishmentBannerState,
-} from "@/lib/punishment";
 import {
   soundBad,
   soundMove,
@@ -180,9 +173,7 @@ function takeBackPlyCount(
 }
 
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
-  const isPunish = isPunishLine(line);
-  const pausePly = isPunish ? punishPausePly(line) : -1;
-  const [mode, setMode] = useState<Mode>(isPunish ? "practice" : initialMode);
+  const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
   const [game, setGame] = useState(() => new Chess());
@@ -190,9 +181,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const [selected, setSelected] = useState<Square | null>(null);
   const [wrongUntil, setWrongUntil] = useState<Square | null>(null);
   const [status, setStatus] = useState({
-    text: isPunish
-      ? "Tap Start — the game plays to the mistake"
-      : "Your move",
+    text: "Your move",
     cls: "",
   });
   const [session, setSession] = useState(0);
@@ -202,7 +191,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   );
   const [hintsReady, setHintsReady] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [banner, setBanner] = useState<PunishmentBannerState>({ kind: "idle" });
   const [nudgeTest, setNudgeTest] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
   const [playingOn, setPlayingOn] = useState(false);
@@ -213,9 +201,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     to: Square;
   } | null>(null);
   const [playLevel, setPlayLevel] = useState<PlayLevel | null>("intermediate");
-  const [punishStarted, setPunishStarted] = useState(false);
-  const [hintUsed, setHintUsed] = useState(false);
-  const [punishHint, setPunishHint] = useState("");
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -223,7 +208,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const notationStripRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
   const playingOnRef = useRef(false);
-  const hintUsedRef = useRef(false);
   const playOnStartPlyRef = useRef(line.plies.length);
   const engineRef = useRef<PlayEngine | null>(null);
   const playLevelRef = useRef<PlayLevel>("intermediate");
@@ -310,16 +294,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setPlyIndex(0);
       setSelected(null);
       setWrongUntil(null);
-      setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
-      setPunishStarted(false);
-      setHintUsed(false);
-      setPunishHint("");
-      hintUsedRef.current = false;
       playOnStartPlyRef.current = line.plies.length;
       setStatus({
-        text: isPunish
-          ? "Tap Start — the game plays to the mistake"
-          : (nextMode ?? mode) === "learn"
+        text: (nextMode ?? mode) === "learn"
             ? "Your move (Practice)"
             : "Your move",
         cls: "",
@@ -329,7 +306,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setCelebrate(false);
       setSession((s) => s + 1);
     },
-    [clearAllTimers, dropEngine, mode, isPunish, line.plies.length],
+    [clearAllTimers, dropEngine, mode, line.plies.length],
   );
 
   const changeMode = (m: Mode) => {
@@ -398,50 +375,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       return;
     }
 
-    // Punishment drill: opponent just played the intentional blunder
-    if (
-      line.punishment &&
-      isMistakeJustPlayed(
-        line.punishment.mistakePlyIndex,
-        pending.nextPly,
-        pending.userMove,
-      )
-    ) {
-      setBanner(
-        nextPunishmentBannerState(
-          { kind: "idle" },
-          {
-            type: "mistake_played",
-            banner: line.punishment.banner,
-            prompt: line.punishment.prompt,
-          },
-        ),
-      );
-      setStatus({
-        text: line.punishment.prompt ?? "Find the punishment",
-        cls: "warn",
-      });
-      if (mode === "learn") scheduleHints();
-      else setHintsReady(true);
-      return;
-    }
-
-    if (
-      pending.nextPly >= line.plies.length ||
-      (isPunish && pending.userMove && pending.nextPly > pausePly)
-    ) {
-      if (line.punishment) {
-        setBanner(
-          nextPunishmentBannerState(
-            { kind: "idle" },
-            {
-              type: "line_complete",
-              explanation: line.punishment.successExplanation,
-            },
-          ),
-        );
-      }
-
+    if (pending.nextPly >= line.plies.length) {
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
@@ -456,11 +390,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         return;
       }
 
-      if (practiceMissedRef.current || hintUsedRef.current) {
+      if (practiceMissedRef.current) {
         setStatus({
-          text: hintUsedRef.current
-            ? "Hint used — Play on from here"
-            : "Finished, but you missed a move — Test again to go green",
+          text: "Finished, but you missed a move — Test again to go green",
           cls: "done",
         });
         soundWin();
@@ -468,9 +400,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       }
 
       setStatus({
-        text: isPunish || line.punishment
-          ? "Punishment found — well done!"
-          : "Line complete — well done!",
+        text: "Line complete — well done!",
         cls: "done",
       });
       soundWin();
@@ -484,25 +414,22 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
     if (pending.userMove) {
       soundOk();
-      // Keep blunder banner visible through the punish sequence
       setStatus({ text: "Good", cls: "ok" });
       setHintsReady(false);
     } else {
       setStatus({
-        text: isPunish
-          ? "Your move — spot the punish"
-          : mode === "learn"
+        text:
+          mode === "learn"
             ? "Your move (Practice)"
             : "Your move",
         cls: "",
       });
-      if (mode === "learn" && !isPunish) scheduleHints();
+      if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [isPunish, pausePly, line.plies.length, line.punishment, line.side, mode, scheduleHints, onLineComplete, onLearnDone]);
+  }, [line.plies.length, line.side, mode, scheduleHints, onLineComplete, onLearnDone]);
 
   useEffect(() => {
-    if (isPunish) return;
     clearReplyTimer();
     if (playingOn) return;
     if (busy || slide) return;
@@ -547,65 +474,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     slide,
     session,
     playingOn,
-    isPunish,
     line.plies.length,
     isUserTurn,
-    expectedMove,
-    clearReplyTimer,
-    beginSlide,
-  ]);
-
-  // Punish spots: auto-play both sides up to pausePly, then wait.
-  // Must not touch timers on book lines — this effect still mounts there.
-  useEffect(() => {
-    if (!isPunish || !punishStarted) return;
-    clearReplyTimer();
-    if (playingOn) return;
-    if (busy || slide) return;
-    if (plyIndex >= pausePly) return;
-    if (plyIndex >= line.plies.length) return;
-
-    setStatus({ text: "…", cls: "" });
-    setHintsReady(false);
-    const idx = plyIndex;
-    const fenNow = game.fen();
-    const gen = replyGenRef.current;
-    replyTimer.current = setTimeout(() => {
-      if (gen !== replyGenRef.current) return;
-      const g = new Chess(fenNow);
-      const exp = expectedMove(g, idx);
-      if (!exp) return;
-      const pieceCode = fenPieceAt(g, exp.from as Square);
-      if (!pieceCode) return;
-      const next = new Chess(fenNow);
-      const ok = next.move({
-        from: exp.from,
-        to: exp.to,
-        promotion: exp.promotion || "q",
-      });
-      if (!ok) return;
-      beginSlide(
-        exp.from as Square,
-        exp.to as Square,
-        pieceCode,
-        next,
-        idx + 1,
-        false,
-      );
-    }, OPPONENT_THINK_MS);
-
-    return clearReplyTimer;
-  }, [
-    isPunish,
-    punishStarted,
-    pausePly,
-    plyIndex,
-    game,
-    busy,
-    slide,
-    session,
-    playingOn,
-    line.plies.length,
     expectedMove,
     clearReplyTimer,
     beginSlide,
@@ -701,8 +571,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     if (from === to) return;
     if (busy || slide || engineBusy) return;
     if (pendingPromo) return;
-    if (isPunish && !punishStarted) return;
-    if (isPunish && !playingOn && plyIndex !== pausePly) return;
     if (!playingOn && plyIndex >= line.plies.length) return;
     if (!isUserTurn(game)) return;
 
@@ -728,8 +596,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   };
 
   const tryPlay = (from: Square, to: Square, promotion?: string) => {
-    if (isPunish && !punishStarted) return;
-    if (isPunish && !playingOnRef.current && plyIndex !== pausePly) return;
     if (playingOnRef.current) {
       const pieceCode = fenPieceAt(game, from);
       if (!pieceCode) return;
@@ -777,8 +643,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const onSquare = (sq: Square) => {
     if (busy || slide || engineBusy) return;
     if (pendingPromo) return;
-    if (isPunish && !punishStarted) return;
-    if (isPunish && !playingOn && plyIndex !== pausePly) return;
     if (!playingOn && plyIndex >= line.plies.length) return;
     if (!isUserTurn(game)) return;
 
@@ -814,7 +678,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     playOnStartPlyRef.current = game.history().length;
     setPlayingOn(true);
     setCelebrate(false);
-    setBanner({ kind: "idle" });
     setSelected(null);
     setPendingPromo(null);
     setEngineBusy(false);
@@ -872,11 +735,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     const currentPly = onPlay ? game.history().length : plyIndex;
     const floor = onPlay
       ? playOnStartPlyRef.current
-      : isPunish
-        ? pausePly
-        : line.side === "w"
-          ? 0
-          : 1;
+      : line.side === "w"
+        ? 0
+        : 1;
     const target = Math.max(floor, Math.min(nextPly, currentPly));
     if (target >= currentPly) {
       setSelected(null);
@@ -903,45 +764,19 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setPlyIndex(target);
     setLastMove(lastMoveSquares(next));
 
-    if (
-      !onPlay &&
-      line.punishment &&
-      target === line.punishment.mistakePlyIndex + 1
-    ) {
-      setBanner(
-        nextPunishmentBannerState(
-          { kind: "idle" },
-          {
-            type: "mistake_played",
-            banner: line.punishment.banner,
-            prompt: line.punishment.prompt,
-          },
-        ),
-      );
-      setStatus({
-        text: line.punishment.prompt ?? "Find the punishment",
-        cls: "warn",
-      });
-      if (mode === "learn") scheduleHints();
-      else setHintsReady(true);
-      return;
-    }
-
-    setBanner(nextPunishmentBannerState({ kind: "idle" }, { type: "reset" }));
     if (onPlay) {
       setHintsReady(false);
       setStatus({ text: "Your move — playing on", cls: "" });
       return;
     }
     setStatus({
-      text: isPunish
-        ? "Your move — spot the punish"
-        : mode === "learn"
+      text:
+        mode === "learn"
           ? "Your move (Practice)"
           : "Your move",
       cls: "",
     });
-    if (mode === "learn" && !isPunish) scheduleHints();
+    if (mode === "learn") scheduleHints();
     else setHintsReady(true);
   };
 
@@ -960,11 +795,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setStatus({
         text: playingOnRef.current
           ? "Your move — playing on"
-          : isPunish
-            ? "Your move — spot the punish"
-            : mode === "learn"
-              ? "Your move (Practice)"
-              : "Your move",
+          : mode === "learn"
+            ? "Your move (Practice)"
+            : "Your move",
         cls: "",
       });
       return;
@@ -984,7 +817,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       playOnStartPlyRef.current,
       line.side,
       isUserTurn(game),
-      isPunish ? pausePly : undefined,
     );
     if (undo <= 0) {
       setSelected(null);
@@ -994,30 +826,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     jumpToPly(currentPly - undo);
   };
 
-  const startPunish = () => {
-    if (!isPunish || punishStarted) return;
-    setPunishStarted(true);
-    setStatus({
-      text: pausePly <= 0 ? "Your move — spot the punish" : "…",
-      cls: "",
-    });
-    setSession((s) => s + 1);
-  };
-
-  const revealPunishHint = () => {
-    if (!isPunish || !punishStarted || playingOnRef.current) return;
-    const san = line.plies[pausePly];
-    if (!san) return;
-    hintUsedRef.current = true;
-    setHintUsed(true);
-    setPunishHint(san);
-    setStatus({ text: "Hint used — Play on from here", cls: "done" });
-  };
-
   const exp = playingOn ? null : expectedMove(game, plyIndex);
   const userTurn = isUserTurn(game) && !busy && !slide && !engineBusy;
   const showHints =
-    !isPunish &&
     !playingOn &&
     mode === "learn" &&
     userTurn &&
@@ -1025,11 +836,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     plyIndex < line.plies.length;
 
   const hint =
-    isPunish && punishHint
-      ? punishHint
-      : showHints && exp
-        ? `Play: ${line.plies[plyIndex]}`
-        : "";
+    showHints && exp
+      ? `Play: ${line.plies[plyIndex]}`
+      : "";
 
   const historySans = playingOn ? game.history() : line.plies;
   const historyCount = playingOn ? game.history().length : plyIndex;
@@ -1057,13 +866,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             : "text-fg-muted";
 
   const bookDone = status.cls === "done" && !playingOn;
-  // Book: Play on only after a clean Test. Punish: after the move or a hint.
-  const showPlayOn = isPunish
-    ? !playingOn &&
-      punishStarted &&
-      plyIndex >= pausePly &&
-      (hintUsed || plyIndex > pausePly || status.cls === "done")
-    : bookDone && mode === "practice" && !practiceMissedRef.current;
+  const showPlayOn = bookDone && mode === "practice" && !practiceMissedRef.current;
 
 
   const canTakeBack =
@@ -1078,7 +881,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         playOnStartPlyRef.current,
         line.side,
         isUserTurn(game),
-        isPunish ? pausePly : undefined,
       ) > 0);
 
   return (
@@ -1095,11 +897,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       </h2>
       <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[0.95rem] font-semibold">
         <span>{line.name}</span>
-        {isPunish ? (
-          <span className="rounded-full bg-accent/14 px-1.5 py-0.5 text-[0.65rem] font-semibold text-accent">
-            Spot the move
-          </span>
-        ) : null}
       </div>
       <div className="text-[0.78rem] text-fg-subtle">
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
@@ -1133,20 +930,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       ) : null}
 
-      {isPunish ? null : (
-        <div className="my-3.5 flex gap-1.5 rounded-full bg-bg-subtle p-1">
-          <ModeTab active={mode === "learn"} onClick={() => changeMode("learn")}>
-            Practice
-          </ModeTab>
-          <ModeTab
-            active={mode === "practice"}
-            onClick={() => changeMode("practice")}
-            nudge={nudgeTest}
-          >
-            Test
-          </ModeTab>
-        </div>
-      )}
+      <div className="my-3.5 flex gap-1.5 rounded-full bg-bg-subtle p-1">
+        <ModeTab active={mode === "learn"} onClick={() => changeMode("learn")}>
+          Practice
+        </ModeTab>
+        <ModeTab
+          active={mode === "practice"}
+          onClick={() => changeMode("practice")}
+          nudge={nudgeTest}
+        >
+          Test
+        </ModeTab>
+      </div>
 
       <div
         className={`mb-2 min-h-[1.2em] text-center text-[0.85rem] font-semibold text-accent transition-opacity duration-200 ${
@@ -1155,36 +950,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       >
         {hint || "\u00a0"}
       </div>
-
-      {banner.kind === "blunder" && (
-        <div
-          role="status"
-          className="mb-2.5 rounded-xl border border-[color-mix(in_srgb,var(--color-danger)_28%,transparent)] bg-[var(--color-danger-soft)] px-3 py-2.5 text-center"
-        >
-          <div className="text-[0.82rem] font-bold text-[var(--color-danger)]">
-            {banner.message}
-          </div>
-          {banner.prompt ? (
-            <div className="mt-1 text-[0.72rem] font-medium text-fg-muted">
-              {banner.prompt}
-            </div>
-          ) : null}
-        </div>
-      )}
-
-      {banner.kind === "success" && (
-        <div
-          role="status"
-          className="mb-2.5 rounded-xl border border-[color-mix(in_srgb,var(--color-success)_30%,transparent)] bg-[var(--color-success-soft)] px-3 py-2.5 text-center"
-        >
-          <div className="text-[0.82rem] font-bold text-[var(--color-success)]">
-            Punishment secured
-          </div>
-          <div className="mt-1 text-[0.78rem] font-medium text-fg-muted">
-            {banner.message}
-          </div>
-        </div>
-      )}
 
       <div className="relative">
         <ChessBoard
@@ -1203,8 +968,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             !busy &&
             !slide &&
             !engineBusy &&
-            !pendingPromo &&
-            (!isPunish || (punishStarted && plyIndex === pausePly) || playingOn)
+            !pendingPromo
           }
           promotion={
             pendingPromo
@@ -1301,20 +1065,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           >
             Take back
           </button>
-          {isPunish &&
-          punishStarted &&
-          !playingOn &&
-          plyIndex === pausePly &&
-          !hintUsed ? (
-            <button
-              type="button"
-              onClick={revealPunishHint}
-              disabled={busy || Boolean(slide)}
-              className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
-            >
-              Hint
-            </button>
-          ) : null}
           <button
             type="button"
             onClick={onBack}
@@ -1333,11 +1083,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           ) : null}
         </div>
         <div className="trainer-primary">
-          {isPunish && !punishStarted ? (
-            <button type="button" onClick={startPunish} className="play-on-btn">
-              Start
-            </button>
-          ) : null}
           {showPlayOn ? (
             <>
               <button
