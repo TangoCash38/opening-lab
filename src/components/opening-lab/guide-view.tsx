@@ -29,7 +29,7 @@ export function GuideView({ onBack }: Props) {
         <br />
         <strong>Ruy Lopez</strong> — 5 book lines + 2 traps.
         <br />
-        <strong>King’s Gambit</strong> — 5 book lines + 2 traps.
+        <strong>King’s Gambit</strong> — 5 book lines.
         <br />
         All four are free.
       </Block>

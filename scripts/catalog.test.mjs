@@ -59,3 +59,38 @@ test("Help and home name all four free openings and do not pitch Lab+", () => {
   assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, and King’s Gambit are free/);
   assert.doesNotMatch(hero, /Lab\+/);
 });
+
+test("King’s Gambit Help/card is 5 book lines only — no Allgaier, no Muzio, no + 2 traps", () => {
+  const guide = readFileSync(
+    join(root, "src/components/opening-lab/guide-view.tsx"),
+    "utf8",
+  );
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const packList = readFileSync(
+    join(root, "src/components/opening-lab/pack-list.tsx"),
+    "utf8",
+  );
+
+  assert.match(guide, /<strong>King’s Gambit<\/strong> — 5 book lines\./);
+  assert.doesNotMatch(guide, /King’s Gambit.*\+ 2 traps/);
+  assert.doesNotMatch(guide, /Allgaier/);
+  assert.doesNotMatch(guide, /Muzio/);
+
+  const start = packs.indexOf('id: "kings-gambit"');
+  assert.ok(start >= 0, "kings-gambit pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const kg = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+  assert.match(kg, /blurb: "5 book lines"/);
+  assert.match(kg, /closedLabel: "Free · 5 book lines"/);
+  assert.doesNotMatch(kg, /\+ 2 traps/);
+  assert.doesNotMatch(kg, /Allgaier/);
+  assert.doesNotMatch(kg, /Muzio/);
+  assert.doesNotMatch(kg, /id: "kg6"/);
+  assert.doesNotMatch(kg, /id: "kg7"/);
+  const lineIds = [...kg.matchAll(/id: "(kg\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, ["kg1", "kg2", "kg3", "kg4", "kg5"]);
+
+  assert.doesNotMatch(packList, /King’s Gambit.*\+ 2 traps/);
+  assert.doesNotMatch(packList, /Allgaier/);
+  assert.doesNotMatch(packList, /Muzio/);
+});
