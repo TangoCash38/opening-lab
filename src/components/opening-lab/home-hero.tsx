@@ -40,7 +40,7 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
         Train openings the strict way
       </h1>
       <p className="mb-4 text-[0.95rem] text-fg-muted">
-        Free Scotch Gambit is ready. Follow the green hint. Wrong moves are
+        Free Scotch Gambit is ready. Follow the yellow hint. Wrong moves are
         rejected.
       </p>
 
