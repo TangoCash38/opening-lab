@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -16,7 +16,7 @@ import {
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
-import { isPlayApp } from "@/lib/play-app";
+import { isPlayWrap } from "@/lib/play-app";
 import {
   hasPlayBillingBridge,
   restorePlayLabPlus,
@@ -207,7 +207,7 @@ export function PackList({ onStartLine }: Props) {
   const resumedCheckout = useRef(false);
 
   useEffect(() => {
-    setPlayApp(isPlayApp());
+    setPlayApp(isPlayWrap());
   }, []);
 
   const catalog = visiblePacks(PACKS);
@@ -218,6 +218,8 @@ export function PackList({ onStartLine }: Props) {
   const clubWeapons = catalog.find((p) => p.id === "club-weapons");
   const morePacks =
     !!classicGames || !!vsLondon || !!clubWeapons || white.length > 0 || black.length > 0;
+
+  const offerPlayLabPlus = catalogOffersLabPlus(catalog);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -269,6 +271,7 @@ export function PackList({ onStartLine }: Props) {
   };
 
   const playYearly = async () => {
+    if (!offerPlayLabPlus) return;
     setPayError(null);
     setPayBusy(true);
     try {
@@ -303,6 +306,7 @@ export function PackList({ onStartLine }: Props) {
   };
 
   const playRestore = async () => {
+    if (!offerPlayLabPlus) return;
     setPayError(null);
     setPayBusy(true);
     try {
@@ -336,7 +340,12 @@ export function PackList({ onStartLine }: Props) {
   };
 
   const pay = async (kind: CheckoutKind, packId?: string) => {
-    if (playApp || isPlayApp()) {
+    if (playApp || isPlayWrap()) {
+      if (!offerPlayLabPlus) {
+        setShowSub(false);
+        setPayBusy(false);
+        return;
+      }
       if (kind === "yearly") {
         await playYearly();
         return;
@@ -385,7 +394,8 @@ export function PackList({ onStartLine }: Props) {
 
   useEffect(() => {
     if (resumedCheckout.current) return;
-    if (playApp || isPlayApp()) {
+    if (playApp || isPlayWrap()) {
+      if (!offerPlayLabPlus) return;
       if (isPending || !signedIn) return;
       const pending = readPendingCheckout();
       if (!pending || pending.kind !== "yearly") return;
@@ -419,9 +429,11 @@ export function PackList({ onStartLine }: Props) {
       ) : null}
 
       {playApp ? (
-        <div className="mb-3">
-          <PlayStoreNotice />
-        </div>
+        offerPlayLabPlus ? (
+          <div className="mb-3">
+            <PlayStoreNotice />
+          </div>
+        ) : null
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
           Only Scotch is on while we check the rest. If a move is wrong, tell us on that line.
@@ -432,6 +444,7 @@ export function PackList({ onStartLine }: Props) {
         playApp={playApp}
         onStartLine={onStartLine}
         onSubscribe={() => {
+          if (playApp && !offerPlayLabPlus) return;
           setPayError(null);
           setShowSub(true);
         }}
@@ -502,7 +515,7 @@ export function PackList({ onStartLine }: Props) {
 
       <LegalFooter />
 
-      {showSub && (
+      {showSub && (!playApp || offerPlayLabPlus) && (
         <SubscribeModal
           onClose={() => {
             if (!payBusy) setShowSub(false);
