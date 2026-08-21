@@ -14,7 +14,7 @@ Strict chess opening memory training — Practice & Test modes, animated board, 
 
 | Tier | Price |
 |------|--------|
-| **Scotch Gambit** (10 lines) | Free |
+| **Scotch Gambit** (5 main lines and 2 traps) | Free |
 | 5-line packs | **£1** |
 | 8–10 line packs | **£1.99** |
 | **Opening Lab+** | **£4.99 / month** or **£29.99 / year** |
