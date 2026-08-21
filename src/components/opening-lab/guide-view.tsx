@@ -43,7 +43,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Practice mode">
-        Green hints show the next move. The opponent replies automatically.
+        Yellow hints show the next move. The opponent replies automatically.
         Follow the exact line. Practice does not complete the line.
       </Block>
 
