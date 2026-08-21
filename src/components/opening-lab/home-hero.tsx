@@ -24,7 +24,7 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
   const scotch = catalog.find((p) => p.id === "scotch");
   const line = scotch?.lines[0];
   const [linesOpen, setLinesOpen] = useState(false);
-  const offerLabPlus = !playApp || catalogOffersLabPlus(catalog);
+  const offerLabPlus = catalogOffersLabPlus(catalog);
 
   const game = useMemo(() => new Chess(), []);
   const expected = useMemo(() => {
@@ -42,8 +42,8 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
         Train openings the strict way
       </h1>
       <p className="mb-4 text-[0.95rem] text-fg-muted">
-        Free Scotch Gambit is ready. Follow the yellow hint. Wrong moves are
-        rejected.
+        Scotch Gambit and Italian Game are free. Follow the yellow hint.
+        Wrong moves are rejected.
       </p>
 
       <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
