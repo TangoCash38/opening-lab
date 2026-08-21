@@ -53,7 +53,7 @@ export function HomeHero({ onStartLine, onSubscribe, playApp = false }: Props) {
             Scotch Gambit
           </h2>
           <p className="mt-0.5 text-[0.82rem] text-fg-muted">
-            {scotch?.lines.length ?? 10} lines · yours forever
+            5 main lines and 2 traps · yours forever
           </p>
         </div>
 
