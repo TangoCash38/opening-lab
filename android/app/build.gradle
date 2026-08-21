@@ -17,7 +17,7 @@ def twaManifest = [
     navigationDividerColor: '#00000000',
     navigationDividerColorDark: '#00000000',
     backgroundColor: '#F4EFE6',
-    enableNotifications: true,
+    enableNotifications: false,
     shortcuts: [],
     splashScreenFadeOutDuration: 300,
     generatorApp: 'opening-lab-twa',

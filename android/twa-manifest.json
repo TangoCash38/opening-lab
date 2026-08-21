@@ -11,7 +11,7 @@
   "navigationDividerColor": "#00000000",
   "navigationDividerColorDark": "#00000000",
   "backgroundColor": "#F4EFE6",
-  "enableNotifications": true,
+  "enableNotifications": false,
   "startUrl": "/",
   "iconUrl": "https://www.openinglab.co.uk/icons/icon-512.png",
   "maskableIconUrl": "https://www.openinglab.co.uk/icons/icon-512-maskable.png",
