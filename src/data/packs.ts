@@ -88,7 +88,7 @@ export const PACKS: Pack[] = [
     isFree: true,
     isPremium: false,
     price: null,
-    blurb: "5 book lines · 4…Nf6, London, Max Lange, Dubois–Réti, Ghulam-Kassim",
+    blurb: "5 book lines + 2 traps · 4…Nf6, London, Max Lange, Dubois–Réti, Ghulam-Kassim",
     lines: [
       {
         id: "s1",
@@ -118,6 +118,18 @@ export const PACKS: Pack[] = [
         id: "s10",
         name: "Line 5 · Ghulam-Kassim 5.O-O Nxe4",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
+        side: "w",
+      },
+      {
+        id: "s19",
+        name: "Trap · Greedy pawn (Haxo)",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+"],
+        side: "w",
+      },
+      {
+        id: "s20",
+        name: "Trap · …Be7",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "bxc3", "Be7", "Qd5"],
         side: "w",
       },
     ],
