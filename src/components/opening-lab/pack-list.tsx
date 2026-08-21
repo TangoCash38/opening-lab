@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, playVisiblePacks, visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -210,7 +210,8 @@ export function PackList({ onStartLine }: Props) {
     setPlayApp(isPlayWrap());
   }, []);
 
-  const catalog = visiblePacks(PACKS);
+  const catalog =
+    playApp || isPlayWrap() ? playVisiblePacks(PACKS) : visiblePacks(PACKS);
   const white = catalog.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london");
   const classicGames = catalog.find((p) => p.id === "classic-games");
@@ -452,7 +453,9 @@ export function PackList({ onStartLine }: Props) {
 
       {morePacks ? (
         <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-          {playApp ? "More packs · Lab+ yearly on Google Play." : "More packs"}
+          {playApp && offerPlayLabPlus
+            ? "More packs · Lab+ yearly on Google Play."
+            : "More packs"}
         </p>
       ) : null}
 

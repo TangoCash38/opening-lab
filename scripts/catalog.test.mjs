@@ -16,15 +16,18 @@ test("catalog only shows Scotch while other packs stay in packs.ts", () => {
   assert.match(src, /export function visiblePacks/);
 });
 
-test("Lab+ offer gate is visible pack count or any locked pack, not a forever hide", () => {
+test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(src, /export function catalogOffersLabPlus/);
-  assert.match(src, /packs\.length > 1/);
-  assert.match(src, /packs\.some\(\(pack\) => !pack\.isFree\)/);
+  assert.match(src, /export function hasPaidPlaySkuPath/);
+  assert.match(src, /export function playVisiblePacks/);
+  assert.match(src, /packs\.some\(hasPaidPlaySkuPath\)/);
+  assert.doesNotMatch(src, /packs\.length > 1/);
 
   const packList = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
   const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
   const playApp = readFileSync(join(root, "src/lib/play-app.ts"), "utf8");
   assert.match(packList, /catalogOffersLabPlus/);
+  assert.match(packList, /playVisiblePacks/);
   assert.match(hero, /catalogOffersLabPlus/);
   assert.match(playApp, /export function isPlayWrap/);
 });
