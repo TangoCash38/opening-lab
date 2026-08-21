@@ -151,14 +151,13 @@
   }
 
   .sq-selected {
-    background-color: #ecec4a;
-    background-image: none;
-    box-shadow: none;
+    background-image: linear-gradient(#4e381c1f, #4e381c1f);
+    box-shadow: inset 0 0 0 2.5px rgba(78, 56, 28, 0.42);
   }
 
   .sq-dark.sq-selected {
-    background-color: #c4d22e;
-    background-image: none;
+    background-image: linear-gradient(#4e381c1f, #4e381c1f);
+    box-shadow: inset 0 0 0 2.5px rgba(78, 56, 28, 0.42);
   }
 
   .sq-hint-from {
@@ -195,10 +194,7 @@
   /* Quiet brown dim — not yellow. Yellow is only for choosing a move. */
   .sq-last-from,
   .sq-last-to {
-    background-image: linear-gradient(
-      rgba(78, 56, 28, 0.12),
-      rgba(78, 56, 28, 0.12)
-    );
+    background-image: linear-gradient(#4e381c1f, #4e381c1f);
   }
 
   .legal-dot {
@@ -574,57 +570,58 @@
   filter: drop-shadow(0 6px 10px rgba(28, 25, 21, 0.38));
 }
 
-/* Compact Play-on row: small strength chips + one primary CTA. */
-.play-on-bar {
+/* One bottom row: muted secondaries left, one primary right. */
+.trainer-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  min-width: 0;
+}
+
+.trainer-secondaries {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.trainer-primary {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  margin: 0 0 0.45rem;
-  min-width: 0;
+  gap: 0.3rem;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
-.strength-pick {
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 0;
-  justify-content: flex-end;
-  gap: 0.22rem;
-}
-
-.strength-btn {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 2rem;
+.strength-cycle {
+  flex: 0 0 auto;
+  min-height: 1.55rem;
   border: none;
   border-radius: 9999px;
-  padding: 0.28rem 0.4rem;
-  font-size: clamp(0.58rem, 2.5vw, 0.7rem);
+  padding: 0.18rem 0.5rem;
+  font-size: 0.62rem;
   font-weight: 650;
   letter-spacing: 0.01em;
   background: var(--color-bg-subtle);
   color: var(--color-fg-muted);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.strength-btn.is-on {
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
-}
-
-.strength-btn:active {
+.strength-cycle:active {
   transform: scale(0.95);
 }
 
 .play-on-btn {
   flex: 0 0 auto;
-  min-height: 2rem;
+  min-height: 2.75rem;
   border: none;
   border-radius: 9999px;
-  padding: 0.35rem 0.85rem;
-  font-size: 0.78rem;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.85rem;
   font-weight: 700;
   background: var(--color-accent);
   color: var(--color-accent-fg);
@@ -633,19 +630,4 @@
 
 .play-on-btn:active {
   transform: scale(0.96);
-}
-
-.trainer-actions {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-  min-width: 0;
-}
-
-.trainer-actions > button {
-  flex: 0 1 auto;
-  min-width: 0;
 }

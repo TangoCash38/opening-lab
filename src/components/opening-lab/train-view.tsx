@@ -350,6 +350,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setSelected(null);
       setBusy(true);
       setHintsReady(false);
+      // Brown last-move wash immediately; hint-from/to drop with showHints.
+      setLastMove({ from, to });
       pendingCommit.current = {
         nextGame,
         nextPly,
@@ -797,6 +799,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     }
   };
 
+  const cyclePlayLevel = () => {
+    const cur = playLevel ?? "intermediate";
+    const i = PLAY_LEVELS.indexOf(cur);
+    setPlayLevel(PLAY_LEVELS[(i + 1) % PLAY_LEVELS.length]!);
+  };
+
   const startPlayOn = () => {
     if (playingOnRef.current) return;
     const level: PlayLevel = playLevel ?? "intermediate";
@@ -1220,11 +1228,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         ) : null}
       </div>
 
-      {/* Move history notation strip — horizontal, scrollable */}
+      {/* Move history — wrap so the current ply stays readable */}
       <div
         ref={notationStripRef}
-        className="mt-2.5 mb-1 flex gap-1.5 overflow-x-auto rounded-xl border border-border bg-bg-elevated px-2.5 py-2 scrollbar-thin"
-        style={{ WebkitOverflowScrolling: "touch" }}
+        className="mt-2.5 mb-1 flex flex-wrap gap-x-1.5 gap-y-1 rounded-xl border border-border bg-bg-elevated px-2.5 py-2"
         aria-label="Move history"
       >
         {notationPairs.length === 0 ? (
@@ -1245,7 +1252,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
                   jumpToPly(pair.black ? pair.num * 2 : pair.num * 2 - 1);
                 }
               }}
-              className={`shrink-0 cursor-pointer whitespace-nowrap rounded-md px-1.5 py-0.5 text-[0.78rem] tabular-nums ${
+              className={`cursor-pointer whitespace-nowrap rounded-md px-1.5 py-0.5 text-[0.78rem] tabular-nums ${
                 pair.active
                   ? "bg-accent/12 font-bold text-accent"
                   : "text-fg-muted"
@@ -1276,94 +1283,99 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       ) : null}
 
-      {isPunish && !punishStarted ? (
-        <div className="play-on-bar">
-          <button type="button" onClick={startPunish} className="play-on-btn">
-            Start
-          </button>
-        </div>
-      ) : null}
-
-      {showPlayOn ? (
-        <div className="play-on-bar">
-          <div
-            className="strength-pick"
-            role="group"
-            aria-label="Computer strength"
-          >
-            {PLAY_LEVELS.map((lvl) => (
-              <button
-                key={lvl}
-                type="button"
-                onClick={() => setPlayLevel(lvl)}
-                className={`strength-btn${playLevel === lvl ? " is-on" : ""}`}
-                aria-pressed={playLevel === lvl}
-              >
-                {PLAY_LEVEL_LABEL[lvl]}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={startPlayOn}
-            className="play-on-btn"
-          >
-            Play on
-          </button>
-        </div>
-      ) : null}
-
       <div className="trainer-actions">
-        <button
-          type="button"
-          onClick={() => resetLine()}
-          className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
-        >
-          Reset
-        </button>
-        <button
-          type="button"
-          onClick={takeBack}
-          disabled={!canTakeBack}
-          aria-label="Take back"
-          className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
-        >
-          Take back
-        </button>
-        {isPunish &&
-        punishStarted &&
-        !playingOn &&
-        plyIndex === pausePly &&
-        !hintUsed ? (
+        <div className="trainer-secondaries">
           <button
             type="button"
-            onClick={revealPunishHint}
-            disabled={busy || Boolean(slide)}
-            className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
+            onClick={() => resetLine()}
+            className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
           >
-            Hint
+            Reset
           </button>
-        ) : null}
-        <button
-          type="button"
-          onClick={onBack}
-          className="rounded-full bg-accent px-4 py-2 text-[0.82rem] font-semibold text-accent-fg active:scale-95"
-        >
-          Done</button>
-        {bookDone && mode === "learn" ? (
           <button
             type="button"
-            onClick={() => changeMode("practice")}
-            className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
+            onClick={takeBack}
+            disabled={!canTakeBack}
+            aria-label="Take back"
+            className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
           >
-            Start Test
+            Take back
           </button>
-        ) : null}
-        {bookDone && mode === "practice" ? (
-          <button type="button" onClick={onTrainNext ?? onBack} className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95">
-            Train next due
+          {isPunish &&
+          punishStarted &&
+          !playingOn &&
+          plyIndex === pausePly &&
+          !hintUsed ? (
+            <button
+              type="button"
+              onClick={revealPunishHint}
+              disabled={busy || Boolean(slide)}
+              className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
+            >
+              Hint
+            </button>
+          ) : null}
+          <button
+            type="button"
+            onClick={onBack}
+            className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
+          >
+            Done
           </button>
-        ) : null}
+          {bookDone && mode === "practice" && showPlayOn ? (
+            <button
+              type="button"
+              onClick={onTrainNext ?? onBack}
+              className="rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
+            >
+              Train next due
+            </button>
+          ) : null}
+        </div>
+        <div className="trainer-primary">
+          {isPunish && !punishStarted ? (
+            <button type="button" onClick={startPunish} className="play-on-btn">
+              Start
+            </button>
+          ) : null}
+          {showPlayOn ? (
+            <>
+              <button
+                type="button"
+                onClick={cyclePlayLevel}
+                className="strength-cycle"
+                aria-label={`Computer strength: ${PLAY_LEVEL_LABEL[playLevel ?? "intermediate"]}. Tap to change.`}
+              >
+                {PLAY_LEVEL_LABEL[playLevel ?? "intermediate"]}
+              </button>
+              <button
+                type="button"
+                onClick={startPlayOn}
+                className="play-on-btn"
+              >
+                Play on
+              </button>
+            </>
+          ) : null}
+          {bookDone && mode === "learn" ? (
+            <button
+              type="button"
+              onClick={() => changeMode("practice")}
+              className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
+            >
+              Start Test
+            </button>
+          ) : null}
+          {bookDone && mode === "practice" && !showPlayOn ? (
+            <button
+              type="button"
+              onClick={onTrainNext ?? onBack}
+              className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
+            >
+              Train next due
+            </button>
+          ) : null}
+        </div>
       </div>
       <LineFeedback pack={pack} line={line} />
     </div>
