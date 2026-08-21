@@ -828,7 +828,7 @@ export const PACKS: Pack[] = [
   },
   {
     id: "classic-games",
-    name: "GM Classic Games",
+    name: "Classic Games",
     eco: "Various",
     side: "Mixed",
     section: "special",
