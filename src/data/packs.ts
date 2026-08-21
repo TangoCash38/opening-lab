@@ -369,8 +369,8 @@ export const PACKS: Pack[] = [
     isFree: true,
     isPremium: false,
     price: null,
-    blurb: "5 book lines",
-    closedLabel: "Free · 5 book lines",
+    blurb: "5 book lines + 1 trap",
+    closedLabel: "Free · 5 book lines + 1 trap",
     lines: [
       {
         id: "kg1",
@@ -400,6 +400,12 @@ export const PACKS: Pack[] = [
         id: "kg5",
         name: "Line 5 · Bishop’s Gambit 3.Bc4",
         plies: ["e4", "e5", "f4", "exf4", "Bc4", "Qh4+", "Kf1", "Nf6", "Nf3", "Qh6", "d4", "d6", "Nc3", "Nc6", "e5", "Nh5", "Nd5", "Kd8", "Rg1", "Bg4"],
+        side: "w",
+      },
+      {
+        id: "kg6",
+        name: "Trap · Quaade 9.Qh5",
+        plies: ["e4", "e5", "f4", "exf4", "Nf3", "g5", "Nc3", "g4", "Ne5", "Qh4+", "g3", "fxg3", "Qxg4", "g2+", "Qxh4", "gxh1=Q", "Qh5", "Nh6", "d4", "d6", "Bxh6", "dxe5"],
         side: "w",
       },
     ],
