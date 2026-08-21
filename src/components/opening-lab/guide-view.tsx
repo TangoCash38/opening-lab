@@ -22,19 +22,9 @@ export function GuideView({ onBack }: Props) {
         opening; wrong moves are rejected so the line sticks.
       </Block>
 
-      <Block title="Free pack">
-        <strong>Scotch Gambit</strong> is free — 5 main lines and 2 traps unlock
-        with no purchase. Use it to learn the app and train every day.
-      </Block>
-
-      <Block title="Premium packs & pricing">
-        Scotch is free. Everything else is pay as you go, or Lab+:
-        <br />• <strong>Pay as you go</strong> — £1 or £1.99 per pack, yours
-        forever
-        <br />• <strong>Opening Lab+</strong> — £4.99 a month, or £29.99 a year
-        for every pack
-        <br />
-        If a Lab+ plan ends, packs you bought stay unlocked.
+      <Block title="Free packs">
+        <strong>Scotch Gambit</strong> and <strong>Italian Game</strong> are
+        free. Train both with no purchase.
       </Block>
 
       <Block title="White & Black sections">
@@ -59,8 +49,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Account">
-        Use the profile icon (top right) to sign in. After you pay, unlocks
-        apply on this device. See our{" "}
+        Use the profile icon (top right) to sign in. See our{" "}
         <Link to="/privacy" className="font-semibold text-accent">
           Privacy Policy
         </Link>{" "}
