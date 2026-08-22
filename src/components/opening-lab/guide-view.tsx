@@ -35,7 +35,9 @@ export function GuideView({ onBack }: Props) {
         <br />
         <strong>Scotch Game</strong> — 5 book lines + 1 trap.
         <br />
-        All six are free.
+        <strong>Open Sicilian</strong> — 5 book lines + 1 trap.
+        <br />
+        All seven are free.
       </Block>
 
       <Block title="White & Black / Special packs">
