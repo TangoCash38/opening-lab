@@ -33,7 +33,9 @@ export function GuideView({ onBack }: Props) {
         <br />
         <strong>Vienna Game</strong> — 5 book lines + 1 trap.
         <br />
-        All five are free.
+        <strong>Scotch Game</strong> — 5 book lines + 1 trap.
+        <br />
+        All six are free.
       </Block>
 
       <Block title="White & Black / Special packs">

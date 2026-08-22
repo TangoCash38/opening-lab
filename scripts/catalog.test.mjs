@@ -7,11 +7,11 @@ import test from "node:test";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
 
-test("catalog shows Scotch, Italian, Ruy, King’s Gambit, and Vienna Game while other packs stay in packs.ts", () => {
+test("catalog shows Scotch, Italian, Ruy, King’s Gambit, Vienna Game, and Scotch Game while other packs stay in packs.ts", () => {
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["scotch", "italian", "ruy", "kings-gambit", "vienna-game"]);
+  assert.deepEqual(ids, ["scotch", "italian", "ruy", "kings-gambit", "vienna-game", "scotch-game"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 });
@@ -35,7 +35,7 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(playApp, /export function isPlayWrap/);
 });
 
-test("Help and home name all five free openings and do not pitch Lab+", () => {
+test("Help and home name all six free openings and do not pitch Lab+", () => {
   const guide = readFileSync(
     join(root, "src/components/opening-lab/guide-view.tsx"),
     "utf8",
@@ -50,14 +50,15 @@ test("Help and home name all five free openings and do not pitch Lab+", () => {
   assert.match(guide, /Ruy Lopez/);
   assert.match(guide, /King’s Gambit/);
   assert.match(guide, /Vienna Game/);
-  assert.match(guide, /All five are free/);
+  assert.match(guide, /Scotch Game/);
+  assert.match(guide, /All six are free/);
   assert.doesNotMatch(guide, /Lab\+/);
   assert.doesNotMatch(guide, /£4\.99/);
   assert.doesNotMatch(guide, /£29\.99/);
   assert.doesNotMatch(guide, /Pay as you go/);
   assert.doesNotMatch(guide, /Premium packs/);
 
-  assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, King’s Gambit, and Vienna Game are free/);
+  assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, King’s Gambit, Vienna Game, and Scotch Game are free/);
   assert.doesNotMatch(hero, /Lab\+/);
 });
 
@@ -109,7 +110,8 @@ test("Vienna Game Help/card is 5 book lines + 1 trap — Würzburger only, no Ha
   );
 
   assert.match(guide, /<strong>Vienna Game<\/strong> — 5 book lines \+ 1 trap\./);
-  assert.match(guide, /All five are free/);
+  assert.match(guide, /All six are free/);
+  assert.doesNotMatch(guide, /All five are free/);
   assert.doesNotMatch(guide, /Hamppe/);
   assert.doesNotMatch(guide, /Muzio/);
   assert.doesNotMatch(guide, /All four are free/);
@@ -137,4 +139,43 @@ test("Vienna Game Help/card is 5 book lines + 1 trap — Würzburger only, no Ha
 
   assert.doesNotMatch(packList, /Hamppe/);
   assert.doesNotMatch(packList, /Muzio/);
+});
+
+test("Scotch Game Help/card is 5 book lines + 1 trap — Steinitz trap only, no GM, no Lolli, no 4.Bc4 gambit leftovers", () => {
+  const guide = readFileSync(
+    join(root, "src/components/opening-lab/guide-view.tsx"),
+    "utf8",
+  );
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const packList = readFileSync(
+    join(root, "src/components/opening-lab/pack-list.tsx"),
+    "utf8",
+  );
+
+  assert.match(guide, /<strong>Scotch Game<\/strong> — 5 book lines \+ 1 trap\./);
+  assert.match(guide, /All six are free/);
+  assert.doesNotMatch(guide, /All five are free/);
+  assert.doesNotMatch(guide, /Lolli/);
+
+  const start = packs.indexOf('id: "scotch-game"');
+  assert.ok(start >= 0, "scotch-game pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const sg = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+  assert.match(sg, /name: "Scotch Game"/);
+  assert.match(sg, /isFree: true/);
+  assert.match(sg, /isPremium: false/);
+  assert.match(sg, /price: null/);
+  assert.match(sg, /blurb: "5 book lines \+ 1 trap"/);
+  assert.match(sg, /closedLabel: "Free · 5 book lines \+ 1 trap"/);
+  assert.doesNotMatch(sg, /8 lines ·/);
+  assert.doesNotMatch(sg, /Lolli/);
+  assert.doesNotMatch(sg, /Model ·/);
+  assert.doesNotMatch(sg, /id: "sg7"/);
+  assert.doesNotMatch(sg, /id: "sg8"/);
+  assert.match(sg, /id: "sg6"/);
+  assert.match(sg, /name: "Trap · Steinitz 7\.Nb5"/);
+  const lineIds = [...sg.matchAll(/id: "(sg\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, ["sg1", "sg2", "sg3", "sg4", "sg5", "sg6"]);
+
+  assert.doesNotMatch(packList, /Lolli/);
 });
