@@ -437,7 +437,7 @@ export function PackList({ onStartLine }: Props) {
         ) : null
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
-          These packs are on while we check the rest. If a move is wrong, tell us on that line.
+          Scotch, Italian, Ruy, King’s Gambit, Vienna, and Scotch Game are on while we check the rest. If a move is wrong, tell us on that line.
         </p>
       )}
 
