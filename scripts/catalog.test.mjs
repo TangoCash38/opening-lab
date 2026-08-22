@@ -60,6 +60,16 @@ test("Help and home name all six free openings and do not pitch Lab+", () => {
 
   assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, King’s Gambit, Vienna Game, and Scotch Game are free/);
   assert.doesNotMatch(hero, /Lab\+/);
+
+  const packList = readFileSync(
+    join(root, "src/components/opening-lab/pack-list.tsx"),
+    "utf8",
+  );
+  assert.match(
+    packList,
+    /Scotch, Italian, Ruy, King’s Gambit, Vienna, and Scotch Game are on while we check the rest/,
+  );
+  assert.doesNotMatch(packList, /and Vienna Game are on/);
 });
 
 test("King’s Gambit Help/card is 5 book lines + 1 trap — Quaade only, no Allgaier, no Muzio", () => {
