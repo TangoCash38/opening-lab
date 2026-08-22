@@ -21,9 +21,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, and Open Sicilian — all other packs are paid */
+  /** Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, and Open Sicilian) */
+  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -264,20 +264,52 @@ export const PACKS: Pack[] = [
   },
   {
     id: "french-as-white",
-    name: "French Defense (as White)",
+    name: "French Defence",
     eco: "C00–C19",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
-    price: "£1",
-    blurb: "5-line White survey · Advance, Milner-Barry, Winawer, Tarrasch & Exchange",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "5 book lines + 1 trap",
+    closedLabel: "Free · 5 book lines + 1 trap",
     lines: [
-      { id: "fw1", name: "Line 1 · Advance 6.a3 …c4", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "O-O", "Ne7", "Rb1", "Nec6"], side: "w" },
-      { id: "fw2", name: "Line 2 · Milner-Barry Gambit", plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "Bd3", "cxd4", "cxd4", "Bd7", "O-O", "Nxd4", "Nxd4", "Qxd4", "Nc3", "Qxe5"], side: "w" },
-      { id: "fw3", name: "Line 3 · Winawer Variation", plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Qg4", "Qc7", "Qxg7", "Rg8", "Qxh7", "cxd4", "Ne2", "Nbc6"], side: "w" },
-      { id: "fw4", name: "Line 4 · Tarrasch Variation", plies: ["e4", "e6", "d4", "d5", "Nd2", "c5", "exd5", "exd5", "Ngf3", "Nc6", "Bb5", "Bd6", "dxc5", "Bxc5", "O-O", "Ne7", "Nb3", "Bd6", "Re1", "O-O"], side: "w" },
-      { id: "fw5", name: "Line 5 · Exchange Variation", plies: ["e4", "e6", "d4", "d5", "exd5", "exd5", "Nf3", "Bd6", "Bd3", "Nc6", "c3", "Nge7", "O-O", "Bg4", "Re1", "Qd7", "Nbd2", "O-O-O", "b4", "Rde8"], side: "w" },
+      {
+        id: "fr1",
+        name: "Line 1 · Advance 3.e5",
+        plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "a3", "c4", "Nbd2", "Na5", "Be2", "Bd7", "Rb1", "h6", "g3", "Ne7", "h4", "O-O-O"],
+        side: "w",
+      },
+      {
+        id: "fr2",
+        name: "Line 2 · Tarrasch 3.Nd2",
+        plies: ["e4", "e6", "d4", "d5", "Nd2", "Nf6", "e5", "Nfd7", "Bd3", "c5", "c3", "Nc6", "Ne2", "cxd4", "cxd4", "f6", "exf6", "Nxf6", "Nf3", "Bd6", "O-O", "O-O"],
+        side: "w",
+      },
+      {
+        id: "fr3",
+        name: "Line 3 · Winawer 4.e5",
+        plies: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Qg4", "cxd4", "Qxg7", "Rg8", "Qxh7", "Qc7", "Ne2", "dxc3", "f4", "Nbc6"],
+        side: "w",
+      },
+      {
+        id: "fr4",
+        name: "Line 4 · Classical 4.e5",
+        plies: ["e4", "e6", "d4", "d5", "Nc3", "Nf6", "e5", "Nfd7", "f4", "c5", "Nf3", "Nc6", "Be3", "a6", "Qd2", "b5", "a3", "Qa5", "Be2", "b4", "Nd1", "Rb8"],
+        side: "w",
+      },
+      {
+        id: "fr5",
+        name: "Line 5 · Exchange 3.exd5",
+        plies: ["e4", "e6", "d4", "d5", "exd5", "exd5", "Bd3", "Nc6", "c3", "Bd6", "Nf3", "Nge7", "O-O", "Bf5", "Bxf5", "Nxf5", "Re1+", "Nce7", "Nbd2", "O-O", "Ne5", "f6"],
+        side: "w",
+      },
+      {
+        id: "fr6",
+        name: "Trap · Advance 10.Bb5+",
+        plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "Bd3", "cxd4", "cxd4", "Nxd4", "Nxd4", "Qxd4", "Bb5+", "Bd7", "Bxd7+", "Kxd7", "Qxd4", "a6"],
+        side: "w",
+      },
     ],
   },
   {

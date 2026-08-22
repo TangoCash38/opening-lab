@@ -7,11 +7,11 @@ import test from "node:test";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
 
-test("catalog shows Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, and Open Sicilian while other packs stay in packs.ts", () => {
+test("catalog shows Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence while other packs stay in packs.ts", () => {
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["scotch", "italian", "ruy", "kings-gambit", "vienna-game", "scotch-game", "open-sicilian"]);
+  assert.deepEqual(ids, ["scotch", "italian", "ruy", "kings-gambit", "vienna-game", "scotch-game", "open-sicilian", "french-as-white"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 });
@@ -35,7 +35,7 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(playApp, /export function isPlayWrap/);
 });
 
-test("Help and home name all seven free openings and do not pitch Lab+", () => {
+test("Help and home name all eight free openings and do not pitch Lab+", () => {
   const guide = readFileSync(
     join(root, "src/components/opening-lab/guide-view.tsx"),
     "utf8",
@@ -51,14 +51,14 @@ test("Help and home name all seven free openings and do not pitch Lab+", () => {
   assert.match(guide, /King’s Gambit/);
   assert.match(guide, /Vienna Game/);
   assert.match(guide, /Scotch Game/);
-  assert.match(guide, /All seven are free/);
+  assert.match(guide, /All eight are free/);
   assert.doesNotMatch(guide, /Lab\+/);
   assert.doesNotMatch(guide, /£4\.99/);
   assert.doesNotMatch(guide, /£29\.99/);
   assert.doesNotMatch(guide, /Pay as you go/);
   assert.doesNotMatch(guide, /Premium packs/);
 
-  assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, King’s Gambit, Vienna Game, Scotch Game, and Open Sicilian are free/);
+  assert.match(hero, /Scotch Gambit, Italian Game, Ruy Lopez, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence are free/);
   assert.doesNotMatch(hero, /Lab\+/);
 
   const packList = readFileSync(
@@ -119,7 +119,7 @@ test("Vienna Game Help/card is 5 book lines + 1 trap — Würzburger only, no Ha
   );
 
   assert.match(guide, /<strong>Vienna Game<\/strong> — 5 book lines \+ 1 trap\./);
-  assert.match(guide, /All seven are free/);
+  assert.match(guide, /All eight are free/);
   assert.doesNotMatch(guide, /All five are free/);
   assert.doesNotMatch(guide, /Hamppe/);
   assert.doesNotMatch(guide, /Muzio/);
@@ -162,7 +162,7 @@ test("Scotch Game Help/card is 5 book lines + 1 trap — Steinitz trap only, no 
   );
 
   assert.match(guide, /<strong>Scotch Game<\/strong> — 5 book lines \+ 1 trap\./);
-  assert.match(guide, /All seven are free/);
+  assert.match(guide, /All eight are free/);
   assert.doesNotMatch(guide, /All five are free/);
   assert.doesNotMatch(guide, /Lolli/);
 
@@ -201,7 +201,7 @@ test("Open Sicilian Help/card is 5 book lines + 1 trap — Magnus Smith only, Nd
   );
 
   assert.match(guide, /<strong>Open Sicilian<\/strong> — 5 book lines \+ 1 trap\./);
-  assert.match(guide, /All seven are free/);
+  assert.match(guide, /All eight are free/);
   assert.doesNotMatch(guide, /All six are free/);
   assert.doesNotMatch(guide, /Alapin/);
 
@@ -227,4 +227,44 @@ test("Open Sicilian Help/card is 5 book lines + 1 trap — Magnus Smith only, Nd
   assert.deepEqual(lineIds, ["si1", "si2", "si3", "si4", "si5", "si6"]);
 
   assert.doesNotMatch(packList, /Alapin/);
+});
+
+test("French Defence Help/card is 5 book lines + 1 trap — Advance trap only, no Chatard, no GM, no old fw survey", () => {
+  const guide = readFileSync(
+    join(root, "src/components/opening-lab/guide-view.tsx"),
+    "utf8",
+  );
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const packList = readFileSync(
+    join(root, "src/components/opening-lab/pack-list.tsx"),
+    "utf8",
+  );
+
+  assert.match(guide, /<strong>French Defence<\/strong> — 5 book lines \+ 1 trap\./);
+  assert.match(guide, /All eight are free/);
+  assert.doesNotMatch(guide, /All seven are free/);
+  assert.doesNotMatch(guide, /Chatard/);
+
+  const start = packs.indexOf('id: "french-as-white"');
+  assert.ok(start >= 0, "french-as-white pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const fr = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+  assert.match(fr, /name: "French Defence"/);
+  assert.match(fr, /isFree: true/);
+  assert.match(fr, /isPremium: false/);
+  assert.match(fr, /price: null/);
+  assert.match(fr, /blurb: "5 book lines \+ 1 trap"/);
+  assert.match(fr, /closedLabel: "Free · 5 book lines \+ 1 trap"/);
+  assert.doesNotMatch(fr, /French Defense \(as White\)/);
+  assert.doesNotMatch(fr, /Milner-Barry/);
+  assert.doesNotMatch(fr, /Chatard/);
+  assert.doesNotMatch(fr, /Model ·/);
+  assert.doesNotMatch(fr, /id: "fw1"/);
+  assert.doesNotMatch(fr, /id: "fr7"/);
+  assert.match(fr, /id: "fr6"/);
+  assert.match(fr, /name: "Trap · Advance 10\.Bb5\+"/);
+  const lineIds = [...fr.matchAll(/id: "(fr\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, ["fr1", "fr2", "fr3", "fr4", "fr5", "fr6"]);
+
+  assert.doesNotMatch(packList, /Chatard/);
 });

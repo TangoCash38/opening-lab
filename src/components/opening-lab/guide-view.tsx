@@ -37,7 +37,9 @@ export function GuideView({ onBack }: Props) {
         <br />
         <strong>Open Sicilian</strong> — 5 book lines + 1 trap.
         <br />
-        All seven are free.
+        <strong>French Defence</strong> — 5 book lines + 1 trap.
+        <br />
+        All eight are free.
       </Block>
 
       <Block title="White & Black / Special packs">
