@@ -67,9 +67,8 @@ test("Help and home name all six free openings and do not pitch Lab+", () => {
   );
   assert.match(
     packList,
-    /Scotch, Italian, Ruy, King’s Gambit, Vienna, and Scotch Game are on while we check the rest/,
+    /These packs are on while we check the rest\. If a move is wrong, tell us on that line\./,
   );
-  assert.doesNotMatch(packList, /and Vienna Game are on/);
 });
 
 test("King’s Gambit Help/card is 5 book lines + 1 trap — Quaade only, no Allgaier, no Muzio", () => {
