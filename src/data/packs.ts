@@ -21,9 +21,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch, Italian, Ruy, King’s Gambit, and Vienna Game — all other packs are paid */
+  /** Scotch, Italian, Ruy, King’s Gambit, Vienna Game, and Scotch Game — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, and Vienna Game) */
+  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, Vienna Game, and Scotch Game) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -513,19 +513,48 @@ export const PACKS: Pack[] = [
     eco: "C45",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
+    isFree: true,
+    isPremium: false,
     price: null,
-    blurb: "8 lines · 4.Nxd4 classical Scotch",
+    blurb: "5 book lines + 1 trap",
+    closedLabel: "Free · 5 book lines + 1 trap",
     lines: [
-      { id: "sg1", name: "Line 1 · 4…Nf6 Mieses", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nxc6", "bxc6", "e5", "Qe7", "Qe2", "Nd5", "c4", "Nb6", "Nc3", "Qe6", "Qe4", "g6"], side: "w" },
-      { id: "sg2", name: "Line 2 · Potter (5.Nb3)", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Nb3", "Bb6", "a4", "a6", "Nc3", "Nf6", "Bg5", "h6", "Bh4", "d6", "Nd5", "g5"], side: "w" },
-      { id: "sg3", name: "Line 3 · 4…Qh4", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Qh4", "Nc3", "Bb4", "Be2", "Qxe4", "Nb5", "Bxc3+", "bxc3", "Kd8", "O-O", "Nf6", "Re1", "d6"], side: "w" },
-      { id: "sg4", name: "Line 4 · 4…Nxd4", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nxd4", "Qxd4", "Qf6", "e5", "Qb6", "Qxb6", "axb6", "Nc3", "Bb4", "Bd2", "Ne7", "a3", "Bxc3"], side: "w" },
-      { id: "sg5", name: "Line 5 · 4…Bb4+", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bb4+", "c3", "Be7", "Nxc6", "bxc6", "Bd3", "d6", "O-O", "Nf6", "Nd2", "O-O", "Re1", "Re8"], side: "w" },
-      { id: "sg6", name: "Line 6 · Scotch Four Knights", plies: ["e4", "e5", "Nf3", "Nc6", "Nc3", "Nf6", "d4", "exd4", "Nxd4", "Bb4", "Nxc6", "bxc6", "Bd3", "d5", "exd5", "cxd5", "O-O", "O-O", "Bg5", "c6"], side: "w" },
-      { id: "sg7", name: "Line 7 · 4…Bc5 5.Be3", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3", "Qf6", "c3", "Nge7", "Bc4", "Ne5", "Be2", "Qg6", "O-O", "d6", "f3", "O-O"], side: "w" },
-      { id: "sg8", name: "Line 8 · Mieses 8…Ba6", plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nxc6", "bxc6", "e5", "Qe7", "Qe2", "Nd5", "c4", "Ba6", "b3", "g6", "g3", "Bg7"], side: "w" },
+      {
+        id: "sg1",
+        name: "Line 1 · Classical 5.Be3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3", "Qf6", "c3", "Nge7", "Bc4", "Ne5", "Be2", "Qg6", "O-O", "d6", "f3", "O-O"],
+        side: "w",
+      },
+      {
+        id: "sg2",
+        name: "Line 2 · Mieses 6.e5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nxc6", "bxc6", "e5", "Qe7", "Qe2", "Nd5", "c4", "Ba6", "b3", "g6", "g3", "Bg7"],
+        side: "w",
+      },
+      {
+        id: "sg3",
+        name: "Line 3 · Schmidt 5.Nc3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Nf6", "Nc3", "Bb4", "Nxc6", "bxc6", "Bd3", "d5", "exd5", "cxd5", "O-O", "O-O", "h3", "c6", "Qf3"],
+        side: "w",
+      },
+      {
+        id: "sg4",
+        name: "Line 4 · Potter 5.Nb3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Nb3", "Bb6", "a4", "a6", "Nc3", "Nf6", "Bg5", "h6", "Bh4", "d6", "Bc4", "g5"],
+        side: "w",
+      },
+      {
+        id: "sg5",
+        name: "Line 5 · Steinitz 4…Qh4",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Qh4", "Nc3", "Bb4", "Be2", "Qxe4", "Nb5", "Bxc3+", "bxc3", "Kd8", "O-O", "Nf6", "Re1", "d6"],
+        side: "w",
+      },
+      {
+        id: "sg6",
+        name: "Trap · Steinitz 7.Nb5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Qh4", "Nc3", "Bb4", "Be2", "Qxe4", "Nb5", "Ba5", "Nxc7+", "Kd8", "Nxa8", "Qxg2", "Bf3", "Qh3"],
+        side: "w",
+      },
     ],
   },
   {
