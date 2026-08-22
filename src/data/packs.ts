@@ -21,9 +21,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch, Italian, Ruy, King’s Gambit, Vienna Game, and Scotch Game — all other packs are paid */
+  /** Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, and Open Sicilian — all other packs are paid */
   isFree: boolean;
-  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, Vienna Game, and Scotch Game) */
+  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, and Open Sicilian) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -218,16 +218,48 @@ export const PACKS: Pack[] = [
     eco: "B20–B99",
     side: "White",
     section: "white",
-    isFree: false,
-    isPremium: true,
-    price: "£1",
-    blurb: "5-line White survey · Najdorf, Dragon, Classical, Scheveningen & Sveshnikov",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "5 book lines + 1 trap",
+    closedLabel: "Free · 5 book lines + 1 trap",
     lines: [
-      { id: "os1", name: "Line 1 · Najdorf Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "e5", "Nb3", "Be6", "f3", "Be7", "Qd2", "O-O", "O-O-O", "Nbd7"], side: "w" },
-      { id: "os2", name: "Line 2 · Dragon Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6", "Be3", "Bg7", "f3", "O-O", "Qd2", "Nc6", "Bc4", "Bd7", "O-O-O", "Rc8"], side: "w" },
-      { id: "os3", name: "Line 3 · Classical Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "Nc6", "Bg5", "e6", "Qd2", "Be7", "O-O-O", "O-O", "f4", "Nxd4", "Qxd4", "a6"], side: "w" },
-      { id: "os4", name: "Line 4 · Scheveningen Variation", plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "e6", "Be2", "Be7", "O-O", "O-O", "f4", "Nc6", "Be3", "a6", "a4", "Qc7"], side: "w" },
-      { id: "os5", name: "Line 5 · Sveshnikov Variation", plies: ["e4", "c5", "Nf3", "Nc6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "e5", "Ndb5", "d6", "Bg5", "a6", "Na3", "b5", "Bxf6", "gxf6", "Nd5", "f5"], side: "w" },
+      {
+        id: "si1",
+        name: "Line 1 · Najdorf 6.Be3",
+        plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "e5", "Nb3", "Be6", "f3", "Be7", "Qd2", "O-O", "O-O-O", "Nbd7"],
+        side: "w",
+      },
+      {
+        id: "si2",
+        name: "Line 2 · Dragon Yugoslav",
+        plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "g6", "Be3", "Bg7", "f3", "O-O", "Qd2", "Nc6", "O-O-O", "d5", "exd5", "Nxd5"],
+        side: "w",
+      },
+      {
+        id: "si3",
+        name: "Line 3 · Sveshnikov 9.Nd5",
+        plies: ["e4", "c5", "Nf3", "Nc6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "e5", "Ndb5", "d6", "Bg5", "a6", "Na3", "b5", "Nd5", "Be7", "Bxf6", "Bxf6"],
+        side: "w",
+      },
+      {
+        id: "si4",
+        name: "Line 4 · Taimanov 6.Be3",
+        plies: ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nc6", "Nc3", "Qc7", "Be3", "a6", "Qd2", "Nf6", "O-O-O", "Be7", "f4", "b5", "e5", "b4"],
+        side: "w",
+      },
+      {
+        id: "si5",
+        name: "Line 5 · Keres 6.g4",
+        plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "e6", "g4", "h6", "h4", "Nc6", "Rg1", "d5", "exd5", "Nxd5", "Nxd5", "exd5"],
+        side: "w",
+      },
+      {
+        id: "si6",
+        name: "Trap · Magnus Smith 9.Bxf7+",
+        plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "Nc6", "Bc4", "g6", "Nxc6", "bxc6", "e5", "dxe5", "Bxf7+", "Kxf7", "Qxd8", "Bg7"],
+        side: "w",
+      },
     ],
   },
   {
