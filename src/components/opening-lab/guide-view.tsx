@@ -42,6 +42,10 @@ export function GuideView({ onBack }: Props) {
         the book move. A clean Test (zero mistakes) turns the line green.
       </Block>
 
+      <Block title="Play on">
+        After a clean Test, Play on from the setup. Pick 800, 1200, or 1800.
+      </Block>
+
       <Block title="Reviews">
         A clean Test turns the line green. You can train it again anytime.
       </Block>

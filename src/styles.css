@@ -570,10 +570,10 @@
   filter: drop-shadow(0 6px 10px rgba(28, 25, 21, 0.38));
 }
 
-/* One bottom row: muted secondaries left, one primary right. */
+/* Muted secondaries left, Play-on chips + button right. Wrap on a phone. */
 .trainer-actions {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 0.4rem;
@@ -591,28 +591,44 @@
 
 .trainer-primary {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.3rem;
-  flex: 0 0 auto;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex: 1 1 auto;
   margin-left: auto;
+  min-width: 0;
 }
 
-.strength-cycle {
+.play-level-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.play-level-chip {
   flex: 0 0 auto;
-  min-height: 1.55rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
   border: none;
   border-radius: 9999px;
-  padding: 0.18rem 0.5rem;
-  font-size: 0.62rem;
-  font-weight: 650;
+  padding: 0.4rem 0.72rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   letter-spacing: 0.01em;
   background: var(--color-bg-subtle);
   color: var(--color-fg-muted);
   white-space: nowrap;
 }
 
-.strength-cycle:active {
-  transform: scale(0.95);
+.play-level-chip:active {
+  transform: scale(0.96);
+}
+
+.play-level-chip.is-on {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
 }
 
 .play-on-btn {

@@ -42,18 +42,23 @@ type Props = {
 
 const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
-const ENGINE_THINK_MS = 900;
 
 const PLAY_THINK_MS: Record<PlayLevel, number> = {
-  beginner: 400,
-  intermediate: ENGINE_THINK_MS,
-  advanced: 1200,
+  beginner: 280,
+  intermediate: 700,
+  advanced: 1400,
 };
 
 const PLAY_LEVEL_LABEL: Record<PlayLevel, string> = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  advanced: "Advanced",
+  beginner: "800",
+  intermediate: "1200",
+  advanced: "1800",
+};
+
+const PLAY_LEVEL_ARIA: Record<PlayLevel, string> = {
+  beginner: "Beginner, about 800.",
+  intermediate: "Intermediate, about 1200.",
+  advanced: "Advanced, about 1800.",
 };
 
 const PLAY_LEVELS: PlayLevel[] = ["beginner", "intermediate", "advanced"];
@@ -200,7 +205,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     from: Square;
     to: Square;
   } | null>(null);
-  const [playLevel, setPlayLevel] = useState<PlayLevel | null>("intermediate");
+  const [playLevel, setPlayLevel] = useState<PlayLevel | null>("beginner");
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -210,8 +215,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const playingOnRef = useRef(false);
   const playOnStartPlyRef = useRef(line.plies.length);
   const engineRef = useRef<PlayEngine | null>(null);
-  const playLevelRef = useRef<PlayLevel>("intermediate");
-  const thinkMsRef = useRef(ENGINE_THINK_MS);
+  const playLevelRef = useRef<PlayLevel>("beginner");
+  const thinkMsRef = useRef(PLAY_THINK_MS.beginner);
   const pendingCommit = useRef<{
     nextGame: Chess;
     nextPly: number;
@@ -249,7 +254,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setEngineReady(false);
     setEngineBusy(false);
     setPendingPromo(null);
-    setPlayLevel("intermediate");
+    setPlayLevel("beginner");
   }, []);
 
   const expectedMove = useCallback(
@@ -663,15 +668,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     }
   };
 
-  const cyclePlayLevel = () => {
-    const cur = playLevel ?? "intermediate";
-    const i = PLAY_LEVELS.indexOf(cur);
-    setPlayLevel(PLAY_LEVELS[(i + 1) % PLAY_LEVELS.length]!);
-  };
-
   const startPlayOn = () => {
     if (playingOnRef.current) return;
-    const level: PlayLevel = playLevel ?? "intermediate";
+    const level: PlayLevel = playLevel ?? "beginner";
     playLevelRef.current = level;
     thinkMsRef.current = PLAY_THINK_MS[level];
     playingOnRef.current = true;
@@ -1085,14 +1084,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         <div className="trainer-primary">
           {showPlayOn ? (
             <>
-              <button
-                type="button"
-                onClick={cyclePlayLevel}
-                className="strength-cycle"
-                aria-label={`Computer strength: ${PLAY_LEVEL_LABEL[playLevel ?? "intermediate"]}. Tap to change.`}
-              >
-                {PLAY_LEVEL_LABEL[playLevel ?? "intermediate"]}
-              </button>
+              <div className="play-level-row" role="group" aria-label="Computer strength">
+                {PLAY_LEVELS.map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => setPlayLevel(level)}
+                    className={`play-level-chip${playLevel === level ? " is-on" : ""}`}
+                    aria-label={PLAY_LEVEL_ARIA[level]}
+                    aria-pressed={playLevel === level}
+                  >
+                    {PLAY_LEVEL_LABEL[level]}
+                  </button>
+                ))}
+              </div>
               <button
                 type="button"
                 onClick={startPlayOn}
