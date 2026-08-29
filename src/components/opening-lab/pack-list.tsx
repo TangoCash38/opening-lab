@@ -213,7 +213,7 @@ export function PackList({ onStartLine }: Props) {
   const catalog =
     playApp || isPlayWrap() ? playVisiblePacks(PACKS) : visiblePacks(PACKS);
   const white = catalog.filter((p) => p.section === "white" && p.id !== "scotch");
-  const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london");
+  const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black");
   const classicGames = catalog.find((p) => p.id === "classic-games");
   const vsLondon = catalog.find((p) => p.id === "vs-london");
   const clubWeapons = catalog.find((p) => p.id === "club-weapons");

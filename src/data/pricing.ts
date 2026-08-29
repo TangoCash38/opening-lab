@@ -14,7 +14,7 @@ export const PRICE_FULL = "£1.99";
 /** Classic Games bundle */
 export const PRICE_BUNDLE = "£3.99";
 
-export const FREE_PACK_IDS = new Set(["scotch", "italian", "ruy", "kings-gambit", "vienna-game"]);
+export const FREE_PACK_IDS = new Set(["caro-kann-black"]);
 
 export function packPrice(pack: Pack): string | null {
   if (FREE_PACK_IDS.has(pack.id) || pack.isFree) return null;

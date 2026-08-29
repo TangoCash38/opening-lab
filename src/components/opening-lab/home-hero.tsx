@@ -17,18 +17,23 @@ type Props = {
 export function HomeHero({ onStartLine }: Props) {
   const { masteryOf, isComplete } = useProgress();
   const catalog = visiblePacks(PACKS);
-  const scotch = catalog.find((p) => p.id === "scotch");
-  const line = scotch?.lines[0];
+  const pack = catalog.find((p) => p.id === "caro-kann-black");
+  const line = pack?.lines[0];
   const [linesOpen, setLinesOpen] = useState(false);
 
-  const game = useMemo(() => new Chess(), []);
+  const game = useMemo(() => {
+    const g = new Chess();
+    g.move("e4");
+    return g;
+  }, []);
   const expected = useMemo(() => {
     const g = new Chess();
-    return g.moves({ verbose: true }).find((m) => m.san === "e4") ?? null;
+    g.move("e4");
+    return g.moves({ verbose: true }).find((m) => m.san === "c6") ?? null;
   }, []);
 
   const startFirst = () => {
-    if (scotch && line) onStartLine(scotch, line, "learn");
+    if (pack && line) onStartLine(pack, line, "learn");
   };
 
   return (
@@ -37,8 +42,7 @@ export function HomeHero({ onStartLine }: Props) {
         Train openings the strict way
       </h1>
       <p className="mb-4 text-[0.95rem] text-fg-muted">
-        Scotch Gambit, Italian Game, Ruy Lopez, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence are free. Follow the yellow
-        hint. Wrong moves are rejected.
+        Caro-Kann for Black is free. You play Black. Follow the yellow hint. Wrong moves are rejected.
       </p>
 
       <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
@@ -47,17 +51,17 @@ export function HomeHero({ onStartLine }: Props) {
             Free pack · ready to train
           </p>
           <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">
-            Scotch Gambit
+            Caro-Kann for Black
           </h2>
           <p className="mt-0.5 text-[0.82rem] text-fg-muted">
-            5 book lines + 2 traps
+            10 setups + 8 follow-ups
           </p>
         </div>
 
         <div className="home-board px-2">
           <ChessBoard
             game={game}
-            flip={false}
+            flip={true}
             selected={null}
             wrongUntil={null}
             expected={expected}
@@ -75,11 +79,11 @@ export function HomeHero({ onStartLine }: Props) {
             onClick={startFirst}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
-            Start free Scotch Line 1
+            Start free Caro-Kann Core 1
           </button>
         </div>
 
-        {scotch ? (
+        {pack ? (
           <div className="border-t border-border">
             <button
               type="button"
@@ -88,12 +92,12 @@ export function HomeHero({ onStartLine }: Props) {
               aria-expanded={linesOpen}
             >
               <span className="block px-1 text-[0.88rem] font-bold">
-                Scotch lines · {scotch.lines.length}
+                Caro-Kann lines · {pack.lines.length}
               </span>
               <PackExpandHint open={linesOpen} free />
             </button>
             {linesOpen
-              ? scotch.lines.map((item, i) => {
+              ? pack.lines.map((item, i) => {
                   const complete = isComplete(item.id);
                   const mastery = masteryOf(item.id);
                   return (
@@ -105,7 +109,7 @@ export function HomeHero({ onStartLine }: Props) {
                         mastery={mastery}
                         locked={false}
                         showFree
-                        onClick={() => onStartLine(scotch, item, "learn")}
+                        onClick={() => onStartLine(pack, item, "learn")}
                       />
                     </div>
                   );
