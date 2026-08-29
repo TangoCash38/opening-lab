@@ -21,9 +21,9 @@ export type Pack = {
   eco: string;
   side: "White" | "Black" | "Mixed";
   section: "white" | "black" | "special";
-  /** Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence — all other packs are paid */
+  /** Caro-Kann for Black is free while we check the rest — hidden packs stay in this file */
   isFree: boolean;
-  /** Paid packs (everything except Scotch, Italian, Ruy, King’s Gambit, Vienna Game, Scotch Game, Open Sicilian, and French Defence) */
+  /** Paid packs (everything except the currently visible free pack) */
   isPremium: boolean;
   /** Display price when paid; null when free */
   price: string | null;
@@ -706,6 +706,128 @@ export const PACKS: Pack[] = [
       { id: "f6", name: "Line 6 · Exchange", plies: ["e4", "e6", "d4", "d5", "exd5", "exd5", "Nf3", "Bd6", "Bd3", "Ne7", "O-O", "O-O", "Bg5", "Nbc6", "c3", "f6", "Bh4", "Bf5", "Re1", "Qd7"], side: "b" },
       { id: "f7", name: "Line 7 · Rubinstein", plies: ["e4", "e6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nd7", "Nf3", "Ngf6", "Nxf6+", "Nxf6", "Bd3", "c5", "dxc5", "Bxc5", "O-O", "O-O", "Qe2", "b6"], side: "b" },
       { id: "f8", name: "Line 8 · Tarrasch Closed", plies: ["e4", "e6", "d4", "d5", "Nd2", "Nf6", "e5", "Nfd7", "Bd3", "c5", "c3", "Nc6", "Ne2", "cxd4", "cxd4", "f6", "exf6", "Nxf6", "O-O", "Bd6"], side: "b" },
+    ],
+  },
+  {
+    id: "caro-kann-black",
+    name: "Caro-Kann for Black",
+    eco: "B10–B19",
+    side: "Black",
+    section: "black",
+    isFree: true,
+    isPremium: false,
+    price: null,
+    blurb: "10 setups + 8 follow-ups",
+    closedLabel: "Free · 18 drills",
+    lines: [
+      {
+        id: "ckb1",
+        name: "Core 1 · Advance: main setup",
+        plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "O-O", "Nc6"],
+        side: "b",
+      },
+      {
+        id: "ckb2",
+        name: "Core 2 · Advance: meet h4",
+        plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "h4", "h5", "Bg5", "Qb6"],
+        side: "b",
+      },
+      {
+        id: "ckb3",
+        name: "Core 3 · Classical: main setup",
+        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "Nf3", "Nd7"],
+        side: "b",
+      },
+      {
+        id: "ckb4",
+        name: "Core 4 · Modern: 3.Nd2 response",
+        plies: ["e4", "c6", "d4", "d5", "Nd2", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "Nf3", "Nd7"],
+        side: "b",
+      },
+      {
+        id: "ckb5",
+        name: "Core 5 · Exchange: active development",
+        plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "Bd3", "Nc6", "c3", "Nf6", "Bf4", "Bg4"],
+        side: "b",
+      },
+      {
+        id: "ckb6",
+        name: "Core 6 · Panov: meet c4",
+        plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "c4", "Nf6", "Nc3", "e6", "Nf3", "Bb4"],
+        side: "b",
+      },
+      {
+        id: "ckb7",
+        name: "Core 7 · Fantasy: practical response",
+        plies: ["e4", "c6", "d4", "d5", "f3", "e6", "Nc3", "Bb4", "a3", "Bxc3+", "bxc3"],
+        side: "b",
+      },
+      {
+        id: "ckb8",
+        name: "Core 8 · Two Knights: direct development",
+        plies: ["e4", "c6", "Nc3", "d5", "Nf3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6"],
+        side: "b",
+      },
+      {
+        id: "ckb9",
+        name: "Core 9 · Classical: N1e2 setup",
+        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "N1e2", "e6"],
+        side: "b",
+      },
+      {
+        id: "ckb10",
+        name: "Core 10 · Advance: trade the active bishop",
+        plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Bd3", "Bxd3", "Qxd3"],
+        side: "b",
+      },
+      {
+        id: "ckb11",
+        name: "Follow-up 1 · Advance: c3 and …Qb6",
+        plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "O-O", "Nc6", "c3", "Qb6", "a3", "cxd4", "cxd4"],
+        side: "b",
+      },
+      {
+        id: "ckb12",
+        name: "Follow-up 2 · Advance: h4 and bishop pressure",
+        plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "h4", "h5", "Bg5", "Qb6", "Bd3", "Bxd3", "Qxd3", "Qxb2"],
+        side: "b",
+      },
+      {
+        id: "ckb13",
+        name: "Follow-up 3 · Classical: h4-h5 chase",
+        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "Nf3", "Nd7", "h4", "h6", "h5", "Bh7"],
+        side: "b",
+      },
+      {
+        id: "ckb14",
+        name: "Follow-up 4 · Classical: Bc4 development",
+        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "Nf3", "Nd7", "Bc4", "e6", "O-O", "Ngf6"],
+        side: "b",
+      },
+      {
+        id: "ckb15",
+        name: "Follow-up 5 · Panov: a3 after …Bb4",
+        plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "c4", "Nf6", "Nc3", "e6", "Nf3", "Bb4", "Bd2", "O-O", "a3", "Bxc3"],
+        side: "b",
+      },
+      {
+        id: "ckb16",
+        name: "Follow-up 6 · Fantasy: after a3",
+        plies: ["e4", "c6", "d4", "d5", "f3", "e6", "Nc3", "Bb4", "a3", "Bxc3+", "bxc3", "Qc7"],
+        side: "b",
+      },
+      {
+        id: "ckb17",
+        name: "Follow-up 7 · Two Knights: h4-h5 chase",
+        plies: ["e4", "c6", "Nc3", "d5", "Nf3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "h5", "Bh7"],
+        side: "b",
+      },
+      {
+        id: "ckb18",
+        name: "Follow-up 8 · Exchange: Qb3 before Nbd2",
+        plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "Bd3", "Nc6", "c3", "Nf6", "Bf4", "Bg4", "Qb3", "Qd7", "Nbd2"],
+        side: "b",
+      },
     ],
   },
   {

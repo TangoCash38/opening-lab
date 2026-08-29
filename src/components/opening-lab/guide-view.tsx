@@ -23,23 +23,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Free openings">
-        <strong>Scotch Gambit</strong> — 5 book lines + 2 traps.
-        <br />
-        <strong>Italian Game</strong> — 5 book lines + 3 traps.
-        <br />
-        <strong>Ruy Lopez</strong> — 5 book lines + 2 traps.
-        <br />
-        <strong>King’s Gambit</strong> — 5 book lines + 1 trap.
-        <br />
-        <strong>Vienna Game</strong> — 5 book lines + 1 trap.
-        <br />
-        <strong>Scotch Game</strong> — 5 book lines + 1 trap.
-        <br />
-        <strong>Open Sicilian</strong> — 5 book lines + 1 trap.
-        <br />
-        <strong>French Defence</strong> — 5 book lines + 1 trap.
-        <br />
-        All eight are free.
+        <strong>Caro-Kann for Black</strong> — 10 setups + 8 follow-ups. This pack is free.
       </Block>
 
       <Block title="White & Black / Special packs">

@@ -32,6 +32,10 @@ for (const line of lines) {
         const tmp = new Chess(game.fen());
         const res = tmp.move(san);
         viaMove = res ? res.san : null;
+        if (res) {
+          game.move(res);
+          continue;
+        }
       } catch {
         viaMove = null;
       }

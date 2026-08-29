@@ -258,7 +258,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       const san = line.plies[idx]!;
       const tmp = new Chess(g.fen());
       const moves = tmp.moves({ verbose: true });
-      return moves.find((m) => m.san === san) || null;
+      return moves.find((m) => m.san === san) || tmp.move(san) || null;
     },
     [line.plies],
   );
