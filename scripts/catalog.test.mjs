@@ -7,11 +7,11 @@ import test from "node:test";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
 
-test("catalog shows only Caro-Kann for Black while other packs stay in packs.ts", () => {
+test("catalog shows Caro-Kann for Black and QGD for Black while other packs stay in packs.ts", () => {
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["caro-kann-black"]);
+  assert.deepEqual(ids, ["caro-kann-black", "qgd-black"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 
@@ -50,7 +50,7 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(playApp, /export function isPlayWrap/);
 });
 
-test("Help and home name the one free pack and do not pitch Lab+", () => {
+test("Help and home name both free packs and do not pitch Lab+", () => {
   const guide = readFileSync(
     join(root, "src/components/opening-lab/guide-view.tsx"),
     "utf8",
@@ -63,6 +63,10 @@ test("Help and home name the one free pack and do not pitch Lab+", () => {
   assert.match(
     guide,
     /<strong>Caro-Kann for Black<\/strong> — 10 setups \+ 8 follow-ups\. This pack is free\./,
+  );
+  assert.match(
+    guide,
+    /<strong>Queen\u2019s Gambit Declined for Black<\/strong> — 10 setups \+ 8 follow-ups\. This pack is free\./,
   );
   assert.doesNotMatch(guide, /Lab\+/);
   assert.doesNotMatch(guide, /£4\.99/);
@@ -136,4 +140,38 @@ test("Caro-Kann for Black is the free Black pack: 10 setups + 8 follow-ups, N1e2
   assert.match(ckb9, /"N1e2"/);
   assert.doesNotMatch(ckb9, /"Ne2"/);
   assert.doesNotMatch(ckb9, /"Nge2"/);
+});
+
+test("Queen’s Gambit Declined for Black is the second free Black pack: 10 setups + 8 follow-ups", () => {
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const start = packs.indexOf('id: "qgd-black"');
+  assert.ok(start >= 0, "qgd-black pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const qgd = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+
+  assert.match(qgd, /name: "Queen\u2019s Gambit Declined for Black"/);
+  assert.match(qgd, /side: "Black"/);
+  assert.match(qgd, /section: "black"/);
+  assert.match(qgd, /isFree: true/);
+  assert.match(qgd, /isPremium: false/);
+  assert.match(qgd, /price: null/);
+  assert.match(qgd, /blurb: "10 setups \+ 8 follow-ups"/);
+  assert.match(qgd, /closedLabel: "Free · 18 drills"/);
+  assert.match(qgd, /eco: "D30–D69"/);
+
+  const lineIds = [...qgd.matchAll(/id: "(qgdb\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(
+    lineIds,
+    Array.from({ length: 18 }, (_, i) => `qgdb${i + 1}`),
+  );
+
+  const sides = [...qgd.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
+  assert.ok(sides.length >= 18, "expected line sides");
+  assert.ok(sides.every((s) => s === "b"), "every line side must be b");
+
+  const qgdb1Start = qgd.indexOf('id: "qgdb1"');
+  assert.ok(qgdb1Start >= 0, "qgdb1 missing");
+  const qgdb1Next = qgd.indexOf('id: "qgdb2"', qgdb1Start);
+  const qgdb1 = qgd.slice(qgdb1Start, qgdb1Next >= 0 ? qgdb1Next : undefined);
+  assert.match(qgdb1, /plies: \["d4"/);
 });
