@@ -1,7 +1,7 @@
 import type { Pack } from "@/data/packs";
 
 /** Only these packs appear in the catalog while we check the rest. */
-export const VISIBLE_PACK_IDS = ["caro-kann-black"] as const;
+export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black"] as const;
 
 export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
 

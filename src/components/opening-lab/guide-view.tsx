@@ -24,6 +24,8 @@ export function GuideView({ onBack }: Props) {
 
       <Block title="Free openings">
         <strong>Caro-Kann for Black</strong> — 10 setups + 8 follow-ups. This pack is free.
+        <br />
+        <strong>Queen’s Gambit Declined for Black</strong> — 10 setups + 8 follow-ups. This pack is free.
       </Block>
 
       <Block title="White & Black / Special packs">
