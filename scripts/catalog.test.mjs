@@ -78,6 +78,8 @@ test("Help and home name the one free pack and do not pitch Lab+", () => {
     hero,
     /Caro-Kann for Black is free\. You play Black\. Follow the yellow hint\. Wrong moves are rejected\./,
   );
+  assert.match(hero, /See 18 lines/);
+  assert.doesNotMatch(hero, /Start free Caro-Kann Core 1/);
   assert.match(hero, /id === "caro-kann-black"/);
   assert.match(hero, /flip=\{true\}/);
   assert.doesNotMatch(hero, /Lab\+/);
