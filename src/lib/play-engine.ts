@@ -17,11 +17,11 @@ export type PlayLevel = "beginner" | "intermediate" | "advanced";
 
 export const PLAY_STRENGTH: Record<
   PlayLevel,
-  { thinkMs: number; depth: number; randomize: boolean }
+  { thinkMs: number; depth: number; randomize: boolean; slack: number }
 > = {
-  beginner: { thinkMs: 400, depth: 2, randomize: true },
-  intermediate: { thinkMs: 900, depth: 4, randomize: false },
-  advanced: { thinkMs: 1200, depth: 5, randomize: false },
+  beginner: { thinkMs: 280, depth: 1, randomize: true, slack: 280 },
+  intermediate: { thinkMs: 700, depth: 3, randomize: true, slack: 80 },
+  advanced: { thinkMs: 1400, depth: 5, randomize: false, slack: 0 },
 };
 
 export type PlayEngine = {
@@ -122,15 +122,15 @@ function resolveLevel(level?: PlayLevel): PlayLevel {
   if (level === "beginner" || level === "advanced" || level === "intermediate") {
     return level;
   }
-  return "intermediate";
+  return "beginner";
 }
 
 function thinkBudget(thinkMs: number, level: PlayLevel): number {
   const fallback = PLAY_STRENGTH[level].thinkMs;
   const raw = Number.isFinite(thinkMs) && thinkMs > 0 ? thinkMs : fallback;
-  if (level === "beginner") return Math.min(600, Math.max(200, raw));
-  if (level === "advanced") return Math.min(1600, Math.max(800, raw));
-  return Math.min(1200, Math.max(600, raw));
+  if (level === "beginner") return Math.min(400, Math.max(200, raw));
+  if (level === "advanced") return Math.min(1800, Math.max(900, raw));
+  return Math.min(900, Math.max(500, raw));
 }
 
 /** Always a legal capture, else the first legal move. Never throws. */
@@ -151,6 +151,7 @@ function searchBest(
   thinkMs: number,
   depthLimit: number,
   randomize: boolean,
+  slack = 160,
 ): EngineMove | null {
   const chess = new Chess(fen);
   const rootMoves = orderMoves(chess.moves({ verbose: true }));
@@ -238,14 +239,14 @@ function searchBest(
 
   if (randomize && rootScores.length > 1) {
     const bestScore = Math.max(...rootScores.map((s) => s.score));
-    const pool = rootScores.filter((s) => s.score >= bestScore - 160);
+    const pool = rootScores.filter((s) => s.score >= bestScore - slack);
     const choice = pool[Math.floor(Math.random() * pool.length)] ?? { m: best };
     return toEngineMove(choice.m);
   }
   return toEngineMove(best);
 }
 
-export function createLiteEngine(level: PlayLevel = "intermediate"): PlayEngine {
+export function createLiteEngine(level: PlayLevel = "beginner"): PlayEngine {
   let dead = false;
   const defaultLevel = resolveLevel(level);
   return {
@@ -263,7 +264,7 @@ export function createLiteEngine(level: PlayLevel = "intermediate"): PlayEngine 
       });
       if (dead) return legalFallback(fen);
       try {
-        return searchBest(fen, budget, spec.depth, spec.randomize) ?? legalFallback(fen);
+        return searchBest(fen, budget, spec.depth, spec.randomize, spec.slack) ?? legalFallback(fen);
       } catch {
         return legalFallback(fen);
       }
@@ -284,7 +285,7 @@ const START_FEN =
  * "Computer unavailable on this phone".
  */
 export async function loadPlayEngine(
-  level: PlayLevel = "intermediate",
+  level: PlayLevel = "beginner",
 ): Promise<PlayEngine> {
   const engine = createLiteEngine(level);
   try {

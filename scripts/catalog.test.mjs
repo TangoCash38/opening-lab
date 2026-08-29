@@ -76,6 +76,12 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /Scotch Gambit/);
   assert.doesNotMatch(guide, /All eight are free/);
 
+  assert.match(guide, /<Block title="Play on">/);
+  assert.match(guide, /After a clean Test, Play on from the setup\. Pick 800, 1200, or 1800\./);
+  assert.match(guide, /800/);
+  assert.match(guide, /1200/);
+  assert.match(guide, /1800/);
+
   assert.match(hero, /Train openings the strict way/);
   assert.match(hero, /How to play/);
   assert.doesNotMatch(
@@ -174,4 +180,34 @@ test("Queen’s Gambit Declined for Black is the second free Black pack: 10 setu
   const qgdb1Next = qgd.indexOf('id: "qgdb2"', qgdb1Start);
   const qgdb1 = qgd.slice(qgdb1Start, qgdb1Next >= 0 ? qgdb1Next : undefined);
   assert.match(qgdb1, /plies: \["d4"/);
+});
+
+test("Play on chips are 800 / 1200 / 1800 and still require a clean Test", () => {
+  const train = readFileSync(
+    join(root, "src/components/opening-lab/train-view.tsx"),
+    "utf8",
+  );
+  const engine = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
+  const css = readFileSync(join(root, "src/styles.css"), "utf8");
+
+  assert.match(
+    train,
+    /showPlayOn = bookDone && mode === "practice" && !practiceMissedRef\.current/,
+  );
+  assert.match(train, /beginner: "800"/);
+  assert.match(train, /intermediate: "1200"/);
+  assert.match(train, /advanced: "1800"/);
+  assert.match(train, /Beginner, about 800\./);
+  assert.match(train, /useState<PlayLevel \| null>\("beginner"\)/);
+  assert.doesNotMatch(train, /cyclePlayLevel/);
+  assert.doesNotMatch(train, /strength-cycle/);
+  assert.match(train, /play-level-chip/);
+
+  assert.match(engine, /beginner: \{ thinkMs: 280, depth: 1, randomize: true, slack: 280 \}/);
+  assert.match(engine, /intermediate: \{ thinkMs: 700, depth: 3, randomize: true, slack: 80 \}/);
+  assert.match(engine, /advanced: \{ thinkMs: 1400, depth: 5, randomize: false, slack: 0 \}/);
+
+  assert.match(css, /\.play-level-chip/);
+  assert.match(css, /\.play-level-chip\.is-on/);
+  assert.doesNotMatch(css, /\.strength-cycle/);
 });
