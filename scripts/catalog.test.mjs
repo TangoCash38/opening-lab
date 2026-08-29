@@ -72,7 +72,9 @@ test("Help and home name the one free pack and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /Scotch Gambit/);
   assert.doesNotMatch(guide, /All eight are free/);
 
-  assert.match(
+  assert.match(hero, /Train openings the strict way/);
+  assert.match(hero, /How to play/);
+  assert.doesNotMatch(
     hero,
     /Caro-Kann for Black is free\. You play Black\. Follow the yellow hint\. Wrong moves are rejected\./,
   );

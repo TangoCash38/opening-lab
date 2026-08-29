@@ -34,6 +34,7 @@ type TrainMode = "learn" | "practice";
 
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
+  onHowToPlay: () => void;
 };
 
 type ModalTarget = { pack: Pack; price: string };
@@ -194,7 +195,7 @@ function PackCard({
   );
 }
 
-export function PackList({ onStartLine }: Props) {
+export function PackList({ onStartLine, onHowToPlay }: Props) {
   const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
@@ -444,6 +445,7 @@ export function PackList({ onStartLine }: Props) {
       <HomeHero
         playApp={playApp}
         onStartLine={onStartLine}
+        onHowToPlay={onHowToPlay}
         onSubscribe={() => {
           if (playApp && !offerPlayLabPlus) return;
           setPayError(null);
