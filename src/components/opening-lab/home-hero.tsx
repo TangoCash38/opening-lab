@@ -10,11 +10,12 @@ type TrainMode = "learn" | "practice";
 
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
+  onHowToPlay: () => void;
   onSubscribe: () => void;
   playApp?: boolean;
 };
 
-export function HomeHero({ onStartLine }: Props) {
+export function HomeHero({ onStartLine, onHowToPlay }: Props) {
   const { masteryOf, isComplete } = useProgress();
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
@@ -41,9 +42,13 @@ export function HomeHero({ onStartLine }: Props) {
       <h1 className="mb-1.5 font-display text-[1.65rem] font-bold tracking-tight">
         Train openings the strict way
       </h1>
-      <p className="mb-4 text-[0.95rem] text-fg-muted">
-        Caro-Kann for Black is free. You play Black. Follow the yellow hint. Wrong moves are rejected.
-      </p>
+      <button
+        type="button"
+        onClick={onHowToPlay}
+        className="mb-4 text-[0.88rem] font-semibold text-accent active:opacity-70"
+      >
+        How to play
+      </button>
 
       <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="px-4 pb-2 pt-3.5">

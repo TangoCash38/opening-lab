@@ -167,7 +167,10 @@ export function OpeningLabApp() {
         }}
       >
         {view === "home" && (
-          <PackList onStartLine={startLine} />
+          <PackList
+            onStartLine={startLine}
+            onHowToPlay={() => setView("guide")}
+          />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}
         {view === "train" && active && isPackVisible(active.pack) && (
