@@ -4,7 +4,7 @@ import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { visiblePacks } from "@/lib/catalog";
 import { ChessBoard } from "./chess-board";
-import { LineRow, PackExpandHint } from "./pack-lines";
+import { LineRow } from "./pack-lines";
 
 type TrainMode = "learn" | "practice";
 
@@ -19,7 +19,6 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
   const { masteryOf, isComplete } = useProgress();
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
-  const line = pack?.lines[0];
   const [linesOpen, setLinesOpen] = useState(false);
 
   const game = useMemo(() => {
@@ -32,10 +31,6 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
     g.move("e4");
     return g.moves({ verbose: true }).find((m) => m.san === "c6") ?? null;
   }, []);
-
-  const startFirst = () => {
-    if (pack && line) onStartLine(pack, line, "learn");
-  };
 
   return (
     <section className="mb-5">
@@ -73,7 +68,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             showHints
             lastMove={null}
             slide={null}
-            onSquare={startFirst}
+            onSquare={() => setLinesOpen(true)}
             interactive
           />
         </div>
@@ -81,46 +76,34 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
         <div className="space-y-2.5 px-4 pb-3 pt-1">
           <button
             type="button"
-            onClick={startFirst}
+            onClick={() => setLinesOpen((v) => !v)}
+            aria-expanded={linesOpen}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
-            Start free Caro-Kann Core 1
+            See 18 lines
           </button>
         </div>
 
-        {pack ? (
+        {pack && linesOpen ? (
           <div className="border-t border-border">
-            <button
-              type="button"
-              className="w-full px-3 py-3 text-left"
-              onClick={() => setLinesOpen((v) => !v)}
-              aria-expanded={linesOpen}
-            >
-              <span className="block px-1 text-[0.88rem] font-bold">
-                Caro-Kann lines · {pack.lines.length}
-              </span>
-              <PackExpandHint open={linesOpen} free />
-            </button>
-            {linesOpen
-              ? pack.lines.map((item, i) => {
-                  const complete = isComplete(item.id);
-                  const mastery = masteryOf(item.id);
-                  return (
-                    <div key={item.id} className="px-3">
-                      <LineRow
-                        index={i}
-                        line={item}
-                        complete={complete}
-                        mastery={mastery}
-                        locked={false}
-                        showFree
-                        onClick={() => onStartLine(pack, item, "learn")}
-                      />
-                    </div>
-                  );
-                })
-              : null}
-            {linesOpen ? <div className="pb-2.5" /> : null}
+            {pack.lines.map((item, i) => {
+              const complete = isComplete(item.id);
+              const mastery = masteryOf(item.id);
+              return (
+                <div key={item.id} className="px-3">
+                  <LineRow
+                    index={i}
+                    line={item}
+                    complete={complete}
+                    mastery={mastery}
+                    locked={false}
+                    showFree
+                    onClick={() => onStartLine(pack, item, "learn")}
+                  />
+                </div>
+              );
+            })}
+            <div className="pb-2.5" />
           </div>
         ) : null}
       </div>
