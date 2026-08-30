@@ -70,6 +70,10 @@ export function GuideView({ onBack }: Props) {
         Meet the Sicilian as White with the Alapin: 2.c3 and d4 against …Nc6, …d5, …Nf6, …e6, …d6, and …g6. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Meet 1.c4: The Symmetrical English for Black">
+        Meet 1.c4 as Black with the Symmetrical English: Four Knights, Botvinnik, Hedgehog, and reversed-Sicilian centres. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
