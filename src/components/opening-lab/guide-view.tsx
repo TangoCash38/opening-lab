@@ -86,6 +86,10 @@ export function GuideView({ onBack }: Props) {
         Meet the Pirc and Modern as White with the 150 Attack: Be3, Qd2, and a supported centre. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Meet the Dutch Defence: The Fianchetto System for White">
+        Meet the Dutch as White with the fianchetto: g3, Bg2, and c4 against Classical, Stonewall, and Leningrad. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
