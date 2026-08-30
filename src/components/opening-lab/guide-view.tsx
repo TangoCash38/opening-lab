@@ -33,6 +33,12 @@ export function GuideView({ onBack }: Props) {
         book lines.
       </Block>
 
+      <Block title="Stop the London System">
+        The London is White's solid d4 setup with Bf4. You hit the
+        centre, pressure b2, and trade that bishop when you can. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. Black vs the London. 18
+        book lines.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
