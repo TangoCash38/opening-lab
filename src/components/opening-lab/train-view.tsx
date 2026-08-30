@@ -897,6 +897,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[0.95rem] font-semibold">
         <span>{line.name}</span>
       </div>
+      {line.idea ? (
+        <p className="mt-1 text-[0.88rem] text-fg-muted">{line.idea}</p>
+      ) : null}
       <div className="text-[0.78rem] text-fg-subtle">
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
       </div>

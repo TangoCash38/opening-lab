@@ -60,14 +60,24 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
     "utf8",
   );
 
+  assert.match(guide, /<Block title="Caro-Kann for Black">/);
+  assert.match(guide, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(
     guide,
-    /<strong>Caro-Kann for Black<\/strong> — 10 setups \+ 8 follow-ups\. This pack is free\./,
+    /This pack drills the\s+main book moves against White's usual tries/,
   );
+  assert.match(guide, /Play on from the setup and see where the game goes/);
+  assert.match(guide, /Free sample: Advance,/);
+  assert.match(guide, /Classical, Exchange/);
   assert.match(
     guide,
-    /<strong>Queen\u2019s Gambit Declined for Black<\/strong> — 10 setups \+ 8 follow-ups\. This pack is free\./,
+    /<Block title="Queen\u2019s Gambit Declined for Black">/,
   );
+  assert.match(guide, /solid answer to 1\.d4/);
+  assert.match(guide, /18\s+book lines/);
+  assert.doesNotMatch(guide, /setups/);
+  assert.doesNotMatch(guide, /follow-ups/);
+  assert.doesNotMatch(guide, /<Block title="Free openings">/);
   assert.doesNotMatch(guide, /Lab\+/);
   assert.doesNotMatch(guide, /£4\.99/);
   assert.doesNotMatch(guide, /£29\.99/);
@@ -75,6 +85,7 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /Premium packs/);
   assert.doesNotMatch(guide, /Scotch Gambit/);
   assert.doesNotMatch(guide, /All eight are free/);
+  assert.doesNotMatch(guide, /£1\.99/);
 
   assert.match(guide, /<Block title="Play on">/);
   assert.match(guide, /After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup\. A clean Test still turns the line green\. Play on does not complete the line\./);
@@ -84,11 +95,27 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
 
   assert.match(hero, /Train openings the strict way/);
   assert.match(hero, /How to play/);
+  assert.match(hero, /rounded-full/);
+  assert.match(hero, /border-border/);
+  assert.match(hero, /min-h-11/);
+  assert.match(hero, /bg-bg-elevated/);
+  assert.match(hero, /See 3 lines/);
+  assert.match(hero, /Free sample/);
+  assert.match(hero, /Advance, Classical, Exchange/);
+  assert.match(hero, /The Caro-Kann is Black's answer to 1\.e4/);
+  assert.match(
+    hero,
+    /This pack drills the\s+main book moves against White's usual tries/,
+  );
+  assert.match(hero, /playableLines/);
+  assert.doesNotMatch(hero, /See 18 lines/);
+  assert.doesNotMatch(hero, /setups/);
+  assert.doesNotMatch(hero, /follow-ups/);
+  assert.doesNotMatch(hero, /Free pack · ready to train/);
   assert.doesNotMatch(
     hero,
     /Caro-Kann for Black is free\. You play Black\. Follow the yellow hint\. Wrong moves are rejected\./,
   );
-  assert.match(hero, /See 18 lines/);
   assert.doesNotMatch(hero, /Start free Caro-Kann Core 1/);
   assert.match(hero, /id === "caro-kann-black"/);
   assert.match(hero, /flip=\{true\}/);
@@ -102,6 +129,8 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
     packList,
     /These packs are on while we check the rest\. If a move is wrong, tell us on that line\./,
   );
+  assert.match(packList, /playableLines\(pack\)/);
+  assert.match(packList, /pack\.about/);
 });
 
 test("Play listing copy is unchanged", () => {
@@ -112,7 +141,7 @@ test("Play listing copy is unchanged", () => {
   );
 });
 
-test("Caro-Kann for Black is the free Black pack: 10 setups + 8 follow-ups, N1e2 on ckb9", () => {
+test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1e2 on ckb9", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "caro-kann-black"');
   assert.ok(start >= 0, "caro-kann-black pack missing");
@@ -125,9 +154,14 @@ test("Caro-Kann for Black is the free Black pack: 10 setups + 8 follow-ups, N1e2
   assert.match(ck, /isFree: true/);
   assert.match(ck, /isPremium: false/);
   assert.match(ck, /price: null/);
-  assert.match(ck, /blurb: "10 setups \+ 8 follow-ups"/);
-  assert.match(ck, /closedLabel: "Free · 18 drills"/);
+  assert.match(ck, /blurb: "Advance, Classical, Exchange"/);
+  assert.match(ck, /closedLabel: "Free · 3 lines"/);
+  assert.match(ck, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(ck, /eco: "B10–B19"/);
+  assert.doesNotMatch(ck, /setups/);
+  assert.doesNotMatch(ck, /follow-ups/);
+  assert.doesNotMatch(ck, /Core \d+ ·/);
+  assert.doesNotMatch(ck, /Follow-up \d+ ·/);
 
   const lineIds = [...ck.matchAll(/id: "(ckb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
@@ -139,6 +173,17 @@ test("Caro-Kann for Black is the free Black pack: 10 setups + 8 follow-ups, N1e2
   assert.ok(sides.length >= 18, "expected line sides");
   assert.ok(sides.every((s) => s === "b"), "every line side must be b");
 
+  const names = Object.fromEntries(
+    [...ck.matchAll(/id: "(ckb\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
+      m[1],
+      m[2],
+    ]),
+  );
+  assert.equal(names.ckb1, "Advance");
+  assert.equal(names.ckb3, "Classical");
+  assert.equal(names.ckb5, "Exchange");
+  assert.equal(names.ckb9, "Classical, N1e2");
+
   const ckb9Start = ck.indexOf('id: "ckb9"');
   assert.ok(ckb9Start >= 0, "ckb9 missing");
   const ckb9Next = ck.indexOf('id: "ckb10"', ckb9Start);
@@ -148,7 +193,7 @@ test("Caro-Kann for Black is the free Black pack: 10 setups + 8 follow-ups, N1e2
   assert.doesNotMatch(ckb9, /"Nge2"/);
 });
 
-test("Queen’s Gambit Declined for Black is the second free Black pack: 10 setups + 8 follow-ups", () => {
+test("Queen’s Gambit Declined for Black stays fully visible with chess names", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "qgd-black"');
   assert.ok(start >= 0, "qgd-black pack missing");
@@ -161,9 +206,14 @@ test("Queen’s Gambit Declined for Black is the second free Black pack: 10 setu
   assert.match(qgd, /isFree: true/);
   assert.match(qgd, /isPremium: false/);
   assert.match(qgd, /price: null/);
-  assert.match(qgd, /blurb: "10 setups \+ 8 follow-ups"/);
-  assert.match(qgd, /closedLabel: "Free · 18 drills"/);
+  assert.match(qgd, /blurb: "Black vs 1\.d4"/);
+  assert.match(qgd, /closedLabel: "Free · 18 lines"/);
+  assert.match(qgd, /solid answer to 1\.d4/);
   assert.match(qgd, /eco: "D30–D69"/);
+  assert.doesNotMatch(qgd, /setups/);
+  assert.doesNotMatch(qgd, /follow-ups/);
+  assert.doesNotMatch(qgd, /Core \d+ ·/);
+  assert.doesNotMatch(qgd, /Follow-up \d+ ·/);
 
   const lineIds = [...qgd.matchAll(/id: "(qgdb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
@@ -180,6 +230,88 @@ test("Queen’s Gambit Declined for Black is the second free Black pack: 10 setu
   const qgdb1Next = qgd.indexOf('id: "qgdb2"', qgdb1Start);
   const qgdb1 = qgd.slice(qgdb1Start, qgdb1Next >= 0 ? qgdb1Next : undefined);
   assert.match(qgdb1, /plies: \["d4"/);
+  assert.match(qgdb1, /name: "Exchange, …Be7"/);
+});
+
+test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for Caro", () => {
+  assert.match(src, /export const FREE_SAMPLE_LINE_IDS/);
+  assert.match(src, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
+  assert.match(src, /export function playableLines\(pack: Pack\): OpeningLine\[\]/);
+  assert.match(src, /if \(!ids\) return pack\.lines;/);
+  assert.match(src, /return pack\.lines\.filter\(\(l\) => ids\.includes\(l\.id\)\);/);
+
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const start = packs.indexOf('id: "caro-kann-black"');
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const ck = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+  const lineIds = [...ck.matchAll(/id: "(ckb\d+)"/g)].map((m) => m[1]);
+  const sample = ["ckb1", "ckb3", "ckb5"];
+  assert.deepEqual(
+    lineIds.filter((id) => sample.includes(id)),
+    sample,
+  );
+  assert.equal(lineIds.length, 18);
+
+  const hero = readFileSync(
+    join(root, "src/components/opening-lab/home-hero.tsx"),
+    "utf8",
+  );
+  const packList = readFileSync(
+    join(root, "src/components/opening-lab/pack-list.tsx"),
+    "utf8",
+  );
+  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(packList, /playableLines\(pack\)\.map/);
+});
+
+test("every ckb1–18 and qgdb1–18 has a non-empty idea; train-view renders line.idea", () => {
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const train = readFileSync(
+    join(root, "src/components/opening-lab/train-view.tsx"),
+    "utf8",
+  );
+  const feedback = readFileSync(
+    join(root, "src/components/opening-lab/line-feedback.tsx"),
+    "utf8",
+  );
+
+  function packBlock(id) {
+    const start = packs.indexOf(`id: "${id}"`);
+    assert.ok(start >= 0, `${id} missing`);
+    const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+    return next >= 0 ? packs.slice(start, next) : packs.slice(start);
+  }
+
+  function assertIdeas(block, prefix, n) {
+    for (let i = 1; i <= n; i++) {
+      const id = `${prefix}${i}`;
+      const from = block.indexOf(`id: "${id}"`);
+      assert.ok(from >= 0, `${id} missing`);
+      const to = block.indexOf(`id: "${prefix}${i + 1}"`, from);
+      const line = block.slice(from, to >= 0 ? to : undefined);
+      const m = line.match(/idea: "([^"]+)"/);
+      assert.ok(m && m[1].trim().length > 0, `${id} needs a non-empty idea`);
+    }
+  }
+
+  const ck = packBlock("caro-kann-black");
+  const qgd = packBlock("qgd-black");
+  assertIdeas(ck, "ckb", 18);
+  assertIdeas(qgd, "qgdb", 18);
+  assert.match(
+    ck,
+    /idea: "White has locked the centre\. Develop the light bishop before …e6, then challenge d4 with …c5\."/,
+  );
+  assert.match(
+    qgd,
+    /idea: "White chose the Exchange early\. Recapture with …exd5 and establish the standard Queen's Gambit Declined centre\."/,
+  );
+
+  assert.match(train, /\{line\.idea\}/);
+  assert.match(train, /text-\[0\.88rem\]/);
+  assert.match(train, /text-fg-muted/);
+  assert.doesNotMatch(feedback, /line\.idea/);
+  assert.match(feedback, /Wrong move\?/);
 });
 
 test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still needs a clean Test", () => {

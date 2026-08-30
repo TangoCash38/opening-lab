@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, playVisiblePacks, visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, playVisiblePacks, playableLines, visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -111,7 +111,7 @@ function PackCard({
             <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
-                {pack.lines.length} lines
+                {playableLines(pack).length} lines
               </span>
               {free ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
@@ -152,12 +152,19 @@ function PackCard({
             </div>
           </div>
         </div>
+        {pack.about ? (
+          <div className="mt-3 space-y-1.5 text-[0.82rem] leading-relaxed text-fg-muted">
+            {pack.about.split("\n\n").map((para) => (
+              <p key={para.slice(0, 40)}>{para}</p>
+            ))}
+          </div>
+        ) : null}
         <PackExpandHint open={open} free={free} closedLabel={pack.closedLabel} />
       </button>
 
       {open && (
         <div className="border-t border-border px-3 pb-4 pt-2.5">
-          {pack.lines.map((line, i) => {
+          {playableLines(pack).map((line, i) => {
             const mastery = masteryOf(line.id);
             const complete = !locked && isComplete(line.id);
             return (
