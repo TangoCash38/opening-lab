@@ -91,7 +91,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             onClick={startAdvance}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
-            Practice Advance
+            Tap to practice
           </button>
           <button
             type="button"
