@@ -102,7 +102,7 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
   assert.match(hero, /border-border/);
   assert.match(hero, /min-h-11/);
   assert.match(hero, /bg-bg-elevated/);
-  assert.match(hero, /Practice Advance/);
+  assert.match(hero, /Tap to practice/);
   assert.match(hero, /See 18 lines/);
   assert.match(hero, /aria-expanded=\{linesOpen\}/);
   assert.match(hero, /Free sample/);
