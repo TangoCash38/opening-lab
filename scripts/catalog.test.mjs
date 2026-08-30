@@ -77,7 +77,7 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /All eight are free/);
 
   assert.match(guide, /<Block title="Play on">/);
-  assert.match(guide, /After a clean Test, Play on from the setup\. Pick 800, 1200, or 1800\./);
+  assert.match(guide, /After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup\. A clean Test still turns the line green\. Play on does not complete the line\./);
   assert.match(guide, /800/);
   assert.match(guide, /1200/);
   assert.match(guide, /1800/);
@@ -182,7 +182,7 @@ test("Queen’s Gambit Declined for Black is the second free Black pack: 10 setu
   assert.match(qgdb1, /plies: \["d4"/);
 });
 
-test("Play on chips are 800 / 1200 / 1800 and still require a clean Test", () => {
+test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still needs a clean Test", () => {
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
     "utf8",
@@ -190,10 +190,15 @@ test("Play on chips are 800 / 1200 / 1800 and still require a clean Test", () =>
   const engine = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
   const css = readFileSync(join(root, "src/styles.css"), "utf8");
 
-  assert.match(
-    train,
-    /showPlayOn = bookDone && mode === "practice" && !practiceMissedRef\.current/,
-  );
+  assert.match(train, /showPlayOn = bookDone;/);
+  assert.doesNotMatch(train, /showPlayOn = bookDone && mode === "practice"/);
+  assert.match(train, /Pick strength, then Play on/);
+  assert.match(train, /Practice done — Play on, or Test with no hints/);
+  assert.match(train, /Finished, but you missed a move — Play on, or Test again to go green/);
+  assert.match(train, /Line complete — well done!/);
+  assert.match(train, /if \(practiceMissedRef\.current\)/);
+  assert.match(train, /onLineComplete\?\.\(\)/);
+  assert.doesNotMatch(train, /bookDone && mode === "practice" && !showPlayOn/);
   assert.match(train, /beginner: "800"/);
   assert.match(train, /intermediate: "1200"/);
   assert.match(train, /advanced: "1800"/);
@@ -209,5 +214,6 @@ test("Play on chips are 800 / 1200 / 1800 and still require a clean Test", () =>
 
   assert.match(css, /\.play-level-chip/);
   assert.match(css, /\.play-level-chip\.is-on/);
+  assert.match(css, /\.play-on-caption/);
   assert.doesNotMatch(css, /\.strength-cycle/);
 });
