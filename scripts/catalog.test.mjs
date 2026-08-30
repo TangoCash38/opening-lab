@@ -340,9 +340,16 @@ test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still ne
   assert.doesNotMatch(train, /strength-cycle/);
   assert.match(train, /play-level-chip/);
 
-  assert.match(engine, /beginner: \{ thinkMs: 280, depth: 1, randomize: true, slack: 280 \}/);
-  assert.match(engine, /intermediate: \{ thinkMs: 700, depth: 3, randomize: true, slack: 80 \}/);
+  assert.match(train, /beginner: 400,/);
+  assert.match(train, /intermediate: 800,/);
+  assert.match(train, /advanced: 1400,/);
+
+  assert.match(engine, /beginner: \{ thinkMs: 400, depth: 2, randomize: true, slack: 80 \}/);
+  assert.match(engine, /intermediate: \{ thinkMs: 800, depth: 3, randomize: true, slack: 40 \}/);
   assert.match(engine, /advanced: \{ thinkMs: 1400, depth: 5, randomize: false, slack: 0 \}/);
+
+  assert.match(engine, /function hangsPiece/);
+  assert.match(engine, /HANG_CP = 250/);
 
   assert.match(css, /\.play-level-chip/);
   assert.match(css, /\.play-level-chip\.is-on/);

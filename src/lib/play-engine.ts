@@ -19,8 +19,8 @@ export const PLAY_STRENGTH: Record<
   PlayLevel,
   { thinkMs: number; depth: number; randomize: boolean; slack: number }
 > = {
-  beginner: { thinkMs: 280, depth: 1, randomize: true, slack: 280 },
-  intermediate: { thinkMs: 700, depth: 3, randomize: true, slack: 80 },
+  beginner: { thinkMs: 400, depth: 2, randomize: true, slack: 80 },
+  intermediate: { thinkMs: 800, depth: 3, randomize: true, slack: 40 },
   advanced: { thinkMs: 1400, depth: 5, randomize: false, slack: 0 },
 };
 
@@ -42,11 +42,14 @@ const VAL: Record<string, number> = {
   k: 20_000,
 };
 
+/** A piece (N/B/R/Q), not a pawn. Weakness is shallow search, not hanging pieces. */
+const HANG_CP = 250;
+
 /* a1=0 … h8=63. Black uses sq ^ 56. */
 const PST: Record<string, number[]> = {
   p: [
     0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 10, -20, -20, 10, 10, 5, 5, -5, -10, 0, 0,
-    -10, -5, 5, 0, 0, 0, 20, 20, 0, 0, 0, 5, 5, 10, 25, 25, 10, 5, 5, 10, 10,
+    -10, -5, 5, 5, 0, 0, 0, 20, 20, 0, 0, 0, 5, 5, 10, 25, 25, 10, 5, 5, 10, 10,
     20, 30, 30, 20, 10, 10, 50, 50, 50, 50, 50, 50, 50, 50, 0, 0, 0, 0, 0, 0, 0,
     0,
   ],
@@ -128,9 +131,9 @@ function resolveLevel(level?: PlayLevel): PlayLevel {
 function thinkBudget(thinkMs: number, level: PlayLevel): number {
   const fallback = PLAY_STRENGTH[level].thinkMs;
   const raw = Number.isFinite(thinkMs) && thinkMs > 0 ? thinkMs : fallback;
-  if (level === "beginner") return Math.min(400, Math.max(200, raw));
+  if (level === "beginner") return Math.min(550, Math.max(280, raw));
   if (level === "advanced") return Math.min(1800, Math.max(900, raw));
-  return Math.min(900, Math.max(500, raw));
+  return Math.min(1100, Math.max(550, raw));
 }
 
 /** Always a legal capture, else the first legal move. Never throws. */
@@ -146,6 +149,47 @@ function legalFallback(fen: string): EngineMove | null {
   }
 }
 
+/** Capture-only qsearch with no clock — used to see if a recapture wins a piece. */
+function captureQsearch(
+  chess: Chess,
+  alpha: number,
+  beta: number,
+  qply: number,
+): number {
+  const stand = evaluate(chess);
+  if (qply <= 0) return stand;
+  if (chess.isCheckmate()) return -20_000;
+  if (chess.isDraw()) return 0;
+  if (stand >= beta) return beta;
+  if (stand > alpha) alpha = stand;
+  const caps = orderMoves(
+    chess.moves({ verbose: true }).filter((m) => m.captured || m.promotion),
+  );
+  for (const m of caps) {
+    chess.move(m);
+    const score = -captureQsearch(chess, -beta, -alpha, qply - 1);
+    chess.undo();
+    if (score >= beta) return beta;
+    if (score > alpha) alpha = score;
+  }
+  return alpha;
+}
+
+/**
+ * True when opponent can recapture (or keep capturing) and we are down a
+ * piece or more, with no compensation visible in capture qsearch.
+ */
+function hangsPiece(chess: Chess, move: Move): boolean {
+  chess.move(move);
+  try {
+    if (chess.isCheckmate()) return false;
+    const our = -captureQsearch(chess, -50_000, 50_000, 6);
+    return our <= -HANG_CP;
+  } finally {
+    chess.undo();
+  }
+}
+
 function searchBest(
   fen: string,
   thinkMs: number,
@@ -154,8 +198,10 @@ function searchBest(
   slack = 160,
 ): EngineMove | null {
   const chess = new Chess(fen);
-  const rootMoves = orderMoves(chess.moves({ verbose: true }));
-  if (rootMoves.length === 0) return null;
+  const legal = orderMoves(chess.moves({ verbose: true }));
+  if (legal.length === 0) return null;
+  const rootMoves = legal.filter((m) => !hangsPiece(chess, m));
+  if (rootMoves.length === 0) return legalFallback(fen);
 
   const deadline = Date.now() + thinkMs;
   let nodes = 0;
