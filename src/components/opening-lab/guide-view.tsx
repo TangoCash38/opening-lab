@@ -43,7 +43,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title="Play on">
-        After a clean Test, Play on from the setup. Pick 800, 1200, or 1800.
+        After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.
       </Block>
 
       <Block title="Reviews">

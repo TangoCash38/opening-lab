@@ -384,7 +384,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
-          text: "Practice done — now Test with no hints",
+          text: "Practice done — Play on, or Test with no hints",
           cls: "done",
         });
         soundWin();
@@ -397,7 +397,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
       if (practiceMissedRef.current) {
         setStatus({
-          text: "Finished, but you missed a move — Test again to go green",
+          text: "Finished, but you missed a move — Play on, or Test again to go green",
           cls: "done",
         });
         soundWin();
@@ -865,7 +865,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             : "text-fg-muted";
 
   const bookDone = status.cls === "done" && !playingOn;
-  const showPlayOn = bookDone && mode === "practice" && !practiceMissedRef.current;
+  const showPlayOn = bookDone;
 
 
   const canTakeBack =
@@ -1071,7 +1071,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           >
             Done
           </button>
-          {bookDone && mode === "practice" && showPlayOn ? (
+          {bookDone && mode === "practice" ? (
             <button
               type="button"
               onClick={onTrainNext ?? onBack}
@@ -1084,6 +1084,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         <div className="trainer-primary">
           {showPlayOn ? (
             <>
+              <p className="play-on-caption">Pick strength, then Play on</p>
               <div className="play-level-row" role="group" aria-label="Computer strength">
                 {PLAY_LEVELS.map((level) => (
                   <button
@@ -1111,18 +1112,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
             <button
               type="button"
               onClick={() => changeMode("practice")}
-              className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
+              className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95"
             >
               Start Test
-            </button>
-          ) : null}
-          {bookDone && mode === "practice" && !showPlayOn ? (
-            <button
-              type="button"
-              onClick={onTrainNext ?? onBack}
-              className="min-h-11 rounded-full bg-accent px-4 py-2.5 text-[0.85rem] font-bold text-accent-fg active:scale-95"
-            >
-              Train next due
             </button>
           ) : null}
         </div>

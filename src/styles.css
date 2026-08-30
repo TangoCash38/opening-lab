@@ -600,6 +600,16 @@
   min-width: 0;
 }
 
+.play-on-caption {
+  flex: 1 0 100%;
+  margin: 0;
+  text-align: right;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-fg-subtle);
+  letter-spacing: 0.01em;
+}
+
 .play-level-row {
   display: flex;
   flex-wrap: wrap;
