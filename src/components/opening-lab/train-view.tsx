@@ -44,8 +44,8 @@ const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
 
 const PLAY_THINK_MS: Record<PlayLevel, number> = {
-  beginner: 280,
-  intermediate: 700,
+  beginner: 400,
+  intermediate: 800,
   advanced: 1400,
 };
 
