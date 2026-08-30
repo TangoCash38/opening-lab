@@ -74,6 +74,10 @@ export function GuideView({ onBack }: Props) {
         Meet 1.c4 as Black with the Symmetrical English: Four Knights, Botvinnik, Hedgehog, and reversed-Sicilian centres. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Defend Against the King’s Gambit">
+        Defend the King’s Gambit as Black: Knight’s Gambit, Fischer, Classical Accepted, Bishop’s Gambit, and Falkbeer. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
