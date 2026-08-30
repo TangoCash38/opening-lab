@@ -90,6 +90,10 @@ export function GuideView({ onBack }: Props) {
         Meet the Dutch as White with the fianchetto: g3, Bg2, and c4 against Classical, Stonewall, and Leningrad. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Meet the Caro-Kann: Advance & Panov for White">
+        Meet the Caro-Kann as White with the Advance and the Panov. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
