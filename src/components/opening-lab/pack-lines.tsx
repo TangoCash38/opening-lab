@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Lock } from "lucide-react";
 import type { OpeningLine } from "@/data/packs";
 import type { Mastery } from "@/lib/progress";
 import { MasteryChip } from "./mastery-chip";
@@ -64,16 +64,26 @@ export function LineRow({
   return (
     <button
       type="button"
-      className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left active:scale-[0.99] ${
-        complete
-          ? "border-success/35 bg-success-soft/55"
-          : "border-danger bg-danger-soft"
+      aria-disabled={locked}
+      className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left ${
+        locked
+          ? "border-border/80 bg-bg-subtle text-fg-muted"
+          : complete
+            ? "border-success/35 bg-success-soft/55 active:scale-[0.99]"
+            : "border-danger bg-danger-soft active:scale-[0.99]"
       }`}
-      onClick={onClick}
+      onClick={() => {
+        if (locked) return;
+        onClick();
+      }}
     >
       <span
-        className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold text-white ${
-          complete ? "bg-success" : "bg-danger"
+        className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
+          locked
+            ? "bg-fg-subtle/40 text-fg-muted"
+            : complete
+              ? "bg-success text-white"
+              : "bg-danger text-white"
         }`}
       >
         {index + 1}
@@ -81,7 +91,12 @@ export function LineRow({
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
           <span className="min-w-0 break-words">{line.name}</span>
-          {showFree ? (
+          {locked ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-bg-elevated px-1.5 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
+              <Lock className="size-3" strokeWidth={2.5} aria-hidden />
+              Locked
+            </span>
+          ) : showFree ? (
             <span className="rounded-full bg-success-soft px-1.5 py-0.5 text-[0.65rem] font-semibold text-success">
               Free
             </span>

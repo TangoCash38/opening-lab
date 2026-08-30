@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, playVisiblePacks, playableLines, visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, isLineUnlocked, playVisiblePacks, visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -111,7 +111,7 @@ function PackCard({
             <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
-                {playableLines(pack).length} lines
+                {pack.lines.length} lines
               </span>
               {free ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
@@ -164,9 +164,11 @@ function PackCard({
 
       {open && (
         <div className="border-t border-border px-3 pb-4 pt-2.5">
-          {playableLines(pack).map((line, i) => {
+          {pack.lines.map((line, i) => {
+            const lineUnlocked = isLineUnlocked(pack, line.id);
+            const rowLocked = locked || !lineUnlocked;
             const mastery = masteryOf(line.id);
-            const complete = !locked && isComplete(line.id);
+            const complete = !rowLocked && isComplete(line.id);
             return (
               <LineRow
                 key={line.id}
@@ -174,11 +176,11 @@ function PackCard({
                 line={line}
                 complete={complete}
                 mastery={mastery}
-                locked={locked}
-                showFree={free}
+                locked={rowLocked}
+                showFree={free && lineUnlocked}
                 onClick={() => {
                   if (locked) onRequestUnlock(pack);
-                  else onStartLine(pack, line);
+                  else if (lineUnlocked) onStartLine(pack, line);
                 }}
               />
             );

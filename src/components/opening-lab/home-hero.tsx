@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
-import { playableLines, visiblePacks } from "@/lib/catalog";
+import { isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { ChessBoard } from "./chess-board";
 import { LineRow } from "./pack-lines";
 
@@ -20,7 +20,6 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
   const [linesOpen, setLinesOpen] = useState(false);
-  const playable = pack ? playableLines(pack) : [];
 
   const game = useMemo(() => {
     const g = new Chess();
@@ -32,6 +31,11 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
     g.move("e4");
     return g.moves({ verbose: true }).find((m) => m.san === "c6") ?? null;
   }, []);
+
+  const startAdvance = () => {
+    const line = pack?.lines.find((l) => l.id === "ckb1");
+    if (pack && line) onStartLine(pack, line, "learn");
+  };
 
   return (
     <section className="mb-5">
@@ -62,9 +66,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             the light bishop out, and keep a solid structure.
           </p>
           <p className="mt-2 text-[0.82rem] leading-relaxed text-fg-muted">
-            This pack drills the main book moves against White's usual tries.
-            Learn those, then Play on from the setup and see where the game
-            goes.
+            Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want.
           </p>
         </div>
 
@@ -78,7 +80,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             showHints
             lastMove={null}
             slide={null}
-            onSquare={() => setLinesOpen(true)}
+            onSquare={() => startAdvance()}
             interactive
           />
         </div>
@@ -86,18 +88,26 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
         <div className="space-y-2.5 px-4 pb-3 pt-1">
           <button
             type="button"
-            onClick={() => setLinesOpen((v) => !v)}
-            aria-expanded={linesOpen}
+            onClick={startAdvance}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
-            See 3 lines
+            Practice Advance
+          </button>
+          <button
+            type="button"
+            onClick={() => setLinesOpen((v) => !v)}
+            aria-expanded={linesOpen}
+            className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
+          >
+            See 18 lines
           </button>
         </div>
 
         {pack && linesOpen ? (
           <div className="border-t border-border">
-            {playable.map((item, i) => {
-              const complete = isComplete(item.id);
+            {pack.lines.map((item, i) => {
+              const unlocked = isLineUnlocked(pack, item.id);
+              const complete = unlocked && isComplete(item.id);
               const mastery = masteryOf(item.id);
               return (
                 <div key={item.id} className="px-3">
@@ -106,9 +116,11 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
                     line={item}
                     complete={complete}
                     mastery={mastery}
-                    locked={false}
-                    showFree
-                    onClick={() => onStartLine(pack, item, "learn")}
+                    locked={!unlocked}
+                    showFree={unlocked}
+                    onClick={() => {
+                      if (unlocked) onStartLine(pack, item, "learn");
+                    }}
                   />
                 </div>
               );

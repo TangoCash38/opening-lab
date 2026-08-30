@@ -722,7 +722,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Advance, Classical, Exchange",
-    about: "The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get the light bishop out, and keep a solid structure.\n\nThis pack drills the main book moves against White's usual tries. Learn those, then Play on from the setup and see where the game goes.",
+    about: "The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get the light bishop out, and keep a solid structure.\n\nPractice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
     closedLabel: "Free · 3 lines",
     lines: [
       {
@@ -863,7 +863,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black vs 1.d4",
-    about: "The Queen’s Gambit Declined is Black's solid answer to 1.d4. You hold the centre, develop, then challenge it.\n\nThis pack drills the main book moves. Then Play on from the setup and see where the game goes.",
+    about: "The Queen’s Gambit Declined is Black's solid answer to 1.d4. You hold the centre, develop, then challenge it.\n\nPractice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
     closedLabel: "Free · 18 lines",
     lines: [
       {

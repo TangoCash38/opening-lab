@@ -64,11 +64,14 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
   assert.match(guide, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(
     guide,
-    /This pack drills the\s+main book moves against White's usual tries/,
+    /Practice the main book moves with the yellow hint/,
   );
+  assert.match(guide, /Then Test with none to prove you/);
+  assert.match(guide, /Play on from the setup if you want/);
   assert.match(guide, /Play on from the setup and see where the game goes/);
-  assert.match(guide, /Free sample: Advance,/);
+  assert.match(guide, /Free sample:\s+Advance,/);
   assert.match(guide, /Classical, Exchange/);
+  assert.match(guide, /Other Caro lines are in the full pack/);
   assert.match(
     guide,
     /<Block title="Queen\u2019s Gambit Declined for Black">/,
@@ -99,16 +102,23 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
   assert.match(hero, /border-border/);
   assert.match(hero, /min-h-11/);
   assert.match(hero, /bg-bg-elevated/);
-  assert.match(hero, /See 3 lines/);
+  assert.match(hero, /Practice Advance/);
+  assert.match(hero, /See 18 lines/);
+  assert.match(hero, /aria-expanded=\{linesOpen\}/);
   assert.match(hero, /Free sample/);
   assert.match(hero, /Advance, Classical, Exchange/);
   assert.match(hero, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(
     hero,
-    /This pack drills the\s+main book moves against White's usual tries/,
+    /Practice the main book moves with the yellow hint/,
   );
-  assert.match(hero, /playableLines/);
-  assert.doesNotMatch(hero, /See 18 lines/);
+  assert.match(hero, /Then Test with none/);
+  assert.match(hero, /Play on from the setup if you want/);
+  assert.match(hero, /id === "ckb1"/);
+  assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
+  assert.match(hero, /isLineUnlocked/);
+  assert.match(hero, /pack\.lines\.map/);
+  assert.doesNotMatch(hero, /See 3 lines/);
   assert.doesNotMatch(hero, /setups/);
   assert.doesNotMatch(hero, /follow-ups/);
   assert.doesNotMatch(hero, /Free pack · ready to train/);
@@ -129,8 +139,10 @@ test("Help and home name both free packs and do not pitch Lab+", () => {
     packList,
     /These packs are on while we check the rest\. If a move is wrong, tell us on that line\./,
   );
-  assert.match(packList, /playableLines\(pack\)/);
+  assert.match(packList, /isLineUnlocked\(pack, line\.id\)/);
+  assert.match(packList, /pack\.lines\.map/);
   assert.match(packList, /pack\.about/);
+  assert.doesNotMatch(packList, /£1\.99/);
 });
 
 test("Play listing copy is unchanged", () => {
@@ -157,6 +169,9 @@ test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1
   assert.match(ck, /blurb: "Advance, Classical, Exchange"/);
   assert.match(ck, /closedLabel: "Free · 3 lines"/);
   assert.match(ck, /The Caro-Kann is Black's answer to 1\.e4/);
+  assert.match(ck, /Practice the main book moves with the yellow hint/);
+  assert.match(ck, /Then Test with none to prove you remember them/);
+  assert.match(ck, /Play on from the setup if you want/);
   assert.match(ck, /eco: "B10–B19"/);
   assert.doesNotMatch(ck, /setups/);
   assert.doesNotMatch(ck, /follow-ups/);
@@ -209,6 +224,9 @@ test("Queen’s Gambit Declined for Black stays fully visible with chess names",
   assert.match(qgd, /blurb: "Black vs 1\.d4"/);
   assert.match(qgd, /closedLabel: "Free · 18 lines"/);
   assert.match(qgd, /solid answer to 1\.d4/);
+  assert.match(qgd, /Practice the main book moves with the yellow hint/);
+  assert.match(qgd, /Then Test with none to prove you remember them/);
+  assert.match(qgd, /Play on from the setup and see where the game goes/);
   assert.match(qgd, /eco: "D30–D69"/);
   assert.doesNotMatch(qgd, /setups/);
   assert.doesNotMatch(qgd, /follow-ups/);
@@ -239,6 +257,9 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.match(src, /export function playableLines\(pack: Pack\): OpeningLine\[\]/);
   assert.match(src, /if \(!ids\) return pack\.lines;/);
   assert.match(src, /return pack\.lines\.filter\(\(l\) => ids\.includes\(l\.id\)\);/);
+  assert.match(src, /export function isLineUnlocked/);
+  assert.match(src, /if \(!ids\) return true;/);
+  assert.match(src, /return ids\.includes\(lineId\)/);
 
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "caro-kann-black"');
@@ -260,8 +281,22 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     join(root, "src/components/opening-lab/pack-list.tsx"),
     "utf8",
   );
-  assert.match(hero, /playableLines\(pack\)/);
-  assert.match(packList, /playableLines\(pack\)\.map/);
+  const rows = readFileSync(
+    join(root, "src/components/opening-lab/pack-lines.tsx"),
+    "utf8",
+  );
+  assert.match(hero, /isLineUnlocked\(pack, item\.id\)/);
+  assert.match(hero, /pack\.lines\.map/);
+  assert.match(packList, /pack\.lines\.map/);
+  assert.match(packList, /isLineUnlocked\(pack, line\.id\)/);
+  assert.match(rows, /from "lucide-react"/);
+  assert.match(rows, /Lock/);
+  assert.match(rows, /Locked/);
+  assert.match(rows, /Test with no mistakes to complete/);
+  assert.doesNotMatch(rows, /£1\.99/);
+  assert.doesNotMatch(hero, /£1\.99/);
+  assert.doesNotMatch(hero, /Lab\+/);
+  assert.doesNotMatch(rows, /Lab\+/);
 });
 
 test("every ckb1–18 and qgdb1–18 has a non-empty idea; train-view renders line.idea", () => {

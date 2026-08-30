@@ -24,6 +24,13 @@ export function playableLines(pack: Pack): OpeningLine[] {
   return pack.lines.filter((l) => ids.includes(l.id));
 }
 
+/** True if the pack has no sample list (QGD all free) or the line is in it. */
+export function isLineUnlocked(pack: Pick<Pack, "id">, lineId: string): boolean {
+  const ids = FREE_SAMPLE_LINE_IDS[pack.id];
+  if (!ids) return true;
+  return ids.includes(lineId);
+}
+
 /**
  * Individual pack Play product IDs on sale. Empty until billing returns.
  * Lab+ yearly is not a pack SKU path.
