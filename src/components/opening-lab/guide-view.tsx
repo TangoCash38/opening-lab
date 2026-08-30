@@ -22,10 +22,19 @@ export function GuideView({ onBack }: Props) {
         opening; wrong moves are rejected so the line sticks.
       </Block>
 
-      <Block title="Free openings">
-        <strong>Caro-Kann for Black</strong> — 10 setups + 8 follow-ups. This pack is free.
-        <br />
-        <strong>Queen’s Gambit Declined for Black</strong> — 10 setups + 8 follow-ups. This pack is free.
+      <Block title="Caro-Kann for Black">
+        The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get
+        the light bishop out, and keep a solid structure. This pack drills the
+        main book moves against White's usual tries. Learn those, then Play on
+        from the setup and see where the game goes. Free sample: Advance,
+        Classical, Exchange.
+      </Block>
+
+      <Block title="Queen’s Gambit Declined for Black">
+        The Queen’s Gambit Declined is Black's solid answer to 1.d4. You
+        hold the centre, develop, then challenge it. This pack drills the main
+        book moves. Then Play on from the setup and see where the game goes. 18
+        book lines.
       </Block>
 
       <Block title="White & Black / Special packs">

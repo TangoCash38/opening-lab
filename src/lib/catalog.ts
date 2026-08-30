@@ -1,4 +1,4 @@
-import type { Pack } from "@/data/packs";
+import type { OpeningLine, Pack } from "@/data/packs";
 
 /** Only these packs appear in the catalog while we check the rest. */
 export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black"] as const;
@@ -12,6 +12,16 @@ export function isPackVisible(pack: Pick<Pack, "id"> | string): boolean {
 
 export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T[] {
   return packs.filter((pack) => isPackVisible(pack));
+}
+
+export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> = {
+  "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
+};
+
+export function playableLines(pack: Pack): OpeningLine[] {
+  const ids = FREE_SAMPLE_LINE_IDS[pack.id];
+  if (!ids) return pack.lines;
+  return pack.lines.filter((l) => ids.includes(l.id));
 }
 
 /**
