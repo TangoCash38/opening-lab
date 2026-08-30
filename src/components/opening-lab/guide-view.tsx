@@ -82,6 +82,10 @@ export function GuideView({ onBack }: Props) {
         Meet the Scandinavian as White: the queen lines, Modern 2…Nf6, Portuguese, and Icelandic. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Meet the Pirc & Modern Defence: The 150 Attack">
+        Meet the Pirc and Modern as White with the 150 Attack: Be3, Qd2, and a supported centre. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
