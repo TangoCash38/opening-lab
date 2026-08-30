@@ -54,6 +54,10 @@ export function GuideView({ onBack }: Props) {
         and the fianchetto. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="Italian Game Mastery for White">
+        Play the Italian as White: quiet d3 systems, the Giuoco Piano, Two Knights, Evans Gambit, and the Hungarian. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
