@@ -1,7 +1,7 @@
 import type { OpeningLine, Pack } from "@/data/packs";
 
 /** Only these packs appear in the catalog while we check the rest. */
-export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black"] as const;
+export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black"] as const;
 
 export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
 
@@ -24,7 +24,7 @@ export function playableLines(pack: Pack): OpeningLine[] {
   return pack.lines.filter((l) => ids.includes(l.id));
 }
 
-/** True if the pack has no sample list (QGD and London all free) or the line is in it. */
+/** True if the pack has no sample list (QGD, London, and 1.d4 sidelines all free) or the line is in it. */
 export function isLineUnlocked(pack: Pick<Pack, "id">, lineId: string): boolean {
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
   if (!ids) return true;
@@ -46,7 +46,7 @@ export function hasPaidPlaySkuPath(
 
 /**
  * Lab+ stays hidden while the Play catalog is free — no paid/locked
- * Play SKU path. A third visible free pack must not unhide Lab+.
+ * Play SKU path. A fourth visible free pack must not unhide Lab+.
  * A locked pack with no Play buy path is not a path (Path A).
  */
 export function catalogOffersLabPlus(

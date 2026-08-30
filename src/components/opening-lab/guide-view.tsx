@@ -39,6 +39,11 @@ export function GuideView({ onBack }: Props) {
         book lines.
       </Block>
 
+      <Block title="1.d4 Sideline Survival Kit">
+        Meet White's 1.d4 sidelines as Black: Colle, Torre, Trompowsky,
+        Veresov, and the Blackmar-Diemer. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
