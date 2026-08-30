@@ -28,6 +28,7 @@ import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
+import { PackAboutModal } from "./pack-about-modal";
 import { LegalFooter } from "./legal-footer";
 
 type TrainMode = "learn" | "practice";
@@ -61,6 +62,7 @@ function PackCard({
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const { masteryOf, isComplete } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
@@ -82,7 +84,13 @@ function PackCard({
       <button
         type="button"
         className="flex w-full flex-col px-4 pb-3 pt-3.5 text-left"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => {
+            const next = !v;
+            if (next && pack.about) setAboutOpen(true);
+            return next;
+          });
+        }}
         aria-expanded={open}
       >
         <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
@@ -152,13 +160,6 @@ function PackCard({
             </div>
           </div>
         </div>
-        {pack.about ? (
-          <div className="mt-3 space-y-1.5 text-[0.82rem] leading-relaxed text-fg-muted">
-            {pack.about.split("\n\n").map((para) => (
-              <p key={para.slice(0, 40)}>{para}</p>
-            ))}
-          </div>
-        ) : null}
         <PackExpandHint open={open} free={free} closedLabel={pack.closedLabel} />
       </button>
 
@@ -200,6 +201,14 @@ function PackCard({
           </button>
         </div>
       )}
+
+      {pack.about && aboutOpen ? (
+        <PackAboutModal
+          title={pack.name}
+          about={pack.about}
+          onClose={() => setAboutOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }

@@ -110,13 +110,10 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(hero, /aria-expanded=\{linesOpen\}/);
   assert.match(hero, /Free sample/);
   assert.match(hero, /Advance, Classical, Exchange/);
-  assert.match(hero, /The Caro-Kann is Black's answer to 1\.e4/);
-  assert.match(
-    hero,
-    /Practice the main book moves with the yellow hint/,
-  );
-  assert.match(hero, /Then Test with none/);
-  assert.match(hero, /Play on from the setup if you want/);
+  assert.match(hero, /PackAboutModal/);
+  assert.match(hero, /aboutOpen/);
+  assert.match(hero, /pack\?\.about/);
+  assert.doesNotMatch(hero, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(hero, /id === "ckb1"/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.match(hero, /isLineUnlocked/);
@@ -145,6 +142,14 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(packList, /isLineUnlocked\(pack, line\.id\)/);
   assert.match(packList, /pack\.lines\.map/);
   assert.match(packList, /pack\.about/);
+  assert.match(packList, /PackAboutModal/);
+  assert.match(packList, /aboutOpen/);
+  const aboutModal = readFileSync(
+    join(root, "src/components/opening-lab/pack-about-modal.tsx"),
+    "utf8",
+  );
+  assert.match(aboutModal, /aria-label="Close"/);
+  assert.match(aboutModal, /role="dialog"/);
   assert.doesNotMatch(packList, /£1\.99/);
   assert.match(
     packList,
