@@ -21,7 +21,7 @@ export function LegalPage({
           {title}
         </h1>
         <p className="mt-1 text-[0.78rem] text-fg-subtle">
-          Last updated 15 August 2026
+          Last updated 30 August 2026
         </p>
         <div className="mt-6 space-y-5 text-[0.95rem] leading-relaxed text-fg-muted">
           {children}

@@ -10,51 +10,35 @@ function Terms() {
     <LegalPage title="Terms of Use">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
-        memory trainer.
+        trainer.
       </p>
 
       <LegalSection title="The product">
         <p>
           Opening Lab helps you memorise set opening lines. You play only the
-          book moves for the line you chose. It is not rated play, not a chess
-          engine, and not a social or puzzle site.
+          book move for the line you chose. Practice uses a yellow hint. Test
+          has none. After Practice or Test you can Play on from that setup
+          against a weak engine at a strength you pick (about 800, 1200, or
+          1800). It is not rated play, not an online chess game against other
+          people, and not a puzzle or social site.
         </p>
       </LegalSection>
 
-      <LegalSection title="Prices (GBP)">
-        <ul className="list-disc space-y-1 pl-5">
-          <li>Scotch is free.</li>
-          <li>
-            Other packs are £1 or £1.99, one-time. They stay on your account.
-          </li>
-          <li>
-            Opening Lab+ is £4.99 a month or £29.99 a year and unlocks every
-            pack while the plan is active.
-          </li>
-        </ul>
-      </LegalSection>
-
-      <LegalSection title="Opening Lab+">
+      <LegalSection title="The catalog">
         <p>
-          You can cancel Lab+ at any time. When a plan ends, Lab+ access ends
-          and packs you have not bought lock again. Packs you already bought
-          stay unlocked on your account.
+          There are twenty opening packs. Caro-Kann for Black is the home
+          sample. The other packs sit under More packs. Packs are currently
+          free. There is no subscription, and the app does not bill through
+          Google Play.
         </p>
       </LegalSection>
 
-      <LegalSection title="Google Play">
+      <LegalSection title="If we add paid packs">
         <p>
-          In the Opening Lab app from Google Play, Scotch is free. Lab+ is a
-          yearly subscription billed by Google. It auto-renews until you
-          cancel in Google Play.
-        </p>
-      </LegalSection>
-
-      <LegalSection title="Pay as you go packs">
-        <p>
-          A pack is a one-time digital purchase. It stays on your account, so
-          it follows you to another phone when you sign in. If Lab+ ends,
-          those packs still stay.
+          If we later sell packs, they will be one-time purchases on this
+          website. They stay on your account when you sign in. We will not
+          take away a pack you already paid for, except where we must for
+          legal reasons.
         </p>
       </LegalSection>
 
@@ -66,11 +50,18 @@ function Terms() {
         </p>
       </LegalSection>
 
+      <LegalSection title="Google Play">
+        <p>
+          The Opening Lab app from Google Play is the same trainer as the
+          website. There is no in-app subscription and no pack billing through
+          Google Play at the moment.
+        </p>
+      </LegalSection>
+
       <LegalSection title="Changes">
         <p>
-          We may add, change, or remove packs and lines. We will not take away
-          a pack you already paid for on your account, except where we must
-          for legal reasons.
+          We may add, change, or remove packs and lines. Training progress
+          stays on your device unless you clear it.
         </p>
       </LegalSection>
 
@@ -86,12 +77,12 @@ function Terms() {
           Nothing here takes away your rights as a UK consumer. We are
           responsible for providing the service with reasonable care. We are
           not responsible for losses we could not reasonably have expected, or
-          for problems caused by your device, your internet, or Stripe’s
-          payment systems. If something goes wrong that is our fault, the most
-          we will pay is the amount you paid us for Opening Lab in the 12
-          months before the claim (or a reasonable amount if you paid
-          nothing). We do not limit liability for death or personal injury
-          caused by our negligence, or for fraud.
+          for problems caused by your device, your internet, or a payment
+          provider. If something goes wrong that is our fault, the most we
+          will pay is the amount you paid us for Opening Lab in the 12 months
+          before the claim (or a reasonable amount if you paid nothing). We do
+          not limit liability for death or personal injury caused by our
+          negligence, or for fraud.
         </p>
       </LegalSection>
 
