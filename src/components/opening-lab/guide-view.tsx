@@ -102,6 +102,10 @@ export function GuideView({ onBack }: Props) {
         Meet the Englund Gambit as White: take on e5, develop, and do not let the queen raid dictate the game. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Meet the Budapest Gambit: White’s Safe Route">
+        Meet the Budapest as White: Alekhine 4.Bf4/e3/Nf3, the main-line Qd5, and the Fajarowicz. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
