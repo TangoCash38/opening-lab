@@ -5,6 +5,7 @@ import { useProgress } from "@/hooks/use-progress";
 import { isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { ChessBoard } from "./chess-board";
 import { LineRow } from "./pack-lines";
+import { PackAboutModal } from "./pack-about-modal";
 
 type TrainMode = "learn" | "practice";
 
@@ -20,6 +21,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
   const [linesOpen, setLinesOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   const game = useMemo(() => {
     const g = new Chess();
@@ -61,13 +63,6 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
           <p className="mt-0.5 text-[0.82rem] text-fg-muted">
             {pack?.blurb ?? "Advance, Classical, Exchange"}
           </p>
-          <p className="mt-2 text-[0.82rem] leading-relaxed text-fg-muted">
-            The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get
-            the light bishop out, and keep a solid structure.
-          </p>
-          <p className="mt-2 text-[0.82rem] leading-relaxed text-fg-muted">
-            Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want.
-          </p>
         </div>
 
         <div className="home-board px-2">
@@ -95,7 +90,13 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
           </button>
           <button
             type="button"
-            onClick={() => setLinesOpen((v) => !v)}
+            onClick={() => {
+              setLinesOpen((v) => {
+                const next = !v;
+                if (next && pack?.about) setAboutOpen(true);
+                return next;
+              });
+            }}
             aria-expanded={linesOpen}
             className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
           >
@@ -129,6 +130,14 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
           </div>
         ) : null}
       </div>
+
+      {pack?.about && aboutOpen ? (
+        <PackAboutModal
+          title={pack.name}
+          about={pack.about}
+          onClose={() => setAboutOpen(false)}
+        />
+      ) : null}
     </section>
   );
 }
