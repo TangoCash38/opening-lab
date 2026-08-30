@@ -49,6 +49,11 @@ export function GuideView({ onBack }: Props) {
         Smith-Morra, Rossolimo, and the Wing Gambit. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="Nimzo-Larsen Attack for White">
+        Play the Nimzo-Larsen as White: 1.b3, Bb2, and the central plans against …e5, …d5, …c5,
+        and the fianchetto. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
