@@ -58,6 +58,10 @@ export function GuideView({ onBack }: Props) {
         Play the Italian as White: quiet d3 systems, the Giuoco Piano, Two Knights, Evans Gambit, and the Hungarian. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="Ruy Lopez Mastery for White">
+        Play the Ruy Lopez as White: Closed Spanish, Berlin, Exchange, Open, Marshall, and Schliemann. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
