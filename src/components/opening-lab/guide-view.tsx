@@ -94,6 +94,10 @@ export function GuideView({ onBack }: Props) {
         Meet the Caro-Kann as White with the Advance and the Panov. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Defend Against the Evans Gambit for Black">
+        Defend the Evans Gambit as Black: accepted Ba5 and Be7, and declined Bb6. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
