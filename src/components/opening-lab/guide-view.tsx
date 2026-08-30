@@ -78,6 +78,10 @@ export function GuideView({ onBack }: Props) {
         Defend the King’s Gambit as Black: Knight’s Gambit, Fischer, Classical Accepted, Bishop’s Gambit, and Falkbeer. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
       </Block>
 
+      <Block title="How to Meet the Scandinavian Defence: White’s Safe Edge">
+        Meet the Scandinavian as White: the queen lines, Modern 2…Nf6, Portuguese, and Icelandic. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. Free.
+      </Block>
+
       <Block title="White & Black / Special packs">
         Each pack trains one opening. You play the book side.
       </Block>
