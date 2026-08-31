@@ -54,7 +54,7 @@ export function soundPickup() {
   }
 }
 
-/** Low board thump on a legal land (click-move or drop). */
+/** Low board thump on a legal land (click-move or drop). Louder than the scrape. */
 export function soundMove() {
   try {
     const ctx = getCtx();
@@ -67,15 +67,30 @@ export function soundMove() {
       o.frequency.setValueAtTime(freq, t);
       o.frequency.exponentialRampToValueAtTime(freq * 0.55, t + dur);
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.004);
       g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
       o.connect(g);
       g.connect(ctx.destination);
       o.start(t);
       o.stop(t + dur + 0.01);
     };
-    thump(95, 0.055, 0.11);
-    thump(170, 0.022, 0.07);
+    thump(85, 0.18, 0.16);
+    thump(160, 0.08, 0.09);
+
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuffer(ctx, 0.06);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 280;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.0001, t);
+    ng.gain.exponentialRampToValueAtTime(0.09, t + 0.003);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.055);
+    src.connect(lp);
+    lp.connect(ng);
+    ng.connect(ctx.destination);
+    src.start(t);
+    src.stop(t + 0.06);
   } catch {
     /* ignore audio failures */
   }
