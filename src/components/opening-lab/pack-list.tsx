@@ -16,6 +16,7 @@ import {
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
+import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { isPlayWrap } from "@/lib/play-app";
 import {
   hasPlayBillingBridge,
@@ -87,7 +88,7 @@ function PackCard({
         onClick={() => {
           setOpen((v) => {
             const next = !v;
-            if (next && pack.about) setAboutOpen(true);
+            if (next && pack.about && !shouldSkipPackIntro()) setAboutOpen(true);
             return next;
           });
         }}

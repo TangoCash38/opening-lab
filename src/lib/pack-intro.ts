@@ -119,12 +119,32 @@ export function openingParagraphs(about: string, packId?: string): string[] {
   return paras;
 }
 
-const seen = new Set<string>();
+/** Session only — intros return after they shut the app/tab down. */
+const INTRO_SKIP_KEY = "opening-lab:intro:skip-v1";
 
-export function hasSeenPackIntro(packId: string): boolean {
-  return seen.has(packId);
+export function shouldSkipPackIntro(): boolean {
+  if (typeof sessionStorage === "undefined") return false;
+  try {
+    return sessionStorage.getItem(INTRO_SKIP_KEY) === "1";
+  } catch {
+    return false;
+  }
 }
 
-export function markPackIntroSeen(packId: string): void {
-  seen.add(packId);
+export function skipPackIntroThisSession(): void {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.setItem(INTRO_SKIP_KEY, "1");
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+/** True after Don't show again or Start this session. packId kept for callers. */
+export function hasSeenPackIntro(_packId?: string): boolean {
+  return shouldSkipPackIntro();
+}
+
+export function markPackIntroSeen(_packId?: string): void {
+  skipPackIntroThisSession();
 }
