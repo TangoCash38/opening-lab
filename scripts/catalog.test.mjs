@@ -1804,3 +1804,93 @@ test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still ne
   assert.match(css, /\.play-on-caption/);
   assert.doesNotMatch(css, /\.strength-cycle/);
 });
+
+test("two-step pack intro exists; gym copy is not the only opening text; no setups/follow-ups", () => {
+  const modal = readFileSync(
+    join(root, "src/components/opening-lab/pack-about-modal.tsx"),
+    "utf8",
+  );
+  const intro = readFileSync(join(root, "src/lib/pack-intro.ts"), "utf8");
+  const hero = readFileSync(
+    join(root, "src/components/opening-lab/home-hero.tsx"),
+    "utf8",
+  );
+  const packList = readFileSync(
+    join(root, "src/components/opening-lab/pack-list.tsx"),
+    "utf8",
+  );
+  const train = readFileSync(
+    join(root, "src/components/opening-lab/train-view.tsx"),
+    "utf8",
+  );
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const sounds = readFileSync(join(root, "src/lib/sounds.ts"), "utf8");
+  const board = readFileSync(
+    join(root, "src/components/opening-lab/chess-board.tsx"),
+    "utf8",
+  );
+  const css = readFileSync(join(root, "src/styles.css"), "utf8");
+
+  assert.match(modal, /data-intro-step=\{step\}/);
+  assert.match(modal, />\s*Continue\s*</);
+  assert.match(modal, /startLabel/);
+  assert.match(modal, /GAME_INTRO/);
+  assert.match(modal, /openingParagraphs\(about, packId\)/);
+  assert.match(modal, /GAME_INTRO_TITLE/);
+  assert.match(intro, /Opening Lab is a strict book-move trainer/);
+  assert.match(intro, /Practice with the yellow hint/);
+  assert.match(intro, /Test with none/);
+  assert.match(intro, /Only the book move counts/);
+  assert.match(intro, /export function openingParagraphs/);
+  assert.match(intro, /filter\(\(p\) => !isGymCopy\(p\)\)/);
+  assert.match(intro, /PACK_OPENING_EXTRA/);
+  assert.doesNotMatch(intro, /setups/);
+  assert.doesNotMatch(intro, /follow-ups/);
+  assert.doesNotMatch(intro, /Lab\+/);
+  assert.doesNotMatch(modal, /setups/);
+  assert.doesNotMatch(modal, /follow-ups/);
+  assert.doesNotMatch(modal, /Lab\+/);
+  assert.doesNotMatch(modal, /grandmaster/i);
+  assert.doesNotMatch(intro, /grandmaster/i);
+
+  const ck = packs.slice(packs.indexOf('id: "caro-kann-black"'));
+  const aboutMatch = ck.match(/about: "([^"]+)"/);
+  assert.ok(aboutMatch, "caro about missing");
+  const about = aboutMatch[1].replace(/\\n/g, "\n");
+  const paras = about.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  assert.ok(paras.length >= 2, "about should split gym from opening");
+  assert.match(paras[0], /The Caro-Kann is Black's answer to 1\.e4/);
+  assert.doesNotMatch(paras[0], /yellow hint/);
+  assert.match(paras[1], /Practice the main book moves with the yellow hint/);
+  assert.ok(paras[0].length > 40, "gym copy is not the only opening text");
+
+  assert.match(hero, /packId=\{pack\.id\}/);
+  assert.match(hero, /onStart/);
+  assert.match(hero, /startLabel="Start"/);
+  assert.match(packList, /packId=\{pack\.id\}/);
+  assert.match(packList, /startLabel="Train"/);
+  assert.match(train, /PackAboutModal/);
+  assert.match(train, /hasSeenPackIntro/);
+  assert.match(train, /startLabel="Train"/);
+  assert.doesNotMatch(train, /LineCompleteBurst/);
+  assert.doesNotMatch(hero, /setups/);
+  assert.doesNotMatch(hero, /follow-ups/);
+  assert.doesNotMatch(packList, /setups and follow-ups/);
+
+  assert.match(sounds, /export function soundPickup/);
+  assert.match(sounds, /export function resumeAudio/);
+  assert.match(sounds, /bandpass/);
+  assert.doesNotMatch(sounds, /type = "sawtooth"/);
+  assert.doesNotMatch(sounds, /beep\(380/);
+  assert.doesNotMatch(sounds, /523, 659, 784, 1046/);
+  assert.match(board, /soundPickup\(\)/);
+  assert.match(board, /resumeAudio\(\)/);
+  assert.match(board, /board-frame/);
+  assert.match(css, /#f3e5c8/);
+  assert.match(css, /#a97850/);
+  assert.match(css, /\.board-frame/);
+  assert.doesNotMatch(css, /hint-from-pulse 1\.4s/);
+  assert.doesNotMatch(board, /linear-gradient\(145deg, #8b6342/);
+  assert.doesNotMatch(css, /linear-gradient\(145deg, #8b6342/);
+});
+

@@ -2,49 +2,132 @@ let audioCtx: AudioContext | null = null;
 
 function getCtx() {
   if (typeof window === "undefined") return null;
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext })
-        .webkitAudioContext)();
+  const AC =
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext: typeof AudioContext })
+      .webkitAudioContext;
+  if (!AC) return null;
+  if (!audioCtx) audioCtx = new AC();
+  if (audioCtx.state === "suspended") {
+    void audioCtx.resume();
   }
   return audioCtx;
 }
 
-function beep(freq: number, dur: number, type: OscillatorType = "sine", vol = 0.08) {
+/** Resume AudioContext on a user gesture so later thumps are not silent. */
+export function resumeAudio() {
+  const ctx = getCtx();
+  if (ctx && ctx.state === "suspended") void ctx.resume();
+}
+
+function noiseBuffer(ctx: AudioContext, seconds: number) {
+  const n = Math.max(1, Math.floor(ctx.sampleRate * seconds));
+  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) data[i] = Math.random() * 2 - 1;
+  return buf;
+}
+
+/** Short quiet wood scrape — pickup / drag start. Filtered noise, not a beep. */
+export function soundPickup() {
   try {
     const ctx = getCtx();
     if (!ctx) return;
-    const o = ctx.createOscillator();
+    const t = ctx.currentTime;
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuffer(ctx, 0.07);
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 1400;
+    bp.Q.value = 0.9;
     const g = ctx.createGain();
-    o.type = type;
-    o.frequency.value = freq;
-    g.gain.value = vol;
-    o.connect(g);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.028, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+    src.connect(bp);
+    bp.connect(g);
     g.connect(ctx.destination);
-    o.start();
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-    o.stop(ctx.currentTime + dur);
+    src.start(t);
+    src.stop(t + 0.07);
+  } catch {
+    /* ignore audio failures */
+  }
+}
+
+/** Low board thump on a legal land (click-move or drop). */
+export function soundMove() {
+  try {
+    const ctx = getCtx();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const thump = (freq: number, vol: number, dur: number) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq, t);
+      o.frequency.exponentialRampToValueAtTime(freq * 0.55, t + dur);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start(t);
+      o.stop(t + dur + 0.01);
+    };
+    thump(95, 0.055, 0.11);
+    thump(170, 0.022, 0.07);
   } catch {
     /* ignore audio failures */
   }
 }
 
 export function soundSelect() {
-  beep(520, 0.06, "triangle", 0.06);
+  soundPickup();
 }
-export function soundMove() {
-  beep(380, 0.07, "sine", 0.07);
-  beep(220, 0.09, "sine", 0.04);
-}
+
 export function soundOk() {
-  beep(660, 0.08, "sine", 0.07);
-  setTimeout(() => beep(880, 0.1, "sine", 0.06), 70);
+  /* Land already thumps. No extra chime. */
 }
+
+/** Dull muted knock — not a toy buzzer. */
 export function soundBad() {
-  beep(180, 0.15, "sawtooth", 0.05);
+  try {
+    const ctx = getCtx();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(130, t);
+    o.frequency.exponentialRampToValueAtTime(70, t + 0.09);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.04, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + 0.12);
+
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuffer(ctx, 0.05);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 400;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.0001, t);
+    ng.gain.exponentialRampToValueAtTime(0.018, t + 0.004);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+    src.connect(lp);
+    lp.connect(ng);
+    ng.connect(ctx.destination);
+    src.start(t);
+    src.stop(t + 0.05);
+  } catch {
+    /* ignore audio failures */
+  }
 }
+
+/** Win arpeggio dropped — clean Test still goes green on the line list. */
 export function soundWin() {
-  [523, 659, 784, 1046].forEach((f, i) =>
-    setTimeout(() => beep(f, 0.18, "sine", 0.07), i * 120),
-  );
+  /* quiet */
 }

@@ -135,7 +135,13 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
         <PackAboutModal
           title={pack.name}
           about={pack.about}
+          packId={pack.id}
+          startLabel="Start"
           onClose={() => setAboutOpen(false)}
+          onStart={() => {
+            setAboutOpen(false);
+            startAdvance();
+          }}
         />
       ) : null}
     </section>

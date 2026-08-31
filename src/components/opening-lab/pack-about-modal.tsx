@@ -1,13 +1,44 @@
+import { useState } from "react";
 import { X } from "lucide-react";
+import {
+  GAME_INTRO,
+  GAME_INTRO_TITLE,
+  markPackIntroSeen,
+  openingParagraphs,
+} from "@/lib/pack-intro";
 
 type Props = {
   title: string;
   about: string;
+  packId?: string;
+  startLabel?: string;
   onClose: () => void;
+  onStart?: () => void;
 };
 
-export function PackAboutModal({ title, about, onClose }: Props) {
-  const paragraphs = about.split("\n\n").map((p) => p.trim()).filter(Boolean);
+export function PackAboutModal({
+  title,
+  about,
+  packId,
+  startLabel = "Train",
+  onClose,
+  onStart,
+}: Props) {
+  const [step, setStep] = useState<1 | 2>(1);
+  const opening = openingParagraphs(about, packId);
+  const heading = step === 1 ? GAME_INTRO_TITLE : title;
+  const paragraphs = step === 1 ? [GAME_INTRO] : opening;
+
+  const close = () => {
+    if (packId) markPackIntroSeen(packId);
+    onClose();
+  };
+
+  const start = () => {
+    if (packId) markPackIntroSeen(packId);
+    if (onStart) onStart();
+    else onClose();
+  };
 
   return (
     <div
@@ -15,7 +46,8 @@ export function PackAboutModal({ title, about, onClose }: Props) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="pack-about-title"
-      onClick={onClose}
+      data-intro-step={step}
+      onClick={close}
       style={{
         paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
       }}
@@ -29,11 +61,11 @@ export function PackAboutModal({ title, about, onClose }: Props) {
             id="pack-about-title"
             className="m-0 pr-2 font-display text-lg font-bold leading-snug"
           >
-            {title}
+            {heading}
           </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={close}
             className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
             aria-label="Close"
           >
@@ -49,6 +81,25 @@ export function PackAboutModal({ title, about, onClose }: Props) {
               {para}
             </p>
           ))}
+        </div>
+        <div className="border-t border-border px-5 py-4">
+          {step === 1 ? (
+            <button
+              type="button"
+              onClick={() => setStep(2)}
+              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+            >
+              Continue
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={start}
+              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+            >
+              {startLabel}
+            </button>
+          )}
         </div>
       </div>
     </div>

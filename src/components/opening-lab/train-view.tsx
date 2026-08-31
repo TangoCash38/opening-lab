@@ -11,9 +11,10 @@ import {
   soundSelect,
   soundWin,
 } from "@/lib/sounds";
+import { hasSeenPackIntro } from "@/lib/pack-intro";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
-import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
+import { PackAboutModal } from "./pack-about-modal";
 
 type PlayLevel = "beginner" | "intermediate" | "advanced";
 
@@ -197,7 +198,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const [hintsReady, setHintsReady] = useState(true);
   const [busy, setBusy] = useState(false);
   const [nudgeTest, setNudgeTest] = useState(false);
-  const [celebrate, setCelebrate] = useState(false);
   const [playingOn, setPlayingOn] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
   const [engineBusy, setEngineBusy] = useState(false);
@@ -206,6 +206,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     to: Square;
   } | null>(null);
   const [playLevel, setPlayLevel] = useState<PlayLevel | null>("beginner");
+  const [aboutOpen, setAboutOpen] = useState(
+    () => Boolean(pack.about) && !hasSeenPackIntro(pack.id),
+  );
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -243,8 +246,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       hintTimer.current = null;
     }
   }, [clearReplyTimer]);
-
-  const stopCelebrate = useCallback(() => setCelebrate(false), []);
 
   const dropEngine = useCallback(() => {
     engineRef.current?.dispose();
@@ -308,7 +309,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       });
       completedRef.current = false;
       practiceMissedRef.current = false;
-      setCelebrate(false);
       setSession((s) => s + 1);
     },
     [clearAllTimers, dropEngine, mode, line.plies.length],
@@ -411,7 +411,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       soundWin();
       if (!completedRef.current) {
         completedRef.current = true;
-        setCelebrate(true);
         onLineComplete?.();
       }
       return;
@@ -676,7 +675,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     playingOnRef.current = true;
     playOnStartPlyRef.current = game.history().length;
     setPlayingOn(true);
-    setCelebrate(false);
     setSelected(null);
     setPendingPromo(null);
     setEngineBusy(false);
@@ -753,7 +751,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setSelected(null);
     setPendingPromo(null);
     setWrongUntil(null);
-    setCelebrate(false);
 
     const next = onPlay
       ? replaySans(game.history(), target)
@@ -986,12 +983,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
               : null
           }
         />
-        {celebrate ? (
-          <LineCompleteBurst
-            pieceCode={line.side === "b" ? "k" : "K"}
-            onFinished={stopCelebrate}
-          />
-        ) : null}
       </div>
 
       {/* Move history — wrap so the current ply stays readable */}
@@ -1123,6 +1114,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       </div>
       <LineFeedback pack={pack} line={line} />
+      {pack.about && aboutOpen ? (
+        <PackAboutModal
+          title={pack.name}
+          about={pack.about}
+          packId={pack.id}
+          startLabel="Train"
+          onClose={() => setAboutOpen(false)}
+          onStart={() => setAboutOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
