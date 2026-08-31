@@ -1944,3 +1944,22 @@ test("wrong-move reports go to support; confirmed book move earns a free pack", 
   assert.doesNotMatch(feedback, /Lab\+/);
   assert.doesNotMatch(guide, /Lab\+/);
 });
+
+test("app open splash: gym story then logo spin then home", () => {
+  const splash = readFileSync(join(root, "src/components/opening-lab/app-splash.tsx"), "utf8");
+  const shell = readFileSync(join(root, "src/components/opening-lab/app-shell.tsx"), "utf8");
+  const css = readFileSync(join(root, "src/styles.css"), "utf8");
+  assert.match(splash, /A line is a routine/);
+  assert.match(splash, /Only the book move counts|You play only the book move/);
+  assert.match(splash, /Practice with the yellow hint/);
+  assert.match(splash, /Test with none/);
+  assert.match(splash, /opening-lab:splash:v1/);
+  assert.match(splash, /onClick=\{onDone\}/);
+  assert.doesNotMatch(splash, /Start Scotch Line 1/);
+  assert.doesNotMatch(splash, /Lab\+/);
+  assert.doesNotMatch(splash, /grandmaster/i);
+  assert.match(shell, /AppSplash/);
+  assert.match(shell, /hasSeenAppSplash/);
+  assert.match(css, /splash-logo-spin/);
+  assert.match(css, /prefers-reduced-motion/);
+});

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CircleHelp, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackVisible, readRequestedPackId } from "@/lib/catalog";
@@ -13,6 +13,11 @@ import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
 import { Onboarding } from "./onboarding";
+import {
+  AppSplash,
+  hasSeenAppSplash,
+  markAppSplashSeen,
+} from "./app-splash";
 import { accessibleCandidates } from "./today-strip";
 
 type View = "home" | "train" | "guide";
@@ -31,6 +36,7 @@ export function OpeningLabApp() {
   const [showOnboarding, setShowOnboarding] = useState(
     false /* onboard after mount */
   );
+  const [showSplash, setShowSplash] = useState(() => !hasSeenAppSplash());
 
   const { complete, markLearned, failPractice, dueQueue } = useProgress();
   const { canAccess } = useUnlocks();
@@ -119,6 +125,11 @@ export function OpeningLabApp() {
     setShowOnboarding(false);
   };
 
+  const finishSplash = useCallback(() => {
+    markAppSplashSeen();
+    setShowSplash(false);
+  }, []);
+
   return (
     <div className="app-shell bg-bg text-fg">
       <header className="app-header z-30 border-b border-border/80">
@@ -198,6 +209,8 @@ export function OpeningLabApp() {
           onSkip={dismissOnboarding}
         />
       )}
+
+      {showSplash ? <AppSplash onDone={finishSplash} /> : null}
     </div>
   );
 }
