@@ -275,6 +275,55 @@
   .board-wrong-dim {
     filter: brightness(0.92);
   }
+
+  .board-fs-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    background: var(--color-bg);
+    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+    padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+    padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  }
+
+  .board-fs-stage {
+    width: min(100%, calc(100dvh - 8.5rem), 44rem);
+  }
+
+  .board-fs-toggle {
+    position: absolute;
+    top: max(0.6rem, env(safe-area-inset-top, 0px));
+    right: max(0.6rem, env(safe-area-inset-right, 0px));
+    z-index: 80;
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-bg-elevated);
+    padding: 0.45rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-fg-muted);
+  }
+
+  .board-fs-toggle:active {
+    transform: scale(0.96);
+  }
+
+  .board-fs-hint,
+  .board-fs-status {
+    min-height: 1.2em;
+    max-width: 36rem;
+    padding: 0 2.5rem;
+  }
 }
 
 @keyframes hint-in {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { Maximize2, Minimize2 } from "lucide-react";
 import { Chess, type Square, type Move } from "chess.js";
 import {
   type OpeningLine,
@@ -209,6 +210,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const [aboutOpen, setAboutOpen] = useState(
     () => Boolean(pack.about) && !hasSeenPackIntro(pack.id),
   );
+  const [boardExpanded, setBoardExpanded] = useState(false);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -864,6 +866,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const bookDone = status.cls === "done" && !playingOn;
   const showPlayOn = bookDone;
 
+  useEffect(() => {
+    if (!boardExpanded) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setBoardExpanded(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [boardExpanded]);
+
 
   const canTakeBack =
     !busy &&
@@ -950,39 +966,80 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         {hint || "\u00a0"}
       </div>
 
-      <div className="relative">
-        <ChessBoard
-          game={game}
-          flip={line.side === "b"}
-          selected={selected}
-          wrongUntil={wrongUntil}
-          expected={exp}
-          showHints={showHints}
-          lastMove={lastMove}
-          slide={slide}
-          onSlideComplete={onSlideComplete}
-          onSquare={onSquare}
-          onPlay={playFromTo}
-          interactive={
-            !busy &&
-            !slide &&
-            !engineBusy &&
-            !pendingPromo
-          }
-          promotion={
-            pendingPromo
-              ? {
-                  color: line.side,
-                  onPick: (piece: PromotionPiece) => {
-                    const dest = pendingPromo;
-                    setPendingPromo(null);
-                    tryPlay(dest.from, dest.to, piece);
-                  },
-                  onCancel: () => setPendingPromo(null),
-                }
-              : null
-          }
-        />
+      {!boardExpanded ? (
+        <div className="mb-1 flex justify-end">
+          <button
+            type="button"
+            onClick={() => setBoardExpanded(true)}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border bg-bg-elevated px-3 py-2 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
+          >
+            <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
+            Expand
+          </button>
+        </div>
+      ) : null}
+
+      <div className={boardExpanded ? "board-fs-overlay" : "relative"}>
+        {boardExpanded ? (
+          <button
+            type="button"
+            onClick={() => setBoardExpanded(false)}
+            className="board-fs-toggle"
+            aria-label="Close full screen"
+          >
+            <Minimize2 className="size-5" strokeWidth={2.25} aria-hidden />
+            Close
+          </button>
+        ) : null}
+        {boardExpanded ? (
+          <p
+            className={`board-fs-hint text-center text-[0.85rem] font-semibold text-accent ${
+              hint ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {hint || " "}
+          </p>
+        ) : null}
+        <div className={boardExpanded ? "board-fs-stage" : undefined}>
+          <ChessBoard
+            game={game}
+            flip={line.side === "b"}
+            selected={selected}
+            wrongUntil={wrongUntil}
+            expected={exp}
+            showHints={showHints}
+            lastMove={lastMove}
+            slide={slide}
+            onSlideComplete={onSlideComplete}
+            onSquare={onSquare}
+            onPlay={playFromTo}
+            expanded={boardExpanded}
+            interactive={
+              !busy &&
+              !slide &&
+              !engineBusy &&
+              !pendingPromo
+            }
+            promotion={
+              pendingPromo
+                ? {
+                    color: line.side,
+                    onPick: (piece: PromotionPiece) => {
+                      const dest = pendingPromo;
+                      setPendingPromo(null);
+                      tryPlay(dest.from, dest.to, piece);
+                    },
+                    onCancel: () => setPendingPromo(null),
+                  }
+                : null
+            }
+          />
+        </div>
+        {boardExpanded ? (
+          <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
+            {status.text}
+          </p>
+        ) : null}
       </div>
 
       {/* Move history — wrap so the current ply stays readable */}
