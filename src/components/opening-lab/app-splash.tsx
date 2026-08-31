@@ -1,4 +1,4 @@
-const SESSION_KEY = "opening-lab:splash:v3";
+const SESSION_KEY = "opening-lab:splash:v4";
 
 export function hasSeenAppSplash(): boolean {
   if (typeof sessionStorage === "undefined") return false;
@@ -39,10 +39,10 @@ export function AppSplash({ onDone }: Props) {
           Opening Lab
         </h1>
         <p className="splash-story mt-3 max-w-[20rem] text-center text-[1.05rem] font-semibold leading-snug text-fg">
-          Most players remember five moves and hope.
+          Most people get bogged down in too much opening theory.
         </p>
         <p className="mt-3 max-w-[20rem] text-center text-[0.95rem] leading-relaxed text-fg-muted">
-          Here you train the line the strict way. Only the book move counts. Practice with the yellow hint. Test with none. Walk onto the board knowing what comes next.
+          Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.
         </p>
         <button
           type="button"
