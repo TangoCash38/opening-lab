@@ -42,6 +42,20 @@ function Terms() {
         </p>
       </LegalSection>
 
+      <LegalSection title="Book-move reports">
+        <p>
+          Only the book move counts in the trainer. If you think a rejected
+          move is book, send it with Wrong move? in the app or email{" "}
+          <a href="mailto:support@openinglab.co.uk" className="text-accent">
+            support@openinglab.co.uk
+          </a>
+          . We will check it. If we agree it is the book move for that line,
+          we will give you a pack free. We decide whether the move is book.
+          Packs are currently free; the same offer applies if we later sell
+          packs.
+        </p>
+      </LegalSection>
+
       <LegalSection title="Cooling-off (UK)">
         <p>
           You have 14 days to cancel a digital purchase if you have not used

@@ -40,7 +40,7 @@ export function LineFeedback({ pack, line }: Props) {
   if (status === "thanks") {
     return (
       <p className="mt-4 text-center text-[0.82rem] font-semibold text-success" role="status">
-        Thanks — we got it.
+        Thanks — we got it. If we confirm your move is book, you get a pack free.
       </p>
     );
   }
@@ -48,15 +48,25 @@ export function LineFeedback({ pack, line }: Props) {
   return (
     <div className="mt-4">
       {!open ? (
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="mx-auto block rounded-full bg-bg-subtle px-4 py-2 text-[0.78rem] font-semibold text-fg-muted"
-        >
-          Wrong move?
-        </button>
+        <>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="mx-auto block rounded-full bg-bg-subtle px-4 py-2 text-[0.78rem] font-semibold text-fg-muted"
+          >
+            Wrong move?
+          </button>
+          <p className="mx-auto mt-2 max-w-sm text-center text-[0.75rem] leading-relaxed text-fg-muted">
+            Think the book move is wrong? Send it to support. If we check it and
+            your move is book, you get a pack free.
+          </p>
+        </>
       ) : (
         <div className="rounded-2xl border border-border bg-bg-elevated px-3 py-3">
+          <p className="mb-2 text-[0.78rem] leading-relaxed text-fg-muted">
+            Only the book move counts here. If you think this line is wrong, send
+            it. If we confirm your move is book, you get a pack free.
+          </p>
           <p className="mb-2 text-[0.78rem] text-fg-muted">
             {pack.name} · {line.name}
           </p>
@@ -68,7 +78,7 @@ export function LineFeedback({ pack, line }: Props) {
             }}
             rows={3}
             maxLength={MAX}
-            placeholder="What should this line do?"
+            placeholder="What move should count, and why?"
             className="w-full resize-none rounded-xl border border-border bg-bg px-3 py-2 text-[0.88rem] text-fg outline-none"
           />
           <div className="mt-2 flex items-center justify-between gap-2">
