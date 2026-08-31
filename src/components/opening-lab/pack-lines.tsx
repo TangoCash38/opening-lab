@@ -51,7 +51,7 @@ type LineRowProps = {
   onClick: () => void;
 };
 
-/** Shared line row — red until a clean Test, no moves on the card. */
+/** Shared line row — locked red, natural until a clean Test, then green. */
 export function LineRow({
   index,
   line,
@@ -67,10 +67,10 @@ export function LineRow({
       aria-disabled={locked}
       className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left ${
         locked
-          ? "border-border/80 bg-bg-subtle text-fg-muted"
+          ? "border-danger bg-danger-soft text-fg"
           : complete
             ? "border-success/35 bg-success-soft/55 active:scale-[0.99]"
-            : "border-danger bg-danger-soft active:scale-[0.99]"
+            : "border-border bg-bg-elevated active:scale-[0.99]"
       }`}
       onClick={() => {
         if (locked) return;
@@ -80,10 +80,10 @@ export function LineRow({
       <span
         className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
           locked
-            ? "bg-fg-subtle/40 text-fg-muted"
+            ? "bg-danger text-white"
             : complete
               ? "bg-success text-white"
-              : "bg-danger text-white"
+              : "bg-bg-subtle text-fg"
         }`}
       >
         {index + 1}
@@ -92,7 +92,7 @@ export function LineRow({
         <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">
           <span className="min-w-0 break-words">{line.name}</span>
           {locked ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-bg-elevated px-1.5 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
+            <span className="inline-flex items-center gap-1 rounded-full bg-danger px-1.5 py-0.5 text-[0.65rem] font-semibold text-white">
               <Lock className="size-3" strokeWidth={2.5} aria-hidden />
               Locked
             </span>
@@ -111,7 +111,7 @@ export function LineRow({
         {!locked ? (
           <p
             className={`mt-0.5 text-[0.72rem] font-semibold ${
-              complete ? "text-success" : "text-danger"
+              complete ? "text-success" : "text-fg-muted"
             }`}
           >
             {complete
