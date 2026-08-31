@@ -43,6 +43,8 @@ type Props = {
   interactive: boolean;
   /** Play-on only. Book Practice/Test keep auto-queen. */
   promotion?: PromotionPrompt | null;
+  /** Trainer full-screen: drop the 420px cap so the parent can size the board. */
+  expanded?: boolean;
 };
 
 type PlacedPiece = {
@@ -136,6 +138,7 @@ export function ChessBoard({
   onPlay,
   interactive,
   promotion,
+  expanded = false,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -512,7 +515,7 @@ export function ChessBoard({
   }, [pieces, slide, glideOn, flip, drag]);
 
   return (
-    <div className="relative mx-auto mb-4 w-full max-w-[420px] touch-none">
+    <div className={`relative mx-auto w-full touch-none ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
       <div className="board-frame">
         <div className="board-frame-inner">
           <div
