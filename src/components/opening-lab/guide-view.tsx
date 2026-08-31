@@ -121,7 +121,9 @@ export function GuideView({ onBack }: Props) {
 
       <Block title="Test mode">
         No hints. Play your side only. Wrong squares flash red until you find
-        the book move. A clean Test (zero mistakes) turns the line green.
+        the book move. A clean Test (zero mistakes) turns the line green. If
+        you think a rejected move is book, send it with Wrong move? If we
+        confirm it, you get a pack free.
       </Block>
 
       <Block title="Play on">

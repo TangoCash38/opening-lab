@@ -1760,6 +1760,9 @@ test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it
   assert.match(train, /text-fg-muted/);
   assert.doesNotMatch(feedback, /line\.idea/);
   assert.match(feedback, /Wrong move\?/);
+  assert.match(feedback, /Send it to support/);
+  assert.match(feedback, /you get a pack free/);
+  assert.match(feedback, /If we confirm your move is book/);
 });
 
 test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still needs a clean Test", () => {
@@ -1913,3 +1916,24 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.doesNotMatch(css, /linear-gradient\(145deg, #8b6342/);
 });
 
+test("wrong-move reports go to support; confirmed book move earns a free pack", () => {
+  const feedback = readFileSync(
+    join(root, "src/components/opening-lab/line-feedback.tsx"),
+    "utf8",
+  );
+  const guide = readFileSync(
+    join(root, "src/components/opening-lab/guide-view.tsx"),
+    "utf8",
+  );
+  const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
+  assert.match(feedback, /Wrong move\?/);
+  assert.match(feedback, /Send it to support/);
+  assert.match(feedback, /you get a pack free/);
+  assert.match(feedback, /If we confirm your move is book/);
+  assert.match(guide, /send it with Wrong move\?/);
+  assert.match(guide, /you get a pack free/);
+  assert.match(terms, /Book-move reports/);
+  assert.match(terms, /we will give you a pack free/);
+  assert.doesNotMatch(feedback, /Lab\+/);
+  assert.doesNotMatch(guide, /Lab\+/);
+});
