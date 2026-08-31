@@ -206,7 +206,14 @@ function PackCard({
         <PackAboutModal
           title={pack.name}
           about={pack.about}
+          packId={pack.id}
+          startLabel="Train"
           onClose={() => setAboutOpen(false)}
+          onStart={() => {
+            setAboutOpen(false);
+            const line = pack.lines.find((l) => isLineUnlocked(pack, l.id));
+            if (line) onStartLine(pack, line);
+          }}
         />
       ) : null}
     </div>

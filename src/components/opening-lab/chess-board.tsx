@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import type { Chess, Square, Move } from "chess.js";
+import { resumeAudio, soundPickup } from "@/lib/sounds";
 import { ChessPiece, pieceName } from "./chess-pieces";
 
 export const SLIDE_MS = 300;
@@ -302,6 +303,7 @@ export function ChessBoard({
     if (!interactive) return;
     if (e.pointerType === "mouse" && e.button !== 0) return;
     if (dragRef.current) return;
+    resumeAudio();
 
     const sq =
       squareFromElement(e.target) ?? squareFromPoint(e.clientX, e.clientY);
@@ -343,6 +345,7 @@ export function ChessBoard({
       const dy = e.clientY - d.startY;
       if (!d.canDrag || dx * dx + dy * dy < DRAG_PX * DRAG_PX) return;
       d.moved = true;
+      soundPickup();
     }
     setDrag({ ...d });
     if (d.moved) e.preventDefault();
@@ -475,7 +478,6 @@ export function ChessBoard({
         p.sq === slide.from &&
         p.code === slide.piece
       );
-      const isHintFromPiece = !!(showHints && expected?.from === p.sq && !isMover);
       const isDragging = !!(drag?.moved && p.sq === drag.from);
 
       const visualSq = isMover && glideOn && slide ? slide.to : p.sq;
@@ -488,7 +490,7 @@ export function ChessBoard({
           data-piece-sq={visualSq}
           data-moving={isMover ? "1" : undefined}
           data-dragging={isDragging ? "1" : undefined}
-          className={`piece-abs${isHintFromPiece ? " piece-hint-from" : ""}`}
+          className="piece-abs"
           style={{
             left: `${col * 12.5}%`,
             top: `${row * 12.5}%`,
@@ -507,30 +509,16 @@ export function ChessBoard({
         </div>
       );
     });
-  }, [pieces, slide, glideOn, flip, showHints, expected?.from, drag]);
+  }, [pieces, slide, glideOn, flip, drag]);
 
   return (
     <div className="relative mx-auto mb-4 w-full max-w-[420px] touch-none">
-      <div
-        className="rounded-2xl p-[10px]"
-        style={{
-          background:
-            "linear-gradient(145deg, #8b6342 0%, #6b4a2e 40%, #5a3d26 70%, #7a5638 100%)",
-          boxShadow:
-            "0 2px 4px rgba(28,25,21,.06), 0 16px 36px rgba(28,25,21,.14), inset 0 1px 0 rgba(255,255,255,.18)",
-        }}
-      >
-        <div
-          className="rounded-[10px] p-[3px]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,.2), rgba(0,0,0,.15))",
-          }}
-        >
+      <div className="board-frame">
+        <div className="board-frame-inner">
           <div
             ref={surfaceRef}
-            className="board-play relative aspect-square w-full rounded-lg"
-            style={{ boxShadow: "inset 0 0 0 1px rgba(0,0,0,.2)", touchAction: "none" }}
+            className={`board-play relative aspect-square w-full${wrongUntil ? " board-wrong-dim" : ""}`}
+            style={{ touchAction: "none" }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
@@ -539,7 +527,7 @@ export function ChessBoard({
           >
             {/* Squares receive all pointer events */}
             <div
-              className="absolute inset-0 z-0 grid overflow-hidden rounded-lg"
+              className="absolute inset-0 z-0 grid overflow-hidden"
               style={{
                 gridTemplateColumns: "repeat(8,1fr)",
                 gridTemplateRows: "repeat(8,1fr)",
@@ -549,7 +537,7 @@ export function ChessBoard({
             </div>
 
             {/* Pieces paint above squares but never steal clicks */}
-            <div className="pointer-events-none absolute inset-0 z-10 overflow-visible rounded-lg">
+            <div className="pointer-events-none absolute inset-0 z-10 overflow-visible">
               {pieceNodes}
             </div>
           </div>
