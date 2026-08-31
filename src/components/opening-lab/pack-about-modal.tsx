@@ -3,8 +3,8 @@ import { X } from "lucide-react";
 import {
   GAME_INTRO,
   GAME_INTRO_TITLE,
-  markPackIntroSeen,
   openingParagraphs,
+  skipPackIntroThisSession,
 } from "@/lib/pack-intro";
 
 type Props = {
@@ -31,12 +31,11 @@ export function PackAboutModal({
   const paragraphs = step === 1 ? gymParas : opening;
 
   const close = () => {
-    if (packId) markPackIntroSeen(packId);
     onClose();
   };
 
   const start = () => {
-    if (packId) markPackIntroSeen(packId);
+    skipPackIntroThisSession();
     if (onStart) onStart();
     else onClose();
   };
@@ -83,7 +82,7 @@ export function PackAboutModal({
             </p>
           ))}
         </div>
-        <div className="border-t border-border px-5 py-4">
+        <div className="space-y-2 border-t border-border px-5 py-4">
           {step === 1 ? (
             <button
               type="button"
@@ -101,6 +100,13 @@ export function PackAboutModal({
               {startLabel}
             </button>
           )}
+          <button
+            type="button"
+            onClick={start}
+            className="min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
+          >
+            Don&apos;t show again
+          </button>
         </div>
       </div>
     </div>

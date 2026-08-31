@@ -3,6 +3,7 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { isLineUnlocked, visiblePacks } from "@/lib/catalog";
+import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { ChessBoard } from "./chess-board";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
@@ -31,7 +32,8 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
   };
 
   const openIntroThenPractice = () => {
-    if (pack?.about) setAboutOpen(true);
+    if (shouldSkipPackIntro()) startAdvance();
+    else if (pack?.about) setAboutOpen(true);
     else startAdvance();
   };
 
@@ -89,7 +91,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             onClick={() => {
               setLinesOpen((v) => {
                 const next = !v;
-                if (next && pack?.about) setAboutOpen(true);
+                if (next && pack?.about && !shouldSkipPackIntro()) setAboutOpen(true);
                 return next;
               });
             }}
