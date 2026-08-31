@@ -36,7 +36,7 @@ export function OpeningLabApp() {
   const [showOnboarding, setShowOnboarding] = useState(
     false /* onboard after mount */
   );
-  const [showSplash, setShowSplash] = useState(() => !hasSeenAppSplash());
+  const [showSplash, setShowSplash] = useState(true);
 
   const { complete, markLearned, failPractice, dueQueue } = useProgress();
   const { canAccess } = useUnlocks();
@@ -46,6 +46,10 @@ export function OpeningLabApp() {
     setActive(null);
     setView("home");
   };
+
+  useEffect(() => {
+    if (hasSeenAppSplash()) setShowSplash(false);
+  }, []);
 
   useEffect(() => {
     /* Home shows the free Scotch board first. No blocking overlay. */
@@ -130,6 +134,14 @@ export function OpeningLabApp() {
     setShowSplash(false);
   }, []);
 
+  if (showSplash) {
+    return (
+      <div className="app-shell bg-bg text-fg">
+        <AppSplash onDone={finishSplash} />
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell bg-bg text-fg">
       <header className="app-header z-30 border-b border-border/80">
@@ -209,8 +221,6 @@ export function OpeningLabApp() {
           onSkip={dismissOnboarding}
         />
       )}
-
-      {showSplash ? <AppSplash onDone={finishSplash} /> : null}
     </div>
   );
 }
