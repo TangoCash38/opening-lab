@@ -27,7 +27,8 @@ export function PackAboutModal({
   const [step, setStep] = useState<1 | 2>(1);
   const opening = openingParagraphs(about, packId);
   const heading = step === 1 ? GAME_INTRO_TITLE : title;
-  const paragraphs = step === 1 ? [GAME_INTRO] : opening;
+  const gymParas = GAME_INTRO.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  const paragraphs = step === 1 ? gymParas : opening;
 
   const close = () => {
     if (packId) markPackIntroSeen(packId);
@@ -53,7 +54,7 @@ export function PackAboutModal({
       }}
     >
       <div
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-bg-elevated shadow-2xl"
+        className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-bg-elevated shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
@@ -72,7 +73,7 @@ export function PackAboutModal({
             <X className="size-4" />
           </button>
         </div>
-        <div className="space-y-3 px-5 py-5">
+        <div className="max-h-[min(22rem,52vh)] space-y-3 overflow-y-auto px-5 py-5">
           {paragraphs.map((para) => (
             <p
               key={para.slice(0, 48)}
