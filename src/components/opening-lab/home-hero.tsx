@@ -23,20 +23,16 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
   const [linesOpen, setLinesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
-  const game = useMemo(() => {
-    const g = new Chess();
-    g.move("e4");
-    return g;
-  }, []);
-  const expected = useMemo(() => {
-    const g = new Chess();
-    g.move("e4");
-    return g.moves({ verbose: true }).find((m) => m.san === "c6") ?? null;
-  }, []);
+  const game = useMemo(() => new Chess(), []);
 
   const startAdvance = () => {
     const line = pack?.lines.find((l) => l.id === "ckb1");
     if (pack && line) onStartLine(pack, line, "learn");
+  };
+
+  const openIntroThenPractice = () => {
+    if (pack?.about) setAboutOpen(true);
+    else startAdvance();
   };
 
   return (
@@ -71,11 +67,11 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             flip={true}
             selected={null}
             wrongUntil={null}
-            expected={expected}
-            showHints
+            expected={null}
+            showHints={false}
             lastMove={null}
             slide={null}
-            onSquare={() => startAdvance()}
+            onSquare={() => openIntroThenPractice()}
             interactive
           />
         </div>
@@ -83,7 +79,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
         <div className="space-y-2.5 px-4 pb-3 pt-1">
           <button
             type="button"
-            onClick={startAdvance}
+            onClick={openIntroThenPractice}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
             Tap to practice
