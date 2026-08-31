@@ -39,10 +39,10 @@ export function AppSplash({ onDone }: Props) {
           Opening Lab
         </h1>
         <p className="splash-story mt-3 max-w-[20rem] text-center text-[1.05rem] font-semibold leading-snug text-fg">
-          Most people get bogged down in too much opening theory.
+          Most people dive into opening theory before they know the basics. That is algebra before you can count.
         </p>
         <p className="mt-3 max-w-[20rem] text-center text-[0.95rem] leading-relaxed text-fg-muted">
-          Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.
+          They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.
         </p>
         <button
           type="button"

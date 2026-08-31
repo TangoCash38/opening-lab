@@ -1949,12 +1949,14 @@ test("app open splash: gym story then logo spin then home", () => {
   const splash = readFileSync(join(root, "src/components/opening-lab/app-splash.tsx"), "utf8");
   const shell = readFileSync(join(root, "src/components/opening-lab/app-shell.tsx"), "utf8");
   const css = readFileSync(join(root, "src/styles.css"), "utf8");
-  assert.match(splash, /bogged down in too much opening theory/);
+  assert.match(splash, /dive into opening theory/);
+  assert.match(splash, /algebra before you can count/);
   assert.match(splash, /Strict lines/);
   assert.match(splash, /spot the opening/);
   assert.match(splash, /opening-lab:splash:v4/);
   assert.doesNotMatch(splash, /Most players remember five moves and hope/);
   assert.doesNotMatch(splash, /A line is a routine/);
+  assert.doesNotMatch(splash, /Chessable/i);
   assert.match(splash, /onClick=\{onDone\}/);
   assert.match(splash, />\s*Play\s*</);
   assert.doesNotMatch(splash, /SPLASH_MS/);
