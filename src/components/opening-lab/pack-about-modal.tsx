@@ -92,21 +92,23 @@ export function PackAboutModal({
               Continue
             </button>
           ) : (
-            <button
-              type="button"
-              onClick={start}
-              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-            >
-              {startLabel}
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={start}
+                className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+              >
+                {startLabel}
+              </button>
+              <button
+                type="button"
+                onClick={start}
+                className="min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
+              >
+                Don&apos;t show again
+              </button>
+            </>
           )}
-          <button
-            type="button"
-            onClick={start}
-            className="min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
-          >
-            Don&apos;t show again
-          </button>
         </div>
       </div>
     </div>
