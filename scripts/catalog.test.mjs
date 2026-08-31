@@ -1863,9 +1863,10 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   ]) {
     assert.match(intro, new RegExp('"' + id + '"'));
   }
-  assert.match(intro, /This pack is how you play against the London/);
-  assert.match(intro, /This pack is how you play against the King's Gambit/);
-  assert.match(intro, /This pack is how you play against it as Black/);
+  assert.doesNotMatch(intro, /This pack is how you/);
+  assert.match(intro, /Against it as Black you do not sit still/);
+  assert.match(intro, /As Black you recapture with development/);
+  assert.match(intro, /The idea is simple and strong/);
   assert.match(modal, /max-h-\[min\(22rem,52vh\)\]/);
   assert.match(modal, /overflow-y-auto/);
   assert.match(intro, /export function openingParagraphs/);
