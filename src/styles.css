@@ -286,6 +286,25 @@
   }
 }
 
+
+@keyframes splash-logo-spin {
+  0% { transform: rotate(-8deg) scale(0.88); }
+  100% { transform: rotate(352deg) scale(1); }
+}
+@keyframes splash-story-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.splash-logo {
+  animation: splash-logo-spin 1.55s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+.splash-story {
+  animation: splash-story-in 0.55s ease-out 0.15s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo, .splash-story { animation: none; }
+}
+
 .mode-tab-nudge {
   background: var(--color-accent);
   color: var(--color-accent-fg);
