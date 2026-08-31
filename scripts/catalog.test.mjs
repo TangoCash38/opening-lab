@@ -147,6 +147,11 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(hero, /min-h-11/);
   assert.match(hero, /bg-bg-elevated/);
   assert.match(hero, /Tap to practice/);
+  assert.doesNotMatch(hero, /g\.move\("e4"\)/);
+  assert.match(hero, /showHints=\{false\}/);
+  assert.match(hero, /expected=\{null\}/);
+  assert.match(hero, /openIntroThenPractice/);
+  assert.match(hero, /onClick=\{openIntroThenPractice\}/);
   assert.match(hero, /See 18 lines/);
   assert.match(hero, /aria-expanded=\{linesOpen\}/);
   assert.match(hero, /Free sample/);
@@ -1889,6 +1894,8 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.match(hero, /packId=\{pack\.id\}/);
   assert.match(hero, /onStart/);
   assert.match(hero, /startLabel="Start"/);
+  assert.match(hero, /openIntroThenPractice/);
+  assert.doesNotMatch(hero, /g\.move\("e4"\)/);
   assert.match(packList, /packId=\{pack\.id\}/);
   assert.match(packList, /startLabel="Train"/);
   assert.match(train, /PackAboutModal/);
