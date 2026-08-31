@@ -1841,6 +1841,25 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.match(intro, /Practice with the yellow hint/);
   assert.match(intro, /Test with none/);
   assert.match(intro, /Only the book move counts/);
+  assert.match(intro, /export const PACK_OPENING/);
+  assert.match(intro, /working repertoire/);
+  assert.match(intro, /solid ground to take your study further/);
+  assert.match(intro, /How the gym works/);
+  for (const id of [
+    "caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black",
+    "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white",
+    "french-white", "alapin-white", "english-black", "kg-black",
+    "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white",
+    "caro-advance-panov-white", "evans-black", "englund-white",
+    "budapest-white", "bdg-black",
+  ]) {
+    assert.match(intro, new RegExp('"' + id + '"'));
+  }
+  assert.match(intro, /This pack is how you play against the London/);
+  assert.match(intro, /This pack is how you play against the King's Gambit/);
+  assert.match(intro, /This pack is how you play against it as Black/);
+  assert.match(modal, /max-h-\[min\(22rem,52vh\)\]/);
+  assert.match(modal, /overflow-y-auto/);
   assert.match(intro, /export function openingParagraphs/);
   assert.match(intro, /filter\(\(p\) => !isGymCopy\(p\)\)/);
   assert.match(intro, /PACK_OPENING_EXTRA/);
