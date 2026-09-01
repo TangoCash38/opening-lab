@@ -63,7 +63,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
           </p>
         </div>
 
-        <div className="home-board px-2">
+        <div className="home-board pointer-events-none px-2">
           <ChessBoard
             game={game}
             flip={true}
@@ -73,8 +73,8 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
             showHints={false}
             lastMove={null}
             slide={null}
-            onSquare={() => openIntroThenPractice()}
-            interactive
+            onSquare={() => {}}
+            interactive={false}
           />
         </div>
 
