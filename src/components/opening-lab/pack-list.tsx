@@ -54,12 +54,14 @@ function PackCard({
   unlocked,
   onStartLine,
   onRequestUnlock,
+  purchasedPackIds = [],
   defaultOpen = false,
 }: {
   pack: Pack;
   unlocked: boolean;
   onStartLine: Props["onStartLine"];
   onRequestUnlock: (pack: Pack) => void;
+  purchasedPackIds?: readonly string[];
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -167,7 +169,7 @@ function PackCard({
       {open && (
         <div className="border-t border-border px-3 pb-4 pt-2.5">
           {pack.lines.map((line, i) => {
-            const lineUnlocked = isLineUnlocked(pack, line.id);
+            const lineUnlocked = isLineUnlocked(pack, line.id, purchasedPackIds);
             const rowLocked = locked || !lineUnlocked;
             const mastery = masteryOf(line.id);
             const complete = !rowLocked && isComplete(line.id);
@@ -181,8 +183,8 @@ function PackCard({
                 locked={rowLocked}
                 showFree={free && lineUnlocked}
                 onClick={() => {
-                  if (locked) onRequestUnlock(pack);
-                  else if (lineUnlocked) onStartLine(pack, line);
+                  if (rowLocked) onRequestUnlock(pack);
+                  else onStartLine(pack, line);
                 }}
               />
             );
@@ -212,7 +214,9 @@ function PackCard({
           onClose={() => setAboutOpen(false)}
           onStart={() => {
             setAboutOpen(false);
-            const line = pack.lines.find((l) => isLineUnlocked(pack, l.id));
+            const line = pack.lines.find((l) =>
+              isLineUnlocked(pack, l.id, purchasedPackIds),
+            );
             if (line) onStartLine(pack, line);
           }}
         />
@@ -222,7 +226,7 @@ function PackCard({
 }
 
 export function PackList({ onStartLine, onHowToPlay }: Props) {
-  const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
+  const { canAccess, buyPack, subscribe, paymentsEnabled, state } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -464,7 +468,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         ) : null
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
-          These packs are on while we check the rest. If a move is wrong, tell us on that line.
+          Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.
         </p>
       )}
 
@@ -472,6 +476,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         playApp={playApp}
         onStartLine={onStartLine}
         onHowToPlay={onHowToPlay}
+        onRequestUnlock={requestUnlock}
         onSubscribe={() => {
           if (playApp && !offerPlayLabPlus) return;
           setPayError(null);
@@ -481,9 +486,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
 
       {morePacks ? (
         <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-          {playApp && offerPlayLabPlus
-            ? "More packs · Lab+ yearly on Google Play."
-            : "More packs"}
+          More packs
         </p>
       ) : null}
 
@@ -493,6 +496,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           unlocked={canAccess(classicGames)}
           onStartLine={onStartLine}
           onRequestUnlock={requestUnlock}
+          purchasedPackIds={state.packs}
         />
       ) : null}
 
@@ -502,6 +506,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           unlocked={canAccess(vsLondon)}
           onStartLine={onStartLine}
           onRequestUnlock={requestUnlock}
+          purchasedPackIds={state.packs}
         />
       ) : null}
 
@@ -515,6 +520,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
               unlocked={canAccess(p)}
               onStartLine={onStartLine}
               onRequestUnlock={requestUnlock}
+              purchasedPackIds={state.packs}
             />
           ))}
         </>
@@ -530,6 +536,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
               unlocked={canAccess(p)}
               onStartLine={onStartLine}
               onRequestUnlock={requestUnlock}
+              purchasedPackIds={state.packs}
             />
           ))}
         </>
@@ -541,6 +548,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           unlocked={canAccess(clubWeapons)}
           onStartLine={onStartLine}
           onRequestUnlock={requestUnlock}
+          purchasedPackIds={state.packs}
         />
       ) : null}
 

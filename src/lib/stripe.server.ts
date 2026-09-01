@@ -7,7 +7,6 @@ import {
   LAB_PLUS_LABEL,
   PRICE_MONTHLY,
   PRICE_YEARLY,
-  isPackFree,
   packPrice,
   priceToPence,
 } from "@/data/pricing";
@@ -190,9 +189,10 @@ export async function createCheckoutSession(request: Request): Promise<Response>
       return json({ error: "Missing pack" }, 400);
     }
     const pack = PACKS.find((p) => p.id === body.packId);
-    if (!pack || isPackFree(pack)) {
+    if (!pack) {
       return json({ error: "Unknown or free pack" }, 400);
     }
+    // Caro is the free sample; checkout still sells the rest of that pack.
     const price = packPrice(pack);
     const pence = price ? priceToPence(price) : null;
     if (!pence) return json({ error: "Unknown or free pack" }, 400);
