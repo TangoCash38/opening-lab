@@ -4,6 +4,7 @@ import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { shouldSkipPackIntro } from "@/lib/pack-intro";
+import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard } from "./chess-board";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
@@ -14,11 +15,14 @@ type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onHowToPlay: () => void;
   onSubscribe: () => void;
+  onRequestUnlock?: (pack: Pack) => void;
   playApp?: boolean;
 };
 
-export function HomeHero({ onStartLine, onHowToPlay }: Props) {
+export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   const { masteryOf, isComplete } = useProgress();
+  const { state } = useUnlocks();
+  const purchased = state.packs;
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
   const [linesOpen, setLinesOpen] = useState(false);
@@ -105,7 +109,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
         {pack && linesOpen ? (
           <div className="border-t border-border">
             {pack.lines.map((item, i) => {
-              const unlocked = isLineUnlocked(pack, item.id);
+              const unlocked = isLineUnlocked(pack, item.id, purchased);
               const complete = unlocked && isComplete(item.id);
               const mastery = masteryOf(item.id);
               return (
@@ -119,6 +123,7 @@ export function HomeHero({ onStartLine, onHowToPlay }: Props) {
                     showFree={unlocked}
                     onClick={() => {
                       if (unlocked) onStartLine(pack, item, "learn");
+                      else onRequestUnlock?.(pack);
                     }}
                   />
                 </div>

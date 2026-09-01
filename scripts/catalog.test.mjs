@@ -35,7 +35,8 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(src, /export function catalogOffersLabPlus/);
   assert.match(src, /export function hasPaidPlaySkuPath/);
   assert.match(src, /export function playVisiblePacks/);
-  assert.match(src, /packs\.some\(hasPaidPlaySkuPath\)/);
+  assert.match(src, /return false/);
+  assert.doesNotMatch(src, /packs\.some\(hasPaidPlaySkuPath\)/);
   assert.doesNotMatch(src, /packs\.length > 1/);
   assert.match(src, /PLAY_PACK_SKUS: Readonly<Record<string, string>> = \{\}/);
 
@@ -82,7 +83,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(guide, /Black vs the London/);
   assert.match(guide, /solid d4 setup with Bf4/);
   assert.match(guide, /<Block title="1\.d4 Sideline Survival Kit">/);
-  assert.match(guide, /18 lines\. Free\./);
+  assert.match(guide, /18 lines\. £2\.99\./);
   assert.match(guide, /<Block title="Anti-Sicilian Survival Kit">/);
   assert.match(guide, /anti-Sicilians as Black/);
   assert.match(guide, /<Block title="Nimzo-Larsen Attack for White">/);
@@ -183,9 +184,9 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   );
   assert.match(
     packList,
-    /These packs are on while we check the rest\. If a move is wrong, tell us on that line\./,
+    /Three Caro lines are free\. Unlock the rest of that pack for £1\.99\. Other packs are £2\.99\./,
   );
-  assert.match(packList, /isLineUnlocked\(pack, line\.id\)/);
+  assert.match(packList, /isLineUnlocked\(pack, line\.id/);
   assert.match(packList, /pack\.lines\.map/);
   assert.match(packList, /pack\.about/);
   assert.match(packList, /PackAboutModal/);
@@ -294,7 +295,7 @@ test("Queen’s Gambit Declined for Black stays fully visible with chess names",
   assert.match(qgd, /name: "Queen\u2019s Gambit Declined for Black"/);
   assert.match(qgd, /side: "Black"/);
   assert.match(qgd, /section: "black"/);
-  assert.match(qgd, /isFree: true/);
+  assert.match(qgd, /isFree: false/);
   assert.match(qgd, /isPremium: false/);
   assert.match(qgd, /price: null/);
   assert.match(qgd, /blurb: "Black vs 1\.d4"/);
@@ -337,7 +338,7 @@ test("Stop the London System is a third visible free Black pack: 18 lonb lines, 
   assert.match(lon, /name: "Stop the London System"/);
   assert.match(lon, /side: "Black"/);
   assert.match(lon, /section: "black"/);
-  assert.match(lon, /isFree: true/);
+  assert.match(lon, /isFree: false/);
   assert.match(lon, /isPremium: false/);
   assert.match(lon, /price: null/);
   assert.match(lon, /blurb: "Black vs the London"/);
@@ -406,7 +407,7 @@ test("1.d4 Sideline Survival Kit is a fourth visible free Black pack: 18 d4s lin
   assert.match(d4s, /name: "1\.d4 Sideline Survival Kit"/);
   assert.match(d4s, /side: "Black"/);
   assert.match(d4s, /section: "black"/);
-  assert.match(d4s, /isFree: true/);
+  assert.match(d4s, /isFree: false/);
   assert.match(d4s, /isPremium: false/);
   assert.match(d4s, /price: null/);
   assert.match(d4s, /blurb: "Black vs Colle, Torre, Trompowsky, Veresov, Blackmar-Diemer"/);
@@ -468,7 +469,7 @@ test("Anti-Sicilian Survival Kit is a fifth visible free Black pack: 18 as lines
   assert.match(asb, /name: "Anti-Sicilian Survival Kit"/);
   assert.match(asb, /side: "Black"/);
   assert.match(asb, /section: "black"/);
-  assert.match(asb, /isFree: true/);
+  assert.match(asb, /isFree: false/);
   assert.match(asb, /isPremium: false/);
   assert.match(asb, /price: null/);
   assert.match(asb, /blurb: "Black vs Alapin, Grand Prix, Closed, Smith-Morra, Rossolimo, Wing Gambit"/);
@@ -531,7 +532,7 @@ test("Nimzo-Larsen Attack for White is a sixth visible free White pack: 18 nl li
   assert.match(nl, /name: "Nimzo-Larsen Attack for White"/);
   assert.match(nl, /side: "White"/);
   assert.match(nl, /section: "white"/);
-  assert.match(nl, /isFree: true/);
+  assert.match(nl, /isFree: false/);
   assert.match(nl, /isPremium: false/);
   assert.match(nl, /price: null/);
   assert.match(nl, /blurb: "White · 1\.b3 Bb2"/);
@@ -599,7 +600,7 @@ test("Italian Game Mastery for White is a seventh visible free White pack: 18 it
   assert.match(it, /name: "Italian Game Mastery for White"/);
   assert.match(it, /side: "White"/);
   assert.match(it, /section: "white"/);
-  assert.match(it, /isFree: true/);
+  assert.match(it, /isFree: false/);
   assert.match(it, /isPremium: false/);
   assert.match(it, /price: null/);
   assert.match(it, /blurb: "White · quiet Italian, Giuoco Piano, Two Knights, Evans, Hungarian"/);
@@ -668,7 +669,7 @@ test("Ruy Lopez Mastery for White is an eighth visible free White pack: 18 rl li
   assert.match(rl, /name: "Ruy Lopez Mastery for White"/);
   assert.match(rl, /side: "White"/);
   assert.match(rl, /section: "white"/);
-  assert.match(rl, /isFree: true/);
+  assert.match(rl, /isFree: false/);
   assert.match(rl, /isPremium: false/);
   assert.match(rl, /price: null/);
   assert.match(rl, /blurb: "White · Closed, Berlin, Exchange, Open, Marshall, Schliemann"/);
@@ -735,7 +736,7 @@ test("French Defence for White is a ninth visible free White pack: 18 fr lines, 
   assert.match(fr, /name: "French Defence for White: Advance & Tarrasch"/);
   assert.match(fr, /side: "White"/);
   assert.match(fr, /section: "white"/);
-  assert.match(fr, /isFree: true/);
+  assert.match(fr, /isFree: false/);
   assert.match(fr, /isPremium: false/);
   assert.match(fr, /price: null/);
   assert.match(fr, /blurb: "White · Advance, Tarrasch, Classical, Winawer, Exchange"/);
@@ -802,7 +803,7 @@ test("How to Meet the Sicilian: The Alapin for White is a tenth visible free Whi
   assert.match(al, /name: "How to Meet the Sicilian: The Alapin for White"/);
   assert.match(al, /side: "White"/);
   assert.match(al, /section: "white"/);
-  assert.match(al, /isFree: true/);
+  assert.match(al, /isFree: false/);
   assert.match(al, /isPremium: false/);
   assert.match(al, /price: null/);
   assert.match(al, /blurb: "White · 2\.c3 vs …Nc6, …d5, …Nf6, …e6, …d6, …g6"/);
@@ -870,7 +871,7 @@ test("How to Meet 1.c4: The Symmetrical English for Black is an eleventh visible
   assert.match(en, /name: "How to Meet 1\.c4: The Symmetrical English for Black"/);
   assert.match(en, /side: "Black"/);
   assert.match(en, /section: "black"/);
-  assert.match(en, /isFree: true/);
+  assert.match(en, /isFree: false/);
   assert.match(en, /isPremium: false/);
   assert.match(en, /price: null/);
   assert.match(en, /blurb: "Black · Four Knights, Botvinnik, Hedgehog, reversed Sicilian"/);
@@ -948,7 +949,7 @@ test("How to Defend Against the King’s Gambit is a twelfth visible free Black 
   assert.match(kg, /name: "How to Defend Against the King\u2019s Gambit"/);
   assert.match(kg, /side: "Black"/);
   assert.match(kg, /section: "black"/);
-  assert.match(kg, /isFree: true/);
+  assert.match(kg, /isFree: false/);
   assert.match(kg, /isPremium: false/);
   assert.match(kg, /price: null/);
   assert.match(kg, /blurb: "Black · Knight\u2019s Gambit, Fischer, Classical, Bishop\u2019s Gambit, Falkbeer"/);
@@ -1047,7 +1048,7 @@ test("How to Meet the Scandinavian Defence: White’s Safe Edge is a thirteenth 
   assert.match(sc, /name: "How to Meet the Scandinavian Defence: White\u2019s Safe Edge"/);
   assert.match(sc, /side: "White"/);
   assert.match(sc, /section: "white"/);
-  assert.match(sc, /isFree: true/);
+  assert.match(sc, /isFree: false/);
   assert.match(sc, /isPremium: false/);
   assert.match(sc, /price: null/);
   assert.match(sc, /blurb: "White · Qa5, Qd6, Qd8, Modern 2…Nf6, Portuguese, Icelandic"/);
@@ -1115,7 +1116,7 @@ test("How to Meet the Pirc & Modern Defence: The 150 Attack is a fourteenth visi
   assert.match(pm, /name: "How to Meet the Pirc & Modern Defence: The 150 Attack"/);
   assert.match(pm, /side: "White"/);
   assert.match(pm, /section: "white"/);
-  assert.match(pm, /isFree: true/);
+  assert.match(pm, /isFree: false/);
   assert.match(pm, /isPremium: false/);
   assert.match(pm, /price: null/);
   assert.match(pm, /blurb: "White · Be3 Qd2 vs Pirc and Modern"/);
@@ -1185,7 +1186,7 @@ test("How to Meet the Dutch Defence: The Fianchetto System for White is a fiftee
   assert.match(du, /name: "How to Meet the Dutch Defence: The Fianchetto System for White"/);
   assert.match(du, /side: "White"/);
   assert.match(du, /section: "white"/);
-  assert.match(du, /isFree: true/);
+  assert.match(du, /isFree: false/);
   assert.match(du, /isPremium: false/);
   assert.match(du, /price: null/);
   assert.match(du, /blurb: "White · g3 Bg2 vs Classical, Stonewall, Leningrad"/);
@@ -1255,7 +1256,7 @@ test("How to Meet the Caro-Kann: Advance & Panov for White is a sixteenth visibl
   assert.match(ckw, /name: "How to Meet the Caro-Kann: Advance & Panov for White"/);
   assert.match(ckw, /side: "White"/);
   assert.match(ckw, /section: "white"/);
-  assert.match(ckw, /isFree: true/);
+  assert.match(ckw, /isFree: false/);
   assert.match(ckw, /isPremium: false/);
   assert.match(ckw, /price: null/);
   assert.match(ckw, /blurb: "White · Advance and Panov"/);
@@ -1324,7 +1325,7 @@ test("How to Defend Against the Evans Gambit for Black is a seventeenth visible 
   assert.match(evb, /name: "How to Defend Against the Evans Gambit for Black"/);
   assert.match(evb, /side: "Black"/);
   assert.match(evb, /section: "black"/);
-  assert.match(evb, /isFree: true/);
+  assert.match(evb, /isFree: false/);
   assert.match(evb, /isPremium: false/);
   assert.match(evb, /price: null/);
   assert.match(evb, /blurb: "Black · accepted Ba5\/Be7 and declined Bb6"/);
@@ -1397,7 +1398,7 @@ test("How to Meet the Englund Gambit: White’s Safe Route is an eighteenth visi
   assert.match(eg, /name: "How to Meet the Englund Gambit: White’s Safe Route"/);
   assert.match(eg, /side: "White"/);
   assert.match(eg, /section: "white"/);
-  assert.match(eg, /isFree: true/);
+  assert.match(eg, /isFree: false/);
   assert.match(eg, /isPremium: false/);
   assert.match(eg, /price: null/);
   assert.match(eg, /blurb: "White · 1\.d4 e5 accepted"/);
@@ -1471,7 +1472,7 @@ test("How to Meet the Budapest Gambit: White’s Safe Route is a nineteenth visi
   assert.match(bp, /name: "How to Meet the Budapest Gambit: White’s Safe Route"/);
   assert.match(bp, /side: "White"/);
   assert.match(bp, /section: "white"/);
-  assert.match(bp, /isFree: true/);
+  assert.match(bp, /isFree: false/);
   assert.match(bp, /isPremium: false/);
   assert.match(bp, /price: null/);
   assert.match(bp, /blurb: "White · Alekhine, main line, Fajarowicz"/);
@@ -1544,7 +1545,7 @@ test("How to Defend Against the Blackmar–Diemer Gambit for Black is a twentiet
   assert.match(bdg, /name: "How to Defend Against the Blackmar–Diemer Gambit for Black"/);
   assert.match(bdg, /side: "Black"/);
   assert.match(bdg, /section: "black"/);
-  assert.match(bdg, /isFree: true/);
+  assert.match(bdg, /isFree: false/);
   assert.match(bdg, /isPremium: false/);
   assert.match(bdg, /price: null/);
   assert.match(bdg, /blurb: "Black · Gunderam, Teichmann, Euwe, Bogoljubow"/);
@@ -1641,7 +1642,8 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.match(src, /return pack\.lines\.filter\(\(l\) => ids\.includes\(l\.id\)\);/);
   assert.match(src, /export function isLineUnlocked/);
   assert.match(src, /if \(!ids\) return true;/);
-  assert.match(src, /return ids\.includes\(lineId\)/);
+  assert.match(src, /ids\.includes\(lineId\)/);
+  assert.match(src, /purchasedPackIds/);
 
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "caro-kann-black"');
@@ -1667,10 +1669,10 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     join(root, "src/components/opening-lab/pack-lines.tsx"),
     "utf8",
   );
-  assert.match(hero, /isLineUnlocked\(pack, item\.id\)/);
+  assert.match(hero, /isLineUnlocked\(pack, item\.id/);
   assert.match(hero, /pack\.lines\.map/);
   assert.match(packList, /pack\.lines\.map/);
-  assert.match(packList, /isLineUnlocked\(pack, line\.id\)/);
+  assert.match(packList, /isLineUnlocked\(pack, line\.id/);
   assert.match(rows, /from "lucide-react"/);
   assert.match(rows, /Lock/);
   assert.match(rows, /Locked/);

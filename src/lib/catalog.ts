@@ -24,11 +24,16 @@ export function playableLines(pack: Pack): OpeningLine[] {
   return pack.lines.filter((l) => ids.includes(l.id));
 }
 
-/** True if the pack has no sample list (QGD, London, 1.d4 sidelines, Anti-Sicilian, Nimzo-Larsen, Italian, Ruy Lopez, French, Alapin, English, King’s Gambit, Scandinavian, the 150 Attack, the Dutch Fianchetto, and the Caro Advance & Panov all free) or the line is in it. */
-export function isLineUnlocked(pack: Pick<Pack, "id">, lineId: string): boolean {
+/** Sample lines stay free. Extra Caro lines need that pack in purchasedPackIds. Other packs have no sample list — pack-level lock handles them. */
+export function isLineUnlocked(
+  pack: Pick<Pack, "id">,
+  lineId: string,
+  purchasedPackIds: readonly string[] = [],
+): boolean {
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
   if (!ids) return true;
-  return ids.includes(lineId);
+  if (ids.includes(lineId)) return true;
+  return purchasedPackIds.includes(pack.id);
 }
 
 /**
@@ -50,9 +55,9 @@ export function hasPaidPlaySkuPath(
  * A locked pack with no Play buy path is not a path (Path A).
  */
 export function catalogOffersLabPlus(
-  packs: readonly Pick<Pack, "id" | "isFree">[],
+  _packs: readonly Pick<Pack, "id" | "isFree">[] = [],
 ): boolean {
-  return packs.some(hasPaidPlaySkuPath);
+  return false;
 }
 
 /** Play wrap: free visible packs only, unless a Play pack SKU exists. */

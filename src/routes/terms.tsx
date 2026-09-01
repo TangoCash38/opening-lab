@@ -27,18 +27,17 @@ function Terms() {
       <LegalSection title="The catalog">
         <p>
           There are twenty opening packs. Caro-Kann for Black is the home
-          sample. The other packs sit under More packs. Packs are currently
-          free. There is no subscription, and the app does not bill through
-          Google Play.
+          sample: Advance, Classical, and Exchange are free. Unlock the rest
+          of that pack for £1.99. Every other pack is £2.99, one-time, on
+          this website via Stripe. There is no Lab+ subscription.
         </p>
       </LegalSection>
 
       <LegalSection title="If we add paid packs">
         <p>
-          If we later sell packs, they will be one-time purchases on this
-          website. They stay on your account when you sign in. We will not
-          take away a pack you already paid for, except where we must for
-          legal reasons.
+          Paid packs are one-time purchases on this website. They stay on
+          your account when you sign in. We will not take away a pack you
+          already paid for, except where we must for legal reasons.
         </p>
       </LegalSection>
 
@@ -51,8 +50,7 @@ function Terms() {
           </a>
           . We will check it. If we agree it is the book move for that line,
           we will give you a pack free. We decide whether the move is book.
-          Packs are currently free; the same offer applies if we later sell
-          packs.
+          If we agree, we will give you a pack free.
         </p>
       </LegalSection>
 
@@ -67,8 +65,8 @@ function Terms() {
       <LegalSection title="Google Play">
         <p>
           The Opening Lab app from Google Play is the same trainer as the
-          website. There is no in-app subscription and no pack billing through
-          Google Play at the moment.
+          website. Pack billing in the Play app is not on sale in this build.
+          Website purchases use Stripe, not Google Play.
         </p>
       </LegalSection>
 
