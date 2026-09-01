@@ -16,6 +16,7 @@ import { hasSeenPackIntro } from "@/lib/pack-intro";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
+import { LineResultModal } from "./line-result-modal";
 
 type PlayLevel = "beginner" | "intermediate" | "advanced";
 
@@ -211,6 +212,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     () => Boolean(pack.about) && !hasSeenPackIntro(pack.id),
   );
   const [boardExpanded, setBoardExpanded] = useState(false);
+  const [resultCard, setResultCard] = useState<{
+    kind: "wrong" | "end";
+    title: string;
+    body: string;
+    caption?: string;
+    actionLabel: string;
+  } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -297,6 +305,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setSlide(null);
       setBusy(false);
       setLastMove(null);
+      setResultCard(null);
       setHintsReady(true);
       setGame(new Chess());
       setPlyIndex(0);
@@ -390,6 +399,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           cls: "done",
         });
         soundWin();
+        setResultCard({
+          kind: "end",
+          title: line.name,
+          caption: "Practice done",
+          body: (line.idea ?? "").trim(),
+          actionLabel: "Continue",
+        });
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -403,6 +419,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           cls: "done",
         });
         soundWin();
+        setResultCard({
+          kind: "end",
+          title: line.name,
+          caption: "Finished, but you missed a move",
+          body: (line.idea ?? "").trim(),
+          actionLabel: "Continue",
+        });
         return;
       }
 
@@ -411,6 +434,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         cls: "done",
       });
       soundWin();
+      setResultCard({
+        kind: "end",
+        title: line.name,
+        caption: "Line complete",
+        body: (line.idea ?? "").trim(),
+        actionLabel: "Continue",
+      });
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -623,6 +653,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setWrongUntil(to);
       setStatus({ text: "Wrong move — try again", cls: "bad" });
       setSelected(null);
+      setResultCard({
+        kind: "wrong",
+        title: "Wrong move",
+        body: `The book move is ${exp.san}.`,
+        actionLabel: "Try again",
+      });
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
       if (mode === "practice") {
         practiceMissedRef.current = true;
@@ -1171,6 +1207,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       </div>
       <LineFeedback pack={pack} line={line} />
+      {resultCard ? (
+        <LineResultModal
+          kind={resultCard.kind}
+          title={resultCard.title}
+          body={resultCard.body}
+          caption={resultCard.caption}
+          actionLabel={resultCard.actionLabel}
+          onClose={() => setResultCard(null)}
+        />
+      ) : null}
       {pack.about && aboutOpen ? (
         <PackAboutModal
           title={pack.name}
