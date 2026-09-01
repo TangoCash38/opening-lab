@@ -163,7 +163,7 @@ function PackCard({
             </div>
           </div>
         </div>
-        <PackExpandHint open={open} free={free} closedLabel={pack.closedLabel} />
+        <PackExpandHint open={open} free={free} closedLabel={free ? pack.closedLabel : price ? `${price} · tap to see lines` : "Tap to see lines"} />
       </button>
 
       {open && (
