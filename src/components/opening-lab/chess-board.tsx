@@ -515,18 +515,18 @@ export function ChessBoard({
   }, [pieces, slide, glideOn, flip, drag]);
 
   return (
-    <div className={`relative mx-auto w-full touch-none ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
+    <div className={`relative mx-auto w-full ${interactive ? "touch-none" : ""} ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
       <div className="board-frame">
         <div className="board-frame-inner">
           <div
             ref={surfaceRef}
             className={`board-play relative aspect-square w-full${wrongUntil ? " board-wrong-dim" : ""}`}
-            style={{ touchAction: "none" }}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerCancel}
-            onLostPointerCapture={onPointerCancel}
+            style={interactive ? { touchAction: "none" } : undefined}
+            onPointerDown={interactive ? onPointerDown : undefined}
+            onPointerMove={interactive ? onPointerMove : undefined}
+            onPointerUp={interactive ? onPointerUp : undefined}
+            onPointerCancel={interactive ? onPointerCancel : undefined}
+            onLostPointerCapture={interactive ? onPointerCancel : undefined}
           >
             {/* Squares receive all pointer events */}
             <div

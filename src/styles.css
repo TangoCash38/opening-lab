@@ -67,8 +67,10 @@
 
   .home-board,
   .home-board button,
+  .home-board .board-play,
   .home-board [class*="touch-none"] {
     touch-action: pan-y !important;
+    pointer-events: none;
   }
 
   input,
