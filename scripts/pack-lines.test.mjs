@@ -17,3 +17,9 @@ test("locked lines are red, unfinished are natural, Test-passed are green", () =
   assert.match(src, /bg-bg-subtle text-fg/);
   assert.doesNotMatch(src, /red until a clean Test/);
 });
+
+test("locked rows still fire onClick so a tap can open unlock", () => {
+  assert.doesNotMatch(src, /if \(locked\) return/);
+  assert.doesNotMatch(src, /aria-disabled=\{locked\}/);
+  assert.match(src, /onClick=\{onClick\}/);
+});

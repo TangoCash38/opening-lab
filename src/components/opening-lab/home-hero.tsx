@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
-import { isLineUnlocked, visiblePacks } from "@/lib/catalog";
+import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard } from "./chess-board";
@@ -120,7 +120,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
                     complete={complete}
                     mastery={mastery}
                     locked={!unlocked}
-                    showFree={unlocked}
+                    showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
                     onClick={() => {
                       if (unlocked) onStartLine(pack, item, "learn");
                       else onRequestUnlock?.(pack);

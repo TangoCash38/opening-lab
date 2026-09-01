@@ -64,18 +64,14 @@ export function LineRow({
   return (
     <button
       type="button"
-      aria-disabled={locked}
       className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left ${
         locked
-          ? "border-danger bg-danger-soft text-fg"
+          ? "border-danger bg-danger-soft text-fg active:scale-[0.99]"
           : complete
             ? "border-success/35 bg-success-soft/55 active:scale-[0.99]"
             : "border-border bg-bg-elevated active:scale-[0.99]"
       }`}
-      onClick={() => {
-        if (locked) return;
-        onClick();
-      }}
+      onClick={onClick}
     >
       <span
         className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
