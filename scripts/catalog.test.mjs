@@ -164,8 +164,10 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(hero, /id === "ckb1"/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.match(hero, /isLineUnlocked/);
-  assert.match(hero, /pack\.lines\.map/);
-  assert.doesNotMatch(hero, /See 3 lines/);
+  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(hero, /shownLines\.map/);
+  assert.match(hero, /See 3 lines/);
+  assert.match(hero, /isPlayWrap\(\)/);
   assert.doesNotMatch(hero, /setups/);
   assert.doesNotMatch(hero, /follow-ups/);
   assert.doesNotMatch(hero, /Free pack · ready to train/);
@@ -1670,8 +1672,11 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     "utf8",
   );
   assert.match(hero, /isLineUnlocked\(pack, item\.id/);
-  assert.match(hero, /pack\.lines\.map/);
+  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(hero, /shownLines\.map/);
   assert.match(packList, /pack\.lines\.map/);
+  assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
+  assert.match(packList, /if \(playApp \|\| isPlayWrap\(\)\) return;/);
   assert.match(packList, /isLineUnlocked\(pack, line\.id/);
   assert.match(rows, /from "lucide-react"/);
   assert.match(rows, /Lock/);

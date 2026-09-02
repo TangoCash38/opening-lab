@@ -1,4 +1,5 @@
 import { Lock, X } from "lucide-react";
+import { isPlayWrap } from "@/lib/play-app";
 
 type Props = {
   packName: string;
@@ -26,6 +27,7 @@ export function UnlockModal({
   error = null,
   playApp = false,
 }: Props) {
+  const wrap = playApp || isPlayWrap();
   const caroRest = packName.toLowerCase().includes("caro");
   return (
     <div
@@ -71,7 +73,7 @@ export function UnlockModal({
         </div>
 
         <div className="space-y-3 px-5 py-5">
-          {playApp ? (
+          {wrap ? (
             <p className="m-0 text-[0.88rem] leading-relaxed text-fg-muted">
               Pack billing in the Play app is not on sale in this build. The three free Caro lines still train here.
             </p>
@@ -100,7 +102,7 @@ export function UnlockModal({
             </p>
           ) : busy ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">Opening checkout…</p>
-          ) : playApp ? null : needsAccount ? (
+          ) : wrap ? null : needsAccount ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
               Sign in so this stays on your account.
             </p>

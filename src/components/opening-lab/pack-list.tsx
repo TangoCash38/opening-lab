@@ -234,15 +234,15 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
-  const [playApp, setPlayApp] = useState(false);
+  const [playApp, setPlayApp] = useState(() => isPlayWrap());
   const resumedCheckout = useRef(false);
+  const wrap = playApp || isPlayWrap();
 
   useEffect(() => {
     setPlayApp(isPlayWrap());
   }, []);
 
-  const catalog =
-    playApp || isPlayWrap() ? playVisiblePacks(PACKS) : visiblePacks(PACKS);
+  const catalog = wrap ? playVisiblePacks(PACKS) : visiblePacks(PACKS);
   const white = catalog.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black");
   const classicGames = catalog.find((p) => p.id === "classic-games");
@@ -291,6 +291,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
   }, [buyPack, subscribe]);
 
   const requestUnlock = (pack: Pack) => {
+    if (playApp || isPlayWrap()) return;
     const price = packPrice(pack);
     if (!price) return;
     setPayError(null);
@@ -373,16 +374,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
 
   const pay = async (kind: CheckoutKind, packId?: string) => {
     if (playApp || isPlayWrap()) {
-      if (!offerPlayLabPlus) {
-        setShowSub(false);
-        setPayBusy(false);
-        return;
-      }
-      if (kind === "yearly") {
-        await playYearly();
-        return;
-      }
-      setPayError("Lab+ yearly is how you unlock packs here.");
+      setShowSub(false);
       setPayBusy(false);
       return;
     }
@@ -460,7 +452,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         </p>
       ) : null}
 
-      {playApp ? (
+      {wrap ? (
         offerPlayLabPlus ? (
           <div className="mb-3">
             <PlayStoreNotice />
@@ -473,12 +465,12 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
       )}
 
       <HomeHero
-        playApp={playApp}
+        playApp={wrap}
         onStartLine={onStartLine}
         onHowToPlay={onHowToPlay}
         onRequestUnlock={requestUnlock}
         onSubscribe={() => {
-          if (playApp && !offerPlayLabPlus) return;
+          if (wrap && !offerPlayLabPlus) return;
           setPayError(null);
           setShowSub(true);
         }}
@@ -554,7 +546,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
 
       <LegalFooter />
 
-      {showSub && (!playApp || offerPlayLabPlus) && (
+      {showSub && (!wrap || offerPlayLabPlus) && (
         <SubscribeModal
           onClose={() => {
             if (!payBusy) setShowSub(false);
@@ -569,10 +561,10 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
             void playRestore();
           }}
           paymentsEnabled={paymentsEnabled}
-          needsAccount={(playApp || paymentsEnabled === true) && !signedIn && !isPending}
+          needsAccount={(wrap || paymentsEnabled === true) && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
-          playApp={playApp}
+          playApp={wrap}
         />
       )}
 
@@ -596,10 +588,10 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
             void playRestore();
           }}
           paymentsEnabled={paymentsEnabled}
-          needsAccount={(playApp || paymentsEnabled === true) && !signedIn && !isPending}
+          needsAccount={(wrap || paymentsEnabled === true) && !signedIn && !isPending}
           busy={payBusy}
           error={payError}
-          playApp={playApp}
+          playApp={wrap}
         />
       )}
     </div>
