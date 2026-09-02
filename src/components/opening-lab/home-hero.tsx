@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
-import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, playableLines, visiblePacks } from "@/lib/catalog";
-import { isPlayWrap } from "@/lib/play-app";
+import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard } from "./chess-board";
@@ -20,14 +19,13 @@ type Props = {
   playApp?: boolean;
 };
 
-export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp = false }: Props) {
+export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   const { masteryOf, isComplete } = useProgress();
   const { state } = useUnlocks();
   const purchased = state.packs;
-  const wrap = playApp || isPlayWrap();
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
-  const shownLines = pack ? (wrap ? playableLines(pack) : pack.lines) : [];
+  const shownLines = pack ? pack.lines : [];
   const [linesOpen, setLinesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
@@ -105,7 +103,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp = 
             aria-expanded={linesOpen}
             className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
           >
-            {wrap ? "See 3 lines" : "See 18 lines"}
+            See 18 lines
           </button>
         </div>
 
@@ -126,7 +124,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp = 
                     showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
                     onClick={() => {
                       if (unlocked) onStartLine(pack, item, "learn");
-                      else if (!wrap) onRequestUnlock?.(pack);
+                      else onRequestUnlock?.(pack);
                     }}
                   />
                 </div>

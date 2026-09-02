@@ -74,9 +74,22 @@ export function UnlockModal({
 
         <div className="space-y-3 px-5 py-5">
           {wrap ? (
-            <p className="m-0 text-[0.88rem] leading-relaxed text-fg-muted">
-              Pack billing in the Play app is not on sale in this build. The three free Caro lines still train here.
-            </p>
+            <>
+              <p className="m-0 text-[0.88rem] leading-relaxed text-fg-muted">
+                Packs are not for sale in this Play test. The three free Caro lines still train here.
+              </p>
+              <div className="flex w-full items-center justify-between rounded-xl border-2 border-border bg-bg-subtle px-4 py-3.5 text-left">
+                <span>
+                  <span className="block text-[0.92rem] font-bold">
+                    {caroRest ? "Rest of this pack" : "This pack"}
+                  </span>
+                  <span className="block text-[0.75rem] text-fg-muted">
+                    Pay as you go. Not for sale in this Play test.
+                  </span>
+                </span>
+                <span className="text-base font-bold">{price}</span>
+              </div>
+            </>
           ) : (
             <button
               type="button"

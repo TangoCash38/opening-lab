@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, isLineUnlocked, playVisiblePacks, visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -242,7 +242,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
     setPlayApp(isPlayWrap());
   }, []);
 
-  const catalog = wrap ? playVisiblePacks(PACKS) : visiblePacks(PACKS);
+  const catalog = visiblePacks(PACKS);
   const white = catalog.filter((p) => p.section === "white" && p.id !== "scotch");
   const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black");
   const classicGames = catalog.find((p) => p.id === "classic-games");
@@ -291,7 +291,6 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
   }, [buyPack, subscribe]);
 
   const requestUnlock = (pack: Pack) => {
-    if (playApp || isPlayWrap()) return;
     const price = packPrice(pack);
     if (!price) return;
     setPayError(null);

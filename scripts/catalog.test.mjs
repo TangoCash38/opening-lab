@@ -44,7 +44,8 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
   const playApp = readFileSync(join(root, "src/lib/play-app.ts"), "utf8");
   assert.match(packList, /catalogOffersLabPlus/);
-  assert.match(packList, /playVisiblePacks/);
+  assert.match(packList, /visiblePacks\(PACKS\)/);
+  assert.doesNotMatch(packList, /playVisiblePacks/);
   assert.doesNotMatch(hero, /catalogOffersLabPlus/);
   assert.doesNotMatch(hero, /LAB_PLUS_LABEL/);
   assert.doesNotMatch(hero, /Lab\+ is on/);
@@ -164,10 +165,11 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(hero, /id === "ckb1"/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.match(hero, /isLineUnlocked/);
-  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(hero, /pack \? pack\.lines : \[\]/);
   assert.match(hero, /shownLines\.map/);
-  assert.match(hero, /See 3 lines/);
-  assert.match(hero, /isPlayWrap\(\)/);
+  assert.doesNotMatch(hero, /playableLines\(pack\)/);
+  assert.doesNotMatch(hero, /See 3 lines/);
+  assert.doesNotMatch(hero, /isPlayWrap\(\)/);
   assert.doesNotMatch(hero, /setups/);
   assert.doesNotMatch(hero, /follow-ups/);
   assert.doesNotMatch(hero, /Free pack · ready to train/);
@@ -1672,11 +1674,15 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     "utf8",
   );
   assert.match(hero, /isLineUnlocked\(pack, item\.id/);
-  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(hero, /pack \? pack\.lines : \[\]/);
   assert.match(hero, /shownLines\.map/);
+  assert.doesNotMatch(hero, /playableLines\(pack\)/);
+  assert.match(hero, /else onRequestUnlock\?\.\(pack\)/);
   assert.match(packList, /pack\.lines\.map/);
+  assert.match(packList, /visiblePacks\(PACKS\)/);
+  assert.doesNotMatch(packList, /playVisiblePacks/);
   assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
-  assert.match(packList, /if \(playApp \|\| isPlayWrap\(\)\) return;/);
+  assert.match(packList, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
   assert.match(packList, /isLineUnlocked\(pack, line\.id/);
   assert.match(rows, /from "lucide-react"/);
   assert.match(rows, /Lock/);

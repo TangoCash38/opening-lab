@@ -43,18 +43,27 @@ test("Play-wrap copy does not send users to buy packs on the website", () => {
   }
 });
 
-test("Play wrap only lists the three free Caro lines and never starts Stripe", () => {
+test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   const hero = src("src/components/opening-lab/home-hero.tsx");
-  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(hero, /pack \? pack\.lines : \[\]/);
   assert.match(hero, /shownLines\.map/);
-  assert.match(hero, /wrap \? "See 3 lines" : "See 18 lines"/);
-  assert.match(hero, /else if \(!wrap\) onRequestUnlock\?\.\(pack\)/);
-  assert.match(hero, /playApp \|\| isPlayWrap\(\)/);
+  assert.match(hero, /See 18 lines/);
+  assert.doesNotMatch(hero, /playableLines\(pack\)/);
+  assert.doesNotMatch(hero, /See 3 lines/);
+  assert.match(hero, /else onRequestUnlock\?\.\(pack\)/);
+  assert.match(hero, /if \(unlocked\) onStartLine\(pack, item, "learn"\)/);
 
   const packList = src("src/components/opening-lab/pack-list.tsx");
   assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
   assert.match(packList, /const wrap = playApp \|\| isPlayWrap\(\)/);
-  assert.match(packList, /const requestUnlock = \(pack: Pack\) => \{[\s\S]*?if \(playApp \|\| isPlayWrap\(\)\) return;/);
+  assert.match(packList, /const catalog = visiblePacks\(PACKS\)/);
+  assert.doesNotMatch(packList, /playVisiblePacks/);
+  const unlockStart = packList.indexOf("const requestUnlock");
+  const unlockFn = packList.slice(unlockStart, packList.indexOf("const goToSignIn", unlockStart));
+  assert.match(unlockFn, /setModal\(\{ pack, price \}\)/);
+  assert.doesNotMatch(unlockFn, /startCheckout/);
+  assert.doesNotMatch(unlockFn, /\/api\/checkout/);
+  assert.doesNotMatch(unlockFn, /fetch\(/);
   const payStart = packList.indexOf("const pay = async");
   const payGuard = packList.slice(payStart, packList.indexOf("setPayError(null);", payStart));
   assert.match(payGuard, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
@@ -70,13 +79,24 @@ test("Play wrap only lists the three free Caro lines and never starts Stripe", (
   assert.match(modal, /const wrap = playApp \|\| isPlayWrap\(\)/);
   assert.match(modal, /\{wrap \? \(/);
   assert.match(modal, /Card via Stripe/);
-  // Stripe CTA is in the website branch only
+  assert.match(modal, /Packs are not for sale in this Play test/);
+  assert.match(modal, /three free Caro lines still train/i);
+  assert.match(modal, /Pay as you go/);
   const wrapBranch = modal.slice(modal.indexOf("{wrap ? ("), modal.indexOf(") : ("));
   assert.doesNotMatch(wrapBranch, /Card via Stripe/);
   assert.doesNotMatch(wrapBranch, /onUnlockPack/);
+  assert.doesNotMatch(wrapBranch, /Please wait/);
+  assert.doesNotMatch(wrapBranch, /Google will bill/i);
+  assert.doesNotMatch(wrapBranch, /Google Play Billing/i);
+  assert.match(wrapBranch, /\{price\}/);
 
   const checkout = src("src/lib/checkout.ts");
   assert.match(checkout, /if \(isPlayApp\(\) \|\| isPlayWrap\(\)\)/);
   assert.doesNotMatch(checkout, /Google Play checkout/);
   assert.match(checkout, /Pack billing is not on sale in this build/);
+
+  const catalog = src("src/lib/catalog.ts");
+  assert.match(catalog, /PLAY_PACK_SKUS: Readonly<Record<string, string>> = \{\}/);
+  assert.match(catalog, /export function catalogOffersLabPlus/);
+  assert.match(catalog, /return false/);
 });
