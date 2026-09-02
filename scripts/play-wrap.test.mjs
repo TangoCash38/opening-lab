@@ -42,3 +42,41 @@ test("Play-wrap copy does not send users to buy packs on the website", () => {
     assert.doesNotMatch(text, /Find the crush/i, rel);
   }
 });
+
+test("Play wrap only lists the three free Caro lines and never starts Stripe", () => {
+  const hero = src("src/components/opening-lab/home-hero.tsx");
+  assert.match(hero, /playableLines\(pack\)/);
+  assert.match(hero, /shownLines\.map/);
+  assert.match(hero, /wrap \? "See 3 lines" : "See 18 lines"/);
+  assert.match(hero, /else if \(!wrap\) onRequestUnlock\?\.\(pack\)/);
+  assert.match(hero, /playApp \|\| isPlayWrap\(\)/);
+
+  const packList = src("src/components/opening-lab/pack-list.tsx");
+  assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
+  assert.match(packList, /const wrap = playApp \|\| isPlayWrap\(\)/);
+  assert.match(packList, /const requestUnlock = \(pack: Pack\) => \{[\s\S]*?if \(playApp \|\| isPlayWrap\(\)\) return;/);
+  const payStart = packList.indexOf("const pay = async");
+  const payGuard = packList.slice(payStart, packList.indexOf("setPayError(null);", payStart));
+  assert.match(payGuard, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
+  assert.match(payGuard, /setShowSub\(false\)/);
+  assert.match(payGuard, /setPayBusy\(false\)/);
+  assert.match(payGuard, /return;/);
+  assert.doesNotMatch(payGuard, /startCheckout/);
+  assert.doesNotMatch(payGuard, /fetch\(/);
+  assert.doesNotMatch(payGuard, /Please wait/);
+  assert.doesNotMatch(packList, /Card via Stripe/);
+
+  const modal = src("src/components/opening-lab/unlock-modal.tsx");
+  assert.match(modal, /const wrap = playApp \|\| isPlayWrap\(\)/);
+  assert.match(modal, /\{wrap \? \(/);
+  assert.match(modal, /Card via Stripe/);
+  // Stripe CTA is in the website branch only
+  const wrapBranch = modal.slice(modal.indexOf("{wrap ? ("), modal.indexOf(") : ("));
+  assert.doesNotMatch(wrapBranch, /Card via Stripe/);
+  assert.doesNotMatch(wrapBranch, /onUnlockPack/);
+
+  const checkout = src("src/lib/checkout.ts");
+  assert.match(checkout, /if \(isPlayApp\(\) \|\| isPlayWrap\(\)\)/);
+  assert.doesNotMatch(checkout, /Google Play checkout/);
+  assert.match(checkout, /Pack billing is not on sale in this build/);
+});

@@ -1,4 +1,4 @@
-import { isPlayApp } from "@/lib/play-app";
+import { isPlayApp, isPlayWrap } from "@/lib/play-app";
 
 export type CheckoutKind = "monthly" | "yearly" | "pack";
 
@@ -17,8 +17,8 @@ export async function fetchPaymentsEnabled(): Promise<boolean> {
 }
 
 export async function startCheckout(kind: CheckoutKind, packId?: string): Promise<string> {
-  if (isPlayApp()) {
-    throw new Error("Google Play checkout is not available yet");
+  if (isPlayApp() || isPlayWrap()) {
+    throw new Error("Pack billing is not on sale in this build");
   }
   const res = await fetch("/api/checkout", {
     method: "POST",
