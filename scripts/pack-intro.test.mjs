@@ -32,25 +32,64 @@ test("practice intros skip for the rest of the session, not forever", () => {
   assert.match(intro, /typeof sessionStorage === "undefined"\) return false/);
 });
 
-test("Don't show again is on the intro, and Practice honours the skip", () => {
+test("Don't show again only on gym step (step 1), not on opening/Start step", () => {
   assert.match(modal, /Don't show again/);
-  assert.match(modal, /skipPackIntroThisSession/);
-  assert.match(hero, /shouldSkipPackIntro\(\)/);
+  const continueIdx = modal.indexOf("Continue");
+  const skipIdx = modal.indexOf("Don't show again");
+  const startLabelIdx = modal.indexOf("{startLabel}");
+  assert.ok(continueIdx > 0 && skipIdx > continueIdx, "Don't show again follows Continue on step 1");
+  assert.ok(startLabelIdx > skipIdx, "Start is on the later opening step");
+  const openingBranch = modal.slice(startLabelIdx);
+  assert.doesNotMatch(openingBranch, /Don't show again/);
+  const gymBranch = modal.slice(modal.indexOf("step === 1"), startLabelIdx);
+  assert.match(gymBranch, /Don't show again/);
+  assert.match(gymBranch, /Continue/);
+});
+
+test("Don't show again calls skipPackIntroThisSession then advances to step 2", () => {
+  const skipBtn = modal.slice(
+    modal.lastIndexOf("onClick", modal.indexOf("Don't show again")),
+    modal.indexOf("Don't show again"),
+  );
+  assert.match(skipBtn, /skipPackIntroThisSession\(\)/);
+  assert.match(skipBtn, /setStep\(2\)/);
+  assert.doesNotMatch(skipBtn, /onStart\(/);
+  assert.doesNotMatch(skipBtn, /\bstart\(\)/);
+});
+
+test("Start on opening does not require Don't show again", () => {
+  const startFn = modal.slice(modal.indexOf("const start"), modal.indexOf("return ("));
+  assert.match(startFn, /onStart/);
+  assert.doesNotMatch(startFn, /skipPackIntroThisSession/);
+  assert.match(modal, /\{startLabel\}/);
+});
+
+test("Modal initial step uses shouldSkipPackIntro to land on opening when skipped", () => {
+  assert.match(modal, /shouldSkipPackIntro/);
+  assert.match(modal, /useState<1 \| 2>/);
+  assert.match(modal, /shouldSkipPackIntro\(\)\s*\?\s*2\s*:\s*1/);
+});
+
+test("Hero always opens about for Tap to practice when about exists", () => {
   assert.match(hero, /openIntroThenPractice/);
-  // See 18 lines / pack expand must not open the intro
-  assert.doesNotMatch(hero, /setLinesOpen\([\s\S]*?setAboutOpen\(true\)/);
-  assert.doesNotMatch(list, /!shouldSkipPackIntro\(\)/);
-  assert.doesNotMatch(list, /setAboutOpen\(true\)/);
-  assert.doesNotMatch(list, /PackAboutModal/);
+  assert.doesNotMatch(hero, /shouldSkipPackIntro/);
+  assert.doesNotMatch(hero, /if \(shouldSkipPackIntro\(\)\) startAdvance/);
+  assert.match(hero, /if \(pack\?\.about\) setAboutOpen\(true\)/);
+  assert.match(hero, /else startAdvance\(\)/);
+  // See 18 lines only toggles the line list; line taps open the intro separately
+  assert.match(hero, /onClick=\{\(\) => setLinesOpen\(\(v\) => !v\)\}/);
   // TrainView must not auto-open intro on mount
   assert.match(train, /const \[aboutOpen, setAboutOpen\] = useState\(false\)/);
   assert.doesNotMatch(train, /hasSeenPackIntro/);
 });
 
-test("Don't show again only appears on the second intro card", () => {
-  const continueIdx = modal.indexOf("Continue");
-  const skipIdx = modal.indexOf("Don't show again");
-  assert.ok(continueIdx > 0 && skipIdx > continueIdx);
-  const firstBranch = modal.slice(0, modal.indexOf("{startLabel}"));
-  assert.doesNotMatch(firstBranch, /Don't show again/);
+test("hero and pack-list line taps show opening info then Start that line", () => {
+  assert.match(hero, /pendingLine/);
+  assert.match(hero, /setPendingLine\(item\)/);
+  assert.match(hero, /setAboutOpen\(true\)/);
+  assert.match(list, /PackAboutModal/);
+  assert.match(list, /setAboutOpen\(true\)/);
+  assert.match(list, /pendingLine/);
+  assert.match(list, /onClick=\{\(\) => setOpen\(\(v\) => !v\)\}/);
+  assert.doesNotMatch(list, /!shouldSkipPackIntro\(\)/);
 });

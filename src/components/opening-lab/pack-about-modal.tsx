@@ -4,6 +4,7 @@ import {
   GAME_INTRO,
   GAME_INTRO_TITLE,
   openingParagraphs,
+  shouldSkipPackIntro,
   skipPackIntroThisSession,
 } from "@/lib/pack-intro";
 import { useT } from "@/lib/i18n";
@@ -26,7 +27,7 @@ export function PackAboutModal({
   onStart,
 }: Props) {
   const t = useT();
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2>(() => (shouldSkipPackIntro() ? 2 : 1));
   const opening = openingParagraphs(about, packId);
   const heading = step === 1 ? t(GAME_INTRO_TITLE) : title;
   const gymParas = t(GAME_INTRO).split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
@@ -37,7 +38,6 @@ export function PackAboutModal({
   };
 
   const start = () => {
-    skipPackIntroThisSession();
     if (onStart) onStart();
     else onClose();
   };
@@ -86,30 +86,33 @@ export function PackAboutModal({
         </div>
         <div className="space-y-2 border-t border-border px-5 py-4">
           {step === 1 ? (
-            <button
-              type="button"
-              onClick={() => setStep(2)}
-              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-            >
-              {t("Continue")}
-            </button>
-          ) : (
             <>
               <button
                 type="button"
-                onClick={start}
+                onClick={() => setStep(2)}
                 className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
               >
-                {startLabel}
+                {t("Continue")}
               </button>
               <button
                 type="button"
-                onClick={start}
+                onClick={() => {
+                  skipPackIntroThisSession();
+                  setStep(2);
+                }}
                 className="min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
               >
                 {t("Don't show again")}
               </button>
             </>
+          ) : (
+            <button
+              type="button"
+              onClick={start}
+              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+            >
+              {startLabel}
+            </button>
           )}
         </div>
       </div>

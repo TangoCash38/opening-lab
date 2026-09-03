@@ -3,7 +3,6 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
-import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import { ChessBoard } from "./chess-board";
@@ -30,6 +29,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   const shownLines = pack ? pack.lines : [];
   const [linesOpen, setLinesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
 
   const game = useMemo(() => new Chess(), []);
 
@@ -39,8 +39,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   };
 
   const openIntroThenPractice = () => {
-    if (shouldSkipPackIntro()) startAdvance();
-    else if (pack?.about) setAboutOpen(true);
+    if (pack?.about) setAboutOpen(true);
     else startAdvance();
   };
 
@@ -121,8 +120,12 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
                     locked={!unlocked}
                     showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
                     onClick={() => {
-                      if (unlocked) onStartLine(pack, item, "learn");
-                      else onRequestUnlock?.(pack);
+                      if (unlocked) {
+                        if (pack.about) {
+                          setPendingLine(item);
+                          setAboutOpen(true);
+                        } else onStartLine(pack, item, "learn");
+                      } else onRequestUnlock?.(pack);
                     }}
                   />
                 </div>
@@ -139,10 +142,16 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
           about={pack.about}
           packId={pack.id}
           startLabel={t("Start")}
-          onClose={() => setAboutOpen(false)}
+          onClose={() => {
+            setAboutOpen(false);
+            setPendingLine(null);
+          }}
           onStart={() => {
             setAboutOpen(false);
-            startAdvance();
+            const line = pendingLine;
+            setPendingLine(null);
+            if (line) onStartLine(pack, line, "learn");
+            else startAdvance();
           }}
         />
       ) : null}
