@@ -1,5 +1,6 @@
 import { Lock, X } from "lucide-react";
 import { isPlayWrap } from "@/lib/play-app";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   packName: string;
@@ -27,6 +28,7 @@ export function UnlockModal({
   error = null,
   playApp = false,
 }: Props) {
+  const t = useT();
   const wrap = playApp || isPlayWrap();
   const caroRest = packName.toLowerCase().includes("caro");
   return (
@@ -52,12 +54,12 @@ export function UnlockModal({
             </span>
             <div>
               <h2 id="unlock-title" className="m-0 font-display text-lg font-bold leading-snug">
-                Unlock {packName}
+                {t("Unlock {packName}", { packName })}
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
                 {caroRest
-                  ? "Three lines stay free. This unlocks the rest of the pack."
-                  : "One-time purchase. This pack only."}
+                  ? t("Three lines stay free. This unlocks the rest of the pack.")
+                  : t("One-time purchase. This pack only.")}
               </p>
             </div>
           </div>
@@ -76,15 +78,15 @@ export function UnlockModal({
           {wrap ? (
             <>
               <p className="m-0 text-[0.88rem] leading-relaxed text-fg-muted">
-                Packs are not for sale in this Play test. The three free Caro lines still train here.
+                {t("Packs are not for sale in this Play test. The three free Caro lines still train here.")}
               </p>
               <div className="flex w-full items-center justify-between rounded-xl border-2 border-border bg-bg-subtle px-4 py-3.5 text-left">
                 <span>
                   <span className="block text-[0.92rem] font-bold">
-                    {caroRest ? "Rest of this pack" : "This pack"}
+                    {caroRest ? t("Rest of this pack") : t("This pack")}
                   </span>
                   <span className="block text-[0.75rem] text-fg-muted">
-                    Pay as you go. Not for sale in this Play test.
+                    {t("Pay as you go. Not for sale in this Play test.")}
                   </span>
                 </span>
                 <span className="text-base font-bold">{price}</span>
@@ -99,10 +101,10 @@ export function UnlockModal({
             >
               <span>
                 <span className="block text-[0.92rem] font-bold text-accent">
-                  {caroRest ? "Unlock the rest of this pack" : "Unlock this pack"}
+                  {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
                 </span>
                 <span className="block text-[0.75rem] text-fg-muted">
-                  Yours to keep. Card via Stripe.
+                  {t("Yours to keep. Card via Stripe.")}
                 </span>
               </span>
               <span className="text-base font-bold text-accent">{price}</span>
@@ -114,18 +116,18 @@ export function UnlockModal({
               {error}
             </p>
           ) : busy ? (
-            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">Opening checkout…</p>
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">{t("Opening checkout…")}</p>
           ) : wrap ? null : needsAccount ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              Sign in so this stays on your account.
+              {t("Sign in so this stays on your account.")}
             </p>
           ) : paymentsEnabled === true ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              You will pay securely with Stripe.
+              {t("You will pay securely with Stripe.")}
             </p>
           ) : paymentsEnabled === false ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
-              Payments are not live yet.
+              {t("Payments are not live yet.")}
             </p>
           ) : null}
         </div>

@@ -13,6 +13,7 @@ import {
   soundWin,
 } from "@/lib/sounds";
 import { hasSeenPackIntro } from "@/lib/pack-intro";
+import { useT } from "@/lib/i18n";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
@@ -181,6 +182,7 @@ function takeBackPlyCount(
 }
 
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
+  const t = useT();
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
@@ -402,9 +404,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         setResultCard({
           kind: "end",
           title: line.name,
-          caption: "Practice done",
+          caption: t("Practice done"),
           body: (line.idea ?? "").trim(),
-          actionLabel: "Continue",
+          actionLabel: t("Continue"),
         });
         if (!completedRef.current) {
           completedRef.current = true;
@@ -422,9 +424,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         setResultCard({
           kind: "end",
           title: line.name,
-          caption: "Finished, but you missed a move",
+          caption: t("Finished, but you missed a move"),
           body: (line.idea ?? "").trim(),
-          actionLabel: "Continue",
+          actionLabel: t("Continue"),
         });
         return;
       }
@@ -437,9 +439,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setResultCard({
         kind: "end",
         title: line.name,
-        caption: "Line complete",
+        caption: t("Line complete"),
         body: (line.idea ?? "").trim(),
-        actionLabel: "Continue",
+        actionLabel: t("Continue"),
       });
       if (!completedRef.current) {
         completedRef.current = true;
@@ -655,9 +657,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setSelected(null);
       setResultCard({
         kind: "wrong",
-        title: "Wrong move",
-        body: `The book move is ${exp.san}.`,
-        actionLabel: "Try again",
+        title: t("Wrong move"),
+        body: t("The book move is {san}.", { san: exp.san }),
+        actionLabel: t("Try again"),
       });
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
       if (mode === "practice") {
@@ -1222,7 +1224,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           title={pack.name}
           about={pack.about}
           packId={pack.id}
-          startLabel="Train"
+          startLabel={t("Train")}
           onClose={() => setAboutOpen(false)}
           onStart={() => setAboutOpen(false)}
         />

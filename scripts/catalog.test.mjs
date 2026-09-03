@@ -136,7 +136,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /All twenty are free/);
   assert.doesNotMatch(guide, /£1\.99/);
 
-  assert.match(guide, /<Block title="Play on">/);
+  assert.match(guide, /t\("Play on"\)/);
   assert.match(guide, /After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup\. A clean Test still turns the line green\. Play on does not complete the line\./);
   assert.match(guide, /800/);
   assert.match(guide, /1200/);
@@ -1972,7 +1972,7 @@ test("app open splash: gym story then logo spin then home", () => {
   assert.doesNotMatch(splash, /A line is a routine/);
   assert.doesNotMatch(splash, /Chessable/i);
   assert.match(splash, /onClick=\{onDone\}/);
-  assert.match(splash, />\s*Play\s*</);
+  assert.match(splash, /t\("Play"\)/);
   assert.doesNotMatch(splash, /SPLASH_MS/);
   assert.doesNotMatch(splash, /setTimeout/);
   assert.doesNotMatch(splash, /Start Scotch Line 1/);

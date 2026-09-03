@@ -1,6 +1,7 @@
 import { ChevronDown, Lock } from "lucide-react";
 import type { OpeningLine } from "@/data/packs";
 import type { Mastery } from "@/lib/progress";
+import { useT } from "@/lib/i18n";
 import { MasteryChip } from "./mastery-chip";
 
 /** Shared expand cue — same look on Scotch and every paid pack. */
@@ -13,13 +14,14 @@ export function PackExpandHint({
   free?: boolean;
   closedLabel?: string;
 }) {
+  const t = useT();
   const label = open
-    ? "Tap to hide"
+    ? t("Tap to hide")
     : closedLabel
       ? closedLabel
       : free
-        ? "Free · tap to see lines"
-        : "Tap to see lines";
+        ? t("Free · tap to see lines")
+        : t("Tap to see lines");
 
   return (
     <span
@@ -61,6 +63,7 @@ export function LineRow({
   showFree = false,
   onClick,
 }: LineRowProps) {
+  const t = useT();
   return (
     <button
       type="button"
@@ -90,11 +93,11 @@ export function LineRow({
           {locked ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-danger px-1.5 py-0.5 text-[0.65rem] font-semibold text-white">
               <Lock className="size-3" strokeWidth={2.5} aria-hidden />
-              Locked
+              {t("Locked")}
             </span>
           ) : showFree ? (
             <span className="rounded-full bg-success-soft px-1.5 py-0.5 text-[0.65rem] font-semibold text-success">
-              Free
+              {t("Free")}
             </span>
           ) : null}
           {!locked && !complete ? <MasteryChip mastery={mastery} /> : null}
@@ -111,8 +114,8 @@ export function LineRow({
             }`}
           >
             {complete
-              ? "Complete — train any time"
-              : "Test with no mistakes to complete"}
+              ? t("Complete — train any time")
+              : t("Test with no mistakes to complete")}
           </p>
         ) : null}
       </div>

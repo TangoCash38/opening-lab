@@ -5,6 +5,7 @@ import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { useT } from "@/lib/i18n";
 import { ChessBoard } from "./chess-board";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
+  const t = useT();
   const { masteryOf, isComplete } = useProgress();
   const { state } = useUnlocks();
   const purchased = state.packs;
@@ -44,21 +46,23 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
 
   return (
     <section className="mb-5">
-      <h1 className="mb-1.5 font-display text-[1.65rem] font-bold tracking-tight">
-        Train openings the strict way
-      </h1>
-      <button
-        type="button"
-        onClick={onHowToPlay}
-        className="mb-4 inline-flex min-h-11 items-center rounded-full border border-border bg-bg-elevated px-4 py-2 text-[0.88rem] font-semibold active:opacity-70"
-      >
-        How to play
-      </button>
+      <div className="home-heading-row">
+        <h1 className="font-display text-[1.65rem] font-bold tracking-tight">
+          {t("Train openings the strict way")}
+        </h1>
+        <button
+          type="button"
+          onClick={onHowToPlay}
+          className="how-to-play inline-flex min-h-11 items-center rounded-full border border-border bg-bg-elevated px-4 py-2 text-[0.88rem] font-semibold active:opacity-70"
+        >
+          {t("How to play")}
+        </button>
+      </div>
 
       <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="px-4 pb-2 pt-3.5">
           <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
-            Free sample
+            {t("Free sample")}
           </p>
           <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">
             Caro-Kann for Black
@@ -89,7 +93,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
             onClick={openIntroThenPractice}
             className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           >
-            Tap to practice
+            {t("Tap to practice")}
           </button>
           <button
             type="button"
@@ -103,7 +107,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
             aria-expanded={linesOpen}
             className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
           >
-            See 18 lines
+            {t("See 18 lines")}
           </button>
         </div>
 
@@ -140,7 +144,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
           title={pack.name}
           about={pack.about}
           packId={pack.id}
-          startLabel="Start"
+          startLabel={t("Start")}
           onClose={() => setAboutOpen(false)}
           onStart={() => {
             setAboutOpen(false);

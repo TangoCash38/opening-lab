@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { LegalFooter } from "./legal-footer";
+import { useT } from "@/lib/i18n";
 
 type Props = { onBack: () => void };
 
 export function GuideView({ onBack }: Props) {
+  const t = useT();
   return (
     <div>
       <button
@@ -11,15 +13,14 @@ export function GuideView({ onBack }: Props) {
         onClick={onBack}
         className="mb-3 rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted"
       >
-        ← Back
+        {t("← Back")}
       </button>
       <h1 className="mb-4 font-display text-[1.65rem] font-bold tracking-tight">
-        User guide
+        {t("User guide")}
       </h1>
 
-      <Block title="What is Opening Lab?">
-        Strict-line memory training. You play only the moves in the chosen
-        opening; wrong moves are rejected so the line sticks.
+      <Block title={t("What is Opening Lab?")}>
+        {t("Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.")}
       </Block>
 
       <Block title="Caro-Kann for Black">
@@ -110,38 +111,34 @@ export function GuideView({ onBack }: Props) {
         Defend the Blackmar-Diemer as Black: Gunderam, Teichmann, Euwe, and Bogoljubow. Practice the main book moves with the yellow hint. Then Test with none to prove you remember them. Play on from the setup if you want. 18 lines. £2.99.
       </Block>
 
-      <Block title="White & Black / Special packs">
-        Each pack trains one opening. You play the book side.
+      <Block title={t("White & Black / Special packs")}>
+        {t("Each pack trains one opening. You play the book side.")}
       </Block>
 
-      <Block title="Practice mode">
-        Yellow hints show the next move. The opponent replies automatically.
-        Follow the exact line. Practice does not complete the line.
+      <Block title={t("Practice mode")}>
+        {t("Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.")}
       </Block>
 
-      <Block title="Test mode">
-        No hints. Play your side only. Wrong squares flash red until you find
-        the book move. A clean Test (zero mistakes) turns the line green. If
-        you think a rejected move is book, send it with Wrong move? If we
-        confirm it, you get a pack free.
+      <Block title={t("Test mode")}>
+        {t("No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.")}
       </Block>
 
-      <Block title="Play on">
-        After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.
+      <Block title={t("Play on")}>
+        {t("After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.")}
       </Block>
 
-      <Block title="Reviews">
-        A clean Test turns the line green. You can train it again anytime.
+      <Block title={t("Reviews")}>
+        {t("A clean Test turns the line green. You can train it again anytime.")}
       </Block>
 
-      <Block title="Account">
-        Use the profile icon (top right) to sign in. See{" "}
+      <Block title={t("Account")}>
+        {t("Use the profile icon (top right) to sign in. See")}{" "}
         <Link to="/privacy" className="font-semibold text-accent">
-          Privacy Policy
+          {t("Privacy Policy")}
         </Link>{" "}
-        and{" "}
+        {t("and")}{" "}
         <Link to="/terms" className="font-semibold text-accent">
-          Terms
+          {t("Terms")}
         </Link>
         .
       </Block>
