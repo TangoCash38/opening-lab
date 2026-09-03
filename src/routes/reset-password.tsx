@@ -1,0 +1,161 @@
+import { useState, type FormEvent } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { authClient } from "@/lib/auth/client";
+
+export const Route = createFileRoute("/reset-password")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    token: typeof search.token === "string" ? search.token : undefined,
+    error: typeof search.error === "string" ? search.error : undefined,
+  }),
+  component: ResetPassword,
+});
+
+function ResetPassword() {
+  const { token, error: urlError } = Route.useSearch();
+  const invalid = urlError === "INVALID_TOKEN" || !token;
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setError(null);
+    if (!token) return;
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+    if (password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error: err } = await authClient.resetPassword({
+        newPassword: password,
+        token,
+      });
+      if (err) {
+        const rec = err as { code?: string; message?: string };
+        const blob = `${rec.code ?? ""} ${rec.message ?? ""}`;
+        if (/INVALID_TOKEN|expired|invalid/i.test(blob)) {
+          setError("This reset link is expired or invalid.");
+        } else if (/PASSWORD_TOO_SHORT|too short/i.test(blob)) {
+          setError("Password must be at least 8 characters.");
+        } else if (/PASSWORD_TOO_LONG|too long/i.test(blob)) {
+          setError("Password is too long. Use 128 characters or fewer.");
+        } else {
+          setError("Could not update password. Try again.");
+        }
+        return;
+      }
+      setPassword("");
+      setConfirm("");
+      setDone(true);
+    } catch {
+      setError(
+        "Could not reach Opening Lab. Check your connection and try again.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <main className="grid min-h-dvh place-items-center bg-bg px-6 text-fg">
+      <div className="w-full max-w-sm space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="grid size-10 place-items-center rounded-[10px] bg-accent text-lg font-bold text-accent-fg">
+            ♔
+          </div>
+          <div>
+            <h1 className="font-display text-xl font-bold">
+              {done ? "Password updated" : "Set a new password"}
+            </h1>
+            <p className="text-sm text-fg-muted">Opening Lab</p>
+          </div>
+        </div>
+
+        {invalid && !done ? (
+          <div className="space-y-3">
+            <p className="text-sm text-fg">
+              This reset link is expired or invalid. Request a new one from Sign
+              in.
+            </p>
+            <Link
+              to="/login"
+              search={{ forgot: true }}
+              className="inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg no-underline shadow-sm transition hover:opacity-95 active:scale-[0.98]"
+            >
+              Forgot password?
+            </Link>
+          </div>
+        ) : done ? (
+          <div className="space-y-3">
+            <p className="text-sm text-fg">
+              Password updated. Sign in with your new password.
+            </p>
+            <Link
+              to="/login"
+              className="inline-flex w-full items-center justify-center rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg no-underline shadow-sm transition hover:opacity-95 active:scale-[0.98]"
+            >
+              Sign in
+            </Link>
+          </div>
+        ) : (
+          <form className="space-y-3" onSubmit={handleSubmit}>
+            <label className="block space-y-1">
+              <span className="text-sm font-semibold text-fg">New password</span>
+              <input
+                type="password"
+                name="new-password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
+              />
+            </label>
+            <label className="block space-y-1">
+              <span className="text-sm font-semibold text-fg">
+                Confirm password
+              </span>
+              <input
+                type="password"
+                name="confirm-password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
+              />
+            </label>
+            {error ? (
+              <p className="text-sm text-danger" role="alert">
+                {error}
+              </p>
+            ) : null}
+            <button
+              type="submit"
+              disabled={busy}
+              className="w-full rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg shadow-sm transition hover:opacity-95 active:scale-[0.98] disabled:opacity-60"
+            >
+              {busy ? "Please wait…" : "Update password"}
+            </button>
+          </form>
+        )}
+
+        <Link
+          to="/login"
+          className="inline-block text-sm font-semibold text-accent no-underline"
+        >
+          ← Back to sign in
+        </Link>
+      </div>
+    </main>
+  );
+}

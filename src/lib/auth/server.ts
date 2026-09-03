@@ -35,7 +35,10 @@ import { getCookie } from "@tanstack/react-start/server";
 import { randomBytes } from "node:crypto";
 import { Pool } from "pg";
 import { ensureDbReady, getPglite } from "../db";
-import { emailAndPasswordEnabled } from "./email-password";
+import {
+  emailAndPassword,
+  emailAndPasswordEnabled,
+} from "./email-password";
 import { GROK_PROVIDERS } from "./providers";
 import { afterSignUpWelcome } from "./welcome-email";
 import { sessionIdsToRevoke } from "./session-cap";
@@ -231,7 +234,7 @@ export const auth = betterAuth({
   session: { cookieCache: { enabled: false } },
 
   // Local email/password — toggled only via `./email-password` (not a plugin).
-  ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true } } : {}),
+  ...(emailAndPasswordEnabled ? { emailAndPassword } : {}),
 
   // Welcome mail after email/password sign-up. Failures are swallowed — never
   // block account creation.
