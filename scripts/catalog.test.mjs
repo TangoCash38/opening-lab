@@ -11,7 +11,7 @@ test("catalog shows Caro-Kann for Black, QGD for Black, London for Black, 1.d4 s
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black"]);
+  assert.deepEqual(ids, ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 
@@ -185,6 +185,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(packList, /englund-white/);
   assert.doesNotMatch(packList, /budapest-white/);
   assert.doesNotMatch(packList, /bdg-black/);
+  assert.doesNotMatch(packList, /queens-gambit-white/);
 });
 
 test("Play listing copy is unchanged", () => {
@@ -1576,6 +1577,79 @@ test("How to Defend Against the Blackmar–Diemer Gambit for Black is a twentiet
 
 
 
+
+test("Queen’s Gambit for White is a twenty-first visible White pack: 18 qgw lines, locked until purchase", () => {
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const start = packs.indexOf('id: "queens-gambit-white"');
+  assert.ok(start >= 0, "queens-gambit-white pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const qgw = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+
+  assert.match(qgw, /name: "Queen’s Gambit for White"/);
+  assert.match(qgw, /side: "White"/);
+  assert.match(qgw, /section: "white"/);
+  assert.match(qgw, /isFree: false/);
+  assert.match(qgw, /isPremium: false/);
+  assert.match(qgw, /price: null/);
+  assert.match(qgw, /blurb: "White vs 1\.\.\.d5"/);
+  assert.match(qgw, /closedLabel: "Free · 18 lines"/);
+  assert.match(qgw, /After 1\.d4 d5 2\.c4/);
+  assert.match(qgw, /Practice the main White moves with the hint/);
+  assert.match(qgw, /Then Test with none/);
+  assert.match(qgw, /Play on from the setup/);
+  assert.match(qgw, /eco: "D06/);
+  assert.doesNotMatch(qgw, /setups/);
+  assert.doesNotMatch(qgw, /follow-ups/);
+  assert.doesNotMatch(qgw, /Core \d+ ·/);
+  assert.doesNotMatch(qgw, /Follow-up \d+ ·/);
+  assert.doesNotMatch(qgw, /Lab\+/);
+  assert.doesNotMatch(qgw, /£/);
+  assert.doesNotMatch(qgw, /trap:\s*true/);
+
+  const lineIds = [...qgw.matchAll(/id: "(qgw\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(
+    lineIds,
+    Array.from({ length: 18 }, (_, i) => `qgw${i + 1}`),
+  );
+
+  const sides = [...qgw.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
+  assert.ok(sides.length >= 18, "expected line sides");
+  assert.ok(sides.every((s) => s === "w"), "every line side must be w");
+
+  function linePlies(id) {
+    const from = qgw.indexOf(`id: "${id}"`);
+    assert.ok(from >= 0, `${id} missing`);
+    const to = qgw.indexOf('id: "', from + 10);
+    const line = qgw.slice(from, to >= 0 ? to : undefined);
+    const m = line.match(/plies: \[([^\]]+)\]/);
+    assert.ok(m, `${id} plies missing`);
+    return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
+  }
+
+  for (let i = 1; i <= 18; i++) {
+    const plies = linePlies(`qgw${i}`);
+    assert.deepEqual(plies.slice(0, 2), ["d4", "d5"], `qgw${i} must start d4 d5`);
+    assert.equal(plies[2], "c4", `qgw${i} must play c4`);
+  }
+
+  assert.ok(linePlies("qgw1").includes("Bb3"), "qgw1 needs Bb3");
+  assert.ok(linePlies("qgw6").includes("Nd2"), "qgw6 needs Nd2");
+  assert.ok(linePlies("qgw12").includes("a4"), "qgw12 needs a4");
+  assert.deepEqual(linePlies("qgw17").slice(0, 7), ["d4", "d5", "c4", "e5", "dxe5", "d4", "Nf3"]);
+
+  const names = Object.fromEntries(
+    [...qgw.matchAll(/id: "(qgw\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
+      m[1],
+      m[2],
+    ]),
+  );
+  assert.equal(names.qgw1, "QGA Classical 3.Nf3 4.e3");
+  assert.equal(names.qgw10, "Tarrasch 3...c5");
+  assert.equal(names.qgw18, "Austrian 2...c5");
+});
+
+
+
 test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for Caro", () => {
   assert.match(src, /export const FREE_SAMPLE_LINE_IDS/);
   assert.match(src, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
@@ -1602,6 +1676,7 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.doesNotMatch(sampleBlock, /englund-white/);
   assert.doesNotMatch(sampleBlock, /budapest-white/);
   assert.doesNotMatch(sampleBlock, /bdg-black/);
+  assert.doesNotMatch(sampleBlock, /queens-gambit-white/);
   assert.match(src, /export function playableLines\(pack: Pack\): OpeningLine\[\]/);
   assert.match(src, /if \(!ids\) return \[\];/);
   assert.doesNotMatch(src, /if \(!ids\) return pack\.lines;/);
@@ -1698,6 +1773,10 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     id: "nimzo-larsen-white",
     lines: Array.from({ length: 18 }, (_, i) => ({ id: `nl${i + 1}` })),
   };
+  const qgwPack = {
+    id: "queens-gambit-white",
+    lines: Array.from({ length: 18 }, (_, i) => ({ id: `qgw${i + 1}` })),
+  };
   const caro = {
     id: "caro-kann-black",
     lines: Array.from({ length: 18 }, (_, i) => ({ id: `ckb${i + 1}` })),
@@ -1707,6 +1786,14 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     assert.equal(isLineUnlocked(nimzo, line.id, []), false, line.id);
     assert.equal(
       isLineUnlocked(nimzo, line.id, ["nimzo-larsen-white"]),
+      true,
+      line.id,
+    );
+  }
+  for (const line of qgwPack.lines) {
+    assert.equal(isLineUnlocked(qgwPack, line.id, []), false, line.id);
+    assert.equal(
+      isLineUnlocked(qgwPack, line.id, ["queens-gambit-white"]),
       true,
       line.id,
     );
@@ -1721,6 +1808,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(isLineUnlocked(caro, "ckb18", ["caro-kann-black"]), true);
 
   assert.deepEqual(playableLines(nimzo), []);
+  assert.deepEqual(playableLines(qgwPack), []);
   assert.deepEqual(
     playableLines(caro).map((l) => l.id),
     ["ckb1", "ckb3", "ckb5"],
@@ -1731,9 +1819,11 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(caro, "ckb5", []), undefined);
   assert.equal(nextUnlockedLine(nimzo, "nl1", []), undefined);
   assert.equal(nextUnlockedLine(nimzo, "nl1", ["nimzo-larsen-white"])?.id, "nl2");
+  assert.equal(nextUnlockedLine(qgwPack, "qgw1", []), undefined);
+  assert.equal(nextUnlockedLine(qgwPack, "qgw1", ["queens-gambit-white"])?.id, "qgw2");
 });
 
-test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, and bdg1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, and qgw1–18 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -1783,6 +1873,7 @@ test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it
   const eg = packBlock("englund-white");
   const bp = packBlock("budapest-white");
   const bdg = packBlock("bdg-black");
+  const qgw = packBlock("queens-gambit-white");
   assertIdeas(ck, "ckb", 18);
   assertIdeas(qgd, "qgdb", 18);
   assertIdeas(lon, "lonb", 18);
@@ -1803,6 +1894,7 @@ test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it
   assertIdeas(eg, "eg", 18);
   assertIdeas(bp, "bp", 18);
   assertIdeas(bdg, "bdg", 18);
+  assertIdeas(qgw, "qgw", 18);
   assert.match(
     ck,
     /idea: "White has locked the centre\. Develop the light bishop before …e6, then challenge d4 with …c5\."/,
