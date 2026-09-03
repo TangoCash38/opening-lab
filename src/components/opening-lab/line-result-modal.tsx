@@ -9,6 +9,7 @@ type Props = {
   onClose: () => void;
   primaryLabel?: string;
   onPrimary?: () => void;
+  onAction?: () => void;
 };
 
 export function LineResultModal({
@@ -20,30 +21,34 @@ export function LineResultModal({
   onClose,
   primaryLabel,
   onPrimary,
+  onAction,
 }: Props) {
-  const showPrimary = kind === "end" && Boolean(primaryLabel && onPrimary);
+  const showPrimary = Boolean(primaryLabel && onPrimary);
+  const handleAction = onAction ?? onClose;
+  const isWrong = kind === "wrong";
   return (
     <div
-      className="fixed inset-0 z-[80] flex items-end justify-center bg-black/40 p-4 sm:items-center"
+      className="line-result-overlay z-[80]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="line-result-title"
       data-result-kind={kind}
       data-result-actions={showPrimary ? 2 : 1}
       onClick={onClose}
-      style={{
-        paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
-      }}
     >
+      <div className="line-result-dim" aria-hidden />
       <div
-        className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-bg-elevated shadow-2xl"
+        className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}`}
+        data-result-sheet
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border px-5 py-3">
           <div>
             <h2
               id="line-result-title"
-              className="m-0 pr-2 font-display text-lg font-bold leading-snug"
+              className={`m-0 pr-2 font-display text-lg font-bold leading-snug${
+                isWrong ? " text-danger" : ""
+              }`}
             >
               {title}
             </h2>
@@ -63,7 +68,7 @@ export function LineResultModal({
           </button>
         </div>
         {body ? (
-          <div className="max-h-[min(18rem,42vh)] space-y-3 overflow-y-auto px-5 py-5">
+          <div className="line-result-body space-y-3 px-5 py-3">
             {body.split(/\n\n+/).map((para) => (
               <p
                 key={para.slice(0, 48)}
@@ -75,7 +80,7 @@ export function LineResultModal({
           </div>
         ) : null}
         <div
-          className={`border-t border-border px-5 py-4${showPrimary ? " space-y-2" : ""}`}
+          className={`shrink-0 border-t border-border px-5 py-3${showPrimary ? " space-y-2" : ""}`}
         >
           {showPrimary ? (
             <button
@@ -90,7 +95,7 @@ export function LineResultModal({
           <button
             type="button"
             data-result-dismiss
-            onClick={onClose}
+            onClick={handleAction}
             className={
               showPrimary
                 ? "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
