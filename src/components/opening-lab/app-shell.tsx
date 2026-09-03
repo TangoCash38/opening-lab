@@ -9,6 +9,13 @@ import { Link } from "@tanstack/react-router";
 import { hasSeenOnboarding, markOnboardingSeen } from "@/lib/progress";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import {
+  I18nProvider,
+  LANG_OPTIONS,
+  isLang,
+  useI18n,
+  useT,
+} from "@/lib/i18n";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
@@ -24,6 +31,15 @@ type View = "home" | "train" | "guide";
 type TrainMode = "learn" | "practice";
 
 export function OpeningLabApp() {
+  return (
+    <I18nProvider>
+      <OpeningLabInner />
+    </I18nProvider>
+  );
+}
+
+function OpeningLabInner() {
+  const t = useT();
   const [view, setView] = useState<View>("home");
   const [active, setActive] = useState<{
     pack: Pack;
@@ -153,7 +169,7 @@ export function OpeningLabApp() {
             type="button"
             className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
             onClick={goHome}
-            aria-label="Opening Lab home"
+            aria-label={t("Opening Lab home")}
           >
             <div className="grid size-9 shrink-0 place-items-center rounded-[11px] bg-accent text-[0.95rem] font-bold text-accent-fg shadow-sm">
               ♔
@@ -163,18 +179,19 @@ export function OpeningLabApp() {
                 Opening Lab
               </strong>
               <span className="block truncate text-[0.65rem] font-medium text-fg-subtle">
-                Strict lines · memory training
+                {t("Strict lines · memory training")}
               </span>
             </div>
           </button>
 
           <div className="flex shrink-0 items-center gap-1">
+            <LangToggle />
             <button
               type="button"
               onClick={() => setView("guide")}
               className="header-icon-btn"
-              aria-label="Help and guide"
-              title="Help"
+              aria-label={t("Help and guide")}
+              title={t("Help")}
             >
               <CircleHelp className="size-[22px]" strokeWidth={1.75} />
             </button>
@@ -225,7 +242,32 @@ export function OpeningLabApp() {
   );
 }
 
+function LangToggle() {
+  const { lang, setLang, t } = useI18n();
+  return (
+    <label className="lang-toggle-wrap">
+      <span className="sr-only">{t("Language")}</span>
+      <select
+        className="lang-toggle"
+        value={lang}
+        aria-label={t("Language")}
+        onChange={(event) => {
+          const next = event.target.value;
+          if (isLang(next)) setLang(next);
+        }}
+      >
+        {LANG_OPTIONS.map((opt) => (
+          <option key={opt.id} value={opt.id}>
+            {opt.short}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 function AccountButton() {
+  const t = useT();
   const { user, isPending } = useCurrentUserState();
 
   if (isPending) {
@@ -243,8 +285,8 @@ function AccountButton() {
         <Link
           to="/login"
           className="header-icon-btn no-underline"
-          aria-label="Account"
-          title="Account"
+          aria-label={t("Account")}
+          title={t("Account")}
         >
           <UserRound className="size-[22px]" strokeWidth={1.75} />
         </Link>
@@ -253,8 +295,8 @@ function AccountButton() {
         <Link
           to="/login"
           className="header-icon-btn no-underline overflow-hidden p-0"
-          aria-label={user?.displayName ?? user?.primaryEmail ?? "Account"}
-          title="Account"
+          aria-label={user?.displayName ?? user?.primaryEmail ?? t("Account")}
+          title={t("Account")}
         >
           {user?.profileImageUrl ? (
             <img

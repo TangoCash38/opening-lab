@@ -15,7 +15,8 @@ const modal = readFileSync(
 );
 
 test("wrong-move popup names the book SAN only", () => {
-  assert.match(train, /The book move is \$\{exp\.san\}/);
+  assert.match(train, /The book move is \{san\}\./);
+  assert.match(train, /san: exp\.san/);
   assert.match(train, /kind: "wrong"/);
   assert.doesNotMatch(train, /because the engine/);
 });

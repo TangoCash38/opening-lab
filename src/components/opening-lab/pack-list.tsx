@@ -31,6 +31,7 @@ import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
 import { PackAboutModal } from "./pack-about-modal";
 import { LegalFooter } from "./legal-footer";
+import { useT } from "@/lib/i18n";
 
 type TrainMode = "learn" | "practice";
 
@@ -64,6 +65,7 @@ function PackCard({
   purchasedPackIds?: readonly string[];
   defaultOpen?: boolean;
 }) {
+  const t = useT();
   const [open, setOpen] = useState(defaultOpen);
   const [aboutOpen, setAboutOpen] = useState(false);
   const { masteryOf, isComplete } = useProgress();
@@ -122,20 +124,20 @@ function PackCard({
             <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
-                {pack.lines.length} lines
+                {t("{n} lines", { n: pack.lines.length })}
               </span>
               {free ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
-                  Free
+                  {t("Free")}
                 </span>
               ) : unlocked ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
-                  Unlocked
+                  {t("Unlocked")}
                 </span>
               ) : (
                 <>
                   <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
-                    Pay as you go
+                    {t("Pay as you go")}
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated">
                     <Lock className="size-3" strokeWidth={2.5} aria-hidden />
@@ -157,13 +159,13 @@ function PackCard({
                 </span>
               ) : pack.section === "special" ? (
                 <span className="rounded-full bg-gold-soft px-2 py-0.5 text-[0.65rem] font-semibold text-gold">
-                  New
+                  {t("New")}
                 </span>
               ) : null}
             </div>
           </div>
         </div>
-        <PackExpandHint open={open} free={free} closedLabel={free ? pack.closedLabel : price ? `${price} · tap to see lines` : "Tap to see lines"} />
+        <PackExpandHint open={open} free={free} closedLabel={free ? pack.closedLabel : price ? t("{price} · tap to see lines", { price }) : t("Tap to see lines")} />
       </button>
 
       {open && (
@@ -200,7 +202,7 @@ function PackCard({
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-bg-subtle py-2.5 text-[0.82rem] font-semibold text-fg-muted active:scale-[0.99]"
           >
             <Lock className="size-3.5" strokeWidth={2.5} />
-            Pay as you go · {price}
+            {t("Pay as you go · {price}", { price })}
           </button>
         </div>
       )}
@@ -210,7 +212,7 @@ function PackCard({
           title={pack.name}
           about={pack.about}
           packId={pack.id}
-          startLabel="Train"
+          startLabel={t("Train")}
           onClose={() => setAboutOpen(false)}
           onStart={() => {
             setAboutOpen(false);
@@ -226,6 +228,7 @@ function PackCard({
 }
 
 export function PackList({ onStartLine, onHowToPlay }: Props) {
+  const t = useT();
   const { canAccess, buyPack, subscribe, paymentsEnabled, state } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
@@ -265,7 +268,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         const result = await confirmCheckoutSession(sessionId);
         if (cancelled) return;
         if (!result.ok) {
-          setUnlockNotice("Payment not confirmed yet");
+          setUnlockNotice(t("Payment not confirmed yet"));
           return;
         }
         if (result.kind === "pack" && result.packId) {
@@ -275,9 +278,9 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         } else if (result.plan === "monthly" || result.plan === "yearly") {
           subscribe(result.plan);
         }
-        setUnlockNotice("Unlocked");
+        setUnlockNotice(t("Unlocked"));
       } catch {
-        if (!cancelled) setUnlockNotice("Could not confirm payment");
+        if (!cancelled) setUnlockNotice(t("Could not confirm payment"));
       } finally {
         const url = new URL(window.location.href);
         url.searchParams.delete("paid");
@@ -324,7 +327,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
       subscribe("yearly");
       setModal(null);
       setShowSub(false);
-      setUnlockNotice("Unlocked");
+      setUnlockNotice(t("Unlocked"));
     } catch (err) {
       const message = err instanceof Error ? err.message : "Payment failed";
       if (message === "Sign in required") {
@@ -358,7 +361,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
       subscribe("yearly");
       setModal(null);
       setShowSub(false);
-      setUnlockNotice("Unlocked");
+      setUnlockNotice(t("Unlocked"));
     } catch (err) {
       const message = err instanceof Error ? err.message : "Could not restore Lab+";
       if (message === "Sign in required") {
@@ -441,7 +444,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
       {unlockNotice ? (
         <p
           className={`mb-3 rounded-xl px-4 py-2.5 text-center text-[0.85rem] font-semibold ${
-            unlockNotice === "Unlocked"
+            unlockNotice === t("Unlocked")
               ? "bg-success-soft text-success"
               : "bg-danger-soft text-danger"
           }`}
@@ -459,7 +462,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         ) : null
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
-          Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.
+          {t("Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.")}
         </p>
       )}
 
@@ -477,7 +480,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
 
       {morePacks ? (
         <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-          More packs
+          {t("More packs")}
         </p>
       ) : null}
 

@@ -111,6 +111,66 @@
     background: var(--color-border);
   }
 
+  .lang-toggle-wrap {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .lang-toggle {
+    height: 2.5rem;
+    max-width: 4.35rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--color-bg-subtle);
+    color: var(--color-fg-muted);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0 0.4rem 0 0.55rem;
+    line-height: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-fg-subtle) 50%),
+      linear-gradient(135deg, var(--color-fg-subtle) 50%, transparent 50%);
+    background-position: calc(100% - 0.72rem) calc(50% - 0.12rem),
+      calc(100% - 0.48rem) calc(50% - 0.12rem);
+    background-size: 0.28rem 0.28rem, 0.28rem 0.28rem;
+    background-repeat: no-repeat;
+    padding-right: 1.15rem;
+  }
+
+  .lang-toggle:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .home-heading-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+  }
+
+  .home-heading-row h1 {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .home-heading-row .how-to-play {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 340px) {
+    .home-heading-row h1 {
+      font-size: 1.28rem;
+    }
+  }
+
   .app-header {
     position: sticky;
     top: 0;

@@ -29,7 +29,7 @@ test("practice intros skip for the rest of the session, not forever", () => {
 });
 
 test("Don't show again is on the intro, and Practice honours the skip", () => {
-  assert.match(modal, /Don&apos;t show again/);
+  assert.match(modal, /Don't show again/);
   assert.match(modal, /skipPackIntroThisSession/);
   assert.match(hero, /shouldSkipPackIntro\(\)/);
   assert.match(list, /!shouldSkipPackIntro\(\)/);
@@ -37,8 +37,8 @@ test("Don't show again is on the intro, and Practice honours the skip", () => {
 
 test("Don't show again only appears on the second intro card", () => {
   const continueIdx = modal.indexOf("Continue");
-  const skipIdx = modal.indexOf("Don&apos;t show again");
+  const skipIdx = modal.indexOf("Don't show again");
   assert.ok(continueIdx > 0 && skipIdx > continueIdx);
   const firstBranch = modal.slice(0, modal.indexOf("{startLabel}"));
-  assert.doesNotMatch(firstBranch, /Don&apos;t show again/);
+  assert.doesNotMatch(firstBranch, /Don't show again/);
 });

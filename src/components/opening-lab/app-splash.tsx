@@ -1,3 +1,5 @@
+import { useT } from "@/lib/i18n";
+
 const SESSION_KEY = "opening-lab:splash:v4";
 
 export function hasSeenAppSplash(): boolean {
@@ -21,6 +23,7 @@ export function markAppSplashSeen(): void {
 type Props = { onDone: () => void };
 
 export function AppSplash({ onDone }: Props) {
+  const t = useT();
   return (
     <div
       className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-bg px-8 text-fg"
@@ -39,17 +42,17 @@ export function AppSplash({ onDone }: Props) {
           Opening Lab
         </h1>
         <p className="splash-story mt-3 max-w-[20rem] text-center text-[1.05rem] font-semibold leading-snug text-fg">
-          Most people dive into opening theory before they know the basics. That is algebra before you can count.
+          {t("Most people dive into opening theory before they know the basics. That is algebra before you can count.")}
         </p>
         <p className="mt-3 max-w-[20rem] text-center text-[0.95rem] leading-relaxed text-fg-muted">
-          They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.
+          {t("They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.")}
         </p>
         <button
           type="button"
           onClick={onDone}
           className="mt-8 min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
         >
-          Play
+          {t("Play")}
         </button>
       </div>
     </div>

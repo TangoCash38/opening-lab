@@ -6,6 +6,7 @@ import {
   openingParagraphs,
   skipPackIntroThisSession,
 } from "@/lib/pack-intro";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   title: string;
@@ -24,10 +25,11 @@ export function PackAboutModal({
   onClose,
   onStart,
 }: Props) {
+  const t = useT();
   const [step, setStep] = useState<1 | 2>(1);
   const opening = openingParagraphs(about, packId);
-  const heading = step === 1 ? GAME_INTRO_TITLE : title;
-  const gymParas = GAME_INTRO.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  const heading = step === 1 ? t(GAME_INTRO_TITLE) : title;
+  const gymParas = t(GAME_INTRO).split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
   const paragraphs = step === 1 ? gymParas : opening;
 
   const close = () => {
@@ -89,7 +91,7 @@ export function PackAboutModal({
               onClick={() => setStep(2)}
               className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
             >
-              Continue
+              {t("Continue")}
             </button>
           ) : (
             <>
@@ -105,7 +107,7 @@ export function PackAboutModal({
                 onClick={start}
                 className="min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
               >
-                Don&apos;t show again
+                {t("Don't show again")}
               </button>
             </>
           )}
