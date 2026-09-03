@@ -1,13 +1,39 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const require = createRequire(join(root, "package.json"));
 
 function src(rel) {
   return readFileSync(join(root, rel), "utf8");
+}
+
+async function loadPlayApp(t) {
+  let ts;
+  try {
+    ts = require("typescript");
+  } catch {
+    t.skip("typescript not installed");
+    return null;
+  }
+  const js = ts.transpileModule(src("src/lib/play-app.ts"), {
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ES2022,
+    },
+  }).outputText;
+  const dir = join(root, "scripts", ".generated-play-app");
+  mkdirSync(dir, { recursive: true });
+  const tmp = join(dir, "play-app.mjs");
+  writeFileSync(tmp, js);
+  t.after(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+  return import(pathToFileURL(tmp).href);
 }
 
 test("Play wrap gate ignores website Stripe packs and website Lab+", () => {
@@ -41,6 +67,60 @@ test("Play-wrap copy does not send users to buy packs on the website", () => {
     assert.doesNotMatch(text, /buy on the website/i, rel);
     assert.doesNotMatch(text, /Find the crush/i, rel);
   }
+});
+
+test("detectPlayApp is OpeningLabPlay UA or android-app referrer only", async (t) => {
+  const mod = await loadPlayApp(t);
+  if (!mod) return;
+  const { detectPlayApp } = mod;
+
+  assert.equal(detectPlayApp({ userAgent: "Mozilla/5.0 OpeningLabPlay wv" }), true);
+  assert.equal(detectPlayApp({ referrer: "android-app://uk.co.openinglab" }), true);
+  assert.equal(detectPlayApp({ androidStandalone: true }), false);
+  assert.equal(detectPlayApp({ hasDigitalGoods: true }), false);
+  assert.equal(detectPlayApp({ remembered: true }), false);
+  assert.equal(
+    detectPlayApp({ remembered: true, userAgent: "Mozilla/5.0 OpeningLabPlay" }),
+    true,
+  );
+  assert.equal(
+    detectPlayApp({ remembered: true, referrer: "android-app://uk.co.openinglab" }),
+    true,
+  );
+  assert.equal(
+    detectPlayApp({
+      userAgent:
+        "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36",
+      androidStandalone: true,
+      hasDigitalGoods: true,
+      remembered: true,
+    }),
+    false,
+  );
+});
+
+test("isPlayApp remembers only a hard UA/referrer hit and clears leftover session", () => {
+  const play = src("src/lib/play-app.ts");
+  const detectFn = play.slice(
+    play.indexOf("export function detectPlayApp"),
+    play.indexOf("function rememberPlayApp"),
+  );
+  assert.match(detectFn, /Ignore remembered AND androidStandalone AND hasDigitalGoods/);
+  assert.match(detectFn, /isPlayUserAgent\(input\.userAgent/);
+  assert.match(detectFn, /isPlayReferrer\(input\.referrer/);
+  assert.doesNotMatch(detectFn, /input\.remembered/);
+  assert.doesNotMatch(detectFn, /input\.hasDigitalGoods/);
+  assert.doesNotMatch(detectFn, /input\.androidStandalone/);
+
+  const isPlay = play.slice(play.indexOf("export function isPlayApp"));
+  assert.doesNotMatch(isPlay, /remembered:/);
+  assert.doesNotMatch(isPlay, /hasDigitalGoods:/);
+  assert.doesNotMatch(isPlay, /androidStandalone:/);
+  assert.match(play, /function forgetPlayApp/);
+  assert.match(play, /sessionStorage\.removeItem\(SESSION_KEY\)/);
+  assert.match(isPlay, /if \(hit\) \{/);
+  assert.match(isPlay, /rememberPlayApp\(\)/);
+  assert.match(isPlay, /forgetPlayApp\(\)/);
 });
 
 test("Play wrap shows locked packs with prices and never starts Stripe", () => {
@@ -83,12 +163,16 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.match(modal, /three free Caro lines still train/i);
   assert.match(modal, /Pay as you go/);
   const wrapBranch = modal.slice(modal.indexOf("{wrap ? ("), modal.indexOf(") : ("));
+  const websiteBranch = modal.slice(modal.indexOf(") : ("));
   assert.doesNotMatch(wrapBranch, /Card via Stripe/);
   assert.doesNotMatch(wrapBranch, /onUnlockPack/);
   assert.doesNotMatch(wrapBranch, /Please wait/);
   assert.doesNotMatch(wrapBranch, /Google will bill/i);
   assert.doesNotMatch(wrapBranch, /Google Play Billing/i);
   assert.match(wrapBranch, /\{price\}/);
+  assert.match(wrapBranch, /Packs are not for sale in this Play test/);
+  assert.match(websiteBranch, /Card via Stripe/);
+  assert.doesNotMatch(websiteBranch, /Packs are not for sale in this Play test/);
 
   const checkout = src("src/lib/checkout.ts");
   assert.match(checkout, /if \(isPlayApp\(\) \|\| isPlayWrap\(\)\)/);

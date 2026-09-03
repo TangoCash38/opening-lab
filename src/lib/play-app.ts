@@ -2,11 +2,13 @@
  * Detect the Google Play app wrap (package uk.co.openinglab).
  *
  * The Play wrapper is an in-app WebView that appends OpeningLabPlay to its
- * user-agent. A normal mobile Chrome visit to www.openinglab.co.uk is
- * display-mode:browser, has no OpeningLabPlay token, and has no
- * android-app:// referrer / Digital Goods API — that is not Play.
- * Remember a positive hit in sessionStorage only (not localStorage), so a later
- * Chrome tab on the same phone still gets website Stripe.
+ * user-agent, or an android-app://uk.co.openinglab referrer. Website Chrome
+ * on a phone — including a visible URL bar and Add-to-Home-Screen / standalone
+ * PWA — is not Play. That is Stripe. Digital Goods API alone is not Play.
+ *
+ * Remember a positive UA/referrer hit in sessionStorage only (not localStorage).
+ * If the current UA/referrer is not Play, clear that flag so a leftover
+ * session from a wrong hit cannot poison Chrome.
  *
  * Play Console: create subscription product `lab_plus_yearly` with a yearly
  * base plan in GBP. Digital Goods will
@@ -92,6 +94,14 @@ export function isAndroidStandaloneDisplay(
   }
 }
 
+/**
+ * Play wrap is OpeningLabPlay user-agent or android-app://uk.co.openinglab referrer only.
+ *
+ * Ignore remembered AND androidStandalone AND hasDigitalGoods. Those are not the
+ * Play wrap: leftover sessionStorage, website Add-to-Home-Screen, or Digital Goods.
+ * isPlayApp remembers a hard UA/referrer hit in sessionStorage, then clears it
+ * when the current UA/referrer is not Play so Chrome cannot stay poisoned.
+ */
 export function detectPlayApp(input: {
   referrer?: string;
   hasDigitalGoods?: boolean;
@@ -99,22 +109,8 @@ export function detectPlayApp(input: {
   remembered?: boolean;
   userAgent?: string;
 }): boolean {
-  if (input.remembered) return true;
-  if (isPlayReferrer(input.referrer ?? "")) return true;
-  if (input.hasDigitalGoods) return true;
-  if (isPlayUserAgent(input.userAgent ?? "")) return true;
-  // TWA / standalone PWA on Android. Regular Chrome tabs are "browser".
-  if (input.androidStandalone) return true;
-  return false;
-}
-
-function rememberedPlayApp(): boolean {
-  if (typeof sessionStorage === "undefined") return false;
-  try {
-    return sessionStorage.getItem(SESSION_KEY) === "1";
-  } catch {
-    return false;
-  }
+  // Ignore remembered AND androidStandalone AND hasDigitalGoods.
+  return isPlayUserAgent(input.userAgent ?? "") || isPlayReferrer(input.referrer ?? "");
 }
 
 function rememberPlayApp() {
@@ -126,18 +122,28 @@ function rememberPlayApp() {
   }
 }
 
+function forgetPlayApp() {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.removeItem(SESSION_KEY);
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
 /** True only inside the Play app wrap. False on the website (desktop or phone Chrome). */
 export function isPlayApp(): boolean {
   if (typeof window === "undefined") return false;
   const hit = detectPlayApp({
     referrer: document.referrer ?? "",
-    hasDigitalGoods: hasDigitalGoodsApi(window),
-    androidStandalone: isAndroidStandaloneDisplay(window),
-    remembered: rememberedPlayApp(),
     userAgent: window.navigator?.userAgent ?? "",
   });
-  if (hit) rememberPlayApp();
-  return hit;
+  if (hit) {
+    rememberPlayApp();
+    return true;
+  }
+  forgetPlayApp();
+  return false;
 }
 
 /** Same as isPlayApp — OpeningLabPlay user agent / android-app referrer wrap. */
