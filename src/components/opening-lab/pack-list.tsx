@@ -24,6 +24,7 @@ import {
 } from "@/lib/play-billing";
 import { LineRow, PackExpandHint } from "./pack-lines";
 import { MiniBoard } from "./mini-board";
+import { PackAboutModal } from "./pack-about-modal";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { PlayStoreNotice } from "./play-store-notice";
@@ -66,6 +67,8 @@ function PackCard({
 }) {
   const t = useT();
   const [open, setOpen] = useState(defaultOpen);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
   const { masteryOf, isComplete } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
@@ -178,7 +181,10 @@ function PackCard({
                 showFree={free && lineUnlocked}
                 onClick={() => {
                   if (rowLocked) onRequestUnlock(pack);
-                  else onStartLine(pack, line);
+                  else if (pack.about) {
+                    setPendingLine(line);
+                    setAboutOpen(true);
+                  } else onStartLine(pack, line);
                 }}
               />
             );
@@ -199,6 +205,24 @@ function PackCard({
         </div>
       )}
 
+      {pack.about && aboutOpen ? (
+        <PackAboutModal
+          title={pack.name}
+          about={pack.about}
+          packId={pack.id}
+          startLabel={t("Start")}
+          onClose={() => {
+            setAboutOpen(false);
+            setPendingLine(null);
+          }}
+          onStart={() => {
+            setAboutOpen(false);
+            const line = pendingLine;
+            setPendingLine(null);
+            if (line) onStartLine(pack, line);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -62,56 +62,17 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
     "utf8",
   );
 
-  assert.match(guide, /<Block title="Caro-Kann for Black">/);
-  assert.match(guide, /The Caro-Kann is Black's answer to 1\.e4/);
-  assert.match(
-    guide,
-    /Practice the main book moves with the yellow hint/,
-  );
-  assert.match(guide, /Then Test with none to prove you/);
-  assert.match(guide, /Play on from the setup if you want/);
-  assert.match(guide, /Play on from the setup and see where the game goes/);
-  assert.match(guide, /Free sample:\s+Advance,/);
-  assert.match(guide, /Classical, Exchange/);
-  assert.match(guide, /Other Caro lines are in the full pack/);
-  assert.match(
-    guide,
-    /<Block title="Queen\u2019s Gambit Declined for Black">/,
-  );
-  assert.match(guide, /solid answer to 1\.d4/);
-  assert.match(guide, /18\s+book lines/);
-  assert.match(guide, /<Block title="Stop the London System">/);
-  assert.match(guide, /Black vs the London/);
-  assert.match(guide, /solid d4 setup with Bf4/);
-  assert.match(guide, /<Block title="1\.d4 Sideline Survival Kit">/);
-  assert.match(guide, /18 lines\. £2\.99\./);
-  assert.match(guide, /<Block title="Anti-Sicilian Survival Kit">/);
-  assert.match(guide, /anti-Sicilians as Black/);
-  assert.match(guide, /<Block title="Nimzo-Larsen Attack for White">/);
-  assert.match(guide, /1\.b3, Bb2/);
-  assert.match(guide, /<Block title="Italian Game Mastery for White">/);
-  assert.match(guide, /Play the Italian as White/);
-  assert.match(guide, /<Block title="Ruy Lopez Mastery for White">/);
-  assert.match(guide, /Play the Ruy Lopez as White/);
-  assert.match(guide, /<Block title="French Defence for White: Advance & Tarrasch">/);
-  assert.match(guide, /Meet the French as White/);
-  assert.match(guide, /<Block title="How to Meet the Sicilian: The Alapin for White">/);
-  assert.match(guide, /Meet the Sicilian as White with the Alapin/);
-  assert.match(guide, /<Block title="How to Meet 1\.c4: The Symmetrical English for Black">/);
-  assert.match(guide, /Meet 1\.c4 as Black with the Symmetrical English/);
-  assert.match(guide, /<Block title="How to Defend Against the King\u2019s Gambit">/);
-  assert.match(guide, /Defend the King\u2019s Gambit as Black/);
-  assert.match(guide, /Knight\u2019s Gambit, Fischer, Classical Accepted, Bishop\u2019s Gambit, and Falkbeer/);
-  assert.match(guide, /<Block title="How to Meet the Scandinavian Defence: White\u2019s Safe Edge">/);
-  assert.match(guide, /Meet the Scandinavian as White/);
-  assert.match(guide, /<Block title="How to Meet the Pirc & Modern Defence: The 150 Attack">/);
-  assert.match(guide, /Meet the Pirc and Modern as White with the 150 Attack/);
-  assert.match(guide, /<Block title="How to Meet the Dutch Defence: The Fianchetto System for White">/);
-  assert.match(guide, /Meet the Dutch as White with the fianchetto/);
-  assert.match(guide, /<Block title="How to Meet the Caro-Kann: Advance & Panov for White">/);
-  assert.match(guide, /Meet the Caro-Kann as White with the Advance and the Panov/);
-  assert.match(guide, /<Block title="How to Defend Against the Evans Gambit for Black">/);
-  assert.match(guide, /Defend the Evans Gambit as Black/);
+  assert.doesNotMatch(guide, /<Block title="Caro-Kann for Black">/);
+  assert.doesNotMatch(guide, /Caro-Kann for Black/);
+  assert.doesNotMatch(guide, /Nimzo-Larsen/);
+  assert.doesNotMatch(guide, /Queen.s Gambit Declined for Black/);
+  assert.doesNotMatch(guide, /Stop the London System/);
+  assert.doesNotMatch(guide, /Blackmar/);
+  assert.match(guide, /t\("What is Opening Lab\?"\)/);
+  assert.match(guide, /t\("White & Black \/ Special packs"\)/);
+  assert.match(guide, /t\("Practice mode"\)/);
+  assert.match(guide, /t\("Test mode"\)/);
+  assert.match(guide, /t\("User guide"\)/);
   assert.doesNotMatch(guide, /setups/);
   assert.doesNotMatch(guide, /follow-ups/);
   assert.doesNotMatch(guide, /<Block title="Free openings">/);
@@ -1931,7 +1892,7 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   const css = readFileSync(join(root, "src/styles.css"), "utf8");
 
   assert.match(modal, /data-intro-step=\{step\}/);
-  assert.match(modal, />\s*Continue\s*</);
+  assert.match(modal, /t\("Continue"\)/);
   assert.match(modal, /startLabel/);
   assert.match(modal, /GAME_INTRO/);
   assert.match(modal, /openingParagraphs\(about, packId\)/);
@@ -1985,14 +1946,14 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
 
   assert.match(hero, /packId=\{pack\.id\}/);
   assert.match(hero, /onStart/);
-  assert.match(hero, /startLabel="Start"/);
+  assert.match(hero, /startLabel=\{t\("Start"\)\}/);
   assert.match(hero, /openIntroThenPractice/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
   assert.match(packList, /packId=\{pack\.id\}/);
-  assert.match(packList, /startLabel="Train"/);
+  assert.match(packList, /startLabel=\{t\("Start"\)\}/);
   assert.match(train, /PackAboutModal/);
-  assert.match(train, /hasSeenPackIntro/);
-  assert.match(train, /startLabel="Train"/);
+  assert.doesNotMatch(train, /hasSeenPackIntro/);
+  assert.match(train, /startLabel=\{t\("Train"\)\}/);
   assert.doesNotMatch(train, /LineCompleteBurst/);
   assert.doesNotMatch(hero, /setups/);
   assert.doesNotMatch(hero, /follow-ups/);
