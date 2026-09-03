@@ -6,6 +6,7 @@ import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalo
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import { ChessBoard } from "./chess-board";
+import { BoardThemePicker } from "./board-theme-picker";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
 
@@ -84,6 +85,9 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
             onSquare={() => {}}
             interactive={false}
           />
+          <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
+            <BoardThemePicker compact className="w-full" />
+          </div>
         </div>
 
         <div className="space-y-2.5 px-4 pb-3 pt-1">
