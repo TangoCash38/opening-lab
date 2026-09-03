@@ -29,8 +29,37 @@ test("end-of-line popup prefers line.next, else the catalog idea", () => {
   assert.match(modal, /data-result-kind/);
   assert.match(modal, /z-\[80\]/);
   assert.match(packs, /next\?: string/);
-  assert.doesNotMatch(packs, /next: "/);
   assert.doesNotMatch(packs, /next: `/);
+});
+
+test("Caro line-complete next notes: ckb1.next exists; ckb12 recommends Qb4 and warns off Qa3", () => {
+  const start = packs.indexOf('id: "caro-kann-black"');
+  assert.ok(start >= 0, "caro-kann-black pack missing");
+  const nextPack = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const ck = nextPack >= 0 ? packs.slice(start, nextPack) : packs.slice(start);
+
+  function lineNext(id) {
+    const s = ck.indexOf(`id: "${id}"`);
+    assert.ok(s >= 0, `${id} missing`);
+    const n = Number(id.slice(3));
+    const end = n === 18 ? ck.length : ck.indexOf(`id: "ckb${n + 1}"`, s);
+    const block = ck.slice(s, end);
+    const m = block.match(/next: "((?:\\.|[^"\\])*)"/);
+    assert.ok(m, `${id}.next missing`);
+    return m[1];
+  }
+
+  const ckb1 = lineNext("ckb1");
+  assert.ok(ckb1.length > 0, "ckb1.next exists");
+
+  const ckb12 = lineNext("ckb12");
+  assert.match(ckb12, /Qb4/);
+  assert.match(ckb12, /Qb6/);
+  assert.match(ckb12, /Do not play …Qa3/);
+  assert.match(ckb12, /hangs to Nxa3/);
+  const bring = ckb12.match(/Bring it out with [^.]+/);
+  assert.ok(bring, "ckb12 bring-it-out sentence missing");
+  assert.doesNotMatch(bring[0], /Qa3/);
 });
 
 test("end modal has two buttons; wrong has one", () => {
