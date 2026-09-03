@@ -145,6 +145,19 @@ html[data-color-scheme="dark"] {
     flex-shrink: 0;
   }
 
+  .splash-lang {
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
+
+  .splash-lang .lang-toggle {
+    max-width: 7.5rem;
+    min-width: 5.5rem;
+    color: var(--color-fg);
+    font-size: 0.72rem;
+  }
+
   .lang-toggle {
     height: 2.5rem;
     max-width: 6rem;
