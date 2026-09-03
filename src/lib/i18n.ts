@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
-export const LANGS = ["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja"] as const;
+export const LANGS = ["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja", "ar", "tr"] as const;
 export type Lang = (typeof LANGS)[number];
 export const LANG_STORAGE_KEY = "opening-lab:lang";
 
@@ -28,6 +28,8 @@ export const LANG_OPTIONS: ReadonlyArray<{
   { id: "it", label: "Italian", short: "IT" },
   { id: "hi", label: "Hindi", short: "हिंदी" },
   { id: "ja", label: "Japanese", short: "日本語" },
+  { id: "ar", label: "Arabic", short: "العربية" },
+  { id: "tr", label: "Turkish", short: "TR" },
 ];
 
 type Dict = Record<string, string>;
@@ -1131,7 +1133,227 @@ const ja: Dict = {
   and: "と",
 };
 
-export const DICTS: Record<Lang, Dict> = { en, es, zh, fr, de, pt, ru, it, hi, ja };
+const ar: Dict = {
+  "Train openings the strict way": "درّب الافتتاحيات بالطريقة الصارمة",
+  "How to play": "كيف تلعب",
+  "Download the app": "حمّل التطبيق",
+  "Continue on the web": "تابع على الويب",
+  "Tap to practice": "اضغط للتدرّب",
+  "See 18 lines": "عرض 18 خطًا",
+  "Free sample": "عينة مجانية",
+  Start: "ابدأ",
+  Train: "تدرّب",
+  "Strict lines · memory training": "خطوط صارمة · تدريب الذاكرة",
+  "Help and guide": "المساعدة والدليل",
+  Help: "مساعدة",
+  Language: "اللغة",
+  "Dark mode": "الوضع الداكن",
+  "Light mode": "الوضع الفاتح",
+  "Opening Lab home": "الرئيسية — Opening Lab",
+  Account: "الحساب",
+  Play: "العب",
+  "Most people dive into opening theory before they know the basics. That is algebra before you can count.":
+    "معظم الناس يغوصون في نظرية الافتتاحيات قبل أساسياتهم. هذا جبر قبل أن تتقن العدّ.",
+  "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
+    "يدفعون مقابل دورات عميقة وما زالوا لا يلعبون الخط. هنا نذهب مباشرة. خطوط صارمة. تتعلّمها، تلعبها، وتتعرّف على الافتتاحية عندما تظهر.",
+  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
+    "ثلاثة خطوط Caro مجانية. افتح بقية هذه الحزمة بـ £1.99. الحزم الأخرى بـ £2.99.",
+  "More packs": "المزيد من الحزم",
+  Free: "مجاني",
+  Unlocked: "مفتوح",
+  "Pay as you go": "ادفع حسب الاستخدام",
+  "{n} lines": "{n} خطوط",
+  "Pay as you go · {price}": "ادفع حسب الاستخدام · {price}",
+  "{price} · tap to see lines": "{price} · اضغط لعرض الخطوط",
+  "Tap to hide": "اضغط للإخفاء",
+  "Free · tap to see lines": "مجاني · اضغط لعرض الخطوط",
+  "Tap to see lines": "اضغط لعرض الخطوط",
+  Locked: "مقفل",
+  "Complete — train any time": "مكتمل — تدرّب في أي وقت",
+  "Test with no mistakes to complete": "أكمل Test بلا أخطاء للإنهاء",
+  New: "جديد",
+  "Payment not confirmed yet": "لم يُؤكَّد الدفع بعد",
+  "Could not confirm payment": "تعذّر تأكيد الدفع",
+  "Unlock {packName}": "افتح {packName}",
+  "Three lines stay free. This unlocks the rest of the pack.":
+    "ثلاثة خطوط تبقى مجانية. هذا يفتح بقية الحزمة.",
+  "One-time purchase. This pack only.": "شراء لمرة واحدة. هذه الحزمة فقط.",
+  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
+    "الحزم غير معروضة للبيع في اختبار Play هذا. خطوط Caro الثلاثة المجانية ما زالت تُدرَّب هنا.",
+  "Rest of this pack": "بقية هذه الحزمة",
+  "This pack": "هذه الحزمة",
+  "Pay as you go. Not for sale in this Play test.":
+    "ادفع حسب الاستخدام. غير معروض للبيع في اختبار Play هذا.",
+  "Unlock the rest of this pack": "افتح بقية هذه الحزمة",
+  "Unlock this pack": "افتح هذه الحزمة",
+  "Yours to keep. Card via Stripe.": "لك للأبد. البطاقة عبر Stripe.",
+  "Opening checkout…": "جارٍ فتح الدفع…",
+  "Sign in so this stays on your account.": "سجّل الدخول ليبقى هذا على حسابك.",
+  "You will pay securely with Stripe.": "ستدفع بأمان عبر Stripe.",
+  "Payments are not live yet.": "المدفوعات ليست مفعّلة بعد.",
+  Close: "إغلاق",
+  "How the gym works": "كيف يعمل الصالة",
+  [GYM_INTRO]:
+    "Opening Lab مدرّب صارم لحركات الكتاب. Practice مع التلميح الأصفر. Test بلا تلميحات. فقط حركة الكتاب تُحسب. ثم Play on من الوضع إن أردت.\n\nهذه الطريقة تبني ذخيرة عملية للافتتاحية: ردود الكتاب الرئيسية، لا ضباب أفكار. إيجاد تلك الحركات بلا تلميح يجعل قراراتك المبكرة أوضح. أساس متين لتواصل الدراسة — كتب، مباريات، محركات — لا اختصار لإتقان الافتتاحية كلها.",
+  Continue: "متابعة",
+  "Don't show again": "لا تظهر مرة أخرى",
+  "Wrong move": "حركة خاطئة",
+  "Wrong move — try again": "حركة خاطئة — حاول مجددًا",
+  "Tap Reset to try again, or go back to Practice": "اضغط Reset للمحاولة مجددًا، أو ارجع إلى Practice",
+  "Inaccurate move": "حركة غير دقيقة",
+  "The book move is {san}.": "حركة الكتاب هي {san}.",
+  "Try again": "حاول مجددًا",
+  "Practice again": "تدرّب مجددًا",
+  "Back to practice": "العودة إلى التدرّب",
+  "Well done": "أحسنت",
+  "Practice next line": "تدرّب على الخط التالي",
+  "Test yourself": "اختبر نفسك",
+  "Practice done": "انتهى التدرّب",
+  "Line complete": "اكتمل الخط",
+  "Finished, but you missed a move": "انتهيت، لكنك أخطأت حركة",
+  "← Back": "← رجوع",
+  "User guide": "دليل المستخدم",
+  "What is Opening Lab?": "ما هو Opening Lab؟",
+  Board: "اللوحة",
+  Book: "كتاب",
+  Paper: "ورق",
+  Future: "مستقبل",
+  Newspaper: "جريدة",
+  "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
+    "تدريب ذاكرة بخطوط صارمة. تلعب فقط حركات الافتتاحية المختارة؛ الحركات الخاطئة تُرفض حتى يثبت الخط.",
+  "White & Black / Special packs": "White و Black / حزم خاصة",
+  "Each pack trains one opening. You play the book side.":
+    "كل حزمة تدرّب افتتاحية واحدة. تلعب جانب الكتاب.",
+  "Practice mode": "وضع Practice",
+  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "التلميحات الصفراء تُظهر الحركة التالية. الخصم يرد تلقائيًا. اتبع الخط بدقة. Practice لا يُكمل الخط.",
+  "Test mode": "وضع Test",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "بلا تلميحات. العب جانبك فقط. المربعات الخاطئة تومض بالأحمر حتى تجد حركة الكتاب. Test نظيف (صفر أخطاء) يجعل الخط أخضر. إن ظننت أن حركة مرفوضة من الكتاب، أرسلها عبر Wrong move؟ إن أكدناها، تحصل على حزمة مجانًا.",
+  "Play on": "Play on",
+  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
+    "بعد Practice أو Test، اختر 800 أو 1200 أو 1800 وPlay on من الوضع. Test نظيف ما زال يجعل الخط أخضر. Play on لا يُكمل الخط.",
+  Reviews: "مراجعات",
+  "A clean Test turns the line green. You can train it again anytime.":
+    "Test نظيف يجعل الخط أخضر. يمكنك التدرّب عليه مجددًا في أي وقت.",
+  "Use the profile icon (top right) to sign in. See":
+    "استخدم أيقونة الملف الشخصي (أعلى اليسار) لتسجيل الدخول. راجع",
+  "Privacy Policy": "سياسة الخصوصية",
+  Terms: "الشروط",
+  and: "و",
+};
+
+const tr: Dict = {
+  "Train openings the strict way": "Açılışları katı şekilde çalış",
+  "How to play": "Nasıl oynanır",
+  "Download the app": "Uygulamayı indir",
+  "Continue on the web": "Web’de devam et",
+  "Tap to practice": "Çalışmak için dokun",
+  "See 18 lines": "18 hattı gör",
+  "Free sample": "Ücretsiz örnek",
+  Start: "Başla",
+  Train: "Çalış",
+  "Strict lines · memory training": "Katı hatlar · bellek çalışması",
+  "Help and guide": "Yardım ve rehber",
+  Help: "Yardım",
+  Language: "Dil",
+  "Dark mode": "Karanlık mod",
+  "Light mode": "Aydınlık mod",
+  "Opening Lab home": "Opening Lab ana sayfa",
+  Account: "Hesap",
+  Play: "Oyna",
+  "Most people dive into opening theory before they know the basics. That is algebra before you can count.":
+    "Çoğu kişi temelleri bilmeden açılış teorisine dalar. Bu, saymayı bilmeden cebir yapmak gibidir.",
+  "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
+    "Derin kurslara para verirler ama hâlâ hattı oynayamazlar. Burada netiz. Katı hatlar. Öğrenirsin, oynarsın ve açılış çıktığında tanırsın.",
+  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
+    "Üç Caro hattı ücretsiz. Paketin geri kalanını £1.99 ile aç. Diğer paketler £2.99.",
+  "More packs": "Diğer paketler",
+  Free: "Ücretsiz",
+  Unlocked: "Açık",
+  "Pay as you go": "Kullandıkça öde",
+  "{n} lines": "{n} hat",
+  "Pay as you go · {price}": "Kullandıkça öde · {price}",
+  "{price} · tap to see lines": "{price} · hatları görmek için dokun",
+  "Tap to hide": "Gizlemek için dokun",
+  "Free · tap to see lines": "Ücretsiz · hatları görmek için dokun",
+  "Tap to see lines": "Hatları görmek için dokun",
+  Locked: "Kilitli",
+  "Complete — train any time": "Tamam — istediğin zaman çalış",
+  "Test with no mistakes to complete": "Tamamlamak için hatasız Test yap",
+  New: "Yeni",
+  "Payment not confirmed yet": "Ödeme henüz onaylanmadı",
+  "Could not confirm payment": "Ödeme onaylanamadı",
+  "Unlock {packName}": "{packName} paketini aç",
+  "Three lines stay free. This unlocks the rest of the pack.":
+    "Üç hat ücretsiz kalır. Bu, paketin geri kalanını açar.",
+  "One-time purchase. This pack only.": "Tek seferlik satın alma. Yalnızca bu paket.",
+  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
+    "Bu Play testinde paketler satılmıyor. Ücretsiz üç Caro hattı burada çalışmaya devam eder.",
+  "Rest of this pack": "Bu paketin geri kalanı",
+  "This pack": "Bu paket",
+  "Pay as you go. Not for sale in this Play test.":
+    "Kullandıkça öde. Bu Play testinde satışta değil.",
+  "Unlock the rest of this pack": "Bu paketin geri kalanını aç",
+  "Unlock this pack": "Bu paketi aç",
+  "Yours to keep. Card via Stripe.": "Senin olur. Kart Stripe ile.",
+  "Opening checkout…": "Ödeme açılıyor…",
+  "Sign in so this stays on your account.": "Hesabında kalsın diye oturum aç.",
+  "You will pay securely with Stripe.": "Stripe ile güvenli ödersin.",
+  "Payments are not live yet.": "Ödemeler henüz açık değil.",
+  Close: "Kapat",
+  "How the gym works": "Salon nasıl işler",
+  [GYM_INTRO]:
+    "Opening Lab katı bir kitap hamlesi eğitmenidir. Practice sarı ipucuyla. Test ipucusuz. Yalnızca kitap hamlesi geçer. İstersen konumdan Play on.\n\nBu öğrenme yolu işleyen bir repertuar kurar: ana kitap cevapları, fikir sis değil. İpucusuz o hamleleri bulmak erken kararlarını daha bilinçli yapar. Kitaplara, partilere, motorlara devam etmek için sağlam zemin — tüm açılışı bir anda bitirme kısayolu değil.",
+  Continue: "Devam",
+  "Don't show again": "Bir daha gösterme",
+  "Wrong move": "Yanlış hamle",
+  "Wrong move — try again": "Yanlış hamle — yeniden dene",
+  "Tap Reset to try again, or go back to Practice": "Yeniden denemek için Reset’e dokun veya Practice’e dön",
+  "Inaccurate move": "İsabetli olmayan hamle",
+  "The book move is {san}.": "Kitap hamlesi {san}.",
+  "Try again": "Yeniden dene",
+  "Practice again": "Yeniden Practice",
+  "Back to practice": "Practice’e dön",
+  "Well done": "Aferin",
+  "Practice next line": "Sonraki hattı çalış",
+  "Test yourself": "Kendini test et",
+  "Practice done": "Practice bitti",
+  "Line complete": "Hat tamam",
+  "Finished, but you missed a move": "Bitti, ama bir hamleyi kaçırdın",
+  "← Back": "← Geri",
+  "User guide": "Kullanım kılavuzu",
+  "What is Opening Lab?": "Opening Lab nedir?",
+  Board: "Tahta",
+  Book: "Kitap",
+  Paper: "Kâğıt",
+  Future: "Gelecek",
+  Newspaper: "Gazete",
+  "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
+    "Katı hat bellek çalışması. Yalnızca seçilen açılışın hamlelerini oynarsın; yanlışlar reddedilir ki hat yerleşsin.",
+  "White & Black / Special packs": "White ve Black / özel paketler",
+  "Each pack trains one opening. You play the book side.":
+    "Her paket bir açılışı çalıştırır. Kitap tarafını oynarsın.",
+  "Practice mode": "Practice modu",
+  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Sarı ipuçları sonraki hamleyi gösterir. Rakip otomatik cevaplar. Tam hattı izle. Practice hattı tamamlamaz.",
+  "Test mode": "Test modu",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "İpucu yok. Yalnızca kendi tarafını oyna. Yanlış kareler kitap hamlesini bulana kadar kırmızı yanıp söner. Temiz Test (sıfır hata) hattı yeşile çevirir. Reddedilen hamlenin kitap olduğunu düşünüyorsan Wrong move? ile gönder. Onaylarsak bir paket bedava.",
+  "Play on": "Play on",
+  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
+    "Practice veya Test’ten sonra 800, 1200 veya 1800 seçip konumdan Play on. Temiz Test hattı yine yeşile çevirir. Play on hattı tamamlamaz.",
+  Reviews: "Tekrarlar",
+  "A clean Test turns the line green. You can train it again anytime.":
+    "Temiz Test hattı yeşile çevirir. İstediğin zaman yeniden çalışabilirsin.",
+  "Use the profile icon (top right) to sign in. See":
+    "Oturum açmak için profil simgesini (sağ üst) kullan. Bak",
+  "Privacy Policy": "Gizlilik Politikası",
+  Terms: "Şartlar",
+  and: "ve",
+};
+
+export const DICTS: Record<Lang, Dict> = { en, es, zh, fr, de, pt, ru, it, hi, ja, ar, tr };
 
 export function isLang(value: string | null | undefined): value is Lang {
   return (
@@ -1144,7 +1366,9 @@ export function isLang(value: string | null | undefined): value is Lang {
     value === "ru" ||
     value === "it" ||
     value === "hi" ||
-    value === "ja"
+    value === "ja" ||
+    value === "ar" ||
+    value === "tr"
   );
 }
 
@@ -1200,6 +1424,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof document === "undefined") return;
     document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }, [lang]);
 
   const t = useCallback<Translate>(
