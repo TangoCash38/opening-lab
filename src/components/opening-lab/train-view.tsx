@@ -13,7 +13,6 @@ import {
   soundSelect,
   soundWin,
 } from "@/lib/sounds";
-import { hasSeenPackIntro } from "@/lib/pack-intro";
 import { useT, type Translate } from "@/lib/i18n";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
@@ -243,9 +242,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     to: Square;
   } | null>(null);
   const [playLevel, setPlayLevel] = useState<PlayLevel | null>("beginner");
-  const [aboutOpen, setAboutOpen] = useState(
-    () => Boolean(pack.about) && !hasSeenPackIntro(pack.id),
-  );
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
   const [resultCard, setResultCard] = useState<{
     kind: "wrong" | "end";

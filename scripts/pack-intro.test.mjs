@@ -18,6 +18,10 @@ const list = readFileSync(
   join(root, "src/components/opening-lab/pack-list.tsx"),
   "utf8",
 );
+const train = readFileSync(
+  join(root, "src/components/opening-lab/train-view.tsx"),
+  "utf8",
+);
 
 test("practice intros skip for the rest of the session, not forever", () => {
   assert.match(intro, /opening-lab:intro:skip-v1/);
@@ -32,7 +36,15 @@ test("Don't show again is on the intro, and Practice honours the skip", () => {
   assert.match(modal, /Don't show again/);
   assert.match(modal, /skipPackIntroThisSession/);
   assert.match(hero, /shouldSkipPackIntro\(\)/);
-  assert.match(list, /!shouldSkipPackIntro\(\)/);
+  assert.match(hero, /openIntroThenPractice/);
+  // See 18 lines / pack expand must not open the intro
+  assert.doesNotMatch(hero, /setLinesOpen\([\s\S]*?setAboutOpen\(true\)/);
+  assert.doesNotMatch(list, /!shouldSkipPackIntro\(\)/);
+  assert.doesNotMatch(list, /setAboutOpen\(true\)/);
+  assert.doesNotMatch(list, /PackAboutModal/);
+  // TrainView must not auto-open intro on mount
+  assert.match(train, /const \[aboutOpen, setAboutOpen\] = useState\(false\)/);
+  assert.doesNotMatch(train, /hasSeenPackIntro/);
 });
 
 test("Don't show again only appears on the second intro card", () => {

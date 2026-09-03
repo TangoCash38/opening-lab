@@ -154,7 +154,6 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   assert.match(shell, /startLine\(active\.pack, nextLine, "learn"\)/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.match(hero, /shouldSkipPackIntro/);
-  assert.match(list, /!shouldSkipPackIntro\(\)/);
   assert.match(list, /onStartLine\(pack, line\)/);
 
   const sample = ["ckb1", "ckb3", "ckb5"];
