@@ -72,7 +72,7 @@ test("header toggle sits next to language picker and inits with board theme", ()
 });
 
 test("i18n keys for dark and light mode exist in every language dict", () => {
-  assert.match(i18n, /LANGS = \["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja"\]/);
+  assert.match(i18n, /LANGS = \["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja", "ar", "tr"\]/);
   assert.match(i18n, /"Dark mode": "Dark mode"/);
   assert.match(i18n, /"Light mode": "Light mode"/);
   assert.match(i18n, /"Dark mode": "Modo oscuro"/);
@@ -92,6 +92,10 @@ test("i18n keys for dark and light mode exist in every language dict", () => {
   assert.match(i18n, /"Light mode": "लाइट मोड"/);
   assert.match(i18n, /"Dark mode": "ダークモード"/);
   assert.match(i18n, /"Light mode": "ライトモード"/);
+  assert.match(i18n, /"Dark mode": "الوضع الداكن"/);
+  assert.match(i18n, /"Light mode": "الوضع الفاتح"/);
+  assert.match(i18n, /"Dark mode": "Karanlık mod"/);
+  assert.match(i18n, /"Light mode": "Aydınlık mod"/);
 });
 
 test("board themes stay independent of chrome color scheme", () => {

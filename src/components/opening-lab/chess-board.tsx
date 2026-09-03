@@ -519,7 +519,7 @@ export function ChessBoard({
 
   return (
     <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
-      <div className="board-frame">
+      <div className="board-frame" dir="ltr">
         <div className="board-frame-inner">
           <div
             ref={surfaceRef}

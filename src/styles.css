@@ -152,7 +152,7 @@ html[data-color-scheme="dark"] {
   }
 
   .splash-lang .lang-toggle {
-    max-width: 7.5rem;
+    max-width: 9rem;
     min-width: 5.5rem;
     color: var(--color-fg);
     font-size: 0.72rem;
