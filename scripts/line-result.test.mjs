@@ -69,7 +69,8 @@ test("end modal has two buttons; wrong has one", () => {
   assert.match(modal, /data-result-dismiss/);
   assert.match(train, /t\("Well done"\)/);
   assert.match(train, /t\("Practice next line"\)/);
-  assert.match(train, /primaryLabel: offerNext && nextLine \? t\("Practice next line"\) : undefined/);
+  assert.match(train, /t\("Test yourself"\)/);
+  assert.match(train, /nextAction === "practiceNext" && nextLine/);
   assert.match(train, /actionLabel: t\("Well done"\)/);
   assert.match(train, /t\("Try again"\)/);
   const wrongStart = train.indexOf('kind: "wrong",');
@@ -91,27 +92,32 @@ test("end modal has two buttons; wrong has one", () => {
   assert.match(i18n, /"Practice next line": "Practice la ligne suivante"/);
 });
 
-test("Practice next line only on a clean Test; Test fail returns to Practice", () => {
-  assert.match(
-    train,
-    /primaryLabel: offerNext && nextLine \? t\("Practice next line"\) : undefined/,
-  );
+test("Practice complete offers Test yourself; clean Test offers next line", () => {
+  const learnAt = train.indexOf('t("Practice done")');
+  assert.ok(learnAt > 0, "learn end card missing");
+  const learnCall = train.slice(train.lastIndexOf("endResultCard", learnAt), train.indexOf(");", learnAt) + 2);
+  assert.match(learnCall, /"testYourself"/);
+  assert.doesNotMatch(learnCall, /practiceNext/);
+  assert.doesNotMatch(learnCall, /Practice next line/);
+  assert.match(train, /t\("Test yourself"\)/);
+  assert.match(train, /nextAction === "testYourself"/);
+  assert.match(train, /changeMode\("practice"\)/);
 
   const cleanAt = train.indexOf('t("Line complete")');
   assert.ok(cleanAt > 0, "clean Test end card missing");
   const cleanCall = train.slice(train.lastIndexOf("endResultCard", cleanAt), train.indexOf(");", cleanAt) + 2);
-  assert.match(cleanCall, /, t, true\)/);
-
-  const learnAt = train.indexOf('t("Practice done")');
-  assert.ok(learnAt > 0, "learn end card missing");
-  const learnCall = train.slice(train.lastIndexOf("endResultCard", learnAt), train.indexOf(");", learnAt) + 2);
-  assert.doesNotMatch(learnCall, /true/);
-  assert.doesNotMatch(learnCall, /primaryLabel/);
+  assert.match(cleanCall, /"practiceNext"/);
+  assert.doesNotMatch(cleanCall, /testYourself/);
+  assert.match(
+    train,
+    /nextAction === "practiceNext" && nextLine\s*\?\s*t\("Practice next line"\)/,
+  );
 
   const missedAt = train.indexOf('t("Finished, but you missed a move")');
   assert.ok(missedAt > 0, "missed Test end card missing");
   const missedCall = train.slice(train.lastIndexOf("endResultCard", missedAt), train.indexOf(");", missedAt) + 2);
-  assert.doesNotMatch(missedCall, /true/);
+  assert.doesNotMatch(missedCall, /practiceNext/);
+  assert.doesNotMatch(missedCall, /testYourself/);
   assert.doesNotMatch(missedCall, /primaryLabel/);
 
   const wrongStart = train.indexOf('kind: "wrong",');
@@ -120,11 +126,17 @@ test("Practice next line only on a clean Test; Test fail returns to Practice", (
   assert.match(wrongBlock, /Practice again/);
   assert.match(wrongBlock, /Try again/);
   assert.doesNotMatch(wrongBlock, /Practice next line/);
+  assert.doesNotMatch(wrongBlock, /Test yourself/);
   assert.match(train, /failToPractice \? t\("Practice again"\) : t\("Try again"\)/);
   assert.match(train, /const failToPractice = mode === "practice"/);
-  assert.match(train, /resultCard\.failToPractice/);
+  assert.match(train, /nextAction: failToPractice \? "learn"/);
+  assert.match(train, /resultCard\.nextAction === "learn"/);
   assert.match(train, /changeMode\("learn"\)/);
 
+  assert.match(i18n, /"Test yourself": "Test yourself"/);
+  assert.match(i18n, /"Test yourself": "Ponte a prueba"/);
+  assert.match(i18n, /"Test yourself": "自我测试"/);
+  assert.match(i18n, /"Test yourself": "Teste-toi"/);
   assert.match(i18n, /"Practice again": "Practice again"/);
   assert.match(i18n, /"Practice again": "Practicar de nuevo"/);
   assert.match(i18n, /"Practice again": "再练习"/);
