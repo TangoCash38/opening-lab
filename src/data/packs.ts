@@ -13,6 +13,8 @@ export type OpeningLine = {
   side: Side;
   /** Catalogue idea shown under the line name while training. */
   idea?: string;
+  /** What happens after the book. Optional; the end modal falls back to idea. */
+  next?: string;
   /** Named model game — who sat each side */
   players?: ModelPlayers;
 };

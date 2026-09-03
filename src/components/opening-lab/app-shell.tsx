@@ -225,6 +225,9 @@ function OpeningLabInner() {
             onPracticeFail={() => failPractice(active.line.id)}
             onTrainNext={trainNext}
             hasNextDue={queue.length > 0}
+            onPracticeNext={(nextLine) =>
+              startLine(active.pack, nextLine, "learn")
+            }
           />
         )}
       </main>
