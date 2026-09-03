@@ -53,6 +53,7 @@ function endResultCard(
   purchased: readonly string[],
   caption: string,
   t: Translate,
+  offerNext = false,
 ) {
   const nextLine = nextUnlockedLine(pack, line.id, purchased);
   return {
@@ -61,7 +62,7 @@ function endResultCard(
     caption,
     body: (line.next ?? line.idea ?? "").trim(),
     actionLabel: t("Well done"),
-    primaryLabel: nextLine ? t("Practice next line") : undefined,
+    primaryLabel: offerNext && nextLine ? t("Practice next line") : undefined,
   };
 }
 
@@ -244,6 +245,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     caption?: string;
     actionLabel: string;
     primaryLabel?: string;
+    failToPractice?: boolean;
   } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -450,7 +452,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         cls: "done",
       });
       soundWin();
-      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t));
+      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, true));
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -663,11 +665,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setWrongUntil(to);
       setStatus({ text: "Wrong move — try again", cls: "bad" });
       setSelected(null);
+      const failToPractice = mode === "practice";
       setResultCard({
         kind: "wrong",
         title: t("Wrong move"),
         body: t("The book move is {san}.", { san: exp.san }),
-        actionLabel: t("Try again"),
+        actionLabel: failToPractice ? t("Practice again") : t("Try again"),
+        failToPractice,
       });
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
       if (mode === "practice") {
@@ -1225,7 +1229,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           caption={resultCard.caption}
           actionLabel={resultCard.actionLabel}
           primaryLabel={resultCard.primaryLabel}
-          onClose={() => setResultCard(null)}
+          onClose={() => {
+            if (resultCard.failToPractice) changeMode("learn");
+            else setResultCard(null);
+          }}
           onPrimary={
             resultCard.primaryLabel
               ? () => {
