@@ -1,7 +1,7 @@
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
-import { isPackVisible, playableLines, visiblePacks } from "@/lib/catalog";
+import { isLineUnlocked, isPackVisible, playableLines, visiblePacks } from "@/lib/catalog";
 
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: "learn" | "practice") => void;
@@ -10,11 +10,21 @@ type Props = {
 
 export function accessibleCandidates(
   canAccess: (pack: Pack) => boolean,
+  purchasedPackIds: readonly string[] = [],
 ): { packId: string; lineId: string }[] {
   const out: { packId: string; lineId: string }[] = [];
   for (const pack of visiblePacks(PACKS)) {
-    if (!canAccess(pack)) continue;
-    for (const line of playableLines(pack)) out.push({ packId: pack.id, lineId: line.id });
+    if (!canAccess(pack)) {
+      for (const line of playableLines(pack)) {
+        out.push({ packId: pack.id, lineId: line.id });
+      }
+      continue;
+    }
+    for (const line of pack.lines) {
+      if (isLineUnlocked(pack, line.id, purchasedPackIds)) {
+        out.push({ packId: pack.id, lineId: line.id });
+      }
+    }
   }
   return out;
 }
@@ -28,8 +38,8 @@ function findLine(packId: string, lineId: string): { pack: Pack; line: OpeningLi
 
 export function TodayStrip({ onStartLine, onTrainDue }: Props) {
   const { streak, unused, dueQueue } = useProgress();
-  const { canAccess } = useUnlocks();
-  const candidates = accessibleCandidates(canAccess);
+  const { canAccess, state } = useUnlocks();
+  const candidates = accessibleCandidates(canAccess, state.packs);
   const queue = dueQueue(candidates);
   const dueCount = queue.length;
   const suggestion = unused(candidates);

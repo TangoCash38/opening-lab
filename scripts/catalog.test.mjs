@@ -1642,11 +1642,14 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.doesNotMatch(sampleBlock, /budapest-white/);
   assert.doesNotMatch(sampleBlock, /bdg-black/);
   assert.match(src, /export function playableLines\(pack: Pack\): OpeningLine\[\]/);
-  assert.match(src, /if \(!ids\) return pack\.lines;/);
+  assert.match(src, /if \(!ids\) return \[\];/);
+  assert.doesNotMatch(src, /if \(!ids\) return pack\.lines;/);
   assert.match(src, /return pack\.lines\.filter\(\(l\) => ids\.includes\(l\.id\)\);/);
   assert.match(src, /export function isLineUnlocked/);
-  assert.match(src, /if \(!ids\) return true;/);
+  assert.doesNotMatch(src, /if \(!ids\) return true;/);
   assert.match(src, /ids\.includes\(lineId\)/);
+  assert.match(src, /purchasedPackIds\.includes\(pack\.id\)/);
+  assert.doesNotMatch(src.slice(src.indexOf("export function isLineUnlocked"), src.indexOf("export function nextUnlockedLine")), /isPackFree/);
   assert.match(src, /purchasedPackIds/);
 
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
@@ -1684,6 +1687,14 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
   assert.match(packList, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
   assert.match(packList, /isLineUnlocked\(pack, line\.id/);
+  assert.match(packList, /WebsiteAppPrompt/);
+  const today = readFileSync(
+    join(root, "src/components/opening-lab/today-strip.tsx"),
+    "utf8",
+  );
+  assert.match(today, /for \(const line of pack\.lines\)/);
+  assert.match(today, /isLineUnlocked\(pack, line\.id, purchasedPackIds\)/);
+  assert.match(today, /playableLines\(pack\)/);
   assert.match(rows, /from "lucide-react"/);
   assert.match(rows, /Lock/);
   assert.match(rows, /Locked/);
@@ -1692,6 +1703,73 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.doesNotMatch(hero, /£1\.99/);
   assert.doesNotMatch(hero, /Lab\+/);
   assert.doesNotMatch(rows, /Lab\+/);
+});
+
+test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", async (t) => {
+  const { mkdirSync, rmSync, writeFileSync } = await import("node:fs");
+  const { createRequire } = await import("node:module");
+  const { pathToFileURL } = await import("node:url");
+  let ts;
+  try {
+    ts = createRequire(join(root, "package.json"))("typescript");
+  } catch {
+    t.skip("typescript not installed");
+    return;
+  }
+  const js = ts.transpileModule(src, {
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ES2022,
+    },
+  }).outputText;
+  const dir = join(root, "scripts", ".generated-catalog");
+  mkdirSync(dir, { recursive: true });
+  const tmp = join(dir, "catalog.mjs");
+  writeFileSync(tmp, js);
+  t.after(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+  const { isLineUnlocked, playableLines, nextUnlockedLine } = await import(
+    pathToFileURL(tmp).href
+  );
+
+  const nimzo = {
+    id: "nimzo-larsen-white",
+    lines: Array.from({ length: 18 }, (_, i) => ({ id: `nl${i + 1}` })),
+  };
+  const caro = {
+    id: "caro-kann-black",
+    lines: Array.from({ length: 18 }, (_, i) => ({ id: `ckb${i + 1}` })),
+  };
+
+  for (const line of nimzo.lines) {
+    assert.equal(isLineUnlocked(nimzo, line.id, []), false, line.id);
+    assert.equal(
+      isLineUnlocked(nimzo, line.id, ["nimzo-larsen-white"]),
+      true,
+      line.id,
+    );
+  }
+  assert.equal(isLineUnlocked(caro, "ckb1", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb2", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb4", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb18", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
+  assert.equal(isLineUnlocked(caro, "ckb18", ["caro-kann-black"]), true);
+
+  assert.deepEqual(playableLines(nimzo), []);
+  assert.deepEqual(
+    playableLines(caro).map((l) => l.id),
+    ["ckb1", "ckb3", "ckb5"],
+  );
+
+  assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
+  assert.equal(nextUnlockedLine(caro, "ckb3", [])?.id, "ckb5");
+  assert.equal(nextUnlockedLine(caro, "ckb5", []), undefined);
+  assert.equal(nextUnlockedLine(nimzo, "nl1", []), undefined);
+  assert.equal(nextUnlockedLine(nimzo, "nl1", ["nimzo-larsen-white"])?.id, "nl2");
 });
 
 test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, and bdg1–18 has a non-empty idea; train-view renders line.idea", () => {

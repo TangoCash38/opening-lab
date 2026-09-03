@@ -22,6 +22,8 @@ const guide = src("src/components/opening-lab/guide-view.tsx");
 const REQUIRED = [
   "Train openings the strict way",
   "How to play",
+  "Download the app",
+  "Continue on the web",
   "Tap to practice",
   "See 18 lines",
   "Free sample",
@@ -84,6 +86,16 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.doesNotMatch(i18n, /"Caro-Kann for Black":/);
   assert.match(splash, /Most people dive into opening theory/);
   assert.match(list, /Three Caro lines are free/);
+  assert.match(list, /WebsiteAppPrompt/);
+  const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
+  assert.match(prompt, /Download the app/);
+  assert.match(prompt, /Continue on the web/);
+  assert.match(prompt, /isPlayWrap\(\)/);
+  assert.match(prompt, /sessionStorage/);
+  assert.match(prompt, /play\.google\.com\/apps\/testing\/uk\.co\.openinglab/);
+  assert.doesNotMatch(prompt, /store\/apps\/details/);
+  assert.doesNotMatch(prompt, /search Opening Lab/i);
+  assert.doesNotMatch(i18n, /search Opening Lab/i);
   assert.match(lines, /t\("Locked"\)/);
   assert.match(lines, /t\("Free"\)/);
   assert.match(unlock, /Packs are not for sale in this Play test/);
