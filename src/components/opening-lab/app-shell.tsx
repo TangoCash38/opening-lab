@@ -55,7 +55,7 @@ function OpeningLabInner() {
   const [showSplash, setShowSplash] = useState(true);
 
   const { complete, markLearned, failPractice, dueQueue } = useProgress();
-  const { canAccess } = useUnlocks();
+  const { canAccess, state } = useUnlocks();
 
   const goHome = () => {
     setQueue([]);
@@ -120,7 +120,7 @@ function OpeningLabInner() {
       startLine(next!.pack, next!.line, next!.mode);
       return;
     }
-    const items = resolveQueue(dueQueue(accessibleCandidates(canAccess)));
+    const items = resolveQueue(dueQueue(accessibleCandidates(canAccess, state.packs)));
     const remaining = items.filter(
       (it) => !(active && it.line.id === active.line.id),
     );

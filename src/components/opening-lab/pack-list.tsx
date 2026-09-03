@@ -32,6 +32,7 @@ import { HomeHero } from "./home-hero";
 import { PackAboutModal } from "./pack-about-modal";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
+import { WebsiteAppPrompt } from "./website-app-prompt";
 
 type TrainMode = "learn" | "practice";
 
@@ -220,6 +221,7 @@ function PackCard({
               isLineUnlocked(pack, l.id, purchasedPackIds),
             );
             if (line) onStartLine(pack, line);
+            else onRequestUnlock(pack);
           }}
         />
       ) : null}
@@ -441,6 +443,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
 
   return (
     <div className="pack-list">
+      <WebsiteAppPrompt />
       {unlockNotice ? (
         <p
           className={`mb-3 rounded-xl px-4 py-2.5 text-center text-[0.85rem] font-semibold ${

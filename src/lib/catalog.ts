@@ -20,19 +20,26 @@ export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> =
 
 export function playableLines(pack: Pack): OpeningLine[] {
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
-  if (!ids) return pack.lines;
+  if (!ids) return [];
   return pack.lines.filter((l) => ids.includes(l.id));
 }
 
-/** Sample lines stay free. Extra Caro lines need that pack in purchasedPackIds. Other packs have no sample list — pack-level lock handles them. */
+/**
+ * Sample ids stay free. Extra Caro lines need that pack in purchasedPackIds.
+ * Packs with no sample list stay locked until purchasedPackIds includes pack.id.
+ * Never treat a missing sample list as unlocked, and do not use isPackFree
+ * (Caro isFree but extras are paid).
+ */
 export function isLineUnlocked(
   pack: Pick<Pack, "id">,
   lineId: string,
   purchasedPackIds: readonly string[] = [],
 ): boolean {
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
-  if (!ids) return true;
-  if (ids.includes(lineId)) return true;
+  if (ids) {
+    if (ids.includes(lineId)) return true;
+    return purchasedPackIds.includes(pack.id);
+  }
   return purchasedPackIds.includes(pack.id);
 }
 

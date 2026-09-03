@@ -34,6 +34,8 @@ const GYM_INTRO =
 const en: Dict = {
   "Train openings the strict way": "Train openings the strict way",
   "How to play": "How to play",
+  "Download the app": "Download the app",
+  "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
   "See 18 lines": "See 18 lines",
   "Free sample": "Free sample",
@@ -128,6 +130,8 @@ const en: Dict = {
 const es: Dict = {
   "Train openings the strict way": "Entrena aperturas a rajatabla",
   "How to play": "Cómo jugar",
+  "Download the app": "Descargar la app",
+  "Continue on the web": "Seguir en la web",
   "Tap to practice": "Toca para practicar",
   "See 18 lines": "Ver 18 líneas",
   "Free sample": "Muestra gratis",
@@ -223,6 +227,8 @@ const es: Dict = {
 const zh: Dict = {
   "Train openings the strict way": "严格训练开局",
   "How to play": "玩法",
+  "Download the app": "下载应用",
+  "Continue on the web": "继续使用网页",
   "Tap to practice": "点按开始练习",
   "See 18 lines": "查看 18 条线路",
   "Free sample": "免费试玩",
@@ -318,6 +324,8 @@ const zh: Dict = {
 const fr: Dict = {
   "Train openings the strict way": "Entraîne les ouvertures à la stricte",
   "How to play": "Comment jouer",
+  "Download the app": "Télécharger l'appli",
+  "Continue on the web": "Continuer sur le web",
   "Tap to practice": "Touche pour t'entraîner",
   "See 18 lines": "Voir 18 lignes",
   "Free sample": "Extrait gratuit",

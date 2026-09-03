@@ -109,8 +109,10 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   const caro = Array.from({ length: 18 }, (_, i) => `ckb${i + 1}`);
   function isLineUnlocked(packId, lineId, purchased) {
     const ids = packId === "caro-kann-black" ? sample : null;
-    if (!ids) return true;
-    if (ids.includes(lineId)) return true;
+    if (ids) {
+      if (ids.includes(lineId)) return true;
+      return purchased.includes(packId);
+    }
     return purchased.includes(packId);
   }
   function nextUnlockedLine(lines, current, packId, purchased) {
@@ -128,6 +130,13 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   );
   assert.equal(nextUnlockedLine(caro, "ckb18", "caro-kann-black", ["caro-kann-black"]), undefined);
   const qgd = Array.from({ length: 18 }, (_, i) => `qgdb${i + 1}`);
-  assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", []), "qgdb2");
-  assert.equal(nextUnlockedLine(qgd, "qgdb18", "qgd-black", []), undefined);
+  assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", []), undefined);
+  assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", ["qgd-black"]), "qgdb2");
+  assert.equal(nextUnlockedLine(qgd, "qgdb18", "qgd-black", ["qgd-black"]), undefined);
+  const nimzo = Array.from({ length: 18 }, (_, i) => `nl${i + 1}`);
+  assert.equal(nextUnlockedLine(nimzo, "nl1", "nimzo-larsen-white", []), undefined);
+  assert.equal(
+    nextUnlockedLine(nimzo, "nl1", "nimzo-larsen-white", ["nimzo-larsen-white"]),
+    "nl2",
+  );
 });

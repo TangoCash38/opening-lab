@@ -184,3 +184,21 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.match(catalog, /export function catalogOffersLabPlus/);
   assert.match(catalog, /return false/);
 });
+
+test("website app prompt is website-only and uses closed testing, not a store page", () => {
+  const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
+  const packList = src("src/components/opening-lab/pack-list.tsx");
+  const hero = src("src/components/opening-lab/home-hero.tsx");
+  assert.match(packList, /WebsiteAppPrompt/);
+  assert.doesNotMatch(hero, /WebsiteAppPrompt/);
+  assert.doesNotMatch(hero, /isPlayWrap\(\)/);
+  assert.match(prompt, /isPlayWrap\(\)/);
+  assert.match(prompt, /if \(isPlayWrap\(\)\) return;/);
+  assert.match(prompt, /sessionStorage\.setItem\(WEBSITE_APP_PROMPT_KEY, "1"\)/);
+  assert.match(prompt, /https:\/\/play\.google\.com\/apps\/testing\/uk\.co\.openinglab/);
+  assert.doesNotMatch(prompt, /play\.google\.com\/store\/apps\/details/);
+  assert.doesNotMatch(prompt, /search Opening Lab/i);
+  assert.doesNotMatch(prompt, /How to play/);
+  assert.match(prompt, /t\("Download the app"\)/);
+  assert.match(prompt, /t\("Continue on the web"\)/);
+});
