@@ -10,7 +10,7 @@ test("board only disables touch actions on draggable pieces", () => {
     styles,
     /\.board-play,\s*\n?\s*\.board-play button\s*\{\s*\n?\s*touch-action:\s*none/,
   );
-  assert.doesNotContain(board, "touch-none");
+  assert.equal(board.includes("touch-none"), false);
   assert.match(board, /isDraggablePiece \? \{ touchAction: "none" \} : undefined/);
   assert.match(board, /occPiece\.color === game\.turn\(\)/);
 });
