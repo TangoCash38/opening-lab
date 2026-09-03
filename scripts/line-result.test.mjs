@@ -46,10 +46,10 @@ test("Test miss status guides Reset or Practice; Practice miss stays try again",
   assert.match(testWrong, /primaryLabel: t\("Try again"\)/);
   assert.match(testWrong, /actionLabel: t\("Back to practice"\)/);
   assert.match(testWrong, /title: t\("Inaccurate move"\)/);
-  assert.equal(i18n.split('"Wrong move — try again":').length - 1, 10);
+  assert.equal(i18n.split('"Wrong move — try again":').length - 1, 12);
   assert.equal(
     i18n.split('"Tap Reset to try again, or go back to Practice":').length - 1,
-    10,
+    12,
   );
   assert.match(i18n, /"Wrong move — try again": "Wrong move — try again"/);
   assert.match(
@@ -289,4 +289,40 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
     nextUnlockedLine(nimzo, "nl1", "nimzo-larsen-white", ["nimzo-larsen-white"]),
     "nl2",
   );
+});
+
+test("finish sheet shows a scroll cue when plan text overflows", () => {
+  assert.match(modal, /line-result-body-wrap/);
+  assert.match(modal, /line-result-body/);
+  assert.match(modal, /data-result-scrollable/);
+  assert.match(modal, /data-result-scrollable=\{hasOverflow \? "1" : undefined\}/);
+  assert.match(modal, /line-result-scroll-fade/);
+  assert.match(modal, /line-result-scroll-hint/);
+  assert.match(modal, /t\("Scroll for more"\)/);
+  assert.match(modal, /ChevronDown/);
+  assert.match(modal, /ResizeObserver/);
+  assert.match(modal, /addEventListener\("scroll"/);
+  assert.match(modal, /scrollHeight > .*clientHeight \+ 4/);
+  assert.match(modal, /useT\(\)/);
+  assert.equal(i18n.split('"Scroll for more":').length - 1, 12);
+  assert.match(i18n, /"Scroll for more": "Scroll for more"/);
+  assert.match(i18n, /"Scroll for more": "Desliza para ver más"/);
+  assert.match(i18n, /"Scroll for more": "下滑查看更多"/);
+  assert.match(i18n, /"Scroll for more": "Fais défiler pour plus"/);
+  assert.match(i18n, /"Scroll for more": "Nach unten scrollen"/);
+  assert.match(i18n, /"Scroll for more": "Role para ver mais"/);
+  assert.match(i18n, /"Scroll for more": "Прокрути ещё"/);
+  assert.match(i18n, /"Scroll for more": "Scorri per altro"/);
+  assert.match(i18n, /"Scroll for more": "और देखने के लिए स्क्रॉल करें"/);
+  assert.match(i18n, /"Scroll for more": "下にスクロール"/);
+  assert.match(i18n, /"Scroll for more": "مرّر للمزيد"/);
+  assert.match(i18n, /"Scroll for more": "Daha fazlası için kaydır"/);
+  assert.match(css, /\.line-result-body-wrap/);
+  assert.match(css, /\.line-result-body-wrap[\s\S]*position:\s*relative/);
+  assert.match(css, /\.line-result-body[\s\S]*overflow-y:\s*auto/);
+  assert.match(css, /\.line-result-scroll-fade/);
+  assert.match(css, /\.line-result-scroll-hint/);
+  assert.match(css, /--color-bg-elevated/);
+  assert.match(css, /html\[data-color-scheme="dark"\] \.line-result-scroll-fade/);
+  assert.match(css, /max-height:\s*min\(32dvh/);
 });
