@@ -5,6 +5,7 @@ import {
   type OpeningLine,
   type Pack,
 } from "@/data/packs";
+import { nextUnlockedLine } from "@/lib/catalog";
 import {
   soundBad,
   soundMove,
@@ -13,7 +14,8 @@ import {
   soundWin,
 } from "@/lib/sounds";
 import { hasSeenPackIntro } from "@/lib/pack-intro";
-import { useT } from "@/lib/i18n";
+import { useT, type Translate } from "@/lib/i18n";
+import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
@@ -39,10 +41,29 @@ type Props = {
   onPracticeFail?: () => void;
   onTrainNext?: () => void;
   hasNextDue?: boolean;
+  onPracticeNext?: (line: OpeningLine) => void;
   pack: Pack;
   line: OpeningLine;
   onBack: () => void;
 };
+
+function endResultCard(
+  line: OpeningLine,
+  pack: Pack,
+  purchased: readonly string[],
+  caption: string,
+  t: Translate,
+) {
+  const nextLine = nextUnlockedLine(pack, line.id, purchased);
+  return {
+    kind: "end" as const,
+    title: line.name,
+    caption,
+    body: (line.next ?? line.idea ?? "").trim(),
+    actionLabel: t("Well done"),
+    primaryLabel: nextLine ? t("Practice next line") : undefined,
+  };
+}
 
 const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
@@ -181,8 +202,10 @@ function takeBackPlyCount(
   return Math.min(userToMove ? 2 : 1, plyIndex - floor);
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue, onPracticeNext }: Props) {
   const t = useT();
+  const { state } = useUnlocks();
+  const purchased = state.packs;
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
@@ -220,6 +243,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     body: string;
     caption?: string;
     actionLabel: string;
+    primaryLabel?: string;
   } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -401,13 +425,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           cls: "done",
         });
         soundWin();
-        setResultCard({
-          kind: "end",
-          title: line.name,
-          caption: t("Practice done"),
-          body: (line.idea ?? "").trim(),
-          actionLabel: t("Continue"),
-        });
+        setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t));
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -421,13 +439,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           cls: "done",
         });
         soundWin();
-        setResultCard({
-          kind: "end",
-          title: line.name,
-          caption: t("Finished, but you missed a move"),
-          body: (line.idea ?? "").trim(),
-          actionLabel: t("Continue"),
-        });
+        setResultCard(
+          endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t),
+        );
         return;
       }
 
@@ -436,13 +450,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         cls: "done",
       });
       soundWin();
-      setResultCard({
-        kind: "end",
-        title: line.name,
-        caption: t("Line complete"),
-        body: (line.idea ?? "").trim(),
-        actionLabel: t("Continue"),
-      });
+      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t));
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -465,7 +473,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line.plies.length, line.side, mode, scheduleHints, onLineComplete, onLearnDone]);
+  }, [line, pack, purchased, t, mode, scheduleHints, onLineComplete, onLearnDone]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -1216,7 +1224,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           body={resultCard.body}
           caption={resultCard.caption}
           actionLabel={resultCard.actionLabel}
+          primaryLabel={resultCard.primaryLabel}
           onClose={() => setResultCard(null)}
+          onPrimary={
+            resultCard.primaryLabel
+              ? () => {
+                  const nextLine = nextUnlockedLine(pack, line.id, purchased);
+                  setResultCard(null);
+                  if (nextLine) onPracticeNext?.(nextLine);
+                }
+              : undefined
+          }
         />
       ) : null}
       {pack.about && aboutOpen ? (

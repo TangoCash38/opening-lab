@@ -36,6 +36,19 @@ export function isLineUnlocked(
   return purchasedPackIds.includes(pack.id);
 }
 
+/** Later unlocked line in the same pack. Skips locked extras (Caro free samples stay ckb1, ckb3, ckb5). */
+export function nextUnlockedLine(
+  pack: Pack,
+  currentLineId: string,
+  purchasedPackIds: readonly string[] = [],
+): OpeningLine | undefined {
+  const idx = pack.lines.findIndex((l) => l.id === currentLineId);
+  if (idx < 0) return undefined;
+  return pack.lines
+    .slice(idx + 1)
+    .find((l) => isLineUnlocked(pack, l.id, purchasedPackIds));
+}
+
 /**
  * Individual pack Play product IDs on sale. Empty until billing returns.
  * Lab+ yearly is not a pack SKU path.
