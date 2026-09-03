@@ -97,13 +97,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
           </button>
           <button
             type="button"
-            onClick={() => {
-              setLinesOpen((v) => {
-                const next = !v;
-                if (next && pack?.about && !shouldSkipPackIntro()) setAboutOpen(true);
-                return next;
-              });
-            }}
+            onClick={() => setLinesOpen((v) => !v)}
             aria-expanded={linesOpen}
             className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
           >

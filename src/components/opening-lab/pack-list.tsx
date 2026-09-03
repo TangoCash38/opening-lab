@@ -16,7 +16,6 @@ import {
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
-import { shouldSkipPackIntro } from "@/lib/pack-intro";
 import { isPlayWrap } from "@/lib/play-app";
 import {
   hasPlayBillingBridge,
@@ -29,7 +28,6 @@ import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
-import { PackAboutModal } from "./pack-about-modal";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 import { WebsiteAppPrompt } from "./website-app-prompt";
@@ -68,7 +66,6 @@ function PackCard({
 }) {
   const t = useT();
   const [open, setOpen] = useState(defaultOpen);
-  const [aboutOpen, setAboutOpen] = useState(false);
   const { masteryOf, isComplete } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
@@ -90,13 +87,7 @@ function PackCard({
       <button
         type="button"
         className="flex w-full flex-col px-4 pb-3 pt-3.5 text-left"
-        onClick={() => {
-          setOpen((v) => {
-            const next = !v;
-            if (next && pack.about && !shouldSkipPackIntro()) setAboutOpen(true);
-            return next;
-          });
-        }}
+        onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
         <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
@@ -208,23 +199,6 @@ function PackCard({
         </div>
       )}
 
-      {pack.about && aboutOpen ? (
-        <PackAboutModal
-          title={pack.name}
-          about={pack.about}
-          packId={pack.id}
-          startLabel={t("Train")}
-          onClose={() => setAboutOpen(false)}
-          onStart={() => {
-            setAboutOpen(false);
-            const line = pack.lines.find((l) =>
-              isLineUnlocked(pack, l.id, purchasedPackIds),
-            );
-            if (line) onStartLine(pack, line);
-            else onRequestUnlock(pack);
-          }}
-        />
-      ) : null}
     </div>
   );
 }
