@@ -1235,11 +1235,51 @@ html[data-color-scheme="dark"] .line-result-dim {
   border-color: var(--color-danger);
 }
 
+.line-result-body-wrap {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
 .line-result-body {
   min-height: 0;
   flex: 1 1 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+.line-result-scroll-cue {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2.6rem;
+}
+
+.line-result-scroll-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--color-bg-elevated), transparent);
+}
+
+html[data-color-scheme="dark"] .line-result-scroll-fade {
+  background: linear-gradient(to top, var(--color-bg-elevated), transparent);
+}
+
+.line-result-scroll-hint {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.15rem;
+  padding-bottom: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
 }
 
 .train-board-anchor {

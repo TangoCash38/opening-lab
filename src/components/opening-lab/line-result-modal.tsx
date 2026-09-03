@@ -1,4 +1,6 @@
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   kind: "wrong" | "end";
@@ -23,9 +25,40 @@ export function LineResultModal({
   onPrimary,
   onAction,
 }: Props) {
+  const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
   const handleAction = onAction ?? onClose;
   const isWrong = kind === "wrong";
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const [moreBelow, setMoreBelow] = useState(false);
+
+  const updateScrollCue = useCallback(() => {
+    const el = bodyRef.current;
+    if (!el) {
+      setHasOverflow(false);
+      setMoreBelow(false);
+      return;
+    }
+    const overflow = el.scrollHeight > el.clientHeight + 4;
+    const more = el.scrollTop + el.clientHeight < el.scrollHeight - 4;
+    setHasOverflow(overflow);
+    setMoreBelow(overflow && more);
+  }, []);
+
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    updateScrollCue();
+    const ro = new ResizeObserver(() => updateScrollCue());
+    ro.observe(el);
+    el.addEventListener("scroll", updateScrollCue, { passive: true });
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", updateScrollCue);
+    };
+  }, [body, updateScrollCue]);
+
   return (
     <div
       className="line-result-overlay z-[80]"
@@ -68,15 +101,29 @@ export function LineResultModal({
           </button>
         </div>
         {body ? (
-          <div className="line-result-body space-y-3 px-5 py-3">
-            {body.split(/\n\n+/).map((para) => (
-              <p
-                key={para.slice(0, 48)}
-                className="m-0 text-[0.92rem] leading-relaxed text-fg-muted"
-              >
-                {para}
-              </p>
-            ))}
+          <div
+            className="line-result-body-wrap"
+            data-result-scrollable={hasOverflow ? "1" : undefined}
+          >
+            <div ref={bodyRef} className="line-result-body space-y-3 px-5 py-3">
+              {body.split(/\n\n+/).map((para) => (
+                <p
+                  key={para.slice(0, 48)}
+                  className="m-0 text-[0.92rem] leading-relaxed text-fg-muted"
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
+            {moreBelow ? (
+              <div className="line-result-scroll-cue" aria-hidden>
+                <div className="line-result-scroll-fade" />
+                <div className="line-result-scroll-hint">
+                  <span>{t("Scroll for more")}</span>
+                  <ChevronDown className="size-3.5" strokeWidth={2.25} />
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
         <div
