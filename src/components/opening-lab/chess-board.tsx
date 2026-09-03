@@ -454,8 +454,8 @@ export function ChessBoard({
           )}
           {r === 7 && (
             <span
-              className={`pointer-events-none absolute bottom-0.5 right-1 z-[2] text-[0.62rem] font-semibold leading-none ${
-                light ? "text-dark-sq/70" : "text-light-sq/80"
+              className={`sq-coord pointer-events-none absolute bottom-0.5 right-1 z-[2] text-[0.72rem] font-bold leading-none ${
+                light ? "sq-coord--on-light" : "sq-coord--on-dark"
               }`}
             >
               {file}
@@ -463,8 +463,8 @@ export function ChessBoard({
           )}
           {c === 0 && (
             <span
-              className={`pointer-events-none absolute left-1 top-0.5 z-[2] text-[0.62rem] font-semibold leading-none ${
-                light ? "text-dark-sq/70" : "text-light-sq/80"
+              className={`sq-coord pointer-events-none absolute left-1 top-0.5 z-[2] text-[0.72rem] font-bold leading-none ${
+                light ? "sq-coord--on-light" : "sq-coord--on-dark"
               }`}
             >
               {rank}
