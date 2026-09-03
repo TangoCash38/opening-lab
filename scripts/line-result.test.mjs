@@ -43,7 +43,7 @@ test("end modal has two buttons; wrong has one", () => {
   assert.match(train, /primaryLabel: nextLine \? t\("Practice next line"\) : undefined/);
   assert.match(train, /actionLabel: t\("Well done"\)/);
   assert.match(train, /actionLabel: t\("Try again"\)/);
-  const wrongStart = train.indexOf('kind: "wrong"');
+  const wrongStart = train.indexOf('kind: "wrong",');
   assert.ok(wrongStart > 0);
   const wrongBlock = train.slice(wrongStart, train.indexOf("});", wrongStart) + 3);
   assert.match(wrongBlock, /Try again/);
