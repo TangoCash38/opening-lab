@@ -31,6 +31,34 @@
   --shadow-card: 0 2px 4px rgba(28, 25, 21, 0.04), 0 12px 28px rgba(28, 25, 21, 0.08);
 }
 
+html {
+  color-scheme: light;
+}
+
+html[data-color-scheme="dark"] {
+  color-scheme: dark;
+  --color-bg: #141210;
+  --color-bg-elevated: #1c1916;
+  --color-bg-subtle: #26221e;
+  --color-fg: #f3efe8;
+  --color-fg-muted: #b5aea3;
+  --color-fg-subtle: #8a8278;
+  --color-border: #3a342e;
+  --color-accent: #3d7a68;
+  --color-accent-fg: #eef8f4;
+  --color-success: #4caf70;
+  --color-success-soft: #1a2e22;
+  --color-danger: #e07066;
+  --color-danger-soft: #3a201c;
+  --color-gold: #d4b03a;
+  --color-gold-soft: #2e2818;
+  --color-tag-white-bg: #2a322e;
+  --color-tag-white-fg: #d5e0da;
+  --color-tag-black-bg: #121110;
+  --color-tag-black-fg: #f3efe8;
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.22), 0 12px 28px rgba(0, 0, 0, 0.38);
+}
+
 @layer base {
   *,
   *::before,
@@ -1126,6 +1154,10 @@
   bottom: 0;
   height: min(40dvh, 20rem);
   background: linear-gradient(to top, rgba(28, 25, 21, 0.22), transparent);
+}
+
+html[data-color-scheme="dark"] .line-result-dim {
+  background: linear-gradient(to top, rgba(20, 18, 16, 0.72), transparent);
 }
 
 .line-result-sheet {
