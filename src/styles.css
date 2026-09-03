@@ -240,6 +240,16 @@ html[data-color-scheme="dark"] {
     background-color: #a97850;
   }
 
+  /* File/rank coords — full opacity, theme-overridable (see data-board-theme). */
+  .sq-coord--on-light {
+    color: #4a2f1c;
+    text-shadow: 0 0 1px rgba(243, 229, 200, 0.9);
+  }
+
+  .sq-coord--on-dark {
+    color: #f3e5c8;
+  }
+
   .sq-selected {
     background-image: linear-gradient(#4e381c1f, #4e381c1f);
     box-shadow: inset 0 0 0 2.5px rgba(78, 56, 28, 0.42);
@@ -722,6 +732,38 @@ html[data-color-scheme="dark"] {
 
 [data-board-theme="newspaper"] .sq-dark.sq-hint-to {
   background-color: #baca44 !important;
+}
+
+
+/* Board coordinates — readable on every theme (printed-diagram ink, not neon). */
+[data-board-theme="paper"] .sq-coord--on-light {
+  color: #3d3830;
+  text-shadow: 0 0 1px rgba(247, 242, 230, 0.85);
+}
+
+[data-board-theme="paper"] .sq-coord--on-dark {
+  color: #f7f2e6;
+  text-shadow: none;
+}
+
+[data-board-theme="future"] .sq-coord--on-light {
+  color: #1e2936;
+  text-shadow: 0 0 1px rgba(216, 226, 234, 0.85);
+}
+
+[data-board-theme="future"] .sq-coord--on-dark {
+  color: #e8f0f6;
+  text-shadow: none;
+}
+
+[data-board-theme="newspaper"] .sq-coord--on-light {
+  color: #111111;
+  text-shadow: 0 0 1px rgba(234, 217, 160, 0.75);
+}
+
+[data-board-theme="newspaper"] .sq-coord--on-dark {
+  color: #f5e9c0;
+  text-shadow: none;
 }
 
 
