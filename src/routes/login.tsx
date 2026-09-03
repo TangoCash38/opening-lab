@@ -4,14 +4,23 @@ import { authClient, signOut } from "@/lib/auth/client";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 
 export const Route = createFileRoute("/login")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    forgot:
+      search.forgot === true ||
+      search.forgot === "true" ||
+      search.forgot === "1"
+        ? true
+        : undefined,
+  }),
   component: Login,
 });
 
-type Mode = "signin" | "signup";
+type Mode = "signin" | "signup" | "forgot";
 
 function Login() {
   const { user, isPending } = useCurrentUserState();
-  const [mode, setMode] = useState<Mode>("signin");
+  const search = Route.useSearch();
+  const [mode, setMode] = useState<Mode>(search.forgot ? "forgot" : "signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -19,12 +28,14 @@ function Login() {
   const [offerCreate, setOfferCreate] = useState(false);
   const [offerSignIn, setOfferSignIn] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
 
   function switchMode(next: Mode) {
     setMode(next);
     setError(null);
     setOfferCreate(false);
     setOfferSignIn(false);
+    setForgotSent(false);
   }
 
   async function handleSignIn(event?: FormEvent) {
@@ -80,6 +91,54 @@ function Login() {
     }
   }
 
+  async function handleForgot(event?: FormEvent) {
+    event?.preventDefault();
+    setError(null);
+    setOfferCreate(false);
+    setOfferSignIn(false);
+    setForgotSent(false);
+    setBusy(true);
+    try {
+      const { error: err } = await authClient.requestPasswordReset({
+        email,
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (err && isUnavailable(err)) {
+        setError("Could not send a reset link. Try again in a moment.");
+        return;
+      }
+      // Always the same copy — never reveal whether the email has an account.
+      setForgotSent(true);
+    } catch {
+      setError(
+        "Could not reach Opening Lab. Check your connection and try again.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const heading = user
+    ? "Account"
+    : mode === "signup"
+      ? "Create account"
+      : mode === "forgot"
+        ? "Forgot password"
+        : "Sign in";
+  const subtitle = user
+    ? "Opening Lab"
+    : mode === "signup"
+      ? "New here? Create an account so this stays with you."
+      : mode === "forgot"
+        ? "Enter your email. If it has an account, we send a reset link."
+        : "Sign in so this stays on your account.";
+
+  function formSubmit(event: FormEvent) {
+    if (mode === "signup") return handleCreateAccount(event);
+    if (mode === "forgot") return handleForgot(event);
+    return handleSignIn(event);
+  }
+
   return (
     <main className="grid min-h-dvh place-items-center bg-bg px-6 text-fg">
       <div className="w-full max-w-sm space-y-4">
@@ -88,16 +147,8 @@ function Login() {
             ♔
           </div>
           <div>
-            <h1 className="font-display text-xl font-bold">
-              {user ? "Account" : mode === "signup" ? "Create account" : "Sign in"}
-            </h1>
-            <p className="text-sm text-fg-muted">
-              {user
-                ? "Opening Lab"
-                : mode === "signup"
-                  ? "New here? Create an account so this stays with you."
-                  : "Sign in so this stays on your account."}
-            </p>
+            <h1 className="font-display text-xl font-bold">{heading}</h1>
+            <p className="text-sm text-fg-muted">{subtitle}</p>
           </div>
         </div>
 
@@ -122,10 +173,21 @@ function Login() {
             </button>
           </div>
         ) : (
-          <form
-            className="space-y-3"
-            onSubmit={mode === "signup" ? handleCreateAccount : handleSignIn}
-          >
+          forgotSent ? (
+            <div className="space-y-3">
+              <p className="text-sm text-fg">
+                If that email has an account, we sent a reset link.
+              </p>
+              <button
+                type="button"
+                onClick={() => switchMode("signin")}
+                className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm font-semibold text-fg shadow-sm transition hover:bg-bg-subtle active:scale-[0.98]"
+              >
+                Back to sign in
+              </button>
+            </div>
+          ) : (
+            <form className="space-y-3" onSubmit={formSubmit}>
             {mode === "signup" ? (
               <label className="block space-y-1">
                 <span className="text-sm font-semibold text-fg">Name</span>
@@ -152,13 +214,26 @@ function Login() {
                 className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
               />
             </label>
-            <PasswordField
-              value={password}
-              onChange={setPassword}
-              autoComplete={
-                mode === "signup" ? "new-password" : "current-password"
-              }
-            />
+            {mode !== "forgot" ? (
+              <PasswordField
+                value={password}
+                onChange={setPassword}
+                autoComplete={
+                  mode === "signup" ? "new-password" : "current-password"
+                }
+              />
+            ) : null}
+
+            {mode === "signin" ? (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => switchMode("forgot")}
+                className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+              >
+                Forgot password?
+              </button>
+            ) : null}
 
             {error ? (
               <div className="space-y-2" role="alert">
@@ -204,6 +279,24 @@ function Login() {
                   Create account
                 </button>
               </>
+            ) : mode === "forgot" ? (
+              <>
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full rounded-full bg-accent px-4 py-3 text-sm font-semibold text-accent-fg shadow-sm transition hover:opacity-95 active:scale-[0.98] disabled:opacity-60"
+                >
+                  {busy ? "Please wait…" : "Send reset link"}
+                </button>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => switchMode("signin")}
+                  className="w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-sm font-semibold text-fg shadow-sm transition hover:bg-bg-subtle active:scale-[0.98] disabled:opacity-60"
+                >
+                  Back to sign in
+                </button>
+              </>
             ) : (
               <>
                 <button
@@ -223,7 +316,8 @@ function Login() {
                 </button>
               </>
             )}
-          </form>
+            </form>
+          )
         )}
 
         <Link

@@ -36,7 +36,15 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function layoutHtml(bodyHtml: string): string {
+function layoutHtml(
+  bodyHtml: string,
+  cta: { href: string; label: string } = {
+    href: SITE_URL,
+    label: "Open Opening Lab",
+  },
+): string {
+  const href = escapeHtml(cta.href);
+  const label = escapeHtml(cta.label);
   return `<!DOCTYPE html>
 <html lang="en">
 <body style="margin:0;padding:24px;background:#f4f1ea;color:#1b1b1b;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55;">
@@ -44,7 +52,7 @@ function layoutHtml(bodyHtml: string): string {
     <p style="margin:0 0 16px;font-weight:700;">Opening Lab</p>
     <p style="margin:0 0 16px;">${bodyHtml}</p>
     <p style="margin:24px 0 0;">
-      <a href="${SITE_URL}" style="display:inline-block;padding:10px 18px;background:#1b1b1b;color:#ffffff;text-decoration:none;border-radius:999px;">Open Opening Lab</a>
+      <a href="${href}" style="display:inline-block;padding:10px 18px;background:#1b1b1b;color:#ffffff;text-decoration:none;border-radius:999px;">${label}</a>
     </p>
   </div>
 </body>
@@ -293,6 +301,34 @@ export async function sendLabPlusEmail(to: string): Promise<void> {
 
 export async function sendPackEmail(to: string, packName: string): Promise<void> {
   await sendMail(packMail(to, packName));
+}
+
+export function resetPasswordMail(to: string, resetUrl: string): Mail {
+  const text =
+    "Reset your Opening Lab password with this link. It expires in about 1 hour.\n\n" +
+    resetUrl +
+    "\n\nIf you did not ask for this, you can ignore this email.";
+  const htmlBody =
+    "Reset your Opening Lab password with the button below. This link expires in about 1 hour. If you did not ask for this, you can ignore this email." +
+    `<br><br><span style="word-break:break-all;font-size:13px;color:#555;">${escapeHtml(resetUrl)}</span>`;
+  return {
+    to,
+    subject: "Reset your Opening Lab password",
+    text: layoutText(text),
+    html: layoutHtml(htmlBody, {
+      href: resetUrl,
+      label: "Reset password",
+    }),
+  };
+}
+
+export async function sendResetPasswordEmail(
+  to: string,
+  resetUrl: string,
+): Promise<void> {
+  const url = resetUrl.trim();
+  if (!url) return;
+  await sendMail(resetPasswordMail(to, url));
 }
 
 function packDisplayName(packId: string): string | null {
