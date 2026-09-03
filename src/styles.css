@@ -381,6 +381,212 @@
     max-width: 36rem;
     padding: 0 2.5rem;
   }
+
+  .board-theme-picker {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-top: 0.35rem;
+  }
+
+  .board-theme-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-bg);
+    padding: 0.55rem 0.35rem 0.5rem;
+    color: var(--color-fg);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .board-theme-card:active {
+    transform: scale(0.97);
+  }
+
+  .board-theme-card-selected {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(47, 93, 80, 0.28);
+    background: var(--color-bg-elevated);
+  }
+
+  .board-theme-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 3px;
+    border: 2px solid;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .board-theme-preview > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .board-theme-label {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* ---- Board themes (paper / future). Book = default .sq-* above. ---- */
+/* Hints stay yellow globally (#ecec4a / #f7f769; darker on dark squares). */
+
+[data-board-theme="paper"] .sq-light {
+  background-color: #f7f2e6;
+}
+
+[data-board-theme="paper"] .sq-dark {
+  background-color: #b7b0a4;
+}
+
+[data-board-theme="paper"] .sq-selected,
+[data-board-theme="paper"] .sq-dark.sq-selected {
+  background-image: linear-gradient(rgba(70, 62, 50, 0.14), rgba(70, 62, 50, 0.14));
+  box-shadow: inset 0 0 0 2px rgba(70, 62, 50, 0.38);
+}
+
+[data-board-theme="paper"] .sq-last-from,
+[data-board-theme="paper"] .sq-last-to {
+  background-image: linear-gradient(rgba(70, 62, 50, 0.12), rgba(70, 62, 50, 0.12));
+}
+
+[data-board-theme="paper"] .legal-dot {
+  background: rgba(70, 62, 50, 0.3);
+}
+
+[data-board-theme="paper"] .legal-capture {
+  border: 2px solid rgba(70, 62, 50, 0.38);
+}
+
+[data-board-theme="paper"] .mini-sq-light {
+  background: #f7f2e6;
+}
+
+[data-board-theme="paper"] .mini-sq-dark {
+  background: #b7b0a4;
+}
+
+[data-board-theme="paper"] .board-frame {
+  border-radius: 2px;
+  padding: 3px;
+  background: #5c564c;
+  box-shadow: none;
+}
+
+[data-board-theme="paper"] .board-frame-inner {
+  border-radius: 0;
+  padding: 1px;
+  background: #4a453e;
+}
+
+[data-board-theme="paper"] .piece-abs-inner {
+  filter: drop-shadow(0 0.5px 0.5px rgba(40, 36, 30, 0.12));
+}
+
+[data-board-theme="paper"] .sq-hint-from {
+  background-color: #ecec4a !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+[data-board-theme="paper"] .sq-dark.sq-hint-from {
+  background-color: #c4d22e !important;
+}
+
+[data-board-theme="paper"] .sq-hint-to {
+  background-color: #f7f769 !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+[data-board-theme="paper"] .sq-dark.sq-hint-to {
+  background-color: #baca44 !important;
+}
+
+[data-board-theme="future"] .sq-light {
+  background-color: #d8e2ea;
+}
+
+[data-board-theme="future"] .sq-dark {
+  background-color: #3a4a5c;
+}
+
+[data-board-theme="future"] .sq-selected,
+[data-board-theme="future"] .sq-dark.sq-selected {
+  background-image: linear-gradient(rgba(120, 170, 200, 0.22), rgba(120, 170, 200, 0.22));
+  box-shadow: inset 0 0 0 2px rgba(150, 190, 210, 0.45);
+}
+
+[data-board-theme="future"] .sq-last-from,
+[data-board-theme="future"] .sq-last-to {
+  background-image: linear-gradient(rgba(90, 130, 160, 0.2), rgba(90, 130, 160, 0.2));
+}
+
+[data-board-theme="future"] .legal-dot {
+  background: rgba(180, 210, 230, 0.42);
+}
+
+[data-board-theme="future"] .legal-capture {
+  border: 2px solid rgba(180, 210, 230, 0.5);
+}
+
+[data-board-theme="future"] .mini-sq-light {
+  background: #d8e2ea;
+}
+
+[data-board-theme="future"] .mini-sq-dark {
+  background: #3a4a5c;
+}
+
+[data-board-theme="future"] .board-frame {
+  border-radius: 8px;
+  padding: 6px;
+  background: linear-gradient(180deg, #1e2936 0%, #0f1720 100%);
+  box-shadow:
+    0 0 0 1px rgba(148, 180, 210, 0.18),
+    0 8px 20px rgba(8, 12, 20, 0.35),
+    inset 0 1px 0 rgba(200, 220, 240, 0.12);
+}
+
+[data-board-theme="future"] .board-frame-inner {
+  border-radius: 4px;
+  padding: 1.5px;
+  background: rgba(148, 180, 210, 0.22);
+}
+
+[data-board-theme="future"] .piece-abs-inner {
+  filter: drop-shadow(0 1px 2px rgba(8, 12, 20, 0.35));
+}
+
+/* Future: keep yellow hints (not cool tint). */
+[data-board-theme="future"] .sq-hint-from {
+  background-color: #ecec4a !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+[data-board-theme="future"] .sq-dark.sq-hint-from {
+  background-color: #c4d22e !important;
+}
+
+[data-board-theme="future"] .sq-hint-to {
+  background-color: #f7f769 !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+[data-board-theme="future"] .sq-dark.sq-hint-to {
+  background-color: #baca44 !important;
 }
 
 @keyframes hint-in {
