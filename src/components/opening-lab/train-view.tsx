@@ -47,22 +47,31 @@ type Props = {
   onBack: () => void;
 };
 
+type ResultNextAction = "practiceNext" | "testYourself" | "learn";
+
 function endResultCard(
   line: OpeningLine,
   pack: Pack,
   purchased: readonly string[],
   caption: string,
   t: Translate,
-  offerNext = false,
+  nextAction?: Exclude<ResultNextAction, "learn">,
 ) {
   const nextLine = nextUnlockedLine(pack, line.id, purchased);
+  const primaryLabel =
+    nextAction === "testYourself"
+      ? t("Test yourself")
+      : nextAction === "practiceNext" && nextLine
+        ? t("Practice next line")
+        : undefined;
   return {
     kind: "end" as const,
     title: line.name,
     caption,
     body: (line.next ?? line.idea ?? "").trim(),
     actionLabel: t("Well done"),
-    primaryLabel: offerNext && nextLine ? t("Practice next line") : undefined,
+    primaryLabel,
+    nextAction: primaryLabel ? nextAction : undefined,
   };
 }
 
@@ -245,7 +254,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     caption?: string;
     actionLabel: string;
     primaryLabel?: string;
-    failToPractice?: boolean;
+    nextAction?: ResultNextAction;
   } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -427,7 +436,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           cls: "done",
         });
         soundWin();
-        setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t));
+        setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself"));
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -452,7 +461,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         cls: "done",
       });
       soundWin();
-      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, true));
+      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, "practiceNext"));
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -671,7 +680,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         title: t("Wrong move"),
         body: t("The book move is {san}.", { san: exp.san }),
         actionLabel: failToPractice ? t("Practice again") : t("Try again"),
-        failToPractice,
+        nextAction: failToPractice ? "learn" : undefined,
       });
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
       if (mode === "practice") {
@@ -1230,12 +1239,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           actionLabel={resultCard.actionLabel}
           primaryLabel={resultCard.primaryLabel}
           onClose={() => {
-            if (resultCard.failToPractice) changeMode("learn");
+            if (resultCard.nextAction === "learn") changeMode("learn");
             else setResultCard(null);
           }}
           onPrimary={
             resultCard.primaryLabel
               ? () => {
+                  if (resultCard.nextAction === "testYourself") {
+                    changeMode("practice");
+                    return;
+                  }
                   const nextLine = nextUnlockedLine(pack, line.id, purchased);
                   setResultCard(null);
                   if (nextLine) onPracticeNext?.(nextLine);
