@@ -392,6 +392,8 @@ export function ChessBoard({
       const rank = 8 - rr;
       const sq = `${file}${rank}` as Square;
       const light = (rr + cc) % 2 === 0;
+      const occPiece = game.get(sq);
+      const isDraggablePiece = interactive && !!occPiece && occPiece.color === game.turn();
 
       const isSelected = selected === sq || dragOrigin === sq;
       const isWrong = wrongUntil === sq;
@@ -411,6 +413,7 @@ export function ChessBoard({
           type="button"
           data-sq={sq}
           disabled={!interactive}
+          style={isDraggablePiece ? { touchAction: "none" } : undefined}
           onClick={() => {
             if (ignoreClickRef.current) {
               ignoreClickRef.current = false;
@@ -515,13 +518,12 @@ export function ChessBoard({
   }, [pieces, slide, glideOn, flip, drag]);
 
   return (
-    <div className={`relative mx-auto w-full ${interactive ? "touch-none" : ""} ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
+    <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
       <div className="board-frame">
         <div className="board-frame-inner">
           <div
             ref={surfaceRef}
             className={`board-play relative aspect-square w-full${wrongUntil ? " board-wrong-dim" : ""}`}
-            style={interactive ? { touchAction: "none" } : undefined}
             onPointerDown={interactive ? onPointerDown : undefined}
             onPointerMove={interactive ? onPointerMove : undefined}
             onPointerUp={interactive ? onPointerUp : undefined}
