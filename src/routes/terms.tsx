@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use">
+    <LegalPage title="Terms of Use" updated="3 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -51,6 +51,16 @@ function Terms() {
           . We will check it. If we agree it is the book move for that line,
           we will give you a pack free. We decide whether the move is book.
           If we agree, we will give you a pack free.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Your account">
+        <p>
+          Your account is for you. You may stay signed in on up to two
+          devices at once. Do not share your email or password. If you sign
+          in on a third device, we sign the oldest one out. Packs you buy
+          stay on your account. Training progress stays on each device, so
+          it does not move when you sign in somewhere else.
         </p>
       </LegalSection>
 

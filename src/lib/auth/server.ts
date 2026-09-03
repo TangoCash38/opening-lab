@@ -38,6 +38,7 @@ import { ensureDbReady, getPglite } from "../db";
 import { emailAndPasswordEnabled } from "./email-password";
 import { GROK_PROVIDERS } from "./providers";
 import { afterSignUpWelcome } from "./welcome-email";
+import { sessionIdsToRevoke } from "./session-cap";
 import { pgliteDialect } from "./pglite-dialect";
 import {
   GROK_ISSUER_DEFAULT,
@@ -224,11 +225,10 @@ export const auth = betterAuth({
     },
   },
 
-  // Cache the session in the short-lived signed `session_data` cookie so reads
-  // (incl. the client's `/get-session`) skip the DB — this shrinks the "loading"
-  // window and reduces auth flicker. See the `auth` skill for the full
-  // flicker-prevention guidance (gate on `isPending`; SSR the session).
-  session: { cookieCache: { enabled: true, maxAge: 300 } },
+  // Two-device cap revokes the oldest session in the DB. A session_data cookie
+  // cache would keep a kicked device signed in until maxAge, so it stays off.
+  // Gate on `isPending` and SSR the session to limit flicker.
+  session: { cookieCache: { enabled: false } },
 
   // Local email/password — toggled only via `./email-password` (not a plugin).
   ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true } } : {}),
@@ -236,6 +236,17 @@ export const auth = betterAuth({
   // Welcome mail after email/password sign-up. Failures are swallowed — never
   // block account creation.
   hooks: { after: afterSignUpWelcome },
+
+  // Every session create (email sign-in, sign-up, broker Google/X). Cap at 2.
+  databaseHooks: {
+    session: {
+      create: {
+        after: async (session) => {
+          await enforceTwoDeviceCap(session);
+        },
+      },
+    },
+  },
 
   // `__Host-` prefixed cookies: the browser REFUSES any same-named cookie that
   // carries a `Domain` attribute, so a sibling `*.grok.me` app cannot "toss" a
@@ -276,6 +287,28 @@ export const auth = betterAuth({
 
 export function readSessionToken(): string | null {
   return getCookie(SESSION_TOKEN_COOKIE) ?? null;
+}
+
+/**
+ * After a session is created, drop the oldest until two remain.
+ * Never throws — sign-in must stay good if list/revoke fails.
+ */
+async function enforceTwoDeviceCap(session: {
+  id: string;
+  userId: string;
+  token: string;
+}) {
+  try {
+    const ctx = await auth.$context;
+    const listed = await ctx.internalAdapter.listSessions(session.userId);
+    const revokeIds = new Set(sessionIdsToRevoke(listed, session.id));
+    for (const row of listed) {
+      if (!revokeIds.has(row.id) || row.id === session.id) continue;
+      await ctx.internalAdapter.deleteSession(row.token);
+    }
+  } catch (err) {
+    console.error("[auth] session cap failed", err);
+  }
 }
 
 // Re-exported for convenience; the array lives in the dependency-free
