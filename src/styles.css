@@ -291,11 +291,6 @@
     opacity: 0;
   }
 
-  .board-play,
-  .board-play button {
-    touch-action: none;
-  }
-
   .chess-piece-img {
     display: block;
     width: 100%;
