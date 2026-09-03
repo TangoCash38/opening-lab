@@ -121,3 +121,18 @@ test("home board still only starts from Tap to practice", () => {
   assert.match(hero, /pointer-events-none/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
 });
+
+test("splash has Language select before Play and persists via setLang", () => {
+  assert.match(splash, /useI18n\(\)/);
+  assert.match(splash, /LANG_OPTIONS/);
+  assert.match(splash, /isLang/);
+  assert.match(splash, /setLang/);
+  assert.match(splash, /<select[\s\S]*className="lang-toggle"/);
+  assert.match(splash, /sr-only[\s\S]*t\("Language"\)/);
+  assert.match(splash, /splash-lang/);
+  const selectAt = splash.indexOf("<select");
+  const playAt = splash.indexOf('{t("Play")}');
+  assert.ok(selectAt > -1 && playAt > selectAt, "Language select sits before Play");
+  assert.match(splash, /SESSION_KEY = "opening-lab:splash:v4"/);
+  assert.match(css, /\.splash-lang/);
+});
