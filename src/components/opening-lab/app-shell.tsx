@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CircleHelp, UserRound } from "lucide-react";
+import { CircleHelp, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackVisible, readRequestedPackId } from "@/lib/catalog";
 import { soundSelect } from "@/lib/sounds";
@@ -17,6 +17,13 @@ import {
   useT,
 } from "@/lib/i18n";
 import { initBoardTheme } from "@/lib/board-theme";
+import {
+  getColorScheme,
+  initColorScheme,
+  setColorScheme,
+  subscribeColorScheme,
+  type ColorScheme,
+} from "@/lib/color-scheme";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
@@ -32,7 +39,14 @@ type View = "home" | "train" | "guide";
 type TrainMode = "learn" | "practice";
 
 export function OpeningLabApp() {
-  useEffect(() => initBoardTheme(), []);
+  useEffect(() => {
+    const stopBoard = initBoardTheme();
+    const stopColor = initColorScheme();
+    return () => {
+      stopBoard();
+      stopColor();
+    };
+  }, []);
   return (
     <I18nProvider>
       <OpeningLabInner />
@@ -188,6 +202,7 @@ function OpeningLabInner() {
 
           <div className="flex shrink-0 items-center gap-1">
             <LangToggle />
+            <ColorSchemeToggle />
             <button
               type="button"
               onClick={() => setView("guide")}
@@ -244,6 +259,35 @@ function OpeningLabInner() {
         />
       )}
     </div>
+  );
+}
+
+function ColorSchemeToggle() {
+  const t = useT();
+  const [scheme, setScheme] = useState<ColorScheme>("light");
+
+  useEffect(() => {
+    setScheme(getColorScheme());
+    return subscribeColorScheme(() => setScheme(getColorScheme()));
+  }, []);
+
+  const dark = scheme === "dark";
+  const label = dark ? t("Light mode") : t("Dark mode");
+
+  return (
+    <button
+      type="button"
+      className="header-icon-btn"
+      aria-label={label}
+      title={label}
+      onClick={() => setColorScheme(dark ? "light" : "dark")}
+    >
+      {dark ? (
+        <Sun className="size-[22px]" strokeWidth={1.75} />
+      ) : (
+        <Moon className="size-[22px]" strokeWidth={1.75} />
+      )}
+    </button>
   );
 }
 
