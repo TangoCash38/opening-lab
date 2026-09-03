@@ -86,7 +86,7 @@ test("yellow hints stay yellow (book + paper + future + newspaper)", () => {
   assert.doesNotMatch(css, /\[data-board-theme="future"\]\s*\.sq-hint-[^{]*\{[^}]*#00ff/s);
 });
 
-test("picker sits near the board on home and trainer, not in the guide", () => {
+test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(picker, /export function BoardThemePicker/);
   assert.match(picker, /compact\?: boolean/);
   assert.match(picker, /className\?: string/);
@@ -98,8 +98,8 @@ test("picker sits near the board on home and trainer, not in the guide", () => {
   assert.match(hero, /BoardThemePicker/);
   assert.match(hero, /from "\.\/board-theme-picker"/);
   assert.match(hero, /pointer-events-auto/);
-  assert.match(train, /BoardThemePicker/);
-  assert.match(train, /from "\.\/board-theme-picker"/);
+  assert.doesNotMatch(train, /BoardThemePicker/);
+  assert.doesNotMatch(train, /board-theme-picker/);
   assert.match(train, /!boardExpanded/);
   assert.doesNotMatch(guide, /board-theme-picker/);
   assert.doesNotMatch(guide, /BoardThemePicker/);

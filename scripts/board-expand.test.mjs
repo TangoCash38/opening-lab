@@ -21,6 +21,8 @@ test("trainer has Expand that opens a full-screen board overlay", () => {
   assert.match(train, /board-fs-overlay/);
   assert.match(train, /Close full screen/);
   assert.match(train, /Escape/);
+  assert.doesNotMatch(train, /BoardThemePicker/);
+  assert.doesNotMatch(train, /board-theme-picker/);
   assert.match(board, /expanded\?: boolean/);
   assert.match(css, /\.board-fs-overlay/);
   assert.match(css, /position: fixed/);

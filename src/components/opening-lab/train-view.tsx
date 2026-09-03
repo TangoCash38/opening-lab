@@ -16,7 +16,6 @@ import {
 import { useT, type Translate } from "@/lib/i18n";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
-import { BoardThemePicker } from "./board-theme-picker";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
@@ -1041,8 +1040,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       </div>
 
       {!boardExpanded ? (
-        <div className="mb-1 flex items-center gap-2">
-          <BoardThemePicker compact className="min-w-0 flex-1" />
+        <div className="mb-1 flex items-center justify-end">
           <button
             type="button"
             onClick={() => setBoardExpanded(true)}
