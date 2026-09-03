@@ -3,9 +3,11 @@ import type { ReactNode } from "react";
 export function LegalPage({
   title,
   children,
+  updated = "30 August 2026",
 }: {
   title: string;
   children: ReactNode;
+  updated?: string;
 }) {
   return (
     <main className="relative z-10 min-h-dvh bg-bg px-4 py-8 text-fg">
@@ -20,7 +22,7 @@ export function LegalPage({
           {title}
         </h1>
         <p className="mt-1 text-[0.78rem] text-fg-subtle">
-          Last updated 30 August 2026
+          Last updated {updated}
         </p>
         <div className="mt-6 space-y-5 text-[0.95rem] leading-relaxed text-fg-muted">
           {children}
