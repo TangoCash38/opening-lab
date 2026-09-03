@@ -259,6 +259,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notationStripRef = useRef<HTMLDivElement | null>(null);
+  const boardWrapRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
   const playingOnRef = useRef(false);
   const playOnStartPlyRef = useRef(line.plies.length);
@@ -672,19 +673,26 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setWrongUntil(to);
       setStatus({ text: "Wrong move — try again", cls: "bad" });
       setSelected(null);
-      const failToPractice = mode === "practice";
-      setResultCard({
-        kind: "wrong",
-        title: t("Wrong move"),
-        body: t("The book move is {san}.", { san: exp.san }),
-        actionLabel: failToPractice ? t("Practice again") : t("Try again"),
-        nextAction: failToPractice ? "learn" : undefined,
-      });
-      if (wrongTimer.current) clearTimeout(wrongTimer.current);
       if (mode === "practice") {
+        setResultCard({
+          kind: "wrong",
+          title: t("Inaccurate move"),
+          body: t("The book move is {san}.", { san: exp.san }),
+          primaryLabel: t("Try again"),
+          actionLabel: t("Back to practice"),
+          nextAction: "learn",
+        });
         practiceMissedRef.current = true;
         onPracticeFail?.();
+      } else {
+        setResultCard({
+          kind: "wrong",
+          title: t("Wrong move"),
+          body: t("The book move is {san}.", { san: exp.san }),
+          actionLabel: t("Try again"),
+        });
       }
+      if (wrongTimer.current) clearTimeout(wrongTimer.current);
       wrongTimer.current = setTimeout(() => setWrongUntil(null), 450);
       return;
     }
@@ -937,6 +945,15 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     };
   }, [boardExpanded]);
 
+  useEffect(() => {
+    if (!resultCard) return;
+    setBoardExpanded(false);
+    boardWrapRef.current?.scrollIntoView({
+      block: "start",
+      behavior: "auto",
+    });
+  }, [resultCard]);
+
 
   const canTakeBack =
     !busy &&
@@ -953,7 +970,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       ) > 0);
 
   return (
-    <div>
+    <div className={resultCard ? "train-result-pad" : undefined}>
       <button
         type="button"
         onClick={onBack}
@@ -1037,7 +1054,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         </div>
       ) : null}
 
-      <div className={boardExpanded ? "board-fs-overlay" : "relative"}>
+      <div
+        ref={boardWrapRef}
+        className={boardExpanded ? "board-fs-overlay" : "train-board-anchor relative"}
+      >
         {boardExpanded ? (
           <button
             type="button"
@@ -1237,13 +1257,19 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           caption={resultCard.caption}
           actionLabel={resultCard.actionLabel}
           primaryLabel={resultCard.primaryLabel}
-          onClose={() => {
-            if (resultCard.nextAction === "learn") changeMode("learn");
-            else setResultCard(null);
-          }}
+          onClose={() => setResultCard(null)}
+          onAction={
+            resultCard.nextAction === "learn"
+              ? () => changeMode("learn")
+              : undefined
+          }
           onPrimary={
             resultCard.primaryLabel
               ? () => {
+                  if (resultCard.nextAction === "learn") {
+                    setResultCard(null);
+                    return;
+                  }
                   if (resultCard.nextAction === "testYourself") {
                     changeMode("practice");
                     return;

@@ -12,9 +12,24 @@ const modal = src("src/components/opening-lab/line-result-modal.tsx");
 const catalog = src("src/lib/catalog.ts");
 const packs = src("src/data/packs.ts");
 const i18n = src("src/lib/i18n.ts");
+const css = src("src/styles.css");
 const shell = src("src/components/opening-lab/app-shell.tsx");
 const hero = src("src/components/opening-lab/home-hero.tsx");
 const list = src("src/components/opening-lab/pack-list.tsx");
+
+function kindBlocks(source, kind) {
+  const blocks = [];
+  let from = 0;
+  const needle = `kind: "${kind}",`;
+  while (true) {
+    const start = source.indexOf(needle, from);
+    if (start < 0) break;
+    const end = source.indexOf("});", start);
+    blocks.push(source.slice(start, end + 3));
+    from = start + 1;
+  }
+  return blocks;
+}
 
 test("wrong-move popup names the book SAN only", () => {
   assert.match(train, /The book move is \{san\}\./);
@@ -62,9 +77,10 @@ test("Caro line-complete next notes: ckb1.next exists; ckb12 recommends Qb4 and 
   assert.doesNotMatch(bring[0], /Qa3/);
 });
 
-test("end modal has two buttons; wrong has one", () => {
+test("end modal has two buttons; Practice wrong has one", () => {
   assert.match(modal, /data-result-actions=\{showPrimary \? 2 : 1\}/);
-  assert.match(modal, /kind === "end" && Boolean\(primaryLabel && onPrimary\)/);
+  assert.match(modal, /Boolean\(primaryLabel && onPrimary\)/);
+  assert.match(modal, /onAction \?\? onClose/);
   assert.match(modal, /data-result-primary/);
   assert.match(modal, /data-result-dismiss/);
   assert.match(train, /t\("Well done"\)/);
@@ -73,13 +89,16 @@ test("end modal has two buttons; wrong has one", () => {
   assert.match(train, /nextAction === "practiceNext" && nextLine/);
   assert.match(train, /actionLabel: t\("Well done"\)/);
   assert.match(train, /t\("Try again"\)/);
-  const wrongStart = train.indexOf('kind: "wrong",');
-  assert.ok(wrongStart > 0);
-  const wrongBlock = train.slice(wrongStart, train.indexOf("});", wrongStart) + 3);
-  assert.match(wrongBlock, /Try again/);
-  assert.doesNotMatch(wrongBlock, /primaryLabel/);
-  assert.doesNotMatch(wrongBlock, /Well done/);
-  assert.doesNotMatch(wrongBlock, /Practice next line/);
+  const wrongs = kindBlocks(train, "wrong");
+  assert.equal(wrongs.length, 2);
+  const practiceWrong = wrongs[1];
+  assert.match(practiceWrong, /Wrong move/);
+  assert.match(practiceWrong, /Try again/);
+  assert.doesNotMatch(practiceWrong, /primaryLabel/);
+  assert.doesNotMatch(practiceWrong, /Inaccurate move/);
+  assert.doesNotMatch(practiceWrong, /Back to practice/);
+  assert.doesNotMatch(practiceWrong, /Well done/);
+  assert.doesNotMatch(practiceWrong, /Practice next line/);
   for (const key of ["Well done", "Practice next line"]) {
     assert.match(i18n, new RegExp(`"${key}": "${key}"`));
     assert.match(i18n, /"Bien hecho"|"做得好"|"Bravo"/);
@@ -120,18 +139,29 @@ test("Practice complete offers Test yourself; clean Test offers next line", () =
   assert.doesNotMatch(missedCall, /testYourself/);
   assert.doesNotMatch(missedCall, /primaryLabel/);
 
-  const wrongStart = train.indexOf('kind: "wrong",');
-  assert.ok(wrongStart > 0);
-  const wrongBlock = train.slice(wrongStart, train.indexOf("});", wrongStart) + 3);
-  assert.match(wrongBlock, /Practice again/);
-  assert.match(wrongBlock, /Try again/);
-  assert.doesNotMatch(wrongBlock, /Practice next line/);
-  assert.doesNotMatch(wrongBlock, /Test yourself/);
-  assert.match(train, /failToPractice \? t\("Practice again"\) : t\("Try again"\)/);
-  assert.match(train, /const failToPractice = mode === "practice"/);
-  assert.match(train, /nextAction: failToPractice \? "learn"/);
+  const wrongs = kindBlocks(train, "wrong");
+  assert.equal(wrongs.length, 2);
+  const testWrong = wrongs[0];
+  assert.match(testWrong, /Inaccurate move/);
+  assert.match(testWrong, /Try again/);
+  assert.match(testWrong, /Back to practice/);
+  assert.match(testWrong, /primaryLabel: t\("Try again"\)/);
+  assert.match(testWrong, /nextAction: "learn"/);
+  assert.doesNotMatch(testWrong, /Practice again/);
+  assert.doesNotMatch(testWrong, /Practice next line/);
+  assert.doesNotMatch(testWrong, /Test yourself/);
+  const practiceWrong = wrongs[1];
+  assert.match(practiceWrong, /Wrong move/);
+  assert.match(practiceWrong, /Try again/);
+  assert.doesNotMatch(practiceWrong, /primaryLabel/);
+  assert.doesNotMatch(practiceWrong, /Back to practice/);
+  assert.match(train, /onClose=\{\(\) => setResultCard\(null\)\}/);
+  assert.match(train, /onAction=/);
   assert.match(train, /resultCard\.nextAction === "learn"/);
   assert.match(train, /changeMode\("learn"\)/);
+  const modalCall = train.slice(train.indexOf("<LineResultModal"), train.indexOf("</LineResultModal>"));
+  assert.match(modalCall, /onClose=\{\(\) => setResultCard\(null\)\}/);
+  assert.doesNotMatch(modalCall, /onClose=\{\(\) => \{\s*if \(resultCard\.nextAction === "learn"\)/);
 
   assert.match(i18n, /"Test yourself": "Test yourself"/);
   assert.match(i18n, /"Test yourself": "Ponte a prueba"/);
@@ -141,6 +171,40 @@ test("Practice complete offers Test yourself; clean Test offers next line", () =
   assert.match(i18n, /"Practice again": "Practicar de nuevo"/);
   assert.match(i18n, /"Practice again": "再练习"/);
   assert.match(i18n, /"Practice again": "Pratiquer encore"/);
+  assert.match(i18n, /"Inaccurate move": "Inaccurate move"/);
+  assert.match(i18n, /"Inaccurate move": "Jugada inexacta"/);
+  assert.match(i18n, /"Inaccurate move": "不准确的着法"/);
+  assert.match(i18n, /"Inaccurate move": "Coup imprécis"/);
+  assert.match(i18n, /"Back to practice": "Back to practice"/);
+  assert.match(i18n, /"Back to practice": "Volver a practicar"/);
+  assert.match(i18n, /"Back to practice": "返回练习"/);
+  assert.match(i18n, /"Back to practice": "Retour à Practice"/);
+});
+
+
+test("result sheet sits under the board so file letters stay readable", () => {
+  assert.match(modal, /line-result-overlay/);
+  assert.match(modal, /line-result-sheet/);
+  assert.match(modal, /line-result-body/);
+  assert.match(modal, /z-\[80\]/);
+  assert.match(modal, /data-result-sheet/);
+  assert.doesNotMatch(modal, /bg-black\/40/);
+  assert.doesNotMatch(modal, /sm:items-center/);
+  assert.match(css, /\.line-result-overlay/);
+  assert.match(css, /align-items:\s*flex-end/);
+  assert.match(css, /background:\s*transparent/);
+  assert.match(css, /\.line-result-sheet/);
+  assert.match(css, /max-height:\s*min\(32dvh/);
+  assert.match(css, /100vw/);
+  assert.match(css, /\.line-result-body/);
+  assert.match(css, /overflow-y:\s*auto/);
+  assert.match(css, /\.train-board-anchor/);
+  assert.match(css, /scroll-margin-bottom/);
+  assert.match(css, /\.train-result-pad/);
+  assert.match(train, /scrollIntoView/);
+  assert.match(train, /train-board-anchor/);
+  assert.match(train, /train-result-pad/);
+  assert.match(train, /boardWrapRef/);
 });
 
 test("practice next line skips locked Caro extras and starts Practice", () => {
