@@ -393,8 +393,7 @@ export function ChessBoard({
       const sq = `${file}${rank}` as Square;
       const light = (rr + cc) % 2 === 0;
       const occPiece = game.get(sq);
-      const isDraggablePiece =
-        interactive && !!occPiece && occPiece.color === game.turn();
+      const isDraggablePiece = interactive && !!occPiece && occPiece.color === game.turn();
 
       const isSelected = selected === sq || dragOrigin === sq;
       const isWrong = wrongUntil === sq;
