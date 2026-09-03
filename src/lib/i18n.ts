@@ -105,6 +105,10 @@ const en: Dict = {
   "← Back": "← Back",
   "User guide": "User guide",
   "What is Opening Lab?": "What is Opening Lab?",
+  Board: "Board",
+  Book: "Book",
+  Paper: "Paper",
+  Future: "Future",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.",
   "White & Black / Special packs": "White & Black / Special packs",
@@ -204,6 +208,10 @@ const es: Dict = {
   "← Back": "← Atrás",
   "User guide": "Guía",
   "What is Opening Lab?": "¿Qué es Opening Lab?",
+  Board: "Tablero",
+  Book: "Libro",
+  Paper: "Papel",
+  Future: "Futuro",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Entrenamiento de memoria con líneas estrictas. Solo juegas las jugadas de la apertura elegida; las incorrectas se rechazan para que la línea se quede.",
   "White & Black / Special packs": "White y Black / packs especiales",
@@ -303,6 +311,10 @@ const zh: Dict = {
   "← Back": "← 返回",
   "User guide": "使用指南",
   "What is Opening Lab?": "Opening Lab 是什么？",
+  Board: "棋盘",
+  Book: "书谱",
+  Paper: "纸面",
+  Future: "未来",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "严格线路记忆训练。你只下所选开局中的着法；错着会被拒绝，线路才能记住。",
   "White & Black / Special packs": "White 与 Black / 专题棋包",
@@ -402,6 +414,10 @@ const fr: Dict = {
   "← Back": "← Retour",
   "User guide": "Guide",
   "What is Opening Lab?": "Qu'est-ce qu'Opening Lab ?",
+  Board: "Échiquier",
+  Book: "Livre",
+  Paper: "Papier",
+  Future: "Futur",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Entraînement mémoire en lignes strictes. Tu ne joues que les coups de l'ouverture choisie ; les mauvais coups sont refusés pour que la ligne tienne.",
   "White & Black / Special packs": "White et Black / packs spéciaux",

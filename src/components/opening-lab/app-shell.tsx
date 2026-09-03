@@ -16,6 +16,7 @@ import {
   useI18n,
   useT,
 } from "@/lib/i18n";
+import { initBoardTheme } from "@/lib/board-theme";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
@@ -31,6 +32,7 @@ type View = "home" | "train" | "guide";
 type TrainMode = "learn" | "practice";
 
 export function OpeningLabApp() {
+  useEffect(() => initBoardTheme(), []);
   return (
     <I18nProvider>
       <OpeningLabInner />
