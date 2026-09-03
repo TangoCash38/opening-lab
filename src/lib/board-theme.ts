@@ -1,4 +1,4 @@
-export const BOARD_THEMES = ["book", "paper", "future"] as const;
+export const BOARD_THEMES = ["book", "paper", "future", "newspaper"] as const;
 export type BoardTheme = (typeof BOARD_THEMES)[number];
 
 export const BOARD_THEME_STORAGE_KEY = "opening-lab:board-theme";
@@ -9,7 +9,12 @@ const EVENT = "opening-lab:board-theme";
 export function isBoardTheme(
   value: string | null | undefined,
 ): value is BoardTheme {
-  return value === "book" || value === "paper" || value === "future";
+  return (
+    value === "book" ||
+    value === "paper" ||
+    value === "future" ||
+    value === "newspaper"
+  );
 }
 
 /** Unknown / missing → book. */
