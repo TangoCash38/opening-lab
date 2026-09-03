@@ -112,15 +112,19 @@ type NotationPair = {
   active: boolean;
 };
 
-function buildNotationPairs(plies: string[], playedCount: number): NotationPair[] {
+function buildNotationPairs(
+  plies: string[],
+  playedCount: number,
+  highlightPly?: number,
+): NotationPair[] {
   const pairs: NotationPair[] = [];
   // Only include plies that have actually been played
   for (let i = 0; i < playedCount; i += 2) {
     const moveNum = i / 2 + 1;
     const white = plies[i]!;
     const black = i + 1 < playedCount ? plies[i + 1] : undefined;
-    // Active if the last played ply sits in this pair
-    const lastPlayed = playedCount - 1;
+    // Active if the viewed ply (or last played ply) sits in this pair
+    const lastPlayed = (highlightPly !== undefined ? highlightPly : playedCount) - 1;
     const active = lastPlayed === i || lastPlayed === i + 1;
     pairs.push({
       num: moveNum,
@@ -189,28 +193,6 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-/** Plies one Take back tap removes. 0 = at start of the line / Play on. */
-function takeBackPlyCount(
-  playingOn: boolean,
-  plyIndex: number,
-  bookLen: number,
-  userSide: "w" | "b",
-  userToMove: boolean,
-  lineFloor?: number,
-): number {
-  const floor = playingOn
-    ? bookLen
-    : lineFloor !== undefined
-      ? lineFloor
-      : userSide === "w"
-        ? 0
-        : 1;
-  if (plyIndex <= floor) return 0;
-  // Computer moved first in Play on — no user ply to undo yet.
-  if (playingOn && userToMove && plyIndex - floor < 2) return 0;
-  return Math.min(userToMove ? 2 : 1, plyIndex - floor);
-}
-
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue, onPracticeNext }: Props) {
   const t = useT();
   const { state } = useUnlocks();
@@ -220,6 +202,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const practiceMissedRef = useRef(false);
   const [game, setGame] = useState(() => new Chess());
   const [plyIndex, setPlyIndex] = useState(0);
+  const [viewPly, setViewPly] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
   const [wrongUntil, setWrongUntil] = useState<Square | null>(null);
   const [status, setStatus] = useState({
@@ -344,6 +327,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setHintsReady(true);
       setGame(new Chess());
       setPlyIndex(0);
+      setViewPly(0);
       setSelected(null);
       setWrongUntil(null);
       playOnStartPlyRef.current = line.plies.length;
@@ -797,58 +781,30 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   };
 
 
+  const livePly = playingOn ? game.history().length : plyIndex;
+
+  // Snap the view to the live ply when a new ply lands or the line resets.
+  useEffect(() => {
+    setViewPly((v) => (livePly > v || livePly === 0 ? livePly : v));
+  }, [livePly]);
+
+  const viewingHistory = viewPly !== livePly;
+  const displayGame = playingOn
+    ? replaySans(game.history(), viewPly)
+    : replaySans(line.plies, viewPly);
+  const displayLastMove = viewingHistory
+    ? lastMoveSquares(displayGame)
+    : lastMove;
+
   const jumpToPly = (nextPly: number) => {
     if (busy || slide) return;
-
-    const onPlay = playingOnRef.current;
-    const currentPly = onPlay ? game.history().length : plyIndex;
-    const floor = onPlay
-      ? playOnStartPlyRef.current
-      : line.side === "w"
-        ? 0
-        : 1;
-    const target = Math.max(floor, Math.min(nextPly, currentPly));
-    if (target >= currentPly) {
-      setSelected(null);
-      return;
-    }
-
-    // Board-only. Do not write progress / SM-2, and do not clear a recorded miss.
-    replyGenRef.current += 1;
-    clearAllTimers();
-    pendingCommit.current = null;
-    setEngineBusy(false);
-    setSlide(null);
-    setBusy(false);
+    // View-only. Does not undo progress / SM-2 / miss flags / a completed line.
+    const target = Math.max(0, Math.min(nextPly, livePly));
     setSelected(null);
-    setPendingPromo(null);
-    setWrongUntil(null);
-
-    const next = onPlay
-      ? replaySans(game.history(), target)
-      : replaySans(line.plies, target);
-
-    setGame(next);
-    setPlyIndex(target);
-    setLastMove(lastMoveSquares(next));
-
-    if (onPlay) {
-      setHintsReady(false);
-      setStatus({ text: "Your move — playing on", cls: "" });
-      return;
-    }
-    setStatus({
-      text:
-        mode === "learn"
-          ? "Your move (Practice)"
-          : "Your move",
-      cls: "",
-    });
-    if (mode === "learn") scheduleHints();
-    else setHintsReady(true);
+    setViewPly(target);
   };
 
-  const takeBack = () => {
+  const stepBack = () => {
     if (busy || slide) return;
 
     // Rejected book try never landed — just clear the pick / red flash.
@@ -877,27 +833,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       return;
     }
 
-    const onPlay = playingOnRef.current;
-    const currentPly = onPlay ? game.history().length : plyIndex;
-    const undo = takeBackPlyCount(
-      onPlay,
-      currentPly,
-      playOnStartPlyRef.current,
-      line.side,
-      isUserTurn(game),
-    );
-    if (undo <= 0) {
-      setSelected(null);
-      return;
-    }
-
-    jumpToPly(currentPly - undo);
+    if (viewPly > 0) setViewPly((p) => p - 1);
+    else setSelected(null);
   };
 
-  const exp = playingOn ? null : expectedMove(game, plyIndex);
-  const userTurn = isUserTurn(game) && !busy && !slide && !engineBusy;
+  const stepForward = () => {
+    if (busy || slide) return;
+    if (viewPly < livePly) setViewPly((p) => Math.min(livePly, p + 1));
+  };
+
+  const exp = playingOn || viewingHistory ? null : expectedMove(game, plyIndex);
+  const userTurn =
+    isUserTurn(game) && !busy && !slide && !engineBusy && !viewingHistory;
   const showHints =
     !playingOn &&
+    !viewingHistory &&
     mode === "learn" &&
     userTurn &&
     hintsReady &&
@@ -909,9 +859,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       : "";
 
   const historySans = playingOn ? game.history() : line.plies;
-  const historyCount = playingOn ? game.history().length : plyIndex;
-  const notationPairs = buildNotationPairs(historySans, historyCount);
+  const historyCount = livePly;
+  const notationPairs = buildNotationPairs(historySans, historyCount, viewPly);
   const n = pack.lines.findIndex((l) => l.id === line.id) + 1;
+  const bookLen = line.plies.length;
+  const pct = bookLen <= 0
+    ? 0
+    : Math.min(
+        100,
+        Math.max(
+          0,
+          plyIndex >= bookLen || status.cls === "done"
+            ? 100
+            : Math.round((plyIndex / bookLen) * 100),
+        ),
+      );
 
   // Keep the active (last-played) move visible in the horizontal strip
   useEffect(() => {
@@ -920,7 +882,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       inline: "center",
       block: "nearest",
     });
-  }, [plyIndex]);
+  }, [plyIndex, viewPly]);
 
   const statusColor =
     status.cls === "ok"
@@ -960,19 +922,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   }, [resultCard]);
 
 
-  const canTakeBack =
+  const canBack =
     !busy &&
     !slide &&
     (Boolean(wrongUntil) ||
       status.cls === "bad" ||
       Boolean(pendingPromo) ||
-      takeBackPlyCount(
-        playingOn,
-        playingOn ? game.history().length : plyIndex,
-        playOnStartPlyRef.current,
-        line.side,
-        isUserTurn(game),
-      ) > 0);
+      viewPly > 0);
+  const canForward = !busy && !slide && viewPly < livePly;
 
   return (
     <div className={resultCard ? "train-result-pad" : undefined}>
@@ -986,6 +943,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       <h2 className="m-0 font-display text-[1.25rem] font-bold">
         Line {n} of {pack.lines.length}
       </h2>
+      {!playingOn ? (
+        <div className="mt-0.5 text-[0.78rem] text-fg-subtle">
+          {t("{pct}% complete", { pct })}
+        </div>
+      ) : null}
       <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[0.95rem] font-semibold">
         <span>{line.name}</span>
       </div>
@@ -1084,13 +1046,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         ) : null}
         <div className={boardExpanded ? "board-fs-stage" : undefined}>
           <ChessBoard
-            game={game}
+            game={displayGame}
             flip={line.side === "b"}
-            selected={selected}
-            wrongUntil={wrongUntil}
+            selected={viewingHistory ? null : selected}
+            wrongUntil={viewingHistory ? null : wrongUntil}
             expected={exp}
             showHints={showHints}
-            lastMove={lastMove}
+            lastMove={displayLastMove}
             slide={slide}
             onSlideComplete={onSlideComplete}
             onSquare={onSquare}
@@ -1100,7 +1062,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
               !busy &&
               !slide &&
               !engineBusy &&
-              !pendingPromo
+              !pendingPromo &&
+              !viewingHistory
             }
             promotion={
               pendingPromo
@@ -1190,13 +1153,24 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           </button>
           <button
             type="button"
-            onClick={takeBack}
-            disabled={!canTakeBack}
-            aria-label="Take back"
+            onClick={stepBack}
+            disabled={!canBack}
+            aria-label={t("Back")}
             className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
           >
-            Take back
+            {t("Back")}
           </button>
+          {canForward || viewingHistory ? (
+            <button
+              type="button"
+              onClick={stepForward}
+              disabled={!canForward}
+              aria-label={t("Forward")}
+              className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
+            >
+              {t("Forward")}
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={onBack}
