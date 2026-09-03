@@ -38,6 +38,19 @@ test("board-theme helper validates unknown → book and persists", () => {
   );
 });
 
+test("initBoardTheme always forces Book on every launch (not only unknown→book)", () => {
+  assert.match(theme, /DEFAULT_BOARD_THEME:\s*BoardTheme\s*=\s*"book"/);
+  assert.match(theme, /export function initBoardTheme/);
+  assert.match(
+    theme,
+    /export function initBoardTheme\(\): \(\) => void \{\s*setBoardTheme\(DEFAULT_BOARD_THEME\);/,
+  );
+  assert.doesNotMatch(
+    theme,
+    /export function initBoardTheme\(\)[^{]*\{\s*applyBoardTheme\(getBoardTheme\(\)\)/,
+  );
+});
+
 test("CSS keeps book defaults and has paper + future + newspaper data-board-theme blocks", () => {
   assert.match(css, /\.sq-light\s*\{\s*background-color:\s*#f3e5c8/);
   assert.match(css, /\.sq-dark\s*\{\s*background-color:\s*#a97850/);
@@ -59,14 +72,17 @@ test("CSS keeps book defaults and has paper + future + newspaper data-board-them
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.board-frame/);
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.piece-abs-inner/);
   assert.match(css, /#f7f2e6/);
-  assert.match(css, /#b7b0a4/);
-  assert.match(css, /#d8e2ea/);
-  assert.match(css, /#3a4a5c/);
+  assert.match(css, /#c4bdb0/);
+  assert.match(css, /#e2eaf0/);
+  assert.match(css, /#5c6f84/);
   assert.match(css, /#1e2936/);
   assert.match(css, /#0f1720/);
   assert.match(css, /#5c564c/);
   assert.match(css, /#ead9a0/);
-  assert.match(css, /#454540/);
+  assert.match(css, /#6e6c64/);
+  assert.doesNotMatch(css, /#b7b0a4/);
+  assert.doesNotMatch(css, /#3a4a5c/);
+  assert.doesNotMatch(css, /#454540/);
 });
 
 test("yellow hints stay yellow (book + paper + future + newspaper)", () => {

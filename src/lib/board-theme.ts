@@ -64,9 +64,9 @@ export function subscribeBoardTheme(cb: () => void): () => void {
   };
 }
 
-/** Read stored theme and sync dataset; keep in sync on changes. */
+/** Always start on Book (persist + apply). Session switches stay until next cold start. */
 export function initBoardTheme(): () => void {
-  applyBoardTheme(getBoardTheme());
+  setBoardTheme(DEFAULT_BOARD_THEME);
   return subscribeBoardTheme(() => {
     applyBoardTheme(getBoardTheme());
   });
