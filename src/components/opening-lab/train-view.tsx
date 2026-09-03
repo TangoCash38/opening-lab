@@ -670,7 +670,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     if (exp.from !== from || exp.to !== to) {
       soundBad();
       setWrongUntil(to);
-      setStatus({ text: "Wrong move — try again", cls: "bad" });
+      setStatus({
+        text:
+          mode === "practice"
+            ? t("Tap Reset to try again, or go back to Practice")
+            : t("Wrong move — try again"),
+        cls: "bad",
+      });
       setSelected(null);
       if (mode === "practice") {
         setResultCard({

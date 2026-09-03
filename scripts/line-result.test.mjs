@@ -31,6 +31,40 @@ function kindBlocks(source, kind) {
   return blocks;
 }
 
+
+test("Test miss status guides Reset or Practice; Practice miss stays try again", () => {
+  const tryPlay = train.slice(train.indexOf("const tryPlay"), train.indexOf("const onSquare"));
+  assert.match(
+    tryPlay,
+    /mode === "practice"\s*\?\s*t\("Tap Reset to try again, or go back to Practice"\)/,
+  );
+  assert.match(tryPlay, /t\("Wrong move — try again"\)/);
+  assert.doesNotMatch(tryPlay, /setStatus\(\{ text: "Wrong move — try again"/);
+  const wrongs = kindBlocks(train, "wrong");
+  assert.equal(wrongs.length, 2);
+  const testWrong = wrongs[0];
+  assert.match(testWrong, /primaryLabel: t\("Try again"\)/);
+  assert.match(testWrong, /actionLabel: t\("Back to practice"\)/);
+  assert.match(testWrong, /title: t\("Inaccurate move"\)/);
+  assert.equal(i18n.split('"Wrong move — try again":').length - 1, 10);
+  assert.equal(
+    i18n.split('"Tap Reset to try again, or go back to Practice":').length - 1,
+    10,
+  );
+  assert.match(i18n, /"Wrong move — try again": "Wrong move — try again"/);
+  assert.match(
+    i18n,
+    /"Tap Reset to try again, or go back to Practice": "Tap Reset to try again, or go back to Practice"/,
+  );
+  assert.match(i18n, /"Wrong move — try again": "Jugada incorrecta — inténtalo de nuevo"/);
+  assert.match(i18n, /"Wrong move — try again": "走错了 — 再试一次"/);
+  assert.match(i18n, /"Wrong move — try again": "Mauvais coup — réessaie"/);
+  assert.match(
+    i18n,
+    /"Tap Reset to try again, or go back to Practice": "Touche Reset pour réessayer, ou reviens à Practice"/,
+  );
+});
+
 test("wrong-move popup names the book SAN only", () => {
   assert.match(train, /The book move is \{san\}\./);
   assert.match(train, /san: exp\.san/);
