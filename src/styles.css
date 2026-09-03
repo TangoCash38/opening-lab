@@ -119,7 +119,7 @@
 
   .lang-toggle {
     height: 2.5rem;
-    max-width: 4.35rem;
+    max-width: 6rem;
     border: none;
     border-radius: 9999px;
     background: var(--color-bg-subtle);

@@ -57,23 +57,29 @@ test("home heading sits on one row with How to play as a real button", () => {
   assert.doesNotMatch(hero, /mb-1\.5 font-display text-\[1\.65rem\]/);
 });
 
-test("first languages are EN, ES, Simplified Chinese, FR and persist", () => {
+test("languages are EN, ES, Simplified Chinese, FR, DE, PT, RU, IT, HI, JA and persist", () => {
   assert.match(i18n, /LANG_STORAGE_KEY = "opening-lab:lang"/);
   assert.match(i18n, /localStorage/);
-  assert.match(i18n, /\["en", "es", "zh", "fr"\]/);
+  assert.match(i18n, /\["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja"\]/);
   assert.match(i18n, /Chinese \(Simplified\)/);
   assert.match(i18n, /训练/);
   assert.doesNotMatch(i18n, /訓練/);
   assert.match(shell, /LangToggle/);
   assert.match(shell, /className="lang-toggle"/);
   assert.match(css, /\.lang-toggle/);
-  assert.match(css, /max-width:\s*4\.35rem/);
+  assert.match(css, /max-width:\s*6rem/);
   assert.match(shell, /header-icon-btn/);
   for (const key of REQUIRED) {
     assert.match(i18n, new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), key);
   }
-  assert.equal(i18n.split("£1.99").length - 1, 8);
-  assert.equal(i18n.split("£2.99").length - 1, 8);
+  assert.equal(i18n.split("£1.99").length - 1, 20);
+  assert.equal(i18n.split("£2.99").length - 1, 20);
+  assert.match(i18n, /short: "DE"/);
+  assert.match(i18n, /short: "PT"/);
+  assert.match(i18n, /short: "RU"/);
+  assert.match(i18n, /short: "IT"/);
+  assert.match(i18n, /short: "हिंदी"/);
+  assert.match(i18n, /short: "日本語"/);
 });
 
 test("UI chrome is translated; chess names stay English in the product", () => {
