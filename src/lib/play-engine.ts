@@ -24,6 +24,14 @@ export const PLAY_STRENGTH: Record<
   advanced: { thinkMs: 1400, depth: 5, randomize: false, slack: 0 },
 };
 
+/** Deeper same-engine search for Play-on Hint (user side only; does not move). */
+export const HINT_STRENGTH = {
+  thinkMs: 2500,
+  depth: 6,
+  randomize: false,
+  slack: 0,
+} as const;
+
 export type PlayEngine = {
   pickMove: (
     fen: string,
@@ -290,6 +298,33 @@ function searchBest(
     return toEngineMove(choice.m);
   }
   return toEngineMove(best);
+}
+
+/**
+ * Stronger suggestion for Play-on Hint — depth 6 / ~2.5s, no randomize.
+ * Does not go through pickMove thinkMs clamps (those cap advanced at 1800ms).
+ */
+export async function pickHintMove(fen: string): Promise<EngineMove | null> {
+  await new Promise<void>((resolve) => {
+    const later =
+      typeof globalThis.setTimeout === "function"
+        ? globalThis.setTimeout
+        : window.setTimeout;
+    later(resolve, 16);
+  });
+  try {
+    return (
+      searchBest(
+        fen,
+        HINT_STRENGTH.thinkMs,
+        HINT_STRENGTH.depth,
+        HINT_STRENGTH.randomize,
+        HINT_STRENGTH.slack,
+      ) ?? legalFallback(fen)
+    );
+  } catch {
+    return legalFallback(fen);
+  }
 }
 
 export function createLiteEngine(level: PlayLevel = "beginner"): PlayEngine {

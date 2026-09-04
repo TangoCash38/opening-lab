@@ -37,7 +37,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title={t("Play on")}>
-        {t("After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.")}
+        {t("After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet. Hint shows a stronger suggestion from the same engine (not Stockfish).")}
       </Block>
 
       <Block title={t("Reviews")}>
