@@ -159,31 +159,174 @@ html[data-color-scheme="dark"] {
   }
 
   .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     height: 2.5rem;
+    min-width: 3.25rem;
     max-width: 6rem;
     border: none;
     border-radius: 9999px;
-    background: var(--color-bg-subtle);
+    background-color: var(--color-bg-subtle);
     color: var(--color-fg-muted);
     font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    padding: 0 0.4rem 0 0.55rem;
+    padding: 0 1.15rem 0 0.55rem;
     line-height: 1;
-    appearance: none;
-    -webkit-appearance: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
     background-image: linear-gradient(45deg, transparent 50%, var(--color-fg-subtle) 50%),
       linear-gradient(135deg, var(--color-fg-subtle) 50%, transparent 50%);
     background-position: calc(100% - 0.72rem) calc(50% - 0.12rem),
       calc(100% - 0.48rem) calc(50% - 0.12rem);
     background-size: 0.28rem 0.28rem, 0.28rem 0.28rem;
     background-repeat: no-repeat;
-    padding-right: 1.15rem;
   }
 
   .lang-toggle:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+
+  .lang-toggle:active {
+    transform: scale(0.94);
+  }
+
+  .lang-picker-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  @media (min-width: 640px) {
+    .lang-picker-overlay {
+      align-items: center;
+    }
+  }
+
+  .lang-picker-sheet {
+    width: 100%;
+    max-width: 22rem;
+    max-height: min(34rem, 88vh);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-elevated);
+    box-shadow: 0 24px 48px rgba(40, 28, 12, 0.22);
+  }
+
+  .lang-picker-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 0.9rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .lang-picker-title {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-display, inherit);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .lang-picker-back {
+    min-height: 2.5rem;
+    padding: 0 0.85rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--color-bg-subtle);
+    color: var(--color-fg);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .lang-picker-back:focus-visible,
+  .lang-picker-close:focus-visible,
+  .lang-picker-option:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .lang-picker-close {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--color-bg-subtle);
+    color: var(--color-fg-muted);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .lang-picker-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lang-picker-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.65rem 0.9rem;
+    border: none;
+    border-radius: 0.85rem;
+    background: transparent;
+    color: var(--color-fg);
+    font-size: 1rem;
+    font-weight: 650;
+    text-align: start;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .lang-picker-option:active {
+    background: var(--color-bg-subtle);
+  }
+
+  .lang-picker-option-selected {
+    background: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg-elevated));
+  }
+
+  .lang-picker-option-label {
+    letter-spacing: 0.02em;
+  }
+
+  .lang-picker-check {
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .lang-picker-check-on {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: inset 0 0 0 0.22rem var(--color-bg-elevated);
   }
 
   .home-heading-row {
