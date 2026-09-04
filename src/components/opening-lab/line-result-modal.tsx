@@ -258,14 +258,19 @@ export function LineResultModal({
                 Play on
               </button>
               {showPrimary ? (
-                <button
-                  type="button"
-                  data-result-primary
-                  onClick={onPrimary}
-                  className="line-result-primary-btn"
-                >
-                  {primaryLabel}
-                </button>
+                <>
+                  <span className="line-result-actions-or" aria-hidden="true">
+                    {t("or")}
+                  </span>
+                  <button
+                    type="button"
+                    data-result-primary
+                    onClick={onPrimary}
+                    className="line-result-primary-btn"
+                  >
+                    {primaryLabel}
+                  </button>
+                </>
               ) : null}
             </div>
           ) : null}

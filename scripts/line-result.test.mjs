@@ -340,7 +340,11 @@ test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", ()
   assert.match(modal, /Pick a level, then Play on/);
   assert.match(modal, /play-level-chip/);
   assert.match(modal, /line-result-actions-row/);
+  assert.match(modal, /line-result-actions-or/);
+  assert.match(modal, /t\("or"\)/);
   assert.match(css, /\.line-result-actions-row/);
+  assert.match(css, /\.line-result-actions-or/);
+  assert.match(i18n, /or: "or"/);
   assert.match(css, /\.line-result-play-prompt \.play-level-chip/);
   assert.match(train, /resultCard\.kind === "end"/);
   assert.match(train, /setResultCard\(null\);\s*startPlayOn\(\)/);

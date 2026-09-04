@@ -1350,8 +1350,16 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
 /* Finish sheet: side-by-side Play on | primary; levels live in a nested prompt */
 .line-result-actions-row {
   display: flex;
-  gap: 0.45rem;
-  align-items: stretch;
+  gap: 0.35rem;
+  align-items: center;
+}
+.line-result-actions-or {
+  flex: 0 0 auto;
+  align-self: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
+  padding: 0 0.15rem;
 }
 .line-result-actions-row > button {
   flex: 1 1 0;
