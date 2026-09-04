@@ -86,3 +86,11 @@ test("status shows Choose a piece while the promo picker is open", () => {
   const i18n = readFileSync(join(root, "src/lib/i18n.ts"), "utf8");
   assert.match(i18n, /"Choose a piece": "Choose a piece"/);
 });
+
+test("Play-on promo picker is history-backed so Back cancels", () => {
+  assert.match(train, /useOverlayHistory\(/);
+  assert.match(train, /Boolean\(pendingPromo\)/);
+  assert.match(train, /"promo"/);
+  assert.match(train, /from "@\/hooks\/use-overlay-history"/);
+});
+

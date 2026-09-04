@@ -14,6 +14,7 @@ import {
   soundWin,
 } from "@/lib/sounds";
 import { useT, type Translate } from "@/lib/i18n";
+import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
@@ -263,6 +264,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     from: Square;
     to: Square;
   } | null>(null);
+
   const [playLevel, setPlayLevel] = useState<PlayLevel | null>("beginner");
   const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
@@ -275,6 +277,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     primaryLabel?: string;
     nextAction?: ResultNextAction;
   } | null>(null);
+
+  // Play-on promotion picker: Back cancels like tapping the dimmed board.
+  useOverlayHistory(
+    Boolean(pendingPromo),
+    () => {
+      setPendingPromo(null);
+      setStatus({ text: "Your move — playing on", cls: "" });
+    },
+    "promo",
+  );
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);

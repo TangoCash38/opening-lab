@@ -41,3 +41,9 @@ test("lang picker sheet has Back, dialog a11y, Escape, backdrop close", () => {
   assert.match(css, /\.lang-picker-back/);
   assert.match(css, /bg-elevated|color-bg-elevated/);
 });
+
+test("lang picker registers history-backed Back via useOverlayHistory", () => {
+  assert.match(picker, /useOverlayHistory\(open, close, "lang"\)/);
+  assert.match(picker, /from "@\/hooks\/use-overlay-history"/);
+});
+

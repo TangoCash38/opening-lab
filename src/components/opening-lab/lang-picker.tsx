@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { X } from "lucide-react";
+import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { LANG_OPTIONS, useI18n } from "@/lib/i18n";
 
 type Props = {
@@ -15,6 +16,9 @@ export function LangToggle({ className }: Props) {
   const current = LANG_OPTIONS.find((opt) => opt.id === lang) ?? LANG_OPTIONS[0];
 
   const close = () => setOpen(false);
+
+  // Hardware/gesture Back closes the sheet (Android Play WebView).
+  useOverlayHistory(open, close, "lang");
 
   useEffect(() => {
     if (!open) return;
