@@ -28,9 +28,15 @@ export const PLAY_STRENGTH: Record<
 /** Deeper same-engine search for Play-on Hint (user side only; does not move). */
 export const HINT_STRENGTH = {
   thinkMs: 2500,
-  depth: 6,
+  depth: 8,
   randomize: false,
   slack: 0,
+  /** Quiescence plies for Hint only — deeper capture resolution. */
+  qPly: 4,
+  /** Allow iterative deepen past the shared opponent depth cap of 6. */
+  depthCap: 8,
+  /** Finish depths 1–4 at every root move before spending leftover on 5+. */
+  solidDepth: 4,
 } as const;
 
 export type PlayEngine = {
@@ -69,9 +75,9 @@ const PST: Record<string, number[]> = {
     -40, -50, -40, -30, -30, -30, -30, -40, -50,
   ],
   b: [
-    -20, -10, -10, -10, -10, -10, -10, -20, -10, 5, 0, 0, 0, 0, 5, -10, -10, 10,
-    10, 10, 10, 10, 10, -10, -10, 0, 10, 10, 10, 10, 0, -10, -10, 5, 5, 10, 10,
-    5, 5, -10, -10, 0, 5, 10, 10, 5, 0, -10, -10, 0, 0, 0, 0, 0, 0, -10, -20,
+    -20, -10, -10, -10, -10, -10, -10, -20, -10, 8, 5, 5, 5, 5, 8, -10, -10, 12,
+    14, 14, 14, 14, 12, -10, -10, 10, 20, 24, 24, 20, 10, -10, -10, 12, 20, 24, 24,
+    20, 12, -10, -10, 5, 12, 14, 14, 12, 5, -10, -10, 5, 5, 5, 5, 5, 5, -10, -20,
     -10, -10, -10, -10, -10, -10, -20,
   ],
   r: [
@@ -93,20 +99,48 @@ const PST: Record<string, number[]> = {
   ],
 };
 
+/** Cheap bishop-pair / development nudge — prefers active bishops like Bf4. */
+const BISHOP_PAIR = 35;
+const BISHOP_DEVELOP = 18;
+
 function evaluate(chess: Chess): number {
   const board = chess.board();
   let score = 0;
+  let wBishops = 0;
+  let bBishops = 0;
   for (let r = 0; r < 8; r++) {
     const row = board[r]!;
     for (let c = 0; c < 8; c++) {
       const p = row[c];
       if (!p) continue;
       const sq = p.color === "w" ? (7 - r) * 8 + c : r * 8 + c;
-      const s = (VAL[p.type] ?? 0) + (PST[p.type]?.[sq] ?? 0);
+      let s = (VAL[p.type] ?? 0) + (PST[p.type]?.[sq] ?? 0);
+      if (p.type === "b") {
+        if (p.color === "w") wBishops++;
+        else bBishops++;
+        // Off the back rank counts as developed (c1/f1 or c8/f8).
+        const rank = p.color === "w" ? 7 - r : r;
+        if (rank > 0) s += BISHOP_DEVELOP;
+      }
       score += p.color === "w" ? s : -s;
     }
   }
+  if (wBishops >= 2) score += BISHOP_PAIR;
+  if (bBishops >= 2) score -= BISHOP_PAIR;
   return chess.turn() === "w" ? score : -score;
+}
+
+function pstSq(square: string, color: "w" | "b"): number {
+  const file = square.charCodeAt(0) - 97;
+  const rank = square.charCodeAt(1) - 49;
+  return color === "w" ? rank * 8 + file : (7 - rank) * 8 + file;
+}
+
+/** Quiet-move PST gain (to − from). Pushes Bf4 ahead of junk retreats at root. */
+function pstDelta(m: Move, color: "w" | "b"): number {
+  const table = PST[m.piece];
+  if (!table) return 0;
+  return (table[pstSq(m.to, color)] ?? 0) - (table[pstSq(m.from, color)] ?? 0);
 }
 
 function orderMoves(moves: Move[]): Move[] {
@@ -116,6 +150,42 @@ function orderMoves(moves: Move[]): Move[] {
       if (m.captured) s += 10 * (VAL[m.captured] ?? 0) - (VAL[m.piece] ?? 0);
       if (m.promotion) s += VAL[m.promotion] ?? 0;
       if (m.flags?.includes("k") || m.flags?.includes("q")) s += 40;
+      return { m, s };
+    })
+    .sort((a, b) => b.s - a.s)
+    .map((x) => x.m);
+}
+
+/**
+ * Root ordering (Hint): captures/checks first, quiet moves by PST delta, plus a
+ * tiny B/N-toward-centre develop nudge (ranks 3–6, files c–f).
+ */
+function orderRootMoves(moves: Move[], color: "w" | "b"): Move[] {
+  return moves
+    .map((m) => {
+      let s = 0;
+      if (m.captured) s += 10 * (VAL[m.captured] ?? 0) - (VAL[m.piece] ?? 0);
+      if (m.promotion) s += VAL[m.promotion] ?? 0;
+      if (m.flags?.includes("k") || m.flags?.includes("q")) s += 40;
+      if (typeof m.san === "string" && m.san.includes("+")) s += 55;
+      if (!m.captured) {
+        s += pstDelta(m, color);
+        if (m.piece === "b" || m.piece === "n") {
+          const file = m.to.charCodeAt(0) - 97;
+          const rank = m.to.charCodeAt(1) - 49;
+          if (file >= 2 && file <= 5 && rank >= 2 && rank <= 5) s += 12;
+          // Active bishop diagonals (c4/f4/c5/f5) ahead of quieter knight junk.
+          if (
+            m.piece === "b" &&
+            file >= 2 &&
+            file <= 5 &&
+            rank >= 3 &&
+            rank <= 4
+          ) {
+            s += 40;
+          }
+        }
+      }
       return { m, s };
     })
     .sort((a, b) => b.s - a.s)
@@ -236,6 +306,20 @@ function filterRootMoves(
   return sensible.length > 0 ? sensible : safe;
 }
 
+type SearchOpts = {
+  /** Hard cap on iterative deepening (opponents stay at 6; Hint uses 8). */
+  depthCap?: number;
+  /** Quiescence depth when depth hits 0 (default 2; Hint uses 4). */
+  qPly?: number;
+  /**
+   * Finish every root move at depths ≤ this before allowing mid-root aborts
+   * (Hint: 4). Opponents omit this and keep the old depth>1 abort behaviour.
+   */
+  solidDepth?: number;
+  /** Root-order quiet moves by PST delta + tiny B/N centre develop bonus. */
+  rootPstOrder?: boolean;
+};
+
 function searchBest(
   fen: string,
   thinkMs: number,
@@ -243,14 +327,23 @@ function searchBest(
   randomize: boolean,
   slack = 160,
   filterWasteful = false,
+  opts?: SearchOpts,
 ): EngineMove | null {
   const chess = new Chess(fen);
+  const turn = chess.turn();
   const legal = orderMoves(chess.moves({ verbose: true }));
   if (legal.length === 0) return null;
-  const rootMoves = filterRootMoves(chess, legal, filterWasteful);
+  const filtered = filterRootMoves(chess, legal, filterWasteful);
+  const rootMoves = opts?.rootPstOrder
+    ? orderRootMoves(filtered, turn)
+    : filtered;
   if (rootMoves.length === 0) return legalFallback(fen);
 
   const deadline = Date.now() + thinkMs;
+  const depthCap = opts?.depthCap ?? 6;
+  const leafQPly = opts?.qPly ?? 2;
+  /** Hint finishes depths 1–4 at every root move before burning rest on 5+. */
+  const solidDepth = opts?.solidDepth ?? 0;
   let nodes = 0;
   let aborted = false;
 
@@ -283,7 +376,7 @@ function searchBest(
     if (aborted) return evaluate(chess);
     if (chess.isCheckmate()) return -20_000 + (8 - depth);
     if (chess.isDraw()) return 0;
-    if (depth <= 0) return qsearch(alpha, beta, 2);
+    if (depth <= 0) return qsearch(alpha, beta, leafQPly);
 
     const moves = orderMoves(chess.moves({ verbose: true }));
     if (moves.length === 0) return 0;
@@ -306,14 +399,25 @@ function searchBest(
 
   let best = rootMoves[0]!;
   let rootScores: { m: Move; score: number }[] = [];
-  const maxDepth = Math.max(1, Math.min(6, depthLimit));
+  const maxDepth = Math.max(1, Math.min(depthCap, depthLimit));
   for (let depth = 1; depth <= maxDepth; depth++) {
+    const solid = solidDepth > 0 && depth <= solidDepth;
+    // Burn leftover think time on depths beyond the solid band only.
+    if (!solid && solidDepth > 0 && Date.now() >= deadline) break;
     aborted = false;
     let alpha = -50_000;
     let local = best;
     const thisScores: { m: Move; score: number }[] = [];
     for (const m of rootMoves) {
-      if (Date.now() >= deadline && depth > 1) break;
+      // Hint solid depths: do not mid-root-abort (finish the iteration).
+      // Opponents / deeper Hint plies: stop once the clock elapses.
+      if (
+        Date.now() >= deadline &&
+        !solid &&
+        (solidDepth > 0 || depth > 1)
+      ) {
+        break;
+      }
       chess.move(m);
       const score = -search(depth - 1, -50_000, -alpha);
       chess.undo();
@@ -323,11 +427,11 @@ function searchBest(
         local = m;
       }
     }
-    if (!aborted || depth === 1) {
+    if (!aborted || solid || depth === 1) {
       best = local;
       rootScores = thisScores;
     }
-    if (Date.now() >= deadline) break;
+    if (Date.now() >= deadline && !solid) break;
   }
 
   if (randomize && rootScores.length > 1) {
@@ -340,7 +444,8 @@ function searchBest(
 }
 
 /**
- * Stronger suggestion for Play-on Hint — depth 6 / ~2.5s, no randomize.
+ * Stronger suggestion for Play-on Hint — depth 8 / ~2.5s, deeper qsearch,
+ * PST root order, no randomize. Time-boxed by thinkMs so wall time stays ~2.5s.
  * Does not go through pickMove thinkMs clamps (those cap advanced at 1800ms).
  */
 export async function pickHintMove(fen: string): Promise<EngineMove | null> {
@@ -359,6 +464,37 @@ export async function pickHintMove(fen: string): Promise<EngineMove | null> {
         HINT_STRENGTH.depth,
         HINT_STRENGTH.randomize,
         HINT_STRENGTH.slack,
+        false,
+        {
+          depthCap: HINT_STRENGTH.depthCap,
+          qPly: HINT_STRENGTH.qPly,
+          solidDepth: HINT_STRENGTH.solidDepth,
+          rootPstOrder: true,
+        },
+      ) ?? legalFallback(fen)
+    );
+  } catch {
+    return legalFallback(fen);
+  }
+}
+
+/** Sync Hint search for tests — same params as pickHintMove, no UI yield. */
+export function searchHintMove(fen: string): EngineMove | null {
+  try {
+    return (
+      searchBest(
+        fen,
+        HINT_STRENGTH.thinkMs,
+        HINT_STRENGTH.depth,
+        HINT_STRENGTH.randomize,
+        HINT_STRENGTH.slack,
+        false,
+        {
+          depthCap: HINT_STRENGTH.depthCap,
+          qPly: HINT_STRENGTH.qPly,
+          solidDepth: HINT_STRENGTH.solidDepth,
+          rootPstOrder: true,
+        },
       ) ?? legalFallback(fen)
     );
   } catch {

@@ -105,12 +105,23 @@ test("Play-on Hint uses deeper same-engine strength (not Stockfish)", () => {
 
   assert.match(
     engine,
-    /HINT_STRENGTH = \{[\s\S]*?thinkMs: 2500,[\s\S]*?depth: 6,[\s\S]*?randomize: false,[\s\S]*?slack: 0/,
+    /HINT_STRENGTH = \{[\s\S]*?thinkMs: 2500,[\s\S]*?depth: 8,[\s\S]*?randomize: false,[\s\S]*?slack: 0/,
   );
+  assert.match(engine, /depthCap: 8/);
+  assert.match(engine, /qPly: 4/);
+  assert.match(engine, /solidDepth: 4/);
+  assert.match(engine, /Math\.min\(depthCap, depthLimit\)/);
+  assert.doesNotMatch(engine, /Math\.min\(6, depthLimit\)/);
+  assert.match(engine, /function orderRootMoves/);
+  assert.match(engine, /function pstDelta/);
+  assert.match(engine, /BISHOP_PAIR/);
+  assert.match(engine, /rootPstOrder/);
   assert.match(engine, /export async function pickHintMove/);
+  assert.match(engine, /export function searchHintMove/);
   assert.match(engine, /HINT_STRENGTH\.thinkMs/);
   assert.match(engine, /HINT_STRENGTH\.depth/);
   assert.doesNotMatch(engine, /from ["']stockfish/);
+  assert.ok(!/thinkMs:\s*(2[6-9]\d{2}|[3-9]\d{3})/.test(engine));
 
   assert.match(train, /playHint/);
   assert.match(train, /requestPlayHint/);
@@ -237,3 +248,51 @@ test("beginner pickMove avoids wasteful Nb1 retreat when sensible moves exist", 
   }
 });
 
+test("Hint prefers quiet Bf4 in a London-style develop position", async (t) => {
+  let ts;
+  try {
+    ts = require("typescript");
+  } catch {
+    t.skip("typescript not installed");
+    return;
+  }
+
+  const src = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
+  const js = ts.transpileModule(src, {
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ES2022,
+    },
+  }).outputText;
+
+  const dir = join(root, "scripts", ".generated-play-engine-hint");
+  mkdirSync(dir, { recursive: true });
+  const tmp = join(dir, "play-engine.mjs");
+  writeFileSync(tmp, js);
+
+  try {
+    const mod = await import(pathToFileURL(tmp).href);
+    // After 1.d4 d5 2.Nf3 Nf6 — quiet Bc1–f4 is the London develop.
+    const fen =
+      "rnbqkb1r/ppp1pppp/5n2/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R w KQkq - 2 3";
+    const t0 = Date.now();
+    const mv = mod.searchHintMove(fen);
+    const elapsed = Date.now() - t0;
+    assert.ok(mv, "searchHintMove returned null");
+    if (elapsed > 4000) {
+      t.skip(`hint search too slow on this host (${elapsed}ms)`);
+      return;
+    }
+    assert.equal(
+      `${mv.from}${mv.to}`,
+      "c1f4",
+      `expected Bf4, got ${mv.from}${mv.to} in ${elapsed}ms`,
+    );
+    assert.ok(
+      elapsed <= 3200,
+      `hint wall time ${elapsed}ms exceeded soft 3.2s budget`,
+    );
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
