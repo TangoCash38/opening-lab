@@ -2,6 +2,12 @@ import { ChevronDown, Maximize2, Minimize2, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
 
+type PlayOnLevelOption = {
+  id: string;
+  label: string;
+  aria?: string;
+};
+
 type Props = {
   kind: "wrong" | "end";
   title: string;
@@ -14,6 +20,11 @@ type Props = {
   onAction?: () => void;
   /** Stronger dim when the trainer board is fullscreen behind the popup. */
   boardExpanded?: boolean;
+  /** Play on controls for end sheets only (Line complete / Practice done / missed). */
+  playOnLevels?: PlayOnLevelOption[];
+  playOnLevel?: string;
+  onPlayOnLevel?: (id: string) => void;
+  onPlayOn?: () => void;
 };
 
 export function LineResultModal({
@@ -27,9 +38,16 @@ export function LineResultModal({
   onPrimary,
   onAction,
   boardExpanded = false,
+  playOnLevels,
+  playOnLevel,
+  onPlayOnLevel,
+  onPlayOn,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
+  const showPlayOn =
+    kind === "end" &&
+    Boolean(playOnLevels?.length && onPlayOn && onPlayOnLevel);
   const handleAction = onAction ?? onClose;
   const isWrong = kind === "wrong";
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -171,8 +189,43 @@ export function LineResultModal({
           </div>
         ) : null}
         <div
-          className={`shrink-0 border-t border-border px-5 py-3${showPrimary ? " space-y-2" : ""}`}
+          className={`shrink-0 border-t border-border px-5 py-3${
+            showPrimary || showPlayOn ? " space-y-2" : ""
+          }`}
         >
+          {showPlayOn ? (
+            <div className="line-result-play-on" data-result-play-on>
+              <p className="play-on-caption m-0">Pick a level, then Play on</p>
+              <div
+                className="play-level-row"
+                role="group"
+                aria-label="Computer strength"
+              >
+                {playOnLevels!.map((level) => (
+                  <button
+                    key={level.id}
+                    type="button"
+                    onClick={() => onPlayOnLevel?.(level.id)}
+                    className={`play-level-chip${
+                      playOnLevel === level.id ? " is-on" : ""
+                    }`}
+                    aria-label={level.aria ?? level.label}
+                    aria-pressed={playOnLevel === level.id}
+                  >
+                    {level.label}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                data-result-play-on-btn
+                onClick={onPlayOn}
+                className="play-on-btn"
+              >
+                Play on
+              </button>
+            </div>
+          ) : null}
           {showPrimary ? (
             <button
               type="button"
@@ -188,7 +241,7 @@ export function LineResultModal({
             data-result-dismiss
             onClick={handleAction}
             className={
-              showPrimary
+              showPrimary || showPlayOn
                 ? "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
                 : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
             }

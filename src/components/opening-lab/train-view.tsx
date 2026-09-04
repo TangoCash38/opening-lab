@@ -88,15 +88,15 @@ const PLAY_THINK_MS: Record<PlayLevel, number> = {
 };
 
 const PLAY_LEVEL_LABEL: Record<PlayLevel, string> = {
-  beginner: "800",
-  intermediate: "1200",
-  advanced: "1800",
+  beginner: "Level 1",
+  intermediate: "Level 2",
+  advanced: "Level 3",
 };
 
 const PLAY_LEVEL_ARIA: Record<PlayLevel, string> = {
-  beginner: "Beginner, about 800.",
-  intermediate: "Intermediate, about 1200.",
-  advanced: "Advanced, about 1800.",
+  beginner: "Level 1, about 800.",
+  intermediate: "Level 2, about 1200.",
+  advanced: "Level 3, about 1800.",
 };
 
 const PLAY_LEVELS: PlayLevel[] = ["beginner", "intermediate", "advanced"];
@@ -295,6 +295,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     setPlayLevel("beginner");
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   const expectedMove = useCallback(
     (g: Chess, idx: number): Move | null => {
       if (idx >= line.plies.length) return null;
@@ -339,6 +343,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       setBusy(false);
       setLastMove(null);
       setResultCard(null);
+      setBoardExpanded(false);
       setHintsReady(true);
       setGame(new Chess());
       setPlyIndex(0);
@@ -1081,6 +1086,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         ) : null}
         <div className={boardExpanded ? "board-fs-stage" : undefined}>
           <ChessBoard
+            key={session}
             game={displayGame}
             flip={line.side === "b"}
             selected={viewingHistory ? null : selected}
@@ -1257,7 +1263,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         <div className="trainer-primary">
           {showPlayOn ? (
             <>
-              <p className="play-on-caption">Pick strength, then Play on</p>
+              <p className="play-on-caption">Pick a level, then Play on</p>
               <div className="play-level-row" role="group" aria-label="Computer strength">
                 {PLAY_LEVELS.map((level) => (
                   <button
@@ -1302,6 +1308,29 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           actionLabel={resultCard.actionLabel}
           primaryLabel={resultCard.primaryLabel}
           boardExpanded={boardExpanded}
+          playOnLevels={
+            resultCard.kind === "end"
+              ? PLAY_LEVELS.map((id) => ({
+                  id,
+                  label: PLAY_LEVEL_LABEL[id],
+                  aria: PLAY_LEVEL_ARIA[id],
+                }))
+              : undefined
+          }
+          playOnLevel={resultCard.kind === "end" ? (playLevel ?? "beginner") : undefined}
+          onPlayOnLevel={
+            resultCard.kind === "end"
+              ? (id) => setPlayLevel(id as PlayLevel)
+              : undefined
+          }
+          onPlayOn={
+            resultCard.kind === "end"
+              ? () => {
+                  setResultCard(null);
+                  startPlayOn();
+                }
+              : undefined
+          }
           onClose={() => setResultCard(null)}
           onAction={
             resultCard.nextAction === "learn"

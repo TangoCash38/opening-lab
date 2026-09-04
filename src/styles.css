@@ -1347,6 +1347,21 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
   background: rgba(20, 18, 16, 0.55);
 }
 
+/* Play on inside finish / result sheet */
+.line-result-play-on {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-bottom: 0.15rem;
+}
+.line-result-play-on .play-on-caption {
+  margin: 0;
+  text-align: center;
+}
+.line-result-play-on .play-on-btn {
+  width: 100%;
+}
+
 .line-result-sheet {
   position: relative;
   display: flex;

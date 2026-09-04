@@ -98,7 +98,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /£1\.99/);
 
   assert.match(guide, /t\("Play on"\)/);
-  assert.match(guide, /After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup\. A clean Test still turns the line green\. Play on does not complete the line\./);
+  assert.match(guide, /After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup\. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800\. A clean Test still turns the line green\. Play on does not complete the line\. Play on is also on the finish sheet\./);
   assert.match(guide, /800/);
   assert.match(guide, /1200/);
   assert.match(guide, /1800/);
@@ -1914,7 +1914,7 @@ test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it
   assert.match(feedback, /If we confirm your move is book/);
 });
 
-test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still needs a clean Test", () => {
+test("Play on chips are Level 1 / 2 / 3 after Practice or Test; green still needs a clean Test", () => {
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
     "utf8",
@@ -1924,17 +1924,19 @@ test("Play on chips are 800 / 1200 / 1800 after Practice or Test; green still ne
 
   assert.match(train, /showPlayOn = bookDone;/);
   assert.doesNotMatch(train, /showPlayOn = bookDone && mode === "practice"/);
-  assert.match(train, /Pick strength, then Play on/);
+  assert.match(train, /Pick a level, then Play on/);
   assert.match(train, /Practice done — Play on, or Test with no hints/);
   assert.match(train, /Finished, but you missed a move — Play on, or Test again to go green/);
   assert.match(train, /Line complete — well done!/);
   assert.match(train, /if \(practiceMissedRef\.current\)/);
   assert.match(train, /onLineComplete\?\.\(\)/);
   assert.doesNotMatch(train, /bookDone && mode === "practice" && !showPlayOn/);
-  assert.match(train, /beginner: "800"/);
-  assert.match(train, /intermediate: "1200"/);
-  assert.match(train, /advanced: "1800"/);
-  assert.match(train, /Beginner, about 800\./);
+  assert.match(train, /beginner: "Level 1"/);
+  assert.match(train, /intermediate: "Level 2"/);
+  assert.match(train, /advanced: "Level 3"/);
+  assert.match(train, /Level 1, about 800\./);
+  assert.match(train, /Level 2, about 1200\./);
+  assert.match(train, /Level 3, about 1800\./);
   assert.match(train, /useState<PlayLevel \| null>\("beginner"\)/);
   assert.doesNotMatch(train, /cyclePlayLevel/);
   assert.doesNotMatch(train, /strength-cycle/);

@@ -143,8 +143,8 @@ const en: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.",
   Reviews: "Reviews",
   "A clean Test turns the line green. You can train it again anytime.":
     "A clean Test turns the line green. You can train it again anytime.",
@@ -260,8 +260,8 @@ const es: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Sin pistas. Juega solo tu bando. Las casillas incorrectas parpadean en rojo hasta la jugada de libro. El % de la lista es una racha de Test de jugadas de libro correctas desde el inicio de ese Test; una jugada errónea congela el % ahí. 100% / verde solo tras un Test limpio con cero errores. Si crees que una jugada rechazada es de libro, envíala con Wrong move? Si lo confirmamos, un pack es gratis.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Después de Practice o Test, elige 800, 1200 o 1800 y Play on desde la posición. Un Test limpio sigue poniendo la línea en verde. Play on no completa la línea.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Después de Practice o Test, elige Level 1, 2 o 3 y Play on desde la posición. Level 1 es unos 800, Level 2 unos 1200, Level 3 unos 1800. Un Test limpio sigue poniendo la línea en verde. Play on no completa la línea. Play on también está en la hoja final.",
   Reviews: "Repasos",
   "A clean Test turns the line green. You can train it again anytime.":
     "Un Test limpio pone la línea en verde. Puedes entrenarla otra vez cuando quieras.",
@@ -377,8 +377,8 @@ const zh: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "没有提示。只下你的一方。错格会闪红，直到走出书谱着法。棋包列表的 % 是该次 Test 从开头起连续正确书谱着的连胜；走错会冻结该 %。仅在零失误的干净 Test 后才是 100% / 绿色。若你认为被拒的着法是书谱，用 Wrong move? 发给我们。确认后可获赠一个棋包。",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Practice 或 Test 之后，选择 800、1200 或 1800，从该局面 Play on。干净的 Test 仍会让线路变绿。Play on 不会完成该线路。",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Practice 或 Test 之后，选择 Level 1、2 或 3，从该局面 Play on。Level 1 约 800 强度，Level 2 约 1200，Level 3 约 1800。干净的 Test 仍会让线路变绿。Play on 不会完成该线路。完成页也可 Play on。",
   Reviews: "复习",
   "A clean Test turns the line green. You can train it again anytime.":
     "干净的 Test 会让线路变绿。你可以随时再练。",
@@ -494,8 +494,8 @@ const fr: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Pas d'indices. Joue seulement ton camp. Les cases fausses clignotent en rouge jusqu'au coup du livre. Le % de la liste est une série Test de coups du livre corrects depuis le début de ce Test ; un mauvais coup y fige le %. 100 % / vert seulement après un Test propre sans faute. Si tu penses qu'un coup refusé est du livre, envoie-le avec Wrong move ? Si on le confirme, un pack est offert.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Après Practice ou Test, choisis 800, 1200 ou 1800 et Play on depuis la position. Un Test propre met toujours la ligne en vert. Play on ne termine pas la ligne.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Après Practice ou Test, choisis Level 1, 2 ou 3 et Play on depuis la position. Level 1 vaut environ 800, Level 2 environ 1200, Level 3 environ 1800. Un Test propre met toujours la ligne en vert. Play on ne termine pas la ligne. Play on est aussi sur la fiche de fin.",
   Reviews: "Révisions",
   "A clean Test turns the line green. You can train it again anytime.":
     "Un Test propre met la ligne en vert. Tu peux la réentraîner quand tu veux.",
@@ -611,8 +611,8 @@ const de: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Keine Hinweise. Spiele nur deine Seite. Falsche Felder blinken rot, bis du den Buchzug findest. Die Listen-% ist eine Test-Serie korrekter Buchzüge ab Start dieses Tests; ein Fehlzug friert die % dort ein. 100 % / grün nur nach einem sauberen Test ohne Fehler. Wenn du denkst, ein abgelehnter Zug ist Buch, schick ihn mit Wrong move? Bestätigen wir ihn, gibt's ein Pack kostenlos.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Nach Practice oder Test wählst du 800, 1200 oder 1800 und Play on von der Stellung. Ein sauberer Test macht die Linie trotzdem grün. Play on schließt die Linie nicht ab.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Nach Practice oder Test wählst du Level 1, 2 oder 3 und Play on von der Stellung. Level 1 ist etwa 800, Level 2 etwa 1200, Level 3 etwa 1800. Ein sauberer Test macht die Linie trotzdem grün. Play on schließt die Linie nicht ab. Play on gibt es auch auf dem Abschlussblatt.",
   Reviews: "Wiederholungen",
   "A clean Test turns the line green. You can train it again anytime.":
     "Ein sauberer Test macht die Linie grün. Du kannst sie jederzeit wieder trainieren.",
@@ -728,8 +728,8 @@ const pt: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Sem dicas. Jogue só o seu lado. Casas erradas piscam em vermelho até o lance de livro. O % da lista é uma sequência de Test de lances de livro corretos desde o início desse Test; um lance errado congela o % ali. 100% / verde só após um Test limpo com zero erros. Se achar que um lance recusado é de livro, envie com Wrong move? Se confirmarmos, um pack é grátis.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Depois de Practice ou Test, escolha 800, 1200 ou 1800 e Play on da posição. Um Test limpo ainda deixa a linha verde. Play on não completa a linha.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Depois de Practice ou Test, escolha Level 1, 2 ou 3 e Play on da posição. Level 1 é cerca de 800, Level 2 cerca de 1200, Level 3 cerca de 1800. Um Test limpo ainda deixa a linha verde. Play on não completa a linha. Play on também está na folha final.",
   Reviews: "Revisões",
   "A clean Test turns the line green. You can train it again anytime.":
     "Um Test limpo deixa a linha verde. Você pode treinar de novo quando quiser.",
@@ -844,8 +844,8 @@ const ru: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Без подсказок. Играй только свою сторону. Неверные поля вспыхивают красным, пока не найдёшь книжный ход. % в списке паков — серия Test верных книжных ходов с начала этого Test; ошибка замораживает % там. 100% / зелёный только после чистого Test без ошибок. Если думаешь, что отклонённый ход книжный, пришли его через Wrong move? Подтвердим — пак в подарок.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "После Practice или Test выбери 800, 1200 или 1800 и Play on с позиции. Чистый Test всё равно делает линию зелёной. Play on не завершает линию.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "После Practice или Test выбери Level 1, 2 или 3 и Play on с позиции. Level 1 — около 800, Level 2 — около 1200, Level 3 — около 1800. Чистый Test всё равно делает линию зелёной. Play on не завершает линию. Play on также есть на финальном экране.",
   Reviews: "Повторения",
   "A clean Test turns the line green. You can train it again anytime.":
     "Чистый Test делает линию зелёной. Можешь тренировать снова когда угодно.",
@@ -961,8 +961,8 @@ const it: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Niente suggerimenti. Giochi solo il tuo lato. Le case sbagliate lampeggiano in rosso fino alla mossa di libro. La % in lista è una serie Test di mosse di libro corrette dall'inizio di quel Test; una mossa sbagliata congela la % lì. 100% / verde solo dopo un Test pulito a zero errori. Se pensi che una mossa rifiutata sia di libro, inviala con Wrong move? Se confermiamo, un pack è gratis.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Dopo Practice o Test, scegli 800, 1200 o 1800 e Play on dalla posizione. Un Test pulito mette comunque la linea in verde. Play on non completa la linea.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Dopo Practice o Test, scegli Level 1, 2 o 3 e Play on dalla posizione. Level 1 è circa 800, Level 2 circa 1200, Level 3 circa 1800. Un Test pulito mette comunque la linea in verde. Play on non completa la linea. Play on è anche sul foglio di fine.",
   Reviews: "Ripassi",
   "A clean Test turns the line green. You can train it again anytime.":
     "Un Test pulito mette la linea in verde. Puoi allenarla di nuovo quando vuoi.",
@@ -1078,8 +1078,8 @@ const hi: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "कोई संकेत नहीं। केवल अपना पक्ष चलें। गलत घर लाल चमकते हैं जब तक बुक चाल न मिले। पैक-सूची का % उस Test की शुरुआत से सही बुक चालों की स्ट्रीक है; गलत चाल वहीं % रोक देती है। 100% / हरा केवल शून्य गलती वाले साफ़ Test के बाद। अगर रद्द चाल बुक लगे तो Wrong move? से भेजें। पुष्टि हुई तो एक पैक मुफ़्त।",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Practice या Test के बाद 800, 1200 या 1800 चुनें और सेटअप से Play on। साफ़ Test लाइन को हरा ही करता है। Play on लाइन पूरी नहीं करता।",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Practice या Test के बाद Level 1, 2 या 3 चुनें और सेटअप से Play on। Level 1 लगभग 800, Level 2 लगभग 1200, Level 3 लगभग 1800। साफ़ Test लाइन को हरा ही करता है। Play on लाइन पूरी नहीं करता। फिनिश शीट पर भी Play on है।",
   Reviews: "दोहराव",
   "A clean Test turns the line green. You can train it again anytime.":
     "साफ़ Test लाइन को हरा कर देता है। आप इसे कभी भी फिर ट्रेन कर सकते हैं।",
@@ -1192,8 +1192,8 @@ const ja: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "ヒントなし。自分の手番だけ指します。違うマスは定跡の手が見つかるまで赤く点滅します。パック一覧の % はその Test 開始からの正しい定跡の連続です。間違えるとその % で止まります。100% / 緑はミスなしの Test のあとだけです。拒否された手が定跡だと思う場合は Wrong move? で送ってください。確認できればパックを1つ進呈します。",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Practice または Test のあと、800・1200・1800 を選んでその局面から Play on。ミスなしの Test はラインを緑にします。Play on ではラインは完了しません。",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Practice または Test のあと、Level 1・2・3 を選んでその局面から Play on。Level 1 は約 800、Level 2 は約 1200、Level 3 は約 1800。ミスなしの Test はラインを緑にします。Play on ではラインは完了しません。終了シートでも Play on できます。",
   Reviews: "復習",
   "A clean Test turns the line green. You can train it again anytime.":
     "ミスなしの Test でラインが緑になります。いつでも再トレーニングできます。",
@@ -1308,8 +1308,8 @@ const ar: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "بلا تلميحات. العب جانبك فقط. المربعات الخاطئة تومض بالأحمر حتى تجد حركة الكتاب. نسبة % في قائمة الحزم هي سلسلة Test من حركات الكتاب الصحيحة من بداية ذلك Test؛ الحركة الخاطئة تجمّد النسبة هناك. 100% / أخضر فقط بعد Test نظيف بلا أخطاء. إن ظننت أن حركة مرفوضة من الكتاب، أرسلها عبر Wrong move؟ إن أكدناها، تحصل على حزمة مجانًا.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "بعد Practice أو Test، اختر 800 أو 1200 أو 1800 وPlay on من الوضع. Test نظيف ما زال يجعل الخط أخضر. Play on لا يُكمل الخط.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "بعد Practice أو Test، اختر Level 1 أو 2 أو 3 وPlay on من الوضع. Level 1 حوالي 800، Level 2 حوالي 1200، Level 3 حوالي 1800. Test نظيف ما زال يجعل الخط أخضر. Play on لا يُكمل الخط. Play on متاح أيضًا في ورقة الإنهاء.",
   Reviews: "مراجعات",
   "A clean Test turns the line green. You can train it again anytime.":
     "Test نظيف يجعل الخط أخضر. يمكنك التدرّب عليه مجددًا في أي وقت.",
@@ -1425,8 +1425,8 @@ const tr: Dict = {
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "İpucu yok. Yalnızca kendi tarafını oyna. Yanlış kareler kitap hamlesini bulana kadar kırmızı yanıp söner. Liste % değeri, o Test'in başından itibaren doğru kitap hamleleri streak'idir; yanlış hamle %'yi orada dondurur. %100 / yeşil yalnızca sıfır hatalı temiz bir Test'ten sonra. Reddedilen hamlenin kitap olduğunu düşünüyorsan Wrong move? ile gönder. Onaylarsak bir paket bedava.",
   "Play on": "Play on",
-  "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
-    "Practice veya Test’ten sonra 800, 1200 veya 1800 seçip konumdan Play on. Temiz Test hattı yine yeşile çevirir. Play on hattı tamamlamaz.",
+  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet.":
+    "Practice veya Test’ten sonra Level 1, 2 veya 3 seçip konumdan Play on. Level 1 yaklaşık 800, Level 2 yaklaşık 1200, Level 3 yaklaşık 1800. Temiz Test hattı yine yeşile çevirir. Play on hattı tamamlamaz. Play on bitiş ekranında da var.",
   Reviews: "Tekrarlar",
   "A clean Test turns the line green. You can train it again anytime.":
     "Temiz Test hattı yeşile çevirir. İstediğin zaman yeniden çalışabilirsin.",
