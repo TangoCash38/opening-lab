@@ -37,7 +37,7 @@ type Vars = Record<string, string | number>;
 export type Translate = (key: string, vars?: Vars) => string;
 
 const GYM_INTRO =
-  "Opening Lab is a strict book-move trainer. Practice with the yellow hint. Test with none. Only the book move counts. Then Play on from the setup if you want.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed. It is a solid ground to take your study further — books, games, engines — not a shortcut to having the whole opening down.";
+  "Opening Lab is a strict book-move trainer. Practice with the green hint. Test with none. Only the book move counts. Then Play on from the setup if you want.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed. It is a solid ground to take your study further — books, games, engines — not a shortcut to having the whole opening down.";
 
 const en: Dict = {
   "Train openings the strict way": "Train openings the strict way",
@@ -137,8 +137,8 @@ const en: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Each pack trains one opening. You play the book side.",
   "Practice mode": "Practice mode",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.",
   "Test mode": "Test mode",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.",
@@ -221,7 +221,7 @@ const es: Dict = {
   Close: "Cerrar",
   "How the gym works": "Cómo funciona el gimnasio",
   [GYM_INTRO]:
-    "Opening Lab es un entrenador estricto de jugadas de libro. Practica con la pista amarilla. Haz Test sin pistas. Solo cuenta la jugada de libro. Luego Play on desde la posición si quieres.\n\nAsí se construye un repertorio que funciona: las respuestas de libro, no una niebla de ideas. Encontrar esas jugadas sin pista hace más informadas tus decisiones tempranas. Es una base sólida para seguir con libros, partidas y motores, no un atajo para dominar toda la apertura.",
+    "Opening Lab es un entrenador estricto de jugadas de libro. Practica con la pista verde. Haz Test sin pistas. Solo cuenta la jugada de libro. Luego Play on desde la posición si quieres.\n\nAsí se construye un repertorio que funciona: las respuestas de libro, no una niebla de ideas. Encontrar esas jugadas sin pista hace más informadas tus decisiones tempranas. Es una base sólida para seguir con libros, partidas y motores, no un atajo para dominar toda la apertura.",
   Continue: "Continuar",
   "Don't show again": "No volver a mostrar",
   "Wrong move": "Jugada incorrecta",
@@ -259,8 +259,8 @@ const es: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Cada pack entrena una apertura. Juegas el bando de libro.",
   "Practice mode": "Modo Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "Las pistas amarillas muestran la siguiente jugada. El rival responde solo. Sigue la línea exacta. Practice no completa la línea.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Las pistas verdes muestran la siguiente jugada. El rival responde solo. Sigue la línea exacta. Practice no completa la línea.",
   "Test mode": "Modo Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Sin pistas. Juega solo tu bando. Las casillas incorrectas parpadean en rojo hasta la jugada de libro. El % de la lista es una racha de Test de jugadas de libro correctas desde el inicio de ese Test; una jugada errónea congela el % ahí. 100% / verde solo tras un Test limpio con cero errores. Si crees que una jugada rechazada es de libro, envíala con Wrong move? Si lo confirmamos, un pack es gratis.",
@@ -338,7 +338,7 @@ const zh: Dict = {
   Close: "关闭",
   "How the gym works": "训练馆怎么用",
   [GYM_INTRO]:
-    "Opening Lab 是严格的书谱着法训练器。Practice 看黄色提示。Test 不给提示。只算书谱着法。然后如需可以从该局面 Play on。\n\n这样练出能用的开局储备：主要书谱应对，而不是一团模糊想法。不看提示找出这些着法，会让你的开局选择更有依据。这是继续读书、对局、用引擎的扎实地基，不是把整个开局一次吃透的捷径。",
+    "Opening Lab 是严格的书谱着法训练器。Practice 看绿色提示。Test 不给提示。只算书谱着法。然后如需可以从该局面 Play on。\n\n这样练出能用的开局储备：主要书谱应对，而不是一团模糊想法。不看提示找出这些着法，会让你的开局选择更有依据。这是继续读书、对局、用引擎的扎实地基，不是把整个开局一次吃透的捷径。",
   Continue: "继续",
   "Don't show again": "不再显示",
   "Wrong move": "走错了",
@@ -376,8 +376,8 @@ const zh: Dict = {
   "Each pack trains one opening. You play the book side.":
     "每个棋包训练一个开局。你下书谱一方。",
   "Practice mode": "Practice 模式",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "黄色提示显示下一着。对手自动应对。跟上准确线路。Practice 不会完成该线路。",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "绿色提示显示下一着。对手自动应对。跟上准确线路。Practice 不会完成该线路。",
   "Test mode": "Test 模式",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "没有提示。只下你的一方。错格会闪红，直到走出书谱着法。棋包列表的 % 是该次 Test 从开头起连续正确书谱着的连胜；走错会冻结该 %。仅在零失误的干净 Test 后才是 100% / 绿色。若你认为被拒的着法是书谱，用 Wrong move? 发给我们。确认后可获赠一个棋包。",
@@ -455,7 +455,7 @@ const fr: Dict = {
   Close: "Fermer",
   "How the gym works": "Comment marche la salle",
   [GYM_INTRO]:
-    "Opening Lab est un entraîneur strict de coups du livre. Practice avec l'indice jaune. Test sans indice. Seul le coup du livre compte. Puis Play on depuis la position si tu veux.\n\nCette façon d'apprendre construit un répertoire qui marche : les réponses du livre, pas un brouillard d'idées. Trouver ces coups sans indice rend tes décisions d'ouverture plus informées. C'est une base solide pour aller plus loin — livres, parties, moteurs — pas un raccourci vers toute l'ouverture.",
+    "Opening Lab est un entraîneur strict de coups du livre. Practice avec l'indice vert. Test sans indice. Seul le coup du livre compte. Puis Play on depuis la position si tu veux.\n\nCette façon d'apprendre construit un répertoire qui marche : les réponses du livre, pas un brouillard d'idées. Trouver ces coups sans indice rend tes décisions d'ouverture plus informées. C'est une base solide pour aller plus loin — livres, parties, moteurs — pas un raccourci vers toute l'ouverture.",
   Continue: "Continuer",
   "Don't show again": "Ne plus afficher",
   "Wrong move": "Mauvais coup",
@@ -493,8 +493,8 @@ const fr: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Chaque pack entraîne une ouverture. Tu joues le camp du livre.",
   "Practice mode": "Mode Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "Les indices jaunes montrent le coup suivant. L'adversaire répond tout seul. Suis la ligne exacte. Practice ne termine pas la ligne.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Les indices verts montrent le coup suivant. L'adversaire répond tout seul. Suis la ligne exacte. Practice ne termine pas la ligne.",
   "Test mode": "Mode Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Pas d'indices. Joue seulement ton camp. Les cases fausses clignotent en rouge jusqu'au coup du livre. Le % de la liste est une série Test de coups du livre corrects depuis le début de ce Test ; un mauvais coup y fige le %. 100 % / vert seulement après un Test propre sans faute. Si tu penses qu'un coup refusé est du livre, envoie-le avec Wrong move ? Si on le confirme, un pack est offert.",
@@ -572,7 +572,7 @@ const de: Dict = {
   Close: "Schließen",
   "How the gym works": "So funktioniert das Training",
   [GYM_INTRO]:
-    "Opening Lab ist ein strikter Buchzug-Trainer. Practice mit dem gelben Hinweis. Test ohne Hinweis. Nur der Buchzug zählt. Dann Play on von der Stellung, wenn du willst.\n\nSo entsteht ein Repertoire, das sitzt: die Buchantworten, kein Nebel aus Ideen. Diese Züge ohne Hinweis zu finden macht deine frühen Entscheidungen klarer. Eine solide Basis für Bücher, Partien, Engines — kein Abkürzungsweg zur ganzen Eröffnung.",
+    "Opening Lab ist ein strikter Buchzug-Trainer. Practice mit dem grünen Hinweis. Test ohne Hinweis. Nur der Buchzug zählt. Dann Play on von der Stellung, wenn du willst.\n\nSo entsteht ein Repertoire, das sitzt: die Buchantworten, kein Nebel aus Ideen. Diese Züge ohne Hinweis zu finden macht deine frühen Entscheidungen klarer. Eine solide Basis für Bücher, Partien, Engines — kein Abkürzungsweg zur ganzen Eröffnung.",
   Continue: "Weiter",
   "Don't show again": "Nicht mehr zeigen",
   "Wrong move": "Falscher Zug",
@@ -610,8 +610,8 @@ const de: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Jedes Pack trainiert eine Eröffnung. Du spielst die Buchseite.",
   "Practice mode": "Modus Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "Gelbe Hinweise zeigen den nächsten Zug. Der Gegner antwortet automatisch. Folge der exakten Linie. Practice schließt die Linie nicht ab.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Grüne Hinweise zeigen den nächsten Zug. Der Gegner antwortet automatisch. Folge der exakten Linie. Practice schließt die Linie nicht ab.",
   "Test mode": "Modus Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Keine Hinweise. Spiele nur deine Seite. Falsche Felder blinken rot, bis du den Buchzug findest. Die Listen-% ist eine Test-Serie korrekter Buchzüge ab Start dieses Tests; ein Fehlzug friert die % dort ein. 100 % / grün nur nach einem sauberen Test ohne Fehler. Wenn du denkst, ein abgelehnter Zug ist Buch, schick ihn mit Wrong move? Bestätigen wir ihn, gibt's ein Pack kostenlos.",
@@ -689,7 +689,7 @@ const pt: Dict = {
   Close: "Fechar",
   "How the gym works": "Como funciona o treino",
   [GYM_INTRO]:
-    "Opening Lab é um treinador estrito de lances de livro. Practice com a dica amarela. Test sem dica. Só conta o lance de livro. Depois Play on da posição, se quiser.\n\nAssim se monta um repertório que funciona: as respostas de livro, não uma névoa de ideias. Achar esses lances sem dica deixa suas decisões iniciais mais informadas. É uma base sólida para ir além — livros, partidas, engines — não um atalho para a abertura inteira.",
+    "Opening Lab é um treinador estrito de lances de livro. Practice com a dica verde. Test sem dica. Só conta o lance de livro. Depois Play on da posição, se quiser.\n\nAssim se monta um repertório que funciona: as respostas de livro, não uma névoa de ideias. Achar esses lances sem dica deixa suas decisões iniciais mais informadas. É uma base sólida para ir além — livros, partidas, engines — não um atalho para a abertura inteira.",
   Continue: "Continuar",
   "Don't show again": "Não mostrar de novo",
   "Wrong move": "Lance errado",
@@ -727,8 +727,8 @@ const pt: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Cada pack treina uma abertura. Você joga o lado de livro.",
   "Practice mode": "Modo Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "As dicas amarelas mostram o próximo lance. O adversário responde sozinho. Siga a linha exata. Practice não completa a linha.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "As dicas verdes mostram o próximo lance. O adversário responde sozinho. Siga a linha exata. Practice não completa a linha.",
   "Test mode": "Modo Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Sem dicas. Jogue só o seu lado. Casas erradas piscam em vermelho até o lance de livro. O % da lista é uma sequência de Test de lances de livro corretos desde o início desse Test; um lance errado congela o % ali. 100% / verde só após um Test limpo com zero erros. Se achar que um lance recusado é de livro, envie com Wrong move? Se confirmarmos, um pack é grátis.",
@@ -805,7 +805,7 @@ const ru: Dict = {
   Close: "Закрыть",
   "How the gym works": "Как устроен зал",
   [GYM_INTRO]:
-    "Opening Lab — строгий тренажёр книжных ходов. Practice с жёлтой подсказкой. Test без подсказки. Считается только книжный ход. Потом Play on с позиции, если хочешь.\n\nТак собирается рабочий репертуар: главные книжные ответы, а не туман идей. Находить эти ходы без подсказки делает ранние решения осознаннее. Это прочная база для книг, партий и движков — не короткий путь ко всему дебюту.",
+    "Opening Lab — строгий тренажёр книжных ходов. Practice с зелёной подсказкой. Test без подсказки. Считается только книжный ход. Потом Play on с позиции, если хочешь.\n\nТак собирается рабочий репертуар: главные книжные ответы, а не туман идей. Находить эти ходы без подсказки делает ранние решения осознаннее. Это прочная база для книг, партий и движков — не короткий путь ко всему дебюту.",
   Continue: "Далее",
   "Don't show again": "Больше не показывать",
   "Wrong move": "Неверный ход",
@@ -843,8 +843,8 @@ const ru: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Каждый пак тренирует один дебют. Ты играешь книжную сторону.",
   "Practice mode": "Режим Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "Жёлтые подсказки показывают следующий ход. Соперник отвечает сам. Следуй точной линии. Practice не завершает линию.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Зелёные подсказки показывают следующий ход. Соперник отвечает сам. Следуй точной линии. Practice не завершает линию.",
   "Test mode": "Режим Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Без подсказок. Играй только свою сторону. Неверные поля вспыхивают красным, пока не найдёшь книжный ход. % в списке паков — серия Test верных книжных ходов с начала этого Test; ошибка замораживает % там. 100% / зелёный только после чистого Test без ошибок. Если думаешь, что отклонённый ход книжный, пришли его через Wrong move? Подтвердим — пак в подарок.",
@@ -922,7 +922,7 @@ const it: Dict = {
   Close: "Chiudi",
   "How the gym works": "Come funziona la palestra",
   [GYM_INTRO]:
-    "Opening Lab è un allenatore rigoroso di mosse di libro. Practice con il suggerimento giallo. Test senza suggerimenti. Conta solo la mossa di libro. Poi Play on dalla posizione, se vuoi.\n\nCosì si costruisce un repertorio che funziona: le risposte di libro, non una nebbia di idee. Trovare quelle mosse senza suggerimento rende più informate le tue decisioni iniziali. È una base solida per andare oltre — libri, partite, motori — non una scorciatoia per tutta l'apertura.",
+    "Opening Lab è un allenatore rigoroso di mosse di libro. Practice con il suggerimento verde. Test senza suggerimenti. Conta solo la mossa di libro. Poi Play on dalla posizione, se vuoi.\n\nCosì si costruisce un repertorio che funziona: le risposte di libro, non una nebbia di idee. Trovare quelle mosse senza suggerimento rende più informate le tue decisioni iniziali. È una base solida per andare oltre — libri, partite, motori — non una scorciatoia per tutta l'apertura.",
   Continue: "Continua",
   "Don't show again": "Non mostrare più",
   "Wrong move": "Mossa sbagliata",
@@ -960,8 +960,8 @@ const it: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Ogni pack allena un'apertura. Giochi il lato di libro.",
   "Practice mode": "Modalità Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "I suggerimenti gialli mostrano la mossa successiva. L'avversario risponde da solo. Segui la linea esatta. Practice non completa la linea.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "I suggerimenti verdi mostrano la mossa successiva. L'avversario risponde da solo. Segui la linea esatta. Practice non completa la linea.",
   "Test mode": "Modalità Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "Niente suggerimenti. Giochi solo il tuo lato. Le case sbagliate lampeggiano in rosso fino alla mossa di libro. La % in lista è una serie Test di mosse di libro corrette dall'inizio di quel Test; una mossa sbagliata congela la % lì. 100% / verde solo dopo un Test pulito a zero errori. Se pensi che una mossa rifiutata sia di libro, inviala con Wrong move? Se confermiamo, un pack è gratis.",
@@ -1039,7 +1039,7 @@ const hi: Dict = {
   Close: "बंद करें",
   "How the gym works": "जिम कैसे चलता है",
   [GYM_INTRO]:
-    "Opening Lab सख्त बुक-चाल ट्रेनर है। Practice पीले संकेत के साथ। Test बिना संकेत। केवल बुक चाल गिनी जाती है। फिर चाहें तो सेटअप से Play on।\n\nइस तरह काम का रेपर्टोयर बनता है: मुख्य बुक जवाब, विचारों का कोहरा नहीं। बिना संकेत वे चालें ढूँढना शुरुआती फैसलों को बेहतर बनाता है। किताबों, खेलों, इंजनों तक जाने की ठोस ज़मीन है — पूरी ओपनिंग हथियाने का शॉर्टकट नहीं।",
+    "Opening Lab सख्त बुक-चाल ट्रेनर है। Practice हरे संकेत के साथ। Test बिना संकेत। केवल बुक चाल गिनी जाती है। फिर चाहें तो सेटअप से Play on।\n\nइस तरह काम का रेपर्टोयर बनता है: मुख्य बुक जवाब, विचारों का कोहरा नहीं। बिना संकेत वे चालें ढूँढना शुरुआती फैसलों को बेहतर बनाता है। किताबों, खेलों, इंजनों तक जाने की ठोस ज़मीन है — पूरी ओपनिंग हथियाने का शॉर्टकट नहीं।",
   Continue: "जारी रखें",
   "Don't show again": "फिर न दिखाएँ",
   "Wrong move": "गलत चाल",
@@ -1077,8 +1077,8 @@ const hi: Dict = {
   "Each pack trains one opening. You play the book side.":
     "हर पैक एक ओपनिंग ट्रेन करता है। आप बुक पक्ष चलते हैं।",
   "Practice mode": "Practice मोड",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "पीले संकेत अगली चाल दिखाते हैं। विरोधी अपने आप जवाब देता है। सटीक लाइन चलें। Practice लाइन पूरी नहीं करता।",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "हरे संकेत अगली चाल दिखाते हैं। विरोधी अपने आप जवाब देता है। सटीक लाइन चलें। Practice लाइन पूरी नहीं करता।",
   "Test mode": "Test मोड",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "कोई संकेत नहीं। केवल अपना पक्ष चलें। गलत घर लाल चमकते हैं जब तक बुक चाल न मिले। पैक-सूची का % उस Test की शुरुआत से सही बुक चालों की स्ट्रीक है; गलत चाल वहीं % रोक देती है। 100% / हरा केवल शून्य गलती वाले साफ़ Test के बाद। अगर रद्द चाल बुक लगे तो Wrong move? से भेजें। पुष्टि हुई तो एक पैक मुफ़्त।",
@@ -1154,7 +1154,7 @@ const ja: Dict = {
   Close: "閉じる",
   "How the gym works": "ジムの使い方",
   [GYM_INTRO]:
-    "Opening Lab は厳密な定跡トレーナーです。Practice は黄色いヒント付き。Test はヒントなし。定跡の手だけが正解。そのあと必要ならその局面から Play on。\n\nこうして使えるレパートリーができます。主な定跡の応じ手であり、ぼんやりした着想ではない。ヒントなしでその手を見つけると、序盤の判断に根拠がつく。本・対局・エンジンへ進むための土台であり、オープニング全体を一気に身につける近道ではない。",
+    "Opening Lab は厳密な定跡トレーナーです。Practice は緑のヒント付き。Test はヒントなし。定跡の手だけが正解。そのあと必要ならその局面から Play on。\n\nこうして使えるレパートリーができます。主な定跡の応じ手であり、ぼんやりした着想ではない。ヒントなしでその手を見つけると、序盤の判断に根拠がつく。本・対局・エンジンへ進むための土台であり、オープニング全体を一気に身につける近道ではない。",
   Continue: "続ける",
   "Don't show again": "今後表示しない",
   "Wrong move": "違う手",
@@ -1191,8 +1191,8 @@ const ja: Dict = {
   "White & Black / Special packs": "White と Black / 特別パック",
   "Each pack trains one opening. You play the book side.": "各パックは1つのオープニングを鍛えます。定跡側を指します。",
   "Practice mode": "Practice モード",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "黄色いヒントが次の手を示します。相手は自動で応じます。正確なラインに従ってください。Practice ではラインは完了しません。",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "緑のヒントが次の手を示します。相手は自動で応じます。正確なラインに従ってください。Practice ではラインは完了しません。",
   "Test mode": "Test モード",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "ヒントなし。自分の手番だけ指します。違うマスは定跡の手が見つかるまで赤く点滅します。パック一覧の % はその Test 開始からの正しい定跡の連続です。間違えるとその % で止まります。100% / 緑はミスなしの Test のあとだけです。拒否された手が定跡だと思う場合は Wrong move? で送ってください。確認できればパックを1つ進呈します。",
@@ -1269,7 +1269,7 @@ const ar: Dict = {
   Close: "إغلاق",
   "How the gym works": "كيف يعمل الصالة",
   [GYM_INTRO]:
-    "Opening Lab مدرّب صارم لحركات الكتاب. Practice مع التلميح الأصفر. Test بلا تلميحات. فقط حركة الكتاب تُحسب. ثم Play on من الوضع إن أردت.\n\nهذه الطريقة تبني ذخيرة عملية للافتتاحية: ردود الكتاب الرئيسية، لا ضباب أفكار. إيجاد تلك الحركات بلا تلميح يجعل قراراتك المبكرة أوضح. أساس متين لتواصل الدراسة — كتب، مباريات، محركات — لا اختصار لإتقان الافتتاحية كلها.",
+    "Opening Lab مدرّب صارم لحركات الكتاب. Practice مع التلميح الأخضر. Test بلا تلميحات. فقط حركة الكتاب تُحسب. ثم Play on من الوضع إن أردت.\n\nهذه الطريقة تبني ذخيرة عملية للافتتاحية: ردود الكتاب الرئيسية، لا ضباب أفكار. إيجاد تلك الحركات بلا تلميح يجعل قراراتك المبكرة أوضح. أساس متين لتواصل الدراسة — كتب، مباريات، محركات — لا اختصار لإتقان الافتتاحية كلها.",
   Continue: "متابعة",
   "Don't show again": "لا تظهر مرة أخرى",
   "Wrong move": "حركة خاطئة",
@@ -1307,8 +1307,8 @@ const ar: Dict = {
   "Each pack trains one opening. You play the book side.":
     "كل حزمة تدرّب افتتاحية واحدة. تلعب جانب الكتاب.",
   "Practice mode": "وضع Practice",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "التلميحات الصفراء تُظهر الحركة التالية. الخصم يرد تلقائيًا. اتبع الخط بدقة. Practice لا يُكمل الخط.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "التلميحات الخضراء تُظهر الحركة التالية. الخصم يرد تلقائيًا. اتبع الخط بدقة. Practice لا يُكمل الخط.",
   "Test mode": "وضع Test",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "بلا تلميحات. العب جانبك فقط. المربعات الخاطئة تومض بالأحمر حتى تجد حركة الكتاب. نسبة % في قائمة الحزم هي سلسلة Test من حركات الكتاب الصحيحة من بداية ذلك Test؛ الحركة الخاطئة تجمّد النسبة هناك. 100% / أخضر فقط بعد Test نظيف بلا أخطاء. إن ظننت أن حركة مرفوضة من الكتاب، أرسلها عبر Wrong move؟ إن أكدناها، تحصل على حزمة مجانًا.",
@@ -1386,7 +1386,7 @@ const tr: Dict = {
   Close: "Kapat",
   "How the gym works": "Salon nasıl işler",
   [GYM_INTRO]:
-    "Opening Lab katı bir kitap hamlesi eğitmenidir. Practice sarı ipucuyla. Test ipucusuz. Yalnızca kitap hamlesi geçer. İstersen konumdan Play on.\n\nBu öğrenme yolu işleyen bir repertuar kurar: ana kitap cevapları, fikir sis değil. İpucusuz o hamleleri bulmak erken kararlarını daha bilinçli yapar. Kitaplara, partilere, motorlara devam etmek için sağlam zemin — tüm açılışı bir anda bitirme kısayolu değil.",
+    "Opening Lab katı bir kitap hamlesi eğitmenidir. Practice yeşil ipucuyla. Test ipucusuz. Yalnızca kitap hamlesi geçer. İstersen konumdan Play on.\n\nBu öğrenme yolu işleyen bir repertuar kurar: ana kitap cevapları, fikir sis değil. İpucusuz o hamleleri bulmak erken kararlarını daha bilinçli yapar. Kitaplara, partilere, motorlara devam etmek için sağlam zemin — tüm açılışı bir anda bitirme kısayolu değil.",
   Continue: "Devam",
   "Don't show again": "Bir daha gösterme",
   "Wrong move": "Yanlış hamle",
@@ -1424,8 +1424,8 @@ const tr: Dict = {
   "Each pack trains one opening. You play the book side.":
     "Her paket bir açılışı çalıştırır. Kitap tarafını oynarsın.",
   "Practice mode": "Practice modu",
-  "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
-    "Sarı ipuçları sonraki hamleyi gösterir. Rakip otomatik cevaplar. Tam hattı izle. Practice hattı tamamlamaz.",
+  "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
+    "Yeşil ipuçları sonraki hamleyi gösterir. Rakip otomatik cevaplar. Tam hattı izle. Practice hattı tamamlamaz.",
   "Test mode": "Test modu",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "İpucu yok. Yalnızca kendi tarafını oyna. Yanlış kareler kitap hamlesini bulana kadar kırmızı yanıp söner. Liste % değeri, o Test'in başından itibaren doğru kitap hamleleri streak'idir; yanlış hamle %'yi orada dondurur. %100 / yeşil yalnızca sıfır hatalı temiz bir Test'ten sonra. Reddedilen hamlenin kitap olduğunu düşünüyorsan Wrong move? ile gönder. Onaylarsak bir paket bedava.",

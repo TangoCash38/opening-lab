@@ -29,7 +29,7 @@ export function GuideView({ onBack }: Props) {
       </Block>
 
       <Block title={t("Practice mode")}>
-        {t("Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.")}
+        {t("Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.")}
       </Block>
 
       <Block title={t("Test mode")}>
