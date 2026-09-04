@@ -60,3 +60,12 @@ test("Back, Forward, and {pct}% complete exist in all 12 language dicts", () => 
     assert.match(i18n, new RegExp(`const ${lang}: Dict`));
   }
 });
+
+test("Play on preserves chess.js history (no FEN-rebase commits)", () => {
+  const train = read("src/components/opening-lab/train-view.tsx");
+  assert.match(train, /function cloneAndMove/);
+  assert.match(train, /function safeMove/);
+  assert.match(train, /replaySans\(line\.plies, line\.plies\.length\)/);
+  assert.doesNotMatch(train, /new Chess\(game\.fen\(\)\)/);
+  assert.match(train, /setEngineBusy\(false\)/);
+});
