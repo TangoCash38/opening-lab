@@ -66,7 +66,8 @@ test("languages are EN, ES, Simplified Chinese, FR, DE, PT, RU, IT, HI, JA, AR, 
   assert.match(i18n, /训练/);
   assert.doesNotMatch(i18n, /訓練/);
   assert.match(shell, /LangToggle/);
-  assert.match(shell, /className="lang-toggle"/);
+  assert.match(shell, /from "\.\/lang-picker"/);
+  assert.doesNotMatch(shell, /<select/);
   assert.match(css, /\.lang-toggle/);
   assert.match(css, /max-width:\s*6rem/);
   assert.match(shell, /header-icon-btn/);
@@ -126,17 +127,15 @@ test("home board still only starts from Tap to practice", () => {
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
 });
 
-test("splash has Language select before Play and persists via setLang", () => {
+test("splash has Language picker before Play (custom sheet, not native select)", () => {
   assert.match(splash, /useI18n\(\)/);
-  assert.match(splash, /LANG_OPTIONS/);
-  assert.match(splash, /isLang/);
-  assert.match(splash, /setLang/);
-  assert.match(splash, /<select[\s\S]*className="lang-toggle"/);
-  assert.match(splash, /sr-only[\s\S]*t\("Language"\)/);
+  assert.match(splash, /LangToggle/);
+  assert.match(splash, /from "\.\/lang-picker"/);
+  assert.doesNotMatch(splash, /<select/);
   assert.match(splash, /splash-lang/);
-  const selectAt = splash.indexOf("<select");
+  const toggleAt = splash.indexOf("<LangToggle");
   const playAt = splash.indexOf('{t("Play")}');
-  assert.ok(selectAt > -1 && playAt > selectAt, "Language select sits before Play");
+  assert.ok(toggleAt > -1 && playAt > toggleAt, "Language picker sits before Play");
   assert.match(splash, /SESSION_KEY = "opening-lab:splash:v4"/);
   assert.match(css, /\.splash-lang/);
 });

@@ -1,8 +1,5 @@
-import {
-  LANG_OPTIONS,
-  isLang,
-  useI18n,
-} from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
+import { LangToggle } from "./lang-picker";
 
 const SESSION_KEY = "opening-lab:splash:v4";
 
@@ -27,7 +24,7 @@ export function markAppSplashSeen(): void {
 type Props = { onDone: () => void };
 
 export function AppSplash({ onDone }: Props) {
-  const { lang, setLang, t } = useI18n();
+  const { t } = useI18n();
   return (
     <div
       className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-bg px-8 text-fg"
@@ -51,24 +48,9 @@ export function AppSplash({ onDone }: Props) {
         <p className="mt-3 max-w-[20rem] text-center text-[0.95rem] leading-relaxed text-fg-muted">
           {t("They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.")}
         </p>
-        <label className="splash-lang mt-6">
-          <span className="sr-only">{t("Language")}</span>
-          <select
-            className="lang-toggle"
-            value={lang}
-            aria-label={t("Language")}
-            onChange={(event) => {
-              const next = event.target.value;
-              if (isLang(next)) setLang(next);
-            }}
-          >
-            {LANG_OPTIONS.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.short}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="splash-lang mt-6">
+          <LangToggle />
+        </div>
         <button
           type="button"
           onClick={onDone}

@@ -11,9 +11,6 @@ import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import {
   I18nProvider,
-  LANG_OPTIONS,
-  isLang,
-  useI18n,
   useT,
 } from "@/lib/i18n";
 import { initBoardTheme } from "@/lib/board-theme";
@@ -34,6 +31,7 @@ import {
   hasSeenAppSplash,
   markAppSplashSeen,
 } from "./app-splash";
+import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
 type View = "home" | "train" | "guide";
@@ -317,30 +315,6 @@ function ColorSchemeToggle() {
         <Moon className="size-[22px]" strokeWidth={1.75} />
       )}
     </button>
-  );
-}
-
-function LangToggle() {
-  const { lang, setLang, t } = useI18n();
-  return (
-    <label className="lang-toggle-wrap">
-      <span className="sr-only">{t("Language")}</span>
-      <select
-        className="lang-toggle"
-        value={lang}
-        aria-label={t("Language")}
-        onChange={(event) => {
-          const next = event.target.value;
-          if (isLang(next)) setLang(next);
-        }}
-      >
-        {LANG_OPTIONS.map((opt) => (
-          <option key={opt.id} value={opt.id}>
-            {opt.short}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }
 
