@@ -185,7 +185,12 @@ function replaySans(sans: string[], count: number): Chess {
   const g = new Chess();
   for (let i = 0; i < count; i++) {
     const san = sans[i];
-    if (!san || !g.move(san)) break;
+    if (!san) break;
+    try {
+      if (!g.move(san)) break;
+    } catch {
+      break;
+    }
   }
   return g;
 }
@@ -296,7 +301,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       const san = line.plies[idx]!;
       const tmp = new Chess(g.fen());
       const moves = tmp.moves({ verbose: true });
-      return moves.find((m) => m.san === san) || tmp.move(san) || null;
+      const found = moves.find((m) => m.san === san);
+      if (found) return found;
+      try {
+        return tmp.move(san) || null;
+      } catch {
+        return null;
+      }
     },
     [line.plies],
   );
@@ -415,7 +426,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     }
 
     // Persist Test (practice) book progress for pack list %.
-    if (mode === "practice") {
+    // Only advance while this attempt is still clean — a miss freezes Test %.
+    if (mode === "practice" && !practiceMissedRef.current) {
       onTestPly?.(pending.nextPly);
     }
 

@@ -264,7 +264,8 @@ export function lineTestPercent(p: LineProgress, bookLen: number): number | null
   if (bookLen <= 0) return null;
   if (p.cleanPractice) return 100;
   if (p.testBestPly <= 0) return null;
-  return Math.min(100, Math.max(0, Math.round((p.testBestPly / bookLen) * 100)));
+  // Cap at 99 without a clean Test — 100% / green only via cleanPractice.
+  return Math.min(99, Math.max(0, Math.round((p.testBestPly / bookLen) * 100)));
 }
 
 export type QueueItem = {
