@@ -85,21 +85,22 @@ test("CSS keeps book defaults and has paper + future + newspaper data-board-them
   assert.doesNotMatch(css, /#454540/);
 });
 
-test("yellow hints stay yellow (book + paper + future + newspaper)", () => {
-  assert.match(css, /\.sq-hint-from\s*\{[^}]*#ecec4a/s);
-  assert.match(css, /\.sq-hint-to\s*\{[^}]*#f7f769/s);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-hint-from[^}]*#ecec4a/s);
-  assert.match(css, /\[data-board-theme="future"\]\s*\.sq-hint-from[^}]*#ecec4a/s);
-  assert.match(css, /\[data-board-theme="future"\]\s*\.sq-hint-to[^}]*#f7f769/s);
+test("green hints stay green (book + paper + future + newspaper)", () => {
+  assert.match(css, /\.sq-hint-from\s*\{[^}]*#b8e6b8/s);
+  assert.match(css, /\.sq-hint-to\s*\{[^}]*#c8ecc8/s);
+  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-hint-from[^}]*#b8e6b8/s);
+  assert.match(css, /\[data-board-theme="future"\]\s*\.sq-hint-from[^}]*#b8e6b8/s);
+  assert.match(css, /\[data-board-theme="future"\]\s*\.sq-hint-to[^}]*#c8ecc8/s);
   assert.match(
     css,
-    /\[data-board-theme="newspaper"\]\s*\.sq-hint-from[^}]*#ecec4a/s,
+    /\[data-board-theme="newspaper"\]\s*\.sq-hint-from[^}]*#b8e6b8/s,
   );
   assert.match(
     css,
-    /\[data-board-theme="newspaper"\]\s*\.sq-hint-to[^}]*#f7f769/s,
+    /\[data-board-theme="newspaper"\]\s*\.sq-hint-to[^}]*#c8ecc8/s,
   );
   assert.doesNotMatch(css, /\[data-board-theme="future"\]\s*\.sq-hint-[^{]*\{[^}]*#00ff/s);
+  assert.match(css, /\.sq-last-from[\s\S]*?linear-gradient\(#ecec4a55, #ecec4a55\)/);
 });
 
 test("picker sits near the board on home only, not trainer or guide", () => {

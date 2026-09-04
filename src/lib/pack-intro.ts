@@ -2,10 +2,10 @@
 export const GAME_INTRO_TITLE = "How the gym works";
 
 export const GAME_INTRO =
-  "Opening Lab is a strict book-move trainer. Practice with the yellow hint. Test with none. Only the book move counts. Then Play on from the setup if you want.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed. It is a solid ground to take your study further — books, games, engines — not a shortcut to having the whole opening down.";
+  "Opening Lab is a strict book-move trainer. Practice with the green hint. Test with none. Only the book move counts. Then Play on from the setup if you want.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed. It is a solid ground to take your study further — books, games, engines — not a shortcut to having the whole opening down.";
 
 const GYM_SNIPPETS = [
-  "Practice the main book moves with the yellow hint",
+  "Practice the main book moves with the green hint",
   "Then Test with none",
   "Play on from the setup",
 ];

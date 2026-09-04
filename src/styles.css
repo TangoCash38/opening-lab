@@ -19,7 +19,7 @@
   --color-gold-soft: #fbf6e6;
   --color-light-sq: #f3e5c8;
   --color-dark-sq: #a97850;
-  --color-hint-to: #c5e4c8;
+  --color-hint-to: #c8ecc8;
   --color-wrong-sq: #f0c4c0;
   --color-tag-white-bg: #eef2f0;
   --color-tag-white-fg: #3a4a42;
@@ -496,24 +496,24 @@ html[data-color-scheme="dark"] {
   }
 
   .sq-hint-from {
-    background-color: #ecec4a !important;
+    background-color: #b8e6b8 !important;
     background-image: none !important;
     box-shadow: none;
   }
 
   .sq-dark.sq-hint-from {
-    background-color: #c4d22e !important;
+    background-color: #7cbc7c !important;
   }
 
   .sq-hint-to {
-    background-color: #f7f769 !important;
+    background-color: #c8ecc8 !important;
     background-image: none !important;
     box-shadow: none;
     animation: hint-in 260ms ease-out both;
   }
 
   .sq-dark.sq-hint-to {
-    background-color: #baca44 !important;
+    background-color: #6eb06e !important;
   }
 
   .sq-wrong {
@@ -521,10 +521,10 @@ html[data-color-scheme="dark"] {
     box-shadow: inset 0 0 0 2px rgba(181, 69, 58, 0.5);
   }
 
-  /* Quiet brown dim — not yellow. Yellow is only for choosing a move. */
+  /* Soft yellow last-move wash. Green is for choosing a move. */
   .sq-last-from,
   .sq-last-to {
-    background-image: linear-gradient(#4e381c1f, #4e381c1f);
+    background-image: linear-gradient(#ecec4a55, #ecec4a55);
   }
 
   .legal-dot {
@@ -787,7 +787,7 @@ html[data-color-scheme="dark"] {
 }
 
 /* ---- Board themes (paper / future / newspaper). Book = default .sq-* above. ---- */
-/* Hints stay yellow globally (#ecec4a / #f7f769; darker on dark squares). */
+/* Hints stay green globally (#b8e6b8 / #c8ecc8; darker on dark squares). */
 
 [data-board-theme="paper"] .sq-light {
   background-color: #f7f2e6;
@@ -805,7 +805,7 @@ html[data-color-scheme="dark"] {
 
 [data-board-theme="paper"] .sq-last-from,
 [data-board-theme="paper"] .sq-last-to {
-  background-image: linear-gradient(rgba(70, 62, 50, 0.12), rgba(70, 62, 50, 0.12));
+  background-image: linear-gradient(#ecec4a55, #ecec4a55);
 }
 
 [data-board-theme="paper"] .legal-dot {
@@ -842,23 +842,23 @@ html[data-color-scheme="dark"] {
 }
 
 [data-board-theme="paper"] .sq-hint-from {
-  background-color: #ecec4a !important;
+  background-color: #b8e6b8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="paper"] .sq-dark.sq-hint-from {
-  background-color: #c4d22e !important;
+  background-color: #7cbc7c !important;
 }
 
 [data-board-theme="paper"] .sq-hint-to {
-  background-color: #f7f769 !important;
+  background-color: #c8ecc8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="paper"] .sq-dark.sq-hint-to {
-  background-color: #baca44 !important;
+  background-color: #6eb06e !important;
 }
 
 [data-board-theme="future"] .sq-light {
@@ -877,7 +877,7 @@ html[data-color-scheme="dark"] {
 
 [data-board-theme="future"] .sq-last-from,
 [data-board-theme="future"] .sq-last-to {
-  background-image: linear-gradient(rgba(90, 130, 160, 0.2), rgba(90, 130, 160, 0.2));
+  background-image: linear-gradient(#ecec4a55, #ecec4a55);
 }
 
 [data-board-theme="future"] .legal-dot {
@@ -916,25 +916,25 @@ html[data-color-scheme="dark"] {
   filter: drop-shadow(0 0 0.6px rgba(255, 255, 255, 0.55)) drop-shadow(0 1px 2px rgba(8, 12, 20, 0.28));
 }
 
-/* Future: keep yellow hints (not cool tint). */
+/* Future: keep green hints (not cool tint). */
 [data-board-theme="future"] .sq-hint-from {
-  background-color: #ecec4a !important;
+  background-color: #b8e6b8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="future"] .sq-dark.sq-hint-from {
-  background-color: #c4d22e !important;
+  background-color: #7cbc7c !important;
 }
 
 [data-board-theme="future"] .sq-hint-to {
-  background-color: #f7f769 !important;
+  background-color: #c8ecc8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="future"] .sq-dark.sq-hint-to {
-  background-color: #baca44 !important;
+  background-color: #6eb06e !important;
 }
 
 [data-board-theme="newspaper"] .sq-light {
@@ -953,7 +953,7 @@ html[data-color-scheme="dark"] {
 
 [data-board-theme="newspaper"] .sq-last-from,
 [data-board-theme="newspaper"] .sq-last-to {
-  background-image: linear-gradient(rgba(17, 17, 17, 0.1), rgba(17, 17, 17, 0.1));
+  background-image: linear-gradient(#ecec4a55, #ecec4a55);
 }
 
 [data-board-theme="newspaper"] .legal-dot {
@@ -991,25 +991,25 @@ html[data-color-scheme="dark"] {
   filter: drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.7)) drop-shadow(0 0.4px 0.4px rgba(0, 0, 0, 0.22));
 }
 
-/* Newspaper: keep yellow hints (not ink-grey). */
+/* Newspaper: keep green hints (not ink-grey). */
 [data-board-theme="newspaper"] .sq-hint-from {
-  background-color: #ecec4a !important;
+  background-color: #b8e6b8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="newspaper"] .sq-dark.sq-hint-from {
-  background-color: #c4d22e !important;
+  background-color: #7cbc7c !important;
 }
 
 [data-board-theme="newspaper"] .sq-hint-to {
-  background-color: #f7f769 !important;
+  background-color: #c8ecc8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="newspaper"] .sq-dark.sq-hint-to {
-  background-color: #baca44 !important;
+  background-color: #6eb06e !important;
 }
 
 

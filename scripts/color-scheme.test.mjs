@@ -52,8 +52,8 @@ test("dark CSS overrides chrome tokens without changing board squares", () => {
     css,
     /\[data-color-scheme="dark"\][^{]*\{[^}]*--color-dark-sq/s,
   );
-  assert.match(css, /\.sq-hint-from\s*\{[^}]*#ecec4a/s);
-  assert.match(css, /\.sq-hint-to\s*\{[^}]*#f7f769/s);
+  assert.match(css, /\.sq-hint-from\s*\{[^}]*#b8e6b8/s);
+  assert.match(css, /\.sq-hint-to\s*\{[^}]*#c8ecc8/s);
 });
 
 test("header toggle sits next to language picker and inits with board theme", () => {
