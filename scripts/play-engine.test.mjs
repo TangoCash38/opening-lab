@@ -43,6 +43,8 @@ test("Play strength is club-player depths with a hanging-piece root filter", () 
   assert.match(engine, /filterWasteful = used === "beginner" \|\| used === "intermediate"/);
   assert.match(engine, /toRank <= 2/);
   assert.match(engine, /toRank >= 7/);
+  assert.match(engine, /fromRank > toRank && toRank <= 2/);
+  assert.match(engine, /fromRank < toRank && toRank >= 7/);
   // Level 1 stays shallow + randomized — not advanced strength.
   assert.match(engine, /beginner:.*depth: 2.*randomize: true/);
   assert.match(engine, /slack: 100/);
@@ -184,6 +186,22 @@ test("isWastefulUndeveloping flags quiet knight home retreats, not captures/chec
     assert.ok(nf3, "expected Nf3 legal");
     assert.equal(mod.isWastefulUndeveloping(chess, nf3), false);
 
+    // Developing onto rank 2 (Be2 / Bd2) must NOT be wasteful — not a retreat.
+    const be2 = chess
+      .moves({ verbose: true })
+      .find((m) => m.from === "f1" && m.to === "e2");
+    assert.ok(be2, "expected Be2 legal");
+    assert.equal(mod.isWastefulUndeveloping(chess, be2), false);
+
+    const bd2Pos = new Chess(
+      "rnbqkbnr/pppp1ppp/8/4p3/4P3/2NP4/PPP2PPP/R1BQKBNR w KQkq - 0 3",
+    );
+    const bd2 = bd2Pos
+      .moves({ verbose: true })
+      .find((m) => m.from === "c1" && m.to === "d2");
+    assert.ok(bd2, "expected Bd2 legal");
+    assert.equal(mod.isWastefulUndeveloping(bd2Pos, bd2), false);
+
     // Capture onto back rank is not wasteful.
     const capFen =
       "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -192,6 +210,16 @@ test("isWastefulUndeveloping flags quiet knight home retreats, not captures/chec
     const start = new Chess();
     const e4 = start.moves({ verbose: true }).find((m) => m.san === "e4");
     assert.equal(mod.isWastefulUndeveloping(start, e4), false);
+
+    // Black developing Be7 onto rank 7 is not wasteful.
+    const blackFen =
+      "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2";
+    const black = new Chess(blackFen);
+    const be7 = black
+      .moves({ verbose: true })
+      .find((m) => m.from === "f8" && m.to === "e7");
+    assert.ok(be7, "expected Be7 legal");
+    assert.equal(mod.isWastefulUndeveloping(black, be7), false);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

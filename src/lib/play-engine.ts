@@ -270,8 +270,9 @@ function hangsPiece(chess: Chess, move: Move): boolean {
 }
 
 /**
- * Quiet N/B/R/Q shuffle onto our back two ranks — no capture, no check.
- * Typical waste: knight retreats home (…Nc6-b8) when better options exist.
+ * Quiet N/B/R/Q *retreat* onto our back two ranks — no capture, no check.
+ * White: fromRank > toRank and toRank <= 2; Black: fromRank < toRank and
+ * toRank >= 7. Developing onto rank 2/7 (Be2, Bd2, Bg2, …) is not waste.
  * Kept when every non-hanging alternative is also wasteful (escape-only).
  */
 export function isWastefulUndeveloping(chess: Chess, move: Move): boolean {
@@ -281,9 +282,13 @@ export function isWastefulUndeveloping(chess: Chess, move: Move): boolean {
   }
   if (move.captured || move.promotion) return false;
 
+  const fromRank = Number(move.from[1]);
   const toRank = Number(move.to[1]);
-  const backTwo = chess.turn() === "w" ? toRank <= 2 : toRank >= 7;
-  if (!backTwo) return false;
+  const retreating =
+    chess.turn() === "w"
+      ? fromRank > toRank && toRank <= 2
+      : fromRank < toRank && toRank >= 7;
+  if (!retreating) return false;
 
   chess.move(move);
   try {
