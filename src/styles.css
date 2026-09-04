@@ -392,7 +392,7 @@ html[data-color-scheme="dark"] {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
+    gap: 0.4rem;
     background: var(--color-bg);
     padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
     padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
@@ -401,7 +401,50 @@ html[data-color-scheme="dark"] {
   }
 
   .board-fs-stage {
-    width: min(100%, calc(100dvh - 8.5rem), 44rem);
+    width: min(100%, calc(100dvh - 13.5rem), 44rem);
+    flex: 0 1 auto;
+  }
+
+  .board-fs-modes {
+    display: flex;
+    width: min(100%, 22rem);
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+    border-radius: 9999px;
+    background: var(--color-bg-subtle);
+    padding: 0.2rem;
+  }
+
+  .board-fs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    max-width: 36rem;
+    padding: 0 0.5rem;
+  }
+
+  .board-fs-action {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-bg-elevated);
+    padding: 0.4rem 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-fg-muted);
+  }
+
+  .board-fs-action:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  .board-fs-action:disabled {
+    opacity: 0.4;
   }
 
   .board-fs-toggle {
@@ -1213,6 +1256,17 @@ html[data-color-scheme="dark"] {
 
 html[data-color-scheme="dark"] .line-result-dim {
   background: linear-gradient(to top, rgba(20, 18, 16, 0.72), transparent);
+}
+
+/* Fullscreen board: slightly stronger full-viewport dim so the popup reads clearly. */
+.line-result-dim--board-fs {
+  inset: 0;
+  height: auto;
+  background: rgba(28, 25, 21, 0.42);
+}
+
+html[data-color-scheme="dark"] .line-result-dim--board-fs {
+  background: rgba(20, 18, 16, 0.55);
 }
 
 .line-result-sheet {

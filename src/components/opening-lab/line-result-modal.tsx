@@ -12,6 +12,8 @@ type Props = {
   primaryLabel?: string;
   onPrimary?: () => void;
   onAction?: () => void;
+  /** Stronger dim when the trainer board is fullscreen behind the popup. */
+  boardExpanded?: boolean;
 };
 
 export function LineResultModal({
@@ -24,6 +26,7 @@ export function LineResultModal({
   primaryLabel,
   onPrimary,
   onAction,
+  boardExpanded = false,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
@@ -88,7 +91,11 @@ export function LineResultModal({
       data-result-actions={showPrimary ? 2 : 1}
       onClick={onClose}
     >
-      <div className="line-result-dim" aria-hidden />
+      <div
+        className={`line-result-dim${boardExpanded ? " line-result-dim--board-fs" : ""}`}
+        aria-hidden
+        data-result-dim-board-fs={boardExpanded ? "1" : undefined}
+      />
       <div
         className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}${
           expanded ? " line-result-sheet--expanded" : ""
