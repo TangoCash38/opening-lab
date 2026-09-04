@@ -19,7 +19,8 @@ export const PLAY_STRENGTH: Record<
   PlayLevel,
   { thinkMs: number; depth: number; randomize: boolean; slack: number }
 > = {
-  beginner: { thinkMs: 400, depth: 2, randomize: true, slack: 80 },
+  // Slack ~100 keeps L1 weaker than L2/L3 among *sensible* near-best moves.
+  beginner: { thinkMs: 400, depth: 2, randomize: true, slack: 100 },
   intermediate: { thinkMs: 800, depth: 3, randomize: true, slack: 40 },
   advanced: { thinkMs: 1400, depth: 5, randomize: false, slack: 0 },
 };
@@ -198,17 +199,55 @@ function hangsPiece(chess: Chess, move: Move): boolean {
   }
 }
 
+/**
+ * Quiet N/B/R/Q shuffle onto our back two ranks — no capture, no check.
+ * Typical waste: knight retreats home (…Nc6-b8) when better options exist.
+ * Kept when every non-hanging alternative is also wasteful (escape-only).
+ */
+export function isWastefulUndeveloping(chess: Chess, move: Move): boolean {
+  const piece = move.piece;
+  if (piece !== "n" && piece !== "b" && piece !== "r" && piece !== "q") {
+    return false;
+  }
+  if (move.captured || move.promotion) return false;
+
+  const toRank = Number(move.to[1]);
+  const backTwo = chess.turn() === "w" ? toRank <= 2 : toRank >= 7;
+  if (!backTwo) return false;
+
+  chess.move(move);
+  try {
+    if (chess.isCheck()) return false;
+  } finally {
+    chess.undo();
+  }
+  return true;
+}
+
+function filterRootMoves(
+  chess: Chess,
+  legal: Move[],
+  filterWasteful: boolean,
+): Move[] {
+  const safe = legal.filter((m) => !hangsPiece(chess, m));
+  if (safe.length === 0) return [];
+  if (!filterWasteful) return safe;
+  const sensible = safe.filter((m) => !isWastefulUndeveloping(chess, m));
+  return sensible.length > 0 ? sensible : safe;
+}
+
 function searchBest(
   fen: string,
   thinkMs: number,
   depthLimit: number,
   randomize: boolean,
   slack = 160,
+  filterWasteful = false,
 ): EngineMove | null {
   const chess = new Chess(fen);
   const legal = orderMoves(chess.moves({ verbose: true }));
   if (legal.length === 0) return null;
-  const rootMoves = legal.filter((m) => !hangsPiece(chess, m));
+  const rootMoves = filterRootMoves(chess, legal, filterWasteful);
   if (rootMoves.length === 0) return legalFallback(fen);
 
   const deadline = Date.now() + thinkMs;
@@ -345,7 +384,18 @@ export function createLiteEngine(level: PlayLevel = "beginner"): PlayEngine {
       });
       if (dead) return legalFallback(fen);
       try {
-        return searchBest(fen, budget, spec.depth, spec.randomize, spec.slack) ?? legalFallback(fen);
+        // L1/L2: drop purposeless back-rank retreats from the candidate pool.
+        const filterWasteful = used === "beginner" || used === "intermediate";
+        return (
+          searchBest(
+            fen,
+            budget,
+            spec.depth,
+            spec.randomize,
+            spec.slack,
+            filterWasteful,
+          ) ?? legalFallback(fen)
+        );
       } catch {
         return legalFallback(fen);
       }
