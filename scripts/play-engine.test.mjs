@@ -110,6 +110,18 @@ test("Play-on Hint uses deeper same-engine strength (not Stockfish)", () => {
   assert.match(train, /t\("Hint"\)/);
   assert.match(train, /Boolean\(playHint\)/);
   assert.match(train, /playingOn \? playHint : bookExp/);
+  assert.match(train, /hint-thinking-cue/);
+  assert.match(train, /HintThinkingCue/);
+  assert.match(train, /playingOn && hintBusy/);
+  assert.match(train, /t\("Thinking…"\)/);
+
+  const css = readFileSync(join(root, "src/styles.css"), "utf8");
+  assert.match(css, /\.hint-thinking-cue/);
+  assert.match(css, /hint-thinking-dot/);
+  assert.match(css, /prefers-reduced-motion:[\s\S]*hint-thinking-dot/);
+
+  const i18n = readFileSync(join(root, "src/lib/i18n.ts"), "utf8");
+  assert.match(i18n, /"Thinking…": "Thinking…"/);
 
   assert.match(guide, /Hint shows a stronger suggestion from the same engine/);
 });
