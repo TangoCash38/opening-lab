@@ -154,6 +154,7 @@ const en: Dict = {
     "Use the profile icon (top right) to sign in. See",
   "Privacy Policy": "Privacy Policy",
   Terms: "Terms",
+  or: "or",
   and: "and",
 };
 
