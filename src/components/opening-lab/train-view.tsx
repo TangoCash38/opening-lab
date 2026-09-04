@@ -914,7 +914,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   useEffect(() => {
     if (!boardExpanded) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setBoardExpanded(false);
+      if (e.key !== "Escape") return;
+      // Result modal owns Escape while the finish/wrong popup is up.
+      if (resultCard) return;
+      setBoardExpanded(false);
     };
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -923,16 +926,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [boardExpanded]);
+  }, [boardExpanded, resultCard]);
 
   useEffect(() => {
     if (!resultCard) return;
-    setBoardExpanded(false);
+    // Keep Expand on when the finish popup appears; fullscreen has nowhere to scroll.
+    if (boardExpanded) return;
     boardWrapRef.current?.scrollIntoView({
       block: "start",
       behavior: "auto",
     });
-  }, [resultCard]);
+  }, [resultCard, boardExpanded]);
 
 
   const canBack =
@@ -1038,24 +1042,39 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         className={boardExpanded ? "board-fs-overlay" : "train-board-anchor relative"}
       >
         {boardExpanded ? (
-          <button
-            type="button"
-            onClick={() => setBoardExpanded(false)}
-            className="board-fs-toggle"
-            aria-label="Close full screen"
-          >
-            <Minimize2 className="size-5" strokeWidth={2.25} aria-hidden />
-            Close
-          </button>
-        ) : null}
-        {boardExpanded ? (
-          <p
-            className={`board-fs-hint text-center text-[0.85rem] font-semibold text-accent ${
-              hint ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {hint || " "}
-          </p>
+          <>
+            <button
+              type="button"
+              onClick={() => setBoardExpanded(false)}
+              className="board-fs-toggle"
+              aria-label="Close full screen"
+            >
+              <Minimize2 className="size-5" strokeWidth={2.25} aria-hidden />
+              Close
+            </button>
+            <div className="board-fs-modes" role="group" aria-label="Mode">
+              <ModeTab
+                active={mode === "learn"}
+                onClick={() => changeMode("learn")}
+              >
+                Practice
+              </ModeTab>
+              <ModeTab
+                active={mode === "practice"}
+                onClick={() => changeMode("practice")}
+                nudge={nudgeTest}
+              >
+                Test
+              </ModeTab>
+            </div>
+            <p
+              className={`board-fs-hint text-center text-[0.85rem] font-semibold text-accent ${
+                hint ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {hint || " "}
+            </p>
+          </>
         ) : null}
         <div className={boardExpanded ? "board-fs-stage" : undefined}>
           <ChessBoard
@@ -1094,9 +1113,40 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           />
         </div>
         {boardExpanded ? (
-          <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
-            {status.text}
-          </p>
+          <>
+            <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
+              {status.text}
+            </p>
+            <div className="board-fs-actions">
+              <button
+                type="button"
+                onClick={() => resetLine()}
+                className="board-fs-action"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                onClick={stepBack}
+                disabled={!canBack}
+                aria-label={t("Back")}
+                className="board-fs-action"
+              >
+                {t("Back")}
+              </button>
+              {canForward || viewingHistory ? (
+                <button
+                  type="button"
+                  onClick={stepForward}
+                  disabled={!canForward}
+                  aria-label={t("Forward")}
+                  className="board-fs-action"
+                >
+                  {t("Forward")}
+                </button>
+              ) : null}
+            </div>
+          </>
         ) : null}
       </div>
 
@@ -1248,6 +1298,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           caption={resultCard.caption}
           actionLabel={resultCard.actionLabel}
           primaryLabel={resultCard.primaryLabel}
+          boardExpanded={boardExpanded}
           onClose={() => setResultCard(null)}
           onAction={
             resultCard.nextAction === "learn"
