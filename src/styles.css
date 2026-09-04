@@ -1162,23 +1162,26 @@ html[data-color-scheme="dark"] {
 }
 
 
-/* Play-on promotion picker (Q/R/B/N). Book mode does not use this. */
+/* Play-on promotion picker (Q/R/B/N). Lives inside .board-play. Book mode does not use this. */
 .promo-picker {
   position: absolute;
   inset: 0;
-  z-index: 50;
+  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(28, 25, 21, 0.42);
-  border-radius: 1rem;
+  pointer-events: auto;
+  touch-action: manipulation;
+  background: rgba(28, 25, 21, 0.5);
+  border-radius: 0;
 }
 
 .promo-picker-row {
   display: flex;
   gap: 0.45rem;
-  padding: 0.6rem;
+  padding: 0.65rem;
   border-radius: 1rem;
+  pointer-events: auto;
   background: var(--color-bg-elevated);
   box-shadow: var(--shadow-card);
 }
@@ -1192,6 +1195,10 @@ html[data-color-scheme="dark"] {
   height: 4.05rem;
   border: none;
   border-radius: 0.75rem;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
   background: var(--color-bg-subtle);
   color: var(--color-fg);
   font-weight: 700;
@@ -1204,6 +1211,7 @@ html[data-color-scheme="dark"] {
   height: 72%;
   max-width: 72%;
   max-height: 72%;
+  pointer-events: none;
 }
 
 .promo-picker-btn:active {

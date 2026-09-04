@@ -382,6 +382,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setPlyIndex(0);
       setViewPly(0);
       setSelected(null);
+      setPendingPromo(null);
       setWrongUntil(null);
       playOnStartPlyRef.current = line.plies.length;
       setStatus({
@@ -685,8 +686,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     const legal = legalMoves.find((m) => m.to === to);
     if (legal) {
       if (playingOn && legalMoves.some((m) => m.to === to && m.promotion)) {
+        // Always show the picker (even for a hinted promoting move) so the
+        // user chooses Q/R/B/N — never auto-apply hint.promotion.
         setPendingPromo({ from, to });
         setSelected(null);
+        setStatus({ text: t("Choose a piece"), cls: "" });
         return;
       }
       tryPlay(from, to, legal.promotion);
@@ -953,6 +957,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (pendingPromo) {
       setPendingPromo(null);
       setSelected(null);
+      setStatus({
+        text: playingOnRef.current
+          ? "Your move — playing on"
+          : mode === "learn"
+            ? "Your move (Practice)"
+            : "Your move",
+        cls: "",
+      });
       return;
     }
 
@@ -1027,7 +1039,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             : "text-fg-muted";
 
   const statusBody =
-    playingOn && hintBusy ? (
+    pendingPromo ? (
+      t("Choose a piece")
+    ) : playingOn && hintBusy ? (
       <HintThinkingCue label={t("Thinking…")} />
     ) : (
       status.text
@@ -1215,13 +1229,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             promotion={
               pendingPromo
                 ? {
-                    color: line.side,
+                    color: game.turn(),
                     onPick: (piece: PromotionPiece) => {
                       const dest = pendingPromo;
                       setPendingPromo(null);
                       tryPlay(dest.from, dest.to, piece);
                     },
-                    onCancel: () => setPendingPromo(null),
+                    onCancel: () => {
+                      setPendingPromo(null);
+                      setStatus({ text: "Your move — playing on", cls: "" });
+                    },
                   }
                 : null
             }
