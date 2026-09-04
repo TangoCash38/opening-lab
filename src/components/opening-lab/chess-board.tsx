@@ -545,6 +545,43 @@ export function ChessBoard({
             <div className="pointer-events-none absolute inset-0 z-10 overflow-visible">
               {pieceNodes}
             </div>
+
+            {/* Play-on promo: inside board-play so it centers on squares and stays above pieces */}
+            {promotion ? (
+              <div
+                className="promo-picker"
+                role="dialog"
+                aria-label="Choose promotion"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => promotion.onCancel?.()}
+              >
+                <div
+                  className="promo-picker-row"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {PROMO_PIECES.map((p) => {
+                    const code =
+                      promotion.color === "w" ? p.key.toUpperCase() : p.key;
+                    return (
+                      <button
+                        key={p.key}
+                        type="button"
+                        className="promo-picker-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          promotion.onPick(p.key);
+                        }}
+                        aria-label={`Promote to ${p.label}`}
+                      >
+                        <ChessPiece code={code} />
+                        <span>{p.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
@@ -564,35 +601,6 @@ export function ChessBoard({
           <span className="piece-abs-inner">
             <ChessPiece code={drag.code} />
           </span>
-        </div>
-      ) : null}
-      {promotion ? (
-        <div
-          className="promo-picker"
-          role="dialog"
-          aria-label="Choose promotion"
-          onClick={() => promotion.onCancel?.()}
-        >
-          <div
-            className="promo-picker-row"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {PROMO_PIECES.map((p) => {
-              const code = promotion.color === "w" ? p.key.toUpperCase() : p.key;
-              return (
-                <button
-                  key={p.key}
-                  type="button"
-                  className="promo-picker-btn"
-                  onClick={() => promotion.onPick(p.key)}
-                  aria-label={`Promote to ${p.label}`}
-                >
-                  <ChessPiece code={code} />
-                  <span>{p.label}</span>
-                </button>
-              );
-            })}
-          </div>
         </div>
       ) : null}
     </div>
