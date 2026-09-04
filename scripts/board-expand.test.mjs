@@ -29,13 +29,10 @@ test("trainer has Expand that opens a full-screen board overlay", () => {
 });
 
 test("finish popup keeps Expand; Test yourself stays expanded", () => {
-  const resultEffect = train.match(
-    /useEffect\(\(\) => \{\s*if \(!resultCard\) return;[\s\S]*?\}, \[resultCard[^\]]*\]\);/,
-  );
-  assert.ok(resultEffect, "resultCard effect present");
-  assert.doesNotMatch(resultEffect[0], /setBoardExpanded\(false\)/);
-  assert.match(resultEffect[0], /if \(boardExpanded\) return/);
-  assert.match(resultEffect[0], /scrollIntoView/);
+  // Finish sheet is fixed overlay — no scrollIntoView / pad when resultCard opens.
+  assert.doesNotMatch(train, /boardWrapRef/);
+  assert.doesNotMatch(train, /scrollIntoView/);
+  assert.doesNotMatch(train, /train-result-pad/);
 
   const expandEsc = train.match(
     /useEffect\(\(\) => \{\s*if \(!boardExpanded\) return;[\s\S]*?\}, \[boardExpanded, resultCard\]\);/,

@@ -234,11 +234,12 @@ test("result sheet sits under the board so file letters stay readable", () => {
   assert.match(css, /overflow-y:\s*auto/);
   assert.match(css, /\.train-board-anchor/);
   assert.match(css, /scroll-margin-bottom/);
-  assert.match(css, /\.train-result-pad/);
-  assert.match(train, /scrollIntoView/);
+  // Finish sheet is position:fixed — no pad or scrollIntoView jump when it opens.
+  assert.doesNotMatch(css, /\.train-result-pad/);
+  assert.doesNotMatch(train, /scrollIntoView/);
   assert.match(train, /train-board-anchor/);
-  assert.match(train, /train-result-pad/);
-  assert.match(train, /boardWrapRef/);
+  assert.doesNotMatch(train, /train-result-pad/);
+  assert.doesNotMatch(train, /boardWrapRef/);
 });
 
 test("practice next line skips locked Caro extras and starts Practice", () => {

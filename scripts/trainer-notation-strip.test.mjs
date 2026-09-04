@@ -27,8 +27,9 @@ test("active move scrolls the strip only — never page scrollIntoView on the ch
   assert.match(train, /notationStripRef\.current/);
   assert.match(train, /\.scrollTo\(\{\s*left:/);
   assert.doesNotMatch(train, /activeMoveRef\.current\?\.scrollIntoView/);
-  // Result-sheet Expand may still scroll the board wrap into view — keep that.
-  assert.match(train, /boardWrapRef\.current\?\.scrollIntoView/);
+  // Finish sheet is fixed — do not scroll the board wrap into view.
+  assert.doesNotMatch(train, /boardWrapRef/);
+  assert.doesNotMatch(train, /scrollIntoView/);
 });
 
 test("hint row and % complete still reserve height", () => {
