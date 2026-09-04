@@ -228,7 +228,7 @@ test("result sheet sits under the board so file letters stay readable", () => {
   assert.match(css, /align-items:\s*flex-end/);
   assert.match(css, /background:\s*transparent/);
   assert.match(css, /\.line-result-sheet/);
-  assert.match(css, /max-height:\s*min\(32dvh/);
+  assert.match(css, /max-height:\s*min\(42dvh/);
   assert.match(css, /100vw/);
   assert.match(css, /\.line-result-body/);
   assert.match(css, /overflow-y:\s*auto/);
@@ -325,7 +325,7 @@ test("finish sheet shows a scroll cue when plan text overflows", () => {
   assert.match(css, /\.line-result-scroll-hint/);
   assert.match(css, /--color-bg-elevated/);
   assert.match(css, /html\[data-color-scheme="dark"\] \.line-result-scroll-fade/);
-  assert.match(css, /max-height:\s*min\(32dvh/);
+  assert.match(css, /max-height:\s*min\(42dvh/);
 });
 
 
@@ -364,4 +364,39 @@ test("scrollAppTop on startLine/goHome; ChessBoard remounts on session; reset co
   assert.match(train, /key=\{session\}/);
   assert.match(train, /setBoardExpanded\(false\)/);
   assert.match(train, /window\.scrollTo\(\{ top: 0, left: 0, behavior: "auto" \}\)/);
+});
+
+
+test("finish sheet with Play on gets taller body so plan text is readable", () => {
+  assert.match(modal, /line-result-sheet--play-on/);
+  assert.match(modal, /showPlayOn \? " line-result-sheet--play-on"/);
+  assert.match(modal, /data-result-has-play-on=\{showPlayOn \? "1" : undefined\}/);
+  assert.match(css, /\.line-result-sheet--play-on/);
+  assert.match(css, /max-height:\s*min\(50dvh/);
+  assert.match(css, /\.line-result-sheet--play-on \.line-result-body[\s\S]*min-height:\s*8\.5rem/);
+  assert.match(css, /\.line-result-sheet--play-on \.line-result-body-wrap[\s\S]*min-height:\s*8\.5rem/);
+  // Default sheet still taller than the old 32dvh clip
+  assert.match(css, /max-height:\s*min\(42dvh/);
+  assert.doesNotMatch(css, /max-height:\s*min\(32dvh/);
+});
+
+test("TrainView remounts on line change only; Practice↔Test stays in place", () => {
+  // Key must NOT include mode — remounting on Practice↔Test flashes an empty board
+  assert.match(shell, /key=\{\`\$\{active\.pack\.id\}-\$\{active\.line\.id\}\`\}/);
+  assert.doesNotMatch(
+    shell,
+    /key=\{\`\$\{active\.pack\.id\}-\$\{active\.line\.id\}-\$\{active\.mode\}\`\}/,
+  );
+  assert.match(shell, /onModeChange=\{\(mode\) =>/);
+  assert.match(shell, /setActive\(\(prev\) => \(prev \? \{ \.\.\.prev, mode \} : prev\)\)/);
+  assert.match(train, /onModeChange\?: \(mode: Mode\) => void/);
+  assert.match(train, /onModeChange\?\.\(m\)/);
+  const changeMode = train.match(/const changeMode = \(m: Mode\) => \{[\s\S]*?\};/);
+  assert.ok(changeMode, "changeMode block");
+  assert.match(changeMode[0], /setMode\(m\)/);
+  assert.match(changeMode[0], /onModeChange\?\.\(m\)/);
+  assert.match(changeMode[0], /resetLine\(m\)/);
+  // Both ModeTab rows bind to the same local mode state
+  assert.equal([...train.matchAll(/active=\{mode === "learn"\}/g)].length, 2);
+  assert.equal([...train.matchAll(/active=\{mode === "practice"\}/g)].length, 2);
 });

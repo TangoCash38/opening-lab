@@ -116,10 +116,11 @@ export function LineResultModal({
       />
       <div
         className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}${
-          expanded ? " line-result-sheet--expanded" : ""
-        }`}
+          showPlayOn ? " line-result-sheet--play-on" : ""
+        }${expanded ? " line-result-sheet--expanded" : ""}`}
         data-result-sheet
         data-result-expanded={expanded ? "1" : undefined}
+        data-result-has-play-on={showPlayOn ? "1" : undefined}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border px-5 py-3">

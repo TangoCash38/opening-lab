@@ -35,6 +35,8 @@ type Mode = "learn" | "practice";
 
 type Props = {
   initialMode?: Mode;
+  /** Keep parent active.mode in sync without remounting on Practice↔Test. */
+  onModeChange?: (mode: Mode) => void;
   onLineComplete?: () => void;
   onLearnDone?: () => void;
   onPracticeFail?: () => void;
@@ -226,7 +228,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -391,6 +393,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const changeMode = (m: Mode) => {
     if (m === "practice") setNudgeTest(false);
     setMode(m);
+    onModeChange?.(m);
     resetLine(m);
   };
 
