@@ -22,7 +22,7 @@ type Props = {
 
 export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   const t = useT();
-  const { masteryOf, isComplete } = useProgress();
+  const { masteryOf, isComplete, testPercentOf } = useProgress();
   const { state } = useUnlocks();
   const purchased = state.packs;
   const catalog = visiblePacks(PACKS);
@@ -123,6 +123,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
                     mastery={mastery}
                     locked={!unlocked}
                     showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
+                    testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
                     onClick={() => {
                       if (unlocked) {
                         if (pack.about) {

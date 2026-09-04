@@ -38,6 +38,8 @@ type Props = {
   onLineComplete?: () => void;
   onLearnDone?: () => void;
   onPracticeFail?: () => void;
+  /** Persist best Test ply after a successful book ply lands. */
+  onTestPly?: (plyIndex: number) => void;
   onTrainNext?: () => void;
   hasNextDue?: boolean;
   onPracticeNext?: (line: OpeningLine) => void;
@@ -193,7 +195,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTrainNext, hasNextDue, onPracticeNext }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext }: Props) {
   const t = useT();
   const { state } = useUnlocks();
   const purchased = state.packs;
@@ -410,6 +412,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       return;
     }
 
+    // Persist Test (practice) book progress for pack list %.
+    if (mode === "practice") {
+      onTestPly?.(pending.nextPly);
+    }
+
     if (pending.nextPly >= line.plies.length) {
       if (mode === "learn") {
         setNudgeTest(true);
@@ -466,7 +473,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line, pack, purchased, t, mode, scheduleHints, onLineComplete, onLearnDone]);
+  }, [line, pack, purchased, t, mode, scheduleHints, onLineComplete, onLearnDone, onTestPly]);
 
   useEffect(() => {
     clearReplyTimer();

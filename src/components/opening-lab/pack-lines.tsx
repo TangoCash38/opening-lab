@@ -50,6 +50,8 @@ type LineRowProps = {
   mastery: Mastery;
   locked: boolean;
   showFree?: boolean;
+  /** Test progress % from lineTestPercent; null = not started in Test. */
+  testPercent?: number | null;
   onClick: () => void;
 };
 
@@ -61,9 +63,11 @@ export function LineRow({
   mastery,
   locked,
   showFree = false,
+  testPercent = null,
   onClick,
 }: LineRowProps) {
   const t = useT();
+  const showPct = !locked && testPercent != null;
   return (
     <button
       type="button"
@@ -101,6 +105,17 @@ export function LineRow({
             </span>
           ) : null}
           {!locked && !complete ? <MasteryChip mastery={mastery} /> : null}
+          {showPct ? (
+            <span
+              className={`rounded-full px-1.5 py-0.5 text-[0.65rem] font-bold tabular-nums ${
+                complete
+                  ? "bg-success text-white"
+                  : "bg-accent/14 text-accent"
+              }`}
+            >
+              {t("{pct}%", { pct: testPercent })}
+            </span>
+          ) : null}
         </div>
         {line.players ? (
           <div className="mt-0.5 text-[0.72rem] text-fg-muted">

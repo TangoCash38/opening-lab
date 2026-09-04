@@ -22,6 +22,8 @@ export type LineProgress = {
   cleanPractice: boolean;
   /** True after Learn mode is finished (does not complete the line). */
   learned: boolean;
+  /** Highest book plyIndex reached during Test (practice) for this line. */
+  testBestPly: number;
 };
 
 export type ProgressStore = {
@@ -42,6 +44,7 @@ const EMPTY_LINE: LineProgress = {
   recentFails: [],
   cleanPractice: false,
   learned: false,
+  testBestPly: 0,
 };
 
 const EMPTY_STORE: ProgressStore = {
@@ -104,6 +107,7 @@ function normalizeLine(raw: Partial<LineProgress> | undefined | null): LineProgr
     // Missing flags (old Learn completions) must not count as complete.
     cleanPractice: raw.cleanPractice === true,
     learned: raw.learned === true,
+    testBestPly: Math.max(0, Number(raw.testBestPly) || 0),
   };
 }
 
@@ -240,6 +244,27 @@ export function markPracticeFail(lineId: string, now = new Date()): LineProgress
   store.lines[lineId] = updated;
   write(store);
   return updated;
+}
+
+export function markTestPly(lineId: string, plyIndex: number): LineProgress {
+  const store = read();
+  const prev = store.lines[lineId] ?? { ...EMPTY_LINE };
+  const nextPly = Math.max(0, Math.floor(Number(plyIndex) || 0));
+  const updated: LineProgress = {
+    ...prev,
+    testBestPly: Math.max(prev.testBestPly, nextPly),
+  };
+  store.lines[lineId] = updated;
+  write(store);
+  return updated;
+}
+
+/** Percent through Test for pack list. null = not started in Test (or invalid book). */
+export function lineTestPercent(p: LineProgress, bookLen: number): number | null {
+  if (bookLen <= 0) return null;
+  if (p.cleanPractice) return 100;
+  if (p.testBestPly <= 0) return null;
+  return Math.min(100, Math.max(0, Math.round((p.testBestPly / bookLen) * 100)));
 }
 
 export type QueueItem = {
