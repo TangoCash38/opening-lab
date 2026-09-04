@@ -257,10 +257,13 @@ function OpeningLabInner() {
         {view === "guide" && <GuideView onBack={goHome} />}
         {view === "train" && active && isPackVisible(active.pack) && (
           <TrainView
-            key={`${active.pack.id}-${active.line.id}-${active.mode}`}
+            key={`${active.pack.id}-${active.line.id}`}
             pack={active.pack}
             line={active.line}
             initialMode={active.mode}
+            onModeChange={(mode) =>
+              setActive((prev) => (prev ? { ...prev, mode } : prev))
+            }
             onBack={goHome}
             onLineComplete={() => complete(active.line.id)}
             onLearnDone={() => markLearned(active.line.id)}

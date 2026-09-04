@@ -1328,7 +1328,7 @@ html[data-color-scheme="dark"] {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: min(40dvh, 20rem);
+  height: min(52dvh, 28rem);
   background: linear-gradient(to top, rgba(28, 25, 21, 0.22), transparent);
 }
 
@@ -1378,7 +1378,8 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
   display: flex;
   width: 100%;
   max-width: 32rem;
-  max-height: min(32dvh, 17.5rem, calc(100dvh - min(100vw, 26rem) - 4.5rem));
+  /* ~4 lines of plan text + sticky footer; keep most of the board visible */
+  max-height: min(42dvh, 22rem, calc(100dvh - min(100vw, 26rem) - 4.5rem));
   flex-direction: column;
   overflow: hidden;
   border-radius: 1rem;
@@ -1393,6 +1394,11 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
   border-color: var(--color-danger);
 }
 
+/* Play-on footer steals height — give the body ~4–6 plan lines before scroll */
+.line-result-sheet--play-on {
+  max-height: min(50dvh, 27rem, calc(100dvh - min(100vw, 26rem) - 4.5rem));
+}
+
 .line-result-sheet--expanded {
   max-height: min(78dvh, 36rem);
 }
@@ -1405,11 +1411,20 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
   flex-direction: column;
 }
 
+.line-result-sheet--play-on .line-result-body-wrap {
+  min-height: 8.5rem;
+}
+
 .line-result-body {
   min-height: 0;
   flex: 1 1 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+.line-result-sheet--play-on .line-result-body {
+  /* Prefer readable plan text; scroll cue sits below, not over clipped lines */
+  min-height: 8.5rem;
 }
 
 .line-result-scroll-cue {
@@ -1446,5 +1461,5 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 .train-board-anchor {
   scroll-margin-top: 4.75rem;
-  scroll-margin-bottom: min(34dvh, 18.5rem);
+  scroll-margin-bottom: min(52dvh, 28rem);
 }
