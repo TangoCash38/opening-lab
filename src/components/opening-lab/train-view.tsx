@@ -181,18 +181,44 @@ function firstPlayableReply(fen: string): PlayableReply | null {
 }
 
 
+function safeMove(
+  chess: Chess,
+  move: string | { from: string; to: string; promotion?: string },
+): Move | null {
+  try {
+    const result = chess.move(move);
+    return result || null;
+  } catch {
+    return null;
+  }
+}
+
+/** Replay SAN; stop on the first illegal ply without throwing. */
 function replaySans(sans: string[], count: number): Chess {
   const g = new Chess();
   for (let i = 0; i < count; i++) {
     const san = sans[i];
-    if (!san) break;
-    try {
-      if (!g.move(san)) break;
-    } catch {
-      break;
-    }
+    if (!san || !safeMove(g, san)) break;
   }
   return g;
+}
+
+/**
+ * Apply a move while keeping the full move history.
+ * Never rebase with `new Chess(fen)` — that leaves history length 1 and
+ * breaks Play on display (`replaySans(game.history(), viewPly)`).
+ */
+function cloneAndMove(
+  game: Chess,
+  move: { from: string; to: string; promotion?: string },
+): { next: Chess; move: Move } | null {
+  const next = new Chess();
+  for (const san of game.history()) {
+    if (!safeMove(next, san)) return null;
+  }
+  const played = safeMove(next, move);
+  if (!played) return null;
+  return { next, move: played };
 }
 
 function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
@@ -509,23 +535,23 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     const gen = replyGenRef.current;
     replyTimer.current = setTimeout(() => {
       if (gen !== replyGenRef.current) return;
-      const g = new Chess(fenNow);
-      const exp = expectedMove(g, idx);
+      // Position probe only — commits go through cloneAndMove so history stays full.
+      const probe = new Chess(fenNow);
+      const exp = expectedMove(probe, idx);
       if (!exp) return;
-      const pieceCode = fenPieceAt(g, exp.from as Square);
+      const pieceCode = fenPieceAt(probe, exp.from as Square);
       if (!pieceCode) return;
-      const next = new Chess(fenNow);
-      const ok = next.move({
+      const committed = cloneAndMove(game, {
         from: exp.from,
         to: exp.to,
         promotion: exp.promotion || "q",
       });
-      if (!ok) return;
+      if (!committed) return;
       beginSlide(
         exp.from as Square,
         exp.to as Square,
         pieceCode,
-        next,
+        committed.next,
         idx + 1,
         false,
       );
@@ -573,13 +599,19 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
       const fb = firstPlayableReply(fenNow);
       if (fb) {
-        applyReply(fb.from, fb.to, fb.pieceCode, fb.next);
-        return;
+        const committed = cloneAndMove(game, {
+          from: fb.from,
+          to: fb.to,
+          promotion: "q",
+        });
+        if (committed) {
+          applyReply(fb.from, fb.to, fb.pieceCode, committed.next);
+          return;
+        }
       }
       setEngineBusy(false);
-      const g = new Chess(fenNow);
       setStatus({
-        text: playOnGameOverText(g, line.side),
+        text: playOnGameOverText(new Chess(fenNow), line.side),
         cls: "ok",
       });
     };
@@ -589,16 +621,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       .then((mv) => {
         if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
         if (mv) {
-          const g = new Chess(fenNow);
-          const pieceCode = fenPieceAt(g, mv.from as Square);
-          const next = new Chess(fenNow);
-          const ok = next.move({
+          const probe = new Chess(fenNow);
+          const pieceCode = fenPieceAt(probe, mv.from as Square);
+          const committed = cloneAndMove(game, {
             from: mv.from,
             to: mv.to,
             promotion: mv.promotion || "q",
           });
-          if (pieceCode && ok) {
-            applyReply(mv.from as Square, mv.to as Square, pieceCode, next);
+          if (pieceCode && committed) {
+            applyReply(
+              mv.from as Square,
+              mv.to as Square,
+              pieceCode,
+              committed.next,
+            );
             return;
           }
         }
@@ -610,6 +646,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
     return () => {
       cancelled = true;
+      // Do not leave the board locked if this search was abandoned.
+      if (gen === replyGenRef.current) {
+        setEngineBusy(false);
+      }
     };
   }, [
     playingOn,
@@ -664,14 +704,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     if (playingOnRef.current) {
       const pieceCode = fenPieceAt(game, from);
       if (!pieceCode) return;
-      const next = new Chess(game.fen());
-      const move = next.move({
+      const committed = cloneAndMove(game, {
         from,
         to,
         promotion: promotion || "q",
       });
-      if (!move) return;
-      beginSlide(from, to, pieceCode, next, plyIndex + 1, true);
+      if (!committed) return;
+      beginSlide(from, to, pieceCode, committed.next, plyIndex + 1, true);
       return;
     }
 
@@ -715,15 +754,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     const pieceCode = fenPieceAt(game, from);
     if (!pieceCode) return;
 
-    const next = new Chess(game.fen());
-    const move = next.move({
+    const committed = cloneAndMove(game, {
       from,
       to,
       promotion: promotion || exp.promotion || "q",
     });
-    if (!move) return;
+    if (!committed) return;
 
-    beginSlide(from, to, pieceCode, next, plyIndex + 1, true);
+    beginSlide(from, to, pieceCode, committed.next, plyIndex + 1, true);
   };
 
   const onSquare = (sq: Square) => {
@@ -754,8 +792,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     const level: PlayLevel = playLevel ?? "beginner";
     playLevelRef.current = level;
     thinkMsRef.current = PLAY_THINK_MS[level];
+    // Rebuild from the book line so chess.js history matches the board.
+    // FEN-rebase commits leave history length 1 and Play on jumps to start.
+    const full = replaySans(line.plies, line.plies.length);
+    const startPly = full.history().length;
+    replyGenRef.current += 1;
     playingOnRef.current = true;
-    playOnStartPlyRef.current = game.history().length;
+    playOnStartPlyRef.current = startPly;
+    setGame(full);
+    setPlyIndex(startPly);
+    setViewPly(startPly);
     setPlayingOn(true);
     setSelected(null);
     setPendingPromo(null);
@@ -793,14 +839,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       }
       engineRef.current = engine;
       setEngineReady(true);
-      if (game.isGameOver()) {
+      if (full.isGameOver()) {
         setStatus({
-          text: playOnGameOverText(game, line.side),
+          text: playOnGameOverText(full, line.side),
           cls: "ok",
         });
         return;
       }
-      if (isUserTurn(game)) {
+      if (isUserTurn(full)) {
         setStatus({ text: "Your move — playing on", cls: "" });
       }
     })();
