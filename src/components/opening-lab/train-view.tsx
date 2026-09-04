@@ -256,6 +256,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [playingOn, setPlayingOn] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
   const [engineBusy, setEngineBusy] = useState(false);
+  const [playHint, setPlayHint] = useState<Move | null>(null);
+  const [hintBusy, setHintBusy] = useState(false);
   const [pendingPromo, setPendingPromo] = useState<{
     from: Square;
     to: Square;
@@ -317,6 +319,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     setPlayingOn(false);
     setEngineReady(false);
     setEngineBusy(false);
+    setPlayHint(null);
+    setHintBusy(false);
     setPendingPromo(null);
     setPlayLevel("beginner");
   }, []);
@@ -371,6 +375,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setResultCard(null);
       setBoardExpanded(false);
       setHintsReady(true);
+      setPlayHint(null);
+      setHintBusy(false);
       setGame(new Chess());
       setPlyIndex(0);
       setViewPly(0);
@@ -409,6 +415,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setSelected(null);
       setBusy(true);
       setHintsReady(false);
+      setPlayHint(null);
       // Brown last-move wash immediately; hint-from/to drop with showHints.
       setLastMove({ from, to });
       pendingCommit.current = {
@@ -801,6 +808,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     setPendingPromo(null);
     setEngineBusy(false);
     setEngineReady(false);
+    setPlayHint(null);
+    setHintBusy(false);
     setStatus({ text: "…", cls: "" });
 
     void (async () => {
@@ -862,6 +871,53 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     ? lastMoveSquares(displayGame)
     : lastMove;
 
+  const requestPlayHint = () => {
+    if (!playingOnRef.current) return;
+    if (busy || slide || engineBusy || hintBusy || viewingHistory) return;
+    if (!isUserTurn(game)) return;
+    const fen = game.fen();
+    const gen = replyGenRef.current;
+    setPlayHint(null);
+    setHintBusy(true);
+    setStatus({ text: "…", cls: "" });
+    void (async () => {
+      try {
+        let mv: { from: string; to: string; promotion?: string } | null = null;
+        const mod = await import("@/lib/play-engine");
+        if (typeof mod.pickHintMove === "function") {
+          mv = await mod.pickHintMove(fen);
+        } else {
+          const eng = engineRef.current ?? mod.createLiteEngine("advanced");
+          mv = await eng.pickMove(fen, 2500, "advanced");
+        }
+        if (gen !== replyGenRef.current || !playingOnRef.current) return;
+        if (!mv) {
+          setStatus({ text: "Your move — playing on", cls: "" });
+          return;
+        }
+        const legal = new Chess(fen)
+          .moves({ verbose: true })
+          .find(
+            (m) =>
+              m.from === mv!.from &&
+              m.to === mv!.to &&
+              (!mv!.promotion || m.promotion === mv!.promotion),
+          );
+        if (legal) {
+          setPlayHint(legal);
+          setStatus({ text: t("Hint ready"), cls: "" });
+        } else {
+          setStatus({ text: "Your move — playing on", cls: "" });
+        }
+      } catch {
+        if (gen !== replyGenRef.current || !playingOnRef.current) return;
+        setStatus({ text: "Your move — playing on", cls: "" });
+      } finally {
+        if (gen === replyGenRef.current) setHintBusy(false);
+      }
+    })();
+  };
+
   const jumpToPly = (nextPly: number) => {
     if (busy || slide) return;
     // View-only. Does not undo progress / SM-2 / miss flags / a completed line.
@@ -908,19 +964,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (viewPly < livePly) setViewPly((p) => Math.min(livePly, p + 1));
   };
 
-  const exp = playingOn || viewingHistory ? null : expectedMove(game, plyIndex);
+  const bookExp =
+    playingOn || viewingHistory ? null : expectedMove(game, plyIndex);
   const userTurn =
     isUserTurn(game) && !busy && !slide && !engineBusy && !viewingHistory;
-  const showHints =
-    !playingOn &&
-    !viewingHistory &&
-    mode === "learn" &&
-    userTurn &&
-    hintsReady &&
-    plyIndex < line.plies.length;
+  const showHints = playingOn
+    ? Boolean(playHint) && userTurn
+    : !viewingHistory &&
+      mode === "learn" &&
+      userTurn &&
+      hintsReady &&
+      plyIndex < line.plies.length;
+  const exp = playingOn ? playHint : bookExp;
 
   const hint =
-    showHints && exp
+    !playingOn && showHints && bookExp
       ? `Play: ${line.plies[plyIndex]}`
       : "";
 
@@ -1183,6 +1241,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               >
                 {t("Back")}
               </button>
+              {playingOn ? (
+                <button
+                  type="button"
+                  onClick={requestPlayHint}
+                  disabled={busy || !!slide || engineBusy || hintBusy || viewingHistory || !isUserTurn(game)}
+                  aria-label={t("Hint")}
+                  className="board-fs-action"
+                >
+                  {t("Hint")}
+                </button>
+              ) : null}
               {canForward || viewingHistory ? (
                 <button
                   type="button"
@@ -1272,6 +1341,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           >
             {t("Back")}
           </button>
+          {playingOn ? (
+            <button
+              type="button"
+              onClick={requestPlayHint}
+              disabled={busy || !!slide || engineBusy || hintBusy || viewingHistory || !isUserTurn(game)}
+              aria-label={t("Hint")}
+              className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
+            >
+              {t("Hint")}
+            </button>
+          ) : null}
           {canForward || viewingHistory ? (
             <button
               type="button"

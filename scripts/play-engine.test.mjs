@@ -83,3 +83,33 @@ test("beginner pickMove does not hang the queen when Qd4 is legal", async (t) =>
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("Play-on Hint uses deeper same-engine strength (not Stockfish)", () => {
+  const engine = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
+  const train = readFileSync(
+    join(root, "src/components/opening-lab/train-view.tsx"),
+    "utf8",
+  );
+  const guide = readFileSync(
+    join(root, "src/components/opening-lab/guide-view.tsx"),
+    "utf8",
+  );
+
+  assert.match(
+    engine,
+    /HINT_STRENGTH = \{[\s\S]*?thinkMs: 2500,[\s\S]*?depth: 6,[\s\S]*?randomize: false,[\s\S]*?slack: 0/,
+  );
+  assert.match(engine, /export async function pickHintMove/);
+  assert.match(engine, /HINT_STRENGTH\.thinkMs/);
+  assert.match(engine, /HINT_STRENGTH\.depth/);
+  assert.doesNotMatch(engine, /from ["']stockfish/);
+
+  assert.match(train, /playHint/);
+  assert.match(train, /requestPlayHint/);
+  assert.match(train, /pickHintMove/);
+  assert.match(train, /t\("Hint"\)/);
+  assert.match(train, /Boolean\(playHint\)/);
+  assert.match(train, /playingOn \? playHint : bookExp/);
+
+  assert.match(guide, /Hint shows a stronger suggestion from the same engine/);
+});
