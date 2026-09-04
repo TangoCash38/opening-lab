@@ -23,7 +23,7 @@ type Props = {
 export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp }: Props) {
   const t = useT();
   const { masteryOf, isComplete, testPercentOf } = useProgress();
-  const { state } = useUnlocks();
+  const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const catalog = visiblePacks(PACKS);
   const pack = catalog.find((p) => p.id === "caro-kann-black");
@@ -131,7 +131,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp }:
             {pack && linesOpen ? (
               <div className="home-lines-panel border-t border-border">
                 {shownLines.map((item, i) => {
-                  const unlocked = isLineUnlocked(pack, item.id, purchased);
+                  const unlocked = subscribed || isLineUnlocked(pack, item.id, purchased);
                   const complete = unlocked && isComplete(item.id);
                   const mastery = masteryOf(item.id);
                   return (

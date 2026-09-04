@@ -11,6 +11,7 @@ type Props = {
 export function accessibleCandidates(
   canAccess: (pack: Pack) => boolean,
   purchasedPackIds: readonly string[] = [],
+  subscribed = false,
 ): { packId: string; lineId: string }[] {
   const out: { packId: string; lineId: string }[] = [];
   for (const pack of visiblePacks(PACKS)) {
@@ -21,7 +22,7 @@ export function accessibleCandidates(
       continue;
     }
     for (const line of pack.lines) {
-      if (isLineUnlocked(pack, line.id, purchasedPackIds)) {
+      if (subscribed || isLineUnlocked(pack, line.id, purchasedPackIds)) {
         out.push({ packId: pack.id, lineId: line.id });
       }
     }
@@ -38,8 +39,8 @@ function findLine(packId: string, lineId: string): { pack: Pack; line: OpeningLi
 
 export function TodayStrip({ onStartLine, onTrainDue }: Props) {
   const { streak, unused, dueQueue } = useProgress();
-  const { canAccess, state } = useUnlocks();
-  const candidates = accessibleCandidates(canAccess, state.packs);
+  const { canAccess, state, subscribed } = useUnlocks();
+  const candidates = accessibleCandidates(canAccess, state.packs, subscribed);
   const queue = dueQueue(candidates);
   const dueCount = queue.length;
   const suggestion = unused(candidates);
