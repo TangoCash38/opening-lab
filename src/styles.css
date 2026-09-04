@@ -1422,7 +1422,3 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   scroll-margin-top: 4.75rem;
   scroll-margin-bottom: min(34dvh, 18.5rem);
 }
-
-.train-result-pad {
-  padding-bottom: min(34dvh, 18.5rem);
-}

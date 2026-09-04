@@ -246,7 +246,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notationStripRef = useRef<HTMLDivElement | null>(null);
-  const boardWrapRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
   const playingOnRef = useRef(false);
   const playOnStartPlyRef = useRef(line.plies.length);
@@ -931,16 +930,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
     };
   }, [boardExpanded, resultCard]);
 
-  useEffect(() => {
-    if (!resultCard) return;
-    // Keep Expand on when the finish popup appears; fullscreen has nowhere to scroll.
-    if (boardExpanded) return;
-    boardWrapRef.current?.scrollIntoView({
-      block: "start",
-      behavior: "auto",
-    });
-  }, [resultCard, boardExpanded]);
-
 
   const canBack =
     !busy &&
@@ -952,7 +941,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
   const canForward = !busy && !slide && viewPly < livePly;
 
   return (
-    <div className={resultCard ? "train-result-pad" : undefined}>
+    <div>
       <button
         type="button"
         onClick={onBack}
@@ -1041,7 +1030,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       ) : null}
 
       <div
-        ref={boardWrapRef}
         className={boardExpanded ? "board-fs-overlay" : "train-board-anchor relative"}
       >
         {boardExpanded ? (
