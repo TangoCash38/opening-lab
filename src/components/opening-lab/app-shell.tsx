@@ -24,6 +24,7 @@ import {
   subscribeColorScheme,
   type ColorScheme,
 } from "@/lib/color-scheme";
+import { isPlayWrap } from "@/lib/play-app";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
@@ -69,6 +70,11 @@ function OpeningLabInner() {
     false /* onboard after mount */
   );
   const [showSplash, setShowSplash] = useState(true);
+  const [playSurface, setPlaySurface] = useState(() => isPlayWrap());
+
+  useEffect(() => {
+    setPlaySurface(isPlayWrap());
+  }, []);
 
   const { complete, markLearned, failPractice, markTest, dueQueue } = useProgress();
   const { canAccess, state } = useUnlocks();
@@ -166,19 +172,21 @@ function OpeningLabInner() {
     setShowSplash(false);
   }, []);
 
+  const surface = playSurface ? "play" : "website";
+
   if (showSplash) {
     return (
-      <div className="app-shell bg-bg text-fg">
+      <div className="app-shell bg-bg text-fg" data-surface={surface}>
         <AppSplash onDone={finishSplash} />
       </div>
     );
   }
 
   return (
-    <div className="app-shell bg-bg text-fg">
+    <div className="app-shell bg-bg text-fg" data-surface={surface}>
       <header className="app-header z-30 border-b border-border/80">
         <div
-          className="mx-auto flex max-w-[520px] items-center gap-2 px-3 pb-2.5"
+          className="app-header-inner mx-auto flex w-full items-center gap-2 px-3 pb-2.5"
           style={{ paddingTop: "max(0.65rem, env(safe-area-inset-top, 0px))" }}
         >
           <button
@@ -218,7 +226,7 @@ function OpeningLabInner() {
       </header>
 
       <main
-        className="app-main mx-auto w-full max-w-[520px] px-4 pt-5"
+        className="app-main mx-auto w-full px-4 pt-5"
         style={{
           paddingBottom: "max(3rem, env(safe-area-inset-bottom, 0px))",
         }}

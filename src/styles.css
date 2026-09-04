@@ -229,10 +229,88 @@ html[data-color-scheme="dark"] {
     background: var(--color-bg);
   }
 
+  .app-header-inner,
+  .app-main {
+    max-width: 520px;
+  }
+
   .app-main {
     overflow-x: hidden;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Website desktop: widen shell; Play wrap stays 520px phone chrome. */
+  @media (min-width: 960px) {
+    [data-surface="website"] .app-header-inner,
+    [data-surface="website"] .app-main {
+      max-width: min(1100px, 100%);
+    }
+
+    [data-surface="website"] .home-hero-split {
+      display: grid;
+      grid-template-columns: minmax(280px, min(420px, 45vw)) minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      column-gap: 1.75rem;
+      row-gap: 0.85rem;
+      align-items: start;
+    }
+
+    [data-surface="website"] .home-hero-split > .home-heading-row {
+      grid-column: 2;
+      grid-row: 1;
+      margin-bottom: 0;
+    }
+
+    [data-surface="website"] .home-hero-split > .home-sample-card,
+    [data-surface="website"] .home-hero-split .home-hero-split-inner {
+      display: contents;
+    }
+
+    [data-surface="website"] .home-hero-split .home-hero-board-col {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      overflow: hidden;
+      border: 1.5px solid color-mix(in oklab, var(--color-accent) 30%, transparent);
+      border-radius: calc(var(--radius-card) + 2px);
+      background: var(--color-bg-elevated);
+      box-shadow: var(--shadow-card);
+      padding-bottom: 0.35rem;
+    }
+
+    [data-surface="website"] .home-hero-split .home-hero-copy-col {
+      grid-column: 2;
+      grid-row: 2;
+      min-height: 0;
+      max-height: min(70vh, 40rem);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1.5px solid color-mix(in oklab, var(--color-accent) 30%, transparent);
+      border-radius: calc(var(--radius-card) + 2px);
+      background: var(--color-bg-elevated);
+      box-shadow: var(--shadow-card);
+    }
+
+    [data-surface="website"] .home-hero-split .home-sample-meta {
+      padding-top: 1.15rem;
+      padding-bottom: 0.65rem;
+    }
+
+    [data-surface="website"] .home-hero-split .home-heading-row h1 {
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+    }
+
+    [data-surface="website"] .pack-list-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 1.25rem;
+      align-items: start;
+    }
+
+    [data-surface="website"] .pack-list-grid > .pack-list-full {
+      grid-column: 1 / -1;
+    }
   }
 
   .pack-list {

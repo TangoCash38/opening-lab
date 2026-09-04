@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
@@ -20,7 +20,7 @@ type Props = {
   playApp?: boolean;
 };
 
-export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
+export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp }: Props) {
   const t = useT();
   const { masteryOf, isComplete, testPercentOf } = useProgress();
   const { state } = useUnlocks();
@@ -31,6 +31,19 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   const [linesOpen, setLinesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
+
+  const websiteSplit = !playApp;
+
+  useEffect(() => {
+    if (!websiteSplit || typeof window === "undefined") return;
+    const mq = window.matchMedia("(min-width: 960px)");
+    const sync = () => {
+      if (mq.matches) setLinesOpen(true);
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, [websiteSplit]);
 
   const game = useMemo(() => new Chess(), []);
 
@@ -45,7 +58,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
   };
 
   return (
-    <section className="mb-5">
+    <section className={`home-hero mb-5${websiteSplit ? " home-hero-split" : ""}`}>
       <div className="home-heading-row">
         <h1 className="font-display text-[1.65rem] font-bold tracking-tight">
           {t("Train openings the strict way")}
@@ -59,86 +72,97 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock }: Props) {
         </button>
       </div>
 
-      <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
-        <div className="px-4 pb-2 pt-3.5">
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
-            {t("Free sample")}
-          </p>
-          <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">
-            Caro-Kann for Black
-          </h2>
-          <p className="mt-0.5 text-[0.82rem] text-fg-muted">
-            {pack?.blurb ?? "Advance, Classical, Exchange"}
-          </p>
-        </div>
+      <div className="home-sample-card overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
+        <div className="home-hero-split-inner">
+          <div className="home-hero-board-col">
+            <div className="home-sample-meta px-4 pb-2 pt-3.5">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+                {t("Free sample")}
+              </p>
+              <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">
+                Caro-Kann for Black
+              </h2>
+              <p className="mt-0.5 text-[0.82rem] text-fg-muted">
+                {pack?.blurb ?? "Advance, Classical, Exchange"}
+              </p>
+            </div>
 
-        <div className="home-board pointer-events-none px-2">
-          <ChessBoard
-            game={game}
-            flip={true}
-            selected={null}
-            wrongUntil={null}
-            expected={null}
-            showHints={false}
-            lastMove={null}
-            slide={null}
-            onSquare={() => {}}
-            interactive={false}
-          />
-          <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
-            <BoardThemePicker compact className="w-full" />
+            <div className="home-board pointer-events-none px-2">
+              <ChessBoard
+                game={game}
+                flip={true}
+                selected={null}
+                wrongUntil={null}
+                expected={null}
+                showHints={false}
+                lastMove={null}
+                slide={null}
+                onSquare={() => {}}
+                interactive={false}
+              />
+              <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
+                <BoardThemePicker compact className="w-full" />
+              </div>
+            </div>
+
+            <div className="space-y-2.5 px-4 pb-3 pt-1">
+              <button
+                type="button"
+                onClick={openIntroThenPractice}
+                className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+              >
+                {t("Tap to practice")}
+              </button>
+            </div>
+          </div>
+
+          <div className="home-hero-copy-col">
+            <div className="space-y-2.5 px-4 pb-3 pt-3.5">
+              <button
+                type="button"
+                onClick={() => setLinesOpen((v) => !v)}
+                aria-expanded={linesOpen}
+                className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
+              >
+                {t("See 18 lines")}
+              </button>
+            </div>
+
+            {pack && linesOpen ? (
+              <div className="home-lines-panel border-t border-border">
+                {shownLines.map((item, i) => {
+                  const unlocked = isLineUnlocked(pack, item.id, purchased);
+                  const complete = unlocked && isComplete(item.id);
+                  const mastery = masteryOf(item.id);
+                  return (
+                    <div key={item.id} className="px-3">
+                      <LineRow
+                        index={i}
+                        line={item}
+                        complete={complete}
+                        mastery={mastery}
+                        locked={!unlocked}
+                        showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
+                        testPercent={
+                          unlocked ? testPercentOf(item.id, item.plies.length) : null
+                        }
+                        onClick={() => {
+                          if (unlocked) {
+                            if (pack.about) {
+                              setPendingLine(item);
+                              setAboutOpen(true);
+                            } else onStartLine(pack, item, "learn");
+                          } else onRequestUnlock?.(pack);
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+                <div className="pb-2.5" />
+              </div>
+            ) : null}
           </div>
         </div>
-
-        <div className="space-y-2.5 px-4 pb-3 pt-1">
-          <button
-            type="button"
-            onClick={openIntroThenPractice}
-            className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-          >
-            {t("Tap to practice")}
-          </button>
-          <button
-            type="button"
-            onClick={() => setLinesOpen((v) => !v)}
-            aria-expanded={linesOpen}
-            className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
-          >
-            {t("See 18 lines")}
-          </button>
-        </div>
-
-        {pack && linesOpen ? (
-          <div className="border-t border-border">
-            {shownLines.map((item, i) => {
-              const unlocked = isLineUnlocked(pack, item.id, purchased);
-              const complete = unlocked && isComplete(item.id);
-              const mastery = masteryOf(item.id);
-              return (
-                <div key={item.id} className="px-3">
-                  <LineRow
-                    index={i}
-                    line={item}
-                    complete={complete}
-                    mastery={mastery}
-                    locked={!unlocked}
-                    showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
-                    testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
-                    onClick={() => {
-                      if (unlocked) {
-                        if (pack.about) {
-                          setPendingLine(item);
-                          setAboutOpen(true);
-                        } else onStartLine(pack, item, "learn");
-                      } else onRequestUnlock?.(pack);
-                    }}
-                  />
-                </div>
-              );
-            })}
-            <div className="pb-2.5" />
-          </div>
-        ) : null}
       </div>
 
       {pack?.about && aboutOpen ? (
