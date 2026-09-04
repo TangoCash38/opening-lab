@@ -324,3 +324,50 @@ test("Hint prefers quiet Bf4 in a London-style develop position", async (t) => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("promotion root urgency prefers e7e8=Q over king walks", async (t) => {
+  let ts;
+  try {
+    ts = require("typescript");
+  } catch {
+    t.skip("typescript not installed");
+    return;
+  }
+
+  const src = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
+  assert.match(src, /8_000 \+ \(VAL\[m\.promotion\]/);
+  assert.match(src, /Prefer a non-disastrous promotion/);
+  assert.match(src, /queenPromos/);
+
+  const js = ts.transpileModule(src, {
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ES2022,
+    },
+  }).outputText;
+
+  const dir = join(root, "scripts", ".generated-play-engine-promo");
+  mkdirSync(dir, { recursive: true });
+  const tmp = join(dir, "play-engine.mjs");
+  writeFileSync(tmp, js);
+
+  try {
+    const mod = await import(pathToFileURL(tmp).href + `?t=${Date.now()}`);
+    const fen = "8/4P3/8/8/8/8/8/4K2k w - - 0 1";
+    const hint = mod.searchHintMove(fen);
+    assert.ok(hint, "hint null");
+    assert.equal(hint.from, "e7");
+    assert.equal(hint.to, "e8");
+    assert.equal(hint.promotion, "q");
+
+    const eng = mod.createLiteEngine("beginner");
+    let promo = 0;
+    for (let i = 0; i < 12; i++) {
+      const mv = await eng.pickMove(fen, 400, "beginner");
+      if (mv && mv.from === "e7" && mv.to === "e8" && mv.promotion === "q") promo++;
+    }
+    assert.ok(promo >= 10, `beginner promoted only ${promo}/12 times`);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

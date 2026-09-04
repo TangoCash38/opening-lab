@@ -148,7 +148,8 @@ function orderMoves(moves: Move[]): Move[] {
     .map((m) => {
       let s = 0;
       if (m.captured) s += 10 * (VAL[m.captured] ?? 0) - (VAL[m.piece] ?? 0);
-      if (m.promotion) s += VAL[m.promotion] ?? 0;
+      // Decisive: never let king-walks outrank making a queen.
+      if (m.promotion) s += 8_000 + (VAL[m.promotion] ?? 0);
       if (m.flags?.includes("k") || m.flags?.includes("q")) s += 40;
       return { m, s };
     })
@@ -165,7 +166,7 @@ function orderRootMoves(moves: Move[], color: "w" | "b"): Move[] {
     .map((m) => {
       let s = 0;
       if (m.captured) s += 10 * (VAL[m.captured] ?? 0) - (VAL[m.piece] ?? 0);
-      if (m.promotion) s += VAL[m.promotion] ?? 0;
+      if (m.promotion) s += 8_000 + (VAL[m.promotion] ?? 0);
       if (m.flags?.includes("k") || m.flags?.includes("q")) s += 40;
       if (typeof m.san === "string" && m.san.includes("+")) s += 55;
       if (!m.captured) {
@@ -339,10 +340,19 @@ function searchBest(
   const legal = orderMoves(chess.moves({ verbose: true }));
   if (legal.length === 0) return null;
   const filtered = filterRootMoves(chess, legal, filterWasteful);
-  const rootMoves = opts?.rootPstOrder
+  let rootMoves = opts?.rootPstOrder
     ? orderRootMoves(filtered, turn)
     : filtered;
   if (rootMoves.length === 0) return legalFallback(fen);
+
+  // If a non-hanging queen promotion exists, search only those — stops Hint/L1
+  // preferring king-walks when e7e8=Q is legal (shallow scores are noisy).
+  const queenPromos = rootMoves.filter((m) => m.promotion === "q");
+  if (queenPromos.length > 0) {
+    rootMoves = opts?.rootPstOrder
+      ? orderRootMoves(queenPromos, turn)
+      : orderMoves(queenPromos);
+  }
 
   const deadline = Date.now() + thinkMs;
   const depthCap = opts?.depthCap ?? 6;
@@ -439,10 +449,28 @@ function searchBest(
     if (Date.now() >= deadline && !solid) break;
   }
 
+  // Prefer a non-disastrous promotion over king-walks / quiet shuffles.
+  if (rootScores.length > 0) {
+    const bestScore = Math.max(...rootScores.map((s) => s.score));
+    const promos = rootScores
+      .filter((s) => s.m.promotion)
+      .sort((a, b) => b.score - a.score);
+    if (
+      promos.length > 0 &&
+      promos[0]!.score >= bestScore - 150 &&
+      promos[0]!.score > -HANG_CP
+    ) {
+      best = promos[0]!.m;
+    }
+  }
+
   if (randomize && rootScores.length > 1) {
     const bestScore = Math.max(...rootScores.map((s) => s.score));
+    // Keep promotions sticky in the random pool when they are near-best.
     const pool = rootScores.filter((s) => s.score >= bestScore - slack);
-    const choice = pool[Math.floor(Math.random() * pool.length)] ?? { m: best };
+    const promoPool = pool.filter((s) => s.m.promotion);
+    const use = promoPool.length > 0 ? promoPool : pool;
+    const choice = use[Math.floor(Math.random() * use.length)] ?? { m: best };
     return toEngineMove(choice.m);
   }
   return toEngineMove(best);

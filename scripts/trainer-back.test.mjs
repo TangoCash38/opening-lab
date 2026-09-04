@@ -75,3 +75,10 @@ test("Play on preserves chess.js history (no FEN-rebase commits)", () => {
     /if \(gen === replyGenRef\.current\) \{[\s\S]*?setEngineBusy\(false\)/,
   );
 });
+
+test("Play-on Hint uses hintGenRef so late resolves cannot paint a stale move", () => {
+  assert.match(train, /const hintGenRef = useRef\(0\)/);
+  assert.match(train, /if \(playingOnRef\.current\) hintGenRef\.current \+= 1/);
+  assert.match(train, /const gen = hintGenRef\.current/);
+  assert.match(train, /gen !== hintGenRef\.current/);
+});
