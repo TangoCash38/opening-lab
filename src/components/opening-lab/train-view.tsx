@@ -155,25 +155,23 @@ type PlayableReply = {
 };
 
 /** Capture if one exists, else the first legal move. Used when search fails. */
-function firstPlayableReply(fen: string): PlayableReply | null {
+function firstPlayableReply(game: Chess): PlayableReply | null {
   try {
-    const g = new Chess(fen);
-    const moves = g.moves({ verbose: true });
+    const moves = game.moves({ verbose: true });
     if (moves.length === 0) return null;
     const m = moves.find((mv) => mv.captured) ?? moves[0]!;
-    const pieceCode = fenPieceAt(g, m.from as Square);
-    const next = new Chess(fen);
-    const ok = next.move({
+    const pieceCode = fenPieceAt(game, m.from as Square);
+    const committed = cloneAndMove(game, {
       from: m.from,
       to: m.to,
       promotion: m.promotion || "q",
     });
-    if (!pieceCode || !ok) return null;
+    if (!pieceCode || !committed) return null;
     return {
       from: m.from as Square,
       to: m.to as Square,
       pieceCode,
-      next,
+      next: committed.next,
     };
   } catch {
     return null;
@@ -597,17 +595,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
 
     const playFallback = () => {
       if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
-      const fb = firstPlayableReply(fenNow);
+      const fb = firstPlayableReply(game);
       if (fb) {
-        const committed = cloneAndMove(game, {
-          from: fb.from,
-          to: fb.to,
-          promotion: "q",
-        });
-        if (committed) {
-          applyReply(fb.from, fb.to, fb.pieceCode, committed.next);
-          return;
-        }
+        applyReply(fb.from, fb.to, fb.pieceCode, fb.next);
+        return;
       }
       setEngineBusy(false);
       setStatus({

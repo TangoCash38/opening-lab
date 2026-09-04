@@ -62,10 +62,16 @@ test("Back, Forward, and {pct}% complete exist in all 12 language dicts", () => 
 });
 
 test("Play on preserves chess.js history (no FEN-rebase commits)", () => {
-  const train = read("src/components/opening-lab/train-view.tsx");
   assert.match(train, /function cloneAndMove/);
   assert.match(train, /function safeMove/);
-  assert.match(train, /replaySans\(line\.plies, line\.plies\.length\)/);
+  assert.match(train, /const full = replaySans\(line\.plies, line\.plies\.length\)/);
+  assert.match(train, /playOnStartPlyRef\.current = startPly/);
   assert.doesNotMatch(train, /new Chess\(game\.fen\(\)\)/);
-  assert.match(train, /setEngineBusy\(false\)/);
+  assert.doesNotMatch(train, /const next = new Chess\(fenNow\)/);
+  assert.doesNotMatch(train, /const next = new Chess\(fen\)/);
+  assert.match(train, /firstPlayableReply\(game\)/);
+  assert.match(
+    train,
+    /if \(gen === replyGenRef\.current\) \{[\s\S]*?setEngineBusy\(false\)/,
+  );
 });
