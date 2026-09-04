@@ -866,8 +866,8 @@ export const PACKS: Pack[] = [
       {
         id: "ckb18",
         name: "Exchange, Qb3",
-        idea: "White attacks b7 before developing Nbd2. Defend b7 with …Qd7; do not overlook that the bishop on f4 is hanging if Black first plays …Bxd1.",
-        next: "It is your move. Play …e6, …Bd6, and castle. …Qd7 already covers b7, so do not look for …Bxd1; the queen has left d1 and that capture is illegal. The risk is Qb3 still pressing d5 if you delay …e6.",
+        idea: "White attacks b7 before developing Nbd2. Defend b7 with …Qd7, then …e6, …Bd6, and castle. Do not park the g4-bishop on d1: Qb3 takes it.",
+        next: "It is your move. Play …e6, then …Bd6, and castle. …Qd7 already covers b7. Do not play …Bd1: White’s queen on b3 takes it. The risk is Qb3 still pressing d5 if you delay …e6.",
         plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "Bd3", "Nc6", "c3", "Nf6", "Bf4", "Bg4", "Qb3", "Qd7", "Nbd2"],
         side: "b",
       },
@@ -3475,7 +3475,7 @@ export const PACKS: Pack[] = [
       {
         id: "qgw6",
         name: "Cambridge Springs 6...Qa5",
-        idea: "Nd2 unpins the queen’s knight and covers c3. Do not take on d5: Nxd5 walks into the Elephant (…Nxd5 Bxd8 Bb4+), which punishes White.",
+        idea: "Nd2 unpins the queen’s knight and covers c3. Do not grab in the centre the way White does in the Elephant (the sister line cxd5 exd5 Nxd5?? …Nxd5 Bxd8 Bb4+). Nd2 is the Cambridge Springs antidote.",
         plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Nbd7", "e3", "c6", "Nf3", "Qa5", "Nd2"],
         side: "w",
       },
