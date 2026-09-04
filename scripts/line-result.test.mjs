@@ -334,12 +334,14 @@ test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", ()
   assert.match(modal, /onPlayOn\?/);
   assert.match(modal, /kind === "end"/);
   assert.match(modal, /data-result-play-on/);
+  assert.match(modal, /data-result-play-on-open/);
   assert.match(modal, /data-result-play-on-btn/);
-  assert.doesNotMatch(modal, /Pick a level, then Play on/);
+  assert.match(modal, /playOnPrompt/);
+  assert.match(modal, /Pick a level, then Play on/);
   assert.match(modal, /play-level-chip/);
-  assert.match(modal, /showPlayOn[\s\S]*min-h-10/);
-  assert.match(css, /\.line-result-play-on \.play-level-chip[\s\S]*min-height:\s*1\.85rem/);
-  assert.match(css, /\.line-result-play-on \.play-on-btn[\s\S]*width:\s*auto/);
+  assert.match(modal, /line-result-actions-row/);
+  assert.match(css, /\.line-result-actions-row/);
+  assert.match(css, /\.line-result-play-prompt \.play-level-chip/);
   assert.match(train, /resultCard\.kind === "end"/);
   assert.match(train, /setResultCard\(null\);\s*startPlayOn\(\)/);
   assert.match(train, /PLAY_LEVEL_LABEL\[id\]/);
@@ -353,7 +355,7 @@ test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", ()
     assert.doesNotMatch(w, /playOnLevels/);
     assert.doesNotMatch(w, /startPlayOn/);
   }
-  assert.match(css, /\.line-result-play-on/);
+  assert.match(css, /\.line-result-play-prompt/);
 });
 
 test("scrollAppTop on startLine/goHome; ChessBoard remounts on session; reset collapses board", () => {
@@ -372,9 +374,9 @@ test("finish sheet with Play on gets taller body so plan text is readable", () =
   assert.match(modal, /showPlayOn \? " line-result-sheet--play-on"/);
   assert.match(modal, /data-result-has-play-on=\{showPlayOn \? "1" : undefined\}/);
   assert.match(css, /\.line-result-sheet--play-on/);
-  assert.match(css, /max-height:\s*min\(50dvh/);
-  assert.match(css, /\.line-result-sheet--play-on \.line-result-body[\s\S]*min-height:\s*8\.5rem/);
-  assert.match(css, /\.line-result-sheet--play-on \.line-result-body-wrap[\s\S]*min-height:\s*8\.5rem/);
+  assert.match(css, /max-height:\s*min\(52dvh/);
+  assert.match(css, /\.line-result-sheet--play-on \.line-result-body[\s\S]*min-height:\s*10\.5rem/);
+  assert.match(css, /\.line-result-sheet--play-on \.line-result-body-wrap[\s\S]*min-height:\s*10\.5rem/);
   // Default sheet still taller than the old 32dvh clip
   assert.match(css, /max-height:\s*min\(42dvh/);
   assert.doesNotMatch(css, /max-height:\s*min\(32dvh/);
@@ -399,4 +401,18 @@ test("TrainView remounts on line change only; Practice↔Test stays in place", (
   // Both ModeTab rows bind to the same local mode state
   assert.equal([...train.matchAll(/active=\{mode === "learn"\}/g)].length, 2);
   assert.equal([...train.matchAll(/active=\{mode === "practice"\}/g)].length, 2);
+});
+
+test("ModeTab nudge is additive and keeps active/inactive chrome", () => {
+  assert.match(train, /function ModeTab\(/);
+  assert.match(
+    train,
+    /active\s*\?\s*"bg-bg-elevated text-fg shadow-sm"[\s\S]*?bg-transparent text-fg-muted[\s\S]*?nudge \? " mode-tab-nudge"/,
+  );
+  assert.doesNotMatch(train, /nudge\s*\?\s*"mode-tab-nudge"\s*:/);
+  assert.match(css, /\.mode-tab-nudge \{/);
+  assert.doesNotMatch(
+    css,
+    /\.mode-tab-nudge \{[^}]*background:\s*var\(--color-accent\)/,
+  );
 });

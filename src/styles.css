@@ -930,9 +930,8 @@ html[data-color-scheme="dark"] {
   .splash-logo, .splash-story { animation: none; }
 }
 
+/* Additive pulse — does not replace active/inactive tab chrome */
 .mode-tab-nudge {
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
   box-shadow:
     0 0 0 3px rgba(47, 93, 80, 0.4),
     0 0 16px rgba(47, 93, 80, 0.45);
@@ -1348,30 +1347,77 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
   background: rgba(20, 18, 16, 0.55);
 }
 
-/* Play on inside finish / result sheet — petite so plan text stays readable */
-.line-result-play-on {
+/* Finish sheet: side-by-side Play on | primary; levels live in a nested prompt */
+.line-result-actions-row {
+  display: flex;
+  gap: 0.45rem;
+  align-items: stretch;
+}
+.line-result-actions-row > button {
+  flex: 1 1 0;
+  min-height: 2.35rem;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 0.75rem;
+}
+.line-result-play-on-btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  color: var(--color-fg);
+}
+.line-result-play-on-btn:active {
+  transform: scale(0.99);
+}
+.line-result-primary-btn {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+.line-result-primary-btn:active {
+  transform: scale(0.99);
+}
+.line-result-play-prompt {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  padding-bottom: 0;
+  gap: 0.55rem;
 }
-.line-result-play-on .play-level-row {
+.line-result-play-prompt-caption {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
+  text-align: center;
+}
+.line-result-play-prompt .play-level-row {
   flex-wrap: nowrap;
-  gap: 0.25rem;
+  gap: 0.3rem;
+  justify-content: center;
 }
-.line-result-play-on .play-level-chip {
-  min-height: 1.85rem;
-  min-width: 1.85rem;
-  padding: 0.2rem 0.55rem;
-  font-size: 0.72rem;
+.line-result-play-prompt .play-level-chip {
+  min-height: 2rem;
+  min-width: 2rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
   font-weight: 600;
 }
-.line-result-play-on .play-on-btn {
-  width: auto;
-  min-height: 1.85rem;
-  padding: 0.2rem 0.7rem;
-  font-size: 0.72rem;
+.line-result-play-prompt .play-on-btn {
+  width: 100%;
+  min-height: 2.35rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
+}
+.line-result-play-prompt-back {
+  min-height: 2rem;
+  width: 100%;
+  border-radius: 0.75rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
+}
+.line-result-play-prompt-back:active {
+  opacity: 0.7;
 }
 
 .line-result-sheet {
@@ -1397,7 +1443,7 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
 
 /* Play-on footer steals height — give the body ~4–6 plan lines before scroll */
 .line-result-sheet--play-on {
-  max-height: min(50dvh, 27rem, calc(100dvh - min(100vw, 26rem) - 4.5rem));
+  max-height: min(52dvh, 28rem, calc(100dvh - min(100vw, 26rem) - 4.5rem));
 }
 
 .line-result-sheet--expanded {
@@ -1413,7 +1459,7 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
 }
 
 .line-result-sheet--play-on .line-result-body-wrap {
-  min-height: 8.5rem;
+  min-height: 10.5rem;
 }
 
 .line-result-body {
@@ -1425,7 +1471,7 @@ html[data-color-scheme="dark"] .line-result-dim--board-fs {
 
 .line-result-sheet--play-on .line-result-body {
   /* Prefer readable plan text; scroll cue sits below, not over clipped lines */
-  min-height: 8.5rem;
+  min-height: 10.5rem;
 }
 
 .line-result-scroll-cue {
