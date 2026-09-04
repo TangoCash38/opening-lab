@@ -335,8 +335,11 @@ test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", ()
   assert.match(modal, /kind === "end"/);
   assert.match(modal, /data-result-play-on/);
   assert.match(modal, /data-result-play-on-btn/);
-  assert.match(modal, /Pick a level, then Play on/);
+  assert.doesNotMatch(modal, /Pick a level, then Play on/);
   assert.match(modal, /play-level-chip/);
+  assert.match(modal, /showPlayOn[\s\S]*min-h-10/);
+  assert.match(css, /\.line-result-play-on \.play-level-chip[\s\S]*min-height:\s*1\.85rem/);
+  assert.match(css, /\.line-result-play-on \.play-on-btn[\s\S]*width:\s*auto/);
   assert.match(train, /resultCard\.kind === "end"/);
   assert.match(train, /setResultCard\(null\);\s*startPlayOn\(\)/);
   assert.match(train, /PLAY_LEVEL_LABEL\[id\]/);
