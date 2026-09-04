@@ -1506,12 +1506,10 @@ function ModeTab({
       type="button"
       onClick={onClick}
       className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
-        nudge
-          ? "mode-tab-nudge"
-          : active
-            ? "bg-bg-elevated text-fg shadow-sm"
-            : "bg-transparent text-fg-muted"
-      }`}
+        active
+          ? "bg-bg-elevated text-fg shadow-sm"
+          : "bg-transparent text-fg-muted"
+      }${nudge ? " mode-tab-nudge" : ""}`}
     >
       {children}
     </button>

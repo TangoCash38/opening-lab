@@ -54,6 +54,7 @@ export function LineResultModal({
   const [hasOverflow, setHasOverflow] = useState(false);
   const [moreBelow, setMoreBelow] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [playOnPrompt, setPlayOnPrompt] = useState(false);
 
   const updateScrollCue = useCallback(() => {
     const el = bodyRef.current;
@@ -83,11 +84,16 @@ export function LineResultModal({
 
   useEffect(() => {
     updateScrollCue();
-  }, [expanded, updateScrollCue]);
+  }, [expanded, playOnPrompt, updateScrollCue]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
+      if (playOnPrompt) {
+        e.preventDefault();
+        setPlayOnPrompt(false);
+        return;
+      }
       if (expanded) {
         e.preventDefault();
         setExpanded(false);
@@ -97,7 +103,7 @@ export function LineResultModal({
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [expanded, onClose]);
+  }, [expanded, playOnPrompt, onClose]);
 
   return (
     <div
@@ -107,6 +113,7 @@ export function LineResultModal({
       aria-labelledby="line-result-title"
       data-result-kind={kind}
       data-result-actions={showPrimary ? 2 : 1}
+      data-result-play-prompt={playOnPrompt ? "1" : undefined}
       onClick={onClose}
     >
       <div
@@ -194,8 +201,15 @@ export function LineResultModal({
             showPlayOn ? " py-2 space-y-1.5" : showPrimary ? " py-3 space-y-2" : " py-3"
           }`}
         >
-          {showPlayOn ? (
-            <div className="line-result-play-on" data-result-play-on>
+          {showPlayOn && playOnPrompt ? (
+            <div
+              className="line-result-play-prompt"
+              data-result-play-on
+              data-result-play-prompt
+            >
+              <p className="line-result-play-prompt-caption">
+                {t("Pick a level, then Play on")}
+              </p>
               <div
                 className="play-level-row"
                 role="group"
@@ -215,45 +229,72 @@ export function LineResultModal({
                     {level.label}
                   </button>
                 ))}
-                <button
-                  type="button"
-                  data-result-play-on-btn
-                  onClick={onPlayOn}
-                  className="play-on-btn"
-                >
-                  Play on
-                </button>
               </div>
+              <button
+                type="button"
+                data-result-play-on-btn
+                onClick={onPlayOn}
+                className="play-on-btn"
+              >
+                Play on
+              </button>
+              <button
+                type="button"
+                onClick={() => setPlayOnPrompt(false)}
+                className="line-result-play-prompt-back"
+              >
+                {t("Back")}
+              </button>
             </div>
           ) : null}
-          {showPrimary ? (
+          {showPlayOn && !playOnPrompt ? (
+            <div className="line-result-actions-row" data-result-play-on>
+              <button
+                type="button"
+                data-result-play-on-open
+                onClick={() => setPlayOnPrompt(true)}
+                className="line-result-play-on-btn"
+              >
+                Play on
+              </button>
+              {showPrimary ? (
+                <button
+                  type="button"
+                  data-result-primary
+                  onClick={onPrimary}
+                  className="line-result-primary-btn"
+                >
+                  {primaryLabel}
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+          {!showPlayOn && showPrimary ? (
             <button
               type="button"
               data-result-primary
               onClick={onPrimary}
-              className={
-                showPlayOn
-                  ? "min-h-10 w-full rounded-xl bg-accent px-3 py-2 text-[0.85rem] font-bold text-accent-fg active:scale-[0.99]"
-                  : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-              }
+              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
             >
               {primaryLabel}
             </button>
           ) : null}
-          <button
-            type="button"
-            data-result-dismiss
-            onClick={handleAction}
-            className={
-              showPlayOn
-                ? "min-h-8 w-full rounded-xl px-3 py-1.5 text-[0.8rem] font-semibold text-fg-muted active:opacity-70"
-                : showPrimary
-                  ? "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
-                  : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-            }
-          >
-            {actionLabel}
-          </button>
+          {!playOnPrompt ? (
+            <button
+              type="button"
+              data-result-dismiss
+              onClick={handleAction}
+              className={
+                showPlayOn
+                  ? "min-h-8 w-full rounded-xl px-3 py-1.5 text-[0.8rem] font-semibold text-fg-muted active:opacity-70"
+                  : showPrimary
+                    ? "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
+                    : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+              }
+            >
+              {actionLabel}
+            </button>
+          ) : null}
         </div>
       </div>
     </div>
