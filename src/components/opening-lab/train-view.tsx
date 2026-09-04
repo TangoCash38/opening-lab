@@ -16,6 +16,7 @@ import {
 import { useT, type Translate } from "@/lib/i18n";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
+import { ChessPiece } from "./chess-pieces";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
@@ -879,7 +880,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     const gen = replyGenRef.current;
     setPlayHint(null);
     setHintBusy(true);
-    setStatus({ text: "…", cls: "" });
+    setStatus({ text: t("Thinking…"), cls: "" });
     void (async () => {
       try {
         let mv: { from: string; to: string; promotion?: string } | null = null;
@@ -1024,6 +1025,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           : status.cls === "done"
             ? "text-accent font-bold"
             : "text-fg-muted";
+
+  const statusBody =
+    playingOn && hintBusy ? (
+      <HintThinkingCue label={t("Thinking…")} />
+    ) : (
+      status.text
+    );
 
   const bookDone = status.cls === "done" && !playingOn;
   const showPlayOn = bookDone;
@@ -1222,7 +1230,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         {boardExpanded ? (
           <>
             <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
-              {status.text}
+              {statusBody}
             </p>
             <div className="board-fs-actions">
               <button
@@ -1314,7 +1322,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       <div
         className={`mb-3 min-h-[1.4em] text-center text-[0.9rem] transition-opacity duration-200 ${statusColor}`}
       >
-        {status.text}
+        {statusBody}
       </div>
 
       {playingOn ? (
@@ -1487,6 +1495,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         />
       ) : null}
     </div>
+  );
+}
+
+function HintThinkingCue({ label }: { label: string }) {
+  return (
+    <span className="hint-thinking-cue" role="status" aria-live="polite">
+      <ChessPiece code="N" className="hint-thinking-piece" />
+      <span className="hint-thinking-bubble" aria-hidden>
+        <span className="hint-thinking-dot" />
+        <span className="hint-thinking-dot" />
+        <span className="hint-thinking-dot" />
+      </span>
+      <span className="hint-thinking-label">{label}</span>
+    </span>
   );
 }
 
