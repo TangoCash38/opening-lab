@@ -293,6 +293,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     userMove: boolean;
   } | null>(null);
   const replyGenRef = useRef(0);
+  /** Bumped on every Play-on commit so late Hint resolves cannot paint a stale move. */
+  const hintGenRef = useRef(0);
 
   const clearReplyTimer = useCallback(() => {
     if (replyTimer.current) {
@@ -369,6 +371,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       clearAllTimers();
       pendingCommit.current = null;
       replyGenRef.current += 1;
+      hintGenRef.current += 1;
       dropEngine();
       setSlide(null);
       setBusy(false);
@@ -418,6 +421,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setBusy(true);
       setHintsReady(false);
       setPlayHint(null);
+      // Invalidate in-flight Hint — gen check drops late resolves for the old FEN.
+      if (playingOnRef.current) hintGenRef.current += 1;
       // Brown last-move wash immediately; hint-from/to drop with showHints.
       setLastMove({ from, to });
       pendingCommit.current = {
@@ -803,6 +808,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     const full = replaySans(line.plies, line.plies.length);
     const startPly = full.history().length;
     replyGenRef.current += 1;
+    hintGenRef.current += 1;
     playingOnRef.current = true;
     playOnStartPlyRef.current = startPly;
     setGame(full);
@@ -881,7 +887,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (busy || slide || engineBusy || hintBusy || viewingHistory) return;
     if (!isUserTurn(game)) return;
     const fen = game.fen();
-    const gen = replyGenRef.current;
+    const gen = hintGenRef.current;
     setPlayHint(null);
     setHintBusy(true);
     setStatus({ text: t("Thinking…"), cls: "" });
@@ -895,7 +901,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           const eng = engineRef.current ?? mod.createLiteEngine("advanced");
           mv = await eng.pickMove(fen, 2500, "advanced");
         }
-        if (gen !== replyGenRef.current || !playingOnRef.current) return;
+        // Stale if the user/engine committed since this Hint started.
+        if (gen !== hintGenRef.current || !playingOnRef.current) return;
         if (!mv) {
           setStatus({ text: "Your move — playing on", cls: "" });
           return;
@@ -915,10 +922,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           setStatus({ text: "Your move — playing on", cls: "" });
         }
       } catch {
-        if (gen !== replyGenRef.current || !playingOnRef.current) return;
+        if (gen !== hintGenRef.current || !playingOnRef.current) return;
         setStatus({ text: "Your move — playing on", cls: "" });
       } finally {
-        if (gen === replyGenRef.current) setHintBusy(false);
+        if (gen === hintGenRef.current) setHintBusy(false);
       }
     })();
   };
