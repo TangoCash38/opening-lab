@@ -25,6 +25,8 @@ export function playableLines(pack: Pack): OpeningLine[] {
 }
 
 /**
+ * Pack-purchase / free-sample gate only. Lab+ / active subscription is the
+ * caller's job (use `subscribed || isLineUnlocked(...)`).
  * Sample ids stay free. Extra Caro lines need that pack in purchasedPackIds.
  * Packs with no sample list stay locked until purchasedPackIds includes pack.id.
  * Never treat a missing sample list as unlocked, and do not use isPackFree
@@ -43,7 +45,11 @@ export function isLineUnlocked(
   return purchasedPackIds.includes(pack.id);
 }
 
-/** Later unlocked line in the same pack. Skips locked extras (Caro free samples stay ckb1, ckb3, ckb5). */
+/**
+ * Later unlocked line in the same pack (pack-purchase / samples only).
+ * Callers with Lab+ should pass the pack id in purchasedPackIds (or treat all
+ * lines as unlocked). Skips locked extras (Caro free samples stay ckb1, ckb3, ckb5).
+ */
 export function nextUnlockedLine(
   pack: Pack,
   currentLineId: string,

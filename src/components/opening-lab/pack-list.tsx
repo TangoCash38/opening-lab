@@ -53,6 +53,7 @@ function QuietLabel({ children }: { children: string }) {
 function PackCard({
   pack,
   unlocked,
+  subscribed = false,
   onStartLine,
   onRequestUnlock,
   purchasedPackIds = [],
@@ -60,6 +61,8 @@ function PackCard({
 }: {
   pack: Pack;
   unlocked: boolean;
+  /** Lab+ / active subscription — unlocks every line; pack purchase is separate. */
+  subscribed?: boolean;
   onStartLine: Props["onStartLine"];
   onRequestUnlock: (pack: Pack) => void;
   purchasedPackIds?: readonly string[];
@@ -166,7 +169,7 @@ function PackCard({
       {open && (
         <div className="border-t border-border px-3 pb-4 pt-2.5">
           {pack.lines.map((line, i) => {
-            const lineUnlocked = isLineUnlocked(pack, line.id, purchasedPackIds);
+            const lineUnlocked = subscribed || isLineUnlocked(pack, line.id, purchasedPackIds);
             const rowLocked = locked || !lineUnlocked;
             const mastery = masteryOf(line.id);
             const complete = !rowLocked && isComplete(line.id);
@@ -230,7 +233,7 @@ function PackCard({
 
 export function PackList({ onStartLine, onHowToPlay }: Props) {
   const t = useT();
-  const { canAccess, buyPack, subscribe, paymentsEnabled, state } = useUnlocks();
+  const { canAccess, buyPack, subscribe, paymentsEnabled, state, subscribed } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -491,6 +494,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           <PackCard
             pack={classicGames}
             unlocked={canAccess(classicGames)}
+            subscribed={subscribed}
             onStartLine={onStartLine}
             onRequestUnlock={requestUnlock}
             purchasedPackIds={state.packs}
@@ -501,6 +505,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           <PackCard
             pack={vsLondon}
             unlocked={canAccess(vsLondon)}
+            subscribed={subscribed}
             onStartLine={onStartLine}
             onRequestUnlock={requestUnlock}
             purchasedPackIds={state.packs}
@@ -515,6 +520,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
                 key={p.id}
                 pack={p}
                 unlocked={canAccess(p)}
+                subscribed={subscribed}
                 onStartLine={onStartLine}
                 onRequestUnlock={requestUnlock}
                 purchasedPackIds={state.packs}
@@ -531,6 +537,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
                 key={p.id}
                 pack={p}
                 unlocked={canAccess(p)}
+                subscribed={subscribed}
                 onStartLine={onStartLine}
                 onRequestUnlock={requestUnlock}
                 purchasedPackIds={state.packs}
@@ -543,6 +550,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           <PackCard
             pack={clubWeapons}
             unlocked={canAccess(clubWeapons)}
+            subscribed={subscribed}
             onStartLine={onStartLine}
             onRequestUnlock={requestUnlock}
             purchasedPackIds={state.packs}

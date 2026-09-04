@@ -57,8 +57,10 @@ function endResultCard(
   caption: string,
   t: Translate,
   nextAction?: Exclude<ResultNextAction, "learn">,
+  subscribed = false,
 ) {
-  const nextLine = nextUnlockedLine(pack, line.id, purchased);
+  const unlockIds = subscribed ? [pack.id] : purchased;
+  const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
   const primaryLabel =
     nextAction === "testYourself"
       ? t("Test yourself")
@@ -197,8 +199,9 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
 
 export function TrainView({ pack, line, onBack, initialMode = "learn", onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext }: Props) {
   const t = useT();
-  const { state } = useUnlocks();
+  const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
+  const unlockIds = subscribed ? [pack.id] : purchased;
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
@@ -425,7 +428,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
           cls: "done",
         });
         soundWin();
-        setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself"));
+        setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed));
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -440,7 +443,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         });
         soundWin();
         setResultCard(
-          endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t),
+          endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t, undefined, subscribed),
         );
         return;
       }
@@ -450,7 +453,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         cls: "done",
       });
       soundWin();
-      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, "practiceNext"));
+      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, "practiceNext", subscribed));
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -473,7 +476,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line, pack, purchased, t, mode, scheduleHints, onLineComplete, onLearnDone, onTestPly]);
+  }, [line, pack, purchased, subscribed, t, mode, scheduleHints, onLineComplete, onLearnDone, onTestPly]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -1316,7 +1319,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
                     changeMode("practice");
                     return;
                   }
-                  const nextLine = nextUnlockedLine(pack, line.id, purchased);
+                  const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
                   setResultCard(null);
                   if (nextLine) onPracticeNext?.(nextLine);
                 }
