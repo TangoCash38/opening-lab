@@ -39,6 +39,11 @@ import { accessibleCandidates } from "./today-strip";
 type View = "home" | "train" | "guide";
 type TrainMode = "learn" | "practice";
 
+
+function scrollAppTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
 export function OpeningLabApp() {
   useEffect(() => {
     const stopBoard = initBoardTheme();
@@ -83,6 +88,8 @@ function OpeningLabInner() {
     setQueue([]);
     setActive(null);
     setView("home");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
   };
 
   useEffect(() => {
@@ -119,6 +126,8 @@ function OpeningLabInner() {
     setActive({ pack, line, mode });
     setView("train");
     soundSelect();
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
   };
 
   const resolveQueue = (
@@ -213,7 +222,11 @@ function OpeningLabInner() {
             <ColorSchemeToggle />
             <button
               type="button"
-              onClick={() => setView("guide")}
+              onClick={() => {
+              setView("guide");
+              scrollAppTop();
+              requestAnimationFrame(() => scrollAppTop());
+            }}
               className="header-icon-btn"
               aria-label={t("Help and guide")}
               title={t("Help")}
@@ -234,7 +247,11 @@ function OpeningLabInner() {
         {view === "home" && (
           <PackList
             onStartLine={startLine}
-            onHowToPlay={() => setView("guide")}
+            onHowToPlay={() => {
+              setView("guide");
+              scrollAppTop();
+              requestAnimationFrame(() => scrollAppTop());
+            }}
           />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}

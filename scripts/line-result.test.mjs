@@ -247,7 +247,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   assert.match(catalog, /slice\(idx \+ 1\)/);
   assert.match(catalog, /isLineUnlocked\(pack, l\.id, purchasedPackIds\)/);
   assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
-  assert.match(train, /nextUnlockedLine\(pack, line\.id, purchased\)/);
+  assert.match(train, /nextUnlockedLine\(pack, line\.id, unlockIds\)/);
   assert.match(train, /onPracticeNext\?\.\(nextLine\)/);
   assert.match(shell, /onPracticeNext=\{\(nextLine\) =>/);
   assert.match(shell, /startLine\(active\.pack, nextLine, "learn"\)/);
@@ -326,4 +326,39 @@ test("finish sheet shows a scroll cue when plan text overflows", () => {
   assert.match(css, /--color-bg-elevated/);
   assert.match(css, /html\[data-color-scheme="dark"\] \.line-result-scroll-fade/);
   assert.match(css, /max-height:\s*min\(32dvh/);
+});
+
+
+test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", () => {
+  assert.match(modal, /playOnLevels\?/);
+  assert.match(modal, /onPlayOn\?/);
+  assert.match(modal, /kind === "end"/);
+  assert.match(modal, /data-result-play-on/);
+  assert.match(modal, /data-result-play-on-btn/);
+  assert.match(modal, /Pick a level, then Play on/);
+  assert.match(modal, /play-level-chip/);
+  assert.match(train, /resultCard\.kind === "end"/);
+  assert.match(train, /setResultCard\(null\);\s*startPlayOn\(\)/);
+  assert.match(train, /PLAY_LEVEL_LABEL\[id\]/);
+  const modalCall = train.slice(train.indexOf("<LineResultModal"), train.indexOf("</LineResultModal>"));
+  assert.match(modalCall, /playOnLevels=/);
+  assert.match(modalCall, /onPlayOn=/);
+  assert.match(modalCall, /resultCard\.kind === "end"/);
+  const wrongs = kindBlocks(train, "wrong");
+  assert.equal(wrongs.length, 2);
+  for (const w of wrongs) {
+    assert.doesNotMatch(w, /playOnLevels/);
+    assert.doesNotMatch(w, /startPlayOn/);
+  }
+  assert.match(css, /\.line-result-play-on/);
+});
+
+test("scrollAppTop on startLine/goHome; ChessBoard remounts on session; reset collapses board", () => {
+  assert.match(shell, /function scrollAppTop\(\)/);
+  assert.match(shell, /window\.scrollTo\(\{ top: 0, left: 0, behavior: "auto" \}\)/);
+  assert.match(shell, /scrollAppTop\(\)/);
+  assert.match(shell, /requestAnimationFrame\(\(\) => scrollAppTop\(\)\)/);
+  assert.match(train, /key=\{session\}/);
+  assert.match(train, /setBoardExpanded\(false\)/);
+  assert.match(train, /window\.scrollTo\(\{ top: 0, left: 0, behavior: "auto" \}\)/);
 });
