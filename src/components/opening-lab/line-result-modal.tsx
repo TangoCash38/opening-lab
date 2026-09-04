@@ -1,5 +1,6 @@
 import { ChevronDown, Maximize2, Minimize2, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useT } from "@/lib/i18n";
 
 type PlayOnLevelOption = {
@@ -55,6 +56,11 @@ export function LineResultModal({
   const [moreBelow, setMoreBelow] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [playOnPrompt, setPlayOnPrompt] = useState(false);
+
+  // Mounted = open. Hardware Back closes the finish/result sheet.
+  useOverlayHistory(true, onClose, "line-result");
+  // Nested Play-on level prompt peels first on Back.
+  useOverlayHistory(playOnPrompt, () => setPlayOnPrompt(false), "play-on-prompt");
 
   const updateScrollCue = useCallback(() => {
     const el = bodyRef.current;

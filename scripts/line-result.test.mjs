@@ -420,3 +420,10 @@ test("ModeTab nudge is additive and keeps active/inactive chrome", () => {
     /\.mode-tab-nudge \{[^}]*background:\s*var\(--color-accent\)/,
   );
 });
+
+test("finish/result sheet is history-backed for Android Back", () => {
+  assert.match(modal, /useOverlayHistory\(true, onClose, "line-result"\)/);
+  assert.match(modal, /useOverlayHistory\(playOnPrompt/);
+  assert.match(modal, /from "@\/hooks\/use-overlay-history"/);
+});
+
