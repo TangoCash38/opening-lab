@@ -196,7 +196,7 @@ function OpeningLabInner() {
       <header className="app-header z-30 border-b border-border/80">
         <div
           className="app-header-inner mx-auto flex w-full items-center gap-2 px-3 pb-2.5"
-          style={{ paddingTop: "max(0.65rem, env(safe-area-inset-top, 0px))" }}
+          style={{ paddingTop: "0.65rem" }}
         >
           <button
             type="button"
