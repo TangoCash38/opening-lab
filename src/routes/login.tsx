@@ -224,7 +224,7 @@ function Login() {
               />
             ) : null}
 
-            {mode === "signin" ? (
+            {mode === "signin" || mode === "signup" ? (
               <button
                 type="button"
                 disabled={busy}
@@ -249,14 +249,24 @@ function Login() {
                   </button>
                 ) : null}
                 {offerSignIn ? (
-                  <button
-                    type="button"
-                    disabled={busy}
-                    onClick={() => switchMode("signin")}
-                    className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
-                  >
-                    Already have an account? Sign in
-                  </button>
+                  <div className="space-y-2">
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => switchMode("signin")}
+                      className="block text-sm font-semibold text-accent underline-offset-2 hover:underline"
+                    >
+                      Already have an account? Sign in
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => switchMode("forgot")}
+                      className="block text-sm font-semibold text-accent underline-offset-2 hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
                 ) : null}
               </div>
             ) : null}

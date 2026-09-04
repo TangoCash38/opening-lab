@@ -78,10 +78,15 @@ function unlocksForRequest(request: Request, unlocks: UnlockState): UnlockState 
   return isPlayUserAgent(ua) ? playWrapAccountUnlocks(unlocks) : unlocks;
 }
 
-export async function signedInUserId(request?: Request): Promise<string | null> {
+export type SignedInUser = { id: string; email: string | null };
+
+/** Resolve signed-in user id + email (email needed for review full-access grant). */
+export async function signedInUser(
+  request?: Request,
+): Promise<SignedInUser | null> {
   try {
     const user = await getSessionUser();
-    if (user?.id) return user.id;
+    if (user?.id) return { id: user.id, email: user.email ?? null };
   } catch {
     /* fall through to request headers */
   }
@@ -90,10 +95,51 @@ export async function signedInUserId(request?: Request): Promise<string | null> 
     const { auth, authConfigured } = await import("@/lib/auth/server");
     if (!authConfigured) return null;
     const session = await auth.api.getSession({ headers: request.headers });
-    return session?.user?.id ?? null;
+    const id = session?.user?.id;
+    if (!id) return null;
+    return { id, email: session?.user?.email ?? null };
   } catch {
     return null;
   }
+}
+
+export async function signedInUserId(request?: Request): Promise<string | null> {
+  const user = await signedInUser(request);
+  return user?.id ?? null;
+}
+
+/** Env REVIEW_FULL_ACCESS_EMAIL: trim, case-insensitive. Empty = no grant. */
+function reviewFullAccessEmail(): string | null {
+  const raw = process.env.REVIEW_FULL_ACCESS_EMAIL?.trim();
+  if (!raw) return null;
+  return raw.toLowerCase();
+}
+
+function emailMatchesReviewFullAccess(email: string | null | undefined): boolean {
+  const target = reviewFullAccessEmail();
+  if (!target || !email) return false;
+  return email.trim().toLowerCase() === target;
+}
+
+/** Virtual unlocks for the review email — no Stripe purchase rows inserted. */
+function reviewFullAccessUnlocks(): UnlockState {
+  return {
+    packs: PACKS.map((p) => p.id),
+    plan: "yearly",
+    expiresAt: Date.now() + 10 * YEAR_MS,
+    playBilled: true,
+  };
+}
+
+function unlocksForSignedIn(
+  request: Request,
+  user: SignedInUser,
+  base: UnlockState,
+): UnlockState {
+  if (emailMatchesReviewFullAccess(user.email)) {
+    return unlocksForRequest(request, reviewFullAccessUnlocks());
+  }
+  return unlocksForRequest(request, base);
 }
 
 export async function getUnlocksForUser(userId: string): Promise<UnlockState> {
@@ -251,10 +297,14 @@ export async function savePlayPurchaseToken(
 }
 
 export async function unlocksGetResponse(request: Request): Promise<Response> {
-  const userId = await signedInUserId(request);
-  if (!userId) return json({ error: "Sign in required" }, 401);
+  const user = await signedInUser(request);
+  if (!user) return json({ error: "Sign in required" }, 401);
   try {
-    return json(unlocksForRequest(request, await getUnlocksForUser(userId)));
+    // Review email gets virtual full unlocks (no fake Stripe rows).
+    if (emailMatchesReviewFullAccess(user.email)) {
+      return json(unlocksForRequest(request, reviewFullAccessUnlocks()));
+    }
+    return json(unlocksForSignedIn(request, user, await getUnlocksForUser(user.id)));
   } catch (err) {
     console.error("[purchases] load failed", err);
     return json({ error: "Could not load unlocks" }, 500);
@@ -262,13 +312,18 @@ export async function unlocksGetResponse(request: Request): Promise<Response> {
 }
 
 export async function unlocksClaimResponse(request: Request): Promise<Response> {
-  const userId = await signedInUserId(request);
-  if (!userId) return json({ error: "Sign in required" }, 401);
+  const user = await signedInUser(request);
+  if (!user) return json({ error: "Sign in required" }, 401);
+
+  // Review full-access grant must not be wiped by claim — short-circuit.
+  if (emailMatchesReviewFullAccess(user.email)) {
+    return json(unlocksForRequest(request, reviewFullAccessUnlocks()));
+  }
 
   const ua = request.headers.get("user-agent") ?? "";
   if (isPlayUserAgent(ua)) {
     try {
-      return json(unlocksForRequest(request, await getUnlocksForUser(userId)));
+      return json(unlocksForRequest(request, await getUnlocksForUser(user.id)));
     } catch (err) {
       console.error("[purchases] play claim skipped", err);
       return json({ error: "Could not load unlocks" }, 500);
@@ -300,7 +355,7 @@ export async function unlocksClaimResponse(request: Request): Promise<Response> 
   }
 
   try {
-    const unlocks = await claimUnlocksForUser(userId, {
+    const unlocks = await claimUnlocksForUser(user.id, {
       packs: normalizePacks(body.packs),
       plan: asPlan(body.plan),
       expiresAt:
@@ -308,6 +363,11 @@ export async function unlocksClaimResponse(request: Request): Promise<Response> 
           ? body.expiresAt
           : null,
     });
+    // Re-apply review grant if email matches (defensive; short-circuit above
+    // already covers the common path).
+    if (emailMatchesReviewFullAccess(user.email)) {
+      return json(unlocksForRequest(request, reviewFullAccessUnlocks()));
+    }
     return json(unlocks);
   } catch (err) {
     console.error("[purchases] claim failed", err);
