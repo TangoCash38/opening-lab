@@ -44,7 +44,7 @@ type ModalTarget = { pack: Pack; price: string };
 
 function QuietLabel({ children }: { children: string }) {
   return (
-    <p className="mb-2 mt-5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
+    <p className="pack-list-full mb-2 mt-5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
       {children}
     </p>
   );
@@ -480,73 +480,75 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         }}
       />
 
-      {morePacks ? (
-        <p className="mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-          {t("More packs")}
-        </p>
-      ) : null}
+      <div className="pack-list-grid">
+        {morePacks ? (
+          <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
+            {t("More packs")}
+          </p>
+        ) : null}
 
-      {classicGames ? (
-        <PackCard
-          pack={classicGames}
-          unlocked={canAccess(classicGames)}
-          onStartLine={onStartLine}
-          onRequestUnlock={requestUnlock}
-          purchasedPackIds={state.packs}
-        />
-      ) : null}
+        {classicGames ? (
+          <PackCard
+            pack={classicGames}
+            unlocked={canAccess(classicGames)}
+            onStartLine={onStartLine}
+            onRequestUnlock={requestUnlock}
+            purchasedPackIds={state.packs}
+          />
+        ) : null}
 
-      {vsLondon ? (
-        <PackCard
-          pack={vsLondon}
-          unlocked={canAccess(vsLondon)}
-          onStartLine={onStartLine}
-          onRequestUnlock={requestUnlock}
-          purchasedPackIds={state.packs}
-        />
-      ) : null}
+        {vsLondon ? (
+          <PackCard
+            pack={vsLondon}
+            unlocked={canAccess(vsLondon)}
+            onStartLine={onStartLine}
+            onRequestUnlock={requestUnlock}
+            purchasedPackIds={state.packs}
+          />
+        ) : null}
 
-      {white.length ? (
-        <>
-          <QuietLabel>White</QuietLabel>
-          {white.map((p) => (
-            <PackCard
-              key={p.id}
-              pack={p}
-              unlocked={canAccess(p)}
-              onStartLine={onStartLine}
-              onRequestUnlock={requestUnlock}
-              purchasedPackIds={state.packs}
-            />
-          ))}
-        </>
-      ) : null}
+        {white.length ? (
+          <>
+            <QuietLabel>White</QuietLabel>
+            {white.map((p) => (
+              <PackCard
+                key={p.id}
+                pack={p}
+                unlocked={canAccess(p)}
+                onStartLine={onStartLine}
+                onRequestUnlock={requestUnlock}
+                purchasedPackIds={state.packs}
+              />
+            ))}
+          </>
+        ) : null}
 
-      {black.length ? (
-        <>
-          <QuietLabel>Black</QuietLabel>
-          {black.map((p) => (
-            <PackCard
-              key={p.id}
-              pack={p}
-              unlocked={canAccess(p)}
-              onStartLine={onStartLine}
-              onRequestUnlock={requestUnlock}
-              purchasedPackIds={state.packs}
-            />
-          ))}
-        </>
-      ) : null}
+        {black.length ? (
+          <>
+            <QuietLabel>Black</QuietLabel>
+            {black.map((p) => (
+              <PackCard
+                key={p.id}
+                pack={p}
+                unlocked={canAccess(p)}
+                onStartLine={onStartLine}
+                onRequestUnlock={requestUnlock}
+                purchasedPackIds={state.packs}
+              />
+            ))}
+          </>
+        ) : null}
 
-      {clubWeapons ? (
-        <PackCard
-          pack={clubWeapons}
-          unlocked={canAccess(clubWeapons)}
-          onStartLine={onStartLine}
-          onRequestUnlock={requestUnlock}
-          purchasedPackIds={state.packs}
-        />
-      ) : null}
+        {clubWeapons ? (
+          <PackCard
+            pack={clubWeapons}
+            unlocked={canAccess(clubWeapons)}
+            onStartLine={onStartLine}
+            onRequestUnlock={requestUnlock}
+            purchasedPackIds={state.packs}
+          />
+        ) : null}
+      </div>
 
       <LegalFooter />
 

@@ -46,7 +46,7 @@ export function WebsiteAppPrompt() {
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-end justify-center bg-black/40 p-4 sm:items-center"
+      className="website-app-prompt fixed inset-0 z-40 flex items-end justify-center bg-black/40 p-4 md:items-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="website-app-prompt-title"
@@ -54,8 +54,8 @@ export function WebsiteAppPrompt() {
         paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
       }}
     >
-      <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-bg-elevated shadow-2xl">
-        <div className="px-5 py-5">
+      <div className="website-app-prompt-card w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-bg-elevated shadow-2xl md:max-w-md">
+        <div className="px-5 py-5 md:px-7 md:py-7">
           <h2
             id="website-app-prompt-title"
             className="m-0 font-display text-lg font-bold leading-snug"
