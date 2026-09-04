@@ -389,7 +389,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setBusy(false);
       setLastMove(null);
       setResultCard(null);
-      setBoardExpanded(false);
       setHintsReady(true);
       setPlayHint(null);
       setHintBusy(false);

@@ -19,7 +19,7 @@
   --color-gold-soft: #fbf6e6;
   --color-light-sq: #f3e5c8;
   --color-dark-sq: #a97850;
-  --color-hint-to: #c8ecc8;
+  --color-hint-to: #9edda8;
   --color-wrong-sq: #f0c4c0;
   --color-tag-white-bg: #eef2f0;
   --color-tag-white-fg: #3a4a42;
@@ -496,24 +496,24 @@ html[data-color-scheme="dark"] {
   }
 
   .sq-hint-from {
-    background-color: #b8e6b8 !important;
+    background-color: #8fd49a !important;
     background-image: none !important;
     box-shadow: none;
   }
 
   .sq-dark.sq-hint-from {
-    background-color: #7cbc7c !important;
+    background-color: #68b078 !important;
   }
 
   .sq-hint-to {
-    background-color: #c8ecc8 !important;
+    background-color: #9edda8 !important;
     background-image: none !important;
     box-shadow: none;
     animation: hint-in 260ms ease-out both;
   }
 
   .sq-dark.sq-hint-to {
-    background-color: #6eb06e !important;
+    background-color: #5aa86a !important;
   }
 
   .sq-wrong {
@@ -613,10 +613,11 @@ html[data-color-scheme="dark"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* flex-start + Close-height pad: Close is absolute; center left a ~109px cream band under it */
+    justify-content: flex-start;
     gap: 0.4rem;
     background: var(--color-bg);
-    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+    padding-top: max(3.55rem, calc(env(safe-area-inset-top, 0px) + 2.95rem));
     padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
     padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
     padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
@@ -787,7 +788,7 @@ html[data-color-scheme="dark"] {
 }
 
 /* ---- Board themes (paper / future / newspaper). Book = default .sq-* above. ---- */
-/* Hints stay green globally (#b8e6b8 / #c8ecc8; darker on dark squares). */
+/* Hints stay green globally (#8fd49a / #9edda8; darker on dark squares). */
 
 [data-board-theme="paper"] .sq-light {
   background-color: #f7f2e6;
@@ -842,23 +843,23 @@ html[data-color-scheme="dark"] {
 }
 
 [data-board-theme="paper"] .sq-hint-from {
-  background-color: #b8e6b8 !important;
+  background-color: #8fd49a !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="paper"] .sq-dark.sq-hint-from {
-  background-color: #7cbc7c !important;
+  background-color: #68b078 !important;
 }
 
 [data-board-theme="paper"] .sq-hint-to {
-  background-color: #c8ecc8 !important;
+  background-color: #9edda8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="paper"] .sq-dark.sq-hint-to {
-  background-color: #6eb06e !important;
+  background-color: #5aa86a !important;
 }
 
 [data-board-theme="future"] .sq-light {
@@ -918,23 +919,23 @@ html[data-color-scheme="dark"] {
 
 /* Future: keep green hints (not cool tint). */
 [data-board-theme="future"] .sq-hint-from {
-  background-color: #b8e6b8 !important;
+  background-color: #8fd49a !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="future"] .sq-dark.sq-hint-from {
-  background-color: #7cbc7c !important;
+  background-color: #68b078 !important;
 }
 
 [data-board-theme="future"] .sq-hint-to {
-  background-color: #c8ecc8 !important;
+  background-color: #9edda8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="future"] .sq-dark.sq-hint-to {
-  background-color: #6eb06e !important;
+  background-color: #5aa86a !important;
 }
 
 [data-board-theme="newspaper"] .sq-light {
@@ -993,23 +994,23 @@ html[data-color-scheme="dark"] {
 
 /* Newspaper: keep green hints (not ink-grey). */
 [data-board-theme="newspaper"] .sq-hint-from {
-  background-color: #b8e6b8 !important;
+  background-color: #8fd49a !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="newspaper"] .sq-dark.sq-hint-from {
-  background-color: #7cbc7c !important;
+  background-color: #68b078 !important;
 }
 
 [data-board-theme="newspaper"] .sq-hint-to {
-  background-color: #c8ecc8 !important;
+  background-color: #9edda8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
 [data-board-theme="newspaper"] .sq-dark.sq-hint-to {
-  background-color: #6eb06e !important;
+  background-color: #5aa86a !important;
 }
 
 

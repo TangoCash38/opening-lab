@@ -73,4 +73,7 @@ test("expanded overlay shows Practice/Test and Reset without collapsing Expand",
   assert.match(css, /\.board-fs-modes/);
   assert.match(css, /\.board-fs-actions/);
   assert.match(css, /calc\(100dvh - 13\.5rem\)/);
+  // Close is absolute; overlay packs from the top so modes sit under Close (no cream band).
+  assert.match(css, /\.board-fs-overlay\s*\{[\s\S]*?justify-content:\s*flex-start/);
+  assert.match(css, /\.board-fs-overlay\s*\{[\s\S]*?padding-top:\s*max\(3\.55rem/);
 });
