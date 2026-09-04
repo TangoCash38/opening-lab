@@ -189,13 +189,12 @@ export function LineResultModal({
           </div>
         ) : null}
         <div
-          className={`shrink-0 border-t border-border px-5 py-3${
-            showPrimary || showPlayOn ? " space-y-2" : ""
+          className={`shrink-0 border-t border-border px-5${
+            showPlayOn ? " py-2 space-y-1.5" : showPrimary ? " py-3 space-y-2" : " py-3"
           }`}
         >
           {showPlayOn ? (
             <div className="line-result-play-on" data-result-play-on>
-              <p className="play-on-caption m-0">Pick a level, then Play on</p>
               <div
                 className="play-level-row"
                 role="group"
@@ -215,15 +214,15 @@ export function LineResultModal({
                     {level.label}
                   </button>
                 ))}
+                <button
+                  type="button"
+                  data-result-play-on-btn
+                  onClick={onPlayOn}
+                  className="play-on-btn"
+                >
+                  Play on
+                </button>
               </div>
-              <button
-                type="button"
-                data-result-play-on-btn
-                onClick={onPlayOn}
-                className="play-on-btn"
-              >
-                Play on
-              </button>
             </div>
           ) : null}
           {showPrimary ? (
@@ -231,7 +230,11 @@ export function LineResultModal({
               type="button"
               data-result-primary
               onClick={onPrimary}
-              className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+              className={
+                showPlayOn
+                  ? "min-h-10 w-full rounded-xl bg-accent px-3 py-2 text-[0.85rem] font-bold text-accent-fg active:scale-[0.99]"
+                  : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+              }
             >
               {primaryLabel}
             </button>
@@ -241,9 +244,11 @@ export function LineResultModal({
             data-result-dismiss
             onClick={handleAction}
             className={
-              showPrimary || showPlayOn
-                ? "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
-                : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+              showPlayOn
+                ? "min-h-8 w-full rounded-xl px-3 py-1.5 text-[0.8rem] font-semibold text-fg-muted active:opacity-70"
+                : showPrimary
+                  ? "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
+                  : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
             }
           >
             {actionLabel}
