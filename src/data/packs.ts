@@ -2056,7 +2056,7 @@ export const PACKS: Pack[] = [
       {
         id: "al6",
         name: "Alapin: …e6 French-style centre",
-        idea: "Against …e6 and …d5, the Alapin becomes a French-like space battle. Support d4, develop, and watch the …c5 break.",
+        idea: "Against …e6 and …d5, the Alapin locks space with e5. Support d4, meet …Qb6 with Bd3, and develop before expanding. Black already played …c5 on move one.",
         plies: ["e4", "c5", "c3", "e6", "d4", "d5", "e5", "Nc6", "Nf3", "Qb6", "Bd3"],
         side: "w",
       },
@@ -2936,7 +2936,7 @@ export const PACKS: Pack[] = [
       },
       {
         id: "ckw10",
-        name: "Panov: develop the queen bishop",
+        name: "Panov: Bd3 and castle",
         idea: "White’s priority is active, safe development. Castle before turning structural pressure into an attack.",
         plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "c4", "Nf6", "Nc3", "e6", "Nf3", "Bb4", "cxd5", "exd5", "Bd3", "O-O", "O-O"],
         side: "w",
