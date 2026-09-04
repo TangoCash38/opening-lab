@@ -1,4 +1,4 @@
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, Maximize2, Minimize2, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
 
@@ -32,6 +32,7 @@ export function LineResultModal({
   const bodyRef = useRef<HTMLDivElement>(null);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [moreBelow, setMoreBelow] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const updateScrollCue = useCallback(() => {
     const el = bodyRef.current;
@@ -59,6 +60,24 @@ export function LineResultModal({
     };
   }, [body, updateScrollCue]);
 
+  useEffect(() => {
+    updateScrollCue();
+  }, [expanded, updateScrollCue]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (expanded) {
+        e.preventDefault();
+        setExpanded(false);
+        return;
+      }
+      onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [expanded, onClose]);
+
   return (
     <div
       className="line-result-overlay z-[80]"
@@ -71,8 +90,11 @@ export function LineResultModal({
     >
       <div className="line-result-dim" aria-hidden />
       <div
-        className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}`}
+        className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}${
+          expanded ? " line-result-sheet--expanded" : ""
+        }`}
         data-result-sheet
+        data-result-expanded={expanded ? "1" : undefined}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border px-5 py-3">
@@ -91,14 +113,29 @@ export function LineResultModal({
               </p>
             ) : null}
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
-            aria-label="Close"
-          >
-            <X className="size-4" />
-          </button>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
+              aria-label={expanded ? t("Shrink") : t("Expand")}
+              data-result-expand
+            >
+              {expanded ? (
+                <Minimize2 className="size-4" strokeWidth={2.25} aria-hidden />
+              ) : (
+                <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
+              aria-label="Close"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
         </div>
         {body ? (
           <div

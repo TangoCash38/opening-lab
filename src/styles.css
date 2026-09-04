@@ -1235,6 +1235,10 @@ html[data-color-scheme="dark"] .line-result-dim {
   border-color: var(--color-danger);
 }
 
+.line-result-sheet--expanded {
+  max-height: min(78dvh, 36rem);
+}
+
 .line-result-body-wrap {
   position: relative;
   display: flex;
