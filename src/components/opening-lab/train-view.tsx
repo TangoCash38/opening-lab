@@ -875,13 +875,19 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         ),
       );
 
-  // Keep the active (last-played) move visible in the horizontal strip
+  // Keep the active (last-played) move visible by scrolling only the strip
   useEffect(() => {
-    activeMoveRef.current?.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
-    });
+    const strip = notationStripRef.current;
+    const chip = activeMoveRef.current;
+    if (!strip || !chip) return;
+    const stripRect = strip.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    const left =
+      strip.scrollLeft +
+      (chipRect.left - stripRect.left) -
+      strip.clientWidth / 2 +
+      chipRect.width / 2;
+    strip.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
   }, [plyIndex, viewPly]);
 
   const statusColor =
@@ -1087,10 +1093,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onLineCom
         ) : null}
       </div>
 
-      {/* Move history — wrap so the current ply stays readable */}
+      {/* Move history — single-row horizontal scroller (no wrap → no board jump) */}
       <div
         ref={notationStripRef}
-        className="mt-2.5 mb-1 flex flex-wrap gap-x-1.5 gap-y-1 rounded-xl border border-border bg-bg-elevated px-2.5 py-2"
+        className="mt-2.5 mb-1 flex flex-nowrap gap-x-1.5 overflow-x-auto rounded-xl border border-border bg-bg-elevated px-2.5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         aria-label="Move history"
       >
         {notationPairs.length === 0 ? (
