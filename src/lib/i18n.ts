@@ -140,8 +140,8 @@ const en: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.",
   "Test mode": "Test mode",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.",
@@ -257,8 +257,8 @@ const es: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Las pistas amarillas muestran la siguiente jugada. El rival responde solo. Sigue la línea exacta. Practice no completa la línea.",
   "Test mode": "Modo Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "Sin pistas. Juega solo tu bando. Las casillas incorrectas parpadean en rojo hasta la jugada de libro. Un Test limpio (cero errores) pone la línea en verde. Si crees que una jugada rechazada es de libro, envíala con Wrong move? Si lo confirmamos, un pack es gratis.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "Sin pistas. Juega solo tu bando. Las casillas incorrectas parpadean en rojo hasta la jugada de libro. El % de la lista es una racha de Test de jugadas de libro correctas desde el inicio de ese Test; una jugada errónea congela el % ahí. 100% / verde solo tras un Test limpio con cero errores. Si crees que una jugada rechazada es de libro, envíala con Wrong move? Si lo confirmamos, un pack es gratis.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Después de Practice o Test, elige 800, 1200 o 1800 y Play on desde la posición. Un Test limpio sigue poniendo la línea en verde. Play on no completa la línea.",
@@ -374,8 +374,8 @@ const zh: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "黄色提示显示下一着。对手自动应对。跟上准确线路。Practice 不会完成该线路。",
   "Test mode": "Test 模式",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "没有提示。只下你的一方。错格会闪红，直到走出书谱着法。干净的 Test（零失误）会让线路变绿。若你认为被拒的着法是书谱，用 Wrong move? 发给我们。确认后可获赠一个棋包。",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "没有提示。只下你的一方。错格会闪红，直到走出书谱着法。棋包列表的 % 是该次 Test 从开头起连续正确书谱着的连胜；走错会冻结该 %。仅在零失误的干净 Test 后才是 100% / 绿色。若你认为被拒的着法是书谱，用 Wrong move? 发给我们。确认后可获赠一个棋包。",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Practice 或 Test 之后，选择 800、1200 或 1800，从该局面 Play on。干净的 Test 仍会让线路变绿。Play on 不会完成该线路。",
@@ -491,8 +491,8 @@ const fr: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Les indices jaunes montrent le coup suivant. L'adversaire répond tout seul. Suis la ligne exacte. Practice ne termine pas la ligne.",
   "Test mode": "Mode Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "Pas d'indices. Joue seulement ton camp. Les cases fausses clignotent en rouge jusqu'au coup du livre. Un Test propre (zéro faute) met la ligne en vert. Si tu penses qu'un coup refusé est du livre, envoie-le avec Wrong move ? Si on le confirme, un pack est offert.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "Pas d'indices. Joue seulement ton camp. Les cases fausses clignotent en rouge jusqu'au coup du livre. Le % de la liste est une série Test de coups du livre corrects depuis le début de ce Test ; un mauvais coup y fige le %. 100 % / vert seulement après un Test propre sans faute. Si tu penses qu'un coup refusé est du livre, envoie-le avec Wrong move ? Si on le confirme, un pack est offert.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Après Practice ou Test, choisis 800, 1200 ou 1800 et Play on depuis la position. Un Test propre met toujours la ligne en vert. Play on ne termine pas la ligne.",
@@ -608,8 +608,8 @@ const de: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Gelbe Hinweise zeigen den nächsten Zug. Der Gegner antwortet automatisch. Folge der exakten Linie. Practice schließt die Linie nicht ab.",
   "Test mode": "Modus Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "Keine Hinweise. Spiele nur deine Seite. Falsche Felder blinken rot, bis du den Buchzug findest. Ein sauberer Test (null Fehler) macht die Linie grün. Wenn du denkst, ein abgelehnter Zug ist Buch, schick ihn mit Wrong move? Bestätigen wir ihn, gibt's ein Pack kostenlos.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "Keine Hinweise. Spiele nur deine Seite. Falsche Felder blinken rot, bis du den Buchzug findest. Die Listen-% ist eine Test-Serie korrekter Buchzüge ab Start dieses Tests; ein Fehlzug friert die % dort ein. 100 % / grün nur nach einem sauberen Test ohne Fehler. Wenn du denkst, ein abgelehnter Zug ist Buch, schick ihn mit Wrong move? Bestätigen wir ihn, gibt's ein Pack kostenlos.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Nach Practice oder Test wählst du 800, 1200 oder 1800 und Play on von der Stellung. Ein sauberer Test macht die Linie trotzdem grün. Play on schließt die Linie nicht ab.",
@@ -725,8 +725,8 @@ const pt: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "As dicas amarelas mostram o próximo lance. O adversário responde sozinho. Siga a linha exata. Practice não completa a linha.",
   "Test mode": "Modo Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "Sem dicas. Jogue só o seu lado. Casas erradas piscam em vermelho até o lance de livro. Um Test limpo (zero erros) deixa a linha verde. Se achar que um lance recusado é de livro, envie com Wrong move? Se confirmarmos, um pack é grátis.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "Sem dicas. Jogue só o seu lado. Casas erradas piscam em vermelho até o lance de livro. O % da lista é uma sequência de Test de lances de livro corretos desde o início desse Test; um lance errado congela o % ali. 100% / verde só após um Test limpo com zero erros. Se achar que um lance recusado é de livro, envie com Wrong move? Se confirmarmos, um pack é grátis.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Depois de Practice ou Test, escolha 800, 1200 ou 1800 e Play on da posição. Um Test limpo ainda deixa a linha verde. Play on não completa a linha.",
@@ -841,8 +841,8 @@ const ru: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Жёлтые подсказки показывают следующий ход. Соперник отвечает сам. Следуй точной линии. Practice не завершает линию.",
   "Test mode": "Режим Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "Без подсказок. Играй только свою сторону. Неверные поля вспыхивают красным, пока не найдёшь книжный ход. Чистый Test (ноль ошибок) делает линию зелёной. Если думаешь, что отклонённый ход книжный, пришли его через Wrong move? Подтвердим — пак в подарок.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "Без подсказок. Играй только свою сторону. Неверные поля вспыхивают красным, пока не найдёшь книжный ход. % в списке паков — серия Test верных книжных ходов с начала этого Test; ошибка замораживает % там. 100% / зелёный только после чистого Test без ошибок. Если думаешь, что отклонённый ход книжный, пришли его через Wrong move? Подтвердим — пак в подарок.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "После Practice или Test выбери 800, 1200 или 1800 и Play on с позиции. Чистый Test всё равно делает линию зелёной. Play on не завершает линию.",
@@ -958,8 +958,8 @@ const it: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "I suggerimenti gialli mostrano la mossa successiva. L'avversario risponde da solo. Segui la linea esatta. Practice non completa la linea.",
   "Test mode": "Modalità Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "Niente suggerimenti. Giochi solo il tuo lato. Le case sbagliate lampeggiano in rosso fino alla mossa di libro. Un Test pulito (zero errori) mette la linea in verde. Se pensi che una mossa rifiutata sia di libro, inviala con Wrong move? Se confermiamo, un pack è gratis.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "Niente suggerimenti. Giochi solo il tuo lato. Le case sbagliate lampeggiano in rosso fino alla mossa di libro. La % in lista è una serie Test di mosse di libro corrette dall'inizio di quel Test; una mossa sbagliata congela la % lì. 100% / verde solo dopo un Test pulito a zero errori. Se pensi che una mossa rifiutata sia di libro, inviala con Wrong move? Se confermiamo, un pack è gratis.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Dopo Practice o Test, scegli 800, 1200 o 1800 e Play on dalla posizione. Un Test pulito mette comunque la linea in verde. Play on non completa la linea.",
@@ -1075,8 +1075,8 @@ const hi: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "पीले संकेत अगली चाल दिखाते हैं। विरोधी अपने आप जवाब देता है। सटीक लाइन चलें। Practice लाइन पूरी नहीं करता।",
   "Test mode": "Test मोड",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "कोई संकेत नहीं। केवल अपना पक्ष चलें। गलत घर लाल चमकते हैं जब तक बुक चाल न मिले। साफ़ Test (शून्य गलती) लाइन हरी कर देता है। अगर रद्द चाल बुक लगे तो Wrong move? से भेजें। पुष्टि हुई तो एक पैक मुफ़्त।",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "कोई संकेत नहीं। केवल अपना पक्ष चलें। गलत घर लाल चमकते हैं जब तक बुक चाल न मिले। पैक-सूची का % उस Test की शुरुआत से सही बुक चालों की स्ट्रीक है; गलत चाल वहीं % रोक देती है। 100% / हरा केवल शून्य गलती वाले साफ़ Test के बाद। अगर रद्द चाल बुक लगे तो Wrong move? से भेजें। पुष्टि हुई तो एक पैक मुफ़्त।",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Practice या Test के बाद 800, 1200 या 1800 चुनें और सेटअप से Play on। साफ़ Test लाइन को हरा ही करता है। Play on लाइन पूरी नहीं करता।",
@@ -1189,8 +1189,8 @@ const ja: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "黄色いヒントが次の手を示します。相手は自動で応じます。正確なラインに従ってください。Practice ではラインは完了しません。",
   "Test mode": "Test モード",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "ヒントなし。自分の手番だけ指します。違うマスは定跡の手が見つかるまで赤く点滅します。ミスなしの Test でラインが緑になります。拒否された手が定跡だと思う場合は Wrong move? で送ってください。確認できればパックを1つ進呈します。",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "ヒントなし。自分の手番だけ指します。違うマスは定跡の手が見つかるまで赤く点滅します。パック一覧の % はその Test 開始からの正しい定跡の連続です。間違えるとその % で止まります。100% / 緑はミスなしの Test のあとだけです。拒否された手が定跡だと思う場合は Wrong move? で送ってください。確認できればパックを1つ進呈します。",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Practice または Test のあと、800・1200・1800 を選んでその局面から Play on。ミスなしの Test はラインを緑にします。Play on ではラインは完了しません。",
@@ -1305,8 +1305,8 @@ const ar: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "التلميحات الصفراء تُظهر الحركة التالية. الخصم يرد تلقائيًا. اتبع الخط بدقة. Practice لا يُكمل الخط.",
   "Test mode": "وضع Test",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "بلا تلميحات. العب جانبك فقط. المربعات الخاطئة تومض بالأحمر حتى تجد حركة الكتاب. Test نظيف (صفر أخطاء) يجعل الخط أخضر. إن ظننت أن حركة مرفوضة من الكتاب، أرسلها عبر Wrong move؟ إن أكدناها، تحصل على حزمة مجانًا.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "بلا تلميحات. العب جانبك فقط. المربعات الخاطئة تومض بالأحمر حتى تجد حركة الكتاب. نسبة % في قائمة الحزم هي سلسلة Test من حركات الكتاب الصحيحة من بداية ذلك Test؛ الحركة الخاطئة تجمّد النسبة هناك. 100% / أخضر فقط بعد Test نظيف بلا أخطاء. إن ظننت أن حركة مرفوضة من الكتاب، أرسلها عبر Wrong move؟ إن أكدناها، تحصل على حزمة مجانًا.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "بعد Practice أو Test، اختر 800 أو 1200 أو 1800 وPlay on من الوضع. Test نظيف ما زال يجعل الخط أخضر. Play on لا يُكمل الخط.",
@@ -1422,8 +1422,8 @@ const tr: Dict = {
   "Yellow hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Sarı ipuçları sonraki hamleyi gösterir. Rakip otomatik cevaplar. Tam hattı izle. Practice hattı tamamlamaz.",
   "Test mode": "Test modu",
-  "No hints. Play your side only. Wrong squares flash red until you find the book move. A clean Test (zero mistakes) turns the line green. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
-    "İpucu yok. Yalnızca kendi tarafını oyna. Yanlış kareler kitap hamlesini bulana kadar kırmızı yanıp söner. Temiz Test (sıfır hata) hattı yeşile çevirir. Reddedilen hamlenin kitap olduğunu düşünüyorsan Wrong move? ile gönder. Onaylarsak bir paket bedava.",
+  "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
+    "İpucu yok. Yalnızca kendi tarafını oyna. Yanlış kareler kitap hamlesini bulana kadar kırmızı yanıp söner. Liste % değeri, o Test'in başından itibaren doğru kitap hamleleri streak'idir; yanlış hamle %'yi orada dondurur. %100 / yeşil yalnızca sıfır hatalı temiz bir Test'ten sonra. Reddedilen hamlenin kitap olduğunu düşünüyorsan Wrong move? ile gönder. Onaylarsak bir paket bedava.",
   "Play on": "Play on",
   "After Practice or Test, pick 800, 1200, or 1800 and Play on from the setup. A clean Test still turns the line green. Play on does not complete the line.":
     "Practice veya Test’ten sonra 800, 1200 veya 1800 seçip konumdan Play on. Temiz Test hattı yine yeşile çevirir. Play on hattı tamamlamaz.",

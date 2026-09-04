@@ -52,11 +52,11 @@ test("lineTestPercent is 100 when cleanPractice even without testBestPly", () =>
   assert.equal(lineTestPercent({ ...base, cleanPractice: true, testBestPly: 3 }, 12), 100);
 });
 
-test("lineTestPercent mid values round from testBestPly / bookLen", () => {
+test("lineTestPercent mid values round from testBestPly / bookLen; never 100 without cleanPractice", () => {
   assert.equal(lineTestPercent({ ...base, testBestPly: 5 }, 10), 50);
   assert.equal(lineTestPercent({ ...base, testBestPly: 1 }, 8), 13);
-  assert.equal(lineTestPercent({ ...base, testBestPly: 8 }, 8), 100);
-  assert.equal(lineTestPercent({ ...base, testBestPly: 20 }, 10), 100);
+  assert.equal(lineTestPercent({ ...base, testBestPly: 8 }, 8), 99);
+  assert.equal(lineTestPercent({ ...base, testBestPly: 20 }, 10), 99);
 });
 
 test("progress store persists testBestPly via markTestPly without cleanPractice", () => {

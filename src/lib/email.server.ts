@@ -259,7 +259,7 @@ async function sendMail(mail: Mail): Promise<void> {
 
 export function welcomeMail(to: string): Mail {
   const text =
-    "You’re in. Scotch Gambit is free. Tap a pack, tap a line, Practice (hints) then Test (no hints). A line stays red until a clean Test, then it goes green. Packs you buy stay on this account.";
+    "Welcome to Opening Lab — enjoy and learn. Tap a pack, tap a line, Practice (hints) then Test (no hints). A line goes green after a clean Test. Packs you buy stay on this account.";
   return {
     to,
     subject: "Welcome to Opening Lab",
