@@ -69,7 +69,7 @@ function PackCard({
   const [open, setOpen] = useState(defaultOpen);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
-  const { masteryOf, isComplete } = useProgress();
+  const { masteryOf, isComplete, testPercentOf } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
   const locked = !unlocked;
@@ -179,6 +179,7 @@ function PackCard({
                 mastery={mastery}
                 locked={rowLocked}
                 showFree={free && lineUnlocked}
+                testPercent={rowLocked ? null : testPercentOf(line.id, line.plies.length)}
                 onClick={() => {
                   if (rowLocked) onRequestUnlock(pack);
                   else if (pack.about) {

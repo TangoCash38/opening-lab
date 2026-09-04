@@ -7,9 +7,11 @@ import {
   getProgressStore,
   isLineComplete,
   isLineDue,
+  lineTestPercent,
   markLineComplete,
   markLineLearned,
   markPracticeFail,
+  markTestPly,
   subscribeProgress,
   type LineProgress,
   type Mastery,
@@ -61,6 +63,16 @@ export function useProgress() {
     setStore(getProgressStore());
   }, []);
 
+  const markTest = useCallback((lineId: string, plyIndex: number) => {
+    markTestPly(lineId, plyIndex);
+    setStore(getProgressStore());
+  }, []);
+
+  const testPercentOf = useCallback(
+    (lineId: string, bookLen: number) => lineTestPercent(line(lineId), bookLen),
+    [line],
+  );
+
   const dueQueue = useCallback(
     (candidates: { packId: string; lineId: string }[]): QueueItem[] =>
       buildDueQueue(candidates),
@@ -86,6 +98,8 @@ export function useProgress() {
     markLearned,
     isComplete,
     failPractice,
+    markTest,
+    testPercentOf,
     dueQueue,
     unused,
     dueCount,

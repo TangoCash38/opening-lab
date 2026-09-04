@@ -37,6 +37,7 @@ const REQUIRED = [
   "Packs are not for sale in this Play test. The three free Caro lines still train here.",
   "Free",
   "Locked",
+  "{pct}%",
 ];
 
 test("home heading sits on one row with How to play as a real button", () => {

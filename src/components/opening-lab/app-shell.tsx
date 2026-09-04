@@ -70,7 +70,7 @@ function OpeningLabInner() {
   );
   const [showSplash, setShowSplash] = useState(true);
 
-  const { complete, markLearned, failPractice, dueQueue } = useProgress();
+  const { complete, markLearned, failPractice, markTest, dueQueue } = useProgress();
   const { canAccess, state } = useUnlocks();
 
   const goHome = () => {
@@ -240,6 +240,7 @@ function OpeningLabInner() {
             onLineComplete={() => complete(active.line.id)}
             onLearnDone={() => markLearned(active.line.id)}
             onPracticeFail={() => failPractice(active.line.id)}
+            onTestPly={(plyIndex) => markTest(active.line.id, plyIndex)}
             onTrainNext={trainNext}
             hasNextDue={queue.length > 0}
             onPracticeNext={(nextLine) =>
