@@ -938,66 +938,25 @@ html[data-color-scheme="dark"] {
   background-color: #5aa86a !important;
 }
 
-/* Newspaper: aged newsprint diagram — grain via ::before so selected/last-move washes stay clean. */
+/* Newspaper: vintage clipping collage on the board backdrop.
+   Light squares = cream wash so clippings read faintly; darks = near-opaque ink. */
+[data-board-theme="newspaper"] .board-frame-inner,
+[data-board-theme="newspaper"] .board-play {
+  background-color: #2e2c28;
+  background-image: url("/board-textures/newspaper-clippings.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 [data-board-theme="newspaper"] .sq-light {
-  background-color: #f2e6c4;
+  background-color: rgba(247, 236, 208, 0.38);
+  background-image: none;
 }
 
 [data-board-theme="newspaper"] .sq-dark {
-  background-color: #3a3832;
-}
-
-[data-board-theme="newspaper"] .sq-light::before,
-[data-board-theme="newspaper"] .sq-dark::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Warm fibre / halftone grain on light newsprint (multiply, low opacity — not muddy). */
-[data-board-theme="newspaper"] .sq-light::before {
-  opacity: 0.55;
-  mix-blend-mode: multiply;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(90, 70, 40, 0.07) 0px,
-      transparent 1px,
-      transparent 3px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(70, 55, 30, 0.05) 0px,
-      transparent 1px,
-      transparent 4px
-    ),
-    repeating-linear-gradient(
-      135deg,
-      rgba(120, 95, 50, 0.035) 0px,
-      transparent 1px,
-      transparent 5px
-    );
-}
-
-/* Charcoal ink wash texture on darks — printed black squares, not walnut. */
-[data-board-theme="newspaper"] .sq-dark::before {
-  opacity: 0.4;
-  mix-blend-mode: soft-light;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 245, 220, 0.06) 0px,
-      transparent 1px,
-      transparent 3px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.12) 0px,
-      transparent 1px,
-      transparent 4px
-    );
+  background-color: #2a2824;
+  background-image: none;
 }
 
 [data-board-theme="newspaper"] .sq-selected,
@@ -1024,7 +983,7 @@ html[data-color-scheme="dark"] {
 }
 
 [data-board-theme="newspaper"] .mini-sq-dark {
-  background: #3a3832;
+  background: #2a2824;
 }
 
 /* Classic newspaper double-rule / column border — sharp corners. */
@@ -1041,17 +1000,16 @@ html[data-color-scheme="dark"] {
 [data-board-theme="newspaper"] .board-frame-inner {
   border-radius: 0;
   padding: 1px;
-  background: #2e2c28;
   box-shadow: inset 0 0 0 0.5px rgba(242, 230, 196, 0.28);
 }
 
-/* Stronger print contrast so dark glyphs stay readable on ink squares. */
+/* Strong print contrast so black/white glyphs pop on busy paper. */
 [data-board-theme="newspaper"] .piece-abs-inner {
   filter:
-    contrast(1.14)
-    brightness(1.05)
-    drop-shadow(0 0 0.55px rgba(255, 255, 255, 0.88))
-    drop-shadow(0 0.5px 0.5px rgba(0, 0, 0, 0.32));
+    contrast(1.22)
+    brightness(1.06)
+    drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 0.7px rgba(0, 0, 0, 0.55));
 }
 
 /* Newspaper: keep green hints (not ink-grey). */

@@ -15,7 +15,7 @@ const THEME_SWATCH: Record<
   book: { light: "#f3e5c8", dark: "#a97850", frame: "#6a4b32" },
   paper: { light: "#f7f2e6", dark: "#b7b0a4", frame: "#5c564c" },
   future: { light: "#d8e2ea", dark: "#3a4a5c", frame: "#1e2936" },
-  newspaper: { light: "#f2e6c4", dark: "#3a3832", frame: "#1a1916" },
+  newspaper: { light: "#f2e6c4", dark: "#2a2824", frame: "#1a1916" },
 };
 
 function themeLabel(id: BoardTheme, t: (key: string) => string): string {
@@ -74,10 +74,32 @@ export function BoardThemePicker({ compact, className }: Props) {
               style={{ borderColor: sw.frame, background: sw.frame }}
               aria-hidden
             >
-              <span style={{ background: sw.light }} />
+              <span
+                style={
+                  id === "newspaper"
+                    ? {
+                        backgroundImage:
+                          "linear-gradient(rgba(247, 236, 208, 0.38), rgba(247, 236, 208, 0.38)), url(/board-textures/newspaper-clippings.webp)",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }
+                    : { background: sw.light }
+                }
+              />
               <span style={{ background: sw.dark }} />
               <span style={{ background: sw.dark }} />
-              <span style={{ background: sw.light }} />
+              <span
+                style={
+                  id === "newspaper"
+                    ? {
+                        backgroundImage:
+                          "linear-gradient(rgba(247, 236, 208, 0.38), rgba(247, 236, 208, 0.38)), url(/board-textures/newspaper-clippings.webp)",
+                        backgroundSize: "cover",
+                        backgroundPosition: "38% 62%",
+                      }
+                    : { background: sw.light }
+                }
+              />
             </span>
             <span className="board-theme-label">{themeLabel(id, t)}</span>
           </button>

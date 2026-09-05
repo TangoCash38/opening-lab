@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -79,13 +79,15 @@ test("CSS keeps book defaults and has paper + future + newspaper data-board-them
   assert.match(css, /#0f1720/);
   assert.match(css, /#5c564c/);
   assert.match(css, /#f2e6c4/);
-  assert.match(css, /#3a3832/);
+  assert.match(css, /#2a2824/);
   assert.match(css, /#2e2c28/);
   assert.match(css, /#1a1916/);
   assert.match(css, /#ebe0b8|#f2e6c4/);
-  assert.match(css, /repeating-linear-gradient/);
-  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-light::before/);
-  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-dark::before/);
+  assert.match(css, /board-textures\/newspaper-clippings\.webp/);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.board-frame-inner/);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.board-play/);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-light\s*\{[^}]*rgba\(247,\s*236,\s*208,\s*0\.38\)/s);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-dark\s*\{[^}]*#2a2824/s);
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.piece-abs-inner[^}]*contrast\(/s);
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-coord\s*\{[^}]*monospace/s);
   assert.doesNotMatch(css, /#ead9a0/);
@@ -123,8 +125,9 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(picker, /pointer-events-auto/);
   assert.match(picker, /t\("Newspaper"\)/);
   assert.match(picker, /newspaper:\s*\{\s*light:\s*"#f2e6c4"/);
-  assert.match(picker, /dark:\s*"#3a3832"/);
+  assert.match(picker, /dark:\s*"#2a2824"/);
   assert.match(picker, /frame:\s*"#1a1916"/);
+  assert.match(picker, /board-textures\/newspaper-clippings\.webp/);
 
   assert.match(hero, /BoardThemePicker/);
   assert.match(hero, /from "\.\/board-theme-picker"/);
@@ -159,4 +162,12 @@ test("default theme is book", () => {
   assert.match(theme, /DEFAULT_BOARD_THEME:\s*BoardTheme\s*=\s*"book"/);
   assert.match(css, /\.sq-light\s*\{\s*background-color:\s*#f3e5c8/);
   assert.doesNotMatch(css, /\[data-board-theme="book"\]/);
+});
+
+test("newspaper clippings texture is committed and reasonably small", () => {
+  const texture = join(root, "public/board-textures/newspaper-clippings.webp");
+  assert.ok(existsSync(texture), "missing public/board-textures/newspaper-clippings.webp");
+  const bytes = statSync(texture).size;
+  assert.ok(bytes > 10 * 1024, `texture too small: ${bytes}`);
+  assert.ok(bytes < 400 * 1024, `texture too large: ${bytes}`);
 });
