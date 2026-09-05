@@ -78,8 +78,18 @@ test("CSS keeps book defaults and has paper + future + newspaper data-board-them
   assert.match(css, /#1e2936/);
   assert.match(css, /#0f1720/);
   assert.match(css, /#5c564c/);
-  assert.match(css, /#ead9a0/);
-  assert.match(css, /#6e6c64/);
+  assert.match(css, /#f2e6c4/);
+  assert.match(css, /#3a3832/);
+  assert.match(css, /#2e2c28/);
+  assert.match(css, /#1a1916/);
+  assert.match(css, /#ebe0b8|#f2e6c4/);
+  assert.match(css, /repeating-linear-gradient/);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-light::before/);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-dark::before/);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.piece-abs-inner[^}]*contrast\(/s);
+  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-coord\s*\{[^}]*monospace/s);
+  assert.doesNotMatch(css, /#ead9a0/);
+  assert.doesNotMatch(css, /#6e6c64/);
   assert.doesNotMatch(css, /#b7b0a4/);
   assert.doesNotMatch(css, /#3a4a5c/);
   assert.doesNotMatch(css, /#454540/);
@@ -112,6 +122,10 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(picker, /subscribeBoardTheme/);
   assert.match(picker, /pointer-events-auto/);
   assert.match(picker, /t\("Newspaper"\)/);
+  assert.match(picker, /newspaper:\s*\{\s*light:\s*"#f2e6c4"/);
+  assert.match(picker, /dark:\s*"#3a3832"/);
+  assert.match(picker, /frame:\s*"#1a1916"/);
+
   assert.match(hero, /BoardThemePicker/);
   assert.match(hero, /from "\.\/board-theme-picker"/);
   assert.match(hero, /pointer-events-auto/);

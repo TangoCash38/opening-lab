@@ -15,7 +15,7 @@ const THEME_SWATCH: Record<
   book: { light: "#f3e5c8", dark: "#a97850", frame: "#6a4b32" },
   paper: { light: "#f7f2e6", dark: "#b7b0a4", frame: "#5c564c" },
   future: { light: "#d8e2ea", dark: "#3a4a5c", frame: "#1e2936" },
-  newspaper: { light: "#ead9a0", dark: "#454540", frame: "#111111" },
+  newspaper: { light: "#f2e6c4", dark: "#3a3832", frame: "#1a1916" },
 };
 
 function themeLabel(id: BoardTheme, t: (key: string) => string): string {
