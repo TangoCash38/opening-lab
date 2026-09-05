@@ -423,7 +423,51 @@ test("ModeTab nudge is additive and keeps active/inactive chrome", () => {
 
 test("finish/result sheet is history-backed for Android Back", () => {
   assert.match(modal, /useOverlayHistory\(true, onClose, "line-result"\)/);
+  assert.match(modal, /useOverlayHistory\(expanded && !minimized/);
   assert.match(modal, /useOverlayHistory\(playOnPrompt/);
   assert.match(modal, /from "@\/hooks\/use-overlay-history"/);
+});
+
+test("finish sheet can dock minimise so the board stays visible", () => {
+  assert.match(modal, /const \[minimized, setMinimized\] = useState\(false\)/);
+  assert.match(modal, /data-result-minimized/);
+  assert.match(modal, /data-result-dock/);
+  assert.match(modal, /data-result-minimise/);
+  assert.match(modal, /data-result-restore/);
+  assert.match(modal, /line-result-overlay--docked/);
+  assert.match(modal, /line-result-dock/);
+  assert.match(modal, /t\("Minimise"\)/);
+  assert.match(modal, /t\("Restore"\)/);
+  assert.match(modal, /setMinimized\(true\)/);
+  assert.match(modal, /setMinimized\(false\)/);
+  assert.match(modal, /const dock = \(\) =>/);
+  assert.match(modal, /const restore = \(\) =>/);
+  assert.match(modal, /setExpanded\(false\);\s*setMinimized\(true\)/);
+  assert.match(modal, /if \(minimized\)/);
+  assert.match(modal, /renderActions\(true\)/);
+  assert.match(modal, /data-result-play-on-open/);
+  // Docked branch: board-visible class, no dim in that return
+  const dockReturn = modal.indexOf("line-result-overlay--docked");
+  assert.ok(dockReturn > 0);
+  const fullSheetReturn = modal.indexOf("line-result-dim", dockReturn);
+  assert.ok(fullSheetReturn > dockReturn, "full sheet comes after docked return");
+  const afterDock = modal.slice(dockReturn, fullSheetReturn);
+  assert.match(afterDock, /data-result-dock/);
+  assert.match(afterDock, /data-result-minimized/);
+  assert.match(afterDock, /data-result-restore/);
+  assert.doesNotMatch(afterDock, /line-result-dim/);
+  assert.doesNotMatch(afterDock, /line-result-body/);
+  assert.match(css, /\.line-result-overlay--docked/);
+  assert.match(css, /pointer-events:\s*none/);
+  assert.match(css, /\.line-result-dock/);
+  assert.match(css, /pointer-events:\s*auto/);
+  assert.equal(i18n.split('"Minimise":').length - 1, 12);
+  assert.equal(i18n.split('"Restore":').length - 1, 12);
+  assert.match(i18n, /"Minimise": "Minimise"/);
+  assert.match(i18n, /"Restore": "Restore"/);
+  assert.match(i18n, /"Minimise": "Minimizar"/);
+  assert.match(i18n, /"Restore": "Restaurar"/);
+  assert.match(i18n, /"Minimise": "最小化"/);
+  assert.match(i18n, /"Restore": "恢复"/);
 });
 
