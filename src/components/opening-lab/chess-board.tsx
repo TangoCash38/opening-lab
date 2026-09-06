@@ -120,6 +120,26 @@ function squareFromPoint(x: number, y: number): Square | null {
   return null;
 }
 
+/** Visual grid → algebraic. Prefer this on drag-end — WebView hit-testing is flaky. */
+function squareFromBoardPoint(
+  clientX: number,
+  clientY: number,
+  surface: HTMLElement | null,
+  flip: boolean,
+): Square | null {
+  if (!surface) return null;
+  const rect = surface.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return null;
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  if (x < 0 || y < 0 || x >= rect.width || y >= rect.height) return null;
+  const col = Math.min(7, Math.max(0, Math.floor((x / rect.width) * 8)));
+  const row = Math.min(7, Math.max(0, Math.floor((y / rect.height) * 8)));
+  const file = flip ? 7 - col : col;
+  const rankIdx = flip ? row : 7 - row;
+  return `${"abcdefgh"[file]}${rankIdx + 1}` as Square;
+}
+
 const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
   { key: "q", label: "Q" },
   { key: "r", label: "R" },
@@ -371,7 +391,15 @@ export function ChessBoard({
     if (cancel || !interactive) return;
 
     if (d.moved && d.canDrag) {
-      const dest = squareFromPoint(e.clientX, e.clientY);
+      // Geometry first: Android WebView elementsFromPoint often misses last-rank
+      // drops (piece layer / ghost), so promotion never opens.
+      const dest =
+        squareFromBoardPoint(
+          e.clientX,
+          e.clientY,
+          surfaceRef.current,
+          flip,
+        ) ?? squareFromPoint(e.clientX, e.clientY);
       if (dest && dest !== d.from) {
         onPlayRef.current?.(d.from, dest);
       }
@@ -558,8 +586,15 @@ export function ChessBoard({
                 className="promo-picker"
                 role="dialog"
                 aria-label="Choose promotion"
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={() => promotion.onCancel?.()}
+                onPointerDown={(e) => {
+                  // Backdrop cancel on pointerdown (not click) — click can land on the
+                  // board after the picker unmounts and undo a just-committed promo.
+                  e.stopPropagation();
+                  if (e.target === e.currentTarget) {
+                    e.preventDefault();
+                    promotion.onCancel?.();
+                  }
+                }}
               >
                 <div
                   className="promo-picker-row"
