@@ -1315,13 +1315,13 @@ html[data-color-scheme="dark"] {
 .promo-picker {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: 70;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: auto;
   touch-action: manipulation;
-  background: rgba(28, 25, 21, 0.5);
+  background: rgba(28, 25, 21, 0.55);
   border-radius: 0;
 }
 
@@ -1340,8 +1340,10 @@ html[data-color-scheme="dark"] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 3.35rem;
-  height: 4.05rem;
+  width: 3.75rem;
+  min-width: 44px;
+  height: 4.5rem;
+  min-height: 44px;
   border: none;
   border-radius: 0.75rem;
   pointer-events: auto;
@@ -1707,8 +1709,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 .train-board-anchor {
   scroll-margin-top: 4.75rem;
-  /* Keep small — a large bottom margin made wrong/finish sheets scroll the board. */
-  scroll-margin-bottom: 1rem;
+  scroll-margin-bottom: min(52dvh, 28rem);
 }
 
 /* trial: phone-centered board — revert if Sean dislikes */
@@ -1748,13 +1749,11 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   }
 
   .train-board-band {
-    /* Grow to fill, but do not shrink when status/actions below grow —
-       that re-centers the board and feels like a shove on wrong move. */
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: min(92vw, 28rem);
+    min-height: 0;
   }
 
   .train-below {

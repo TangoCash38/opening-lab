@@ -769,14 +769,48 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
   const tryPlay = (from: Square, to: Square, promotion?: string) => {
     if (playingOnRef.current) {
-      const pieceCode = fenPieceAt(game, from);
-      if (!pieceCode) return;
+      const promoMoves = game
+        .moves({ square: from, verbose: true })
+        .filter((m) => m.to === to && m.promotion);
+      const isPromo = promoMoves.length > 0;
+      const promo =
+        (promotion as "q" | "r" | "b" | "n" | undefined) ||
+        (isPromo ? "q" : undefined);
       const committed = cloneAndMove(game, {
         from,
         to,
-        promotion: promotion || "q",
+        promotion: promo || "q",
       });
-      if (!committed) return;
+      if (!committed) {
+        soundBad();
+        setStatus({ text: "Your move — playing on", cls: "" });
+        return;
+      }
+      // Instant place for promotions — sliding a pawn then snapping to Q/R/B/N
+      // looked broken and could fail to settle the piece on Play WebView.
+      if (isPromo) {
+        setSelected(null);
+        setBusy(false);
+        setSlide(null);
+        pendingCommit.current = null;
+        setGame(committed.next);
+        setPlyIndex((p) => p + 1);
+        setLastMove({ from, to });
+        soundMove();
+        const g = committed.next;
+        if (g.isGameOver()) {
+          setStatus({
+            text: playOnGameOverText(g, line.side),
+            cls: "ok",
+          });
+        } else {
+          soundOk();
+          setStatus({ text: "…", cls: "" });
+        }
+        return;
+      }
+      const pieceCode = fenPieceAt(game, from);
+      if (!pieceCode) return;
       beginSlide(from, to, pieceCode, committed.next, plyIndex + 1, true);
       return;
     }
@@ -824,7 +858,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     const committed = cloneAndMove(game, {
       from,
       to,
-      promotion: promotion || exp.promotion || "q",
+      promotion: exp.promotion || promotion || "q",
     });
     if (!committed) return;
 
