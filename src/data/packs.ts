@@ -4324,7 +4324,7 @@ export const PACKS: Pack[] = [
         next: "Checkmate. The knight on d5 and bishop on f7 leave Black with no flight square. Reset and drill Nxe5, then Bxf7+ and Nd5 after the queen take. Play on is closed after mate.",
         plies: ["e4", "e5", "Nf3", "d6", "Bc4", "Bg4", "Nc3", "g6", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
         side: "w",
-      }
+      },
       {
         id: "ot2",
         name: "Trap · Fishing Pole",
@@ -4332,7 +4332,7 @@ export const PACKS: Pack[] = [
         next: "White to move with the queen on h4 and the h-file open. Against Qh3 trade or keep pressing with …d6 and …Bxh3; against quiet moves look for …Bc5 and …Nd4. Do not close the file or leave the queen hanging to a discovery. The risk is letting White consolidate while your king stays central.",
         plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Ng4", "h3", "h5", "hxg4", "hxg4", "c3", "a6", "Ba4", "gxf3", "Qxf3", "Qh4"],
         side: "b",
-      }
+      },
       {
         id: "ot3",
         name: "Trap · Elephant (Cambridge Springs)",
@@ -4340,7 +4340,7 @@ export const PACKS: Pack[] = [
         next: "Black is a piece up and the king sits on d8. Castle by hand with …c6, …Kc7, and develop …Re8 when the centre opens. Meet e4 with calm development. Do not give the piece back for a random pawn grab.",
         plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Nbd7", "cxd5", "exd5", "Nxd5", "Nxd5", "Bxd8", "Bb4+", "Qd2", "Bxd2+", "Kxd2", "Kxd8"],
         side: "b",
-      }
+      },
       {
         id: "ot4",
         name: "Trap · Lasker Albin",
@@ -4348,7 +4348,7 @@ export const PACKS: Pack[] = [
         next: "White’s queen is gone. Develop …Nc6, castle queenside when safe, and keep the queen active on the back rank. Collect loose pawns only after the pieces are out. The underpromotion path is the book punish when the king steps to e2.",
         plies: ["d4", "d5", "c4", "e5", "dxe5", "d4", "e3", "Bb4+", "Bd2", "dxe3", "Bxb4", "exf2+", "Ke2", "fxg1=N+", "Rxg1", "Bg4+", "Ke3", "Qxd1"],
         side: "b",
-      }
+      },
       {
         id: "ot5",
         name: "Trap · Blackburne Shilling",
@@ -4356,7 +4356,7 @@ export const PACKS: Pack[] = [
         next: "Black has won the queen and the h1-rook; White’s king sits on d1. Play …d5, develop with …Bg4+ or …Nf6, and castle when safe. Do not hunt the knight on f7 before your pieces are out.",
         plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nd4", "Nxe5", "Qg5", "Nxf7", "Qxg2", "d3", "Qxh1+", "Kd2", "Qxd1+", "Kxd1"],
         side: "b",
-      }
+      },
       {
         id: "ot6",
         name: "Trap · Stafford",
@@ -4364,7 +4364,7 @@ export const PACKS: Pack[] = [
         next: "Checkmate on g4. White has no legal reply. Reset and drill …Nxe4, then …Bxf2+ and …Bg4 after the queen take. Play on is closed after mate.",
         plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Bg5", "Nxe4", "Bxd8", "Bxf2+", "Ke2", "Bg4#"],
         side: "b",
-      }
+      },
       {
         id: "ot7",
         name: "Trap · Englund",
@@ -4372,7 +4372,7 @@ export const PACKS: Pack[] = [
         next: "Black’s queen sits on a3 with a clear material plus. Against Rb1 tuck with …Qc5 or …Qc3+; develop …Nge7, then castle. Do not leave the queen with no exit while White’s rook comes to the b-file.",
         plies: ["d4", "e5", "dxe5", "Nc6", "Nf3", "Qe7", "Bf4", "Qb4+", "Bd2", "Qxb2", "Bc3", "Bb4", "Bxb4", "Nxb4", "Na3", "Qxa3"],
         side: "b",
-      }
+      },
       {
         id: "ot8",
         name: "Trap · QGA …cxb5",
@@ -4380,7 +4380,7 @@ export const PACKS: Pack[] = [
         next: "White is an exchange up with the queen on a8. Against …Qc7 retreat or stay active, then develop Nf3/Nc3 and castle. Alternatives like …Qc7 or …Nc6 also meet Qf3 — take on a8 when it is free. Do not hunt the c4 pawn before the rook is collected.",
         plies: ["d4", "d5", "c4", "dxc4", "e3", "b5", "a4", "c6", "axb5", "cxb5", "Qf3", "a6", "Qxa8"],
         side: "w",
-      }
+      },
       {
         id: "ot9",
         name: "Trap · Damiano",
@@ -4388,7 +4388,7 @@ export const PACKS: Pack[] = [
         next: "Black is in check on g3. Against …Qg5 take on c7 or keep the queens on; against …Kh5/…Kh6 keep checking. Develop, castle, and do not trade queens while the king is still in the open.",
         plies: ["e4", "e5", "Nf3", "f6", "Nxe5", "fxe5", "Qh5+", "Ke7", "Qxe5+", "Kf7", "Bc4+", "d5", "Bxd5+", "Kg6", "Qg3+"],
         side: "w",
-      }
+      },
       {
         id: "ot10",
         name: "Trap · Budapest Kieninger",
@@ -4398,7 +4398,8 @@ export const PACKS: Pack[] = [
         side: "b",
       }
     ],
-  }
+  },
+
 ];
 
 export const COMING: ComingSoon[] = [];
