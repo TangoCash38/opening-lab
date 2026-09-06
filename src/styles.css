@@ -787,8 +787,8 @@ html[data-color-scheme="dark"] {
   }
 }
 
-/* ---- Board themes (paper / future / newspaper). Book = default .sq-* above. ---- */
-/* Hints stay green globally (#8fd49a / #9edda8; darker on dark squares). */
+/* ---- Board themes (paper / future / tournament). Book = default .sq-* above. ---- */
+/* Hints stay green globally (#8fd49a / #9edda8; brighter on dark green tournament squares). */
 
 [data-board-theme="paper"] .sq-light {
   background-color: #f7f2e6;
@@ -938,130 +938,79 @@ html[data-color-scheme="dark"] {
   background-color: #5aa86a !important;
 }
 
-/* Newspaper: vintage clipping collage on the board backdrop.
-   Light squares = cream wash so clippings read faintly; darks = near-opaque ink. */
-[data-board-theme="newspaper"] .board-frame-inner,
-[data-board-theme="newspaper"] .board-play {
-  background-color: #2e2c28;
-  background-image: url("/board-textures/newspaper-clippings.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+/* Tournament: classic green + cream vinyl board. No texture / no heavy piece filters. */
+[data-board-theme="tournament"] .sq-light {
+  background-color: #eeeed2;
 }
 
-[data-board-theme="newspaper"] .sq-light {
-  background-color: rgba(247, 236, 208, 0.38);
-  background-image: none;
+[data-board-theme="tournament"] .sq-dark {
+  background-color: #769656;
 }
 
-[data-board-theme="newspaper"] .sq-dark {
-  background-color: #2a2824;
-  background-image: none;
+[data-board-theme="tournament"] .sq-selected,
+[data-board-theme="tournament"] .sq-dark.sq-selected {
+  background-image: linear-gradient(rgba(46, 74, 40, 0.18), rgba(46, 74, 40, 0.18));
+  box-shadow: inset 0 0 0 2px rgba(46, 74, 40, 0.45);
 }
 
-[data-board-theme="newspaper"] .sq-selected,
-[data-board-theme="newspaper"] .sq-dark.sq-selected {
-  background-image: linear-gradient(rgba(20, 18, 14, 0.18), rgba(20, 18, 14, 0.18));
-  box-shadow: inset 0 0 0 2px rgba(20, 18, 14, 0.55);
-}
-
-[data-board-theme="newspaper"] .sq-last-from,
-[data-board-theme="newspaper"] .sq-last-to {
+[data-board-theme="tournament"] .sq-last-from,
+[data-board-theme="tournament"] .sq-last-to {
   background-image: linear-gradient(#ecec4a55, #ecec4a55);
 }
 
-[data-board-theme="newspaper"] .legal-dot {
-  background: rgba(20, 18, 14, 0.42);
+[data-board-theme="tournament"] .legal-dot {
+  background: rgba(46, 74, 40, 0.38);
 }
 
-[data-board-theme="newspaper"] .legal-capture {
-  border: 2px solid rgba(20, 18, 14, 0.5);
+[data-board-theme="tournament"] .legal-capture {
+  border: 2px solid rgba(46, 74, 40, 0.5);
 }
 
-[data-board-theme="newspaper"] .mini-sq-light {
-  background: #f2e6c4;
+[data-board-theme="tournament"] .mini-sq-light {
+  background: #eeeed2;
 }
 
-[data-board-theme="newspaper"] .mini-sq-dark {
-  background: #2a2824;
+[data-board-theme="tournament"] .mini-sq-dark {
+  background: #769656;
 }
 
-/* Classic newspaper double-rule / column border — sharp corners. */
-[data-board-theme="newspaper"] .board-frame {
-  border-radius: 0;
-  padding: 3px;
-  background: #1a1916;
-  box-shadow:
-    0 0 0 1px #1a1916,
-    0 0 0 3px #f2e6c4,
-    0 0 0 4px #1a1916;
+[data-board-theme="tournament"] .board-frame {
+  border-radius: 2px;
+  padding: 4px;
+  background: #2e4a28;
+  box-shadow: none;
 }
 
-[data-board-theme="newspaper"] .board-frame-inner {
+[data-board-theme="tournament"] .board-frame-inner {
   border-radius: 0;
   padding: 1px;
-  box-shadow: inset 0 0 0 0.5px rgba(242, 230, 196, 0.28);
+  background: #243c20;
 }
 
-/* Strong print contrast so black/white glyphs pop on busy paper. */
-[data-board-theme="newspaper"] .piece-abs-inner {
-  filter:
-    contrast(1.22)
-    brightness(1.06)
-    drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.95))
-    drop-shadow(0 0 0.7px rgba(0, 0, 0, 0.55));
+/* Default piece filter only — no cream halos / stacked drop-shadows (WebView crash surface). */
+[data-board-theme="tournament"] .piece-abs-inner {
+  filter: drop-shadow(0 1px 1px rgba(28, 25, 21, 0.18));
 }
 
-/* Black CBurnett pieces: cream/off-white halo so silhouettes separate from ink squares (#2a2824). */
-[data-board-theme="newspaper"] [data-piece-color="b"] .piece-abs-inner {
-  filter:
-    brightness(1.2)
-    sepia(0.12)
-    drop-shadow(0 0 1.5px #f5efd8)
-    drop-shadow(0 0 2px #f5efd8)
-    drop-shadow(0 0 2.5px #ffffff)
-    drop-shadow(1.5px 0 0 #f5efd8)
-    drop-shadow(-1.5px 0 0 #f5efd8)
-    drop-shadow(0 1.5px 0 #f5efd8)
-    drop-shadow(0 -1.5px 0 #f5efd8)
-    drop-shadow(1.2px 1.2px 0 #fff)
-    drop-shadow(-1.2px -1.2px 0 #fff);
-}
-
-/* White pieces: thicker dark ink outline so they stay crisp on busy collage lights. */
-[data-board-theme="newspaper"] [data-piece-color="w"] .piece-abs-inner {
-  filter:
-    contrast(1.15)
-    brightness(1.04)
-    drop-shadow(0 0 1.2px #1a1916)
-    drop-shadow(0 0 2px #1a1916)
-    drop-shadow(1.5px 0 0 #1a1916)
-    drop-shadow(-1.5px 0 0 #1a1916)
-    drop-shadow(0 1.5px 0 #1a1916)
-    drop-shadow(0 -1.5px 0 #1a1916)
-    drop-shadow(1.2px 1.2px 0 #1a1916)
-    drop-shadow(-1.2px -1.2px 0 #1a1916);
-}
-
-/* Newspaper: keep green hints (not ink-grey). */
-[data-board-theme="newspaper"] .sq-hint-from {
+/* Tournament: green hints; brighter on dark green for contrast. */
+[data-board-theme="tournament"] .sq-hint-from {
   background-color: #8fd49a !important;
   background-image: none !important;
   box-shadow: none;
 }
 
-[data-board-theme="newspaper"] .sq-dark.sq-hint-from {
-  background-color: #68b078 !important;
+[data-board-theme="tournament"] .sq-dark.sq-hint-from {
+  background-color: #b4eebb !important;
 }
 
-[data-board-theme="newspaper"] .sq-hint-to {
+[data-board-theme="tournament"] .sq-hint-to {
   background-color: #9edda8 !important;
   background-image: none !important;
   box-shadow: none;
 }
 
-[data-board-theme="newspaper"] .sq-dark.sq-hint-to {
-  background-color: #5aa86a !important;
+[data-board-theme="tournament"] .sq-dark.sq-hint-to {
+  background-color: #c5f0cc !important;
 }
 
 
@@ -1086,21 +1035,16 @@ html[data-color-scheme="dark"] {
   text-shadow: none;
 }
 
-[data-board-theme="newspaper"] .sq-coord {
-  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+[data-board-theme="tournament"] .sq-coord--on-light {
+  color: #2e4a28;
+  text-shadow: 0 0 1px rgba(238, 238, 210, 0.85);
 }
 
-[data-board-theme="newspaper"] .sq-coord--on-light {
-  color: #111111;
-  text-shadow: 0 0 1px rgba(242, 230, 196, 0.8);
-}
-
-[data-board-theme="newspaper"] .sq-coord--on-dark {
-  color: #f5efd8;
+[data-board-theme="tournament"] .sq-coord--on-dark {
+  color: #f5f5f0;
   text-shadow: none;
 }
+
 
 
 @keyframes hint-in {

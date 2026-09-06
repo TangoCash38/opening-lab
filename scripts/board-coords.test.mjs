@@ -29,9 +29,9 @@ test("styles.css defines high-contrast sq-coord colours for every theme", () => 
   assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-coord--on-dark/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-coord--on-light/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-coord--on-dark/);
-  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-coord--on-light/);
-  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-coord--on-dark/);
-  assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-coord--on-light\s*\{[^}]*#111/s);
+  assert.match(css, /\[data-board-theme="tournament"\]\s*\.sq-coord--on-light/);
+  assert.match(css, /\[data-board-theme="tournament"\]\s*\.sq-coord--on-dark/);
+  assert.match(css, /\[data-board-theme="tournament"\]\s*\.sq-coord--on-light\s*\{[^}]*#2e4a28/s);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-coord--on-light\s*\{[^}]*#1e2936/s);
 });
 

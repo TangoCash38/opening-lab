@@ -132,7 +132,7 @@ const en: Dict = {
   Book: "Book",
   Paper: "Paper",
   Future: "Future",
-  Newspaper: "Newspaper",
+  Tournament: "Tournament",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.",
   "White & Black / Special packs": "White & Black / Special packs",
@@ -256,7 +256,7 @@ const es: Dict = {
   Book: "Libro",
   Paper: "Papel",
   Future: "Futuro",
-  Newspaper: "Periódico",
+  Tournament: "Torneo",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Entrenamiento de memoria con líneas estrictas. Solo juegas las jugadas de la apertura elegida; las incorrectas se rechazan para que la línea se quede.",
   "White & Black / Special packs": "White y Black / packs especiales",
@@ -375,7 +375,7 @@ const zh: Dict = {
   Book: "书谱",
   Paper: "纸面",
   Future: "未来",
-  Newspaper: "报纸",
+  Tournament: "锦标赛",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "严格线路记忆训练。你只下所选开局中的着法；错着会被拒绝，线路才能记住。",
   "White & Black / Special packs": "White 与 Black / 专题棋包",
@@ -494,7 +494,7 @@ const fr: Dict = {
   Book: "Livre",
   Paper: "Papier",
   Future: "Futur",
-  Newspaper: "Journal",
+  Tournament: "Tournoi",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Entraînement mémoire en lignes strictes. Tu ne joues que les coups de l'ouverture choisie ; les mauvais coups sont refusés pour que la ligne tienne.",
   "White & Black / Special packs": "White et Black / packs spéciaux",
@@ -613,7 +613,7 @@ const de: Dict = {
   Book: "Buch",
   Paper: "Papier",
   Future: "Zukunft",
-  Newspaper: "Zeitung",
+  Tournament: "Turnier",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Gedächtnistraining mit strikten Linien. Du spielst nur die Züge der gewählten Eröffnung; falsche Züge werden abgelehnt, damit die Linie sitzt.",
   "White & Black / Special packs": "White und Black / Spezial-Packs",
@@ -732,7 +732,7 @@ const pt: Dict = {
   Book: "Livro",
   Paper: "Papel",
   Future: "Futuro",
-  Newspaper: "Jornal",
+  Tournament: "Torneio",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Treino de memória com linhas estritas. Você só joga os lances da abertura escolhida; os errados são recusados para a linha grudar.",
   "White & Black / Special packs": "White e Black / packs especiais",
@@ -850,7 +850,7 @@ const ru: Dict = {
   Book: "Книга",
   Paper: "Бумага",
   Future: "Будущее",
-  Newspaper: "Газета",
+  Tournament: "Турнир",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Тренировка памяти по строгим линиям. Играешь только ходы выбранного дебюта; неверные ходы отклоняются, чтобы линия засела.",
   "White & Black / Special packs": "White и Black / спецпаки",
@@ -969,7 +969,7 @@ const it: Dict = {
   Book: "Libro",
   Paper: "Carta",
   Future: "Futuro",
-  Newspaper: "Giornale",
+  Tournament: "Torneo",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Allenamento di memoria a linee rigorose. Giochi solo le mosse dell'apertura scelta; quelle sbagliate vengono rifiutate perché la linea resti.",
   "White & Black / Special packs": "White e Black / pack speciali",
@@ -1088,7 +1088,7 @@ const hi: Dict = {
   Book: "किताब",
   Paper: "कागज़",
   Future: "भविष्य",
-  Newspaper: "अखबार",
+  Tournament: "टूर्नामेंट",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "सख्त लाइन की याददाश्त ट्रेनिंग। चुनी ओपनिंग की चालें ही चलें; गलत चालें रद्द होती हैं ताकि लाइन बैठ जाए।",
   "White & Black / Special packs": "White और Black / खास पैक",
@@ -1205,7 +1205,7 @@ const ja: Dict = {
   Book: "本",
   Paper: "紙",
   Future: "未来",
-  Newspaper: "新聞",
+  Tournament: "トーナメント",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "厳密ラインの記憶トレーニング。選んだオープニングの手だけを指します。違う手は拒否され、ラインが定着します。",
   "White & Black / Special packs": "White と Black / 特別パック",
@@ -1322,7 +1322,7 @@ const ar: Dict = {
   Book: "كتاب",
   Paper: "ورق",
   Future: "مستقبل",
-  Newspaper: "جريدة",
+  Tournament: "بطولة",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "تدريب ذاكرة بخطوط صارمة. تلعب فقط حركات الافتتاحية المختارة؛ الحركات الخاطئة تُرفض حتى يثبت الخط.",
   "White & Black / Special packs": "White و Black / حزم خاصة",
@@ -1441,7 +1441,7 @@ const tr: Dict = {
   Book: "Kitap",
   Paper: "Kâğıt",
   Future: "Gelecek",
-  Newspaper: "Gazete",
+  Tournament: "Turnuva",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Katı hat bellek çalışması. Yalnızca seçilen açılışın hamlelerini oynarsın; yanlışlar reddedilir ki hat yerleşsin.",
   "White & Black / Special packs": "White ve Black / özel paketler",

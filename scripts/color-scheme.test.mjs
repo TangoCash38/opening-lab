@@ -99,7 +99,7 @@ test("i18n keys for dark and light mode exist in every language dict", () => {
 });
 
 test("board themes stay independent of chrome color scheme", () => {
-  assert.match(boardTheme, /BOARD_THEMES = \["book", "paper", "future", "newspaper"\]/);
+  assert.match(boardTheme, /BOARD_THEMES = \["book", "paper", "future", "tournament"\]/);
   assert.match(boardTheme, /BOARD_THEME_STORAGE_KEY = "opening-lab:board-theme"/);
   assert.doesNotMatch(scheme, /boardTheme/);
   assert.doesNotMatch(scheme, /BOARD_THEME/);
