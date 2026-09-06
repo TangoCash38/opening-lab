@@ -12,7 +12,7 @@ export const PRICE_CARO_REST = "£1.99";
 /** Any other visible pack. */
 export const PRICE_PACK = "£2.99";
 
-export const FREE_PACK_IDS = new Set(["caro-kann-black"]);
+export const FREE_PACK_IDS = new Set(["caro-kann-black", "opening-traps"]);
 
 export function packPrice(pack: Pack): string | null {
   if (pack.id === "caro-kann-black") return PRICE_CARO_REST;
