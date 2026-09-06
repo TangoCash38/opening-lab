@@ -94,3 +94,20 @@ test("Play-on promo picker is history-backed so Back cancels", () => {
   assert.match(train, /from "@\/hooks\/use-overlay-history"/);
 });
 
+test("drag-end resolves squares from board geometry (WebView-safe)", () => {
+  assert.match(board, /function squareFromBoardPoint/);
+  assert.match(board, /squareFromBoardPoint\(/);
+  // finishPointer prefers geometry over elementsFromPoint
+  assert.match(
+    board,
+    /squareFromBoardPoint\([\s\S]*?\)\s*\?\?\s*squareFromPoint/,
+  );
+});
+
+test("promo backdrop cancels on pointerdown target===currentTarget (no click-through)", () => {
+  assert.match(board, /e\.target === e\.currentTarget/);
+  assert.doesNotMatch(
+    board,
+    /className="promo-picker"[\s\S]{0,280}onClick=\{\(\) => promotion\.onCancel/,
+  );
+});
