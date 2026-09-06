@@ -152,6 +152,17 @@ function playOnGameOverText(g: Chess, userSide: "w" | "b"): string {
   return "Draw";
 }
 
+/** Book lines that end in # / mate — Play on stays off (game over). */
+function lineEndsInMate(line: OpeningLine): boolean {
+  const last = line.plies[line.plies.length - 1];
+  if (last?.includes("#")) return true;
+  try {
+    return replaySans(line.plies, line.plies.length).isCheckmate();
+  } catch {
+    return false;
+  }
+}
+
 type PlayableReply = {
   from: Square;
   to: Square;
@@ -526,7 +537,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
-          text: "Practice done — Play on, or Test with no hints",
+          text: lineEndsInMate(line)
+            ? "Practice done — Test with no hints"
+            : "Practice done — Play on, or Test with no hints",
           cls: "done",
         });
         setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed));
@@ -539,7 +552,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
       if (practiceMissedRef.current) {
         setStatus({
-          text: "Finished, but you missed a move — Play on, or Test again to go green",
+          text: lineEndsInMate(line)
+            ? "Finished, but you missed a move — Test again to go green"
+            : "Finished, but you missed a move — Play on, or Test again to go green",
           cls: "done",
         });
         setResultCard(
@@ -1192,7 +1207,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     );
 
   const bookDone = status.cls === "done" && !playingOn;
-  const showPlayOn = bookDone;
+  const showPlayOn = bookDone && !lineEndsInMate(line);
 
   useEffect(() => {
     if (!boardExpanded) return;
@@ -1637,7 +1652,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           primaryLabel={resultCard.primaryLabel}
           boardExpanded={boardExpanded}
           playOnLevels={
-            resultCard.kind === "end"
+            resultCard.kind === "end" && !lineEndsInMate(line)
               ? PLAY_LEVELS.map((id) => ({
                   id,
                   label: PLAY_LEVEL_LABEL[id],
@@ -1645,14 +1660,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 }))
               : undefined
           }
-          playOnLevel={resultCard.kind === "end" ? (playLevel ?? "beginner") : undefined}
+          playOnLevel={
+            resultCard.kind === "end" && !lineEndsInMate(line)
+              ? (playLevel ?? "beginner")
+              : undefined
+          }
           onPlayOnLevel={
-            resultCard.kind === "end"
+            resultCard.kind === "end" && !lineEndsInMate(line)
               ? (id) => setPlayLevel(id as PlayLevel)
               : undefined
           }
           onPlayOn={
-            resultCard.kind === "end"
+            resultCard.kind === "end" && !lineEndsInMate(line)
               ? () => {
                   setResultCard(null);
                   startPlayOn();
