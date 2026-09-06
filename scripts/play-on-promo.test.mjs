@@ -61,7 +61,7 @@ test("promo-picker is centered inside .board-play above pieces", () => {
   assert.match(play[0], /className="promo-picker"/);
   assert.match(play[0], /pointer-events-none absolute inset-0 z-10/);
 
-  assert.match(css, /\.promo-picker\s*\{[^}]*z-index:\s*40/);
+  assert.match(css, /\.promo-picker\s*\{[^}]*z-index:\s*70/);
   assert.match(css, /\.promo-picker\s*\{[^}]*pointer-events:\s*auto/);
   assert.match(css, /\.promo-picker-btn\s*\{[^}]*pointer-events:\s*auto/);
 });
