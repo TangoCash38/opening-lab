@@ -4303,7 +4303,7 @@ export const PACKS: Pack[] = [
         },
       },
     ],
-  },,
+  },
   {
     id: "opening-traps",
     name: "Opening Traps",
@@ -4314,9 +4314,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Famous punish-the-take traps",
-    about: "Practice traps where the opponent’s greedy take loses.
-
-Practice the trapper’s book moves with the hint. Then Test with none. Play on from the finish if you want.",
+    about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none. Play on from the finish if you want.",
     closedLabel: "Free · 10 traps",
     lines: [
       {
