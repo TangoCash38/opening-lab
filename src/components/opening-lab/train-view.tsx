@@ -1096,7 +1096,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const canForward = !busy && !slide && viewPly < livePly;
 
   return (
-    <div>
+    <div className="train-layout">
+      <div className="train-top-chrome">
       <button
         type="button"
         onClick={onBack}
@@ -1116,7 +1117,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         <span>{line.name}</span>
       </div>
       {line.idea ? (
-        <p className="mt-1 text-[0.88rem] text-fg-muted">{line.idea}</p>
+        <p className="train-idea mt-1 text-[0.88rem] text-fg-muted">{line.idea}</p>
       ) : null}
       <div className="text-[0.78rem] text-fg-subtle">
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
@@ -1170,7 +1171,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       >
         {hint || "\u00a0"}
       </div>
+      </div>
 
+      <div className="train-board-band">
       {!boardExpanded ? (
         <div className="mb-1 flex items-center justify-end">
           <button
@@ -1310,7 +1313,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           </>
         ) : null}
       </div>
+      </div>
 
+      <div className="train-below">
       {/* Move history — single-row horizontal scroller (no wrap → no board jump) */}
       <div
         ref={notationStripRef}
@@ -1462,6 +1467,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         </div>
       </div>
       <LineFeedback pack={pack} line={line} />
+      </div>
       {resultCard ? (
         <LineResultModal
           kind={resultCard.kind}

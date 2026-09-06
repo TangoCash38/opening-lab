@@ -1706,6 +1706,56 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   scroll-margin-bottom: min(52dvh, 28rem);
 }
 
+/* trial: phone-centered board — revert if Sean dislikes */
+@media (max-width: 640px) {
+  .train-layout {
+    display: flex;
+    flex-direction: column;
+    /* Fill the visible band under sticky header (+ app-main top pad). */
+    min-height: calc(100dvh - 4.75rem - env(safe-area-inset-top, 0px));
+  }
+
+  .train-top-chrome {
+    flex: 0 0 auto;
+  }
+
+  /* Compact Packs / title / idea so the board can rise. */
+  .train-top-chrome > button:first-child {
+    margin-bottom: 0.55rem;
+  }
+
+  .train-top-chrome > h2 {
+    font-size: 1.12rem;
+  }
+
+  .train-idea {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 0.15rem;
+    line-height: 1.35;
+  }
+
+  .train-top-chrome .my-3\.5 {
+    margin-top: 0.65rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .train-board-band {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  .train-below {
+    flex: 0 0 auto;
+  }
+}
+
+
 /* Play-on Hint: compact knight + thought-bubble while lite engine searches */
 .hint-thinking-cue {
   display: inline-flex;
