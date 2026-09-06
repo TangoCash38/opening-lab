@@ -224,6 +224,15 @@ function cloneAndMove(
   return { next, move: played };
 }
 
+function pieceCodeFromVerbose(m: {
+  color: string;
+  piece: string;
+  promotion?: string | undefined;
+}): string {
+  const t = m.promotion || m.piece;
+  return m.color === "w" ? t.toUpperCase() : t.toLowerCase();
+}
+
 function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   const hist = g.history({ verbose: true });
   const m = hist[hist.length - 1];
@@ -977,11 +986,49 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     })();
   };
 
+  const historySans = playingOn ? game.history() : line.plies;
+
   const jumpToPly = (nextPly: number) => {
     if (busy || slide) return;
     // View-only. Does not undo progress / SM-2 / miss flags / a completed line.
     const target = Math.max(0, Math.min(nextPly, livePly));
     setSelected(null);
+    setViewPly(target);
+  };
+
+  /** Scrub one half-move with a single-piece slide (not a full move pair). */
+  const scrubOnePly = (dir: -1 | 1) => {
+    const target = viewPly + dir;
+    if (target < 0 || target > livePly) return;
+    const sans = historySans;
+    // Move being undone (Back) is the last ply of the current view;
+    // move being replayed (Forward) is the next ply after the current view.
+    const probeAt = dir === -1 ? viewPly : target;
+    const probe = replaySans(sans, probeAt);
+    const hist = probe.history({ verbose: true });
+    const m = hist[hist.length - 1];
+    setSelected(null);
+    if (m) {
+      const piece = pieceCodeFromVerbose(m);
+      // No pendingCommit — onSlideComplete only clears the scrub animation.
+      pendingCommit.current = null;
+      setBusy(true);
+      if (dir === -1) {
+        // Reverse slide: piece walks back to its from-square.
+        setSlide({
+          from: m.to as Square,
+          to: m.from as Square,
+          piece,
+        });
+      } else {
+        setSlide({
+          from: m.from as Square,
+          to: m.to as Square,
+          piece,
+        });
+      }
+      soundMove();
+    }
     setViewPly(target);
   };
 
@@ -1022,13 +1069,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       return;
     }
 
-    if (viewPly > 0) setViewPly((p) => p - 1);
+    if (viewPly > 0) scrubOnePly(-1);
     else setSelected(null);
   };
 
   const stepForward = () => {
     if (busy || slide) return;
-    if (viewPly < livePly) setViewPly((p) => Math.min(livePly, p + 1));
+    if (viewPly < livePly) scrubOnePly(1);
   };
 
   const bookExp =
@@ -1049,7 +1096,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       ? `Play: ${line.plies[plyIndex]}`
       : "";
 
-  const historySans = playingOn ? game.history() : line.plies;
   const historyCount = livePly;
   const notationPairs = buildNotationPairs(historySans, historyCount, viewPly);
   const n = pack.lines.findIndex((l) => l.id === line.id) + 1;
@@ -1386,37 +1432,45 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         {notationPairs.length === 0 ? (
           <span className="text-[0.78rem] text-fg-subtle">Moves will appear here…</span>
         ) : (
-          notationPairs.map((pair) => (
+          notationPairs.map((pair) => {
+            const whitePly = pair.num * 2 - 1;
+            const blackPly = pair.num * 2;
+            const viewHighlight = viewPly;
+            const whiteOn = viewHighlight === whitePly;
+            const blackOn = Boolean(pair.black) && viewHighlight === blackPly;
+            return (
             <span
               key={pair.num}
               ref={pair.active ? activeMoveRef : undefined}
-              role="button"
-              tabIndex={0}
-              onClick={() =>
-                jumpToPly(pair.black ? pair.num * 2 : pair.num * 2 - 1)
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  jumpToPly(pair.black ? pair.num * 2 : pair.num * 2 - 1);
-                }
-              }}
-              className={`cursor-pointer whitespace-nowrap rounded-md px-1.5 py-0.5 text-[0.78rem] tabular-nums ${
-                pair.active
-                  ? "bg-accent/12 font-bold text-accent"
-                  : "text-fg-muted"
-              }`}
+              className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[0.78rem] tabular-nums text-fg-muted"
             >
               <span className="text-fg-subtle">{pair.num}.</span>{" "}
-              <span>{pair.white}</span>
+              <button
+                type="button"
+                onClick={() => jumpToPly(whitePly)}
+                className={`cursor-pointer rounded-sm px-0.5 ${
+                  whiteOn ? "bg-accent/12 font-bold text-accent" : ""
+                }`}
+              >
+                {pair.white}
+              </button>
               {pair.black ? (
                 <>
                   {" "}
-                  <span>{pair.black}</span>
+                  <button
+                    type="button"
+                    onClick={() => jumpToPly(blackPly)}
+                    className={`cursor-pointer rounded-sm px-0.5 ${
+                      blackOn ? "bg-accent/12 font-bold text-accent" : ""
+                    }`}
+                  >
+                    {pair.black}
+                  </button>
                 </>
               ) : null}
             </span>
-          ))
+            );
+          })
         )}
       </div>
 
