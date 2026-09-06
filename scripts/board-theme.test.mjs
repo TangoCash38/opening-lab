@@ -14,6 +14,7 @@ const hero = src("src/components/opening-lab/home-hero.tsx");
 const train = src("src/components/opening-lab/train-view.tsx");
 const guide = src("src/components/opening-lab/guide-view.tsx");
 const shell = src("src/components/opening-lab/app-shell.tsx");
+const chessBoard = src("src/components/opening-lab/chess-board.tsx");
 const i18n = src("src/lib/i18n.ts");
 
 test("board-theme helper validates unknown → book and persists", () => {
@@ -89,12 +90,47 @@ test("CSS keeps book defaults and has paper + future + newspaper data-board-them
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-light\s*\{[^}]*rgba\(247,\s*236,\s*208,\s*0\.38\)/s);
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-dark\s*\{[^}]*#2a2824/s);
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.piece-abs-inner[^}]*contrast\(/s);
+  assert.match(
+    css,
+    /\[data-board-theme="newspaper"\]\s*\[data-piece-color="b"\]\s*\.piece-abs-inner/,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="newspaper"\]\s*\[data-piece-color="w"\]\s*\.piece-abs-inner/,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="newspaper"\]\s*\[data-piece-color="b"\]\s*\.piece-abs-inner[^}]*#f5efd8/s,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="newspaper"\]\s*\[data-piece-color="b"\]\s*\.piece-abs-inner[^}]*brightness\(1\.2\)/s,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="newspaper"\]\s*\[data-piece-color="w"\]\s*\.piece-abs-inner[^}]*#1a1916/s,
+  );
   assert.match(css, /\[data-board-theme="newspaper"\]\s*\.sq-coord\s*\{[^}]*monospace/s);
   assert.doesNotMatch(css, /#ead9a0/);
   assert.doesNotMatch(css, /#6e6c64/);
   assert.doesNotMatch(css, /#b7b0a4/);
   assert.doesNotMatch(css, /#3a4a5c/);
   assert.doesNotMatch(css, /#454540/);
+});
+
+
+test("ChessBoard marks piece colour for newspaper halo CSS (board, ghost, promo)", () => {
+  assert.match(chessBoard, /function pieceSide\(code: string\): "w" \| "b"/);
+  assert.match(chessBoard, /data-piece-color=\{pieceSide\(p\.code\)\}/);
+  assert.match(chessBoard, /data-piece-color=\{pieceSide\(drag\.code\)\}/);
+  assert.match(chessBoard, /data-piece-color=\{promotion\.color\}/);
+  assert.match(chessBoard, /className="piece-abs"/);
+  assert.match(chessBoard, /className="piece-drag-ghost"/);
+  // Promo picker pieces wrap ChessPiece in piece-abs-inner so newspaper filters apply
+  assert.match(
+    chessBoard,
+    /promo-picker-btn[\s\S]*?piece-abs-inner[\s\S]*?ChessPiece/,
+  );
 });
 
 test("green hints stay green (book + paper + future + newspaper)", () => {

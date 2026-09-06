@@ -39,3 +39,10 @@ test("mini-board has no coordinates", () => {
   assert.doesNotMatch(mini, /sq-coord/);
   assert.doesNotMatch(mini, /text-dark-sq\/70/);
 });
+
+test("ChessBoard sets data-piece-color on piece-abs / drag ghost / promo", () => {
+  assert.match(board, /data-piece-color=\{pieceSide\(p\.code\)\}/);
+  assert.match(board, /data-piece-color=\{pieceSide\(drag\.code\)\}/);
+  assert.match(board, /data-piece-color=\{promotion\.color\}/);
+  assert.match(board, /pieceSide\(code: string\): "w" \| "b"/);
+});

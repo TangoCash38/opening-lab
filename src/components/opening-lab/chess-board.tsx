@@ -13,6 +13,11 @@ import { ChessPiece, pieceName } from "./chess-pieces";
 export const SLIDE_MS = 300;
 export const SLIDE_EASE = "cubic-bezier(0.25, 0.8, 0.25, 1)";
 
+/** Chess.js piece letter: uppercase = white, lowercase = black. */
+function pieceSide(code: string): "w" | "b" {
+  return code === code.toUpperCase() ? "w" : "b";
+}
+
 export type SlideAnim = {
   from: Square;
   to: Square;
@@ -496,6 +501,7 @@ export function ChessBoard({
           data-piece-sq={visualSq}
           data-moving={isMover ? "1" : undefined}
           data-dragging={isDragging ? "1" : undefined}
+          data-piece-color={pieceSide(p.code)}
           className="piece-abs"
           style={{
             left: `${col * 12.5}%`,
@@ -568,13 +574,16 @@ export function ChessBoard({
                         key={p.key}
                         type="button"
                         className="promo-picker-btn"
+                        data-piece-color={promotion.color}
                         onClick={(e) => {
                           e.stopPropagation();
                           promotion.onPick(p.key);
                         }}
                         aria-label={`Promote to ${p.label}`}
                       >
-                        <ChessPiece code={code} />
+                        <span className="piece-abs-inner">
+                          <ChessPiece code={code} />
+                        </span>
                         <span>{p.label}</span>
                       </button>
                     );
@@ -588,6 +597,7 @@ export function ChessBoard({
       {drag?.moved && drag.code ? (
         <div
           className="piece-drag-ghost"
+          data-piece-color={pieceSide(drag.code)}
           style={{
             left: drag.x,
             top: drag.y,
