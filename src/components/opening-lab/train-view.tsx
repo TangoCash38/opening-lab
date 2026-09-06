@@ -18,6 +18,7 @@ import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
+import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
@@ -255,6 +256,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [hintsReady, setHintsReady] = useState(true);
   const [busy, setBusy] = useState(false);
   const [nudgeTest, setNudgeTest] = useState(false);
+  const [celebratePiece, setCelebratePiece] = useState<string | null>(null);
   const [playingOn, setPlayingOn] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
   const [engineBusy, setEngineBusy] = useState(false);
@@ -407,6 +409,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       });
       completedRef.current = false;
       practiceMissedRef.current = false;
+      setCelebratePiece(null);
       setSession((s) => s + 1);
     },
     [clearAllTimers, dropEngine, mode, line.plies.length],
@@ -418,6 +421,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     onModeChange?.(m);
     resetLine(m);
   };
+
+  const stopCelebrate = useCallback(() => setCelebratePiece(null), []);
 
   const beginSlide = useCallback(
     (
@@ -470,7 +475,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           text: playOnGameOverText(g, line.side),
           cls: "ok",
         });
-        if (g.isCheckmate()) soundWin();
+        // Gym Test celebration only — Play-on checkmate stays quiet.
         return;
       }
       if (pending.userMove) {
@@ -495,7 +500,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           text: "Practice done — Play on, or Test with no hints",
           cls: "done",
         });
-        soundWin();
         setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed));
         if (!completedRef.current) {
           completedRef.current = true;
@@ -509,7 +513,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           text: "Finished, but you missed a move — Play on, or Test again to go green",
           cls: "done",
         });
-        soundWin();
         setResultCard(
           endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t, undefined, subscribed),
         );
@@ -521,6 +524,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         cls: "done",
       });
       soundWin();
+      {
+        const piece =
+          fenPieceAt(pending.nextGame, pending.move.to) ??
+          (line.side === "b" ? "k" : "K");
+        setCelebratePiece(piece);
+      }
       setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, "practiceNext", subscribed));
       if (!completedRef.current) {
         completedRef.current = true;
@@ -1223,44 +1232,52 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           </>
         ) : null}
         <div className={boardExpanded ? "board-fs-stage" : undefined}>
-          <ChessBoard
-            key={session}
-            game={displayGame}
-            flip={line.side === "b"}
-            selected={viewingHistory ? null : selected}
-            wrongUntil={viewingHistory ? null : wrongUntil}
-            expected={exp}
-            showHints={showHints}
-            lastMove={displayLastMove}
-            slide={slide}
-            onSlideComplete={onSlideComplete}
-            onSquare={onSquare}
-            onPlay={playFromTo}
-            expanded={boardExpanded}
-            interactive={
-              !busy &&
-              !slide &&
-              !engineBusy &&
-              !pendingPromo &&
-              !viewingHistory
-            }
-            promotion={
-              pendingPromo
-                ? {
-                    color: game.turn(),
-                    onPick: (piece: PromotionPiece) => {
-                      const dest = pendingPromo;
-                      setPendingPromo(null);
-                      tryPlay(dest.from, dest.to, piece);
-                    },
-                    onCancel: () => {
-                      setPendingPromo(null);
-                      setStatus({ text: "Your move — playing on", cls: "" });
-                    },
-                  }
-                : null
-            }
-          />
+          <div className="relative">
+            <ChessBoard
+              key={session}
+              game={displayGame}
+              flip={line.side === "b"}
+              selected={viewingHistory ? null : selected}
+              wrongUntil={viewingHistory ? null : wrongUntil}
+              expected={exp}
+              showHints={showHints}
+              lastMove={displayLastMove}
+              slide={slide}
+              onSlideComplete={onSlideComplete}
+              onSquare={onSquare}
+              onPlay={playFromTo}
+              expanded={boardExpanded}
+              interactive={
+                !busy &&
+                !slide &&
+                !engineBusy &&
+                !pendingPromo &&
+                !viewingHistory
+              }
+              promotion={
+                pendingPromo
+                  ? {
+                      color: game.turn(),
+                      onPick: (piece: PromotionPiece) => {
+                        const dest = pendingPromo;
+                        setPendingPromo(null);
+                        tryPlay(dest.from, dest.to, piece);
+                      },
+                      onCancel: () => {
+                        setPendingPromo(null);
+                        setStatus({ text: "Your move — playing on", cls: "" });
+                      },
+                    }
+                  : null
+              }
+            />
+            {celebratePiece ? (
+              <LineCompleteBurst
+                pieceCode={celebratePiece}
+                onFinished={stopCelebrate}
+              />
+            ) : null}
+          </div>
         </div>
         {boardExpanded ? (
           <>

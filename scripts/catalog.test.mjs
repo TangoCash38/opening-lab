@@ -2048,7 +2048,7 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.match(train, /PackAboutModal/);
   assert.doesNotMatch(train, /hasSeenPackIntro/);
   assert.match(train, /startLabel=\{t\("Train"\)\}/);
-  assert.doesNotMatch(train, /LineCompleteBurst/);
+  assert.match(train, /LineCompleteBurst/);
   assert.doesNotMatch(hero, /setups/);
   assert.doesNotMatch(hero, /follow-ups/);
   assert.doesNotMatch(packList, /setups and follow-ups/);
@@ -2059,6 +2059,34 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.doesNotMatch(sounds, /type = "sawtooth"/);
   assert.doesNotMatch(sounds, /beep\(380/);
   assert.doesNotMatch(sounds, /523, 659, 784, 1046/);
+  // Clean Test celebration: real win arpeggio + burst; Practice/miss stay quiet.
+  const soundWinBody = sounds.slice(sounds.indexOf("export function soundWin"));
+  assert.match(soundWinBody, /createOscillator/);
+  assert.match(soundWinBody, /exponentialRampToValueAtTime/);
+  assert.doesNotMatch(soundWinBody, /\/\* quiet \*\//);
+  assert.doesNotMatch(css, /\.line-complete-burst\s*\{\s*display:\s*none\s*!important/);
+  assert.match(css, /\.line-complete-burst\s*\{[\s\S]*?position:\s*absolute/);
+  assert.match(train, /setCelebratePiece\(/);
+  {
+    const iLearn = train.indexOf('text: "Practice done');
+    const iMiss = train.indexOf("Finished, but you missed a move");
+    const iClean = train.indexOf("Line complete — well done");
+    const iAfterClean = train.indexOf("pending.userMove", iClean);
+    const learnDone = train.slice(iLearn, iMiss);
+    assert.ok(iLearn > 0 && iMiss > iLearn, "Practice done block bounds");
+    assert.doesNotMatch(learnDone, /soundWin/);
+    assert.doesNotMatch(learnDone, /setCelebratePiece/);
+    const missedDone = train.slice(iMiss, iClean);
+    assert.ok(iMiss > 0 && iClean > iMiss, "missed finish block bounds");
+    assert.doesNotMatch(missedDone, /soundWin/);
+    assert.doesNotMatch(missedDone, /setCelebratePiece/);
+    const cleanDone = train.slice(iClean, iAfterClean);
+    assert.ok(iClean > 0 && iAfterClean > iClean, "clean Test block bounds");
+    assert.match(cleanDone, /soundWin\(\)/);
+    assert.match(cleanDone, /setCelebratePiece/);
+  }
+  assert.match(train, /<LineCompleteBurst/);
+  assert.doesNotMatch(train, /isCheckmate\(\)\) soundWin/);
   assert.match(board, /soundPickup\(\)/);
   assert.match(board, /resumeAudio\(\)/);
   assert.match(board, /board-frame/);
