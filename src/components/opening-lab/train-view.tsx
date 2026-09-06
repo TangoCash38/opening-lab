@@ -315,6 +315,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const notationStripRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
   const playingOnRef = useRef(false);
+  const gameRef = useRef(game);
+  gameRef.current = game;
   const playOnStartPlyRef = useRef(line.plies.length);
   const engineRef = useRef<PlayEngine | null>(null);
   const playLevelRef = useRef<PlayLevel>("beginner");
@@ -741,9 +743,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (busy || slide || engineBusy) return;
     if (pendingPromo) return;
     if (!playingOn && plyIndex >= line.plies.length) return;
-    if (!isUserTurn(game)) return;
+    const live = gameRef.current;
+    if (!isUserTurn(live)) return;
 
-    const legalMoves = game.moves({ square: from, verbose: true });
+    const legalMoves = live.moves({ square: from, verbose: true });
     const legal = legalMoves.find((m) => m.to === to);
     if (legal) {
       if (playingOn && legalMoves.some((m) => m.to === to && m.promotion)) {
@@ -758,7 +761,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       return;
     }
 
-    const destPiece = game.get(to);
+    const destPiece = live.get(to);
     if (destPiece && destPiece.color === game.turn()) {
       setSelected(to);
       soundSelect();
@@ -769,14 +772,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
   const tryPlay = (from: Square, to: Square, promotion?: string) => {
     if (playingOnRef.current) {
-      const promoMoves = game
+      const live = gameRef.current;
+      const promoMoves = live
         .moves({ square: from, verbose: true })
         .filter((m) => m.to === to && m.promotion);
       const isPromo = promoMoves.length > 0;
       const promo =
         (promotion as "q" | "r" | "b" | "n" | undefined) ||
         (isPromo ? "q" : undefined);
-      const committed = cloneAndMove(game, {
+      // chess.js needs an explicit promotion letter for last-rank pawn moves.
+      if (isPromo && !promo) {
+        soundBad();
+        setStatus({ text: "Your move — playing on", cls: "" });
+        return;
+      }
+      const committed = cloneAndMove(live, {
         from,
         to,
         promotion: promo || "q",
@@ -809,7 +819,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         }
         return;
       }
-      const pieceCode = fenPieceAt(game, from);
+      const pieceCode = fenPieceAt(live, from);
       if (!pieceCode) return;
       beginSlide(from, to, pieceCode, committed.next, plyIndex + 1, true);
       return;
