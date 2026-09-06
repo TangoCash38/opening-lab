@@ -255,8 +255,14 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
   const classicGames = catalog.find((p) => p.id === "classic-games");
   const vsLondon = catalog.find((p) => p.id === "vs-london");
   const clubWeapons = catalog.find((p) => p.id === "club-weapons");
+  const openingTraps = catalog.find((p) => p.id === "opening-traps");
   const morePacks =
-    !!classicGames || !!vsLondon || !!clubWeapons || white.length > 0 || black.length > 0;
+    !!classicGames ||
+    !!vsLondon ||
+    !!clubWeapons ||
+    !!openingTraps ||
+    white.length > 0 ||
+    black.length > 0;
 
   const offerPlayLabPlus = catalogOffersLabPlus(catalog);
 
@@ -488,6 +494,17 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
           <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
             {t("More packs")}
           </p>
+        ) : null}
+
+        {openingTraps ? (
+          <PackCard
+            pack={openingTraps}
+            unlocked={canAccess(openingTraps)}
+            subscribed={subscribed}
+            onStartLine={onStartLine}
+            onRequestUnlock={requestUnlock}
+            purchasedPackIds={state.packs}
+          />
         ) : null}
 
         {classicGames ? (
