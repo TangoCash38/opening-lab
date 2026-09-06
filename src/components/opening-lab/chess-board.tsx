@@ -575,9 +575,15 @@ export function ChessBoard({
                         type="button"
                         className="promo-picker-btn"
                         data-piece-color={promotion.color}
-                        onClick={(e) => {
+                        onPointerDown={(e) => {
+                          // Play WebView: commit on pointerdown so the pick is not lost.
+                          e.preventDefault();
                           e.stopPropagation();
                           promotion.onPick(p.key);
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                         }}
                         aria-label={`Promote to ${p.label}`}
                       >
