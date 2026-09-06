@@ -54,15 +54,12 @@ export function LineResultModal({
   const bodyRef = useRef<HTMLDivElement>(null);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [moreBelow, setMoreBelow] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  /** Docked slim bar — separate from text `expanded` (taller plan). */
+  /** Docked slim bar — board stays visible to memorise. */
   const [minimized, setMinimized] = useState(false);
   const [playOnPrompt, setPlayOnPrompt] = useState(false);
 
   // Mounted = open (including docked). Hardware Back closes the finish/result sheet.
   useOverlayHistory(true, onClose, "line-result");
-  // Tall sheet peels to normal height before closing.
-  useOverlayHistory(expanded && !minimized, () => setExpanded(false), "line-result-expanded");
   // Nested Play-on level prompt peels first on Back.
   useOverlayHistory(playOnPrompt, () => setPlayOnPrompt(false), "play-on-prompt");
 
@@ -94,7 +91,7 @@ export function LineResultModal({
 
   useEffect(() => {
     updateScrollCue();
-  }, [expanded, playOnPrompt, minimized, updateScrollCue]);
+  }, [playOnPrompt, minimized, updateScrollCue]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -104,20 +101,14 @@ export function LineResultModal({
         setPlayOnPrompt(false);
         return;
       }
-      if (expanded && !minimized) {
-        e.preventDefault();
-        setExpanded(false);
-        return;
-      }
       // Docked: close (same as Close), not restore.
       onClose();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [expanded, minimized, playOnPrompt, onClose]);
+  }, [minimized, playOnPrompt, onClose]);
 
   const dock = () => {
-    setExpanded(false);
     setMinimized(true);
   };
 
@@ -351,9 +342,8 @@ export function LineResultModal({
       <div
         className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}${
           showPlayOn ? " line-result-sheet--play-on" : ""
-        }${expanded ? " line-result-sheet--expanded" : ""}`}
+        }`}
         data-result-sheet
-        data-result-expanded={expanded ? "1" : undefined}
         data-result-has-play-on={showPlayOn ? "1" : undefined}
         onClick={(e) => e.stopPropagation()}
       >
@@ -374,38 +364,15 @@ export function LineResultModal({
             ) : null}
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
-            {expanded ? (
-              <button
-                type="button"
-                onClick={() => setExpanded(false)}
-                className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
-                aria-label={t("Shrink")}
-                data-result-expand
-              >
-                <Minimize2 className="size-4" strokeWidth={2.25} aria-hidden />
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setExpanded(true)}
-                  className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
-                  aria-label={t("Expand")}
-                  data-result-expand
-                >
-                  <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
-                </button>
-                <button
-                  type="button"
-                  onClick={dock}
-                  className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
-                  aria-label={t("Minimise")}
-                  data-result-minimise
-                >
-                  <Minimize2 className="size-4" strokeWidth={2.25} aria-hidden />
-                </button>
-              </>
-            )}
+            <button
+              type="button"
+              onClick={dock}
+              className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
+              aria-label={t("Minimise")}
+              data-result-minimise
+            >
+              <Minimize2 className="size-4" strokeWidth={2.25} aria-hidden />
+            </button>
             <button
               type="button"
               onClick={onClose}
