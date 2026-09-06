@@ -471,3 +471,10 @@ test("finish sheet can dock minimise so the board stays visible", () => {
   assert.match(i18n, /"Restore": "恢复"/);
 });
 
+test("mate book finishes omit Play on from the end sheet", () => {
+  assert.match(train, /function lineEndsInMate/);
+  assert.match(train, /bookDone && !lineEndsInMate\(line\)/);
+  assert.match(train, /resultCard\.kind === "end" && !lineEndsInMate\(line\)/);
+  // Status copy skips Play on when the book ends in mate.
+  assert.match(train, /Practice done — Test with no hints/);
+});
