@@ -1012,6 +1012,37 @@ html[data-color-scheme="dark"] {
     drop-shadow(0 0 0.7px rgba(0, 0, 0, 0.55));
 }
 
+/* Black CBurnett pieces: cream/off-white halo so silhouettes separate from ink squares (#2a2824). */
+[data-board-theme="newspaper"] [data-piece-color="b"] .piece-abs-inner {
+  filter:
+    brightness(1.2)
+    sepia(0.12)
+    drop-shadow(0 0 1.5px #f5efd8)
+    drop-shadow(0 0 2px #f5efd8)
+    drop-shadow(0 0 2.5px #ffffff)
+    drop-shadow(1.5px 0 0 #f5efd8)
+    drop-shadow(-1.5px 0 0 #f5efd8)
+    drop-shadow(0 1.5px 0 #f5efd8)
+    drop-shadow(0 -1.5px 0 #f5efd8)
+    drop-shadow(1.2px 1.2px 0 #fff)
+    drop-shadow(-1.2px -1.2px 0 #fff);
+}
+
+/* White pieces: thicker dark ink outline so they stay crisp on busy collage lights. */
+[data-board-theme="newspaper"] [data-piece-color="w"] .piece-abs-inner {
+  filter:
+    contrast(1.15)
+    brightness(1.04)
+    drop-shadow(0 0 1.2px #1a1916)
+    drop-shadow(0 0 2px #1a1916)
+    drop-shadow(1.5px 0 0 #1a1916)
+    drop-shadow(-1.5px 0 0 #1a1916)
+    drop-shadow(0 1.5px 0 #1a1916)
+    drop-shadow(0 -1.5px 0 #1a1916)
+    drop-shadow(1.2px 1.2px 0 #1a1916)
+    drop-shadow(-1.2px -1.2px 0 #1a1916);
+}
+
 /* Newspaper: keep green hints (not ink-grey). */
 [data-board-theme="newspaper"] .sq-hint-from {
   background-color: #8fd49a !important;
