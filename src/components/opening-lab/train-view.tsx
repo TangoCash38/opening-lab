@@ -780,7 +780,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setStatus({
         text:
           mode === "practice"
-            ? t("Tap Reset to try again, or go back to Practice")
+            ? t("Try again to reset, or Practice again")
             : t("Wrong move — try again"),
         cls: "bad",
       });
@@ -791,7 +791,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           title: t("Inaccurate move"),
           body: t("The book move is {san}.", { san: exp.san }),
           primaryLabel: t("Try again"),
-          actionLabel: t("Back to practice"),
+          actionLabel: t("Practice again"),
           nextAction: "learn",
         });
         practiceMissedRef.current = true;
@@ -1563,26 +1563,28 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           }
           onClose={() => setResultCard(null)}
           onAction={
-            resultCard.nextAction === "learn"
-              ? () => changeMode("learn")
-              : undefined
+            resultCard.kind === "wrong"
+              ? resultCard.nextAction === "learn"
+                ? () => changeMode("learn") // Practice again
+                : () => resetLine() // Try again (Practice miss)
+              : resultCard.nextAction === "learn"
+                ? () => changeMode("learn")
+                : undefined
           }
           onPrimary={
-            resultCard.primaryLabel
-              ? () => {
-                  if (resultCard.nextAction === "learn") {
+            resultCard.kind === "wrong"
+              ? () => resetLine() // Try again — reset line, stay in Test
+              : resultCard.primaryLabel
+                ? () => {
+                    if (resultCard.nextAction === "testYourself") {
+                      changeMode("practice");
+                      return;
+                    }
+                    const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
                     setResultCard(null);
-                    return;
+                    if (nextLine) onPracticeNext?.(nextLine);
                   }
-                  if (resultCard.nextAction === "testYourself") {
-                    changeMode("practice");
-                    return;
-                  }
-                  const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
-                  setResultCard(null);
-                  if (nextLine) onPracticeNext?.(nextLine);
-                }
-              : undefined
+                : undefined
           }
         />
       ) : null}
