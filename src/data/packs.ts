@@ -4303,7 +4303,7 @@ export const PACKS: Pack[] = [
         },
       },
     ],
-  },,
+  },
   {
     id: "opening-traps",
     name: "Opening Traps",
