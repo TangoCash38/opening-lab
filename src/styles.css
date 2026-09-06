@@ -1134,9 +1134,13 @@ html[data-color-scheme="dark"] {
   }
 }
 
-/* Clean-Test celebration overlay is off — green lives on the line list. */
+/* Clean-Test celebration overlay (board) */
 .line-complete-burst {
-  display: none !important;
+  position: absolute;
+  inset: -6% -2% 0.75rem;
+  z-index: 40;
+  pointer-events: none;
+  overflow: visible;
 }
 
 .lcb-flash {
