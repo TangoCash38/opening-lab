@@ -257,6 +257,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [busy, setBusy] = useState(false);
   const [nudgeTest, setNudgeTest] = useState(false);
   const [celebratePiece, setCelebratePiece] = useState<string | null>(null);
+  /** Line-complete sheet waits until the burst finishes so celebration is visible. */
+  const pendingEndCardRef = useRef<{
+    kind: "wrong" | "end";
+    title: string;
+    body: string;
+    caption?: string;
+    actionLabel: string;
+    primaryLabel?: string;
+    nextAction?: "learn" | "practiceNext" | "testYourself";
+  } | null>(null);
   const [playingOn, setPlayingOn] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
   const [engineBusy, setEngineBusy] = useState(false);
@@ -409,6 +419,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       });
       completedRef.current = false;
       practiceMissedRef.current = false;
+      pendingEndCardRef.current = null;
       setCelebratePiece(null);
       setSession((s) => s + 1);
     },
@@ -422,7 +433,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     resetLine(m);
   };
 
-  const stopCelebrate = useCallback(() => setCelebratePiece(null), []);
+  const stopCelebrate = useCallback(() => {
+    setCelebratePiece(null);
+    const pending = pendingEndCardRef.current;
+    if (pending) {
+      pendingEndCardRef.current = null;
+      setResultCard(pending);
+    }
+  }, []);
 
   const beginSlide = useCallback(
     (
@@ -528,9 +546,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         const piece =
           fenPieceAt(pending.nextGame, pending.move.to) ??
           (line.side === "b" ? "k" : "K");
+        // Celebration first — finish sheet opens when the burst ends.
+        pendingEndCardRef.current = endResultCard(
+          line,
+          pack,
+          purchased,
+          t("Line complete"),
+          t,
+          "practiceNext",
+          subscribed,
+        );
         setCelebratePiece(piece);
       }
-      setResultCard(endResultCard(line, pack, purchased, t("Line complete"), t, "practiceNext", subscribed));
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -1094,6 +1121,23 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     };
   }, [boardExpanded, resultCard]);
 
+  // Keep the board still when the finish/wrong sheet opens (no page jump).
+  useEffect(() => {
+    if (!resultCard) return;
+    const x = window.scrollX;
+    const y = window.scrollY;
+    const restore = () => window.scrollTo(x, y);
+    restore();
+    const raf = requestAnimationFrame(restore);
+    const t0 = window.setTimeout(restore, 0);
+    const t1 = window.setTimeout(restore, 50);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(t0);
+      window.clearTimeout(t1);
+    };
+  }, [resultCard]);
+
 
   const canBack =
     !busy &&
@@ -1377,7 +1421,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
 
       <div
-        className={`mb-3 min-h-[1.4em] text-center text-[0.9rem] transition-opacity duration-200 ${statusColor}`}
+        className={`mb-3 min-h-[3.2em] text-center text-[0.9rem] transition-opacity duration-200 ${statusColor}`}
       >
         {statusBody}
       </div>

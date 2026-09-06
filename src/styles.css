@@ -1707,7 +1707,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 .train-board-anchor {
   scroll-margin-top: 4.75rem;
-  scroll-margin-bottom: min(52dvh, 28rem);
+  /* Keep small — a large bottom margin made wrong/finish sheets scroll the board. */
+  scroll-margin-bottom: 1rem;
 }
 
 /* trial: phone-centered board — revert if Sean dislikes */
@@ -1747,11 +1748,13 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   }
 
   .train-board-band {
-    flex: 1 1 auto;
+    /* Grow to fill, but do not shrink when status/actions below grow —
+       that re-centers the board and feels like a shove on wrong move. */
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 0;
+    min-height: min(92vw, 28rem);
   }
 
   .train-below {
