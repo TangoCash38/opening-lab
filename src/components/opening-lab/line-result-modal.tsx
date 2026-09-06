@@ -208,7 +208,30 @@ export function LineResultModal({
           ) : null}
         </div>
       ) : null}
-      {!showPlayOn && showPrimary ? (
+      {!showPlayOn && showPrimary && isWrong ? (
+        <div className="line-result-actions-row" data-result-wrong-actions>
+          <button
+            type="button"
+            data-result-dismiss
+            onClick={handleAction}
+            className="line-result-play-on-btn"
+          >
+            {actionLabel}
+          </button>
+          <span className="line-result-actions-or" aria-hidden="true">
+            {t("or")}
+          </span>
+          <button
+            type="button"
+            data-result-primary
+            onClick={onPrimary}
+            className="line-result-primary-btn"
+          >
+            {primaryLabel}
+          </button>
+        </div>
+      ) : null}
+      {!showPlayOn && showPrimary && !isWrong ? (
         <button
           type="button"
           data-result-primary
@@ -222,7 +245,7 @@ export function LineResultModal({
           {primaryLabel}
         </button>
       ) : null}
-      {!playOnPrompt ? (
+      {!playOnPrompt && !(isWrong && showPrimary) ? (
         <button
           type="button"
           data-result-dismiss
