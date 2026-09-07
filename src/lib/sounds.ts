@@ -144,6 +144,46 @@ export function soundMove() {
   }
 }
 
+/** Arcade-only: taken piece zap. No-op on other themes. */
+export function soundCapture() {
+  try {
+    if (getBoardTheme() !== "arcade") return;
+    const ctx = getCtx();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sawtooth";
+    o.frequency.setValueAtTime(420, t);
+    o.frequency.exponentialRampToValueAtTime(90, t + 0.18);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.085, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + 0.22);
+    // Noise burst
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuffer(ctx, 0.12);
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 900;
+    bp.Q.value = 0.7;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.0001, t);
+    ng.gain.exponentialRampToValueAtTime(0.06, t + 0.01);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+    src.connect(bp);
+    bp.connect(ng);
+    ng.connect(ctx.destination);
+    src.start(t);
+    src.stop(t + 0.12);
+  } catch {
+    /* ignore */
+  }
+}
+
 export function soundSelect() {
   soundPickup();
 }
