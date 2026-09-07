@@ -224,3 +224,16 @@ test("Arcade-only fun motion and arcade sounds; other themes keep wood", () => {
   assert.match(chessBoard, /boardTheme === "arcade"/);
   assert.match(i18n, /Arcade: "Arcade"/);
 });
+
+test("Arcade captures blast the taken piece off the board", () => {
+  assert.match(chessBoard, /ArcadeCaptureBlast/);
+  assert.match(chessBoard, /data-arcade-blast/);
+  assert.match(chessBoard, /slide\?\.captured/);
+  assert.match(css, /arcade-capture-blast/);
+  const sounds = src("src/lib/sounds.ts");
+  assert.match(sounds, /export function soundCapture/);
+  assert.match(sounds, /getBoardTheme\(\) !== "arcade"/);
+  const train = src("src/components/opening-lab/train-view.tsx");
+  assert.match(train, /capturedCodeFromMove/);
+  assert.match(train, /soundCapture\(\)/);
+});
