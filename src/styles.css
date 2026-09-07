@@ -1120,6 +1120,63 @@ html[data-color-scheme="dark"] {
   animation: arcade-capture-blast 0.45s cubic-bezier(0.15, 0.85, 0.25, 1) forwards;
 }
 
+@keyframes arcade-mate-blast {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  35% {
+    transform: translate(0, -8%) scale(1.35) rotate(-8deg);
+    opacity: 1;
+    filter: brightness(1.8);
+  }
+  100% {
+    transform: translate(18%, -140%) scale(0.2) rotate(48deg);
+    opacity: 0;
+    filter: brightness(2.4);
+  }
+}
+
+@keyframes arcade-mate-flash {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.arcade-mate-flash {
+  position: absolute;
+  z-index: 54;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 240, 120, 0.95) 0%,
+    rgba(255, 43, 214, 0.55) 40%,
+    transparent 70%
+  );
+  animation: arcade-mate-flash 0.5s ease-out forwards;
+}
+
+.piece-arcade-mate-blast {
+  pointer-events: none;
+  animation: arcade-mate-blast 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piece-arcade-mate-blast,
+  .arcade-mate-flash {
+    animation-duration: 0.01ms;
+  }
+}
+
+
+
 @media (prefers-reduced-motion: reduce) {
   .piece-arcade-blast {
     animation-duration: 0.01ms;

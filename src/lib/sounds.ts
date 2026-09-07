@@ -145,6 +145,59 @@ export function soundMove() {
 }
 
 /** Arcade-only: taken piece zap. No-op on other themes. */
+export function soundMateBoom() {
+  try {
+    if (getBoardTheme() !== "arcade") return;
+    const ctx = getCtx();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    // Deep boom
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sawtooth";
+    o.frequency.setValueAtTime(180, t);
+    o.frequency.exponentialRampToValueAtTime(40, t + 0.35);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.12, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + 0.42);
+    // Noise crack
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuffer(ctx, 0.2);
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 700;
+    bp.Q.value = 0.5;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.0001, t);
+    ng.gain.exponentialRampToValueAtTime(0.1, t + 0.01);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+    src.connect(bp);
+    bp.connect(ng);
+    ng.connect(ctx.destination);
+    src.start(t);
+    src.stop(t + 0.22);
+    // High sparkle
+    const o2 = ctx.createOscillator();
+    const g2 = ctx.createGain();
+    o2.type = "square";
+    o2.frequency.setValueAtTime(1200, t + 0.04);
+    o2.frequency.exponentialRampToValueAtTime(2200, t + 0.16);
+    g2.gain.setValueAtTime(0.0001, t + 0.04);
+    g2.gain.exponentialRampToValueAtTime(0.045, t + 0.05);
+    g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+    o2.connect(g2);
+    g2.connect(ctx.destination);
+    o2.start(t + 0.04);
+    o2.stop(t + 0.22);
+  } catch {
+    /* ignore */
+  }
+}
+
 export function soundCapture() {
   try {
     if (getBoardTheme() !== "arcade") return;
