@@ -4315,7 +4315,7 @@ export const PACKS: Pack[] = [
     price: null,
     blurb: "Famous punish-the-take traps",
     about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none. Play on from the finish if you want.",
-    closedLabel: "Free · 10 traps",
+    closedLabel: "Free · 2 traps",
     lines: [
       {
         id: "ot1",

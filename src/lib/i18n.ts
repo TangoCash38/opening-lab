@@ -62,8 +62,8 @@ const en: Dict = {
     "Most people dive into opening theory before they know the basics. That is algebra before you can count.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.",
   "More packs": "More packs",
   Free: "Free",
   Unlocked: "Unlocked",
@@ -186,8 +186,8 @@ const es: Dict = {
     "La mayoría se lanza a la teoría de aperturas antes de dominar lo básico. Es álgebra antes de saber contar.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Pagan cursos profundos y aún no pueden jugar la línea. Aquí vamos al grano. Líneas estrictas. Las aprendes, las juegas y reconoces la apertura cuando aparece.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Tres líneas Caro son gratis. Desbloquea el resto de ese pack por £1.99. Los demás packs cuestan £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Dos Opening Traps y tres líneas Caro son gratis. Desbloquea el resto de cada uno por £1.99. Los demás packs cuestan £2.99.",
   "More packs": "Más packs",
   Free: "Gratis",
   Unlocked: "Desbloqueado",
@@ -306,8 +306,8 @@ const zh: Dict = {
     "很多人还没掌握基础就扎进开局理论。那等于还不会数数就学代数。",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "他们买了深度课程，还是下不出这条线路。这里直来直去。严格线路。学会了就能下，局面出现时也能认出来。",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "三条 Caro 线路免费。解锁该棋包其余线路 £1.99。其他棋包 £2.99。",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "两个 Opening Traps 和三条 Caro 线路免费。各自其余内容 £1.99 解锁。其他棋包 £2.99。",
   "More packs": "更多棋包",
   Free: "免费",
   Unlocked: "已解锁",
@@ -426,8 +426,8 @@ const fr: Dict = {
     "La plupart plongent dans la théorie des ouvertures avant les bases. C'est l'algèbre avant de savoir compter.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Ils paient des cours poussés et ne savent toujours pas jouer la ligne. Ici, on va droit au but. Lignes strictes. Tu les apprends, tu les joues, et tu reconnais l'ouverture quand elle apparaît.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Trois lignes Caro sont gratuites. Débloque le reste de ce pack pour £1.99. Les autres packs sont à £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Deux Opening Traps et trois lignes Caro sont gratuites. Débloque le reste de chacun pour £1.99. Les autres packs sont à £2.99.",
   "More packs": "Plus de packs",
   Free: "Gratuit",
   Unlocked: "Débloqué",
@@ -546,8 +546,8 @@ const de: Dict = {
     "Die meisten stürzen sich in die Eröffnungstheorie, bevor die Grundlagen sitzen. Das ist Algebra, bevor man zählen kann.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Sie zahlen für tiefe Kurse und können die Linie trotzdem nicht spielen. Hier bleibt's klar. Strikte Linien. Du lernst sie, du spielst sie, und du erkennst die Eröffnung, wenn sie kommt.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Drei Caro-Linien sind kostenlos. Schalte den Rest des Packs für £1.99 frei. Andere Packs kosten £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Zwei Opening Traps und drei Caro-Linien sind kostenlos. Schalte den Rest jedes Packs für £1.99 frei. Andere Packs kosten £2.99.",
   "More packs": "Mehr Packs",
   Free: "Kostenlos",
   Unlocked: "Freigeschaltet",
@@ -666,8 +666,8 @@ const pt: Dict = {
     "A maioria mergulha na teoria de aberturas antes do básico. É álgebra antes de saber contar.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Pagam cursos profundos e ainda não jogam a linha. Aqui é direto. Linhas estritas. Você aprende, joga e reconhece a abertura quando ela aparece.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Três linhas Caro são grátis. Desbloqueie o resto desse pack por £1.99. Os outros packs custam £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Duas Opening Traps e três linhas Caro são grátis. Desbloqueie o resto de cada um por £1.99. Os outros packs custam £2.99.",
   "More packs": "Mais packs",
   Free: "Grátis",
   Unlocked: "Desbloqueado",
@@ -786,8 +786,8 @@ const ru: Dict = {
     "Большинство лезут в дебютную теорию без базы. Это алгебра до того, как научился считать.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Платят за глубокие курсы и всё равно не играют линию. Здесь по делу. Строгие линии. Выучишь — сыграешь, и узнаешь дебют, когда он появится.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Три линии Caro бесплатны. Открой остаток пака за £1.99. Остальные паки — £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Две Opening Traps и три линии Caro бесплатны. Открой остаток каждого за £1.99. Остальные паки — £2.99.",
   "More packs": "Ещё паки",
   Free: "Бесплатно",
   Unlocked: "Открыто",
@@ -905,8 +905,8 @@ const it: Dict = {
     "La maggior parte si butta sulla teoria delle aperture prima delle basi. È algebra prima di saper contare.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Pagano corsi approfonditi e ancora non sanno giocare la linea. Qui andiamo dritti. Linee rigorose. Le impari, le giochi e riconosci l'apertura quando compare.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Tre linee Caro sono gratis. Sblocca il resto di quel pack per £1.99. Gli altri pack costano £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Due Opening Traps e tre linee Caro sono gratis. Sblocca il resto di ciascuno per £1.99. Gli altri pack costano £2.99.",
   "More packs": "Altri pack",
   Free: "Gratis",
   Unlocked: "Sbloccato",
@@ -1025,8 +1025,8 @@ const hi: Dict = {
     "ज़्यादातर लोग बुनियाद से पहले ओपनिंग थ्योरी में कूद पड़ते हैं। गिनती आए बिना बीजगणित जैसा।",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "गहरे कोर्स खरीदते हैं, फिर भी लाइन नहीं चल पाते। यहाँ बात साफ़ है। सख्त लाइनें। सीखो, चलो, और ओपनिंग आए तो पहचानो।",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "तीन Caro लाइनें मुफ़्त हैं। उस पैक की बाकी लाइनें £1.99 में खोलें। बाकी पैक £2.99।",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "दो Opening Traps और तीन Caro लाइनें मुफ़्त हैं। प्रत्येक का बाकी हिस्सा £1.99 में खोलें। बाकी पैक £2.99।",
   "More packs": "और पैक",
   Free: "मुफ़्त",
   Unlocked: "खुला",
@@ -1145,8 +1145,8 @@ const ja: Dict = {
     "多くの人は基礎の前にオープニング理論へ飛び込む。数を数えられずに代数をやるようなものだ。",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "深い講座を買ってもラインを指せない。ここでは単刀直入。厳密なライン。覚えれば指せるし、そのオープニングが出たら分かる。",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Caro の3ラインは無料。そのパックの残りは £1.99 で解除。他のパックは £2.99。",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "Opening Traps の2つと Caro の3ラインは無料。各パックの残りは £1.99 で解除。他のパックは £2.99。",
   "More packs": "他のパック",
   Free: "無料",
   Unlocked: "解除済み",
@@ -1261,8 +1261,8 @@ const ar: Dict = {
     "معظم الناس يغوصون في نظرية الافتتاحيات قبل أساسياتهم. هذا جبر قبل أن تتقن العدّ.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "يدفعون مقابل دورات عميقة وما زالوا لا يلعبون الخط. هنا نذهب مباشرة. خطوط صارمة. تتعلّمها، تلعبها، وتتعرّف على الافتتاحية عندما تظهر.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "ثلاثة خطوط Caro مجانية. افتح بقية هذه الحزمة بـ £1.99. الحزم الأخرى بـ £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "مصيدتان Opening Traps وثلاثة خطوط Caro مجانية. افتح بقية كل حزمة بـ £1.99. الحزم الأخرى بـ £2.99.",
   "More packs": "المزيد من الحزم",
   Free: "مجاني",
   Unlocked: "مفتوح",
@@ -1381,8 +1381,8 @@ const tr: Dict = {
     "Çoğu kişi temelleri bilmeden açılış teorisine dalar. Bu, saymayı bilmeden cebir yapmak gibidir.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Derin kurslara para verirler ama hâlâ hattı oynayamazlar. Burada netiz. Katı hatlar. Öğrenirsin, oynarsın ve açılış çıktığında tanırsın.",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.":
-    "Üç Caro hattı ücretsiz. Paketin geri kalanını £1.99 ile aç. Diğer paketler £2.99.",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
+    "İki Opening Trap ve üç Caro hattı ücretsiz. Her birinin geri kalanını £1.99 ile aç. Diğer paketler £2.99.",
   "More packs": "Diğer paketler",
   Free: "Ücretsiz",
   Unlocked: "Açık",
