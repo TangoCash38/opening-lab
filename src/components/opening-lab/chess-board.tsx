@@ -4,6 +4,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
@@ -26,6 +27,8 @@ export type SlideAnim = {
   from: Square;
   to: Square;
   piece: string;
+  /** Captured piece code (KQRBN uppercase white / lowercase black). Arcade blasts it off. */
+  captured?: string;
 };
 
 export type PromotionPiece = "q" | "r" | "b" | "n";
@@ -133,6 +136,54 @@ const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
 
 const DRAG_PX = 8;
 
+
+function ArcadeCaptureBlast({
+  code,
+  from,
+  sq,
+  flip,
+}: {
+  code: string;
+  from: Square;
+  sq: Square;
+  flip: boolean;
+}) {
+  const fromRC = squareToRC(from, flip);
+  const toRC = squareToRC(sq, flip);
+  let dx = toRC.col - fromRC.col;
+  let dy = toRC.row - fromRC.row;
+  if (dx === 0 && dy === 0) {
+    dx = 1;
+    dy = -1;
+  }
+  const len = Math.hypot(dx, dy) || 1;
+  const blastX = `${(dx / len) * 130}%`;
+  const blastY = `${(dy / len) * 130}%`;
+  const rot = `${dx >= 0 ? 42 : -42}deg`;
+  const style = {
+    left: `${toRC.col * 12.5}%`,
+    top: `${toRC.row * 12.5}%`,
+    width: "12.5%",
+    height: "12.5%",
+    zIndex: 50,
+    ["--blast-x"]: blastX,
+    ["--blast-y"]: blastY,
+    ["--blast-rot"]: rot,
+  } as CSSProperties;
+  return (
+    <div
+      className="piece-abs piece-arcade-blast"
+      data-arcade-blast="1"
+      data-piece-color={pieceSide(code)}
+      style={style}
+    >
+      <span className="piece-abs-inner">
+        <ChessPiece code={code} />
+      </span>
+    </div>
+  );
+}
+
 export function ChessBoard({
   game,
   flip,
@@ -164,6 +215,28 @@ export function ChessBoard({
   }, []);
   const slideMs = boardTheme === "arcade" ? ARCADE_SLIDE_MS : SLIDE_MS;
   const slideEase = boardTheme === "arcade" ? ARCADE_SLIDE_EASE : SLIDE_EASE;
+  const [arcadeBlast, setArcadeBlast] = useState<{
+    code: string;
+    sq: Square;
+    from: Square;
+    key: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (boardTheme !== "arcade" || !slide?.captured) return;
+    setArcadeBlast({
+      code: slide.captured,
+      sq: slide.to,
+      from: slide.from,
+      key: Date.now(),
+    });
+  }, [boardTheme, slide?.captured, slide?.from, slide?.to]);
+
+  useEffect(() => {
+    if (!arcadeBlast) return;
+    const t = window.setTimeout(() => setArcadeBlast(null), 480);
+    return () => window.clearTimeout(t);
+  }, [arcadeBlast]);
   const dragRef = useRef<DragState | null>(null);
   const ignoreClickRef = useRef(false);
   const [drag, setDrag] = useState<DragState | null>(null);
@@ -561,6 +634,15 @@ export function ChessBoard({
             {/* Pieces paint above squares but never steal clicks */}
             <div className="pointer-events-none absolute inset-0 z-10 overflow-visible">
               {pieceNodes}
+              {arcadeBlast ? (
+                <ArcadeCaptureBlast
+                  key={arcadeBlast.key}
+                  code={arcadeBlast.code}
+                  from={arcadeBlast.from}
+                  sq={arcadeBlast.sq}
+                  flip={flip}
+                />
+              ) : null}
             </div>
 
             {/* Play-on promo: inside board-play so it centers on squares and stays above pieces */}
