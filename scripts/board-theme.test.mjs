@@ -20,7 +20,7 @@ const i18n = src("src/lib/i18n.ts");
 test("board-theme helper validates unknown → book and persists", () => {
   assert.match(
     theme,
-    /BOARD_THEMES = \["book", "paper", "future", "tournament"\]/,
+    /BOARD_THEMES = \["book", "paper", "future", "tournament", "arcade"\]/,
   );
   assert.match(theme, /BOARD_THEME_STORAGE_KEY = "opening-lab:board-theme"/);
   assert.match(theme, /DEFAULT_BOARD_THEME/);
@@ -77,6 +77,10 @@ test("CSS keeps book defaults and has paper + future + tournament data-board-the
   assert.match(css, /\[data-board-theme="tournament"\]\s*\.mini-sq-dark/);
   assert.match(css, /\[data-board-theme="tournament"\]\s*\.board-frame/);
   assert.match(css, /\[data-board-theme="tournament"\]\s*\.piece-abs-inner/);
+  assert.match(css, /\[data-board-theme="arcade"\]\s*\.sq-light/);
+  assert.match(css, /\[data-board-theme="arcade"\]\s*\.sq-dark/);
+  assert.match(css, /\[data-board-theme="arcade"\]\s*\.board-frame/);
+  assert.match(css, /\[data-board-theme="arcade"\]\s*\.piece-abs-inner/);
   assert.match(css, /#f7f2e6/);
   assert.match(css, /#c4bdb0/);
   assert.match(css, /#e2eaf0/);
@@ -161,6 +165,8 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(picker, /subscribeBoardTheme/);
   assert.match(picker, /pointer-events-auto/);
   assert.match(picker, /t\("Tournament"\)/);
+  assert.match(picker, /t\("Arcade"\)/);
+  assert.match(picker, /arcade:\s*\{\s*light:/);
   assert.match(picker, /tournament:\s*\{\s*light:\s*"#eeeed2"/);
   assert.match(picker, /dark:\s*"#769656"/);
   assert.match(picker, /frame:\s*"#2e4a28"/);
@@ -207,4 +213,14 @@ test("newspaper clippings texture is removed (crash surface)", () => {
   assert.equal(existsSync(texture), false);
   assert.doesNotMatch(css, /newspaper-clippings/);
   assert.doesNotMatch(picker, /newspaper-clippings/);
+});
+
+test("Arcade-only fun motion and arcade sounds; other themes keep wood", () => {
+  const sounds = src("src/lib/sounds.ts");
+  assert.match(sounds, /getBoardTheme\(\) === "arcade"/);
+  assert.match(sounds, /soundMoveArcade|soundPickupArcade/);
+  assert.match(chessBoard, /ARCADE_SLIDE_MS/);
+  assert.match(chessBoard, /ARCADE_SLIDE_EASE/);
+  assert.match(chessBoard, /boardTheme === "arcade"/);
+  assert.match(i18n, /Arcade: "Arcade"/);
 });
