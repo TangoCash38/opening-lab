@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -7,11 +8,14 @@ import {
   type ReactNode,
 } from "react";
 import type { Chess, Square, Move } from "chess.js";
+import { getBoardTheme, subscribeBoardTheme } from "@/lib/board-theme";
 import { resumeAudio, soundPickup } from "@/lib/sounds";
 import { ChessPiece, pieceName } from "./chess-pieces";
 
 export const SLIDE_MS = 300;
 export const SLIDE_EASE = "cubic-bezier(0.25, 0.8, 0.25, 1)";
+export const ARCADE_SLIDE_MS = 240;
+export const ARCADE_SLIDE_EASE = "cubic-bezier(0.34, 1.45, 0.64, 1)";
 
 /** Chess.js piece letter: uppercase = white, lowercase = black. */
 function pieceSide(code: string): "w" | "b" {
@@ -120,26 +124,6 @@ function squareFromPoint(x: number, y: number): Square | null {
   return null;
 }
 
-/** Visual grid → algebraic. Prefer this on drag-end — WebView hit-testing is flaky. */
-function squareFromBoardPoint(
-  clientX: number,
-  clientY: number,
-  surface: HTMLElement | null,
-  flip: boolean,
-): Square | null {
-  if (!surface) return null;
-  const rect = surface.getBoundingClientRect();
-  if (rect.width <= 0 || rect.height <= 0) return null;
-  const x = clientX - rect.left;
-  const y = clientY - rect.top;
-  if (x < 0 || y < 0 || x >= rect.width || y >= rect.height) return null;
-  const col = Math.min(7, Math.max(0, Math.floor((x / rect.width) * 8)));
-  const row = Math.min(7, Math.max(0, Math.floor((y / rect.height) * 8)));
-  const file = flip ? 7 - col : col;
-  const rankIdx = flip ? row : 7 - row;
-  return `${"abcdefgh"[file]}${rankIdx + 1}` as Square;
-}
-
 const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
   { key: "q", label: "Q" },
   { key: "r", label: "R" },
@@ -173,6 +157,13 @@ export function ChessBoard({
   onPlayRef.current = onPlay;
 
   const surfaceRef = useRef<HTMLDivElement | null>(null);
+  const [boardTheme, setBoardThemeState] = useState(getBoardTheme);
+  useEffect(() => {
+    setBoardThemeState(getBoardTheme());
+    return subscribeBoardTheme(() => setBoardThemeState(getBoardTheme()));
+  }, []);
+  const slideMs = boardTheme === "arcade" ? ARCADE_SLIDE_MS : SLIDE_MS;
+  const slideEase = boardTheme === "arcade" ? ARCADE_SLIDE_EASE : SLIDE_EASE;
   const dragRef = useRef<DragState | null>(null);
   const ignoreClickRef = useRef(false);
   const [drag, setDrag] = useState<DragState | null>(null);
@@ -298,13 +289,13 @@ export function ChessBoard({
     });
     const done = window.setTimeout(() => {
       if (slideGen.current === gen) completeRef.current?.();
-    }, SLIDE_MS + 40);
+    }, slideMs + 40);
     return () => {
       cancelAnimationFrame(raf1);
       cancelAnimationFrame(raf2);
       clearTimeout(done);
     };
-  }, [slide?.from, slide?.to, slide?.piece]);
+  }, [slide?.from, slide?.to, slide?.piece, slideMs]);
 
   useLayoutEffect(() => {
     const el = surfaceRef.current;
@@ -391,15 +382,7 @@ export function ChessBoard({
     if (cancel || !interactive) return;
 
     if (d.moved && d.canDrag) {
-      // Geometry first: Android WebView elementsFromPoint often misses last-rank
-      // drops (piece layer / ghost), so promotion never opens.
-      const dest =
-        squareFromBoardPoint(
-          e.clientX,
-          e.clientY,
-          surfaceRef.current,
-          flip,
-        ) ?? squareFromPoint(e.clientX, e.clientY);
+      const dest = squareFromPoint(e.clientX, e.clientY);
       if (dest && dest !== d.from) {
         onPlayRef.current?.(d.from, dest);
       }
@@ -538,7 +521,7 @@ export function ChessBoard({
             height: "12.5%",
             zIndex: isMover ? 40 : 5,
             transition: isMover
-              ? `left ${SLIDE_MS}ms ${SLIDE_EASE}, top ${SLIDE_MS}ms ${SLIDE_EASE}`
+              ? `left ${slideMs}ms ${slideEase}, top ${slideMs}ms ${slideEase}`
               : undefined,
             willChange: isMover ? "left, top" : undefined,
           }}
@@ -549,7 +532,7 @@ export function ChessBoard({
         </div>
       );
     });
-  }, [pieces, slide, glideOn, flip, drag]);
+  }, [pieces, slide, glideOn, flip, drag, slideMs, slideEase]);
 
   return (
     <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
@@ -586,15 +569,8 @@ export function ChessBoard({
                 className="promo-picker"
                 role="dialog"
                 aria-label="Choose promotion"
-                onPointerDown={(e) => {
-                  // Backdrop cancel on pointerdown (not click) — click can land on the
-                  // board after the picker unmounts and undo a just-committed promo.
-                  e.stopPropagation();
-                  if (e.target === e.currentTarget) {
-                    e.preventDefault();
-                    promotion.onCancel?.();
-                  }
-                }}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => promotion.onCancel?.()}
               >
                 <div
                   className="promo-picker-row"

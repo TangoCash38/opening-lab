@@ -1,3 +1,4 @@
+import { getBoardTheme } from "@/lib/board-theme";
 let audioCtx: AudioContext | null = null;
 
 function getCtx() {
@@ -28,69 +29,116 @@ function noiseBuffer(ctx: AudioContext, seconds: number) {
   return buf;
 }
 
-/** Short quiet wood scrape — pickup / drag start. Filtered noise, not a beep. */
+function soundPickupArcade(ctx: AudioContext) {
+  const t = ctx.currentTime;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = "square";
+  o.frequency.setValueAtTime(880, t);
+  o.frequency.exponentialRampToValueAtTime(1320, t + 0.05);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.05, t + 0.005);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+  o.connect(g);
+  g.connect(ctx.destination);
+  o.start(t);
+  o.stop(t + 0.08);
+}
+
+function soundPickupWood(ctx: AudioContext) {
+  const t = ctx.currentTime;
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer(ctx, 0.07);
+  const bp = ctx.createBiquadFilter();
+  bp.type = "bandpass";
+  bp.frequency.value = 1400;
+  bp.Q.value = 0.9;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.028, t + 0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+  src.connect(bp);
+  bp.connect(g);
+  g.connect(ctx.destination);
+  src.start(t);
+  src.stop(t + 0.07);
+}
+
+/** Pickup — wood scrape, or arcade blip only on Arcade theme. */
 export function soundPickup() {
   try {
     const ctx = getCtx();
     if (!ctx) return;
-    const t = ctx.currentTime;
-    const src = ctx.createBufferSource();
-    src.buffer = noiseBuffer(ctx, 0.07);
-    const bp = ctx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = 1400;
-    bp.Q.value = 0.9;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.028, t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
-    src.connect(bp);
-    bp.connect(g);
-    g.connect(ctx.destination);
-    src.start(t);
-    src.stop(t + 0.07);
+    if (getBoardTheme() === "arcade") soundPickupArcade(ctx);
+    else soundPickupWood(ctx);
   } catch {
     /* ignore audio failures */
   }
 }
 
-/** Low board thump on a legal land (click-move or drop). Louder than the scrape. */
+function soundMoveArcade(ctx: AudioContext) {
+  const t = ctx.currentTime;
+  const beep = (freq: number, start: number, dur: number, vol: number) => {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "square";
+    o.frequency.setValueAtTime(freq, t + start);
+    g.gain.setValueAtTime(0.0001, t + start);
+    g.gain.exponentialRampToValueAtTime(vol, t + start + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + start + dur);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t + start);
+    o.stop(t + start + dur + 0.01);
+  };
+  // Coin / land chiptune: short ascending blip-blip
+  beep(523, 0, 0.06, 0.07);
+  beep(784, 0.05, 0.08, 0.09);
+  beep(1046, 0.11, 0.1, 0.06);
+}
+
+function soundMoveWood(ctx: AudioContext) {
+  const t = ctx.currentTime;
+  const thump = (freq: number, vol: number, dur: number) => {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(freq, t);
+    o.frequency.exponentialRampToValueAtTime(freq * 0.55, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + dur + 0.01);
+  };
+  thump(85, 0.18, 0.16);
+  thump(160, 0.08, 0.09);
+
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer(ctx, 0.06);
+  const lp = ctx.createBiquadFilter();
+  lp.type = "lowpass";
+  lp.frequency.value = 280;
+  const ng = ctx.createGain();
+  ng.gain.setValueAtTime(0.0001, t);
+  ng.gain.exponentialRampToValueAtTime(0.09, t + 0.003);
+  ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.055);
+  src.connect(lp);
+  lp.connect(ng);
+  ng.connect(ctx.destination);
+  src.start(t);
+  src.stop(t + 0.06);
+}
+
+/** Land — board thud, or arcade coin-blip only on Arcade theme. */
 export function soundMove() {
   try {
     const ctx = getCtx();
     if (!ctx) return;
-    const t = ctx.currentTime;
-    const thump = (freq: number, vol: number, dur: number) => {
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = "sine";
-      o.frequency.setValueAtTime(freq, t);
-      o.frequency.exponentialRampToValueAtTime(freq * 0.55, t + dur);
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol, t + 0.004);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g);
-      g.connect(ctx.destination);
-      o.start(t);
-      o.stop(t + dur + 0.01);
-    };
-    thump(85, 0.18, 0.16);
-    thump(160, 0.08, 0.09);
-
-    const src = ctx.createBufferSource();
-    src.buffer = noiseBuffer(ctx, 0.06);
-    const lp = ctx.createBiquadFilter();
-    lp.type = "lowpass";
-    lp.frequency.value = 280;
-    const ng = ctx.createGain();
-    ng.gain.setValueAtTime(0.0001, t);
-    ng.gain.exponentialRampToValueAtTime(0.09, t + 0.003);
-    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.055);
-    src.connect(lp);
-    lp.connect(ng);
-    ng.connect(ctx.destination);
-    src.start(t);
-    src.stop(t + 0.06);
+    if (getBoardTheme() === "arcade") soundMoveArcade(ctx);
+    else soundMoveWood(ctx);
   } catch {
     /* ignore audio failures */
   }

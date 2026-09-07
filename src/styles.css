@@ -701,8 +701,8 @@ html[data-color-scheme="dark"] {
 
   .board-theme-picker {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.4rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.35rem;
     margin-top: 0.25rem;
   }
 
@@ -787,7 +787,7 @@ html[data-color-scheme="dark"] {
   }
 }
 
-/* ---- Board themes (paper / future / tournament). Book = default .sq-* above. ---- */
+/* ---- Board themes (paper / future / tournament / arcade). Book = default .sq-* above. ---- */
 /* Hints stay green globally (#8fd49a / #9edda8; brighter on dark green tournament squares). */
 
 [data-board-theme="paper"] .sq-light {
@@ -1013,6 +1013,94 @@ html[data-color-scheme="dark"] {
   background-color: #c5f0cc !important;
 }
 
+
+
+/* Arcade: neon cabinet board. Fun motion/sounds only when this theme is on. */
+[data-board-theme="arcade"] .sq-light {
+  background-color: #2a2150;
+}
+
+[data-board-theme="arcade"] .sq-dark {
+  background-color: #ff2bd6;
+}
+
+[data-board-theme="arcade"] .sq-selected,
+[data-board-theme="arcade"] .sq-dark.sq-selected {
+  background-image: linear-gradient(rgba(0, 255, 240, 0.28), rgba(0, 255, 240, 0.28));
+  box-shadow: inset 0 0 0 2px rgba(0, 255, 240, 0.75);
+}
+
+[data-board-theme="arcade"] .sq-last-from,
+[data-board-theme="arcade"] .sq-last-to {
+  background-image: linear-gradient(#ecec4a55, #ecec4a55);
+}
+
+[data-board-theme="arcade"] .legal-dot {
+  background: rgba(0, 255, 240, 0.55);
+}
+
+[data-board-theme="arcade"] .legal-capture {
+  border: 2px solid rgba(0, 255, 240, 0.7);
+}
+
+[data-board-theme="arcade"] .mini-sq-light {
+  background: #2a2150;
+}
+
+[data-board-theme="arcade"] .mini-sq-dark {
+  background: #ff2bd6;
+}
+
+[data-board-theme="arcade"] .board-frame {
+  border-radius: 10px;
+  padding: 7px;
+  background: linear-gradient(180deg, #1a1038 0%, #0b0620 55%, #12082e 100%);
+  box-shadow:
+    0 0 0 2px rgba(0, 255, 240, 0.35),
+    0 0 18px rgba(255, 43, 214, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+[data-board-theme="arcade"] .board-frame-inner {
+  border-radius: 4px;
+  padding: 2px;
+  background: rgba(0, 255, 240, 0.2);
+}
+
+/* Keep pieces readable on neon pink/purple — light outline only (no heavy filters). */
+[data-board-theme="arcade"] .piece-abs-inner {
+  filter: drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+[data-board-theme="arcade"] .sq-hint-from {
+  background-color: #8fd49a !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+[data-board-theme="arcade"] .sq-dark.sq-hint-from {
+  background-color: #b4eebb !important;
+}
+
+[data-board-theme="arcade"] .sq-hint-to {
+  background-color: #9edda8 !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+[data-board-theme="arcade"] .sq-dark.sq-hint-to {
+  background-color: #c5f0cc !important;
+}
+
+[data-board-theme="arcade"] .sq-coord--on-light {
+  color: #e8f7ff;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.65);
+}
+
+[data-board-theme="arcade"] .sq-coord--on-dark {
+  color: #1a1038;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.55);
+}
 
 /* Board coordinates — readable on every theme (printed-diagram ink, not neon). */
 [data-board-theme="paper"] .sq-coord--on-light {
