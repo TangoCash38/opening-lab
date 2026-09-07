@@ -188,6 +188,40 @@ function ArcadeCaptureBlast({
 }
 
 
+function mateShardClip(index: number, count: number) {
+  const step = (Math.PI * 2) / count;
+  const mid = index * step - Math.PI / 2;
+  const a0 = mid - step / 2 - 0.12;
+  const a1 = mid + step / 2 + 0.12;
+  const p0 = {
+    x: 50 + Math.cos(a0) * 85,
+    y: 50 + Math.sin(a0) * 85,
+  };
+  const p1 = {
+    x: 50 + Math.cos(a1) * 85,
+    y: 50 + Math.sin(a1) * 85,
+  };
+  return `polygon(50% 50%, ${p0.x.toFixed(1)}% ${p0.y.toFixed(1)}%, ${p1.x.toFixed(1)}% ${p1.y.toFixed(1)}%)`;
+}
+
+function buildMateShards(count: number) {
+  return Array.from({ length: count }, (_, i) => {
+    const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+    const dist = 110 + (i % 3) * 28;
+    return {
+      clip: mateShardClip(i, count),
+      x: `${(Math.cos(angle) * dist).toFixed(1)}%`,
+      y: `${(Math.sin(angle) * dist).toFixed(1)}%`,
+      rot: `${(((i * 53) % 90) - 45).toFixed(0)}deg`,
+      stagger: `${(i % 4) * 20}ms`,
+    };
+  });
+}
+
+const MATE_SHARD_COUNT = 8;
+const MATE_SHATTER_MS = 520;
+const MATE_TOTAL_MS = 1450;
+
 function ArcadeMateBlast({
   code,
   sq,
@@ -200,41 +234,60 @@ function ArcadeMateBlast({
   onDone?: () => void;
 }) {
   const { row, col } = squareToRC(sq, flip);
-  const style = {
+  const shards = useMemo(() => buildMateShards(MATE_SHARD_COUNT), []);
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    const tBanner = window.setTimeout(() => setShowBanner(true), MATE_SHATTER_MS);
+    const tDone = window.setTimeout(() => onDone?.(), MATE_TOTAL_MS);
+    return () => {
+      window.clearTimeout(tBanner);
+      window.clearTimeout(tDone);
+    };
+  }, [onDone]);
+
+  const cell = {
     left: `${col * 12.5}%`,
     top: `${row * 12.5}%`,
     width: "12.5%",
     height: "12.5%",
-    zIndex: 55,
   } as CSSProperties;
-
-  useEffect(() => {
-    const t = window.setTimeout(() => onDone?.(), 620);
-    return () => window.clearTimeout(t);
-  }, [onDone]);
 
   return (
     <>
-      <div
-        className="arcade-mate-flash"
-        style={{
-          left: `${col * 12.5}%`,
-          top: `${row * 12.5}%`,
-          width: "12.5%",
-          height: "12.5%",
-        }}
-        aria-hidden
-      />
-      <div
-        className="piece-abs piece-arcade-mate-blast"
-        data-arcade-mate-blast="1"
-        data-piece-color={pieceSide(code)}
-        style={style}
-      >
-        <span className="piece-abs-inner">
-          <ChessPiece code={code} />
-        </span>
-      </div>
+      <div className="arcade-mate-flash" style={cell} aria-hidden />
+      {!showBanner
+        ? shards.map((s, i) => (
+            <div
+              key={i}
+              className="piece-abs piece-arcade-mate-shard"
+              data-arcade-mate-blast="1"
+              data-piece-color={pieceSide(code)}
+              style={
+                {
+                  ...cell,
+                  zIndex: 55,
+                  clipPath: s.clip,
+                  ["--mate-x"]: s.x,
+                  ["--mate-y"]: s.y,
+                  ["--mate-rot"]: s.rot,
+                  animationDelay: s.stagger,
+                } as CSSProperties
+              }
+              aria-hidden
+            >
+              <span className="piece-abs-inner">
+                <ChessPiece code={code} />
+              </span>
+            </div>
+          ))
+        : null}
+      {showBanner ? (
+        <div className="arcade-mate-banner" role="status" aria-live="polite">
+          <span className="arcade-mate-banner-glow" aria-hidden />
+          <span className="arcade-mate-banner-text">CHECKMATE</span>
+        </div>
+      ) : null}
     </>
   );
 }
