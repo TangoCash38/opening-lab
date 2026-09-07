@@ -16,6 +16,7 @@ export const FREE_PACK_IDS = new Set(["caro-kann-black", "opening-traps"]);
 
 export function packPrice(pack: Pack): string | null {
   if (pack.id === "caro-kann-black") return PRICE_CARO_REST;
+  if (pack.id === "opening-traps") return PRICE_CARO_REST; // £1.99
   if (FREE_PACK_IDS.has(pack.id) || pack.isFree) return null;
   if (pack.price) return pack.price;
   return PRICE_PACK;
@@ -30,7 +31,7 @@ export function isPackPremium(pack: Pack): boolean {
 }
 
 export function isPayAsYouGoPack(pack: Pack): boolean {
-  return isPackPremium(pack) || pack.id === "caro-kann-black";
+  return isPackPremium(pack) || pack.id === "caro-kann-black" || pack.id === "opening-traps";
 }
 
 /** Parse a display price like £1 or £1.99 into Stripe pence. */

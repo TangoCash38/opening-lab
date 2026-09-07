@@ -473,7 +473,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         ) : null
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
-          {t("Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.")}
+          {t("Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.")}
         </p>
       )}
 
