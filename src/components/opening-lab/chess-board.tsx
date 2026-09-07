@@ -57,6 +57,9 @@ type Props = {
   promotion?: PromotionPrompt | null;
   /** Trainer full-screen: drop the 420px cap so the parent can size the board. */
   expanded?: boolean;
+  /** Arcade mate: king on this square blasts off before the finish sheet. */
+  mateBlast?: { code: string; sq: Square } | null;
+  onMateBlastDone?: () => void;
 };
 
 type PlacedPiece = {
@@ -184,6 +187,58 @@ function ArcadeCaptureBlast({
   );
 }
 
+
+function ArcadeMateBlast({
+  code,
+  sq,
+  flip,
+  onDone,
+}: {
+  code: string;
+  sq: Square;
+  flip: boolean;
+  onDone?: () => void;
+}) {
+  const { row, col } = squareToRC(sq, flip);
+  const style = {
+    left: `${col * 12.5}%`,
+    top: `${row * 12.5}%`,
+    width: "12.5%",
+    height: "12.5%",
+    zIndex: 55,
+  } as CSSProperties;
+
+  useEffect(() => {
+    const t = window.setTimeout(() => onDone?.(), 620);
+    return () => window.clearTimeout(t);
+  }, [onDone]);
+
+  return (
+    <>
+      <div
+        className="arcade-mate-flash"
+        style={{
+          left: `${col * 12.5}%`,
+          top: `${row * 12.5}%`,
+          width: "12.5%",
+          height: "12.5%",
+        }}
+        aria-hidden
+      />
+      <div
+        className="piece-abs piece-arcade-mate-blast"
+        data-arcade-mate-blast="1"
+        data-piece-color={pieceSide(code)}
+        style={style}
+      >
+        <span className="piece-abs-inner">
+          <ChessPiece code={code} />
+        </span>
+      </div>
+    </>
+  );
+}
+
 export function ChessBoard({
   game,
   flip,
@@ -199,6 +254,8 @@ export function ChessBoard({
   interactive,
   promotion,
   expanded = false,
+  mateBlast = null,
+  onMateBlastDone,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -566,6 +623,7 @@ export function ChessBoard({
 
   const pieceNodes = useMemo(() => {
     return pieces.map((p) => {
+      if (mateBlast && p.sq === mateBlast.sq) return null;
       if (slide && p.sq === slide.to) return null;
 
       const isMover = !!(
@@ -605,7 +663,7 @@ export function ChessBoard({
         </div>
       );
     });
-  }, [pieces, slide, glideOn, flip, drag, slideMs, slideEase]);
+  }, [pieces, slide, glideOn, flip, drag, slideMs, slideEase, mateBlast]);
 
   return (
     <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
@@ -641,6 +699,15 @@ export function ChessBoard({
                   from={arcadeBlast.from}
                   sq={arcadeBlast.sq}
                   flip={flip}
+                />
+              ) : null}
+              {mateBlast ? (
+                <ArcadeMateBlast
+                  key={`mate-${mateBlast.sq}-${mateBlast.code}`}
+                  code={mateBlast.code}
+                  sq={mateBlast.sq}
+                  flip={flip}
+                  onDone={onMateBlastDone}
                 />
               ) : null}
             </div>
