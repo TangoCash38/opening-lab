@@ -9,6 +9,7 @@ import { nextUnlockedLine } from "@/lib/catalog";
 import {
   soundBad,
   soundCapture,
+  soundMateBoom,
   soundMove,
   soundOk,
   soundSelect,
@@ -17,6 +18,7 @@ import {
 import { useT, type Translate } from "@/lib/i18n";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useUnlocks } from "@/hooks/use-unlocks";
+import { getBoardTheme } from "@/lib/board-theme";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
 import { LineCompleteBurst } from "./line-complete-burst";
@@ -117,6 +119,19 @@ function fenPieceAt(g: Chess, sq: Square): string | null {
 function capturedCodeFromMove(m: { color: string; captured?: string }): string | undefined {
   if (!m.captured) return undefined;
   return m.color === "w" ? m.captured : m.captured.toUpperCase();
+}
+
+function findKingSquare(g: Chess, color: "w" | "b"): Square | null {
+  const rows = g.board();
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const p = rows[r]![c];
+      if (p && p.type === "k" && p.color === color) {
+        return `${"abcdefgh"[c]!}${8 - r}` as Square;
+      }
+    }
+  }
+  return null;
 }
 
 /** Group SAN plies into standard move pairs for the notation strip. */
@@ -286,6 +301,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [busy, setBusy] = useState(false);
   const [nudgeTest, setNudgeTest] = useState(false);
   const [celebratePiece, setCelebratePiece] = useState<string | null>(null);
+  const [mateBlast, setMateBlast] = useState<{ code: string; sq: Square } | null>(null);
   /** Line-complete sheet waits until the burst finishes so celebration is visible. */
   const pendingEndCardRef = useRef<{
     kind: "wrong" | "end";
@@ -452,6 +468,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       practiceMissedRef.current = false;
       pendingEndCardRef.current = null;
       setCelebratePiece(null);
+      setMateBlast(null);
       setSession((s) => s + 1);
     },
     [clearAllTimers, dropEngine, mode, line.plies.length],
@@ -467,11 +484,65 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const stopCelebrate = useCallback(() => {
     setCelebratePiece(null);
     const pending = pendingEndCardRef.current;
+    if (!pending) return;
+    // Clean Test on Arcade mate: burst first, then king blast, then finish sheet.
+    if (getBoardTheme() === "arcade" && gameRef.current.isCheckmate()) {
+      const mated = gameRef.current.turn();
+      const sq = findKingSquare(gameRef.current, mated);
+      if (sq) {
+        setMateBlast({
+          code: mated === "w" ? "K" : "k",
+          sq,
+        });
+        soundMateBoom();
+        return;
+      }
+    }
+    pendingEndCardRef.current = null;
+    setResultCard(pending);
+  }, []);
+
+  const stopMateBlast = useCallback(() => {
+    setMateBlast(null);
+    const pending = pendingEndCardRef.current;
     if (pending) {
       pendingEndCardRef.current = null;
       setResultCard(pending);
     }
   }, []);
+
+  /** Arcade mate: king blasts off, then finish sheet. Other themes open the sheet now. */
+  const openEndCard = useCallback(
+    (
+      card: {
+        kind: "end";
+        title: string;
+        caption: string;
+        body: string;
+        actionLabel: string;
+        primaryLabel?: string;
+        nextAction?: ResultNextAction;
+      },
+      nextGame: Chess,
+    ) => {
+      if (getBoardTheme() === "arcade" && nextGame.isCheckmate()) {
+        const mated = nextGame.turn();
+        const sq = findKingSquare(nextGame, mated);
+        if (sq) {
+          pendingEndCardRef.current = card;
+          setCelebratePiece(null);
+          setMateBlast({
+            code: mated === "w" ? "K" : "k",
+            sq,
+          });
+          soundMateBoom();
+          return;
+        }
+      }
+      setResultCard(card);
+    },
+    [],
+  );
 
   const beginSlide = useCallback(
     (
@@ -558,7 +629,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             : "Practice done — Play on, or Test with no hints",
           cls: "done",
         });
-        setResultCard(endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed));
+        openEndCard(
+          endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
+          pending.nextGame,
+        );
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -573,8 +647,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             : "Finished, but you missed a move — Play on, or Test again to go green",
           cls: "done",
         });
-        setResultCard(
+        openEndCard(
           endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t, undefined, subscribed),
+          pending.nextGame,
         );
         return;
       }
@@ -585,11 +660,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       });
       soundWin();
       {
-        const piece =
-          fenPieceAt(pending.nextGame, pending.move.to) ??
-          (line.side === "b" ? "k" : "K");
-        // Celebration first — finish sheet opens when the burst ends.
-        pendingEndCardRef.current = endResultCard(
+        const card = endResultCard(
           line,
           pack,
           purchased,
@@ -598,7 +669,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           "practiceNext",
           subscribed,
         );
-        setCelebratePiece(piece);
+        // Arcade mate: king blast then sheet. Else celebration burst then sheet.
+        if (getBoardTheme() === "arcade" && pending.nextGame.isCheckmate()) {
+          openEndCard(card, pending.nextGame);
+        } else {
+          const piece =
+            fenPieceAt(pending.nextGame, pending.move.to) ??
+            (line.side === "b" ? "k" : "K");
+          pendingEndCardRef.current = card;
+          setCelebratePiece(piece);
+        }
       }
       if (!completedRef.current) {
         completedRef.current = true;
@@ -622,7 +702,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line, pack, purchased, subscribed, t, mode, scheduleHints, onLineComplete, onLearnDone, onTestPly]);
+  }, [line, pack, purchased, subscribed, t, mode, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -1439,6 +1519,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               onSquare={onSquare}
               onPlay={playFromTo}
               expanded={boardExpanded}
+              mateBlast={mateBlast}
+              onMateBlastDone={stopMateBlast}
               interactive={
                 !busy &&
                 !slide &&
