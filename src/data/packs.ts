@@ -4396,6 +4396,14 @@ export const PACKS: Pack[] = [
         next: "Checkmate on d3. White has no legal reply. Reset and drill …Ngxe5 then …Nd3# after the bishop is taken.",
         plies: ["d4", "Nf6", "c4", "e5", "dxe5", "Ng4", "Bf4", "Nc6", "Nf3", "Bb4+", "Nbd2", "Qe7", "a3", "Ngxe5", "axb4", "Nd3#"],
         side: "b",
+      },
+      {
+        id: "ot11",
+        name: "Trap · Alien Gambit …Bxh1",
+        idea: "White’s Alien sac Nxf7 starts the attack. After Bxe6+ and g5, …Bxh1 takes the rook and walks into g6#. That rook grab is the trap.",
+        next: "Checkmate with the pawn on g6. Reset and drill Bxe6+ Kh7 g5, then g6# after the rook take. Mate finishes the line.",
+        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nf6", "Ng5", "h6", "Nxf7", "Kxf7", "Nf3", "Bf5", "Ne5+", "Kg8", "Bc4+", "e6", "g4", "b5", "Bb3", "Be4", "Bxe6+", "Kh7", "g5", "Bxh1", "g6#"],
+        side: "w",
       }
     ],
   },
