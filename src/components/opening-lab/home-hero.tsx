@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
@@ -122,9 +123,20 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp }:
                 type="button"
                 onClick={() => setLinesOpen((v) => !v)}
                 aria-expanded={linesOpen}
-                className="min-h-12 w-full rounded-2xl border-[1.5px] border-border bg-bg-subtle px-4 py-3 text-[0.95rem] font-bold text-fg active:scale-[0.99]"
+                className={`flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 py-3 text-[0.95rem] font-bold active:scale-[0.99] ${
+                  linesOpen
+                    ? "border-border bg-bg-subtle text-fg-muted"
+                    : "border-accent bg-accent/14 text-accent"
+                }`}
               >
-                {t("See 18 lines")}
+                <ChevronDown
+                  className={`size-5 shrink-0 transition-transform duration-150 ${
+                    linesOpen ? "rotate-180" : ""
+                  }`}
+                  strokeWidth={2.75}
+                  aria-hidden
+                />
+                {linesOpen ? t("Tap to hide") : t("See 18 lines")}
               </button>
             </div>
 
