@@ -8,6 +8,7 @@ import {
 import { nextUnlockedLine } from "@/lib/catalog";
 import {
   soundBad,
+  soundCapture,
   soundMove,
   soundOk,
   soundSelect,
@@ -112,6 +113,12 @@ function fenPieceAt(g: Chess, sq: Square): string | null {
   return p.color === "w" ? p.type.toUpperCase() : p.type.toLowerCase();
 }
 
+/** Victim piece code from a chess.js Move (Arcade blast). */
+function capturedCodeFromMove(m: { color: string; captured?: string }): string | undefined {
+  if (!m.captured) return undefined;
+  return m.color === "w" ? m.captured : m.captured.toUpperCase();
+}
+
 /** Group SAN plies into standard move pairs for the notation strip. */
 type NotationPair = {
   num: number;
@@ -168,6 +175,7 @@ type PlayableReply = {
   to: Square;
   pieceCode: string;
   next: Chess;
+  capturedCode?: string;
 };
 
 /** Capture if one exists, else the first legal move. Used when search fails. */
@@ -188,6 +196,7 @@ function firstPlayableReply(game: Chess): PlayableReply | null {
       to: m.to as Square,
       pieceCode,
       next: committed.next,
+      capturedCode: capturedCodeFromMove(committed.move),
     };
   } catch {
     return null;
@@ -472,6 +481,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       nextGame: Chess,
       nextPly: number,
       userMove: boolean,
+      capturedCode?: string,
     ) => {
       setSelected(null);
       setBusy(true);
@@ -487,8 +497,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         move: { from, to },
         userMove,
       };
-      setSlide({ from, to, piece: pieceCode });
+      setSlide({
+        from,
+        to,
+        piece: pieceCode,
+        captured: capturedCode,
+      });
       soundMove();
+      if (capturedCode) soundCapture();
     },
     [],
   );
@@ -642,6 +658,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         committed.next,
         idx + 1,
         false,
+        capturedCodeFromMove(committed.move),
       );
     }, OPPONENT_THINK_MS);
 
@@ -677,17 +694,23 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     setEngineBusy(true);
     setStatus({ text: "…", cls: "" });
 
-    const applyReply = (from: Square, to: Square, pieceCode: string, next: Chess) => {
+    const applyReply = (
+      from: Square,
+      to: Square,
+      pieceCode: string,
+      next: Chess,
+      capturedCode?: string,
+    ) => {
       if (cancelled || gen !== replyGenRef.current) return;
       setEngineBusy(false);
-      beginSlide(from, to, pieceCode, next, idx + 1, false);
+      beginSlide(from, to, pieceCode, next, idx + 1, false, capturedCode);
     };
 
     const playFallback = () => {
       if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
       const fb = firstPlayableReply(game);
       if (fb) {
-        applyReply(fb.from, fb.to, fb.pieceCode, fb.next);
+        applyReply(fb.from, fb.to, fb.pieceCode, fb.next, fb.capturedCode);
         return;
       }
       setEngineBusy(false);
@@ -715,6 +738,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               mv.to as Square,
               pieceCode,
               committed.next,
+              capturedCodeFromMove(committed.move),
             );
             return;
           }
@@ -836,7 +860,15 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       }
       const pieceCode = fenPieceAt(live, from);
       if (!pieceCode) return;
-      beginSlide(from, to, pieceCode, committed.next, plyIndex + 1, true);
+      beginSlide(
+        from,
+        to,
+        pieceCode,
+        committed.next,
+        plyIndex + 1,
+        true,
+        capturedCodeFromMove(committed.move),
+      );
       return;
     }
 
@@ -887,7 +919,15 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     });
     if (!committed) return;
 
-    beginSlide(from, to, pieceCode, committed.next, plyIndex + 1, true);
+    beginSlide(
+      from,
+      to,
+      pieceCode,
+      committed.next,
+      plyIndex + 1,
+      true,
+      capturedCodeFromMove(committed.move),
+    );
   };
 
   const onSquare = (sq: Square) => {

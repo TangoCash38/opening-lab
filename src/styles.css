@@ -1102,6 +1102,32 @@ html[data-color-scheme="dark"] {
   text-shadow: 0 0 1px rgba(255, 255, 255, 0.55);
 }
 
+/* Arcade capture: victim shoots off the board */
+@keyframes arcade-capture-blast {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--blast-x, 120%), var(--blast-y, -120%)) scale(0.35) rotate(var(--blast-rot, 40deg));
+    opacity: 0;
+  }
+}
+
+[data-board-theme="arcade"] .piece-arcade-blast,
+.piece-arcade-blast {
+  pointer-events: none;
+  animation: arcade-capture-blast 0.45s cubic-bezier(0.15, 0.85, 0.25, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piece-arcade-blast {
+    animation-duration: 0.01ms;
+  }
+}
+
+
+
 /* Board coordinates — readable on every theme (printed-diagram ink, not neon). */
 [data-board-theme="paper"] .sq-coord--on-light {
   color: #3d3830;
