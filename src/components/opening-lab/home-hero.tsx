@@ -136,7 +136,7 @@ export function HomeHero({ onStartLine, onHowToPlay, onRequestUnlock, playApp }:
                   strokeWidth={2.75}
                   aria-hidden
                 />
-                {linesOpen ? t("Tap to hide") : t("See 18 lines")}
+                {linesOpen ? t("Tap to hide") : t("See {n} lines", { n: shownLines.length })}
               </button>
             </div>
 

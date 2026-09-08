@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, isLineUnlocked, visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -126,7 +126,9 @@ function PackCard({
               </span>
               {free ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
-                  {t("Free")}
+                  {(FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0
+                    ? t("{n} free", { n: FREE_SAMPLE_LINE_IDS[pack.id].length })
+                    : t("Free")}
                 </span>
               ) : unlocked ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
@@ -163,7 +165,15 @@ function PackCard({
             </div>
           </div>
         </div>
-        <PackExpandHint open={open} free={free} closedLabel={free ? pack.closedLabel : price ? t("{price} · tap to see lines", { price }) : t("Tap to see lines")} />
+        <PackExpandHint
+          open={open}
+          free={free}
+          closedLabel={
+            price
+              ? t("{price} · tap to see {n} lines", { price, n: pack.lines.length })
+              : t("Tap to see {n} lines", { n: pack.lines.length })
+          }
+        />
       </button>
 
       {open && (
