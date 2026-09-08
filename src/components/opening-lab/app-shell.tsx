@@ -22,6 +22,7 @@ import {
   type ColorScheme,
 } from "@/lib/color-scheme";
 import { isPlayWrap } from "@/lib/play-app";
+import { DailyGuess } from "./daily-guess";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
@@ -34,7 +35,7 @@ import {
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "home" | "train" | "guide";
+type View = "home" | "train" | "guide" | "daily";
 type TrainMode = "learn" | "practice";
 
 
@@ -250,9 +251,15 @@ function OpeningLabInner() {
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());
             }}
+            onOpenDaily={() => {
+              setView("daily");
+              scrollAppTop();
+              requestAnimationFrame(() => scrollAppTop());
+            }}
           />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}
+        {view === "daily" && <DailyGuess onBack={goHome} />}
         {view === "train" && active && isPackVisible(active.pack) && (
           <TrainView
             key={`${active.pack.id}-${active.line.id}`}
