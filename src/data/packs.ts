@@ -51,9 +51,9 @@ export const PACKS: Pack[] = [
     eco: "C44 / C55–C56",
     side: "White",
     section: "white",
-    isFree: true,
-    isPremium: false,
-    price: null,
+    isFree: false,
+    isPremium: true,
+    price: "£2.99",
     blurb: "18 lines · Gambit 4.Bc4 and Game 4.Nxd4",
     lines: [
       {
