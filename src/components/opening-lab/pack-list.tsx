@@ -250,7 +250,7 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
   }, []);
 
   const catalog = visiblePacks(PACKS);
-  const white = catalog.filter((p) => p.section === "white" && p.id !== "scotch");
+  const white = catalog.filter((p) => p.section === "white");
   const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black");
   const classicGames = catalog.find((p) => p.id === "classic-games");
   const vsLondon = catalog.find((p) => p.id === "vs-london");

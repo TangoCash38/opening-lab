@@ -1,7 +1,7 @@
 import type { OpeningLine, Pack } from "@/data/packs";
 
 /** Only these packs appear in the catalog while we check the rest. */
-export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white", "opening-traps"] as const;
+export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white", "opening-traps", "scotch"] as const;
 
 export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
 
@@ -17,6 +17,7 @@ export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T
 export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> = {
   "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
   "opening-traps": ["ot1", "ot2"],
+  "scotch": ["s1", "s2", "s8", "s13", "s10", "s19", "s20"],
 };
 
 export function playableLines(pack: Pack): OpeningLine[] {
