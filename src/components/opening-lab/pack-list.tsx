@@ -3,6 +3,7 @@ import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
+import { dailyDoneToday, dailyLinePool } from "@/lib/daily-guess";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -38,6 +39,7 @@ type TrainMode = "learn" | "practice";
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onHowToPlay: () => void;
+  onOpenDaily: () => void;
 };
 
 type ModalTarget = { pack: Pack; price: string };
@@ -241,7 +243,7 @@ function PackCard({
   );
 }
 
-export function PackList({ onStartLine, onHowToPlay }: Props) {
+export function PackList({ onStartLine, onHowToPlay, onOpenDaily }: Props) {
   const t = useT();
   const { canAccess, buyPack, subscribe, paymentsEnabled, state, subscribed } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
@@ -499,6 +501,10 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         }}
       />
 
+      {dailyLinePool().length > 0 ? (
+        <DailyTasksCard onOpen={onOpenDaily} />
+      ) : null}
+
       <div className="pack-list-grid">
         {morePacks ? (
           <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
@@ -636,5 +642,35 @@ export function PackList({ onStartLine, onHowToPlay }: Props) {
         />
       )}
     </div>
+  );
+}
+
+function DailyTasksCard({ onOpen }: { onOpen: () => void }) {
+  const t = useT();
+  const [done, setDone] = useState(() => dailyDoneToday());
+
+  useEffect(() => {
+    setDone(dailyDoneToday());
+  }, []);
+
+  return (
+    <section
+      className="mb-5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/25 bg-bg-elevated shadow-[var(--shadow-card)]"
+      aria-label={t("Daily tasks")}
+    >
+      <div className="px-4 pb-4 pt-3.5">
+        <p className="mb-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+          {t("Daily tasks")}
+        </p>
+        <p className="m-0 text-[1.05rem] font-bold">{t("Guess the opening")}</p>
+        <button
+          type="button"
+          onClick={onOpen}
+          className="mt-3.5 min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+        >
+          {done ? t("Done for today") : t("Guess the opening")}
+        </button>
+      </div>
+    </section>
   );
 }
