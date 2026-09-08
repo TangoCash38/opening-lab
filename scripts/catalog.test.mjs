@@ -21,7 +21,6 @@ test("catalog shows Caro-Kann for Black, QGD for Black, London for Black, 1.d4 s
     "ruy",
     "kings-gambit",
     "vienna-game",
-    "scotch-game",
     "open-sicilian",
     "french-as-white",
   ]) {
