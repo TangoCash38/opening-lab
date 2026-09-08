@@ -17,7 +17,6 @@ export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T
 export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> = {
   "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
   "opening-traps": ["ot1", "ot2"],
-  "scotch": ["s1", "s2", "s8", "s13", "s10", "s19", "s20", "s21", "s22", "s23", "s24", "s25", "sg1", "sg2", "sg3", "sg4", "sg5", "sg6"],
 };
 
 export function playableLines(pack: Pack): OpeningLine[] {

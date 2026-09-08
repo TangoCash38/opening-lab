@@ -6,7 +6,7 @@ import { useT } from "@/lib/i18n";
 export const PLAY_CLOSED_TESTING_URL =
   "https://play.google.com/apps/testing/uk.co.openinglab";
 
-export const WEBSITE_APP_PROMPT_KEY = "opening-lab:website-app-prompt:v1";
+export const WEBSITE_APP_PROMPT_KEY = "opening-lab:website-app-prompt:v2";
 
 export function hasDismissedWebsiteAppPrompt(): boolean {
   if (typeof sessionStorage === "undefined") return false;
@@ -63,14 +63,13 @@ export function WebsiteAppPrompt() {
             Opening Lab
           </h2>
           <div className="mt-4 space-y-2">
-            <a
-              href={PLAY_CLOSED_TESTING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-accent px-4 py-3 text-center text-[0.95rem] font-bold text-accent-fg no-underline active:scale-[0.99]"
+            <button
+              type="button"
+              className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-accent px-4 py-3 text-center text-[0.95rem] font-bold text-accent-fg"
+              onClick={continueOnWeb}
             >
-              {t("Download the app")}
-            </a>
+              {t("App coming soon")}
+            </button>
             <button
               type="button"
               onClick={continueOnWeb}
