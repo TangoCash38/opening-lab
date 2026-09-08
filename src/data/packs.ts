@@ -54,7 +54,7 @@ export const PACKS: Pack[] = [
     isFree: true,
     isPremium: false,
     price: null,
-    blurb: "5 book lines + 2 traps · 4…Nf6, London, Max Lange, Dubois–Réti, Ghulam-Kassim",
+    blurb: "5 book lines + 2 traps + 1 mate drill",
     lines: [
       {
         id: "s1",
@@ -96,6 +96,14 @@ export const PACKS: Pack[] = [
         id: "s20",
         name: "Trap · …Be7",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "bxc3", "Be7", "Qd5"],
+        side: "w",
+      },
+      {
+        id: "s21",
+        name: "Mate drill · 4.Ng5 …Ke8",
+        idea: "Taking the knight on f7 is fine. The mate is only if the king goes back to e8. After Bc4+ Ke8, Qh5+ starts a forced mate. This is a mate drill, not a punish-the-take.",
+        next: "Checkmate on b5. Reset and drill Bc4+ only after the king returns to e8. If the king stays in the open after Kxf7, there is no mate.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Ng5", "h6", "Nxf7", "Kxf7", "Bc4+", "Ke8", "Qh5+", "Ke7", "Qf7+", "Kd6", "Bf4+", "Kc5", "Qd5+", "Kb6", "Qb5#"],
         side: "w",
       },
     ],
