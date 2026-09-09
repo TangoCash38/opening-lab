@@ -97,6 +97,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The English Opening is 1.c4. White controls d5 from the flank and can meet 1…e5, 1…c5, or 1…Nf6 with Four Knights, Botvinnik, Symmetrical, Mikenas, and related structures.",
     "You are not racing for a mate on move ten. Build the English shell, know which Black reply you are in, and practise the main White moves before you mix plans.",
   ],
+  "catalan-white": [
+    "The Catalan Opening is 1.d4 Nf6 2.c4 e6 3.g3. White fianchettoes the king bishop and meets Open, Closed, and Bogo-Catalan structures — recover c4, clamp the centre, and use the long diagonal.",
+    "You are not racing for a mate on move ten. Know which Catalan shell you are in, and practise the main White moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */

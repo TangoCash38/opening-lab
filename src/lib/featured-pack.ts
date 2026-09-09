@@ -31,6 +31,7 @@ export function packShortLabel(pack: { id: string; name: string }): string {
     "d4-sidelines-black": "1.d4 Sidelines",
     "anti-sicilian-black": "Anti-Sicilian",
     "english-white": "English Opening",
+    "catalan-white": "Catalan Opening",
   };
   if (known[pack.id]) return known[pack.id];
 
