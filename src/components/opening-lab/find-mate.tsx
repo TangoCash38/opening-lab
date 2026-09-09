@@ -3,8 +3,9 @@ import { Chess, type Square } from "chess.js";
 import { useT } from "@/lib/i18n";
 import {
   loadMateSession,
-  playMateSan,
-  saveMateSolved,
+  matePuzzles,
+  saveMateIndex,
+  type MatePuzzle,
   type MateSession,
 } from "@/lib/find-mate";
 import { ChessBoard } from "./chess-board";
@@ -29,41 +30,102 @@ export function FindMate({ onBack }: Props) {
       </div>
     );
   }
-  return <FindMateSession session={session} onBack={onBack} />;
+  if (session.done || !session.puzzle) {
+    return <FindMateDone session={session} onBack={onBack} />;
+  }
+  return <FindMateSet initial={session} onBack={onBack} />;
 }
 
-function FindMateSession({
-  session,
+function BackButton({ onBack }: { onBack: () => void }) {
+  const t = useT();
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      className="mb-3 rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted"
+    >
+      {t("← Back")}
+    </button>
+  );
+}
+
+function FindMateDone({ session, onBack }: { session: MateSession; onBack: () => void }) {
+  const t = useT();
+  return (
+    <div>
+      <BackButton onBack={onBack} />
+      <p className="mb-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+        {t("Mate in one")}
+      </p>
+      <h1 className="mb-3 font-display text-[1.65rem] font-bold tracking-tight">
+        {t("Find the mate")}
+      </h1>
+      <p className="mb-3 text-[0.8rem] font-semibold text-fg-muted">
+        {t("{n} of {total}", { n: session.total, total: session.total })}
+      </p>
+      <div className="rounded-2xl bg-success-soft px-4 py-3.5" role="status">
+        <p className="m-0 text-[0.95rem] font-bold text-success">{t("Done")}</p>
+      </div>
+    </div>
+  );
+}
+
+function FindMateSet({ initial, onBack }: { initial: MateSession; onBack: () => void }) {
+  const pool = useMemo(() => matePuzzles(), []);
+  const [index, setIndex] = useState(initial.index);
+  const puzzle = pool[index];
+  if (!puzzle || index >= pool.length) {
+    return <FindMateDone session={{ ...initial, index: pool.length, done: true }} onBack={onBack} />;
+  }
+  return (
+    <FindMateRound
+      key={puzzle.id}
+      date={initial.date}
+      index={index}
+      total={pool.length}
+      puzzle={puzzle}
+      onBack={onBack}
+      onNext={() => setIndex((n) => n + 1)}
+    />
+  );
+}
+
+function FindMateRound({
+  date,
+  index,
+  total,
+  puzzle,
   onBack,
+  onNext,
 }: {
-  session: MateSession;
+  date: string;
+  index: number;
+  total: number;
+  puzzle: MatePuzzle;
   onBack: () => void;
+  onNext: () => void;
 }) {
   const t = useT();
-  const gameRef = useRef(new Chess(session.fen));
+  const gameRef = useRef(new Chess(puzzle.fen));
   const [, bumpBoard] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
-  const [solved, setSolved] = useState(session.solved);
+  const [solved, setSolved] = useState(false);
   const [notMate, setNotMate] = useState(false);
   const [busy, setBusy] = useState(false);
   const resetTimer = useRef<number | null>(null);
+  const last = index + 1 >= total;
 
   useEffect(() => {
-    const game = new Chess(session.fen);
-    if (session.solved) {
-      const played = playMateSan(game, session.san);
-      if (played) setLastMove({ from: played.from, to: played.to });
-    }
-    gameRef.current = game;
+    gameRef.current = new Chess(puzzle.fen);
     bumpBoard((n) => n + 1);
     return () => {
       if (resetTimer.current != null) window.clearTimeout(resetTimer.current);
     };
-  }, [session.fen, session.id, session.san, session.solved]);
+  }, [puzzle.fen, puzzle.id]);
 
   const resetBoard = () => {
-    gameRef.current = new Chess(session.fen);
+    gameRef.current = new Chess(puzzle.fen);
     setSelected(null);
     setLastMove(null);
     bumpBoard((n) => n + 1);
@@ -74,7 +136,7 @@ function FindMateSession({
     setLastMove({ from, to });
     setNotMate(false);
     setSolved(true);
-    saveMateSolved(session.date, session.id);
+    saveMateIndex(date, index + 1);
     bumpBoard((n) => n + 1);
   };
 
@@ -141,27 +203,24 @@ function FindMateSession({
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={onBack}
-        className="mb-3 rounded-full bg-bg-subtle px-4 py-2 text-[0.82rem] font-semibold text-fg-muted"
-      >
-        {t("← Back")}
-      </button>
+      <BackButton onBack={onBack} />
 
       <p className="mb-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
         {t("Mate in one")}
       </p>
-      <h1 className="mb-3 font-display text-[1.65rem] font-bold tracking-tight">
+      <h1 className="mb-1 font-display text-[1.65rem] font-bold tracking-tight">
         {t("Find the mate")}
       </h1>
+      <p className="mb-3 text-[0.8rem] font-semibold text-fg-muted">
+        {t("{n} of {total}", { n: index + 1, total })}
+      </p>
 
       <div className="overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-border bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="px-2 pb-3 pt-2">
           <ChessBoard
-            key={session.id}
+            key={puzzle.id}
             game={gameRef.current}
-            flip={session.side === "b"}
+            flip={puzzle.side === "b"}
             selected={selected}
             wrongUntil={null}
             expected={null}
@@ -184,9 +243,20 @@ function FindMateSession({
       {solved ? (
         <div className="mt-4 rounded-2xl bg-success-soft px-4 py-3.5" role="status">
           <p className="m-0 text-[0.95rem] font-bold text-success">{t("Correct")}</p>
-          <p className="m-0 mt-1 text-[0.8rem] text-fg-muted">{t("Done for today")}</p>
+          {last ? (
+            <p className="m-0 mt-1 text-[0.8rem] text-fg-muted">{t("Done")}</p>
+          ) : (
+            <button
+              type="button"
+              onClick={onNext}
+              className="mt-3 min-h-11 rounded-full bg-accent px-4 py-2 text-[0.92rem] font-bold text-accent-fg active:scale-[0.99]"
+            >
+              {t("Next")}
+            </button>
+          )}
         </div>
       ) : null}
     </div>
   );
 }
+
