@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
-import { dailyDoneToday } from "@/lib/daily-guess";
-import { mateDoneToday } from "@/lib/find-mate";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -495,6 +493,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenGuess, onOpenMate }: 
         playApp={wrap}
         onStartLine={onStartLine}
         onHowToPlay={onHowToPlay}
+        onOpenGuess={onOpenGuess}
+        onOpenMate={onOpenMate}
         onRequestUnlock={requestUnlock}
         onSubscribe={() => {
           if (wrap && !offerPlayLabPlus) return;
@@ -503,12 +503,10 @@ export function PackList({ onStartLine, onHowToPlay, onOpenGuess, onOpenMate }: 
         }}
       />
 
-      <MoreGamesSection onGuess={onOpenGuess} onMate={onOpenMate} />
-
       <div className="pack-list-grid">
         {morePacks ? (
           <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-            {t("More packs")}
+            {t("More opening packs")}
           </p>
         ) : null}
 
@@ -642,74 +640,5 @@ export function PackList({ onStartLine, onHowToPlay, onOpenGuess, onOpenMate }: 
         />
       )}
     </div>
-  );
-}
-
-function MoreGamesSection({
-  onGuess,
-  onMate,
-}: {
-  onGuess: () => void;
-  onMate: () => void;
-}) {
-  const t = useT();
-  const [open, setOpen] = useState(false);
-  const [guessDone, setGuessDone] = useState(false);
-  const [mateDone, setMateDone] = useState(false);
-
-  useEffect(() => {
-    setGuessDone(dailyDoneToday());
-    setMateDone(mateDoneToday());
-  }, []);
-
-  return (
-    <section
-      className="mb-5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/25 bg-bg-elevated shadow-[var(--shadow-card)]"
-      aria-label={t("More games")}
-    >
-      <button
-        type="button"
-        className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-      >
-        <span className="text-[1.05rem] font-bold">{t("More games")}</span>
-        <ChevronDown
-          className={`size-5 shrink-0 text-fg-muted transition-transform duration-150 ${
-            open ? "rotate-180" : ""
-          }`}
-          strokeWidth={2.5}
-          aria-hidden
-        />
-      </button>
-      {open ? (
-        <div className="flex flex-col gap-2 border-t border-border px-3 pb-3.5 pt-2.5">
-          <button
-            type="button"
-            onClick={onGuess}
-            className="min-h-12 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-left active:scale-[0.99]"
-          >
-            <span className="block text-[0.95rem] font-semibold">{t("Guess the opening")}</span>
-            {guessDone ? (
-              <span className="mt-0.5 block text-[0.75rem] font-semibold text-fg-muted">
-                {t("Done for today")}
-              </span>
-            ) : null}
-          </button>
-          <button
-            type="button"
-            onClick={onMate}
-            className="min-h-12 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-left active:scale-[0.99]"
-          >
-            <span className="block text-[0.95rem] font-semibold">{t("Find the mate")}</span>
-            {mateDone ? (
-              <span className="mt-0.5 block text-[0.75rem] font-semibold text-fg-muted">
-                {t("Done for today")}
-              </span>
-            ) : null}
-          </button>
-        </div>
-      ) : null}
-    </section>
   );
 }
