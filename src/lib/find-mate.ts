@@ -48,19 +48,21 @@ type MateRecord = {
 /**
  * Harder club-level mate-in-ones. Not Scotch lines, not Opening Traps ot1/ot2.
  * Each intended SAN is checked with chess.js: legal, checkmate, and the only mate.
+ * Positions must also be quiet for both kings (side to move not in check; opponent
+ * not already in check — illegal if the side that just "moved" left their king hanging).
  * Order is the bank. Mating side is `side` (board flips so that side is at the bottom).
  */
 const MATE_PUZZLES: readonly MatePuzzle[] = [
   {
-    id: "boden-w",
-    fen: "1nkr4/p1p2ppp/2p5/5B2/8/8/PPP2PPP/2K2B2 w - - 0 1",
-    san: "Ba6#",
+    id: "damiano",
+    fen: "r1b2rk1/pp3pp1/2n1p1N1/3pP3/3P4/8/PPP2PP1/R1BQK2R w KQ - 0 1",
+    san: "Rh8#",
     side: "w",
   },
   {
-    id: "boden-b",
-    fen: "2kr1b1r/pp3ppp/2p5/8/2b2b2/8/P1P2PPP/1NK5 b - - 0 1",
-    san: "Ba3#",
+    id: "cross-b",
+    fen: "6k1/ppp2Npp/2p4r/8/8/1bq4R/PPP2PPP/6K1 b - - 0 1",
+    san: "Qe1#",
     side: "b",
   },
   {
@@ -117,11 +119,37 @@ export function playMateSan(game: Chess, san: string) {
   return game.move(san) || game.move(san.replace(/#$/, ""));
 }
 
-/** chess.js: intended SAN is legal and the only mating move. */
+/** Flip side-to-move in a FEN (clear EP). Used to detect opponent-in-check. */
+export function fenWithFlippedTurn(fen: string): string {
+  const parts = fen.trim().split(/\s+/);
+  if (parts.length < 2) return fen;
+  parts[1] = parts[1] === "w" ? "b" : "w";
+  if (parts.length >= 4) parts[3] = "-";
+  return parts.join(" ");
+}
+
+/**
+ * chess.js `isCheck()` only covers the side to move. If the opponent is already
+ * in check, the prior "move" left their king hanging — illegal quiet mate puzzle.
+ */
+export function opponentIsInCheck(fen: string): boolean {
+  try {
+    return new Chess(fenWithFlippedTurn(fen)).isCheck();
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * Strengthened gate: FEN loads, side matches, side to move not in check,
+ * opponent not already in check, intended SAN is legal + unique mate-in-one.
+ */
 export function isUniqueMateInOne(puzzle: MatePuzzle): boolean {
   try {
     const game = new Chess(puzzle.fen);
-    if (game.turn() !== puzzle.side || game.isCheck()) return false;
+    if (game.turn() !== puzzle.side) return false;
+    if (game.isCheck()) return false;
+    if (opponentIsInCheck(puzzle.fen)) return false;
     const mates = game.moves({ verbose: true }).filter((move) => {
       const next = new Chess(puzzle.fen);
       const played = next.move(move);
@@ -134,6 +162,11 @@ export function isUniqueMateInOne(puzzle: MatePuzzle): boolean {
   } catch {
     return false;
   }
+}
+
+/** Raw bank (for regression tests). Prefer `matePuzzles()` in app code. */
+export function matePuzzleBank(): readonly MatePuzzle[] {
+  return MATE_PUZZLES;
 }
 
 export function matePuzzles(): MatePuzzle[] {
