@@ -105,6 +105,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Nimzo-Indian Defence is 1.d4 Nf6 2.c4 e6 3.Nc3 Bb4. Black pins the knight, fights doubled c-pawns, and strikes with …c5 or …d5 against Classical, Rubinstein, and Sämisch structures.",
     "You are not racing for a mate on move ten. Know which Nimzo shell you are in, and practise the main Black moves before you mix plans.",
   ],
+  "grunfeld-black": [
+    "The Grünfeld Defence is 1.d4 Nf6 2.c4 g6 with …d5. Black invites the big centre, then strikes it with …c5 or active pieces against Exchange, Russian, and Fianchetto structures.",
+    "You are not racing for a mate on move ten. Know which Grünfeld shell you are in, and practise the main Black moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
