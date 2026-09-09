@@ -29,69 +29,69 @@ type MateRecord = {
 };
 
 /**
- * Original mate-in-one diagrams. Not Scotch lines, not Opening Traps ot1/ot2.
+ * Harder club-level mate-in-ones. Not Scotch lines, not Opening Traps ot1/ot2.
  * Each intended SAN is checked with chess.js: legal, checkmate, and the only mate.
  * Order is the set. Mating side is `side` (board flips so that side is at the bottom).
  */
 const MATE_PUZZLES: readonly MatePuzzle[] = [
   {
-    id: "scholar",
-    fen: "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
-    san: "Qxf7#",
+    id: "boden-w",
+    fen: "1nkr4/p1p2ppp/2p5/5B2/8/8/PPP2PPP/2K2B2 w - - 0 1",
+    san: "Ba6#",
     side: "w",
   },
   {
-    id: "black-back-rank",
-    fen: "4r1k1/5ppp/8/8/8/8/5PPP/6K1 b - - 0 1",
-    san: "Re1#",
+    id: "boden-b",
+    fen: "2kr1b1r/pp3ppp/2p5/8/2b2b2/8/P1P2PPP/1NK5 b - - 0 1",
+    san: "Ba3#",
     side: "b",
   },
   {
-    id: "white-queen",
-    fen: "7k/8/5KQ1/8/8/8/8/8 w - - 0 1",
-    san: "Qg7#",
+    id: "smother-w",
+    fen: "r2q2rk/1p3ppp/p1n5/6N1/2B5/2N5/PP3PPP/5RK1 w - - 0 1",
+    san: "Nxf7#",
     side: "w",
   },
   {
-    id: "black-queen",
-    fen: "6K1/8/5k1q/8/8/8/8/8 b - - 0 1",
-    san: "Qg7#",
+    id: "hook",
+    fen: "5r1k/1ppq2pp/p6N/8/3B4/8/1PP3PP/5R1K w - - 0 1",
+    san: "Rxf8#",
+    side: "w",
+  },
+  {
+    id: "anastasia",
+    fen: "2r4k/pp2N1p1/2p4p/8/8/1BQ4R/PPP2PPP/6K1 w - - 0 1",
+    san: "Rxh6#",
+    side: "w",
+  },
+  {
+    id: "smother-b",
+    fen: "2kr1r2/1pp2ppp/p7/8/6n1/2n5/PPP2PPP/R3R1RK b - - 0 1",
+    san: "Nxf2#",
     side: "b",
   },
   {
-    id: "white-back-rank",
-    fen: "6k1/5ppp/8/8/8/8/5PPP/4R1K1 w - - 0 1",
-    san: "Re8#",
-    side: "w",
-  },
-  {
-    id: "black-bishop",
-    fen: "7b/8/8/8/8/8/PPk5/K7 b - - 0 1",
-    san: "Bxb2#",
+    id: "corridor-b",
+    fen: "r3r1k1/1p3ppp/p7/8/8/5q2/PPP2PPP/4R1K1 b - - 0 1",
+    san: "Rxe1#",
     side: "b",
   },
   {
-    id: "white-bishop",
-    fen: "7k/5Kpp/8/8/8/8/8/B7 w - - 0 1",
-    san: "Bxg7#",
+    id: "arab-w",
+    fen: "7k/1pp2ppp/5N2/8/R7/2B5/1PP2PPP/6K1 w - - 0 1",
+    san: "Ra8#",
     side: "w",
   },
   {
-    id: "black-knight",
-    fen: "6k1/8/8/8/6n1/8/6PP/6RK b - - 0 1",
-    san: "Nf2#",
-    side: "b",
-  },
-  {
-    id: "white-knight",
-    fen: "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
-    san: "Nf7#",
+    id: "greek-qh7",
+    fen: "r1b2rk1/pp3ppp/2n1p3/3pP1NQ/3P4/8/PPP2PPP/R1B1K2R w KQ - 0 1",
+    san: "Qxh7#",
     side: "w",
   },
   {
-    id: "black-rook-file",
-    fen: "5r2/8/8/8/8/8/5k2/7K b - - 0 1",
-    san: "Rh8#",
+    id: "arab-b",
+    fen: "6k1/1p3ppp/p4n2/8/1r6/2b5/5PPP/6KR b - - 0 1",
+    san: "Rb1#",
     side: "b",
   },
 ];

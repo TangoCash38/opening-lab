@@ -4,7 +4,6 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
-import { dailyDoneToday } from "@/lib/daily-guess";
 import { mateDoneToday } from "@/lib/find-mate";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
@@ -18,7 +17,6 @@ type TrainMode = "learn" | "practice";
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onHowToPlay: () => void;
-  onOpenGuess: () => void;
   onOpenMate: () => void;
   onSubscribe: () => void;
   onRequestUnlock?: (pack: Pack) => void;
@@ -28,7 +26,6 @@ type Props = {
 export function HomeHero({
   onStartLine,
   onHowToPlay,
-  onOpenGuess,
   onOpenMate,
   onRequestUnlock,
   playApp,
@@ -83,7 +80,7 @@ export function HomeHero({
           >
             {t("How to play")}
           </button>
-          <MoreGamesMenu onGuess={onOpenGuess} onMate={onOpenMate} />
+          <MoreGamesMenu onMate={onOpenMate} />
         </div>
       </div>
 
@@ -214,21 +211,13 @@ export function HomeHero({
   );
 }
 
-function MoreGamesMenu({
-  onGuess,
-  onMate,
-}: {
-  onGuess: () => void;
-  onMate: () => void;
-}) {
+function MoreGamesMenu({ onMate }: { onMate: () => void }) {
   const t = useT();
   const [open, setOpen] = useState(false);
-  const [guessDone, setGuessDone] = useState(false);
   const [mateDone, setMateDone] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setGuessDone(dailyDoneToday());
     setMateDone(mateDoneToday());
   }, []);
 
@@ -272,22 +261,6 @@ function MoreGamesMenu({
           role="menu"
           className="absolute end-0 top-full z-40 mt-1.5 flex min-w-[14rem] flex-col gap-1 rounded-2xl border-[1.5px] border-accent/25 bg-bg-elevated p-1.5 shadow-[var(--shadow-card)]"
         >
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setOpen(false);
-              onGuess();
-            }}
-            className="min-h-11 w-full rounded-xl px-3 py-2 text-left active:bg-bg-subtle"
-          >
-            <span className="block text-[0.88rem] font-semibold">{t("Guess the opening")}</span>
-            {guessDone ? (
-              <span className="mt-0.5 block text-[0.72rem] font-semibold text-fg-muted">
-                {t("Done for today")}
-              </span>
-            ) : null}
-          </button>
           <button
             type="button"
             role="menuitem"
