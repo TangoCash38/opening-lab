@@ -335,6 +335,8 @@ html[data-color-scheme="dark"] {
     align-items: center;
     gap: 0.65rem;
     margin-bottom: 1rem;
+    position: relative;
+    z-index: 5;
   }
 
   .home-heading-row h1 {
@@ -344,7 +346,15 @@ html[data-color-scheme="dark"] {
     line-height: 1.15;
   }
 
-  .home-heading-row .how-to-play {
+  .home-heading-row .home-heading-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .home-heading-row .how-to-play,
+  .home-heading-row .more-games-btn {
     flex: 0 0 auto;
     white-space: nowrap;
   }

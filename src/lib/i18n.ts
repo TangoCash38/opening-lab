@@ -70,6 +70,7 @@ const en: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.",
   "More packs": "More packs",
+  "More opening packs": "More opening packs",
   "Daily tasks": "Daily tasks",
   "Guess the opening": "Guess the opening",
   "Which opening was that?": "Which opening was that?",
@@ -209,6 +210,7 @@ const es: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Dos Opening Traps y tres líneas Caro son gratis. Desbloquea el resto de cada uno por £1.99. Los demás packs cuestan £2.99.",
   "More packs": "Más packs",
+  "More opening packs": "Más packs de aperturas",
   "Daily tasks": "Tareas diarias",
   "Guess the opening": "Adivina la apertura",
   "Which opening was that?": "¿Qué apertura fue esa?",
@@ -344,6 +346,7 @@ const zh: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "两个 Opening Traps 和三条 Caro 线路免费。各自其余内容 £1.99 解锁。其他棋包 £2.99。",
   "More packs": "更多棋包",
+  "More opening packs": "更多开局棋包",
   "Daily tasks": "每日任务",
   "Guess the opening": "猜开局",
   "Which opening was that?": "那是哪种开局？",
@@ -479,6 +482,7 @@ const fr: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Deux Opening Traps et trois lignes Caro sont gratuites. Débloque le reste de chacun pour £1.99. Les autres packs sont à £2.99.",
   "More packs": "Plus de packs",
+  "More opening packs": "Plus de packs d'ouvertures",
   "Daily tasks": "Tâches du jour",
   "Guess the opening": "Devine l'ouverture",
   "Which opening was that?": "Quelle ouverture était-ce ?",
@@ -614,6 +618,7 @@ const de: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Zwei Opening Traps und drei Caro-Linien sind kostenlos. Schalte den Rest jedes Packs für £1.99 frei. Andere Packs kosten £2.99.",
   "More packs": "Mehr Packs",
+  "More opening packs": "Mehr Eröffnungspacks",
   "Daily tasks": "Tägliche Aufgaben",
   "Guess the opening": "Rate die Eröffnung",
   "Which opening was that?": "Welche Eröffnung war das?",
@@ -749,6 +754,7 @@ const pt: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Duas Opening Traps e três linhas Caro são grátis. Desbloqueie o resto de cada um por £1.99. Os outros packs custam £2.99.",
   "More packs": "Mais packs",
+  "More opening packs": "Mais packs de aberturas",
   "Daily tasks": "Tarefas diárias",
   "Guess the opening": "Adivinhe a abertura",
   "Which opening was that?": "Que abertura foi essa?",
@@ -884,6 +890,7 @@ const ru: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Две Opening Traps и три линии Caro бесплатны. Открой остаток каждого за £1.99. Остальные паки — £2.99.",
   "More packs": "Ещё паки",
+  "More opening packs": "Ещё паки дебютов",
   "Daily tasks": "Задачи дня",
   "Guess the opening": "Угадай дебют",
   "Which opening was that?": "Какой это был дебют?",
@@ -1018,6 +1025,7 @@ const it: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Due Opening Traps e tre linee Caro sono gratis. Sblocca il resto di ciascuno per £1.99. Gli altri pack costano £2.99.",
   "More packs": "Altri pack",
+  "More opening packs": "Altri pack di aperture",
   "Daily tasks": "Compiti del giorno",
   "Guess the opening": "Indovina l'apertura",
   "Which opening was that?": "Quale apertura era?",
@@ -1153,6 +1161,7 @@ const hi: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "दो Opening Traps और तीन Caro लाइनें मुफ़्त हैं। प्रत्येक का बाकी हिस्सा £1.99 में खोलें। बाकी पैक £2.99।",
   "More packs": "और पैक",
+  "More opening packs": "और ओपनिंग पैक",
   "Daily tasks": "दैनिक कार्य",
   "Guess the opening": "ओपनिंग पहचानें",
   "Which opening was that?": "वह कौन सी ओपनिंग थी?",
@@ -1288,6 +1297,7 @@ const ja: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "Opening Traps の2つと Caro の3ラインは無料。各パックの残りは £1.99 で解除。他のパックは £2.99。",
   "More packs": "他のパック",
+  "More opening packs": "他のオープニングパック",
   "Daily tasks": "今日の課題",
   "Guess the opening": "オープニングを当てる",
   "Which opening was that?": "どのオープニングでしたか？",
@@ -1419,6 +1429,7 @@ const ar: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "مصيدتان Opening Traps وثلاثة خطوط Caro مجانية. افتح بقية كل حزمة بـ £1.99. الحزم الأخرى بـ £2.99.",
   "More packs": "المزيد من الحزم",
+  "More opening packs": "المزيد من حزم الافتتاح",
   "Daily tasks": "مهام اليوم",
   "Guess the opening": "خمّن الافتتاح",
   "Which opening was that?": "أي افتتاح كان ذلك؟",
@@ -1554,6 +1565,7 @@ const tr: Dict = {
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.":
     "İki Opening Trap ve üç Caro hattı ücretsiz. Her birinin geri kalanını £1.99 ile aç. Diğer paketler £2.99.",
   "More packs": "Diğer paketler",
+  "More opening packs": "Diğer açılış paketleri",
   "Daily tasks": "Günlük görevler",
   "Guess the opening": "Açılışı tahmin et",
   "Which opening was that?": "O hangi açılıştı?",
