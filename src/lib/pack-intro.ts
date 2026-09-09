@@ -93,6 +93,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Blackmar-Diemer Gambit is 1.d4 d5 2.e4 dxe4 3.Nc3 Nf6 4.f3. White offers a pawn to open the f-file and castle long into an attack. Club players like it because the plans look obvious.",
     "As Black, Gunderam (…Bf5), Teichmann (…Bg4), Euwe (…e6), and Bogoljubow (…g6) are the book ways to take the pawn and complete development without walking into the attack.",
   ],
+  "english-white": [
+    "The English Opening is 1.c4. White controls d5 from the flank and can meet 1…e5, 1…c5, or 1…Nf6 with Four Knights, Botvinnik, Symmetrical, Mikenas, and related structures.",
+    "You are not racing for a mate on move ten. Build the English shell, know which Black reply you are in, and practise the main White moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
