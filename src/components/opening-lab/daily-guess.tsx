@@ -124,9 +124,6 @@ function DailyGuessSession({
         {t("← Back")}
       </button>
 
-      <p className="mb-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
-        {t("Daily tasks")}
-      </p>
       <h1 className="mb-3 font-display text-[1.65rem] font-bold tracking-tight">
         {t("Guess the opening")}
       </h1>
