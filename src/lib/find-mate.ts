@@ -1,8 +1,10 @@
 import { Chess } from "chess.js";
 import { localDateKey } from "@/lib/daily-guess";
 
-/** Same-day Find the mate puzzle. Local calendar day, not UTC. */
+/** Same-day Find the mate set. Local calendar day, not UTC. */
 export const FIND_MATE_KEY = "opening-lab:find-mate";
+
+export const MATE_SET_SIZE = 10;
 
 export type MateSide = "w" | "b";
 
@@ -13,32 +15,29 @@ export type MatePuzzle = {
   side: MateSide;
 };
 
-export type MateSession = MatePuzzle & {
+export type MateSession = {
   date: string;
-  solved: boolean;
+  index: number;
+  total: number;
+  puzzle: MatePuzzle | null;
+  done: boolean;
 };
 
 type MateRecord = {
   date: string;
-  id: string;
-  solved: boolean;
+  index: number;
 };
 
 /**
  * Original mate-in-one diagrams. Not Scotch lines, not Opening Traps ot1/ot2.
  * Each intended SAN is checked with chess.js: legal, checkmate, and the only mate.
+ * Order is the set. Mating side is `side` (board flips so that side is at the bottom).
  */
 const MATE_PUZZLES: readonly MatePuzzle[] = [
   {
     id: "scholar",
     fen: "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
     san: "Qxf7#",
-    side: "w",
-  },
-  {
-    id: "white-back-rank",
-    fen: "6k1/5ppp/8/8/8/8/5PPP/4R1K1 w - - 0 1",
-    san: "Re8#",
     side: "w",
   },
   {
@@ -59,17 +58,43 @@ const MATE_PUZZLES: readonly MatePuzzle[] = [
     san: "Qg7#",
     side: "b",
   },
+  {
+    id: "white-back-rank",
+    fen: "6k1/5ppp/8/8/8/8/5PPP/4R1K1 w - - 0 1",
+    san: "Re8#",
+    side: "w",
+  },
+  {
+    id: "black-bishop",
+    fen: "7b/8/8/8/8/8/PPk5/K7 b - - 0 1",
+    san: "Bxb2#",
+    side: "b",
+  },
+  {
+    id: "white-bishop",
+    fen: "7k/5Kpp/8/8/8/8/8/B7 w - - 0 1",
+    san: "Bxg7#",
+    side: "w",
+  },
+  {
+    id: "black-knight",
+    fen: "6k1/8/8/8/6n1/8/6PP/6RK b - - 0 1",
+    san: "Nf2#",
+    side: "b",
+  },
+  {
+    id: "white-knight",
+    fen: "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
+    san: "Nf7#",
+    side: "w",
+  },
+  {
+    id: "black-rook-file",
+    fen: "5r2/8/8/8/8/8/5k2/7K b - - 0 1",
+    san: "Rh8#",
+    side: "b",
+  },
 ];
-
-function mix(date: string, salt: string): number {
-  let h = 2166136261;
-  const s = `${date}:${salt}`;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
 
 export function playMateSan(game: Chess, san: string) {
   return game.move(san) || game.move(san.replace(/#$/, ""));
@@ -78,24 +103,20 @@ export function playMateSan(game: Chess, san: string) {
 /** chess.js: intended SAN is legal and the only mating move. */
 export function isUniqueMateInOne(puzzle: MatePuzzle): boolean {
   try {
-    const game = new Chess(puzzleFen(puzzle));
+    const game = new Chess(puzzle.fen);
     if (game.turn() !== puzzle.side || game.isCheck()) return false;
     const mates = game.moves({ verbose: true }).filter((move) => {
-      const next = new Chess(puzzleFen(puzzle));
+      const next = new Chess(puzzle.fen);
       const played = next.move(move);
       return !!played && next.isCheckmate();
     });
     if (mates.length !== 1 || mates[0]!.san !== puzzle.san) return false;
-    const check = new Chess(puzzleFen(puzzle));
+    const check = new Chess(puzzle.fen);
     const played = playMateSan(check, puzzle.san);
     return !!played && check.isCheckmate() && played.san === puzzle.san;
   } catch {
     return false;
   }
-}
-
-function puzzleFen(puzzle: MatePuzzle): string {
-  return puzzle.fen;
 }
 
 export function matePuzzles(): MatePuzzle[] {
@@ -108,10 +129,9 @@ function readRecord(): MateRecord | null {
     const raw = window.localStorage.getItem(FIND_MATE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<MateRecord>;
-    if (!parsed || typeof parsed.date !== "string" || typeof parsed.id !== "string") {
-      return null;
-    }
-    return { date: parsed.date, id: parsed.id, solved: parsed.solved === true };
+    if (!parsed || typeof parsed.date !== "string") return null;
+    const index = typeof parsed.index === "number" && Number.isFinite(parsed.index) ? parsed.index : 0;
+    return { date: parsed.date, index };
   } catch {
     return null;
   }
@@ -126,9 +146,15 @@ function writeRecord(record: MateRecord) {
   }
 }
 
+function clampIndex(index: number, total: number) {
+  if (!Number.isFinite(index) || index < 0) return 0;
+  return Math.min(Math.floor(index), total);
+}
+
 export function mateDoneToday(now = new Date()): boolean {
+  const pool = matePuzzles();
   const stored = readRecord();
-  return !!stored && stored.date === localDateKey(now) && stored.solved;
+  return !!stored && stored.date === localDateKey(now) && pool.length > 0 && stored.index >= pool.length;
 }
 
 export function loadMateSession(now = new Date()): MateSession | null {
@@ -136,16 +162,16 @@ export function loadMateSession(now = new Date()): MateSession | null {
   if (pool.length === 0) return null;
   const date = localDateKey(now);
   const stored = readRecord();
-  const kept =
-    stored && stored.date === date ? pool.find((item) => item.id === stored.id) : undefined;
-  if (kept) {
-    return { ...kept, date, solved: stored?.solved ?? false };
+  const sameDay = stored && stored.date === date;
+  const index = sameDay ? clampIndex(stored.index, pool.length) : 0;
+  if (!sameDay) writeRecord({ date, index: 0 });
+  if (index >= pool.length) {
+    return { date, index, total: pool.length, puzzle: null, done: true };
   }
-  const next = pool[mix(date, "mate") % pool.length]!;
-  writeRecord({ date, id: next.id, solved: false });
-  return { ...next, date, solved: false };
+  return { date, index, total: pool.length, puzzle: pool[index]!, done: false };
 }
 
-export function saveMateSolved(date: string, id: string) {
-  writeRecord({ date, id, solved: true });
+/** Remember the first unsolved puzzle so a same-day return resumes the set. */
+export function saveMateIndex(date: string, index: number) {
+  writeRecord({ date, index });
 }
