@@ -34,6 +34,7 @@ export function packShortLabel(pack: { id: string; name: string }): string {
     "catalan-white": "Catalan Opening",
     "nimzo-indian-black": "Nimzo-Indian",
     "grunfeld-black": "Grünfeld",
+    "petroff-black": "Petroff",
   };
   if (known[pack.id]) return known[pack.id];
 

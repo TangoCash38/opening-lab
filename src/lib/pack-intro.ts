@@ -109,6 +109,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Grünfeld Defence is 1.d4 Nf6 2.c4 g6 with …d5. Black invites the big centre, then strikes it with …c5 or active pieces against Exchange, Russian, and Fianchetto structures.",
     "You are not racing for a mate on move ten. Know which Grünfeld shell you are in, and practise the main Black moves before you mix plans.",
   ],
+  "petroff-black": [
+    "The Petroff Defence is 1.e4 e5 2.Nf3 Nf6. Black answers symmetrically, then reclaim the centre with …d5 or solid piece play against Classical, Steinitz, and Nimzowitsch structures.",
+    "You are not racing for a mate on move ten. Know which Petroff shell you are in, and practise the main Black moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
