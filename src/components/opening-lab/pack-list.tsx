@@ -2,11 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
+import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, visiblePacks } from "@/lib/catalog";
+import {
+  DEFAULT_FEATURED_PACK_ID,
+  packShortLabel,
+  readFeaturedPackId,
+  writeFeaturedPackId,
+} from "@/lib/featured-pack";
 import { packLooksFree } from "@/lib/review-free";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
-import { useProgress } from "@/hooks/use-progress";
 import {
   clearPendingCheckout,
   confirmCheckoutSession,
@@ -22,9 +27,8 @@ import {
   restorePlayLabPlus,
   startPlayLabPlusYearly,
 } from "@/lib/play-billing";
-import { LineRow, PackExpandHint } from "./pack-lines";
+import { PackExpandHint } from "./pack-lines";
 import { MiniBoard } from "./mini-board";
-import { PackAboutModal } from "./pack-about-modal";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { PlayStoreNotice } from "./play-store-notice";
@@ -54,29 +58,19 @@ function QuietLabel({ children }: { children: string }) {
 function PackCard({
   pack,
   unlocked,
-  subscribed = false,
-  onStartLine,
+  onSelectPack,
   onRequestUnlock,
-  purchasedPackIds = [],
-  defaultOpen = false,
 }: {
   pack: Pack;
   unlocked: boolean;
-  /** Lab+ / active subscription — unlocks every line; pack purchase is separate. */
-  subscribed?: boolean;
-  onStartLine: Props["onStartLine"];
+  onSelectPack: (pack: Pack) => void;
   onRequestUnlock: (pack: Pack) => void;
-  purchasedPackIds?: readonly string[];
-  defaultOpen?: boolean;
 }) {
   const t = useT();
-  const [open, setOpen] = useState(defaultOpen);
-  const [aboutOpen, setAboutOpen] = useState(false);
-  const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
-  const { masteryOf, isComplete, testPercentOf } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
   const locked = !unlocked;
+  const shortPack = packShortLabel(pack);
 
   const sideClass =
     pack.side === "White"
@@ -88,14 +82,13 @@ function PackCard({
   return (
     <div
       className={`mb-3.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
-        open ? "border-accent/35" : locked ? "border-border/80" : "border-border"
+        locked ? "border-border/80" : "border-border"
       }`}
     >
       <button
         type="button"
         className="flex w-full flex-col px-4 pb-3 pt-3.5 text-left"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
+        onClick={() => onSelectPack(pack)}
       >
         <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
           <div className="relative">
@@ -167,45 +160,22 @@ function PackCard({
           </div>
         </div>
         <PackExpandHint
-          open={open}
+          open={false}
           free={free}
           closedLabel={
             price
-              ? t("{price} · tap to see {n} lines", { price, n: pack.lines.length })
-              : t("Tap to see {n} lines", { n: pack.lines.length })
+              ? t("{price} · See {n} {pack} lines", {
+                  price,
+                  n: pack.lines.length,
+                  pack: shortPack,
+                })
+              : t("Tap to see {n} {pack} lines", {
+                  n: pack.lines.length,
+                  pack: shortPack,
+                })
           }
         />
       </button>
-
-      {open && (
-        <div className="border-t border-border px-3 pb-4 pt-2.5">
-          {pack.lines.map((line, i) => {
-            const lineUnlocked = subscribed || isLineUnlocked(pack, line.id, purchasedPackIds);
-            const rowLocked = locked || !lineUnlocked;
-            const mastery = masteryOf(line.id);
-            const complete = !rowLocked && isComplete(line.id);
-            return (
-              <LineRow
-                key={line.id}
-                index={i}
-                line={line}
-                complete={complete}
-                mastery={mastery}
-                locked={rowLocked}
-                showFree={free && lineUnlocked}
-                testPercent={rowLocked ? null : testPercentOf(line.id, line.plies.length)}
-                onClick={() => {
-                  if (rowLocked) onRequestUnlock(pack);
-                  else if (pack.about) {
-                    setPendingLine(line);
-                    setAboutOpen(true);
-                  } else onStartLine(pack, line);
-                }}
-              />
-            );
-          })}
-        </div>
-      )}
 
       {locked && (
         <div className="border-t border-border px-3 pb-3 pt-2">
@@ -219,32 +189,13 @@ function PackCard({
           </button>
         </div>
       )}
-
-      {pack.about && aboutOpen ? (
-        <PackAboutModal
-          title={pack.name}
-          about={pack.about}
-          packId={pack.id}
-          startLabel={t("Start")}
-          onClose={() => {
-            setAboutOpen(false);
-            setPendingLine(null);
-          }}
-          onStart={() => {
-            setAboutOpen(false);
-            const line = pendingLine;
-            setPendingLine(null);
-            if (line) onStartLine(pack, line);
-          }}
-        />
-      ) : null}
     </div>
   );
 }
 
 export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   const t = useT();
-  const { canAccess, buyPack, subscribe, paymentsEnabled, state, subscribed } = useUnlocks();
+  const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -253,20 +204,44 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
+  const [featuredId, setFeaturedId] = useState(DEFAULT_FEATURED_PACK_ID);
   const resumedCheckout = useRef(false);
+  const heroAnchorRef = useRef<HTMLDivElement>(null);
   const wrap = playApp || isPlayWrap();
 
   useEffect(() => {
     setPlayApp(isPlayWrap());
   }, []);
 
+  useEffect(() => {
+    setFeaturedId(readFeaturedPackId());
+  }, []);
+
   const catalog = visiblePacks(PACKS);
-  const white = catalog.filter((p) => p.section === "white");
-  const black = catalog.filter((p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black");
-  const classicGames = catalog.find((p) => p.id === "classic-games");
-  const vsLondon = catalog.find((p) => p.id === "vs-london");
-  const clubWeapons = catalog.find((p) => p.id === "club-weapons");
-  const openingTraps = catalog.find((p) => p.id === "opening-traps");
+  const featuredPack =
+    catalog.find((p) => p.id === featuredId) ??
+    catalog.find((p) => p.id === DEFAULT_FEATURED_PACK_ID) ??
+    catalog[0];
+
+  const promotePack = (pack: Pack) => {
+    setFeaturedId(pack.id);
+    writeFeaturedPackId(pack.id);
+    const scrollTop = () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      heroAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    requestAnimationFrame(scrollTop);
+  };
+
+  const notFeatured = (p: Pack) => p.id !== featuredPack?.id;
+  const white = catalog.filter((p) => p.section === "white" && notFeatured(p));
+  const black = catalog.filter(
+    (p) => p.section === "black" && p.id !== "vs-london" && notFeatured(p),
+  );
+  const classicGames = catalog.find((p) => p.id === "classic-games" && notFeatured(p));
+  const vsLondon = catalog.find((p) => p.id === "vs-london" && notFeatured(p));
+  const clubWeapons = catalog.find((p) => p.id === "club-weapons" && notFeatured(p));
+  const openingTraps = catalog.find((p) => p.id === "opening-traps" && notFeatured(p));
   const morePacks =
     !!classicGames ||
     !!vsLondon ||
@@ -488,18 +463,23 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
         </p>
       )}
 
-      <HomeHero
-        playApp={wrap}
-        onStartLine={onStartLine}
-        onHowToPlay={onHowToPlay}
-        onOpenMate={onOpenMate}
-        onRequestUnlock={requestUnlock}
-        onSubscribe={() => {
-          if (wrap && !offerPlayLabPlus) return;
-          setPayError(null);
-          setShowSub(true);
-        }}
-      />
+      <div ref={heroAnchorRef}>
+        {featuredPack ? (
+          <HomeHero
+            pack={featuredPack}
+            playApp={wrap}
+            onStartLine={onStartLine}
+            onHowToPlay={onHowToPlay}
+            onOpenMate={onOpenMate}
+            onRequestUnlock={requestUnlock}
+            onSubscribe={() => {
+              if (wrap && !offerPlayLabPlus) return;
+              setPayError(null);
+              setShowSub(true);
+            }}
+          />
+        ) : null}
+      </div>
 
       <div className="pack-list-grid">
         {morePacks ? (
@@ -512,10 +492,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           <PackCard
             pack={openingTraps}
             unlocked={canAccess(openingTraps)}
-            subscribed={subscribed}
-            onStartLine={onStartLine}
+            onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
-            purchasedPackIds={state.packs}
           />
         ) : null}
 
@@ -523,10 +501,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           <PackCard
             pack={classicGames}
             unlocked={canAccess(classicGames)}
-            subscribed={subscribed}
-            onStartLine={onStartLine}
+            onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
-            purchasedPackIds={state.packs}
           />
         ) : null}
 
@@ -534,10 +510,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           <PackCard
             pack={vsLondon}
             unlocked={canAccess(vsLondon)}
-            subscribed={subscribed}
-            onStartLine={onStartLine}
+            onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
-            purchasedPackIds={state.packs}
           />
         ) : null}
 
@@ -549,10 +523,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
                 key={p.id}
                 pack={p}
                 unlocked={canAccess(p)}
-                subscribed={subscribed}
-                onStartLine={onStartLine}
+                onSelectPack={promotePack}
                 onRequestUnlock={requestUnlock}
-                purchasedPackIds={state.packs}
               />
             ))}
           </>
@@ -566,10 +538,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
                 key={p.id}
                 pack={p}
                 unlocked={canAccess(p)}
-                subscribed={subscribed}
-                onStartLine={onStartLine}
+                onSelectPack={promotePack}
                 onRequestUnlock={requestUnlock}
-                purchasedPackIds={state.packs}
               />
             ))}
           </>
@@ -579,10 +549,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           <PackCard
             pack={clubWeapons}
             unlocked={canAccess(clubWeapons)}
-            subscribed={subscribed}
-            onStartLine={onStartLine}
+            onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
-            purchasedPackIds={state.packs}
           />
         ) : null}
       </div>
