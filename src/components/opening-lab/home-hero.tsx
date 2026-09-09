@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
-import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
+import { type OpeningLine, type Pack } from "@/data/packs";
+import { packPrice } from "@/data/pricing";
 import { useProgress } from "@/hooks/use-progress";
-import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
+import { FREE_SAMPLE_LINE_IDS, isLineUnlocked } from "@/lib/catalog";
+import { packShortLabel } from "@/lib/featured-pack";
 import {
   formatUnlockRemaining,
   mateDoneToday,
@@ -19,6 +21,7 @@ import { PackAboutModal } from "./pack-about-modal";
 type TrainMode = "learn" | "practice";
 
 type Props = {
+  pack: Pack;
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onHowToPlay: () => void;
   onOpenMate: () => void;
@@ -28,6 +31,7 @@ type Props = {
 };
 
 export function HomeHero({
+  pack,
   onStartLine,
   onHowToPlay,
   onOpenMate,
@@ -38,14 +42,18 @@ export function HomeHero({
   const { masteryOf, isComplete, testPercentOf } = useProgress();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
-  const catalog = visiblePacks(PACKS);
-  const pack = catalog.find((p) => p.id === "caro-kann-black");
-  const shownLines = pack ? pack.lines : [];
+  const shownLines = pack.lines;
   const [linesOpen, setLinesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
 
   const websiteSplit = !playApp;
+  const hasFreeSample = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
+  const price = packPrice(pack);
+  const shortPack = packShortLabel(pack);
+  // Keep default Caro-Kann for Black / Advance, Classical, Exchange strings for tests.
+  const title = pack.name || "Caro-Kann for Black";
+  const blurb = pack.blurb || "Advance, Classical, Exchange";
 
   useEffect(() => {
     if (!websiteSplit || typeof window === "undefined") return;
@@ -58,15 +66,37 @@ export function HomeHero({
     return () => mq.removeEventListener("change", sync);
   }, [websiteSplit]);
 
+  useEffect(() => {
+    setLinesOpen(false);
+    setAboutOpen(false);
+    setPendingLine(null);
+  }, [pack.id]);
+
   const game = useMemo(() => new Chess(), []);
 
+  const pickPracticeLine = (): OpeningLine | undefined => {
+    if (pack.id === "caro-kann-black") {
+      return pack.lines.find((l) => l.id === "ckb1");
+    }
+    const samples = FREE_SAMPLE_LINE_IDS[pack.id];
+    if (samples?.length) {
+      const sample = pack.lines.find((l) => l.id === samples[0]);
+      if (sample) return sample;
+    }
+    const unlocked = pack.lines.find(
+      (l) => subscribed || isLineUnlocked(pack, l.id, purchased),
+    );
+    return unlocked;
+  };
+
   const startAdvance = () => {
-    const line = pack?.lines.find((l) => l.id === "ckb1");
-    if (pack && line) onStartLine(pack, line, "learn");
+    const line = pickPracticeLine();
+    if (line) onStartLine(pack, line, "learn");
+    else onRequestUnlock?.(pack);
   };
 
   const openIntroThenPractice = () => {
-    if (pack?.about) setAboutOpen(true);
+    if (pack.about) setAboutOpen(true);
     else startAdvance();
   };
 
@@ -92,21 +122,25 @@ export function HomeHero({
         <div className="home-hero-split-inner">
           <div className="home-hero-board-col">
             <div className="home-sample-meta px-4 pb-2 pt-3.5">
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
-                {t("Free sample")}
-              </p>
+              {hasFreeSample ? (
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+                  {t("Free sample")}
+                </p>
+              ) : price ? (
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+                  {price}
+                </p>
+              ) : null}
               <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">
-                Caro-Kann for Black
+                {title}
               </h2>
-              <p className="mt-0.5 text-[0.82rem] text-fg-muted">
-                {pack?.blurb ?? "Advance, Classical, Exchange"}
-              </p>
+              <p className="mt-0.5 text-[0.82rem] text-fg-muted">{blurb}</p>
             </div>
 
             <div className="home-board pointer-events-none px-2">
               <ChessBoard
                 game={game}
-                flip={true}
+                flip={pack.side === "Black"}
                 selected={null}
                 wrongUntil={null}
                 expected={null}
@@ -151,11 +185,16 @@ export function HomeHero({
                   strokeWidth={2.75}
                   aria-hidden
                 />
-                {linesOpen ? t("Tap to hide") : t("See {n} lines", { n: shownLines.length })}
+                {linesOpen
+                  ? t("Tap to hide")
+                  : t("See {n} {pack} lines", {
+                      n: shownLines.length,
+                      pack: shortPack,
+                    })}
               </button>
             </div>
 
-            {pack && linesOpen ? (
+            {linesOpen ? (
               <div className="home-lines-panel border-t border-border">
                 {shownLines.map((item, i) => {
                   const unlocked = subscribed || isLineUnlocked(pack, item.id, purchased);
@@ -192,7 +231,7 @@ export function HomeHero({
         </div>
       </div>
 
-      {pack?.about && aboutOpen ? (
+      {pack.about && aboutOpen ? (
         <PackAboutModal
           title={pack.name}
           about={pack.about}
