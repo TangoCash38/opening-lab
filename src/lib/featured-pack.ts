@@ -30,6 +30,7 @@ export function packShortLabel(pack: { id: string; name: string }): string {
     "bdg-black": "Blackmar–Diemer",
     "d4-sidelines-black": "1.d4 Sidelines",
     "anti-sicilian-black": "Anti-Sicilian",
+    "english-white": "English Opening",
   };
   if (known[pack.id]) return known[pack.id];
 
