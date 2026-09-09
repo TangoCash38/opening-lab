@@ -113,6 +113,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Petroff Defence is 1.e4 e5 2.Nf3 Nf6. Black answers symmetrically, then reclaim the centre with …d5 or solid piece play against Classical, Steinitz, and Nimzowitsch structures.",
     "You are not racing for a mate on move ten. Know which Petroff shell you are in, and practise the main Black moves before you mix plans.",
   ],
+  "berlin-black": [
+    "The Berlin Defence is 1.e4 e5 2.Nf3 Nc6 3.Bb5 Nf6. Black answers the Spanish with …Nf6, then steers into the Berlin Wall endgame, Rio trades, or quiet Anti-Berlin 4.d3 shells.",
+    "You are not racing for a mate on move ten. Know which Berlin shell you are in, and practise the main Black moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
