@@ -38,7 +38,6 @@ type TrainMode = "learn" | "practice";
 type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onHowToPlay: () => void;
-  onOpenGuess: () => void;
   onOpenMate: () => void;
 };
 
@@ -243,7 +242,7 @@ function PackCard({
   );
 }
 
-export function PackList({ onStartLine, onHowToPlay, onOpenGuess, onOpenMate }: Props) {
+export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   const t = useT();
   const { canAccess, buyPack, subscribe, paymentsEnabled, state, subscribed } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
@@ -493,7 +492,6 @@ export function PackList({ onStartLine, onHowToPlay, onOpenGuess, onOpenMate }: 
         playApp={wrap}
         onStartLine={onStartLine}
         onHowToPlay={onHowToPlay}
-        onOpenGuess={onOpenGuess}
         onOpenMate={onOpenMate}
         onRequestUnlock={requestUnlock}
         onSubscribe={() => {

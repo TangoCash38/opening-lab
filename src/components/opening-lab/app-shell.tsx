@@ -22,7 +22,6 @@ import {
   type ColorScheme,
 } from "@/lib/color-scheme";
 import { isPlayWrap } from "@/lib/play-app";
-import { DailyGuess } from "./daily-guess";
 import { FindMate } from "./find-mate";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
@@ -36,7 +35,7 @@ import {
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "home" | "train" | "guide" | "daily" | "mate";
+type View = "home" | "train" | "guide" | "mate";
 type TrainMode = "learn" | "practice";
 
 
@@ -252,11 +251,6 @@ function OpeningLabInner() {
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());
             }}
-            onOpenGuess={() => {
-              setView("daily");
-              scrollAppTop();
-              requestAnimationFrame(() => scrollAppTop());
-            }}
             onOpenMate={() => {
               setView("mate");
               scrollAppTop();
@@ -265,7 +259,6 @@ function OpeningLabInner() {
           />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}
-        {view === "daily" && <DailyGuess onBack={goHome} />}
         {view === "mate" && <FindMate onBack={goHome} />}
         {view === "train" && active && isPackVisible(active.pack) && (
           <TrainView
