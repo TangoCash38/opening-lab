@@ -4,7 +4,11 @@ import { Chess } from "chess.js";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isLineUnlocked, visiblePacks } from "@/lib/catalog";
-import { mateDoneToday } from "@/lib/find-mate";
+import {
+  formatUnlockRemaining,
+  mateDoneToday,
+  mateUnlockRemainingMs,
+} from "@/lib/find-mate";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import { ChessBoard } from "./chess-board";
@@ -215,10 +219,18 @@ function MoreGamesMenu({ onMate }: { onMate: () => void }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const [mateDone, setMateDone] = useState(false);
+  const [mateWait, setMateWait] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMateDone(mateDoneToday());
+    const refresh = () => {
+      const done = mateDoneToday();
+      setMateDone(done);
+      setMateWait(done ? formatUnlockRemaining(mateUnlockRemainingMs()) : "");
+    };
+    refresh();
+    const id = window.setInterval(refresh, 60_000);
+    return () => window.clearInterval(id);
   }, []);
 
   useEffect(() => {
@@ -273,7 +285,9 @@ function MoreGamesMenu({ onMate }: { onMate: () => void }) {
             <span className="block text-[0.88rem] font-semibold">{t("Find the mate")}</span>
             {mateDone ? (
               <span className="mt-0.5 block text-[0.72rem] font-semibold text-fg-muted">
-                {t("Done for today")}
+                {mateWait
+                  ? t("Next 5 unlock in {time}", { time: mateWait })
+                  : t("Done for today")}
               </span>
             ) : null}
           </button>
