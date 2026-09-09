@@ -101,6 +101,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Catalan Opening is 1.d4 Nf6 2.c4 e6 3.g3. White fianchettoes the king bishop and meets Open, Closed, and Bogo-Catalan structures — recover c4, clamp the centre, and use the long diagonal.",
     "You are not racing for a mate on move ten. Know which Catalan shell you are in, and practise the main White moves before you mix plans.",
   ],
+  "nimzo-indian-black": [
+    "The Nimzo-Indian Defence is 1.d4 Nf6 2.c4 e6 3.Nc3 Bb4. Black pins the knight, fights doubled c-pawns, and strikes with …c5 or …d5 against Classical, Rubinstein, and Sämisch structures.",
+    "You are not racing for a mate on move ten. Know which Nimzo shell you are in, and practise the main Black moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
