@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="3 September 2026">
+    <LegalPage title="Terms of Use" updated="10 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -26,18 +26,36 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          There are twenty opening packs. Caro-Kann for Black is the home
-          sample: Advance, Classical, and Exchange are free. Unlock the rest
-          of that pack for £1.99. Every other pack is £2.99, one-time, on
-          this website via Stripe. There is no Lab+ subscription.
+          There are thirty opening packs. Some lines are free as samples (for
+          example part of Caro-Kann). Other packs are one-time purchases on
+          this website via Stripe, usually £1.99 or £2.99 in the UK. You can
+          also buy Buy all packs for £19.99 (UK), which unlocks every opening
+          pack on the website. Prices include VAT where it applies. Pack
+          billing in the Google Play app is not on sale in this build.
         </p>
       </LegalSection>
 
-      <LegalSection title="If we add paid packs">
+      <LegalSection title="Buy all packs">
         <p>
-          Paid packs are one-time purchases on this website. They stay on
-          your account when you sign in. We will not take away a pack you
-          already paid for, except where we must for legal reasons.
+          Buy all packs is a one-time website purchase. It is not a lifetime
+          licence and we do not sell lifetime access.
+        </p>
+        <p>
+          What you get: full access on your account to every opening pack on
+          the website at the time of purchase, and to packs we later add to
+          that Buy all offer, for as long as we keep Opening Lab available to
+          you.
+        </p>
+        <p>
+          We guarantee that access for at least 12 months from the purchase
+          date. We will try to keep the service running after that. If we stop
+          the service or end that access more than 12 months after your Buy
+          all purchase, no further refund is due for that purchase because of
+          the stop or change, except where UK law says otherwise.
+        </p>
+        <p>
+          Buy all does not change the 14-day cooling-off rules below. Nothing
+          in these terms takes away your rights as a UK consumer.
         </p>
       </LegalSection>
 

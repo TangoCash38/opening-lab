@@ -97,3 +97,31 @@ test("opening-traps free samples are ot1 and ot2 only", () => {
   assert.match(pricing, /opening-traps/);
   assert.match(pricing, /isPayAsYouGoPack[\s\S]*opening-traps/);
 });
+
+test("Buy all packs is £19.99 one-time checkout kind", () => {
+  assert.match(pricing, /PRICE_BUY_ALL = "£19\.99"/);
+  const checkout = readFileSync(join(root, "src/lib/checkout.ts"), "utf8");
+  assert.match(checkout, /"buy_all"/);
+  const stripe = readFileSync(join(root, "src/lib/stripe.server.ts"), "utf8");
+  assert.match(stripe, /kind === "buy_all"/);
+  assert.match(stripe, /PRICE_BUY_ALL/);
+  const purchases = readFileSync(join(root, "src/lib/purchases.server.ts"), "utf8");
+  assert.match(purchases, /kind === "buy_all"/);
+  assert.match(purchases, /plan = "buy_all"/);
+  const unlocks = readFileSync(join(root, "src/lib/unlocks.ts"), "utf8");
+  assert.match(unlocks, /plan === "buy_all"/);
+  assert.match(unlocks, /activateBuyAll/);
+  const modal = readFileSync(
+    join(root, "src/components/opening-lab/unlock-modal.tsx"),
+    "utf8",
+  );
+  assert.match(modal, /or buy all for just £19\.99/);
+  const migration = readFileSync(join(root, "migrations/0005_buy_all.sql"), "utf8");
+  assert.match(migration, /'buy_all'/);
+  const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
+  assert.match(terms, /thirty opening packs/);
+  assert.match(terms, /Buy all packs for £19\.99/);
+  assert.match(terms, /10 September 2026/);
+  assert.match(terms, /not a lifetime licence/);
+  assert.doesNotMatch(terms, /forever/i);
+});
