@@ -259,10 +259,19 @@ export async function applyPurchase(
   return unlocks;
 }
 
+/** True when Stripe secret is set — same check as paymentsAreEnabled(). */
+function stripePaymentsConfigured(): boolean {
+  return Boolean(process.env.STRIPE_SECRET_KEY?.trim());
+}
+
 export async function claimUnlocksForUser(
   userId: string,
   incoming: UnlockState,
 ): Promise<UnlockState> {
+  // Defense in depth: never persist client-asserted unlocks when payments are live.
+  if (stripePaymentsConfigured()) {
+    return getUnlocksForUser(userId);
+  }
   const packs = normalizePacks(incoming.packs);
   const plan = asPlan(incoming.plan);
   let expiresAt =
@@ -338,6 +347,19 @@ export async function unlocksClaimResponse(request: Request): Promise<Response> 
       return json(unlocksForRequest(request, await getUnlocksForUser(user.id)));
     } catch (err) {
       console.error("[purchases] play claim skipped", err);
+      return json({ error: "Could not load unlocks" }, 500);
+    }
+  }
+
+  // When Stripe/payments are configured, only return existing server unlocks —
+  // never write client-asserted packs/plans. Stripe applyPurchase is the grant path.
+  if (stripePaymentsConfigured()) {
+    try {
+      return json(
+        unlocksForSignedIn(request, user, await getUnlocksForUser(user.id)),
+      );
+    } catch (err) {
+      console.error("[purchases] claim read-only load failed", err);
       return json({ error: "Could not load unlocks" }, 500);
     }
   }

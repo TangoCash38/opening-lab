@@ -34,7 +34,7 @@ import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { getCookie } from "@tanstack/react-start/server";
 import { randomBytes } from "node:crypto";
 import { Pool } from "pg";
-import { ensureDbReady, getPglite } from "../db";
+import { ensureDbReady, getOrCreateNeonPool, getPglite } from "../db";
 import {
   emailAndPassword,
   emailAndPasswordEnabled,
@@ -169,7 +169,9 @@ const grokUserInfoUrl = `${issuerBase}/api/auth/oauth2/userinfo`;
 // Auth persists to the SAME DB as app data. On Vercel without DATABASE_URL the
 // auth route short-circuits and never imports this module.
 const database = databaseUrl
-  ? new Pool({ connectionString: databaseUrl })
+  ? getOrCreateNeonPool(
+      () => new Pool({ connectionString: databaseUrl, max: 2 }),
+    )
   : { dialect: pgliteDialect(() => getPglite()), type: "postgres" as const };
 
 /** Session token cookie name — also read by the live-preview popup completion page. */

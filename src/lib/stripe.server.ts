@@ -292,7 +292,22 @@ export async function handleStripeWebhook(request: Request): Promise<Response> {
   const webhookSecret = env("STRIPE_WEBHOOK_SECRET");
   let event: Stripe.Event | null = null;
 
-  if (webhookSecret) {
+  const isProduction =
+    process.env.VERCEL_ENV === "production" ||
+    process.env.NODE_ENV === "production";
+
+  if (!webhookSecret) {
+    // Never accept unsigned raw JSON in production.
+    if (isProduction) {
+      console.error("[stripe] STRIPE_WEBHOOK_SECRET missing in production");
+      return new Response("Webhook secret not configured", { status: 500 });
+    }
+    try {
+      event = JSON.parse(raw) as Stripe.Event;
+    } catch {
+      return json({ received: true });
+    }
+  } else {
     const signature = request.headers.get("stripe-signature");
     if (!signature) {
       return new Response("Missing signature", { status: 400 });
@@ -301,12 +316,6 @@ export async function handleStripeWebhook(request: Request): Promise<Response> {
       event = Stripe.webhooks.constructEvent(raw, signature, webhookSecret);
     } catch {
       return new Response("Invalid signature", { status: 400 });
-    }
-  } else {
-    try {
-      event = JSON.parse(raw) as Stripe.Event;
-    } catch {
-      return json({ received: true });
     }
   }
 
