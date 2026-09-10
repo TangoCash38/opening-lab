@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import { PACKS } from "@/data/packs";
 import {
   LAB_PLUS_LABEL,
+  PRICE_BUY_ALL,
   PRICE_MONTHLY,
   PRICE_YEARLY,
   packPrice,
@@ -13,7 +14,7 @@ import {
 import { applyPurchase, signedInUserId } from "@/lib/purchases.server";
 import { MONTH_MS, YEAR_MS, type SubPlan } from "@/lib/unlocks";
 
-export type CheckoutKind = "monthly" | "yearly" | "pack";
+export type CheckoutKind = "monthly" | "yearly" | "pack" | "buy_all";
 
 function env(key: string): string | undefined {
   const value = process.env[key]?.trim();
@@ -124,6 +125,13 @@ async function persistPaidSession(
       });
       return;
     }
+    if (kind === "buy_all") {
+      await applyPurchase(userId, {
+        kind: "buy_all",
+        stripeCustomerId: stripeId(session.customer),
+      });
+      return;
+    }
     if (plan) {
       await applyPurchase(userId, {
         kind: plan,
@@ -160,7 +168,7 @@ export async function createCheckoutSession(request: Request): Promise<Response>
   }
 
   const kind = body.kind;
-  if (kind !== "monthly" && kind !== "yearly" && kind !== "pack") {
+  if (kind !== "monthly" && kind !== "yearly" && kind !== "pack" && kind !== "buy_all") {
     return json({ error: "Invalid request" }, 400);
   }
 
@@ -182,6 +190,18 @@ export async function createCheckoutSession(request: Request): Promise<Response>
         unit_amount: pence,
         recurring: { interval: kind === "monthly" ? "month" : "year" },
         product_data: { name: LAB_PLUS_LABEL },
+      },
+    };
+  } else if (kind === "buy_all") {
+    const pence = priceToPence(PRICE_BUY_ALL);
+    if (!pence) return json({ error: "Invalid price" }, 400);
+    mode = "payment";
+    lineItem = {
+      quantity: 1,
+      price_data: {
+        currency: "gbp",
+        unit_amount: pence,
+        product_data: { name: "Buy all packs" },
       },
     };
   } else {
@@ -258,9 +278,12 @@ export async function getCheckoutSession(request: Request): Promise<Response> {
 
   return json({
     ok: true,
-    kind: kind === "monthly" || kind === "yearly" || kind === "pack" ? kind : undefined,
+    kind:
+      kind === "monthly" || kind === "yearly" || kind === "pack" || kind === "buy_all"
+        ? kind
+        : undefined,
     packId,
-    plan,
+    plan: kind === "buy_all" ? "buy_all" : plan,
   });
 }
 

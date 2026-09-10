@@ -13,6 +13,7 @@ import {
   isPackUnlocked,
   isSubscriptionActive,
   replaceUnlocks,
+  activateBuyAll,
   startSubscription,
   subscribeUnlocks,
   unlockPack,
@@ -135,5 +136,10 @@ export function useUnlocks() {
     setState(getUnlocks());
   }, []);
 
-  return { state, subscribed, canAccess, buyPack, subscribe, paymentsEnabled };
+  const buyAll = useCallback(() => {
+    activateBuyAll();
+    setState(getUnlocks());
+  }, []);
+
+  return { state, subscribed, canAccess, buyPack, subscribe, buyAll, paymentsEnabled };
 }

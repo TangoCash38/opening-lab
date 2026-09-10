@@ -195,7 +195,7 @@ function PackCard({
 
 export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   const t = useT();
-  const { canAccess, buyPack, subscribe, paymentsEnabled } = useUnlocks();
+  const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -269,6 +269,8 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
         }
         if (result.kind === "pack" && result.packId) {
           buyPack(result.packId);
+        } else if (result.kind === "buy_all" || result.plan === "buy_all") {
+          buyAll();
         } else if (result.kind === "monthly" || result.kind === "yearly") {
           subscribe(result.kind);
         } else if (result.plan === "monthly" || result.plan === "yearly") {
@@ -287,7 +289,7 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [buyPack, subscribe]);
+  }, [buyPack, buyAll, subscribe]);
 
   const requestUnlock = (pack: Pack) => {
     const price = packPrice(pack);
@@ -399,6 +401,7 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
         return;
       }
       if (kind === "pack" && packId) buyPack(packId);
+      else if (kind === "buy_all") buyAll();
       else if (kind === "monthly" || kind === "yearly") subscribe(kind);
       setModal(null);
       setShowSub(false);
@@ -588,6 +591,9 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           }}
           onUnlockPack={() => {
             void pay("pack", modal.pack.id);
+          }}
+          onBuyAll={() => {
+            void pay("buy_all");
           }}
           onSubscribeMonthly={() => {
             void pay("monthly");

@@ -399,7 +399,7 @@ export async function sendLineFeedbackEmail(input: {
 
 export async function notifyPaidUnlock(input: {
   userId: string;
-  kind: "pack" | "monthly" | "yearly";
+  kind: "pack" | "monthly" | "yearly" | "buy_all";
   packId?: string;
 }): Promise<void> {
   try {
@@ -413,6 +413,10 @@ export async function notifyPaidUnlock(input: {
       const to = await userEmail(input.userId);
       if (!to) return;
       await sendPackEmail(to, packName);
+      return;
+    }
+    if (input.kind === "buy_all") {
+      // Buy all is not Lab+. Skip Lab+ welcome mail.
       return;
     }
     if (input.kind === "monthly" || input.kind === "yearly") {

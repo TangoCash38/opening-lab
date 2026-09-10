@@ -1,12 +1,12 @@
 import { isPlayApp, isPlayWrap } from "@/lib/play-app";
 
-export type CheckoutKind = "monthly" | "yearly" | "pack";
+export type CheckoutKind = "monthly" | "yearly" | "pack" | "buy_all";
 
 export type CheckoutSessionResult = {
   ok: boolean;
   kind?: CheckoutKind;
   packId?: string;
-  plan?: "monthly" | "yearly" | null;
+  plan?: "monthly" | "yearly" | "buy_all" | null;
 };
 
 export async function fetchPaymentsEnabled(): Promise<boolean> {
@@ -64,7 +64,12 @@ export function readPendingCheckout(): PendingCheckout | null {
     const raw = sessionStorage.getItem(PENDING_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as { kind?: unknown; packId?: unknown };
-    if (parsed.kind !== "monthly" && parsed.kind !== "yearly" && parsed.kind !== "pack") {
+    if (
+      parsed.kind !== "monthly" &&
+      parsed.kind !== "yearly" &&
+      parsed.kind !== "pack" &&
+      parsed.kind !== "buy_all"
+    ) {
       return null;
     }
     return {

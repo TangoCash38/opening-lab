@@ -7,6 +7,7 @@ type Props = {
   price: string;
   onClose: () => void;
   onUnlockPack: () => void;
+  onBuyAll?: () => void;
   onSubscribeMonthly: () => void;
   onSubscribeYearly: () => void;
   onRestore?: () => void;
@@ -22,6 +23,7 @@ export function UnlockModal({
   price,
   onClose,
   onUnlockPack,
+  onBuyAll,
   paymentsEnabled = false,
   needsAccount = false,
   busy = false,
@@ -93,22 +95,36 @@ export function UnlockModal({
               </div>
             </>
           ) : (
-            <button
-              type="button"
-              onClick={onUnlockPack}
-              disabled={busy}
-              className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
-            >
-              <span>
-                <span className="block text-[0.92rem] font-bold text-accent">
-                  {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
+            <>
+              <button
+                type="button"
+                onClick={onUnlockPack}
+                disabled={busy}
+                className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
+              >
+                <span>
+                  <span className="block text-[0.92rem] font-bold text-accent">
+                    {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
+                  </span>
+                  <span className="block text-[0.75rem] text-fg-muted">
+                    {t("Yours to keep. Card via Stripe.")}
+                  </span>
                 </span>
-                <span className="block text-[0.75rem] text-fg-muted">
-                  {t("Yours to keep. Card via Stripe.")}
-                </span>
-              </span>
-              <span className="text-base font-bold text-accent">{price}</span>
-            </button>
+                <span className="text-base font-bold text-accent">{price}</span>
+              </button>
+              {onBuyAll ? (
+                <button
+                  type="button"
+                  onClick={onBuyAll}
+                  disabled={busy}
+                  className="flex w-full items-center justify-center rounded-xl border border-border bg-bg-subtle px-4 py-3 text-center active:scale-[0.99] disabled:opacity-60"
+                >
+                  <span className="text-[0.92rem] font-semibold text-fg">
+                    {t("or buy all for just £19.99")}
+                  </span>
+                </button>
+              ) : null}
+            </>
           )}
 
           {error ? (

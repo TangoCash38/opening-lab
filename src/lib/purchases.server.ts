@@ -18,7 +18,7 @@ const KNOWN_PACK_IDS = new Set(PACKS.map((p) => p.id));
 const EMPTY: UnlockState = { packs: [], plan: null, expiresAt: null };
 
 export type PurchaseApply = {
-  kind: "pack" | "monthly" | "yearly";
+  kind: "pack" | "monthly" | "yearly" | "buy_all";
   packId?: string;
   plan?: SubPlan | null;
   expiresAt?: number | null;
@@ -49,7 +49,9 @@ function asExpiryMs(value: Date | string | null | undefined): number | null {
 }
 
 function asPlan(value: unknown): SubPlan | null {
-  return value === "monthly" || value === "yearly" ? value : null;
+  return value === "monthly" || value === "yearly" || value === "buy_all"
+    ? value
+    : null;
 }
 
 function normalizePacks(value: unknown): string[] {
@@ -208,10 +210,13 @@ export async function applyPurchase(
   userId: string,
   input: PurchaseApply,
 ): Promise<UnlockState> {
-  const packs =
-    input.kind === "pack" && input.packId && KNOWN_PACK_IDS.has(input.packId)
-      ? [input.packId]
-      : [];
+  let packs: string[] = [];
+  if (input.kind === "pack" && input.packId && KNOWN_PACK_IDS.has(input.packId)) {
+    packs = [input.packId];
+  } else if (input.kind === "buy_all") {
+    // Snapshot every current pack id; plan buy_all also unlocks packs added later.
+    packs = PACKS.map((p) => p.id);
+  }
 
   let plan: SubPlan | null = null;
   let expiresAt: number | null = null;
@@ -221,6 +226,13 @@ export async function applyPurchase(
       typeof input.expiresAt === "number" && Number.isFinite(input.expiresAt)
         ? input.expiresAt
         : Date.now() + (plan === "yearly" ? YEAR_MS : MONTH_MS);
+  } else if (input.kind === "buy_all") {
+    plan = "buy_all";
+    // Marker for upsert merge preference; unlock checks treat buy_all as active.
+    expiresAt =
+      typeof input.expiresAt === "number" && Number.isFinite(input.expiresAt)
+        ? input.expiresAt
+        : Date.now() + 100 * YEAR_MS;
   }
 
   const unlocks = await upsertMerged(

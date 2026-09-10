@@ -6,7 +6,7 @@ import { isPlayApp, isPlayBilledLabPlusActive } from "@/lib/play-app";
 
 const STORAGE_KEY = "opening-lab:unlocks:v2";
 
-export type SubPlan = "monthly" | "yearly";
+export type SubPlan = "monthly" | "yearly" | "buy_all";
 
 export type UnlockState = {
   packs: string[];
@@ -44,7 +44,10 @@ export function normalizeUnlockState(parsed: Partial<UnlockState> | null | undef
     packs: Array.isArray(parsed?.packs)
       ? parsed.packs.filter((id): id is string => typeof id === "string" && !!id)
       : [],
-    plan: parsed?.plan === "monthly" || parsed?.plan === "yearly" ? parsed.plan : null,
+    plan:
+      parsed?.plan === "monthly" || parsed?.plan === "yearly" || parsed?.plan === "buy_all"
+        ? parsed.plan
+        : null,
     expiresAt: typeof parsed?.expiresAt === "number" && Number.isFinite(parsed.expiresAt)
       ? parsed.expiresAt
       : null,
@@ -61,6 +64,8 @@ export function replaceUnlocks(state: UnlockState) {
 }
 
 export function isSubscriptionActive(state: UnlockState = read()): boolean {
+  // Buy all unlocks every pack (current + future) while the entitlement stands.
+  if (state.plan === "buy_all") return true;
   return !!state.plan && typeof state.expiresAt === "number" && Date.now() < state.expiresAt;
 }
 
@@ -84,12 +89,27 @@ export function unlockPack(packId: string) {
 export function startSubscription(plan: SubPlan) {
   const now = Date.now();
   const prev = read();
+  if (plan === "buy_all") {
+    write({
+      ...prev,
+      plan: "buy_all",
+      // Expiry is not used for buy_all unlock checks; keep a long marker for account merge.
+      expiresAt: now + 100 * YEAR_MS,
+      playBilled: prev.playBilled,
+    });
+    return;
+  }
   write({
     ...prev,
     plan,
     expiresAt: now + (plan === "yearly" ? YEAR_MS : MONTH_MS),
     playBilled: isPlayApp() && plan === "yearly" ? true : prev.playBilled,
   });
+}
+
+/** Local/demo activate after Buy all checkout (or offline demo). */
+export function activateBuyAll() {
+  startSubscription("buy_all");
 }
 
 export function subscribeUnlocks(cb: () => void) {
@@ -119,8 +139,10 @@ export async function claimAccountUnlocks(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       packs: state.packs,
-      plan: state.plan,
-      expiresAt: state.expiresAt,
+      // Never claim buy_all from the client — only Stripe applyPurchase may set it.
+      plan: state.plan === "monthly" || state.plan === "yearly" ? state.plan : null,
+      expiresAt:
+        state.plan === "monthly" || state.plan === "yearly" ? state.expiresAt : null,
     }),
   });
   if (res.status === 401) return null;

@@ -11,6 +11,8 @@ export const PRICE_YEARLY_NOTE = "a year · best value";
 export const PRICE_CARO_REST = "£1.99";
 /** Any other visible pack. */
 export const PRICE_PACK = "£2.99";
+/** One-time: unlock every opening pack (current + future on the website). */
+export const PRICE_BUY_ALL = "£19.99";
 
 export const FREE_PACK_IDS = new Set(["caro-kann-black", "opening-traps"]);
 
