@@ -55,9 +55,24 @@ export interface Sql {
  */
 const globalRef = globalThis as typeof globalThis & {
   __pgSqlPromise__?: Promise<Sql>;
+  __pgPool__?: import("pg").Pool;
   __pgliteInstance__?: Promise<import("@electric-sql/pglite").PGlite>;
   __pgliteMigrateChain__?: Promise<void>;
 };
+
+/**
+ * Shared Neon `pg.Pool` (max 2) for serverless. Auth and app SQL must reuse the
+ * same instance so we do not open two pools per isolate.
+ */
+export function getOrCreateNeonPool(
+  create: () => import("pg").Pool,
+): import("pg").Pool {
+  if (!databaseUrl) {
+    throw new Error("getOrCreateNeonPool() requires DATABASE_URL");
+  }
+  globalRef.__pgPool__ ??= create();
+  return globalRef.__pgPool__;
+}
 
 /**
  * Result-type parity: Postgres sends every value as text plus a type OID — the
@@ -102,7 +117,9 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INT8, Number);
     types.setTypeParser(OID_DATE, identity);
     types.setTypeParser(OID_INTERVAL, identity);
-    const pool = new Pool({ connectionString: databaseUrl });
+    const pool = getOrCreateNeonPool(
+      () => new Pool({ connectionString: databaseUrl, max: 2 }),
+    );
     return toSql(async <T>(text: string, params: unknown[]) => {
       const res = await pool.query(text, params);
       return res.rows as T[];

@@ -56,6 +56,22 @@ function syncAccountUnlocks(userId: string): Promise<void> {
       replaceUnlocks(playWrapAccountUnlocks(source));
       return;
     }
+
+    // When payments are live, never push local/demo unlocks to the server —
+    // fetch account unlocks only (Stripe applyPurchase is the grant path).
+    let paymentsOn = false;
+    try {
+      paymentsOn = await fetchPaymentsEnabled();
+    } catch {
+      /* treat as off so local/demo claim still works */
+    }
+    if (paymentsOn) {
+      writeClaimedUser(userId);
+      const account = await fetchAccountUnlocks();
+      if (account) replaceUnlocks(account);
+      return;
+    }
+
     const last = readClaimedUser();
     const local = getUnlocks();
     const canClaim = last == null || last === userId;
