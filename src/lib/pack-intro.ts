@@ -23,7 +23,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   ],
   "london-black": [
     "The London System is White's quiet 1.d4 setup: Nf3, Bf4, e3, and often c3. The dark-squared bishop comes out early, the centre stays solid, and the same moves work against almost anything. The Jobava London adds Nc3 and looks for Nb5 or e4.",
-    "Against it as Black you do not sit still. Hit the centre with …c5, pressure b2 with …Qb6, and trade that Bf4 bishop when you can.",
+    "Against it as Black you do not sit still. Break the Bf4 pyramid with Sedlak’s Caro-Kann, Classical …c5, Dubov …Nh5, Carlsen …Bd6, Symmetry and Grünfeld shells, plus Jobava and early …c5.",
   ],
   "d4-sidelines-black": [
     "After 1.d4, not every White player goes Queen's Gambit. The Colle and Torre keep a London-like shell. The Trompowsky (Bg5) and Veresov (Nc3 and Bg5) pin or trade the f6 knight. The Blackmar-Diemer offers a pawn for a quick attack.",

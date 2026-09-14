@@ -23,6 +23,8 @@ test("catalog shows Caro-Kann for Black, QGD for Black, London for Black, 1.d4 s
     "vienna-game",
     "open-sicilian",
     "french-as-white",
+    "vs-london",
+    "london",
   ]) {
     assert.match(packs, new RegExp(`id: "${hidden}"`), `${hidden} should stay in packs.ts`);
     assert.equal(ids.includes(hidden), false, `${hidden} must not be visible`);
@@ -65,6 +67,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /Nimzo-Larsen/);
   assert.doesNotMatch(guide, /Queen.s Gambit Declined for Black/);
   assert.doesNotMatch(guide, /Stop the London System/);
+  assert.doesNotMatch(guide, /Fight the London/);
   assert.doesNotMatch(guide, /Blackmar/);
   assert.match(guide, /t\("What is Opening Lab\?"\)/);
   assert.match(guide, /t\("White & Black \/ Special packs"\)/);
@@ -300,25 +303,25 @@ test("Queen’s Gambit Declined for Black stays fully visible with chess names",
   assert.match(qgdb1, /name: "Exchange, …Be7"/);
 });
 
-test("Stop the London System is a third visible free Black pack: 18 lonb lines, all playable", () => {
+test("Fight the London is a visible Black pack: 18 alb lines, locked until purchase", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "london-black"');
   assert.ok(start >= 0, "london-black pack missing");
   const next = packs.indexOf("\n  {\n    id: \"", start + 1);
   const lon = next >= 0 ? packs.slice(start, next) : packs.slice(start);
 
-  assert.match(lon, /name: "Stop the London System"/);
+  assert.match(lon, /name: "Fight the London"/);
   assert.match(lon, /side: "Black"/);
   assert.match(lon, /section: "black"/);
   assert.match(lon, /isFree: false/);
   assert.match(lon, /isPremium: false/);
   assert.match(lon, /price: null/);
-  assert.match(lon, /blurb: "Black vs the London"/);
+  assert.match(lon, /blurb: "Anti-London for Black"/);
   assert.match(lon, /closedLabel: "Free · 18 lines"/);
-  assert.match(lon, /The London is White's solid d4 setup with Bf4/);
-  assert.match(lon, /Practice the main book moves with the green hint/);
+  assert.match(lon, /Master Anti-London systems for Black/);
+  assert.match(lon, /Practice the main Black moves with the hint/);
   assert.match(lon, /Then Test with none to prove you remember them/);
-  assert.match(lon, /Play on from the setup if you want/);
+  assert.match(lon, /Play on from the setup and see where the game goes/);
   assert.match(lon, /eco: "D00–D02"/);
   assert.doesNotMatch(lon, /setups/);
   assert.doesNotMatch(lon, /follow-ups/);
@@ -326,11 +329,13 @@ test("Stop the London System is a third visible free Black pack: 18 lonb lines, 
   assert.doesNotMatch(lon, /Follow-up \d+ ·/);
   assert.doesNotMatch(lon, /Lab\+/);
   assert.doesNotMatch(lon, /£/);
+  assert.doesNotMatch(lon, /id: "lonb/);
+  assert.doesNotMatch(lon, /Stop the London System/);
 
-  const lineIds = [...lon.matchAll(/id: "(lonb\d+)"/g)].map((m) => m[1]);
+  const lineIds = [...lon.matchAll(/id: "(alb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 18 }, (_, i) => `lonb${i + 1}`),
+    Array.from({ length: 18 }, (_, i) => `alb${i + 1}`),
   );
 
   const sides = [...lon.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
@@ -347,25 +352,38 @@ test("Stop the London System is a third visible free Black pack: 18 lonb lines, 
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  const lonb1 = linePlies("lonb1");
-  const lonb2 = linePlies("lonb2");
-  assert.deepEqual(lonb1, lonb2);
-  assert.deepEqual(lonb1, ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "c3", "Qb6"]);
+  for (let i = 1; i <= 18; i++) {
+    const plies = linePlies(`alb${i}`);
+    assert.equal(plies[0], "d4", `alb${i} must start d4`);
+    assert.ok(plies.includes("Bf4") || plies.includes("Nc3"), `alb${i} needs a London try`);
+  }
 
-  const lonb11 = linePlies("lonb11");
-  assert.ok(lonb11.includes("Qxf5"), "lonb11 needs Qxf5");
-  assert.ok(lonb11.includes("Qxb2"), "lonb11 needs Qxb2");
+  assert.ok(linePlies("alb1").includes("c6"), "alb1 needs …c6 Caro");
+  assert.ok(linePlies("alb1").includes("Bf5"), "alb1 needs …Bf5");
+  assert.ok(linePlies("alb5").includes("Nh5"), "alb5 needs Dubov …Nh5");
+  assert.ok(linePlies("alb5").includes("g5"), "alb5 needs …g5");
+  assert.ok(linePlies("alb8").includes("g6"), "alb8 needs Grünfeld …g6");
+  assert.ok(linePlies("alb16").includes("Nc3"), "alb16 needs Jobava Nc3");
+  assert.ok(linePlies("alb17").includes("Qa5+"), "alb17 needs …Qa5+");
+  assert.deepEqual(linePlies("alb18").slice(0, 4), ["d4", "d5", "Bf4", "c5"]);
 
   const names = Object.fromEntries(
-    [...lon.matchAll(/id: "(lonb\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
+    [...lon.matchAll(/id: "(alb\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
       m[1],
       m[2],
     ]),
   );
-  assert.equal(names.lonb1, "Early …c5");
-  assert.equal(names.lonb2, "Pressure b2");
-  assert.equal(names.lonb11, "Qc2, …Qxb2");
-  assert.equal(names.lonb18, "Qb3, …Bf5");
+  assert.equal(names.alb1, "Caro-Kann …c6 …Bf5 Bd3");
+  assert.equal(names.alb5, "Dubov …Nh5 Bg5 h6 g5");
+  assert.equal(names.alb16, "Jobava …c5 …Bg4");
+  assert.equal(names.alb18, "Early 2…c5 vs Bf4");
+
+  // Hidden overlap pack stays in packs.ts and off the catalog.
+  const vsStart = packs.indexOf('id: "vs-london"');
+  assert.ok(vsStart >= 0, "vs-london pack must remain");
+  assert.notEqual(vsStart, start);
+  const whiteLon = packs.indexOf('id: "london"');
+  assert.ok(whiteLon >= 0, "White london pack must remain");
 });
 
 
@@ -2585,7 +2603,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(stbPack, "stb1", ["stafford-black"])?.id, "stb2");
 });
 
-test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–18, gfb1–18, peb1–18, berb1–18, kidb1–18, and stb1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–18, gfb1–18, peb1–18, berb1–18, kidb1–18, and stb1–18 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -2646,7 +2664,7 @@ test("every ckb1–18, qgdb1–18, lonb1–18, d4s1–18, as1–18, nl1–18, it
   const stb = packBlock("stafford-black");
   assertIdeas(ck, "ckb", 18);
   assertIdeas(qgd, "qgdb", 18);
-  assertIdeas(lon, "lonb", 18);
+  assertIdeas(lon, "alb", 18);
   assertIdeas(d4s, "d4s", 18);
   assertIdeas(asb, "as", 18);
   assertIdeas(nl, "nl", 18);

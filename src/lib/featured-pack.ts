@@ -11,7 +11,7 @@ export function packShortLabel(pack: { id: string; name: string }): string {
     "opening-traps": "Opening Traps",
     scotch: "Scotch",
     "qgd-black": "Queen’s Gambit Declined",
-    "london-black": "London System",
+    "london-black": "Fight the London",
     "queens-gambit-white": "Queen’s Gambit",
     "italian-white": "Italian Game",
     "ruy-white": "Ruy Lopez",
