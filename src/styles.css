@@ -477,6 +477,12 @@ html[data-color-scheme="dark"] {
     touch-action: pan-y;
   }
 
+  .pack-search-input::-webkit-search-cancel-button,
+  .pack-search-input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
   .sq-light {
     background-color: #f3e5c8;
   }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Lock } from "lucide-react";
+import { Lock, X } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, visiblePacks } from "@/lib/catalog";
@@ -10,6 +10,7 @@ import {
   writeFeaturedPackId,
 } from "@/lib/featured-pack";
 import { packLooksFree } from "@/lib/review-free";
+import { packMatchesQuery } from "@/lib/pack-search";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import {
@@ -52,6 +53,44 @@ function QuietLabel({ children }: { children: string }) {
     <p className="pack-list-full mb-2 mt-5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
       {children}
     </p>
+  );
+}
+
+function PackSearchField({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (next: string) => void;
+}) {
+  const t = useT();
+  return (
+    <div className="pack-list-full pack-search mb-3">
+      <div className="relative">
+        <input
+          type="search"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={t("Search openings")}
+          aria-label={t("Search openings")}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          enterKeyHint="search"
+          className="pack-search-input w-full min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-3 pe-11 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
+        />
+        {value ? (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute inset-y-0 end-1 my-auto grid size-9 place-items-center rounded-full text-fg-muted"
+            aria-label={t("Clear search")}
+          >
+            <X className="size-4" strokeWidth={2.5} />
+          </button>
+        ) : null}
+      </div>
+    </div>
   );
 }
 
@@ -205,6 +244,7 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
   const [featuredId, setFeaturedId] = useState(DEFAULT_FEATURED_PACK_ID);
+  const [packQuery, setPackQuery] = useState("");
   const resumedCheckout = useRef(false);
   const heroAnchorRef = useRef<HTMLDivElement>(null);
   const wrap = playApp || isPlayWrap();
@@ -234,21 +274,41 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   };
 
   const notFeatured = (p: Pack) => p.id !== featuredPack?.id;
-  const white = catalog.filter((p) => p.section === "white" && notFeatured(p));
-  const black = catalog.filter(
-    (p) => p.section === "black" && p.id !== "vs-london" && notFeatured(p),
+  const q = packQuery.trim();
+  const searching = q.length > 0;
+  const inMoreList = (p: Pack) => !searching || packMatchesQuery(p, q);
+  const white = catalog.filter(
+    (p) => p.section === "white" && notFeatured(p) && inMoreList(p),
   );
-  const classicGames = catalog.find((p) => p.id === "classic-games" && notFeatured(p));
-  const vsLondon = catalog.find((p) => p.id === "vs-london" && notFeatured(p));
-  const clubWeapons = catalog.find((p) => p.id === "club-weapons" && notFeatured(p));
-  const openingTraps = catalog.find((p) => p.id === "opening-traps" && notFeatured(p));
-  const morePacks =
+  const black = catalog.filter(
+    (p) =>
+      p.section === "black" &&
+      p.id !== "vs-london" &&
+      notFeatured(p) &&
+      inMoreList(p),
+  );
+  const classicGames = catalog.find(
+    (p) => p.id === "classic-games" && notFeatured(p) && inMoreList(p),
+  );
+  const vsLondon = catalog.find(
+    (p) => p.id === "vs-london" && notFeatured(p) && inMoreList(p),
+  );
+  const clubWeapons = catalog.find(
+    (p) => p.id === "club-weapons" && notFeatured(p) && inMoreList(p),
+  );
+  const openingTraps = catalog.find(
+    (p) => p.id === "opening-traps" && notFeatured(p) && inMoreList(p),
+  );
+  const morePacks = catalog.some((p) => notFeatured(p));
+  const moreMatches =
     !!classicGames ||
     !!vsLondon ||
     !!clubWeapons ||
     !!openingTraps ||
     white.length > 0 ||
     black.length > 0;
+  const featuredMatches = featuredPack ? packMatchesQuery(featuredPack, q) : false;
+  const showNoMatches = searching && !moreMatches && !featuredMatches;
 
   const offerPlayLabPlus = catalogOffersLabPlus(catalog);
 
@@ -488,6 +548,19 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
         {morePacks ? (
           <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
             {t("More opening packs")}
+          </p>
+        ) : null}
+
+        {morePacks ? (
+          <PackSearchField value={packQuery} onChange={setPackQuery} />
+        ) : null}
+
+        {showNoMatches ? (
+          <p
+            className="pack-list-full mb-3 px-1 text-[0.85rem] text-fg-muted"
+            role="status"
+          >
+            {t("No openings match.")}
           </p>
         ) : null}
 
