@@ -119,9 +119,9 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   const migration = readFileSync(join(root, "migrations/0005_buy_all.sql"), "utf8");
   assert.match(migration, /'buy_all'/);
   const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
-  assert.match(terms, /thirty opening packs/);
+  assert.match(terms, /thirty-one opening packs/);
   assert.match(terms, /Buy all packs for £19\.99/);
-  assert.match(terms, /10 September 2026/);
+  assert.match(terms, /14 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
 });

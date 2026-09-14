@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="10 September 2026">
+    <LegalPage title="Terms of Use" updated="14 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -26,7 +26,7 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          There are thirty opening packs. Some lines are free as samples (for
+          There are thirty-one opening packs. Some lines are free as samples (for
           example part of Caro-Kann). Other packs are one-time purchases on
           this website via Stripe, usually £1.99 or £2.99 in the UK. You can
           also buy Buy all packs for £19.99 (UK), which unlocks every opening
