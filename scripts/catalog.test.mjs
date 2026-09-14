@@ -2775,7 +2775,8 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.match(intro, /Only the book move counts/);
   assert.match(intro, /export const PACK_OPENING/);
   assert.match(intro, /working repertoire/);
-  assert.match(intro, /solid ground to take your study further/);
+  assert.match(intro, /more informed\./);
+  assert.doesNotMatch(intro, /solid ground to take your study further/);
   assert.match(intro, /How the gym works/);
   for (const id of [
     "caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black",
