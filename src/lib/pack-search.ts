@@ -1,15 +1,11 @@
 import type { Pack } from "@/data/packs";
 
-/** Case-insensitive match on pack fields used by the home list search. */
+/** Case-insensitive match on pack name and blurb (v1 home list search). */
 export function packMatchesQuery(
-  pack: Pick<Pack, "name" | "blurb" | "eco" | "side" | "lines">,
+  pack: Pick<Pack, "name" | "blurb">,
   query: string,
 ): boolean {
   const q = query.trim().toLowerCase();
   if (!q) return true;
-  if (pack.name.toLowerCase().includes(q)) return true;
-  if (pack.blurb.toLowerCase().includes(q)) return true;
-  if (pack.eco.toLowerCase().includes(q)) return true;
-  if (pack.side.toLowerCase().includes(q)) return true;
-  return pack.lines.some((line) => line.name.toLowerCase().includes(q));
+  return pack.name.toLowerCase().includes(q) || pack.blurb.toLowerCase().includes(q);
 }

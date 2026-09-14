@@ -12,6 +12,7 @@ const helperSrc = src("src/lib/pack-search.ts");
 const list = src("src/components/opening-lab/pack-list.tsx");
 const i18n = src("src/lib/i18n.ts");
 const css = src("src/styles.css");
+const intro = src("src/lib/pack-intro.ts");
 
 function toRunnableJs(text) {
   return text
@@ -29,52 +30,53 @@ const { packMatchesQuery } = await import(pathToFileURL(jsPath).href);
 const sample = {
   name: "Caro-Kann for Black",
   blurb: "18 lines · Advance, Classical, Exchange",
-  eco: "B12–B19",
-  side: "Black",
-  lines: [{ name: "Line 1 · Advance 4.h4" }, { name: "Line 2 · Classical" }],
 };
 
-test("packMatchesQuery is case-insensitive on name, blurb, eco, side, and line names", () => {
+test("packMatchesQuery is case-insensitive on name and blurb only", () => {
   assert.equal(packMatchesQuery(sample, ""), true);
   assert.equal(packMatchesQuery(sample, "   "), true);
   assert.equal(packMatchesQuery(sample, "caro"), true);
   assert.equal(packMatchesQuery(sample, "CARO-KANN"), true);
   assert.equal(packMatchesQuery(sample, "classical"), true);
-  assert.equal(packMatchesQuery(sample, "b12"), true);
   assert.equal(packMatchesQuery(sample, "black"), true);
-  assert.equal(packMatchesQuery(sample, "4.h4"), true);
+  assert.equal(packMatchesQuery(sample, "b12"), false);
+  assert.equal(packMatchesQuery(sample, "4.h4"), false);
   assert.equal(packMatchesQuery(sample, "sicilian"), false);
-  assert.equal(packMatchesQuery(sample, "white"), false);
+  assert.doesNotMatch(helperSrc, /pack\.eco/);
+  assert.doesNotMatch(helperSrc, /pack\.side/);
+  assert.doesNotMatch(helperSrc, /pack\.lines/);
 });
 
-test("search field sits under More opening packs and filters the more-pack lists", () => {
-  const headingAt = list.indexOf('t("More opening packs")');
+test("sticky search strip sits under the hero and above More opening packs", () => {
+  const heroAt = list.indexOf("<HomeHero");
   const searchAt = list.indexOf("<PackSearchField");
+  const headingAt = list.indexOf('t("More opening packs")');
   const trapsAt = list.indexOf("{openingTraps ? (");
-  assert.ok(headingAt > -1, "More opening packs heading");
-  assert.ok(searchAt > headingAt, "search sits after More opening packs");
-  assert.ok(trapsAt > searchAt, "pack lists sit after the search field");
+  assert.ok(heroAt > -1, "hero stays on the page");
+  assert.ok(searchAt > heroAt, "search sits under the hero");
+  assert.ok(headingAt > searchAt, "More opening packs heading sits after search");
+  assert.ok(trapsAt > headingAt, "pack lists sit after the heading");
   assert.match(list, /from "@\/lib\/pack-search"/);
   assert.match(list, /packMatchesQuery/);
+  assert.match(list, /pack-search-sticky/);
   assert.match(list, /t\("Search openings"\)/);
   assert.match(list, /t\("Clear search"\)/);
-  assert.match(list, /t\("No openings match\."\)/);
-  assert.match(list, /pack-list-full pack-search/);
+  assert.match(list, /t\("No packs match"\)/);
+  assert.doesNotMatch(list, /t\("No openings match\."\)/);
   assert.match(list, /type="search"/);
   assert.match(list, /placeholder=\{t\("Search openings"\)\}/);
   assert.match(list, /onSelectPack=\{promotePack\}/);
   assert.match(list, /setFeaturedId\(pack\.id\)/);
-  assert.match(list, /<HomeHero/);
-  const heroAt = list.indexOf("<HomeHero");
-  assert.ok(heroAt > -1 && heroAt < searchAt, "hero stays above the search lists");
-  assert.doesNotMatch(list, /searching && !featuredPack/);
+  assert.match(css, /\.pack-search-sticky/);
+  assert.match(css, /position:\s*sticky/);
   assert.match(css, /\.pack-search-input::-webkit-search-cancel-button/);
+  assert.doesNotMatch(list, /home-hero[\s\S]{0,200}PackSearchField/);
 });
 
 test("search copy is translated; required home-row English keys stay intact", () => {
   assert.match(i18n, /"Search openings": "Search openings"/);
   assert.match(i18n, /"Clear search": "Clear search"/);
-  assert.match(i18n, /"No openings match\.": "No openings match\."/);
+  assert.match(i18n, /"No packs match": "No packs match"/);
   assert.match(i18n, /"Search openings": "Buscar aperturas"/);
   assert.match(i18n, /"Search openings": "搜索开局"/);
   for (const key of [
@@ -101,4 +103,12 @@ test("search copy is translated; required home-row English keys stay intact", ()
   assert.equal(i18n.split("£1.99").length - 1, 24);
   assert.equal(i18n.split("£2.99").length - 1, 24);
   assert.doesNotMatch(i18n, /search Opening Lab/i);
+});
+
+test("GAME_INTRO ends at informed and drops the solid-ground sentence", () => {
+  assert.match(intro, /makes your early decisions more informed\./);
+  assert.doesNotMatch(intro, /solid ground to take your study further/);
+  assert.doesNotMatch(intro, /books, games, engines/);
+  assert.match(i18n, /makes your early decisions more informed\./);
+  assert.doesNotMatch(i18n, /solid ground to take your study further/);
 });

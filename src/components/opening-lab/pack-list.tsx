@@ -65,7 +65,7 @@ function PackSearchField({
 }) {
   const t = useT();
   return (
-    <div className="pack-list-full pack-search mb-3">
+    <div className="pack-list-full pack-search">
       <div className="relative">
         <input
           type="search"
@@ -544,6 +544,12 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
         ) : null}
       </div>
 
+      {morePacks ? (
+        <div className="pack-search-sticky pack-list-full">
+          <PackSearchField value={packQuery} onChange={setPackQuery} />
+        </div>
+      ) : null}
+
       <div className="pack-list-grid">
         {morePacks ? (
           <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
@@ -551,17 +557,17 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           </p>
         ) : null}
 
-        {morePacks ? (
-          <PackSearchField value={packQuery} onChange={setPackQuery} />
-        ) : null}
-
         {showNoMatches ? (
-          <p
-            className="pack-list-full mb-3 px-1 text-[0.85rem] text-fg-muted"
-            role="status"
-          >
-            {t("No openings match.")}
-          </p>
+          <div className="pack-list-full mb-3 px-1" role="status">
+            <p className="text-[0.85rem] text-fg-muted">{t("No packs match")}</p>
+            <button
+              type="button"
+              onClick={() => setPackQuery("")}
+              className="mt-1 text-[0.85rem] font-semibold text-accent"
+            >
+              {t("Clear search")}
+            </button>
+          </div>
         ) : null}
 
         {openingTraps ? (
