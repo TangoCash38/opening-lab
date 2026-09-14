@@ -121,6 +121,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The King’s Indian Defence is 1.d4 Nf6 2.c4 g6 with …Bg7 and …d6. Black fianchettoes, clamps the centre, then strikes with …e5 or …c5 against Classical, Sämisch, and Fianchetto structures.",
     "You are not racing for a mate on move ten. Know which King’s Indian shell you are in, and practise the main Black moves before you mix plans.",
   ],
+  "stafford-black": [
+    "The Stafford Gambit is 1.e4 e5 2.Nf3 Nf6 3.Nxe5 Nc6. Black answers the Petroff take with …Nc6, then after 4.Nxc6 dxc6 hunts traps and solid Bc5 shells.",
+    "You are not racing for a mate on move ten. Know which Stafford shell you are in, and practise the main Black moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
