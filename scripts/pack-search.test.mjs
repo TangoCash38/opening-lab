@@ -86,7 +86,6 @@ test("search copy is translated; required home-row English keys stay intact", ()
     "See 18 lines",
     "Free sample",
     "Strict lines · memory training",
-    "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.",
     "How the gym works",
     "Continue",
     "Don't show again",
@@ -99,5 +98,7 @@ test("search copy is translated; required home-row English keys stay intact", ()
   ]) {
     assert.match(i18n, new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), key);
   }
+  assert.equal(i18n.split("£1.99").length - 1, 24);
+  assert.equal(i18n.split("£2.99").length - 1, 24);
   assert.doesNotMatch(i18n, /search Opening Lab/i);
 });
