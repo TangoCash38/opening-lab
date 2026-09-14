@@ -15,6 +15,7 @@ test("guide-view has no per-opening titles; still has gym blocks", () => {
   assert.doesNotMatch(guide, /Nimzo-Larsen/);
   assert.doesNotMatch(guide, /Queen.s Gambit Declined/);
   assert.doesNotMatch(guide, /Stop the London System/);
+  assert.doesNotMatch(guide, /Fight the London/);
   assert.doesNotMatch(guide, /Blackmar/);
   assert.match(guide, /t\("User guide"\)/);
   assert.match(guide, /t\("What is Opening Lab\?"\)/);
