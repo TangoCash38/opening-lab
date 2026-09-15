@@ -170,6 +170,7 @@ const en: Dict = {
   Future: "Future",
   Tournament: "Tournament",
   Arcade: "Arcade",
+  Print: "Print",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.",
   "White & Black / Special packs": "White & Black / Special packs",
@@ -331,6 +332,7 @@ const es: Dict = {
   Future: "Futuro",
   Tournament: "Torneo",
   Arcade: "Arcade",
+  Print: "Impreso",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Entrenamiento de memoria con líneas estrictas. Solo juegas las jugadas de la apertura elegida; las incorrectas se rechazan para que la línea se quede.",
   "White & Black / Special packs": "White y Black / packs especiales",
@@ -487,6 +489,7 @@ const zh: Dict = {
   Future: "未来",
   Tournament: "锦标赛",
   Arcade: "街机",
+  Print: "印刷",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "严格线路记忆训练。你只下所选开局中的着法；错着会被拒绝，线路才能记住。",
   "White & Black / Special packs": "White 与 Black / 专题棋包",
@@ -643,6 +646,7 @@ const fr: Dict = {
   Future: "Futur",
   Tournament: "Tournoi",
   Arcade: "Arcade",
+  Print: "Imprimé",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Entraînement mémoire en lignes strictes. Tu ne joues que les coups de l'ouverture choisie ; les mauvais coups sont refusés pour que la ligne tienne.",
   "White & Black / Special packs": "White et Black / packs spéciaux",
@@ -799,6 +803,7 @@ const de: Dict = {
   Future: "Zukunft",
   Tournament: "Turnier",
   Arcade: "Arcade",
+  Print: "Druck",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Gedächtnistraining mit strikten Linien. Du spielst nur die Züge der gewählten Eröffnung; falsche Züge werden abgelehnt, damit die Linie sitzt.",
   "White & Black / Special packs": "White und Black / Spezial-Packs",
@@ -955,6 +960,7 @@ const pt: Dict = {
   Future: "Futuro",
   Tournament: "Torneio",
   Arcade: "Arcade",
+  Print: "Impresso",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Treino de memória com linhas estritas. Você só joga os lances da abertura escolhida; os errados são recusados para a linha grudar.",
   "White & Black / Special packs": "White e Black / packs especiais",
@@ -1110,6 +1116,7 @@ const ru: Dict = {
   Future: "Будущее",
   Tournament: "Турнир",
   Arcade: "Аркада",
+  Print: "Печать",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Тренировка памяти по строгим линиям. Играешь только ходы выбранного дебюта; неверные ходы отклоняются, чтобы линия засела.",
   "White & Black / Special packs": "White и Black / спецпаки",
@@ -1266,6 +1273,7 @@ const it: Dict = {
   Future: "Futuro",
   Tournament: "Torneo",
   Arcade: "Arcade",
+  Print: "Stampa",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Allenamento di memoria a linee rigorose. Giochi solo le mosse dell'apertura scelta; quelle sbagliate vengono rifiutate perché la linea resti.",
   "White & Black / Special packs": "White e Black / pack speciali",
@@ -1422,6 +1430,7 @@ const hi: Dict = {
   Future: "भविष्य",
   Tournament: "टूर्नामेंट",
   Arcade: "आर्केड",
+  Print: "प्रिंट",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "सख्त लाइन की याददाश्त ट्रेनिंग। चुनी ओपनिंग की चालें ही चलें; गलत चालें रद्द होती हैं ताकि लाइन बैठ जाए।",
   "White & Black / Special packs": "White और Black / खास पैक",
@@ -1576,6 +1585,7 @@ const ja: Dict = {
   Future: "未来",
   Tournament: "トーナメント",
   Arcade: "アーケード",
+  Print: "プリント",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "厳密ラインの記憶トレーニング。選んだオープニングの手だけを指します。違う手は拒否され、ラインが定着します。",
   "White & Black / Special packs": "White と Black / 特別パック",
@@ -1730,6 +1740,7 @@ const ar: Dict = {
   Future: "مستقبل",
   Tournament: "بطولة",
   Arcade: "أركيد",
+  Print: "طباعة",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "تدريب ذاكرة بخطوط صارمة. تلعب فقط حركات الافتتاحية المختارة؛ الحركات الخاطئة تُرفض حتى يثبت الخط.",
   "White & Black / Special packs": "White و Black / حزم خاصة",
@@ -1886,6 +1897,7 @@ const tr: Dict = {
   Future: "Gelecek",
   Tournament: "Turnuva",
   Arcade: "Arcade",
+  Print: "Baskı",
   "Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.":
     "Katı hat bellek çalışması. Yalnızca seçilen açılışın hamlelerini oynarsın; yanlışlar reddedilir ki hat yerleşsin.",
   "White & Black / Special packs": "White ve Black / özel paketler",
