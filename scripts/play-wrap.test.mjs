@@ -209,3 +209,15 @@ test("website app prompt is website-only and uses closed testing, not a store pa
   assert.match(prompt, /t\("Download the app"\)/);
   assert.match(prompt, /t\("Continue on the web"\)/);
 });
+
+test("pack unlock sheet Stripe line has no Yours to keep", () => {
+  const modal = src("src/components/opening-lab/unlock-modal.tsx");
+  const i18n = src("src/lib/i18n.ts");
+  assert.match(modal, /t\("Unlock this pack"\)/);
+  assert.match(modal, /t\("Card via Stripe\."\)/);
+  assert.doesNotMatch(modal, /Yours to keep/);
+  assert.equal(i18n.split('"Card via Stripe.":').length - 1, 12);
+  assert.match(i18n, /"Card via Stripe.": "Card via Stripe."/);
+  assert.doesNotMatch(i18n, /Yours to keep/);
+  assert.match(i18n, /"You will pay securely with Stripe.": "You will pay securely with Stripe."/);
+});
