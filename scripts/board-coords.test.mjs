@@ -25,8 +25,7 @@ test("ChessBoard uses dedicated sq-coord classes (no faint opacity colours)", ()
 test("styles.css defines high-contrast sq-coord colours for every theme", () => {
   assert.match(css, /\.sq-coord--on-light\s*\{[^}]*#4a2f1c/s);
   assert.match(css, /\.sq-coord--on-dark\s*\{[^}]*#f3e5c8/s);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-coord--on-light/);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-coord--on-dark/);
+  assert.doesNotMatch(css, /\[data-board-theme="paper"\]/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-coord--on-light/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-coord--on-dark/);
   assert.match(css, /\[data-board-theme="tournament"\]\s*\.sq-coord--on-light/);

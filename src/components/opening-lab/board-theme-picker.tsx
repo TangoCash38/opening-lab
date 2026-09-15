@@ -13,7 +13,6 @@ const THEME_SWATCH: Record<
   { light: string; dark: string; frame: string }
 > = {
   book: { light: "#f3e5c8", dark: "#a97850", frame: "#6a4b32" },
-  paper: { light: "#f7f2e6", dark: "#b7b0a4", frame: "#5c564c" },
   future: { light: "#d8e2ea", dark: "#3a4a5c", frame: "#1e2936" },
   tournament: { light: "#eeeed2", dark: "#769656", frame: "#2e4a28" },
   arcade: { light: "#2a2150", dark: "#ff2bd6", frame: "#0b0620" },
@@ -22,7 +21,6 @@ const THEME_SWATCH: Record<
 
 function themeLabel(id: BoardTheme, t: (key: string) => string): string {
   if (id === "book") return t("Book");
-  if (id === "paper") return t("Paper");
   if (id === "future") return t("Future");
   if (id === "tournament") return t("Tournament");
   if (id === "arcade") return t("Arcade");
