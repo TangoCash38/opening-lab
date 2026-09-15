@@ -20,7 +20,7 @@ const i18n = src("src/lib/i18n.ts");
 test("board-theme helper validates unknown → book and persists", () => {
   assert.match(
     theme,
-    /BOARD_THEMES = \["book", "paper", "future", "tournament", "arcade"\]/,
+    /BOARD_THEMES = \["book", "paper", "future", "tournament", "arcade", "print"\]/,
   );
   assert.match(theme, /BOARD_THEME_STORAGE_KEY = "opening-lab:board-theme"/);
   assert.match(theme, /DEFAULT_BOARD_THEME/);
@@ -32,6 +32,7 @@ test("board-theme helper validates unknown → book and persists", () => {
   assert.match(theme, /dataset\.boardTheme/);
   assert.match(theme, /isBoardTheme/);
   assert.match(theme, /"tournament"/);
+  assert.match(theme, /"print"/);
   // legacy newspaper → tournament (crash migration)
   assert.match(
     theme,
@@ -81,6 +82,14 @@ test("CSS keeps book defaults and has paper + future + tournament data-board-the
   assert.match(css, /\[data-board-theme="arcade"\]\s*\.sq-dark/);
   assert.match(css, /\[data-board-theme="arcade"\]\s*\.board-frame/);
   assert.match(css, /\[data-board-theme="arcade"\]\s*\.piece-abs-inner/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.sq-light/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.sq-dark/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.board-frame/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.mini-sq-light/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.mini-sq-dark/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.sq-hint-from/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.sq-coord--on-light/);
+  assert.match(css, /\[data-board-theme="print"\]\s*\.sq-coord--on-dark/);
   assert.match(css, /#f7f2e6/);
   assert.match(css, /#c4bdb0/);
   assert.match(css, /#e2eaf0/);
@@ -91,6 +100,25 @@ test("CSS keeps book defaults and has paper + future + tournament data-board-the
   assert.match(css, /#eeeed2/);
   assert.match(css, /#769656/);
   assert.match(css, /#2e4a28/);
+  assert.match(css, /#faf8f2/);
+  assert.match(css, /#a39e94/);
+  assert.match(css, /#5c4033/);
+  assert.match(
+    css,
+    /\[data-board-theme="print"\]\s*\.sq-light\s*\{[^}]*#faf8f2/s,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="print"\]\s*\.sq-dark\s*\{[^}]*repeating-linear-gradient/s,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="print"\]\s*\.sq-dark\s*\{[^}]*#a39e94/s,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="print"\]\s*\.board-frame\s*\{[^}]*#5c4033/s,
+  );
   assert.match(
     css,
     /\[data-board-theme="tournament"\]\s*\.sq-light\s*\{[^}]*#eeeed2/s,
@@ -152,6 +180,14 @@ test("green hints stay green (book + paper + future + tournament)", () => {
     css,
     /\[data-board-theme="tournament"\]\s*\.sq-dark\.sq-hint-to[^}]*#c5f0cc/s,
   );
+  assert.match(
+    css,
+    /\[data-board-theme="print"\]\s*\.sq-hint-from[^}]*#8fd49a/s,
+  );
+  assert.match(
+    css,
+    /\[data-board-theme="print"\]\s*\.sq-hint-to[^}]*#9edda8/s,
+  );
   assert.doesNotMatch(css, /\[data-board-theme="future"\]\s*\.sq-hint-[^{]*\{[^}]*#00ff/s);
   assert.match(css, /\.sq-last-from[\s\S]*?linear-gradient\(#ecec4a55, #ecec4a55\)/);
 });
@@ -166,7 +202,11 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(picker, /pointer-events-auto/);
   assert.match(picker, /t\("Tournament"\)/);
   assert.match(picker, /t\("Arcade"\)/);
+  assert.match(picker, /t\("Print"\)/);
   assert.match(picker, /arcade:\s*\{\s*light:/);
+  assert.match(picker, /print:\s*\{\s*light:\s*"#faf8f2"/);
+  assert.match(picker, /dark:\s*"#a39e94"/);
+  assert.match(picker, /frame:\s*"#5c4033"/);
   assert.match(picker, /tournament:\s*\{\s*light:\s*"#eeeed2"/);
   assert.match(picker, /dark:\s*"#769656"/);
   assert.match(picker, /frame:\s*"#2e4a28"/);
@@ -200,6 +240,7 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(i18n, /Future: "Futur"/);
   assert.match(i18n, /Tournament: "Tournoi"/);
   assert.match(i18n, /Tournament: "Tournament"/);
+  assert.match(i18n, /Print: "Print"/);
 });
 
 test("default theme is book", () => {

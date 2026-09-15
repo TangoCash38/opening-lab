@@ -17,6 +17,7 @@ const THEME_SWATCH: Record<
   future: { light: "#d8e2ea", dark: "#3a4a5c", frame: "#1e2936" },
   tournament: { light: "#eeeed2", dark: "#769656", frame: "#2e4a28" },
   arcade: { light: "#2a2150", dark: "#ff2bd6", frame: "#0b0620" },
+  print: { light: "#faf8f2", dark: "#a39e94", frame: "#5c4033" },
 };
 
 function themeLabel(id: BoardTheme, t: (key: string) => string): string {
@@ -24,7 +25,8 @@ function themeLabel(id: BoardTheme, t: (key: string) => string): string {
   if (id === "paper") return t("Paper");
   if (id === "future") return t("Future");
   if (id === "tournament") return t("Tournament");
-  return t("Arcade");
+  if (id === "arcade") return t("Arcade");
+  return t("Print");
 }
 
 type Props = {
