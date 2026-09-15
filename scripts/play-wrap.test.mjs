@@ -159,6 +159,7 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.match(modal, /const wrap = playApp \|\| isPlayWrap\(\)/);
   assert.match(modal, /\{wrap \? \(/);
   assert.match(modal, /Card via Stripe/);
+  assert.doesNotMatch(modal, /Yours to keep/);
   assert.match(modal, /Packs are not for sale in this Play test/);
   assert.match(modal, /three free Caro lines still train/i);
   assert.match(modal, /Pay as you go/);
@@ -172,7 +173,13 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.match(wrapBranch, /\{price\}/);
   assert.match(wrapBranch, /Packs are not for sale in this Play test/);
   assert.match(websiteBranch, /Card via Stripe/);
+  assert.doesNotMatch(websiteBranch, /Yours to keep/);
   assert.doesNotMatch(websiteBranch, /Packs are not for sale in this Play test/);
+
+  const i18n = src("src/lib/i18n.ts");
+  assert.equal(i18n.split('"Card via Stripe.":').length - 1, 12);
+  assert.match(i18n, /"Card via Stripe.": "Card via Stripe."/);
+  assert.doesNotMatch(i18n, /Yours to keep/);
 
   const checkout = src("src/lib/checkout.ts");
   assert.match(checkout, /if \(isPlayApp\(\) \|\| isPlayWrap\(\)\)/);
@@ -201,4 +208,16 @@ test("website app prompt is website-only and uses closed testing, not a store pa
   assert.doesNotMatch(prompt, /How to play/);
   assert.match(prompt, /t\("Download the app"\)/);
   assert.match(prompt, /t\("Continue on the web"\)/);
+});
+
+test("pack unlock sheet Stripe line has no Yours to keep", () => {
+  const modal = src("src/components/opening-lab/unlock-modal.tsx");
+  const i18n = src("src/lib/i18n.ts");
+  assert.match(modal, /t\("Unlock this pack"\)/);
+  assert.match(modal, /t\("Card via Stripe\."\)/);
+  assert.doesNotMatch(modal, /Yours to keep/);
+  assert.equal(i18n.split('"Card via Stripe.":').length - 1, 12);
+  assert.match(i18n, /"Card via Stripe.": "Card via Stripe."/);
+  assert.doesNotMatch(i18n, /Yours to keep/);
+  assert.match(i18n, /"You will pay securely with Stripe.": "You will pay securely with Stripe."/);
 });
