@@ -1,4 +1,4 @@
-export const BOARD_THEMES = ["book", "paper", "future", "tournament", "arcade", "print"] as const;
+export const BOARD_THEMES = ["book", "future", "tournament", "arcade", "print"] as const;
 export type BoardTheme = (typeof BOARD_THEMES)[number];
 
 export const BOARD_THEME_STORAGE_KEY = "opening-lab:board-theme";
@@ -11,7 +11,6 @@ export function isBoardTheme(
 ): value is BoardTheme {
   return (
     value === "book" ||
-    value === "paper" ||
     value === "future" ||
     value === "tournament" ||
     value === "arcade" ||
@@ -19,11 +18,11 @@ export function isBoardTheme(
   );
 }
 
-/** Unknown / missing → book. Legacy `newspaper` → tournament (crash migration). */
+/** Unknown / missing → book. Dropped `paper` and legacy `newspaper` → book. */
 export function normalizeBoardTheme(
   value: string | null | undefined,
 ): BoardTheme {
-  if (value === "newspaper") return "tournament";
+  if (value === "paper" || value === "newspaper") return "book";
   return isBoardTheme(value) ? value : DEFAULT_BOARD_THEME;
 }
 

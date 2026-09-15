@@ -20,7 +20,7 @@ const i18n = src("src/lib/i18n.ts");
 test("board-theme helper validates unknown → book and persists", () => {
   assert.match(
     theme,
-    /BOARD_THEMES = \["book", "paper", "future", "tournament", "arcade", "print"\]/,
+    /BOARD_THEMES = \["book", "future", "tournament", "arcade", "print"\]/,
   );
   assert.match(theme, /BOARD_THEME_STORAGE_KEY = "opening-lab:board-theme"/);
   assert.match(theme, /DEFAULT_BOARD_THEME/);
@@ -33,10 +33,14 @@ test("board-theme helper validates unknown → book and persists", () => {
   assert.match(theme, /isBoardTheme/);
   assert.match(theme, /"tournament"/);
   assert.match(theme, /"print"/);
-  // legacy newspaper → tournament (crash migration)
+  // dropped paper + legacy newspaper → book
   assert.match(
     theme,
-    /if \(value === "newspaper"\) return "tournament"/,
+    /if \(value === "paper" \|\| value === "newspaper"\) return "book"/,
+  );
+  assert.match(
+    theme,
+    /value === "book" \|\|\s*value === "future" \|\|\s*value === "tournament" \|\|\s*value === "arcade" \|\|\s*value === "print"/,
   );
   // unknown → book
   assert.match(
@@ -58,13 +62,10 @@ test("initBoardTheme always forces Book on every launch (not only unknown→book
   );
 });
 
-test("CSS keeps book defaults and has paper + future + tournament data-board-theme blocks", () => {
+test("CSS keeps book defaults and has future + tournament + arcade + print data-board-theme blocks", () => {
   assert.match(css, /\.sq-light\s*\{\s*background-color:\s*#f3e5c8/);
   assert.match(css, /\.sq-dark\s*\{\s*background-color:\s*#a97850/);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-light/);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-dark/);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.board-frame/);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.mini-sq-light/);
+  assert.doesNotMatch(css, /\[data-board-theme="paper"\]/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-light/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-dark/);
   assert.match(css, /\[data-board-theme="future"\]\s*\.board-frame/);
@@ -90,13 +91,10 @@ test("CSS keeps book defaults and has paper + future + tournament data-board-the
   assert.match(css, /\[data-board-theme="print"\]\s*\.sq-hint-from/);
   assert.match(css, /\[data-board-theme="print"\]\s*\.sq-coord--on-light/);
   assert.match(css, /\[data-board-theme="print"\]\s*\.sq-coord--on-dark/);
-  assert.match(css, /#f7f2e6/);
-  assert.match(css, /#c4bdb0/);
   assert.match(css, /#e2eaf0/);
   assert.match(css, /#5c6f84/);
   assert.match(css, /#1e2936/);
   assert.match(css, /#0f1720/);
-  assert.match(css, /#5c564c/);
   assert.match(css, /#eeeed2/);
   assert.match(css, /#769656/);
   assert.match(css, /#2e4a28/);
@@ -157,10 +155,9 @@ test("ChessBoard marks piece colour for theme CSS hooks (board, ghost, promo)", 
   );
 });
 
-test("green hints stay green (book + paper + future + tournament)", () => {
+test("green hints stay green (book + future + tournament + print)", () => {
   assert.match(css, /\.sq-hint-from\s*\{[^}]*#8fd49a/s);
   assert.match(css, /\.sq-hint-to\s*\{[^}]*#9edda8/s);
-  assert.match(css, /\[data-board-theme="paper"\]\s*\.sq-hint-from[^}]*#8fd49a/s);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-hint-from[^}]*#8fd49a/s);
   assert.match(css, /\[data-board-theme="future"\]\s*\.sq-hint-to[^}]*#9edda8/s);
   assert.match(
@@ -203,6 +200,9 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(picker, /t\("Tournament"\)/);
   assert.match(picker, /t\("Arcade"\)/);
   assert.match(picker, /t\("Print"\)/);
+  assert.doesNotMatch(picker, /t\("Paper"\)/);
+  assert.doesNotMatch(picker, /paper:/);
+  assert.match(css, /grid-template-columns:\s*repeat\(5,/);
   assert.match(picker, /arcade:\s*\{\s*light:/);
   assert.match(picker, /print:\s*\{\s*light:\s*"#faf8f2"/);
   assert.match(picker, /dark:\s*"#a39e94"/);
@@ -228,19 +228,49 @@ test("picker sits near the board on home only, not trainer or guide", () => {
   assert.match(i18n, /Board: "棋盘"/);
   assert.match(i18n, /Board: "Échiquier"/);
   assert.match(i18n, /Book: "Libro"/);
-  assert.match(i18n, /Paper: "Papel"/);
+  assert.doesNotMatch(i18n, /Paper:/);
   assert.match(i18n, /Future: "Futuro"/);
   assert.match(i18n, /Tournament: "Torneo"/);
   assert.match(i18n, /Book: "书谱"/);
-  assert.match(i18n, /Paper: "纸面"/);
   assert.match(i18n, /Future: "未来"/);
   assert.match(i18n, /Tournament: "锦标赛"/);
   assert.match(i18n, /Book: "Livre"/);
-  assert.match(i18n, /Paper: "Papier"/);
   assert.match(i18n, /Future: "Futur"/);
   assert.match(i18n, /Tournament: "Tournoi"/);
   assert.match(i18n, /Tournament: "Tournament"/);
   assert.match(i18n, /Print: "Print"/);
+});
+
+test("normalizeBoardTheme maps paper and newspaper to book", async (t) => {
+  let ts;
+  try {
+    ts = (await import("typescript")).default;
+  } catch {
+    t.skip("typescript not installed");
+    return;
+  }
+  const js = ts.transpileModule(theme, {
+    compilerOptions: {
+      module: ts.ModuleKind.ESNext,
+      target: ts.ScriptTarget.ES2022,
+    },
+  }).outputText;
+  const dataUrl = `data:text/javascript;base64,${Buffer.from(js).toString("base64")}`;
+  const mod = await import(dataUrl);
+  assert.equal(mod.normalizeBoardTheme("paper"), "book");
+  assert.equal(mod.normalizeBoardTheme("newspaper"), "book");
+  assert.equal(mod.normalizeBoardTheme("print"), "print");
+  assert.equal(mod.normalizeBoardTheme("arcade"), "arcade");
+  assert.equal(mod.normalizeBoardTheme("unknown"), "book");
+  assert.equal(mod.isBoardTheme("paper"), false);
+  assert.equal(mod.isBoardTheme("print"), true);
+});
+
+test("unlock sheet copy still has Card via Stripe without Yours to keep", () => {
+  const modal = src("src/components/opening-lab/unlock-modal.tsx");
+  assert.match(modal, /t\("Unlock this pack"\)/);
+  assert.match(modal, /t\("Card via Stripe\."\)/);
+  assert.doesNotMatch(modal, /Yours to keep/);
 });
 
 test("default theme is book", () => {
