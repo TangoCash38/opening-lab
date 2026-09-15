@@ -107,7 +107,7 @@ export function UnlockModal({
                     {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
                   </span>
                   <span className="block text-[0.75rem] text-fg-muted">
-                    {t("Yours to keep. Card via Stripe.")}
+                    {t("Card via Stripe.")}
                   </span>
                 </span>
                 <span className="text-base font-bold text-accent">{price}</span>
