@@ -23,6 +23,7 @@ import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhoo
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
+import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -94,6 +95,11 @@ const ApiPlaySubscribeRoute = ApiPlaySubscribeRouteImport.update({
   path: '/api/play/subscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
+  id: '/api/practice-review-eval',
+  path: '/api/practice-review-eval',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
+  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
+  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
+  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
+    | '/api/practice-review-eval'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
+    | '/api/practice-review-eval'
   id:
     | '__root__'
     | '/'
@@ -193,6 +204,7 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
+    | '/api/practice-review-eval'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -208,6 +220,7 @@ export interface RootRouteChildren {
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
+  ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPlaySubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/practice-review-eval': {
+      id: '/api/practice-review-eval'
+      path: '/api/practice-review-eval'
+      fullPath: '/api/practice-review-eval'
+      preLoaderRoute: typeof ApiPracticeReviewEvalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -350,6 +370,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
+  ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
