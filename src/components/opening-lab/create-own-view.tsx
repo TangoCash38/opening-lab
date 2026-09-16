@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Bookmark, RotateCcw } from "lucide-react";
 import { Chess, type Move, type Square } from "chess.js";
-import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useT } from "@/lib/i18n";
 import {
   firstMoveSquares,
@@ -317,7 +316,40 @@ function RememberModal({
   onKeepEditing: () => void;
 }) {
   const t = useT();
-  useOverlayHistory(true, onKeepEditing, "gym-remember");
+  const onKeepRef = useRef(onKeepEditing);
+  onKeepRef.current = onKeepEditing;
+  /**
+   * Own history entry so Back/Escape close the modal first.
+   * Do not use useOverlayHistory: its unmount history.back() races
+   * Practice navigation and can blank the page (same as the old review sheet).
+   */
+  useEffect(() => {
+    window.history.pushState({ olOverlay: "gym-remember" }, "");
+    const onPop = () => onKeepRef.current();
+    window.addEventListener("popstate", onPop);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      if (isRememberState(window.history.state)) {
+        window.history.back();
+        return;
+      }
+      onKeepRef.current();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  const goPractice = () => {
+    if (isRememberState(window.history.state)) {
+      window.history.replaceState(null, "");
+    }
+    onPractice();
+  };
+
   const san = formatGymSan(line.plies);
   const chips = gymSanChips(line.plies);
 
@@ -348,7 +380,7 @@ function RememberModal({
         <button
           type="button"
           data-create-own-practice
-          onClick={onPractice}
+          onClick={goPractice}
           className="create-own-remember-go"
         >
           {t("Practice this line")}
@@ -366,6 +398,14 @@ function RememberModal({
         </p>
       </div>
     </div>
+  );
+}
+
+function isRememberState(state: unknown): boolean {
+  return Boolean(
+    state &&
+      typeof state === "object" &&
+      (state as { olOverlay?: string }).olOverlay === "gym-remember",
   );
 }
 

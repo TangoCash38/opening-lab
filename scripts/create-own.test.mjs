@@ -92,7 +92,8 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.match(author, /data-create-own/);
   assert.match(author, /data-create-own-remembered/);
   assert.match(author, /data-board-theme="book"/);
-  assert.match(author, /useOverlayHistory\(true, onKeepEditing, "gym-remember"\)/);
+  assert.match(author, /olOverlay: "gym-remember"/);
+  assert.doesNotMatch(author, /useOverlayHistory\(/);
   assert.doesNotMatch(author, /SF cloud/i);
   assert.doesNotMatch(author, /Stockfish/i);
   assert.doesNotMatch(author, /Lichess/i);
