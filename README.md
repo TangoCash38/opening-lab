@@ -83,6 +83,23 @@ public/
   og.jpg
 ```
 
+## Practice-review Engine (server)
+
+After a finished Practice line or a wrong-move review, App Dev can POST
+`/api/practice-review-eval` for a short MultiPV-2 Engine eval (depth 14,
+hard cap 16, wall ~2.5s). **Practice only** — never Test, free play, or
+mid-drill.
+
+The API runs **Stockfish on the server only**. Set **`STOCKFISH_PATH`** on
+the host that runs the API (fallbacks: `/usr/games/stockfish`,
+`/usr/bin/stockfish`). Do **not** ship WASM Stockfish (or any GPL engine
+net) to the client or the Play WebView bundle.
+
+If the binary is missing or the search times out empty, the API returns
+`{ ok: false }` with HTTP 200 so the UI can hide the eval bar / PVs and
+keep Expert “why” text. Product copy should say **Engine**, not
+“Lichess / Stockfish cloud”.
+
 ## Scripts
 
 ```bash
