@@ -121,9 +121,10 @@ test("request/response contract: FEN validation, depth clamp, fail-soft, mock Mu
     const mod = await import(loaded.href);
 
     assert.equal(mod.isValidPracticeFen(START_FEN), true);
+    assert.equal(mod.isValidPracticeFen("4k3/8/8/8/8/8/8/4K3 w - - 0 1"), true);
     assert.equal(mod.isValidPracticeFen("not-a-fen"), false);
     assert.equal(mod.isValidPracticeFen(""), false);
-    assert.equal(mod.isValidPracticeFen("8/8/8/8/8/8/8/8 w - - 0 1"), true);
+    assert.equal(mod.isValidPracticeFen("8/8/8/8/8/8/8/8 w - - 0 1"), false);
     assert.equal(mod.isValidPracticeFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"), false);
 
     assert.equal(mod.clampPracticeReviewDepth(), 14);
@@ -168,6 +169,27 @@ test("request/response contract: FEN validation, depth clamp, fail-soft, mock Mu
     assert.equal(noBin.ok, false);
     assert.equal(typeof noBin.error, "string");
     assert.match(noBin.error, /Engine/);
+
+    const prevPath = process.env.STOCKFISH_PATH;
+    delete process.env.STOCKFISH_PATH;
+    const postNoBin = await mod.practiceReviewEvalPost({
+      request: new Request("http://local/api/practice-review-eval", {
+        method: "POST",
+        body: JSON.stringify({ fen: START_FEN }),
+        headers: { "content-type": "application/json" },
+      }),
+    });
+    if (prevPath !== undefined) process.env.STOCKFISH_PATH = prevPath;
+    assert.equal(postNoBin.status, 200);
+    const postBody = await postNoBin.json();
+    if (postBody.ok === true) {
+      assert.equal(typeof postBody.evalCp === "number" || postBody.evalCp === null, true);
+      assert.ok(Array.isArray(postBody.pvs));
+    } else {
+      assert.equal(postBody.ok, false);
+      assert.equal(typeof postBody.error, "string");
+      assert.match(postBody.error, /Engine/);
+    }
 
     const info1 =
       "info depth 14 seldepth 18 multipv 1 score cp 32 time 40 nodes 100 pv e2e4 e7e5 g1f3";
