@@ -16,6 +16,10 @@ import {
   soundWin,
 } from "@/lib/sounds";
 import { useT, type Translate } from "@/lib/i18n";
+import {
+  formatOpeningIdentity,
+  lookupOpeningIdentityPrefix,
+} from "@/lib/opening-identity";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { getBoardTheme } from "@/lib/board-theme";
@@ -1375,6 +1379,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       Boolean(pendingPromo) ||
       viewPly > 0);
   const canForward = !busy && !slide && viewPly < livePly;
+  const gymOpening = gym ? lookupOpeningIdentityPrefix(line.plies) : null;
 
   return (
     <div className="train-layout">
@@ -1384,6 +1389,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           <h2 className="m-0 font-display text-[1.45rem] font-bold tracking-tight">
             {t(line.side === "b" ? "My line · Black" : "My line · White")}
           </h2>
+          {gymOpening ? (
+            <p
+              className="create-own-train-identity"
+              data-create-own-train-identity={`${gymOpening.name}|${gymOpening.eco}`}
+            >
+              {formatOpeningIdentity(gymOpening)}
+            </p>
+          ) : null}
           <p className="create-own-train-chip" data-gym-remembered>
             {t("Yours · remembered")}
           </p>

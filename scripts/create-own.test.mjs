@@ -96,6 +96,18 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.match(author, /Curated packs stay in the store/);
   assert.match(author, /data-create-own/);
   assert.match(author, /data-create-own-remembered/);
+  assert.match(author, /data-create-own-identity/);
+  assert.match(author, /data-create-own-eval-bar/);
+  assert.match(author, /data-create-own-pvs/);
+  assert.match(author, /lookupOpeningIdentityPrefix/);
+  assert.match(author, /formatOpeningIdentity/);
+  assert.match(author, /formatEvalLabel/);
+  assert.match(author, /evalBarWhitePct/);
+  assert.match(author, /formatPvLine/);
+  assert.match(author, /arrowsFromPvs/);
+  assert.match(author, /Opening…/);
+  assert.match(author, /MultiPV · Top lines/);
+  assert.match(author, /Your line · build move by move/);
   assert.match(author, /data-board-theme="book"/);
   assert.match(author, /olOverlay: "gym-remember"/);
   assert.doesNotMatch(author, /useOverlayHistory\(/);
@@ -104,13 +116,19 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.doesNotMatch(author, /Lichess/i);
   assert.match(i18n, /"Create your own": "Create your own"/);
   assert.match(i18n, /"Engine · suggesting…": "Engine · suggesting…"/);
+  assert.match(i18n, /"Opening…": "Opening…"/);
+  assert.match(i18n, /"MultiPV · Top lines": "MultiPV · Top lines"/);
   assert.match(
     i18n,
     /"Remembered — \{san\} — locked as your gym line\. Train it like a pack\.":\s*"Remembered — \{san\} — locked as your gym line\. Train it like a pack\."/,
   );
   assert.doesNotMatch(i18n, /SF cloud|Stockfish cloud|Lichess/i);
   assert.match(css, /\.create-own-remember-sheet/);
+  assert.match(css, /\.create-own-identity/);
+  assert.match(css, /\.create-own-eval-track/);
+  assert.match(css, /\.create-own-pvs/);
   assert.match(readme, /Create your own \(web\)/);
+  assert.match(readme, /opening-identity/);
 });
 
 test("Practice/Test gym chrome has no Engine badge; Test stays locked until Practice", () => {
@@ -125,6 +143,12 @@ test("Practice/Test gym chrome has no Engine badge; Test stays locked until Prac
   assert.doesNotMatch(train, /SF cloud|Stockfish cloud|Lichess/i);
   assert.doesNotMatch(train, /fetchPracticeReviewEval/);
   assert.doesNotMatch(train, /data-create-own-engine/);
+  assert.doesNotMatch(train, /data-create-own-eval-bar/);
+  assert.doesNotMatch(train, /data-create-own-pvs/);
+  assert.doesNotMatch(train, /MultiPV · Top lines/);
+  assert.doesNotMatch(train, /evalBarWhitePct/);
+  assert.match(train, /lookupOpeningIdentityPrefix/);
+  assert.match(train, /data-create-own-train-identity/);
   assert.match(shell, /gym=\{isGymPack\(active\.pack\)\}/);
   assert.match(shell, /testLocked=/);
   assert.match(shell, /CreateOwnView/);

@@ -79,6 +79,33 @@ export function lookupOpeningIdentityFromPlies(plies: readonly string[]): Openin
   return lookupOpeningIdentity(game.fen());
 }
 
+/**
+ * Deepest book prefix along a SAN-from-start line. Off-book tails keep the
+ * last known name (never invent). Empty / unknown → null.
+ */
+export function lookupOpeningIdentityPrefix(
+  plies: readonly string[],
+): OpeningIdentity | null {
+  if (plies.length === 0) return null;
+  const game = new Chess();
+  const keys: string[] = [];
+  for (const san of plies) {
+    try {
+      if (!game.move(san)) break;
+    } catch {
+      break;
+    }
+    const key = openingFenKey(game.fen());
+    if (key) keys.push(key);
+  }
+  const book = bookIndex();
+  for (let i = keys.length - 1; i >= 0; i--) {
+    const hit = book.get(keys[i]!);
+    if (hit) return { name: hit.name, eco: hit.eco };
+  }
+  return null;
+}
+
 /** Quiet chip label, e.g. `Italian Game · C50`. */
 export function formatOpeningIdentity(id: OpeningIdentity): string {
   return `${id.name} · ${id.eco}`;

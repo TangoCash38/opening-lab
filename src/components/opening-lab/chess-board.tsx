@@ -68,6 +68,8 @@ type Props = {
   onMateBlastDone?: () => void;
   /** Practice-review MultiPV arrows (PV1 blue, PV2 grey). */
   arrows?: BoardArrow[];
+  /** Extra soft-green hint moves (authoring MultiPV first plies). */
+  hintMoves?: { from: Square; to: Square }[];
 };
 
 type PlacedPiece = {
@@ -318,6 +320,7 @@ export function ChessBoard({
   mateBlast = null,
   onMateBlastDone,
   arrows,
+  hintMoves,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -605,8 +608,14 @@ export function ChessBoard({
 
       const isSelected = selected === sq || dragOrigin === sq;
       const isWrong = wrongUntil === sq;
-      const isFrom = showHints && expected?.from === sq;
-      const isTo = showHints && expected?.to === sq;
+      const isFrom =
+        showHints &&
+        (expected?.from === sq ||
+          Boolean(hintMoves?.some((h) => h.from === sq)));
+      const isTo =
+        showHints &&
+        !isFrom &&
+        (expected?.to === sq || Boolean(hintMoves?.some((h) => h.to === sq)));
       const isLegal = legalTargets.has(sq);
       const isLastFrom = lastMove?.from === sq;
       const isLastTo = lastMove?.to === sq;

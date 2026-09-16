@@ -90,11 +90,16 @@ board, then **Remember this line**. The locked SAN is stored in
 `localStorage` (`src/lib/gym-line.ts`) and trains with the same Practice →
 Test loop as a curated pack. Test unlocks after a clean Practice.
 
+The authoring board shows a local opening chip (`Italian Game · C50`)
+from `src/lib/opening-identity.ts` — deepest SAN-from-start / FEN match,
+or **Opening…** when unknown. It never invents a pack name.
+
 While authoring, the board POSTs `/api/practice-review-eval` (`depth: 12`,
-~400ms debounce) and paints a soft green Engine hint. Status copy is
+~400ms debounce) and paints full Engine chrome: thin eval bar, MultiPV-2
+rows, and soft green hints from each PV first move. Status copy is
 **Engine · suggesting…** only — never “SF cloud”, “Stockfish cloud”, or
-“Lichess”. Fail-soft `{ ok: false }` hides the hint. Practice and Test
-never show Engine / MultiPV chrome.
+“Lichess”. Fail-soft `{ ok: false }` hides the bar, MultiPV, and greens.
+Practice and Test never show Engine / MultiPV chrome.
 
 The Remembered sheet body is the **full line SAN**, e.g.
 `Remembered — 1.e4 e5 2.Nf3 Nc6 — locked as your gym line. Train it like a pack.`
