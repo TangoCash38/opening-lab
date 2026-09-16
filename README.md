@@ -83,17 +83,33 @@ public/
   og.jpg
 ```
 
+## Create your own (web)
+
+Website-only authoring: pick Black or White, play both sides on a Book
+board, then **Remember this line**. The locked SAN is stored in
+`localStorage` (`src/lib/gym-line.ts`) and trains with the same Practice →
+Test loop as a curated pack. Test unlocks after a clean Practice.
+
+While authoring, the board POSTs `/api/practice-review-eval` (`depth: 12`,
+~400ms debounce) and paints a soft green Engine hint. Status copy is
+**Engine · suggesting…** only — never “SF cloud”, “Stockfish cloud”, or
+“Lichess”. Fail-soft `{ ok: false }` hides the hint. Practice and Test
+never show Engine / MultiPV chrome.
+
+The Remembered sheet body is the **full line SAN**, e.g.
+`Remembered — 1.e4 e5 2.Nf3 Nc6 — locked as your gym line. Train it like a pack.`
+
+Play wrap hides this entry (`!isPlayApp()`).
+
 ## Practice-review Engine (server)
 
-After a finished Practice line or a wrong-move review, Practice can open
-**Why this move?** and POST `/api/practice-review-eval` for a short
-MultiPV-2 Engine eval (depth 14, hard cap 16, wall ~2.5s). **Practice
-only** — never Test, free play, or mid-drill. Test cannot open the sheet.
+`POST /api/practice-review-eval` is a short MultiPV-2 Engine eval (default
+depth 14, hard cap 16, wall ~2.5s). Create-your-own authoring reuses it at
+depth 12. Never mid-drill in Practice or Test.
 
 **Vercel has no Stockfish binary.** Leave **`STOCKFISH_PATH` unset** on
-Vercel; the handler fail-softs `{ ok: false }` (HTTP 200) so the UI can
-hide the eval bar / PVs and keep Expert “why” text. Live eval comes later
-via a small **worker that sets `STOCKFISH_PATH`** (e.g. `/usr/games/stockfish`
+Vercel; the handler fail-softs `{ ok: false }` (HTTP 200). Live eval comes
+later via a small **worker that sets `STOCKFISH_PATH`** (e.g. `/usr/games/stockfish`
 or `/usr/bin/stockfish`) and is reached as **`PRACTICE_REVIEW_EVAL_URL`**
 (same `POST` contract). Do **not** ship WASM Stockfish (or any GPL engine
 net) to the client or the Play WebView bundle.

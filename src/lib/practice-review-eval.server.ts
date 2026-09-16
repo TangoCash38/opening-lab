@@ -10,8 +10,9 @@
  * Do not ship WASM Stockfish (or any GPL engine net) to the client / Play
  * WebView bundle. This path never imports play-engine lite JS.
  *
- * Product rules: Practice only — after a finished Practice line or wrong-move
- * review. Never Test. No free-play analysis. No mid-drill MultiPV. UI copy
+ * Product rules: authoring suggests (Create your own). Never mid-drill in
+ * Practice or Test. No free-play analysis. No mid-drill MultiPV.
+ * UI copy
  * should say "Engine", not "Lichess / Stockfish cloud".
  *
  * Search: MultiPV 2, depth target 14, hard cap 16, wall ~1.5–2.5s.

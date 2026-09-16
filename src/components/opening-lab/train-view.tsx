@@ -25,7 +25,6 @@ import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
-import { PracticeReviewSheet } from "./practice-review-sheet";
 
 type PlayLevel = "beginner" | "intermediate" | "advanced";
 
@@ -55,6 +54,9 @@ type Props = {
   pack: Pack;
   line: OpeningLine;
   onBack: () => void;
+  /** Create-your-own gym line: custom chrome, Test gated until Practice. */
+  gym?: boolean;
+  testLocked?: boolean;
 };
 
 type ResultNextAction = "practiceNext" | "testYourself" | "learn";
@@ -276,7 +278,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -335,25 +337,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     primaryLabel?: string;
     nextAction?: ResultNextAction;
   } | null>(null);
-  const [practiceReview, setPracticeReview] = useState<{
-    fen: string;
-    whyText: string;
-  } | null>(null);
-  const [reviewLock, setReviewLock] = useState(false);
-  const reviewLockRef = useRef(false);
-  useEffect(() => {
-    if (practiceReview) {
-      reviewLockRef.current = true;
-      setReviewLock(true);
-      return;
-    }
-    const t = window.setTimeout(() => {
-      reviewLockRef.current = false;
-      setReviewLock(false);
-    }, 400);
-    return () => window.clearTimeout(t);
-  }, [practiceReview]);
-
   // Play-on promotion picker: Back cancels like tapping the dimmed board.
   useOverlayHistory(
     Boolean(pendingPromo),
@@ -467,7 +450,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setBusy(false);
       setLastMove(null);
       setResultCard(null);
-      setPracticeReview(null);
       setHintsReady(true);
       setPlayHint(null);
       setHintBusy(false);
@@ -495,6 +477,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   );
 
   const changeMode = (m: Mode) => {
+    if (m === "practice" && testLocked) return;
     if (m === "practice") setNudgeTest(false);
     setMode(m);
     onModeChange?.(m);
@@ -1396,6 +1379,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   return (
     <div className="train-layout">
       <div className="train-top-chrome">
+      {gym ? (
+        <div className="create-own-train-head" data-gym-line>
+          <h2 className="m-0 font-display text-[1.45rem] font-bold tracking-tight">
+            {t(line.side === "b" ? "My line · Black" : "My line · White")}
+          </h2>
+          <p className="create-own-train-chip" data-gym-remembered>
+            {t("Yours · remembered")}
+          </p>
+        </div>
+      ) : (
+        <>
       <button
         type="button"
         onClick={onBack}
@@ -1414,12 +1408,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[0.95rem] font-semibold">
         <span>{line.name}</span>
       </div>
-      {line.idea ? (
+        </>
+      )}
+      {!gym && line.idea ? (
         <p className="train-idea mt-1 text-[0.88rem] text-fg-muted">{line.idea}</p>
       ) : null}
+      {!gym ? (
       <div className="text-[0.78rem] text-fg-subtle">
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
       </div>
+      ) : null}
 
       {line.players ? (
         <div className="mt-2.5">
@@ -1457,6 +1455,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           active={mode === "practice"}
           onClick={() => changeMode("practice")}
           nudge={nudgeTest}
+          disabled={testLocked}
+          title={testLocked ? t("Test unlocks after a clean Practice.") : undefined}
         >
           Test
         </ModeTab>
@@ -1510,6 +1510,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 active={mode === "practice"}
                 onClick={() => changeMode("practice")}
                 nudge={nudgeTest}
+                disabled={testLocked}
+                title={testLocked ? t("Test unlocks after a clean Practice.") : undefined}
               >
                 Test
               </ModeTab>
@@ -1820,22 +1822,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 }
               : undefined
           }
-          reviewOpen={reviewLock}
-          whyThisMoveLabel={mode === "learn" ? t("Why this move?") : undefined}
-          onWhyThisMove={
-            mode === "learn"
-              ? () => {
-                  reviewLockRef.current = true;
-                  setReviewLock(true);
-                  setPracticeReview({
-                    fen: game.fen(),
-                    whyText: resultCard.body,
-                  });
-                }
-              : undefined
-          }
           onClose={() => {
-            if (reviewLockRef.current) return;
             setResultCard(null);
           }}
           onAction={
@@ -1862,18 +1849,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                   }
                 : undefined
           }
-        />
-      ) : null}
-      {practiceReview && mode === "learn" ? (
-        <PracticeReviewSheet
-          fen={practiceReview.fen}
-          whyText={practiceReview.whyText}
-          flip={line.side === "b"}
-          onClose={() => setPracticeReview(null)}
-          onBackToPractice={() => {
-            setPracticeReview(null);
-            setResultCard(null);
-          }}
         />
       ) : null}
       {pack.about && aboutOpen ? (
@@ -1909,21 +1884,28 @@ function ModeTab({
   onClick,
   children,
   nudge,
+  disabled,
+  title,
 }: {
   active: boolean;
   onClick: () => void;
   children: ReactNode;
   nudge?: boolean;
+  disabled?: boolean;
+  title?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
+      disabled={disabled}
+      title={title}
+      aria-disabled={disabled || undefined}
       className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
         active
           ? "bg-bg-elevated text-fg shadow-sm"
           : "bg-transparent text-fg-muted"
-      }${nudge ? " mode-tab-nudge" : ""}`}
+      }${nudge ? " mode-tab-nudge" : ""}${disabled ? " opacity-40" : ""}`}
     >
       {children}
     </button>

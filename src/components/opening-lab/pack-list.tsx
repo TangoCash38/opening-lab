@@ -34,9 +34,11 @@ import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
+import { CreateOwnEntry } from "./create-own-view";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 import { WebsiteAppPrompt } from "./website-app-prompt";
+import { readGymLine, subscribeGymLine, type GymLine } from "@/lib/gym-line";
 
 type TrainMode = "learn" | "practice";
 
@@ -44,6 +46,8 @@ type Props = {
   onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
   onHowToPlay: () => void;
   onOpenMate: () => void;
+  onCreateOwn?: () => void;
+  onPracticeGym?: (line: GymLine) => void;
 };
 
 type ModalTarget = { pack: Pack; price: string };
@@ -232,7 +236,13 @@ function PackCard({
   );
 }
 
-export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
+export function PackList({
+  onStartLine,
+  onHowToPlay,
+  onOpenMate,
+  onCreateOwn,
+  onPracticeGym,
+}: Props) {
   const t = useT();
   const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
@@ -248,6 +258,12 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
   const resumedCheckout = useRef(false);
   const heroAnchorRef = useRef<HTMLDivElement>(null);
   const wrap = playApp || isPlayWrap();
+  const [gymLine, setGymLine] = useState<GymLine | null>(null);
+
+  useEffect(() => {
+    setGymLine(readGymLine());
+    return subscribeGymLine(() => setGymLine(readGymLine()));
+  }, []);
 
   useEffect(() => {
     setPlayApp(isPlayWrap());
@@ -525,6 +541,14 @@ export function PackList({ onStartLine, onHowToPlay, onOpenMate }: Props) {
           {t("Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.")}
         </p>
       )}
+
+      {!wrap && onCreateOwn ? (
+        <CreateOwnEntry
+          remembered={gymLine}
+          onOpen={onCreateOwn}
+          onPractice={onPracticeGym}
+        />
+      ) : null}
 
       <div ref={heroAnchorRef}>
         {featuredPack ? (

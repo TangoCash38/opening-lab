@@ -16,10 +16,8 @@ const BLACK_FEN =
 
 const train = src("src/components/opening-lab/train-view.tsx");
 const modal = src("src/components/opening-lab/line-result-modal.tsx");
-const sheet = src("src/components/opening-lab/practice-review-sheet.tsx");
 const client = src("src/lib/practice-review-eval.ts");
-const board = src("src/components/opening-lab/chess-board.tsx");
-const css = src("src/styles.css");
+const author = src("src/components/opening-lab/create-own-view.tsx");
 const i18n = src("src/lib/i18n.ts");
 const server = src("src/lib/practice-review-eval.server.ts");
 
@@ -43,95 +41,49 @@ function loadClient() {
   return { dir, href: pathToFileURL(tmp).href };
 }
 
-test("Practice-only Why this move entry; Test never opens the review sheet", () => {
-  assert.match(train, /PracticeReviewSheet/);
-  assert.match(train, /whyThisMoveLabel=\{mode === "learn" \? t\("Why this move\?"\) : undefined\}/);
-  assert.match(train, /onWhyThisMove=\{\s*mode === "learn"/);
-  assert.match(train, /setPracticeReview/);
-  assert.match(train, /practiceReview && mode === "learn"/);
-  assert.doesNotMatch(train, /mode === "practice"[\s\S]{0,80}Why this move/);
-  assert.doesNotMatch(train, /playingOn[\s\S]{0,40}PracticeReviewSheet/);
-
-  const modalCall = train.slice(
-    train.indexOf("<LineResultModal"),
-    train.indexOf("</LineResultModal>"),
-  );
-  assert.match(modalCall, /mode === "learn"/);
-  assert.doesNotMatch(modalCall, /mode === "practice" \? t\("Why this move\?"\)/);
-
-  const wrongs = [];
-  let from = 0;
-  while (true) {
-    const start = train.indexOf('kind: "wrong",', from);
-    if (start < 0) break;
-    const end = train.indexOf("});", start);
-    wrongs.push(train.slice(start, end + 3));
-    from = start + 1;
+test("Why this move and Practice review sheet are gone from the product", () => {
+  assert.doesNotMatch(train, /PracticeReviewSheet/);
+  assert.doesNotMatch(train, /whyThisMoveLabel/);
+  assert.doesNotMatch(train, /onWhyThisMove/);
+  assert.doesNotMatch(train, /setPracticeReview/);
+  assert.doesNotMatch(train, /Why this move/);
+  assert.doesNotMatch(modal, /whyThisMoveLabel/);
+  assert.doesNotMatch(modal, /onWhyThisMove/);
+  assert.doesNotMatch(modal, /data-why-this-move/);
+  assert.doesNotMatch(modal, /reviewOpen/);
+  assert.doesNotMatch(src("src/styles.css"), /\.practice-review-sheet/);
+  assert.doesNotMatch(src("src/styles.css"), /\.line-result-why-btn/);
+  try {
+    readFileSync(join(root, "src/components/opening-lab/practice-review-sheet.tsx"));
+    assert.fail("practice-review-sheet.tsx should be removed");
+  } catch (err) {
+    assert.equal(err.code, "ENOENT");
   }
-  assert.equal(wrongs.length, 2);
-  for (const w of wrongs) {
-    assert.doesNotMatch(w, /Why this move/);
-    assert.doesNotMatch(w, /practiceReview/);
-  }
-
-  assert.match(modal, /whyThisMoveLabel\?/);
-  assert.match(modal, /onWhyThisMove\?/);
-  assert.match(modal, /data-why-this-move/);
-  assert.match(modal, /reviewOpen/);
-  assert.match(modal, /Practice-only opt-in Engine review/);
-  assert.match(modal, /Never passed from Test/);
-  assert.match(train, /reviewOpen=\{reviewLock\}/);
-  assert.match(train, /reviewLockRef/);
-  assert.match(train, /if \(reviewLockRef\.current\) return/);
 });
 
-test("review sheet matches Practice UI mock and fail-softs Engine miss", () => {
-  assert.match(sheet, /data-practice-review-sheet/);
-  assert.match(sheet, /Practice · review/);
-  assert.match(sheet, /Why this move\?/);
-  assert.match(sheet, /data-practice-review-why/);
-  assert.match(sheet, /data-practice-review-eval-bar/);
-  assert.match(sheet, /data-practice-review-pvs/);
-  assert.match(sheet, /data-practice-review-back/);
-  assert.match(sheet, /data-practice-review-close/);
-  assert.match(sheet, /Back to Practice/);
-  assert.match(sheet, /t\("Close"\)/);
-  assert.match(sheet, /fetchPracticeReviewEval/);
-  assert.match(sheet, /setEvalOk\(result\.ok \? result : null\)/);
-  assert.match(sheet, /data-practice-review-eval=\{showEval \? "ok" : ready \? "hidden" : "loading"\}/);
-  assert.match(sheet, /showEval \? \(/);
-  assert.match(sheet, /t\("Engine"\)/);
-  assert.match(sheet, /olOverlay: REVIEW_STATE/);
-  assert.match(sheet, /Do not use useOverlayHistory here/);
-  assert.doesNotMatch(sheet, /useOverlayHistory\(/);
-  assert.match(sheet, /data-board-theme="book"/);
-  assert.match(sheet, /arrows=\{arrows\}/);
-  assert.doesNotMatch(sheet, /Stockfish cloud/i);
-  assert.doesNotMatch(sheet, /Lichess Analysis/i);
-  assert.doesNotMatch(sheet, /stockfish\.wasm/i);
-  assert.doesNotMatch(sheet, /from ["']@\/lib\/play-engine/);
-  assert.doesNotMatch(sheet, /from ["']@\/lib\/practice-review-eval\.server/);
-
-  assert.match(css, /\.practice-review-overlay/);
-  assert.match(css, /\.practice-review-sheet/);
-  assert.match(css, /\.practice-review-eval-track/);
-  assert.match(css, /\.practice-review-pv\.is-pv1/);
-  assert.match(css, /--color-accent/);
-  assert.match(css, /\.board-arrow--pv1/);
-  assert.match(css, /\.board-arrow--pv2/);
-  assert.match(css, /#f3e5c8/);
-  assert.doesNotMatch(sheet, /bg-neutral-900/);
-  assert.doesNotMatch(css, /\.practice-review-sheet[\s\S]{0,80}#111/);
-
-  assert.match(board, /arrows\?: BoardArrow\[\]/);
-  assert.match(board, /data-board-arrows/);
-  assert.match(board, /board-arrow--pv1/);
+test("authoring reuses POST /api/practice-review-eval at depth 12; fail-soft hides hints", () => {
+  assert.match(author, /fetchPracticeReviewEval\(fen, \{ depth: GYM_AUTHOR_DEPTH \}\)/);
+  assert.match(author, /GYM_AUTHOR_DEPTH/);
+  assert.match(author, /GYM_AUTHOR_DEBOUNCE_MS/);
+  assert.match(author, /t\("Engine · suggesting…"\)/);
+  assert.match(author, /result\.ok/);
+  assert.match(author, /setSuggest\(null\)/);
+  assert.doesNotMatch(author, /SF cloud/i);
+  assert.doesNotMatch(author, /Stockfish cloud/i);
+  assert.doesNotMatch(author, /Lichess/i);
+  assert.doesNotMatch(author, /stockfish\.wasm/i);
+  assert.doesNotMatch(author, /from ["']@\/lib\/play-engine/);
+  assert.doesNotMatch(train, /fetchPracticeReviewEval/);
+  assert.doesNotMatch(train, /Engine · suggesting/);
+  assert.doesNotMatch(train, /t\("Engine/);
+  assert.doesNotMatch(train, /SF cloud|Stockfish cloud|Lichess/i);
+  assert.doesNotMatch(train, /data-create-own-engine/);
 });
 
 test("client Engine path is POST /api/practice-review-eval; no WASM / play-engine", () => {
   assert.match(client, /PRACTICE_REVIEW_EVAL_PATH = "\/api\/practice-review-eval"/);
   assert.match(client, /method: "POST"/);
-  assert.match(client, /JSON\.stringify\(\{ fen \}\)/);
+  assert.match(client, /JSON.stringify\(payload\)/);
   assert.match(client, /Product copy: "Engine"/);
   assert.doesNotMatch(client, /from ["']@\/lib\/play-engine/);
   assert.doesNotMatch(client, /from ["']stockfish/);
@@ -139,10 +91,7 @@ test("client Engine path is POST /api/practice-review-eval; no WASM / play-engin
   assert.doesNotMatch(client, /lichess\.org\/api/);
   assert.doesNotMatch(client, /child_process/);
   assert.doesNotMatch(server, /from ["']@\/lib\/practice-review-eval["']/);
-  assert.match(i18n, /"Why this move\?": "Why this move\?"/);
-  assert.equal(i18n.split('"Why this move?":').length - 1, 12);
-  assert.equal(i18n.split('"Practice · review":').length - 1, 12);
-  assert.equal(i18n.split('"Back to Practice":').length - 1, 12);
+  assert.match(i18n, /"Engine · suggesting…": "Engine · suggesting…"/);
 });
 
 test("eval formatters and fail-soft parse (client)", async (t) => {
@@ -190,10 +139,13 @@ test("eval formatters and fail-soft parse (client)", async (t) => {
     assert.ok(pct > 50 && pct < 70);
 
     const origFetch = globalThis.fetch;
-    globalThis.fetch = async () => {
+    globalThis.fetch = async (_url, init) => {
+      const body = JSON.parse(String(init.body));
+      assert.equal(body.fen, START_FEN);
+      assert.equal(body.depth, 12);
       throw new Error("network");
     };
-    const netFail = await mod.fetchPracticeReviewEval(START_FEN);
+    const netFail = await mod.fetchPracticeReviewEval(START_FEN, { depth: 12 });
     globalThis.fetch = origFetch;
     assert.deepEqual(netFail, { ok: false, error: "Engine unavailable" });
   } finally {
