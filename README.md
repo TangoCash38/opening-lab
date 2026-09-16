@@ -90,11 +90,12 @@ After a finished Practice line or a wrong-move review, App Dev can POST
 hard cap 16, wall ~2.5s). **Practice only** — never Test, free play, or
 mid-drill.
 
-**Vercel has no Stockfish binary.** When **`STOCKFISH_PATH` is unset** the
-handler fail-softs `{ ok: false }` (HTTP 200) so the UI can hide the eval
-bar / PVs and keep Expert “why” text. Live eval comes later via a small
-**worker that sets `STOCKFISH_PATH`** (e.g. `/usr/games/stockfish` or
-`/usr/bin/stockfish`). Do **not** ship WASM Stockfish (or any GPL engine
+**Vercel has no Stockfish binary.** Leave **`STOCKFISH_PATH` unset** on
+Vercel; the handler fail-softs `{ ok: false }` (HTTP 200) so the UI can
+hide the eval bar / PVs and keep Expert “why” text. Live eval comes later
+via a small **worker that sets `STOCKFISH_PATH`** (e.g. `/usr/games/stockfish`
+or `/usr/bin/stockfish`) and is reached as **`PRACTICE_REVIEW_EVAL_URL`**
+(same `POST` contract). Do **not** ship WASM Stockfish (or any GPL engine
 net) to the client or the Play WebView bundle.
 
 Product copy should say **Engine**, not “Lichess / Stockfish cloud”.

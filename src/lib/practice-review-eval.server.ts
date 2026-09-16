@@ -4,7 +4,8 @@
  * Ops: Vercel has no Stockfish binary. When STOCKFISH_PATH is unset the
  * handler MUST fail-soft `{ ok: false }` (HTTP 200) so the UI can hide the
  * eval bar / PVs and keep Expert "why" text. Live eval comes later via a
- * small worker that sets STOCKFISH_PATH — not WASM in the client or Play wrap.
+ * small worker that sets STOCKFISH_PATH (PRACTICE_REVIEW_EVAL_URL) —
+ * not WASM in the client or Play wrap.
  *
  * Do not ship WASM Stockfish (or any GPL engine net) to the client / Play
  * WebView bundle. This path never imports play-engine lite JS.

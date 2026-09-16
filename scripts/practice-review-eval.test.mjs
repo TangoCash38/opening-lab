@@ -111,7 +111,9 @@ test("Practice-review Engine stays server-side (no WASM / play-engine / product 
   const readme = readFileSync(join(root, "README.md"), "utf8");
   assert.match(readme, /STOCKFISH_PATH/);
   assert.match(readme, /Vercel has no Stockfish binary/);
+  assert.match(readme, /Leave \*\*`STOCKFISH_PATH` unset\*\* on\nVercel/);
   assert.match(readme, /worker that sets `STOCKFISH_PATH`/);
+  assert.match(readme, /PRACTICE_REVIEW_EVAL_URL/);
   assert.match(readme, /\/api\/practice-review-eval/);
   assert.match(readme, /Do \*\*not\*\* ship WASM Stockfish/);
   assert.match(readme, /\*\*Engine\*\*/);
