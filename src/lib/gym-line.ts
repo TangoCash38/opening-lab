@@ -4,8 +4,9 @@
  * Remembered SAN lives in localStorage so Practice / Test can reload it.
  * Not a catalog pack — curated PACKS / VISIBLE_PACK_IDS stay unchanged.
  *
- * Engine suggests only while authoring (POST /api/practice-review-eval,
- * depth 12). Practice / Test use book green hints only — no mid-drill MultiPV.
+ * Engine chrome (eval bar, MultiPV-2, green PV hints) is authoring-only
+ * via POST /api/practice-review-eval, depth 12. Practice / Test use book
+ * green hints only — no mid-drill MultiPV.
  */
 import type { OpeningLine, Pack, Side } from "@/data/packs";
 

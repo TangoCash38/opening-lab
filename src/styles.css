@@ -2268,14 +2268,74 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   background: transparent;
 }
 
+.create-own-identity {
+  margin: 0.85rem 0 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
+}
+
+.create-own-identity[data-create-own-identity="unknown"] {
+  color: var(--color-fg-subtle);
+}
+
+.create-own-board-row {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: 0.2rem auto 0;
+  max-width: 26rem;
+}
+
 .create-own-board {
-  margin: 0.35rem auto 0;
+  flex: 1 1 auto;
+  min-width: 0;
   max-width: 22rem;
+  margin: 0;
+}
+
+.create-own-board .relative.mx-auto {
+  margin-bottom: 0;
+}
+
+.create-own-eval {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  padding: 0.15rem 0;
+}
+
+.create-own-eval-track {
+  width: 0.42rem;
+  flex: 1 1 auto;
+  min-height: 12rem;
+  border-radius: 999px;
+  background: #1c1915;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.create-own-eval-white {
+  width: 100%;
+  background: #fbf8f2;
+}
+
+.create-own-eval-score {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-fg-muted);
+  letter-spacing: 0.01em;
 }
 
 .create-own-engine {
   min-height: 1.2em;
-  margin: 0.7rem 0 0.45rem;
+  margin: 0.7rem 0 0.2rem;
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--color-fg-subtle);
@@ -2283,6 +2343,67 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 .create-own-engine[data-create-own-engine="hidden"] {
   visibility: hidden;
+}
+
+.create-own-multipv {
+  margin: 0.15rem 0 0.7rem;
+}
+
+.create-own-multipv-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-fg-subtle);
+}
+
+.create-own-pvs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.create-own-pv {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  text-align: left;
+}
+
+.create-own-pv.is-pv1 {
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+}
+
+.create-own-pv-score {
+  flex: 0 0 auto;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-fg);
+}
+
+.create-own-pv-line {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 11.5rem;
+}
+
+.create-own-line-kicker {
+  margin: 0.15rem 0 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-fg-subtle);
 }
 
 .create-own-chips {
@@ -2311,12 +2432,18 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   color: var(--color-accent-fg);
 }
 
+.create-own-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
 .create-own-remember {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  width: 100%;
+  flex: 1 1 auto;
   min-height: 3.15rem;
   border: 0;
   border-radius: 999px;
@@ -2339,10 +2466,12 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  margin-top: 0.55rem;
-  min-height: 2.4rem;
-  border: 0;
-  background: transparent;
+  flex: 0 0 auto;
+  min-height: 3.15rem;
+  padding: 0 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
   color: var(--color-fg-muted);
   font-size: 0.92rem;
   font-weight: 600;
@@ -2379,6 +2508,13 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   font-family: var(--font-display);
   font-size: 1.85rem;
   font-weight: 700;
+}
+
+.create-own-remember-identity {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
 }
 
 .create-own-remember-copy {
@@ -2493,6 +2629,13 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 .create-own-train-head {
   text-align: center;
   margin-bottom: 0.15rem;
+}
+
+.create-own-train-identity {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-fg-muted);
 }
 
 .create-own-train-chip {

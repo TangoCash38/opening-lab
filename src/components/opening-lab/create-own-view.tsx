@@ -1,11 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Bookmark, RotateCcw } from "lucide-react";
+import { ChevronRight, Star, Trash2 } from "lucide-react";
 import { Chess, type Move, type Square } from "chess.js";
 import { useT } from "@/lib/i18n";
 import {
+  arrowsFromPvs,
+  evalBarWhitePct,
   firstMoveSquares,
   fetchPracticeReviewEval,
+  formatEvalLabel,
+  formatPvLine,
+  whiteEvalCp,
+  type PracticeReviewOk,
 } from "@/lib/practice-review-eval";
+import {
+  formatOpeningIdentity,
+  lookupOpeningIdentityPrefix,
+} from "@/lib/opening-identity";
 import {
   GYM_AUTHOR_DEBOUNCE_MS,
   GYM_AUTHOR_DEPTH,
@@ -37,11 +47,12 @@ export function CreateOwnView({ onPractice, initial }: Props) {
     null,
   );
   const [remembered, setRemembered] = useState<GymLine | null>(null);
-  const [suggest, setSuggest] = useState<Move | null>(null);
+  const [evalOk, setEvalOk] = useState<PracticeReviewOk | null>(null);
   const [suggesting, setSuggesting] = useState(false);
   const fen = game.fen();
   const plies = game.history();
   const genRef = useRef(0);
+  const opening = lookupOpeningIdentityPrefix(plies);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -50,31 +61,17 @@ export function CreateOwnView({ onPractice, initial }: Props) {
   useEffect(() => {
     const gen = ++genRef.current;
     setSuggesting(true);
-    setSuggest(null);
+    setEvalOk(null);
     const timer = window.setTimeout(() => {
       void fetchPracticeReviewEval(fen, { depth: GYM_AUTHOR_DEPTH }).then(
         (result) => {
           if (gen !== genRef.current) return;
           if (!result.ok) {
-            setSuggest(null);
+            setEvalOk(null);
             setSuggesting(false);
             return;
           }
-          const pv1 = result.pvs.find((p) => p.multipv === 1);
-          const san = pv1?.san[0];
-          if (!san) {
-            setSuggest(null);
-            setSuggesting(false);
-            return;
-          }
-          try {
-            const probe = new Chess(fen);
-            const mv = probe.move(san);
-            setSuggest(mv || null);
-          } catch {
-            const sq = firstMoveSquares(fen, san);
-            setSuggest(sq ? ({ from: sq.from, to: sq.to } as Move) : null);
-          }
+          setEvalOk(result);
           setSuggesting(false);
         },
       );
@@ -133,7 +130,7 @@ export function CreateOwnView({ onPractice, initial }: Props) {
     setGame(new Chess());
     setSelected(null);
     setLastMove(null);
-    setSuggest(null);
+    setEvalOk(null);
     setSuggesting(false);
     setRemembered(null);
   };
@@ -147,7 +144,33 @@ export function CreateOwnView({ onPractice, initial }: Props) {
   };
 
   const chips = useMemo(() => gymSanChips(plies), [plies]);
-  const showEngine = suggesting || suggest != null;
+  const showEval = evalOk != null;
+  const showEngine = suggesting || showEval;
+  const pvs = showEval
+    ? [...evalOk.pvs].sort((a, b) => a.multipv - b.multipv)
+    : [];
+  const hintMoves = showEval ? arrowsFromPvs(fen, evalOk.pvs) : [];
+  const pv1 = pvs.find((p) => p.multipv === 1);
+  const suggest = useMemo((): Move | null => {
+    const san = pv1?.san[0];
+    if (!san || !showEval) return null;
+    try {
+      const probe = new Chess(fen);
+      const mv = probe.move(san);
+      return mv || null;
+    } catch {
+      const sq = firstMoveSquares(fen, san);
+      return sq ? ({ from: sq.from, to: sq.to } as Move) : null;
+    }
+  }, [fen, pv1, showEval]);
+  const barCp = showEval
+    ? whiteEvalCp(evalOk.evalCp, evalOk.mate, fen)
+    : null;
+  const barPct = evalBarWhitePct(barCp);
+  const barLabel = showEval
+    ? formatEvalLabel(evalOk.evalCp, evalOk.mate, fen)
+    : "";
+  const openingLabel = opening ? formatOpeningIdentity(opening) : t("Opening…");
 
   return (
     <div className="create-own" data-create-own data-board-theme="book">
@@ -155,16 +178,6 @@ export function CreateOwnView({ onPractice, initial }: Props) {
         <h1 className="create-own-title">{t("Create your own")}</h1>
         <p className="create-own-sub">{t("Build a line, then train it.")}</p>
         <div className="create-own-side" role="group" aria-label={t("Create your own")}>
-          <button
-            type="button"
-            data-create-own-side="b"
-            aria-pressed={side === "b"}
-            className={`create-own-side-btn${side === "b" ? " is-on" : ""}`}
-            onClick={() => setSide("b")}
-          >
-            <span className="create-own-side-dot is-black" aria-hidden />
-            {t("Black")}
-          </button>
           <button
             type="button"
             data-create-own-side="w"
@@ -175,35 +188,94 @@ export function CreateOwnView({ onPractice, initial }: Props) {
             <span className="create-own-side-dot is-white" aria-hidden />
             {t("White")}
           </button>
+          <button
+            type="button"
+            data-create-own-side="b"
+            aria-pressed={side === "b"}
+            className={`create-own-side-btn${side === "b" ? " is-on" : ""}`}
+            onClick={() => setSide("b")}
+          >
+            <span className="create-own-side-dot is-black" aria-hidden />
+            {t("Black")}
+          </button>
         </div>
       </div>
 
-      <div className="create-own-board">
-        <ChessBoard
-          game={game}
-          flip={side === "b"}
-          selected={selected}
-          wrongUntil={null}
-          expected={suggest}
-          showHints={suggest != null}
-          lastMove={lastMove}
-          slide={null}
-          onSquare={onSquare}
-          onPlay={playMove}
-          interactive
-        />
+      <p
+        className="create-own-identity"
+        data-create-own-identity={opening ? `${opening.name}|${opening.eco}` : "unknown"}
+      >
+        {openingLabel}
+      </p>
+
+      <div className="create-own-board-row">
+        <div className="create-own-board">
+          <ChessBoard
+            game={game}
+            flip={side === "b"}
+            selected={selected}
+            wrongUntil={null}
+            expected={suggest}
+            showHints={showEval}
+            hintMoves={hintMoves}
+            lastMove={lastMove}
+            slide={null}
+            onSquare={onSquare}
+            onPlay={playMove}
+            interactive
+          />
+        </div>
+        {showEval ? (
+          <div
+            className="create-own-eval"
+            data-create-own-eval-bar
+            aria-label={t("Engine")}
+          >
+            <div className="create-own-eval-track" aria-hidden>
+              <div
+                className="create-own-eval-white"
+                style={{ height: `${barPct}%` }}
+              />
+            </div>
+            <span className="create-own-eval-score">{barLabel}</span>
+          </div>
+        ) : null}
       </div>
 
       <p
         className="create-own-engine"
         data-create-own-engine={
-          suggest ? "ok" : suggesting ? "loading" : "hidden"
+          showEval ? "ok" : suggesting ? "loading" : "hidden"
         }
         aria-live="polite"
       >
         {showEngine ? t("Engine · suggesting…") : "\u00a0"}
       </p>
 
+      {showEval && pvs.length > 0 ? (
+        <div className="create-own-multipv" data-create-own-pvs>
+          <p className="create-own-multipv-kicker">{t("MultiPV · Top lines")}</p>
+          <ul className="create-own-pvs">
+            {pvs.map((pv) => {
+              const score = formatEvalLabel(pv.scoreCp, pv.mate, fen);
+              const line = formatPvLine(fen, pv.san);
+              return (
+                <li key={pv.multipv}>
+                  <div
+                    className={`create-own-pv${pv.multipv === 1 ? " is-pv1" : ""}`}
+                    data-create-own-pv={pv.multipv}
+                  >
+                    <span className="create-own-pv-score">{score}</span>
+                    <span className="create-own-pv-line">{line}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : null}
+
+      <p className="create-own-line-kicker">{t("Your line · build move by move")}</p>
       <div className="create-own-chips" aria-label={t("Create your own")}>
         {chips.length === 0 ? (
           <span className="create-own-chips-empty">…</span>
@@ -220,26 +292,29 @@ export function CreateOwnView({ onPractice, initial }: Props) {
         )}
       </div>
 
-      <button
-        type="button"
-        data-create-own-remember
-        disabled={plies.length === 0}
-        onClick={lockLine}
-        className="create-own-remember"
-      >
-        {t("Remember this line")}
-        <Bookmark className="size-4" strokeWidth={2.25} aria-hidden />
-      </button>
+      <div className="create-own-actions">
+        <button
+          type="button"
+          data-create-own-remember
+          disabled={plies.length === 0}
+          onClick={lockLine}
+          className="create-own-remember"
+        >
+          <Star className="size-4" strokeWidth={2.25} aria-hidden />
+          {t("Remember this line")}
+          <ChevronRight className="size-4" strokeWidth={2.25} aria-hidden />
+        </button>
 
-      <button
-        type="button"
-        data-create-own-clear
-        onClick={clearLine}
-        className="create-own-clear"
-      >
-        <RotateCcw className="size-3.5" strokeWidth={2.25} aria-hidden />
-        {t("Clear")}
-      </button>
+        <button
+          type="button"
+          data-create-own-clear
+          onClick={clearLine}
+          className="create-own-clear"
+        >
+          <Trash2 className="size-3.5" strokeWidth={2.25} aria-hidden />
+          {t("Clear")}
+        </button>
+      </div>
 
       <p className="create-own-footer">
         {t("Curated packs stay in the store — this is your gym line.")}
@@ -352,6 +427,7 @@ function RememberModal({
 
   const san = formatGymSan(line.plies);
   const chips = gymSanChips(line.plies);
+  const opening = lookupOpeningIdentityPrefix(line.plies);
 
   return (
     <div
@@ -369,6 +445,14 @@ function RememberModal({
         <h2 id="create-own-remembered-title" className="create-own-remember-title">
           {t("Remembered")}
         </h2>
+        {opening ? (
+          <p
+            className="create-own-remember-identity"
+            data-create-own-remembered-identity={`${opening.name}|${opening.eco}`}
+          >
+            {formatOpeningIdentity(opening)}
+          </p>
+        ) : null}
         <p
           className="create-own-remember-copy"
           data-create-own-remembered-body

@@ -68,8 +68,11 @@ test("module is a local book helper for Create-your-own authoring identity", () 
   assert.doesNotMatch(identitySrc, /from ["']@\/data\/packs/);
   assert.doesNotMatch(dataSrc, /Italian Game Mastery|My line/);
   assert.doesNotMatch(gymSrc, /lookupOpeningIdentity/);
-  assert.doesNotMatch(author, /lookupOpeningIdentity/);
-  assert.doesNotMatch(train, /lookupOpeningIdentity/);
+  assert.match(author, /lookupOpeningIdentityPrefix/);
+  assert.match(author, /data-create-own-identity/);
+  assert.match(train, /lookupOpeningIdentityPrefix/);
+  assert.match(train, /data-create-own-train-identity/);
+  assert.doesNotMatch(train, /data-create-own-eval-bar/);
   assert.doesNotMatch(packs, /lookupOpeningIdentity/);
   assert.doesNotMatch(evalClient, /opening-identity/);
   assert.doesNotMatch(evalServer, /opening-identity/);
@@ -143,6 +146,12 @@ test("deepest book hit wins; unknown and start return null", async (t) => {
   assert.equal(mod.lookupOpeningIdentity(KINGS_ONLY_FEN), null);
   assert.equal(mod.lookupOpeningIdentityFromPlies([]), null);
   assert.equal(mod.lookupOpeningIdentityFromPlies(["e4", "e5", "Nf3", "Nc6", "Bc4", "a5"]), null);
+  assert.deepEqual(
+    mod.lookupOpeningIdentityPrefix(["e4", "e5", "Nf3", "Nc6", "Bc4", "a5"]),
+    { name: "Italian Game", eco: "C50" },
+  );
+  assert.equal(mod.lookupOpeningIdentityPrefix([]), null);
+  assert.equal(mod.lookupOpeningIdentityPrefix(["a3"]), null);
   assert.equal(mod.lookupOpeningIdentityFromPlies(["e4", "zzzz"]), null);
 
   assert.deepEqual(mod.lookupOpeningIdentityFromPlies(["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5"]), {

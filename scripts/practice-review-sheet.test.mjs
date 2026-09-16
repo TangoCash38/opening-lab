@@ -61,13 +61,16 @@ test("Why this move and Practice review sheet are gone from the product", () => 
   }
 });
 
-test("authoring reuses POST /api/practice-review-eval at depth 12; fail-soft hides hints", () => {
+test("authoring reuses POST /api/practice-review-eval at depth 12; fail-soft hides chrome", () => {
   assert.match(author, /fetchPracticeReviewEval\(fen, \{ depth: GYM_AUTHOR_DEPTH \}\)/);
   assert.match(author, /GYM_AUTHOR_DEPTH/);
   assert.match(author, /GYM_AUTHOR_DEBOUNCE_MS/);
   assert.match(author, /t\("Engine · suggesting…"\)/);
   assert.match(author, /result\.ok/);
-  assert.match(author, /setSuggest\(null\)/);
+  assert.match(author, /setEvalOk\(null\)/);
+  assert.match(author, /data-create-own-eval-bar/);
+  assert.match(author, /data-create-own-pvs/);
+  assert.match(author, /showEval \? arrowsFromPvs/);
   assert.doesNotMatch(author, /SF cloud/i);
   assert.doesNotMatch(author, /Stockfish cloud/i);
   assert.doesNotMatch(author, /Lichess/i);
@@ -78,6 +81,8 @@ test("authoring reuses POST /api/practice-review-eval at depth 12; fail-soft hid
   assert.doesNotMatch(train, /t\("Engine/);
   assert.doesNotMatch(train, /SF cloud|Stockfish cloud|Lichess/i);
   assert.doesNotMatch(train, /data-create-own-engine/);
+  assert.doesNotMatch(train, /data-create-own-eval-bar/);
+  assert.doesNotMatch(train, /data-create-own-pvs/);
 });
 
 test("client Engine path is POST /api/practice-review-eval; no WASM / play-engine", () => {
