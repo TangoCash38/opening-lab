@@ -185,12 +185,17 @@ export function parsePracticeReviewJson(data: unknown): PracticeReviewResult {
 
 export async function fetchPracticeReviewEval(
   fen: string,
+  opts?: { depth?: number },
 ): Promise<PracticeReviewResult> {
   try {
+    const payload: { fen: string; depth?: number } = { fen };
+    if (opts?.depth != null && Number.isFinite(opts.depth)) {
+      payload.depth = opts.depth;
+    }
     const res = await fetch(PRACTICE_REVIEW_EVAL_PATH, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fen }),
+      body: JSON.stringify(payload),
     });
     let data: unknown = null;
     try {

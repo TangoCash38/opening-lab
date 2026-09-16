@@ -2,6 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { CircleHelp, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackVisible, readRequestedPackId } from "@/lib/catalog";
+import {
+  gymPackFromLine,
+  isGymPack,
+  readGymLine,
+  type GymLine,
+} from "@/lib/gym-line";
 import { soundSelect } from "@/lib/sounds";
 import { SignedIn, SignedOut } from "@/lib/auth/gates";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -26,6 +32,7 @@ import { FindMate } from "./find-mate";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
 import { TrainView } from "./train-view";
+import { CreateOwnView } from "./create-own-view";
 import { Onboarding } from "./onboarding";
 import {
   AppSplash,
@@ -35,12 +42,16 @@ import {
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "home" | "train" | "guide" | "mate";
+type View = "home" | "train" | "guide" | "mate" | "create";
 type TrainMode = "learn" | "practice";
 
 
 function scrollAppTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
+function canTrainPack(pack: Pick<Pack, "id"> | string): boolean {
+  return isGymPack(pack) || isPackVisible(pack);
 }
 
 export function OpeningLabApp() {
@@ -80,7 +91,8 @@ function OpeningLabInner() {
     setPlaySurface(isPlayWrap());
   }, []);
 
-  const { complete, markLearned, failPractice, markTest, dueQueue } = useProgress();
+  const { complete, markLearned, failPractice, markTest, dueQueue, line: lineProgress } =
+    useProgress();
   const { canAccess, state, subscribed } = useUnlocks();
 
   const goHome = () => {
@@ -102,27 +114,43 @@ function OpeningLabInner() {
 
   useEffect(() => {
     const packId = readRequestedPackId();
-    if (packId && !isPackVisible(packId)) {
+    if (packId && !isPackVisible(packId) && !isGymPack(packId)) {
       goHome();
     }
   }, []);
 
   useEffect(() => {
-    if (view === "train" && active && !isPackVisible(active.pack)) {
+    if (view === "train" && active && !canTrainPack(active.pack)) {
       goHome();
     }
   }, [view, active]);
+
+  useEffect(() => {
+    if (playSurface && view === "create") goHome();
+  }, [playSurface, view]);
 
   const startLine = (
     pack: Pack,
     line: OpeningLine,
     mode: TrainMode = "learn",
   ) => {
-    if (!isPackVisible(pack)) {
+    if (!canTrainPack(pack)) {
       goHome();
       return;
     }
     setActive({ pack, line, mode });
+    setView("train");
+    soundSelect();
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
+  const startGymLine = (gym: GymLine) => {
+    if (playSurface) return;
+    const pack = gymPackFromLine(gym);
+    const opening = pack.lines[0];
+    if (!opening) return;
+    setActive({ pack, line: opening, mode: "learn" });
     setView("train");
     soundSelect();
     scrollAppTop();
@@ -136,7 +164,7 @@ function OpeningLabInner() {
     for (const item of items) {
       const pack = PACKS.find((p) => p.id === item.packId);
       const line = pack?.lines.find((l) => l.id === item.lineId);
-      if (pack && line && isPackVisible(pack)) {
+      if (pack && line && canTrainPack(pack)) {
         resolved.push({ pack, line, mode: item.mode });
       }
     }
@@ -256,20 +284,52 @@ function OpeningLabInner() {
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());
             }}
+            onCreateOwn={
+              playSurface
+                ? undefined
+                : () => {
+                    setView("create");
+                    scrollAppTop();
+                    requestAnimationFrame(() => scrollAppTop());
+                  }
+            }
+            onPracticeGym={playSurface ? undefined : startGymLine}
           />
         )}
         {view === "guide" && <GuideView onBack={goHome} />}
         {view === "mate" && <FindMate onBack={goHome} />}
-        {view === "train" && active && isPackVisible(active.pack) && (
+        {view === "create" && !playSurface && (
+          <CreateOwnView
+            initial={readGymLine()}
+            onPractice={startGymLine}
+          />
+        )}
+        {view === "train" && active && canTrainPack(active.pack) && (
           <TrainView
-            key={`${active.pack.id}-${active.line.id}`}
+            key={
+              isGymPack(active.pack)
+                ? `${active.pack.id}-${active.line.side}-${active.line.plies.join(",")}`
+                : `${active.pack.id}-${active.line.id}`
+            }
             pack={active.pack}
             line={active.line}
             initialMode={active.mode}
+            gym={isGymPack(active.pack)}
+            testLocked={
+              isGymPack(active.pack) && !lineProgress(active.line.id).learned
+            }
             onModeChange={(mode) =>
               setActive((prev) => (prev ? { ...prev, mode } : prev))
             }
-            onBack={goHome}
+            onBack={
+              isGymPack(active.pack) && !playSurface
+                ? () => {
+                    setActive(null);
+                    setView("create");
+                    scrollAppTop();
+                  }
+                : goHome
+            }
             onLineComplete={() => complete(active.line.id)}
             onLearnDone={() => markLearned(active.line.id)}
             onPracticeFail={() => failPractice(active.line.id)}

@@ -26,11 +26,6 @@ type Props = {
   playOnLevel?: string;
   onPlayOnLevel?: (id: string) => void;
   onPlayOn?: () => void;
-  /** Practice-only opt-in Engine review. Never passed from Test. */
-  whyThisMoveLabel?: string;
-  onWhyThisMove?: () => void;
-  /** True while the Practice review sheet sits on top — ignore overlay clicks. */
-  reviewOpen?: boolean;
 };
 
 export function LineResultModal({
@@ -48,13 +43,9 @@ export function LineResultModal({
   playOnLevel,
   onPlayOnLevel,
   onPlayOn,
-  whyThisMoveLabel,
-  onWhyThisMove,
-  reviewOpen = false,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
-  const showWhy = Boolean(whyThisMoveLabel && onWhyThisMove);
   const showPlayOn =
     kind === "end" &&
     Boolean(playOnLevels?.length && onPlayOn && onPlayOnLevel);
@@ -245,16 +236,6 @@ export function LineResultModal({
           {primaryLabel}
         </button>
       ) : null}
-      {showWhy && !playOnPrompt ? (
-        <button
-          type="button"
-          data-why-this-move
-          onClick={onWhyThisMove}
-          className="line-result-why-btn"
-        >
-          {whyThisMoveLabel}
-        </button>
-      ) : null}
       {!playOnPrompt && !(isWrong && showPrimary) ? (
         <button
           type="button"
@@ -344,14 +325,14 @@ export function LineResultModal({
 
   return (
     <div
-        className={`line-result-overlay z-[80]${reviewOpen ? " pointer-events-none" : ""}`}
+        className="line-result-overlay z-[80]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="line-result-title"
         data-result-kind={kind}
         data-result-actions={showPrimary ? 2 : 1}
         data-result-play-prompt={playOnPrompt ? "1" : undefined}
-        onClick={reviewOpen ? undefined : onClose}
+        onClick={onClose}
     >
       <div
         className={`line-result-dim${boardExpanded ? " line-result-dim--board-fs" : ""}`}

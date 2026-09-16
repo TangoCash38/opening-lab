@@ -151,6 +151,18 @@ export function getLineProgress(lineId: string): LineProgress {
   return normalizeLine(read().lines[lineId]);
 }
 
+/** Drop one line's progress (gym re-remember / clear). */
+export function clearLineProgress(lineId: string): void {
+  if (!lineId) return;
+  const store = read();
+  if (!store.lines[lineId]) {
+    write(store);
+    return;
+  }
+  delete store.lines[lineId];
+  write(store);
+}
+
 export function isLineComplete(p: LineProgress): boolean {
   return p.cleanPractice === true;
 }

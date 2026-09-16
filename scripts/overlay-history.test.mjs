@@ -215,9 +215,8 @@ test("language sheet, finish modal, and promo use useOverlayHistory", () => {
 
   assert.match(picker, /useOverlayHistory\(open, close, "lang"\)/);
   assert.match(modal, /useOverlayHistory\(true, onClose, "line-result"\)/);
-  const review = src("src/components/opening-lab/practice-review-sheet.tsx");
-  assert.match(review, /olOverlay: REVIEW_STATE/);
-  assert.doesNotMatch(review, /useOverlayHistory\(/);
+  const remember = src("src/components/opening-lab/create-own-view.tsx");
+  assert.match(remember, /useOverlayHistory\(true, onKeepEditing, "gym-remember"\)/);
   assert.match(
     modal,
     /useOverlayHistory\(playOnPrompt, \(\) => setPlayOnPrompt\(false\), "play-on-prompt"\)/,
