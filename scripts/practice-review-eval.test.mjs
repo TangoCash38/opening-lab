@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { PassThrough } from "node:stream";
@@ -84,11 +84,16 @@ function mockSpawn({ lines = [], hang = false, failSpawn = false } = {}) {
 
 test("Practice-review Engine stays server-side (no WASM / play-engine / product Stockfish copy)", () => {
   assert.match(serverSrc, /STOCKFISH_PATH/);
+  assert.match(serverSrc, /Vercel has no Stockfish binary/);
+  assert.match(serverSrc, /fail-soft `\{ ok: false \}`/);
+  assert.match(serverSrc, /small worker that sets STOCKFISH_PATH/);
+  assert.match(serverSrc, /not WASM in the client or Play wrap/);
   assert.match(serverSrc, /MultiPV/);
   assert.match(serverSrc, /child_process/);
-  assert.match(serverSrc, /Do not\s*\n\s*\* ship WASM Stockfish/s);
+  assert.match(serverSrc, /Do not ship WASM Stockfish/s);
   assert.match(serverSrc, /never imports play-engine/);
   assert.match(serverSrc, /UI copy\s*\n\s*\* should say "Engine"/s);
+  assert.match(routeSrc, /Unset STOCKFISH_PATH → fail-soft/);
   assert.match(serverSrc, /WALL_MS = 2500/);
   assert.match(serverSrc, /DEFAULT_DEPTH = 14/);
   assert.match(serverSrc, /MAX_DEPTH = 16/);
@@ -105,6 +110,8 @@ test("Practice-review Engine stays server-side (no WASM / play-engine / product 
 
   const readme = readFileSync(join(root, "README.md"), "utf8");
   assert.match(readme, /STOCKFISH_PATH/);
+  assert.match(readme, /Vercel has no Stockfish binary/);
+  assert.match(readme, /worker that sets `STOCKFISH_PATH`/);
   assert.match(readme, /\/api\/practice-review-eval/);
   assert.match(readme, /Do \*\*not\*\* ship WASM Stockfish/);
   assert.match(readme, /\*\*Engine\*\*/);
@@ -172,6 +179,9 @@ test("request/response contract: FEN validation, depth clamp, fail-soft, mock Mu
 
     const prevPath = process.env.STOCKFISH_PATH;
     delete process.env.STOCKFISH_PATH;
+    assert.equal(mod.resolveStockfishPath(), null);
+    const unsetEval = await mod.evaluatePracticeReview(START_FEN, 14);
+    assert.deepEqual(unsetEval, { ok: false, error: "Engine unavailable" });
     const postNoBin = await mod.practiceReviewEvalPost({
       request: new Request("http://local/api/practice-review-eval", {
         method: "POST",
@@ -180,16 +190,12 @@ test("request/response contract: FEN validation, depth clamp, fail-soft, mock Mu
       }),
     });
     if (prevPath !== undefined) process.env.STOCKFISH_PATH = prevPath;
+    else delete process.env.STOCKFISH_PATH;
     assert.equal(postNoBin.status, 200);
-    const postBody = await postNoBin.json();
-    if (postBody.ok === true) {
-      assert.equal(typeof postBody.evalCp === "number" || postBody.evalCp === null, true);
-      assert.ok(Array.isArray(postBody.pvs));
-    } else {
-      assert.equal(postBody.ok, false);
-      assert.equal(typeof postBody.error, "string");
-      assert.match(postBody.error, /Engine/);
-    }
+    assert.deepEqual(await postNoBin.json(), {
+      ok: false,
+      error: "Engine unavailable",
+    });
 
     const info1 =
       "info depth 14 seldepth 18 multipv 1 score cp 32 time 40 nodes 100 pv e2e4 e7e5 g1f3";
@@ -274,12 +280,17 @@ test("live Stockfish smoke (skips if no binary)", async (t) => {
   }
   try {
     const mod = await import(`${loaded.href}?live=1`);
-    const bin = mod.resolveStockfishPath();
+    const hints = [
+      process.env.STOCKFISH_PATH?.trim(),
+      ...(mod.STOCKFISH_PATH_HINTS ?? []),
+    ].filter(Boolean);
+    const bin = hints.find((p) => existsSync(p));
     if (!bin) {
       t.skip("no Stockfish binary (set STOCKFISH_PATH)");
       return;
     }
     const result = await mod.evaluatePracticeReview(START_FEN, 8, {
+      stockfishPath: bin,
       wallMs: 2500,
     });
     if (!result.ok) {

@@ -1,22 +1,24 @@
 /**
  * Server-only Practice-review Engine eval.
  *
- * Production MUST set STOCKFISH_PATH on the host that runs this API. Do not
- * ship WASM Stockfish (or any GPL engine net) to the client / Play WebView
- * bundle. This path never imports play-engine lite JS.
+ * Ops: Vercel has no Stockfish binary. When STOCKFISH_PATH is unset the
+ * handler MUST fail-soft `{ ok: false }` (HTTP 200) so the UI can hide the
+ * eval bar / PVs and keep Expert "why" text. Live eval comes later via a
+ * small worker that sets STOCKFISH_PATH — not WASM in the client or Play wrap.
+ *
+ * Do not ship WASM Stockfish (or any GPL engine net) to the client / Play
+ * WebView bundle. This path never imports play-engine lite JS.
  *
  * Product rules: Practice only — after a finished Practice line or wrong-move
  * review. Never Test. No free-play analysis. No mid-drill MultiPV. UI copy
  * should say "Engine", not "Lichess / Stockfish cloud".
  *
  * Search: MultiPV 2, depth target 14, hard cap 16, wall ~1.5–2.5s.
- * Fail soft so the UI can hide the eval bar / PVs and keep Expert "why" text.
  *
  * Cheap rate note: thin unauthenticated test endpoint (same as /api/feedback).
  * Hosts that expose it publicly can add a cheap per-IP throttle later.
  */
 import { spawn, type ChildProcess, type SpawnOptions } from "node:child_process";
-import { existsSync } from "node:fs";
 import { Chess } from "chess.js";
 
 export const DEFAULT_DEPTH = 14;
@@ -27,7 +29,8 @@ export const WALL_MS = 2500;
 const FEN_MAX_LEN = 200;
 const UCI_MOVE = /^[a-h][1-8][a-h][1-8][qrbn]?$/;
 
-const FALLBACK_PATHS = [
+/** Hint paths for a worker host that sets STOCKFISH_PATH. Not probed on Vercel. */
+export const STOCKFISH_PATH_HINTS = [
   "/usr/games/stockfish",
   "/usr/bin/stockfish",
   "/usr/local/bin/stockfish",
@@ -137,15 +140,17 @@ export function parsePracticeReviewBody(body: unknown): ParseRequestResult {
   };
 }
 
+/**
+ * Binary path for a live eval. Unset / empty STOCKFISH_PATH → null (fail-soft).
+ * Vercel does not install Stockfish and must leave this unset. A later worker
+ * sets STOCKFISH_PATH (e.g. /usr/games/stockfish). Common paths are not
+ * auto-probed so an unset env never silently finds a host binary.
+ */
 export function resolveStockfishPath(
   envPath = process.env.STOCKFISH_PATH,
 ): string | null {
   const fromEnv = envPath?.trim();
-  if (fromEnv) return fromEnv;
-  for (const p of FALLBACK_PATHS) {
-    if (existsSync(p)) return p;
-  }
-  return null;
+  return fromEnv || null;
 }
 
 export function parseUciInfoLine(line: string): ParsedInfo | null {
