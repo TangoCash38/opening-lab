@@ -39,6 +39,12 @@ export type PromotionPrompt = {
   onCancel?: () => void;
 };
 
+export type BoardArrow = {
+  from: Square;
+  to: Square;
+  kind: "pv1" | "pv2";
+};
+
 type Props = {
   game: Chess;
   flip: boolean;
@@ -60,6 +66,8 @@ type Props = {
   /** Arcade mate: king on this square blasts off before the finish sheet. */
   mateBlast?: { code: string; sq: Square } | null;
   onMateBlastDone?: () => void;
+  /** Practice-review MultiPV arrows (PV1 blue, PV2 grey). */
+  arrows?: BoardArrow[];
 };
 
 type PlacedPiece = {
@@ -309,6 +317,7 @@ export function ChessBoard({
   expanded = false,
   mateBlast = null,
   onMateBlastDone,
+  arrows,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -741,6 +750,71 @@ export function ChessBoard({
             >
               {squares}
             </div>
+
+            {arrows && arrows.length > 0 ? (
+              <svg
+                className="board-arrows pointer-events-none absolute inset-0 z-[12] h-full w-full overflow-visible"
+                viewBox="0 0 8 8"
+                preserveAspectRatio="none"
+                aria-hidden
+                data-board-arrows
+              >
+                {(arrows.some((a) => a.kind === "pv2")
+                  ? arrows.filter((a) => a.kind === "pv2")
+                  : []
+                )
+                  .concat(arrows.filter((a) => a.kind === "pv1"))
+                  .map((arrow) => {
+                    const a = squareToRC(arrow.from, flip);
+                    const b = squareToRC(arrow.to, flip);
+                    const x1 = a.col + 0.5;
+                    const y1 = a.row + 0.5;
+                    const x2 = b.col + 0.5;
+                    const y2 = b.row + 0.5;
+                    const dx = x2 - x1;
+                    const dy = y2 - y1;
+                    const len = Math.hypot(dx, dy) || 1;
+                    const ux = dx / len;
+                    const uy = dy / len;
+                    const start = Math.min(0.42, len * 0.36);
+                    const end = Math.min(0.18, len * 0.14);
+                    const sx = x1 + ux * start;
+                    const sy = y1 + uy * start;
+                    const ex = x2 - ux * end;
+                    const ey = y2 - uy * end;
+                    const head = Math.min(0.34, Math.max(0.22, len * 0.28));
+                    const hx = ex - ux * head;
+                    const hy = ey - uy * head;
+                    const nx = -uy * head * 0.42;
+                    const ny = ux * head * 0.42;
+                    const color = arrow.kind === "pv1" ? "#3b6ea5" : "#8a8278";
+                    return (
+                      <g
+                        key={`${arrow.kind}-${arrow.from}-${arrow.to}`}
+                        className={
+                          arrow.kind === "pv1"
+                            ? "board-arrow board-arrow--pv1"
+                            : "board-arrow board-arrow--pv2"
+                        }
+                      >
+                        <line
+                          x1={sx}
+                          y1={sy}
+                          x2={hx}
+                          y2={hy}
+                          stroke={color}
+                          strokeWidth={arrow.kind === "pv1" ? 0.14 : 0.12}
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d={`M ${ex} ${ey} L ${hx + nx} ${hy + ny} L ${hx - nx} ${hy - ny} Z`}
+                          fill={color}
+                        />
+                      </g>
+                    );
+                  })}
+              </svg>
+            ) : null}
 
             {/* Pieces paint above squares but never steal clicks */}
             <div className="pointer-events-none absolute inset-0 z-10 overflow-visible">

@@ -25,6 +25,7 @@ import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
+import { PracticeReviewSheet } from "./practice-review-sheet";
 
 type PlayLevel = "beginner" | "intermediate" | "advanced";
 
@@ -334,6 +335,24 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     primaryLabel?: string;
     nextAction?: ResultNextAction;
   } | null>(null);
+  const [practiceReview, setPracticeReview] = useState<{
+    fen: string;
+    whyText: string;
+  } | null>(null);
+  const [reviewLock, setReviewLock] = useState(false);
+  const reviewLockRef = useRef(false);
+  useEffect(() => {
+    if (practiceReview) {
+      reviewLockRef.current = true;
+      setReviewLock(true);
+      return;
+    }
+    const t = window.setTimeout(() => {
+      reviewLockRef.current = false;
+      setReviewLock(false);
+    }, 400);
+    return () => window.clearTimeout(t);
+  }, [practiceReview]);
 
   // Play-on promotion picker: Back cancels like tapping the dimmed board.
   useOverlayHistory(
@@ -448,6 +467,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setBusy(false);
       setLastMove(null);
       setResultCard(null);
+      setPracticeReview(null);
       setHintsReady(true);
       setPlayHint(null);
       setHintBusy(false);
@@ -1800,7 +1820,24 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 }
               : undefined
           }
-          onClose={() => setResultCard(null)}
+          reviewOpen={reviewLock}
+          whyThisMoveLabel={mode === "learn" ? t("Why this move?") : undefined}
+          onWhyThisMove={
+            mode === "learn"
+              ? () => {
+                  reviewLockRef.current = true;
+                  setReviewLock(true);
+                  setPracticeReview({
+                    fen: game.fen(),
+                    whyText: resultCard.body,
+                  });
+                }
+              : undefined
+          }
+          onClose={() => {
+            if (reviewLockRef.current) return;
+            setResultCard(null);
+          }}
           onAction={
             resultCard.kind === "wrong"
               ? resultCard.nextAction === "learn"
@@ -1825,6 +1862,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                   }
                 : undefined
           }
+        />
+      ) : null}
+      {practiceReview && mode === "learn" ? (
+        <PracticeReviewSheet
+          fen={practiceReview.fen}
+          whyText={practiceReview.whyText}
+          flip={line.side === "b"}
+          onClose={() => setPracticeReview(null)}
+          onBackToPractice={() => {
+            setPracticeReview(null);
+            setResultCard(null);
+          }}
         />
       ) : null}
       {pack.about && aboutOpen ? (
