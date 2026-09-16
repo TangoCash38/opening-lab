@@ -103,6 +103,10 @@ test("known early openings map to name + ECO; clocks do not matter", async (t) =
     name: "Ruy Lopez",
     eco: "C60",
   });
+  assert.deepEqual(mod.lookupOpeningIdentityFromPlies(["e4", "e5", "Nf3", "Nf6"]), {
+    name: "Petroff Defence",
+    eco: "C42",
+  });
   assert.deepEqual(mod.lookupOpeningIdentityFromPlies(["e4", "c5"]), {
     name: "Sicilian Defence",
     eco: "B20",
