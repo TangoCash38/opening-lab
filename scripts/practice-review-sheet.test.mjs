@@ -75,7 +75,9 @@ test("authoring reuses POST /api/practice-review-eval at depth 12; fail-soft hid
   assert.doesNotMatch(author, /from ["']@\/lib\/play-engine/);
   assert.doesNotMatch(train, /fetchPracticeReviewEval/);
   assert.doesNotMatch(train, /Engine · suggesting/);
-  assert.doesNotMatch(train, /SF cloud/i);
+  assert.doesNotMatch(train, /t\("Engine/);
+  assert.doesNotMatch(train, /SF cloud|Stockfish cloud|Lichess/i);
+  assert.doesNotMatch(train, /data-create-own-engine/);
 });
 
 test("client Engine path is POST /api/practice-review-eval; no WASM / play-engine", () => {

@@ -91,9 +91,13 @@ board, then **Remember this line**. The locked SAN is stored in
 Test loop as a curated pack. Test unlocks after a clean Practice.
 
 While authoring, the board POSTs `/api/practice-review-eval` (`depth: 12`,
-~400ms debounce) and paints a soft green Engine hint. Fail-soft
-`{ ok: false }` hides the hint. Practice and Test never show Engine /
-MultiPV.
+~400ms debounce) and paints a soft green Engine hint. Status copy is
+**Engine · suggesting…** only — never “SF cloud”, “Stockfish cloud”, or
+“Lichess”. Fail-soft `{ ok: false }` hides the hint. Practice and Test
+never show Engine / MultiPV chrome.
+
+The Remembered sheet body is the **full line SAN**, e.g.
+`Remembered — 1.e4 e5 2.Nf3 Nc6 — locked as your gym line. Train it like a pack.`
 
 Play wrap hides this entry (`!isPlayApp()`).
 

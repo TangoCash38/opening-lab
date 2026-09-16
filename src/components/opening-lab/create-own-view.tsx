@@ -369,10 +369,14 @@ function RememberModal({
         <h2 id="create-own-remembered-title" className="create-own-remember-title">
           {t("Remembered")}
         </h2>
-        <p className="create-own-remember-copy">
-          {t("{san} — locked as your gym line. Train it like a pack.", { san })}
+        <p
+          className="create-own-remember-copy"
+          data-create-own-remembered-body
+          data-create-own-remembered-san={san}
+        >
+          {t("Remembered — {san} — locked as your gym line. Train it like a pack.", { san })}
         </p>
-        <div className="create-own-remember-sans" data-create-own-locked-san>
+        <div className="create-own-remember-sans" data-create-own-locked-san={san}>
           {pairLines(chips).map((row) => (
             <div key={row}>{row}</div>
           ))}

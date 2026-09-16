@@ -164,8 +164,8 @@ const en: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Curated packs stay in the store — this is your gym line.",
   Remembered: "Remembered",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — locked as your gym line. Train it like a pack.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Remembered — {san} — locked as your gym line. Train it like a pack.",
   "Practice this line": "Practice this line",
   "Keep editing": "Keep editing",
   "Test unlocks after a clean Practice.": "Test unlocks after a clean Practice.",
@@ -348,8 +348,8 @@ const es: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Los packs curados siguen en la tienda — esta es tu línea de gym.",
   Remembered: "Recordada",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — bloqueada como tu línea de gym. Entrena como un pack.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Recordada — {san} — bloqueada como tu línea de gym. Entrena como un pack.",
   "Practice this line": "Practica esta línea",
   "Keep editing": "Seguir editando",
   "Test unlocks after a clean Practice.": "Test se desbloquea tras un Practice limpio.",
@@ -527,8 +527,8 @@ const zh: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "精选包仍在商店 — 这是你的训练线路。",
   Remembered: "已记住",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — 已锁定为你的训练线路。像训练包一样练。",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "已记住 — {san} — 已锁定为你的训练线路。像训练包一样练。",
   "Practice this line": "练习这条线路",
   "Keep editing": "继续编辑",
   "Test unlocks after a clean Practice.": "干净地完成 Practice 后解锁 Test。",
@@ -706,8 +706,8 @@ const fr: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Les packs restent dans le store — c’est ta ligne de gym.",
   Remembered: "Retenue",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — verrouillée comme ta ligne de gym. Entraîne-la comme un pack.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Retenue — {san} — verrouillée comme ta ligne de gym. Entraîne-la comme un pack.",
   "Practice this line": "Pratiquer cette ligne",
   "Keep editing": "Continuer à éditer",
   "Test unlocks after a clean Practice.": "Test se débloque après un Practice propre.",
@@ -885,8 +885,8 @@ const de: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Kuratierte Packs bleiben im Store — das ist deine Gym-Linie.",
   Remembered: "Gemerkt",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — als Gym-Linie gesperrt. Trainiere sie wie ein Pack.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Gemerkt — {san} — als Gym-Linie gesperrt. Trainiere sie wie ein Pack.",
   "Practice this line": "Diese Linie üben",
   "Keep editing": "Weiter bearbeiten",
   "Test unlocks after a clean Practice.": "Test nach sauberem Practice frei.",
@@ -1064,8 +1064,8 @@ const pt: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Os packs continuam na loja — esta é a tua linha de gym.",
   Remembered: "Memorizada",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — bloqueada como a tua linha de gym. Treina como um pack.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Memorizada — {san} — bloqueada como a tua linha de gym. Treina como um pack.",
   "Practice this line": "Praticar esta linha",
   "Keep editing": "Continuar a editar",
   "Test unlocks after a clean Practice.": "Test destrava após um Practice limpo.",
@@ -1242,8 +1242,8 @@ const ru: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Пакеты остаются в магазине — это твоя линия зала.",
   Remembered: "Запомнена",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — закреплена как линия зала. Тренируй как пакет.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Запомнена — {san} — закреплена как линия зала. Тренируй как пакет.",
   "Practice this line": "Практиковать эту линию",
   "Keep editing": "Продолжить правку",
   "Test unlocks after a clean Practice.": "Test откроется после чистого Practice.",
@@ -1421,8 +1421,8 @@ const it: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "I pack restano nello store — questa è la tua linea da palestra.",
   Remembered: "Ricordata",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — bloccata come linea da palestra. Allenala come un pack.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Ricordata — {san} — bloccata come linea da palestra. Allenala come un pack.",
   "Practice this line": "Pratica questa linea",
   "Keep editing": "Continua a modificare",
   "Test unlocks after a clean Practice.": "Test si sblocca dopo un Practice pulito.",
@@ -1600,8 +1600,8 @@ const hi: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "पैक स्टोर में रहते हैं — यह आपकी जिम लाइन है।",
   Remembered: "याद रखी",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — आपकी जिम लाइन लॉक। पैक की तरह ट्रेन करें।",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "याद रखी — {san} — आपकी जिम लाइन लॉक। पैक की तरह ट्रेन करें।",
   "Practice this line": "यह लाइन प्रैक्टिस करें",
   "Keep editing": "एडिट जारी रखें",
   "Test unlocks after a clean Practice.": "साफ़ Practice के बाद Test खुलेगा।",
@@ -1777,8 +1777,8 @@ const ja: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "パックはストアのまま — これはあなたのジムライン。",
   Remembered: "記憶した",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — ジムラインとして固定。パックのように訓練。",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "記憶した — {san} — ジムラインとして固定。パックのように訓練。",
   "Practice this line": "このラインを練習",
   "Keep editing": "編集を続ける",
   "Test unlocks after a clean Practice.": "きれいな Practice のあと Test が開く。",
@@ -1954,8 +1954,8 @@ const ar: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "الباقات تبقى في المتجر — هذا خط صالتك.",
   Remembered: "محفوظ",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — ثُبّت كخط صالتك. درّبه كباقة.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "محفوظ — {san} — ثُبّت كخط صالتك. درّبه كباقة.",
   "Practice this line": "تدرّب على هذا الخط",
   "Keep editing": "متابعة التعديل",
   "Test unlocks after a clean Practice.": "يُفتح Test بعد Practice نظيف.",
@@ -2133,8 +2133,8 @@ const tr: Dict = {
   "Curated packs stay in the store — this is your gym line.":
     "Paketler mağazada kalır — bu senin salon hattın.",
   Remembered: "Hatırlandı",
-  "{san} — locked as your gym line. Train it like a pack.":
-    "{san} — salon hattın olarak kilitlendi. Bir paket gibi çalış.",
+  "Remembered — {san} — locked as your gym line. Train it like a pack.":
+    "Hatırlandı — {san} — salon hattın olarak kilitlendi. Bir paket gibi çalış.",
   "Practice this line": "Bu hattı çalış",
   "Keep editing": "Düzenlemeye devam",
   "Test unlocks after a clean Practice.": "Test, temiz bir Practice sonrası açılır.",

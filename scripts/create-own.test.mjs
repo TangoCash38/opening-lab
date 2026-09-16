@@ -87,7 +87,12 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.match(author, /Keep editing/);
   assert.match(author, /Practice this line/);
   assert.match(author, /Test unlocks after a clean Practice\./);
-  assert.match(author, /locked as your gym line/);
+  assert.match(author, /formatGymSan\(line\.plies\)/);
+  assert.match(
+    author,
+    /Remembered — \{san\} — locked as your gym line\. Train it like a pack\./,
+  );
+  assert.match(author, /data-create-own-remembered-san=\{san\}/);
   assert.match(author, /Curated packs stay in the store/);
   assert.match(author, /data-create-own/);
   assert.match(author, /data-create-own-remembered/);
@@ -99,6 +104,11 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.doesNotMatch(author, /Lichess/i);
   assert.match(i18n, /"Create your own": "Create your own"/);
   assert.match(i18n, /"Engine · suggesting…": "Engine · suggesting…"/);
+  assert.match(
+    i18n,
+    /"Remembered — \{san\} — locked as your gym line\. Train it like a pack\.":\s*"Remembered — \{san\} — locked as your gym line\. Train it like a pack\."/,
+  );
+  assert.doesNotMatch(i18n, /SF cloud|Stockfish cloud|Lichess/i);
   assert.match(css, /\.create-own-remember-sheet/);
   assert.match(readme, /Create your own \(web\)/);
 });
@@ -111,8 +121,10 @@ test("Practice/Test gym chrome has no Engine badge; Test stays locked until Prac
   assert.match(train, /if \(m === "practice" && testLocked\) return/);
   assert.match(train, /disabled=\{testLocked\}/);
   assert.doesNotMatch(train, /Engine · suggesting/);
-  assert.doesNotMatch(train, /SF cloud/i);
+  assert.doesNotMatch(train, /t\("Engine/);
+  assert.doesNotMatch(train, /SF cloud|Stockfish cloud|Lichess/i);
   assert.doesNotMatch(train, /fetchPracticeReviewEval/);
+  assert.doesNotMatch(train, /data-create-own-engine/);
   assert.match(shell, /gym=\{isGymPack\(active\.pack\)\}/);
   assert.match(shell, /testLocked=/);
   assert.match(shell, /CreateOwnView/);
