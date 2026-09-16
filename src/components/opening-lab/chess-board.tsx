@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -39,6 +40,12 @@ export type PromotionPrompt = {
   onCancel?: () => void;
 };
 
+export type BoardArrow = {
+  from: Square;
+  to: Square;
+  kind: "pv1" | "pv2";
+};
+
 type Props = {
   game: Chess;
   flip: boolean;
@@ -60,6 +67,8 @@ type Props = {
   /** Arcade mate: king on this square blasts off before the finish sheet. */
   mateBlast?: { code: string; sq: Square } | null;
   onMateBlastDone?: () => void;
+  /** Practice-review MultiPV arrows (PV1 blue, PV2 grey). */
+  arrows?: BoardArrow[];
 };
 
 type PlacedPiece = {
@@ -309,7 +318,9 @@ export function ChessBoard({
   expanded = false,
   mateBlast = null,
   onMateBlastDone,
+  arrows,
 }: Props) {
+  const arrowId = useId().replace(/:/g, "");
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
   const onSquareRef = useRef(onSquare);
@@ -741,6 +752,77 @@ export function ChessBoard({
             >
               {squares}
             </div>
+
+            {arrows && arrows.length > 0 ? (
+              <svg
+                className="board-arrows pointer-events-none absolute inset-0 z-[12] h-full w-full overflow-visible"
+                viewBox="0 0 8 8"
+                preserveAspectRatio="none"
+                aria-hidden
+                data-board-arrows
+              >
+                <defs>
+                  <marker
+                    id={`${arrowId}-pv2`}
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="3.2"
+                    markerHeight="3.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a8278" />
+                  </marker>
+                  <marker
+                    id={`${arrowId}-pv1`}
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="3.2"
+                    markerHeight="3.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b6ea5" />
+                  </marker>
+                </defs>
+                {(arrows.some((a) => a.kind === "pv2")
+                  ? arrows.filter((a) => a.kind === "pv2")
+                  : []
+                )
+                  .concat(arrows.filter((a) => a.kind === "pv1"))
+                  .map((arrow) => {
+                    const a = squareToRC(arrow.from, flip);
+                    const b = squareToRC(arrow.to, flip);
+                    const x1 = a.col + 0.5;
+                    const y1 = a.row + 0.5;
+                    const x2 = b.col + 0.5;
+                    const y2 = b.row + 0.5;
+                    const dx = x2 - x1;
+                    const dy = y2 - y1;
+                    const len = Math.hypot(dx, dy) || 1;
+                    const trim = 0.28;
+                    return (
+                      <line
+                        key={`${arrow.kind}-${arrow.from}-${arrow.to}`}
+                        x1={x1 + (dx / len) * 0.18}
+                        y1={y1 + (dy / len) * 0.18}
+                        x2={x2 - (dx / len) * trim}
+                        y2={y2 - (dy / len) * trim}
+                        className={
+                          arrow.kind === "pv1"
+                            ? "board-arrow board-arrow--pv1"
+                            : "board-arrow board-arrow--pv2"
+                        }
+                        markerEnd={
+                          arrow.kind === "pv1"
+                            ? `url(#${arrowId}-pv1)`
+                            : `url(#${arrowId}-pv2)`
+                        }
+                      />
+                    );
+                  })}
+              </svg>
+            ) : null}
 
             {/* Pieces paint above squares but never steal clicks */}
             <div className="pointer-events-none absolute inset-0 z-10 overflow-visible">

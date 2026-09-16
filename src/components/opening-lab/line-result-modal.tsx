@@ -26,6 +26,9 @@ type Props = {
   playOnLevel?: string;
   onPlayOnLevel?: (id: string) => void;
   onPlayOn?: () => void;
+  /** Practice-only opt-in Engine review. Never passed from Test. */
+  whyThisMoveLabel?: string;
+  onWhyThisMove?: () => void;
 };
 
 export function LineResultModal({
@@ -43,9 +46,12 @@ export function LineResultModal({
   playOnLevel,
   onPlayOnLevel,
   onPlayOn,
+  whyThisMoveLabel,
+  onWhyThisMove,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
+  const showWhy = Boolean(whyThisMoveLabel && onWhyThisMove);
   const showPlayOn =
     kind === "end" &&
     Boolean(playOnLevels?.length && onPlayOn && onPlayOnLevel);
@@ -234,6 +240,16 @@ export function LineResultModal({
           }
         >
           {primaryLabel}
+        </button>
+      ) : null}
+      {showWhy && !playOnPrompt ? (
+        <button
+          type="button"
+          data-why-this-move
+          onClick={onWhyThisMove}
+          className="line-result-why-btn"
+        >
+          {whyThisMoveLabel}
         </button>
       ) : null}
       {!playOnPrompt && !(isWrong && showPrimary) ? (
