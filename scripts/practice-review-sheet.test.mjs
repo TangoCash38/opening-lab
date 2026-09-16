@@ -77,8 +77,12 @@ test("Practice-only Why this move entry; Test never opens the review sheet", () 
   assert.match(modal, /whyThisMoveLabel\?/);
   assert.match(modal, /onWhyThisMove\?/);
   assert.match(modal, /data-why-this-move/);
+  assert.match(modal, /reviewOpen/);
   assert.match(modal, /Practice-only opt-in Engine review/);
   assert.match(modal, /Never passed from Test/);
+  assert.match(train, /reviewOpen=\{reviewLock\}/);
+  assert.match(train, /reviewLockRef/);
+  assert.match(train, /if \(reviewLockRef\.current\) return/);
 });
 
 test("review sheet matches Practice UI mock and fail-softs Engine miss", () => {
@@ -97,7 +101,9 @@ test("review sheet matches Practice UI mock and fail-softs Engine miss", () => {
   assert.match(sheet, /data-practice-review-eval=\{showEval \? "ok" : ready \? "hidden" : "loading"\}/);
   assert.match(sheet, /showEval \? \(/);
   assert.match(sheet, /t\("Engine"\)/);
-  assert.match(sheet, /useOverlayHistory\(true, onClose, "practice-review"\)/);
+  assert.match(sheet, /olOverlay: REVIEW_STATE/);
+  assert.match(sheet, /Do not use useOverlayHistory here/);
+  assert.doesNotMatch(sheet, /useOverlayHistory\(/);
   assert.match(sheet, /data-board-theme="book"/);
   assert.match(sheet, /arrows=\{arrows\}/);
   assert.doesNotMatch(sheet, /Stockfish cloud/i);

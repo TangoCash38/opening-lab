@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Chess } from "chess.js";
-import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useT } from "@/lib/i18n";
 import {
   arrowsFromPvs,
@@ -21,6 +20,19 @@ type Props = {
   onClose: () => void;
 };
 
+const REVIEW_STATE = "practice-review";
+
+function isReviewState(state: unknown): boolean {
+  return Boolean(
+    state &&
+      typeof state === "object" &&
+      (state as { olOverlay?: string }).olOverlay === REVIEW_STATE,
+  );
+}
+
+/** Survives React Strict Mode remount so we only push one history entry. */
+let reviewHistoryHeld = false;
+
 export function PracticeReviewSheet({
   fen,
   whyText,
@@ -31,19 +43,54 @@ export function PracticeReviewSheet({
   const t = useT();
   const [evalOk, setEvalOk] = useState<PracticeReviewOk | null>(null);
   const [ready, setReady] = useState(false);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+  const onBackRef = useRef(onBackToPractice);
+  onBackRef.current = onBackToPractice;
 
-  useOverlayHistory(true, onClose, "practice-review");
+  const dismiss = () => {
+    if (typeof window !== "undefined" && isReviewState(window.history.state)) {
+      window.history.back();
+      return;
+    }
+    reviewHistoryHeld = false;
+    onCloseRef.current();
+  };
 
+  const backToPractice = () => {
+    if (typeof window !== "undefined" && isReviewState(window.history.state)) {
+      reviewHistoryHeld = false;
+      window.history.replaceState(null, "");
+    }
+    onBackRef.current();
+  };
+
+  /**
+   * Own history entry so Android Back / Escape close this sheet first.
+   * Do not use useOverlayHistory here: its cleanup history.back() races
+   * React Strict Mode and can pop the Practice result sheet (or the page).
+   */
   useEffect(() => {
+    if (!reviewHistoryHeld) {
+      window.history.pushState({ olOverlay: REVIEW_STATE }, "");
+      reviewHistoryHeld = true;
+    }
+    const onPop = () => {
+      reviewHistoryHeld = false;
+      onCloseRef.current();
+    };
+    window.addEventListener("popstate", onPop);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-      }
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      dismiss();
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [onClose]);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -88,6 +135,8 @@ export function PracticeReviewSheet({
       aria-labelledby="practice-review-title"
       data-practice-review-sheet
       data-practice-review-eval={showEval ? "ok" : ready ? "hidden" : "loading"}
+      onClick={(e) => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
     >
       <div className="practice-review-sheet" data-board-theme="book">
         <header className="practice-review-header">
@@ -161,7 +210,7 @@ export function PracticeReviewSheet({
           <button
             type="button"
             data-practice-review-back
-            onClick={onBackToPractice}
+            onClick={backToPractice}
             className="practice-review-back"
           >
             {t("Back to Practice")}
@@ -169,7 +218,7 @@ export function PracticeReviewSheet({
           <button
             type="button"
             data-practice-review-close
-            onClick={onClose}
+            onClick={dismiss}
             className="practice-review-close"
           >
             {t("Close")}

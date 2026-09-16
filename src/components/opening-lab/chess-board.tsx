@@ -1,6 +1,5 @@
 import {
   useEffect,
-  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -320,7 +319,6 @@ export function ChessBoard({
   onMateBlastDone,
   arrows,
 }: Props) {
-  const arrowId = useId().replace(/:/g, "");
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
   const onSquareRef = useRef(onSquare);
@@ -761,30 +759,6 @@ export function ChessBoard({
                 aria-hidden
                 data-board-arrows
               >
-                <defs>
-                  <marker
-                    id={`${arrowId}-pv2`}
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="3.2"
-                    markerHeight="3.2"
-                    orient="auto-start-reverse"
-                  >
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a8278" />
-                  </marker>
-                  <marker
-                    id={`${arrowId}-pv1`}
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="3.2"
-                    markerHeight="3.2"
-                    orient="auto-start-reverse"
-                  >
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b6ea5" />
-                  </marker>
-                </defs>
                 {(arrows.some((a) => a.kind === "pv2")
                   ? arrows.filter((a) => a.kind === "pv2")
                   : []
@@ -800,25 +774,43 @@ export function ChessBoard({
                     const dx = x2 - x1;
                     const dy = y2 - y1;
                     const len = Math.hypot(dx, dy) || 1;
-                    const trim = 0.28;
+                    const ux = dx / len;
+                    const uy = dy / len;
+                    const start = Math.min(0.42, len * 0.36);
+                    const end = Math.min(0.18, len * 0.14);
+                    const sx = x1 + ux * start;
+                    const sy = y1 + uy * start;
+                    const ex = x2 - ux * end;
+                    const ey = y2 - uy * end;
+                    const head = Math.min(0.34, Math.max(0.22, len * 0.28));
+                    const hx = ex - ux * head;
+                    const hy = ey - uy * head;
+                    const nx = -uy * head * 0.42;
+                    const ny = ux * head * 0.42;
+                    const color = arrow.kind === "pv1" ? "#3b6ea5" : "#8a8278";
                     return (
-                      <line
+                      <g
                         key={`${arrow.kind}-${arrow.from}-${arrow.to}`}
-                        x1={x1 + (dx / len) * 0.18}
-                        y1={y1 + (dy / len) * 0.18}
-                        x2={x2 - (dx / len) * trim}
-                        y2={y2 - (dy / len) * trim}
                         className={
                           arrow.kind === "pv1"
                             ? "board-arrow board-arrow--pv1"
                             : "board-arrow board-arrow--pv2"
                         }
-                        markerEnd={
-                          arrow.kind === "pv1"
-                            ? `url(#${arrowId}-pv1)`
-                            : `url(#${arrowId}-pv2)`
-                        }
-                      />
+                      >
+                        <line
+                          x1={sx}
+                          y1={sy}
+                          x2={hx}
+                          y2={hy}
+                          stroke={color}
+                          strokeWidth={arrow.kind === "pv1" ? 0.14 : 0.12}
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d={`M ${ex} ${ey} L ${hx + nx} ${hy + ny} L ${hx - nx} ${hy - ny} Z`}
+                          fill={color}
+                        />
+                      </g>
                     );
                   })}
               </svg>

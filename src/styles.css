@@ -2188,20 +2188,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 }
 
 .board-arrow {
-  fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.board-arrow--pv1 {
-  stroke: #3b6ea5;
-  stroke-width: 2.4;
-}
-
-.board-arrow--pv2 {
-  stroke: #8a8278;
-  stroke-width: 2.1;
 }
 
 /* Practice-only “Why this move?” review — cream/green, not a dark analysis clone. */

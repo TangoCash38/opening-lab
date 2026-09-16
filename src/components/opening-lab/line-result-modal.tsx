@@ -29,6 +29,8 @@ type Props = {
   /** Practice-only opt-in Engine review. Never passed from Test. */
   whyThisMoveLabel?: string;
   onWhyThisMove?: () => void;
+  /** True while the Practice review sheet sits on top — ignore overlay clicks. */
+  reviewOpen?: boolean;
 };
 
 export function LineResultModal({
@@ -48,6 +50,7 @@ export function LineResultModal({
   onPlayOn,
   whyThisMoveLabel,
   onWhyThisMove,
+  reviewOpen = false,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
@@ -341,14 +344,14 @@ export function LineResultModal({
 
   return (
     <div
-      className="line-result-overlay z-[80]"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="line-result-title"
-      data-result-kind={kind}
-      data-result-actions={showPrimary ? 2 : 1}
-      data-result-play-prompt={playOnPrompt ? "1" : undefined}
-      onClick={onClose}
+        className={`line-result-overlay z-[80]${reviewOpen ? " pointer-events-none" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="line-result-title"
+        data-result-kind={kind}
+        data-result-actions={showPrimary ? 2 : 1}
+        data-result-play-prompt={playOnPrompt ? "1" : undefined}
+        onClick={reviewOpen ? undefined : onClose}
     >
       <div
         className={`line-result-dim${boardExpanded ? " line-result-dim--board-fs" : ""}`}

@@ -339,6 +339,20 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     fen: string;
     whyText: string;
   } | null>(null);
+  const [reviewLock, setReviewLock] = useState(false);
+  const reviewLockRef = useRef(false);
+  useEffect(() => {
+    if (practiceReview) {
+      reviewLockRef.current = true;
+      setReviewLock(true);
+      return;
+    }
+    const t = window.setTimeout(() => {
+      reviewLockRef.current = false;
+      setReviewLock(false);
+    }, 400);
+    return () => window.clearTimeout(t);
+  }, [practiceReview]);
 
   // Play-on promotion picker: Back cancels like tapping the dimmed board.
   useOverlayHistory(
@@ -1806,17 +1820,24 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 }
               : undefined
           }
+          reviewOpen={reviewLock}
           whyThisMoveLabel={mode === "learn" ? t("Why this move?") : undefined}
           onWhyThisMove={
             mode === "learn"
-              ? () =>
+              ? () => {
+                  reviewLockRef.current = true;
+                  setReviewLock(true);
                   setPracticeReview({
                     fen: game.fen(),
                     whyText: resultCard.body,
-                  })
+                  });
+                }
               : undefined
           }
-          onClose={() => setResultCard(null)}
+          onClose={() => {
+            if (reviewLockRef.current) return;
+            setResultCard(null);
+          }}
           onAction={
             resultCard.kind === "wrong"
               ? resultCard.nextAction === "learn"
