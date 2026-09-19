@@ -22,9 +22,11 @@ import {
   GYM_LINE_ID,
   formatGymSan,
   gymSanChips,
+  hasUnsavedAuthorPlies,
   readGymLine,
   rememberGymLine,
   sameGymLine,
+  undoAuthorPlies,
   type GymLine,
 } from "@/lib/gym-line";
 import { clearLineProgress } from "@/lib/progress";
@@ -35,10 +37,11 @@ type Side = "w" | "b";
 
 type Props = {
   onPractice: (line: GymLine) => void;
+  onHome: () => void;
   initial?: GymLine | null;
 };
 
-export function CreateOwnView({ onPractice, initial }: Props) {
+export function CreateOwnView({ onPractice, onHome, initial }: Props) {
   const t = useT();
   const [side, setSide] = useState<Side>(initial?.side ?? "b");
   const [game, setGame] = useState(() => replay(initial?.plies ?? []));
@@ -47,6 +50,7 @@ export function CreateOwnView({ onPractice, initial }: Props) {
     null,
   );
   const [remembered, setRemembered] = useState<GymLine | null>(null);
+  const [leaveOpen, setLeaveOpen] = useState(false);
   const [evalOk, setEvalOk] = useState<PracticeReviewOk | null>(null);
   const [suggesting, setSuggesting] = useState(false);
   const fen = game.fen();
@@ -135,6 +139,30 @@ export function CreateOwnView({ onPractice, initial }: Props) {
     setRemembered(null);
   };
 
+  const stepBack = () => {
+    const history = game.history();
+    if (history.length === 0) return;
+    const next = replay(undoAuthorPlies(history));
+    const verbose = next.history({ verbose: true });
+    const last = verbose[verbose.length - 1];
+    setGame(next);
+    setSelected(null);
+    setLastMove(last ? { from: last.from as Square, to: last.to as Square } : null);
+  };
+
+  const requestHome = () => {
+    if (!hasUnsavedAuthorPlies(plies, readGymLine())) {
+      onHome();
+      return;
+    }
+    setLeaveOpen(true);
+  };
+
+  const confirmLeave = () => {
+    setLeaveOpen(false);
+    onHome();
+  };
+
   const lockLine = () => {
     const prev = readGymLine();
     const locked = rememberGymLine(plies, side);
@@ -174,6 +202,17 @@ export function CreateOwnView({ onPractice, initial }: Props) {
 
   return (
     <div className="create-own" data-create-own data-board-theme="book">
+      <div className="create-own-nav">
+        <button
+          type="button"
+          data-create-own-home
+          onClick={requestHome}
+          aria-label={t("Home")}
+          className="create-own-home"
+        >
+          {t("Home")}
+        </button>
+      </div>
       <div className="create-own-head">
         <h1 className="create-own-title">{t("Create your own")}</h1>
         <p className="create-own-sub">{t("Build a line, then train it.")}</p>
@@ -307,6 +346,17 @@ export function CreateOwnView({ onPractice, initial }: Props) {
 
         <button
           type="button"
+          data-create-own-back
+          disabled={plies.length === 0}
+          onClick={stepBack}
+          aria-label={t("Back")}
+          className="create-own-back"
+        >
+          {t("Back")}
+        </button>
+
+        <button
+          type="button"
           data-create-own-clear
           onClick={clearLine}
           className="create-own-clear"
@@ -325,6 +375,13 @@ export function CreateOwnView({ onPractice, initial }: Props) {
           line={remembered}
           onPractice={() => onPractice(remembered)}
           onKeepEditing={() => setRemembered(null)}
+        />
+      ) : null}
+
+      {leaveOpen ? (
+        <LeaveConfirm
+          onDiscard={confirmLeave}
+          onStay={() => setLeaveOpen(false)}
         />
       ) : null}
     </div>
@@ -378,6 +435,61 @@ export function CreateOwnEntry({
         </button>
       </div>
     </section>
+  );
+}
+
+function LeaveConfirm({
+  onDiscard,
+  onStay,
+}: {
+  onDiscard: () => void;
+  onStay: () => void;
+}) {
+  const t = useT();
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      onStay();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onStay]);
+
+  return (
+    <div
+      className="create-own-remember-overlay z-[80]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="create-own-leave-title"
+      data-create-own-leave
+      onClick={onStay}
+    >
+      <div
+        className="create-own-remember-sheet"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="create-own-leave-title" className="create-own-remember-title">
+          {t("Discard unsaved moves?")}
+        </h2>
+        <button
+          type="button"
+          data-create-own-leave-discard
+          onClick={onDiscard}
+          className="create-own-remember-go"
+        >
+          {t("Discard")}
+        </button>
+        <button
+          type="button"
+          data-create-own-leave-stay
+          onClick={onStay}
+          className="create-own-remember-edit"
+        >
+          {t("Keep editing")}
+        </button>
+      </div>
+    </div>
   );
 }
 

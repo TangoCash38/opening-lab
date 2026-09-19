@@ -84,6 +84,28 @@ export function sameGymLine(a: GymLine | null, b: GymLine | null): boolean {
   );
 }
 
+/** Drop the last ply only. Empty stays empty (Back is a no-op at start). */
+export function undoAuthorPlies(plies: readonly string[]): string[] {
+  if (plies.length === 0) return [];
+  return plies.slice(0, -1);
+}
+
+/**
+ * Home asks to discard only when the board has plies that are not the
+ * remembered gym line. Empty or already-saved lines leave straight home.
+ */
+export function hasUnsavedAuthorPlies(
+  plies: readonly string[],
+  saved: GymLine | null,
+): boolean {
+  if (plies.length === 0) return false;
+  if (!saved) return true;
+  return (
+    saved.plies.length !== plies.length ||
+    saved.plies.some((p, i) => p !== plies[i])
+  );
+}
+
 export function rememberGymLine(plies: string[], side: Side): GymLine | null {
   const clean = plies.filter((p) => typeof p === "string" && p.trim().length > 0);
   if (clean.length === 0) return null;
