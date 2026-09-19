@@ -108,7 +108,7 @@ Purchases will fail in Console until the merchant card / bank check on **16 Sept
 
 Server verify uses Android Publisher API only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` is set on the host (Vercel). Never put that JSON in the repo.
 
-App version for the next AAB: **versionCode 7 / versionName 1.0.6**. Do not upload an AAB from this note alone.
+App version for the next AAB: **versionCode 8 / versionName 1.0.7**. Do not upload an AAB from this note alone.
 
 ## Out of scope
 
