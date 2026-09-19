@@ -25,12 +25,12 @@ test("trainer Back/Forward review the board without a Take back button", () => {
 
 test("trainer shows {pct}% complete through the book line", () => {
   assert.match(train, /t\("\{pct\}% complete"/);
-  assert.match(train, /plyIndex \/ bookLen/);
+  assert.match(train, /plyIndex - bookStartPly\) \/ bookLen/);
   assert.match(train, /!playingOn \? \(/);
 });
 
 test("viewPly is wired as a view-only cursor on the live ply", () => {
-  assert.match(train, /const \[viewPly, setViewPly\] = useState\(0\)/);
+  assert.match(train, /const \[viewPly, setViewPly\] = useState\(bookStartPly\)/);
   assert.match(train, /const livePly = playingOn \? game\.history\(\)\.length : plyIndex/);
   assert.match(train, /setViewPly\(\(v\) => \(livePly > v \|\| livePly === 0 \? livePly : v\)\)/);
   assert.match(train, /replaySans\(line\.plies, viewPly\)/);

@@ -23,6 +23,7 @@ import {
   type CheckoutKind,
 } from "@/lib/checkout";
 import { isPlayWrap } from "@/lib/play-app";
+import type { TrainStartOptions } from "@/lib/london-warmup";
 import {
   hasPlayBillingBridge,
   restorePlayLabPlus,
@@ -43,7 +44,12 @@ import { readGymLine, subscribeGymLine, type GymLine } from "@/lib/gym-line";
 type TrainMode = "learn" | "practice";
 
 type Props = {
-  onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
+  onStartLine: (
+    pack: Pack,
+    line: OpeningLine,
+    mode?: TrainMode,
+    options?: TrainStartOptions,
+  ) => void;
   onHowToPlay: () => void;
   onOpenMate: () => void;
   onCreateOwn?: () => void;

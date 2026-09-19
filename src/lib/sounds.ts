@@ -283,18 +283,16 @@ export function soundBad() {
   }
 }
 
-/** Short pleasant win arpeggio — clean Test pass celebration only. */
+/** Soft two-note chime — clean Test pass only. Quieter and shorter than a land thud. */
 export function soundWin() {
   try {
     const ctx = getCtx();
     if (!ctx) return;
     const t = ctx.currentTime;
-    // Soft rising G-major: G4–B4–D5–G5 (~0.85s), sine only — not a toy buzzer.
+    // Soft G4–D5 (~0.28s). Thud peaks ~0.18; this stays well under.
     const notes = [
-      { f: 392, at: 0, dur: 0.22, vol: 0.055 },
-      { f: 494, at: 0.12, dur: 0.22, vol: 0.05 },
-      { f: 587, at: 0.24, dur: 0.26, vol: 0.048 },
-      { f: 784, at: 0.4, dur: 0.42, vol: 0.04 },
+      { f: 392, at: 0, dur: 0.16, vol: 0.028 },
+      { f: 587, at: 0.07, dur: 0.2, vol: 0.024 },
     ];
     for (const n of notes) {
       const o = ctx.createOscillator();
@@ -302,7 +300,7 @@ export function soundWin() {
       o.type = "sine";
       o.frequency.setValueAtTime(n.f, t + n.at);
       g.gain.setValueAtTime(0.0001, t + n.at);
-      g.gain.exponentialRampToValueAtTime(n.vol, t + n.at + 0.018);
+      g.gain.exponentialRampToValueAtTime(n.vol, t + n.at + 0.012);
       g.gain.exponentialRampToValueAtTime(0.0001, t + n.at + n.dur);
       o.connect(g);
       g.connect(ctx.destination);

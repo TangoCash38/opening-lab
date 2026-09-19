@@ -2043,6 +2043,53 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   scroll-margin-bottom: min(52dvh, 28rem);
 }
 
+/* Practice near-miss: book SAN + retry. Soft sheet, not a modal. */
+.near-miss-toast {
+  position: absolute;
+  left: 0.55rem;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  z-index: 6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem 0.75rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in oklab, var(--color-accent) 22%, var(--color-border));
+  background: color-mix(in oklab, var(--color-bg-elevated) 92%, var(--color-accent) 8%);
+  box-shadow: var(--shadow-card);
+}
+
+.near-miss-toast-copy {
+  margin: 0;
+  flex: 1 1 10rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.near-miss-toast-cta {
+  flex: 0 0 auto;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 0;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.near-miss-toast-cta:active {
+  transform: scale(0.98);
+}
+
+.home-warmup-chip {
+  letter-spacing: -0.01em;
+}
+
 /* trial: phone-centered board — revert if Sean dislikes */
 @media (max-width: 640px) {
   .train-layout {

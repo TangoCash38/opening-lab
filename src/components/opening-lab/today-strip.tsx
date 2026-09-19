@@ -2,9 +2,15 @@ import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { isLineUnlocked, isPackVisible, playableLines, visiblePacks } from "@/lib/catalog";
+import type { TrainStartOptions } from "@/lib/london-warmup";
 
 type Props = {
-  onStartLine: (pack: Pack, line: OpeningLine, mode?: "learn" | "practice") => void;
+  onStartLine: (
+    pack: Pack,
+    line: OpeningLine,
+    mode?: "learn" | "practice",
+    options?: TrainStartOptions,
+  ) => void;
   onTrainDue: () => void;
 };
 

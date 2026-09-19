@@ -105,6 +105,14 @@ export function LineRow({
             </span>
           ) : null}
           {!locked && !complete ? <MasteryChip mastery={mastery} /> : null}
+          {!locked && complete ? (
+            <span
+              className="book-solid-stamp rounded-full bg-success px-1.5 py-0.5 text-[0.65rem] font-semibold text-white"
+              data-book-solid
+            >
+              {t("Book solid")}
+            </span>
+          ) : null}
           {showPct ? (
             <span
               className={`rounded-full px-1.5 py-0.5 text-[0.65rem] font-bold tabular-nums ${

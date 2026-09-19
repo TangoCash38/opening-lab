@@ -23,6 +23,7 @@ import {
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { getBoardTheme } from "@/lib/board-theme";
+import { warmupEndPly } from "@/lib/london-warmup";
 import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
 import { LineCompleteBurst } from "./line-complete-burst";
@@ -61,6 +62,9 @@ type Props = {
   /** Create-your-own gym line: custom chrome, Test gated until Practice. */
   gym?: boolean;
   testLocked?: boolean;
+  /** Cap this session at startPly + plyLimit book plies (London warm-up). */
+  plyLimit?: number;
+  startPly?: number;
 };
 
 type ResultNextAction = "practiceNext" | "testYourself" | "learn";
@@ -282,17 +286,24 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, plyLimit, startPly = 0 }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const unlockIds = subscribed ? [pack.id] : purchased;
+  const warmup = plyLimit != null;
+  const lockTest = testLocked || warmup;
+  const bookStartPly = Math.max(0, Math.min(Math.floor(startPly) || 0, line.plies.length));
+  const bookEndPly = warmup
+    ? warmupEndPly(bookStartPly, line.plies.length, plyLimit)
+    : line.plies.length;
   const [mode, setMode] = useState<Mode>(initialMode);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
-  const [game, setGame] = useState(() => new Chess());
-  const [plyIndex, setPlyIndex] = useState(0);
-  const [viewPly, setViewPly] = useState(0);
+  const [game, setGame] = useState(() => replaySans(line.plies, bookStartPly));
+  const [plyIndex, setPlyIndex] = useState(bookStartPly);
+  const [viewPly, setViewPly] = useState(bookStartPly);
+  const [nearMissSan, setNearMissSan] = useState<string | null>(null);
   const [selected, setSelected] = useState<Square | null>(null);
   const [wrongUntil, setWrongUntil] = useState<Square | null>(null);
   const [status, setStatus] = useState({
@@ -302,7 +313,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [session, setSession] = useState(0);
   const [slide, setSlide] = useState<SlideAnim | null>(null);
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(
-    null,
+    () => lastMoveSquares(replaySans(line.plies, bookStartPly)),
   );
   const [hintsReady, setHintsReady] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -452,14 +463,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       dropEngine();
       setSlide(null);
       setBusy(false);
-      setLastMove(null);
       setResultCard(null);
       setHintsReady(true);
       setPlayHint(null);
       setHintBusy(false);
-      setGame(new Chess());
-      setPlyIndex(0);
-      setViewPly(0);
+      setNearMissSan(null);
+      const start = replaySans(line.plies, bookStartPly);
+      setGame(start);
+      setPlyIndex(bookStartPly);
+      setViewPly(bookStartPly);
+      setLastMove(lastMoveSquares(start));
       setSelected(null);
       setPendingPromo(null);
       setWrongUntil(null);
@@ -477,11 +490,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setMateBlast(null);
       setSession((s) => s + 1);
     },
-    [clearAllTimers, dropEngine, mode, line.plies.length],
+    [clearAllTimers, dropEngine, mode, line.plies, bookStartPly],
   );
 
   const changeMode = (m: Mode) => {
-    if (m === "practice" && testLocked) return;
+    if (m === "practice" && lockTest) return;
     if (m === "practice") setNudgeTest(false);
     setMode(m);
     onModeChange?.(m);
@@ -627,7 +640,22 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       onTestPly?.(pending.nextPly);
     }
 
-    if (pending.nextPly >= line.plies.length) {
+    if (pending.nextPly >= bookEndPly) {
+      if (warmup && mode === "learn") {
+        setStatus({
+          text: t("Warm-up done"),
+          cls: "done",
+        });
+        setResultCard({
+          kind: "end",
+          title: line.name,
+          caption: t("Warm-up done"),
+          body: "",
+          actionLabel: t("Done"),
+        });
+        return;
+      }
+
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
@@ -662,31 +690,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       }
 
       setStatus({
-        text: "Line complete — well done!",
+        text: t("Book solid"),
         cls: "done",
       });
       soundWin();
-      {
-        const card = endResultCard(
+      setResultCard(
+        endResultCard(
           line,
           pack,
           purchased,
-          t("Line complete"),
+          t("Book solid"),
           t,
           "practiceNext",
           subscribed,
-        );
-        // Arcade mate: king blast then sheet. Else celebration burst then sheet.
-        if (getBoardTheme() === "arcade" && pending.nextGame.isCheckmate()) {
-          openEndCard(card, pending.nextGame);
-        } else {
-          const piece =
-            fenPieceAt(pending.nextGame, pending.move.to) ??
-            (line.side === "b" ? "k" : "K");
-          pendingEndCardRef.current = card;
-          setCelebratePiece(piece);
-        }
-      }
+        ),
+      );
       if (!completedRef.current) {
         completedRef.current = true;
         onLineComplete?.();
@@ -709,13 +727,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line, pack, purchased, subscribed, t, mode, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard]);
+  }, [line, pack, purchased, subscribed, t, mode, warmup, bookEndPly, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard]);
 
   useEffect(() => {
     clearReplyTimer();
     if (playingOn) return;
     if (busy || slide) return;
-    if (plyIndex >= line.plies.length) return;
+    if (plyIndex >= bookEndPly) return;
     if (isUserTurn(game)) return;
 
     setStatus({ text: "…", cls: "" });
@@ -758,6 +776,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     session,
     playingOn,
     line.plies.length,
+    bookEndPly,
     isUserTurn,
     expectedMove,
     clearReplyTimer,
@@ -868,7 +887,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (from === to) return;
     if (busy || slide || engineBusy) return;
     if (pendingPromo) return;
-    if (!playingOn && plyIndex >= line.plies.length) return;
+    if (!playingOn && plyIndex >= bookEndPly) return;
     const live = gameRef.current;
     if (!isUserTurn(live)) return;
 
@@ -973,6 +992,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       });
       setSelected(null);
       if (mode === "practice") {
+        setNearMissSan(null);
         setResultCard({
           kind: "wrong",
           title: t("Inaccurate move"),
@@ -984,18 +1004,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         practiceMissedRef.current = true;
         onPracticeFail?.();
       } else {
-        setResultCard({
-          kind: "wrong",
-          title: t("Wrong move"),
-          body: t("The book move is {san}.", { san: exp.san }),
-          actionLabel: t("Try again"),
-        });
+        // Practice: toast with book SAN. Never a blocking sheet. Never in Test.
+        setResultCard(null);
+        setNearMissSan(exp.san);
       }
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
       wrongTimer.current = setTimeout(() => setWrongUntil(null), 450);
       return;
     }
 
+    setNearMissSan(null);
     const pieceCode = fenPieceAt(game, from);
     if (!pieceCode) return;
 
@@ -1020,7 +1038,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const onSquare = (sq: Square) => {
     if (busy || slide || engineBusy) return;
     if (pendingPromo) return;
-    if (!playingOn && plyIndex >= line.plies.length) return;
+    if (!playingOn && plyIndex >= bookEndPly) return;
     if (!isUserTurn(game)) return;
 
     const piece = game.get(sq);
@@ -1218,26 +1236,32 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     setViewPly(target);
   };
 
+  /** Same as Back after a rejected book try — stay on this ply. */
+  const retryFromHere = () => {
+    if (wrongTimer.current) {
+      clearTimeout(wrongTimer.current);
+      wrongTimer.current = null;
+    }
+    setSelected(null);
+    setPendingPromo(null);
+    setWrongUntil(null);
+    setNearMissSan(null);
+    setStatus({
+      text: playingOnRef.current
+        ? "Your move — playing on"
+        : mode === "learn"
+          ? "Your move (Practice)"
+          : "Your move",
+      cls: "",
+    });
+  };
+
   const stepBack = () => {
     if (busy || slide) return;
 
     // Rejected book try never landed — just clear the pick / red flash.
-    if (wrongUntil || status.cls === "bad") {
-      if (wrongTimer.current) {
-        clearTimeout(wrongTimer.current);
-        wrongTimer.current = null;
-      }
-      setSelected(null);
-      setPendingPromo(null);
-      setWrongUntil(null);
-      setStatus({
-        text: playingOnRef.current
-          ? "Your move — playing on"
-          : mode === "learn"
-            ? "Your move (Practice)"
-            : "Your move",
-        cls: "",
-      });
+    if (wrongUntil || status.cls === "bad" || nearMissSan) {
+      retryFromHere();
       return;
     }
 
@@ -1274,7 +1298,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       mode === "learn" &&
       userTurn &&
       hintsReady &&
-      plyIndex < line.plies.length;
+      plyIndex < bookEndPly;
   const exp = playingOn ? playHint : bookExp;
 
   const hint =
@@ -1285,16 +1309,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const historyCount = livePly;
   const notationPairs = buildNotationPairs(historySans, historyCount, viewPly);
   const n = pack.lines.findIndex((l) => l.id === line.id) + 1;
-  const bookLen = line.plies.length;
+  const bookLen = bookEndPly - bookStartPly;
   const pct = bookLen <= 0
     ? 0
     : Math.min(
         100,
         Math.max(
           0,
-          plyIndex >= bookLen || status.cls === "done"
+          plyIndex >= bookEndPly || status.cls === "done"
             ? 100
-            : Math.round((plyIndex / bookLen) * 100),
+            : Math.round(((plyIndex - bookStartPly) / bookLen) * 100),
         ),
       );
 
@@ -1334,7 +1358,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     );
 
   const bookDone = status.cls === "done" && !playingOn;
-  const showPlayOn = bookDone && !lineEndsInMate(line);
+  const showPlayOn = bookDone && !warmup && !lineEndsInMate(line);
 
   useEffect(() => {
     if (!boardExpanded) return;
@@ -1376,6 +1400,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     !slide &&
     (Boolean(wrongUntil) ||
       status.cls === "bad" ||
+      Boolean(nearMissSan) ||
       Boolean(pendingPromo) ||
       viewPly > 0);
   const canForward = !busy && !slide && viewPly < livePly;
@@ -1468,8 +1493,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           active={mode === "practice"}
           onClick={() => changeMode("practice")}
           nudge={nudgeTest}
-          disabled={testLocked}
-          title={testLocked ? t("Test unlocks after a clean Practice.") : undefined}
+          disabled={lockTest}
+          title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
         >
           Test
         </ModeTab>
@@ -1523,8 +1548,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 active={mode === "practice"}
                 onClick={() => changeMode("practice")}
                 nudge={nudgeTest}
-                disabled={testLocked}
-                title={testLocked ? t("Test unlocks after a clean Practice.") : undefined}
+                disabled={lockTest}
+                title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
               >
                 Test
               </ModeTab>
@@ -1585,6 +1610,25 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 pieceCode={celebratePiece}
                 onFinished={stopCelebrate}
               />
+            ) : null}
+            {nearMissSan && mode === "learn" && !playingOn ? (
+              <div
+                className="near-miss-toast"
+                role="status"
+                data-near-miss-toast
+              >
+                <p className="near-miss-toast-copy">
+                  {t("The book move is {san}.", { san: nearMissSan })}
+                </p>
+                <button
+                  type="button"
+                  data-near-miss-retry
+                  onClick={retryFromHere}
+                  className="near-miss-toast-cta"
+                >
+                  {t("Try again from here")}
+                </button>
+              </div>
             ) : null}
           </div>
         </div>
@@ -1786,7 +1830,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               </button>
             </>
           ) : null}
-          {bookDone && mode === "learn" ? (
+          {bookDone && mode === "learn" && !warmup && !testLocked ? (
             <button
               type="button"
               onClick={() => changeMode("practice")}
@@ -1809,7 +1853,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           primaryLabel={resultCard.primaryLabel}
           boardExpanded={boardExpanded}
           playOnLevels={
-            resultCard.kind === "end" && !lineEndsInMate(line)
+            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
               ? PLAY_LEVELS.map((id) => ({
                   id,
                   label: PLAY_LEVEL_LABEL[id],
@@ -1818,17 +1862,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               : undefined
           }
           playOnLevel={
-            resultCard.kind === "end" && !lineEndsInMate(line)
+            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
               ? (playLevel ?? "beginner")
               : undefined
           }
           onPlayOnLevel={
-            resultCard.kind === "end" && !lineEndsInMate(line)
+            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
               ? (id) => setPlayLevel(id as PlayLevel)
               : undefined
           }
           onPlayOn={
-            resultCard.kind === "end" && !lineEndsInMate(line)
+            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
               ? () => {
                   setResultCard(null);
                   startPlayOn();
@@ -1837,13 +1881,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           }
           onClose={() => {
             setResultCard(null);
+            if (warmup && resultCard.kind === "end") onBack();
           }}
           onAction={
             resultCard.kind === "wrong"
               ? resultCard.nextAction === "learn"
                 ? () => changeMode("learn") // Practice again
                 : () => resetLine() // Try again (Practice miss)
-              : resultCard.nextAction === "learn"
+              : warmup && resultCard.kind === "end"
+                ? onBack
+                : resultCard.nextAction === "learn"
                 ? () => changeMode("learn")
                 : undefined
           }

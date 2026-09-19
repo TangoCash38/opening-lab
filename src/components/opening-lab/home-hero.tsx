@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
-import { type OpeningLine, type Pack } from "@/data/packs";
+import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isLineUnlocked } from "@/lib/catalog";
@@ -13,6 +13,7 @@ import {
 } from "@/lib/find-mate";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
+import { LONDON_PACK_ID, pickLondonWarmup, type TrainStartOptions } from "@/lib/london-warmup";
 import { ChessBoard } from "./chess-board";
 import { BoardThemePicker } from "./board-theme-picker";
 import { LineRow } from "./pack-lines";
@@ -22,7 +23,12 @@ type TrainMode = "learn" | "practice";
 
 type Props = {
   pack: Pack;
-  onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
+  onStartLine: (
+    pack: Pack,
+    line: OpeningLine,
+    mode?: TrainMode,
+    options?: TrainStartOptions,
+  ) => void;
   onHowToPlay: () => void;
   onOpenMate: () => void;
   onSubscribe: () => void;
@@ -39,7 +45,7 @@ export function HomeHero({
   playApp,
 }: Props) {
   const t = useT();
-  const { masteryOf, isComplete, testPercentOf } = useProgress();
+  const { masteryOf, isComplete, testPercentOf, line } = useProgress();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const shownLines = pack.lines;
@@ -87,6 +93,23 @@ export function HomeHero({
       (l) => subscribed || isLineUnlocked(pack, l.id, purchased),
     );
     return unlocked;
+  };
+
+  const londonPack = useMemo(
+    () => PACKS.find((p) => p.id === LONDON_PACK_ID),
+    [],
+  );
+  const londonWarmup = useMemo(
+    () => (londonPack ? pickLondonWarmup(londonPack, (id) => line(id)) : null),
+    [londonPack, line],
+  );
+
+  const startLondonWarmup = () => {
+    if (!londonPack || !londonWarmup) return;
+    onStartLine(londonPack, londonWarmup.line, "learn", {
+      plyLimit: londonWarmup.plyLimit,
+      startPly: londonWarmup.startPly,
+    });
   };
 
   const startAdvance = () => {
@@ -163,6 +186,16 @@ export function HomeHero({
               >
                 {t("Tap to practice")}
               </button>
+              {londonWarmup ? (
+                <button
+                  type="button"
+                  data-london-warmup
+                  onClick={startLondonWarmup}
+                  className="home-warmup-chip min-h-11 w-full rounded-full border border-border bg-bg-elevated px-4 py-2 text-[0.88rem] font-semibold text-fg active:scale-[0.99]"
+                >
+                  {t("London warm-up · {n} moves", { n: londonWarmup.plyLimit })}
+                </button>
+              ) : null}
             </div>
           </div>
 

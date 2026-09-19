@@ -32,37 +32,30 @@ function kindBlocks(source, kind) {
 }
 
 
-test("Test miss status guides Reset or Practice; Practice miss stays try again", () => {
+test("Test miss status guides Reset or Practice; Practice miss is a toast", () => {
   const tryPlay = train.slice(train.indexOf("const tryPlay"), train.indexOf("const onSquare"));
   assert.match(
     tryPlay,
-    /mode === "practice"\s*\?\s*t\("Tap Reset to try again, or go back to Practice"\)/,
+    /mode === "practice"\s*\?\s*t\("Try again to reset, or Practice again"\)/,
   );
   assert.match(tryPlay, /t\("Wrong move — try again"\)/);
   assert.doesNotMatch(tryPlay, /setStatus\(\{ text: "Wrong move — try again"/);
   const wrongs = kindBlocks(train, "wrong");
-  assert.equal(wrongs.length, 2);
+  assert.equal(wrongs.length, 1);
   const testWrong = wrongs[0];
   assert.match(testWrong, /primaryLabel: t\("Try again"\)/);
-  assert.match(testWrong, /actionLabel: t\("Back to practice"\)/);
+  assert.match(testWrong, /actionLabel: t\("Practice again"\)/);
   assert.match(testWrong, /title: t\("Inaccurate move"\)/);
+  assert.match(tryPlay, /setNearMissSan\(exp\.san\)/);
+  assert.doesNotMatch(
+    tryPlay.slice(tryPlay.indexOf('if (mode === "practice")'), tryPlay.indexOf("setNearMissSan(exp.san)")),
+    /setNearMissSan\(exp/,
+  );
   assert.equal(i18n.split('"Wrong move — try again":').length - 1, 12);
-  assert.equal(
-    i18n.split('"Tap Reset to try again, or go back to Practice":').length - 1,
-    12,
-  );
   assert.match(i18n, /"Wrong move — try again": "Wrong move — try again"/);
-  assert.match(
-    i18n,
-    /"Tap Reset to try again, or go back to Practice": "Tap Reset to try again, or go back to Practice"/,
-  );
   assert.match(i18n, /"Wrong move — try again": "Jugada incorrecta — inténtalo de nuevo"/);
   assert.match(i18n, /"Wrong move — try again": "走错了 — 再试一次"/);
   assert.match(i18n, /"Wrong move — try again": "Mauvais coup — réessaie"/);
-  assert.match(
-    i18n,
-    /"Tap Reset to try again, or go back to Practice": "Touche Reset pour réessayer, ou reviens à Practice"/,
-  );
 });
 
 test("wrong-move popup names the book SAN only", () => {
@@ -111,7 +104,7 @@ test("Caro line-complete next notes: ckb1.next exists; ckb12 recommends Qb4 and 
   assert.doesNotMatch(bring[0], /Qa3/);
 });
 
-test("end modal has two buttons; Practice wrong has one", () => {
+test("end modal has two buttons; Practice miss is a toast, not a sheet", () => {
   assert.match(modal, /data-result-actions=\{showPrimary \? 2 : 1\}/);
   assert.match(modal, /Boolean\(primaryLabel && onPrimary\)/);
   assert.match(modal, /onAction \?\? onClose/);
@@ -124,15 +117,15 @@ test("end modal has two buttons; Practice wrong has one", () => {
   assert.match(train, /actionLabel: t\("Well done"\)/);
   assert.match(train, /t\("Try again"\)/);
   const wrongs = kindBlocks(train, "wrong");
-  assert.equal(wrongs.length, 2);
-  const practiceWrong = wrongs[1];
-  assert.match(practiceWrong, /Wrong move/);
-  assert.match(practiceWrong, /Try again/);
-  assert.doesNotMatch(practiceWrong, /primaryLabel/);
-  assert.doesNotMatch(practiceWrong, /Inaccurate move/);
-  assert.doesNotMatch(practiceWrong, /Back to practice/);
-  assert.doesNotMatch(practiceWrong, /Well done/);
-  assert.doesNotMatch(practiceWrong, /Practice next line/);
+  assert.equal(wrongs.length, 1);
+  assert.match(wrongs[0], /Inaccurate move/);
+  assert.match(train, /data-near-miss-toast/);
+  assert.match(train, /t\("Try again from here"\)/);
+  assert.match(train, /setNearMissSan\(exp\.san\)/);
+  assert.doesNotMatch(
+    train.slice(train.indexOf("if (mode === \"practice\")"), train.indexOf("setNearMissSan(exp.san)")),
+    /setNearMissSan\(exp/,
+  );
   for (const key of ["Well done", "Practice next line"]) {
     assert.match(i18n, new RegExp(`"${key}": "${key}"`));
     assert.match(i18n, /"Bien hecho"|"做得好"|"Bravo"/);
@@ -156,7 +149,7 @@ test("Practice complete offers Test yourself; clean Test offers next line", () =
   assert.match(train, /nextAction === "testYourself"/);
   assert.match(train, /changeMode\("practice"\)/);
 
-  const cleanAt = train.indexOf('t("Line complete")');
+  const cleanAt = train.indexOf('t("Book solid"),\n          t,\n          "practiceNext"');
   assert.ok(cleanAt > 0, "clean Test end card missing");
   const cleanCall = train.slice(train.lastIndexOf("endResultCard", cleanAt), train.indexOf(");", cleanAt) + 2);
   assert.match(cleanCall, /"practiceNext"/);
@@ -174,27 +167,27 @@ test("Practice complete offers Test yourself; clean Test offers next line", () =
   assert.doesNotMatch(missedCall, /primaryLabel/);
 
   const wrongs = kindBlocks(train, "wrong");
-  assert.equal(wrongs.length, 2);
+  assert.equal(wrongs.length, 1);
   const testWrong = wrongs[0];
   assert.match(testWrong, /Inaccurate move/);
   assert.match(testWrong, /Try again/);
-  assert.match(testWrong, /Back to practice/);
+  assert.match(testWrong, /Practice again/);
   assert.match(testWrong, /primaryLabel: t\("Try again"\)/);
   assert.match(testWrong, /nextAction: "learn"/);
-  assert.doesNotMatch(testWrong, /Practice again/);
   assert.doesNotMatch(testWrong, /Practice next line/);
   assert.doesNotMatch(testWrong, /Test yourself/);
-  const practiceWrong = wrongs[1];
-  assert.match(practiceWrong, /Wrong move/);
-  assert.match(practiceWrong, /Try again/);
-  assert.doesNotMatch(practiceWrong, /primaryLabel/);
-  assert.doesNotMatch(practiceWrong, /Back to practice/);
-  assert.match(train, /onClose=\{\(\) => setResultCard\(null\)\}/);
+  assert.match(train, /setNearMissSan\(exp\.san\)/);
+  assert.match(train, /retryFromHere/);
+  assert.doesNotMatch(
+    train.slice(train.indexOf('if (mode === "practice") {'), train.indexOf("practiceMissedRef")),
+    /setNearMissSan\(exp/,
+  );
+  assert.match(train, /onClose=/);
   assert.match(train, /onAction=/);
   assert.match(train, /resultCard\.nextAction === "learn"/);
   assert.match(train, /changeMode\("learn"\)/);
   const modalCall = train.slice(train.indexOf("<LineResultModal"), train.indexOf("</LineResultModal>"));
-  assert.match(modalCall, /onClose=\{\(\) => setResultCard\(null\)\}/);
+  assert.match(modalCall, /setResultCard\(null\)/);
   assert.doesNotMatch(modalCall, /onClose=\{\(\) => \{\s*if \(resultCard\.nextAction === "learn"\)/);
 
   assert.match(i18n, /"Test yourself": "Test yourself"/);
@@ -254,7 +247,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.doesNotMatch(hero, /if \(shouldSkipPackIntro\(\)\) startAdvance/);
   assert.match(hero, /setAboutOpen\(true\)/);
-  assert.match(list, /onStartLine\(pack, line\)/);
+  assert.match(list, /onStartLine=\{onStartLine\}/);
 
   const sample = ["ckb1", "ckb3", "ckb5"];
   const caro = Array.from({ length: 18 }, (_, i) => `ckb${i + 1}`);
@@ -354,7 +347,7 @@ test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", ()
   assert.match(modalCall, /onPlayOn=/);
   assert.match(modalCall, /resultCard\.kind === "end"/);
   const wrongs = kindBlocks(train, "wrong");
-  assert.equal(wrongs.length, 2);
+  assert.equal(wrongs.length, 1);
   for (const w of wrongs) {
     assert.doesNotMatch(w, /playOnLevels/);
     assert.doesNotMatch(w, /startPlayOn/);
@@ -388,7 +381,10 @@ test("finish sheet with Play on gets taller body so plan text is readable", () =
 
 test("TrainView remounts on line change only; Practice↔Test stays in place", () => {
   // Key must NOT include mode — remounting on Practice↔Test flashes an empty board
-  assert.match(shell, /key=\{\`\$\{active\.pack\.id\}-\$\{active\.line\.id\}\`\}/);
+  assert.match(
+    shell,
+    /\$\{active\.pack\.id\}-\$\{active\.line\.id\}-\$\{active\.startPly \?\? 0\}-\$\{active\.plyLimit \?\? "all"\}/,
+  );
   assert.doesNotMatch(
     shell,
     /key=\{\`\$\{active\.pack\.id\}-\$\{active\.line\.id\}-\$\{active\.mode\}\`\}/,
@@ -423,7 +419,6 @@ test("ModeTab nudge is additive and keeps active/inactive chrome", () => {
 
 test("finish/result sheet is history-backed for Android Back", () => {
   assert.match(modal, /useOverlayHistory\(true, onClose, "line-result"\)/);
-  assert.match(modal, /useOverlayHistory\(expanded && !minimized/);
   assert.match(modal, /useOverlayHistory\(playOnPrompt/);
   assert.match(modal, /from "@\/hooks\/use-overlay-history"/);
 });
@@ -442,7 +437,7 @@ test("finish sheet can dock minimise so the board stays visible", () => {
   assert.match(modal, /setMinimized\(false\)/);
   assert.match(modal, /const dock = \(\) =>/);
   assert.match(modal, /const restore = \(\) =>/);
-  assert.match(modal, /setExpanded\(false\);\s*setMinimized\(true\)/);
+  assert.match(modal, /setMinimized\(true\)/);
   assert.match(modal, /if \(minimized\)/);
   assert.match(modal, /renderActions\(true\)/);
   assert.match(modal, /data-result-play-on-open/);
@@ -473,8 +468,8 @@ test("finish sheet can dock minimise so the board stays visible", () => {
 
 test("mate book finishes omit Play on from the end sheet", () => {
   assert.match(train, /function lineEndsInMate/);
-  assert.match(train, /bookDone && !lineEndsInMate\(line\)/);
-  assert.match(train, /resultCard\.kind === "end" && !lineEndsInMate\(line\)/);
+  assert.match(train, /bookDone && !warmup && !lineEndsInMate\(line\)/);
+  assert.match(train, /resultCard\.kind === "end" && !warmup && !lineEndsInMate\(line\)/);
   // Status copy skips Play on when the book ends in mate.
   assert.match(train, /Practice done — Test with no hints/);
 });

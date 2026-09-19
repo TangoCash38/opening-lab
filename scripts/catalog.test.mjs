@@ -2718,12 +2718,12 @@ test("Play on chips are Level 1 / 2 / 3 after Practice or Test; green still need
   const engine = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
   const css = readFileSync(join(root, "src/styles.css"), "utf8");
 
-  assert.match(train, /showPlayOn = bookDone;/);
+  assert.match(train, /showPlayOn = bookDone && !warmup && !lineEndsInMate\(line\)/);
   assert.doesNotMatch(train, /showPlayOn = bookDone && mode === "practice"/);
   assert.match(train, /Pick a level, then Play on/);
   assert.match(train, /Practice done — Play on, or Test with no hints/);
   assert.match(train, /Finished, but you missed a move — Play on, or Test again to go green/);
-  assert.match(train, /Line complete — well done!/);
+  assert.match(train, /t\("Book solid"\)/);
   assert.match(train, /if \(practiceMissedRef\.current\)/);
   assert.match(train, /onLineComplete\?\.\(\)/);
   assert.doesNotMatch(train, /bookDone && mode === "practice" && !showPlayOn/);
@@ -2856,7 +2856,7 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.doesNotMatch(sounds, /type = "sawtooth"/);
   assert.doesNotMatch(sounds, /beep\(380/);
   assert.doesNotMatch(sounds, /523, 659, 784, 1046/);
-  // Clean Test celebration: real win arpeggio + burst; Practice/miss stay quiet.
+  // Clean Test: soft chime + Book solid. No burst. Practice/miss stay quiet.
   const soundWinBody = sounds.slice(sounds.indexOf("export function soundWin"));
   assert.match(soundWinBody, /createOscillator/);
   assert.match(soundWinBody, /exponentialRampToValueAtTime/);
@@ -2867,7 +2867,7 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   {
     const iLearn = train.indexOf('text: "Practice done');
     const iMiss = train.indexOf("Finished, but you missed a move");
-    const iClean = train.indexOf("Line complete — well done");
+    const iClean = train.indexOf('t("Book solid")');
     const iAfterClean = train.indexOf("pending.userMove", iClean);
     const learnDone = train.slice(iLearn, iMiss);
     assert.ok(iLearn > 0 && iMiss > iLearn, "Practice done block bounds");
@@ -2880,7 +2880,8 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
     const cleanDone = train.slice(iClean, iAfterClean);
     assert.ok(iClean > 0 && iAfterClean > iClean, "clean Test block bounds");
     assert.match(cleanDone, /soundWin\(\)/);
-    assert.match(cleanDone, /setCelebratePiece/);
+    assert.doesNotMatch(cleanDone, /setCelebratePiece/);
+    assert.doesNotMatch(cleanDone, /LineCompleteBurst/);
   }
   assert.match(train, /<LineCompleteBurst/);
   assert.doesNotMatch(train, /isCheckmate\(\)\) soundWin/);
