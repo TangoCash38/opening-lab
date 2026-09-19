@@ -48,10 +48,15 @@ export function GuideView({ onBack }: Props) {
         {t("Use the profile icon (top right) to sign in. See")}{" "}
         <Link to="/privacy" className="font-semibold text-accent">
           {t("Privacy Policy")}
-        </Link>{" "}
-        {t("and")}{" "}
+        </Link>
+        {", "}
         <Link to="/terms" className="font-semibold text-accent">
           {t("Terms")}
+        </Link>
+        {", "}
+        {t("and")}{" "}
+        <Link to="/delete-account" className="font-semibold text-accent">
+          {t("Delete account")}
         </Link>
         .
       </Block>

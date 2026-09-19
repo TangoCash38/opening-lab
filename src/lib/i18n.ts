@@ -223,6 +223,7 @@ const en: Dict = {
   Terms: "Terms",
   or: "or",
   and: "and",
+  "Delete account": "Delete account",
 };
 
 const es: Dict = {
@@ -405,6 +406,7 @@ const es: Dict = {
   "Privacy Policy": "Política de privacidad",
   Terms: "Términos",
   and: "y",
+  "Delete account": "Eliminar cuenta",
 };
 
 const zh: Dict = {
@@ -587,6 +589,7 @@ const zh: Dict = {
   "Privacy Policy": "隐私政策",
   Terms: "条款",
   and: "与",
+  "Delete account": "删除账户",
 };
 
 const fr: Dict = {
@@ -769,6 +772,7 @@ const fr: Dict = {
   "Privacy Policy": "Politique de confidentialité",
   Terms: "Conditions",
   and: "et",
+  "Delete account": "Supprimer le compte",
 };
 
 const de: Dict = {
@@ -951,6 +955,7 @@ const de: Dict = {
   "Privacy Policy": "Datenschutz",
   Terms: "Nutzungsbedingungen",
   and: "und",
+  "Delete account": "Konto löschen",
 };
 
 const pt: Dict = {
@@ -1133,6 +1138,7 @@ const pt: Dict = {
   "Privacy Policy": "Política de privacidade",
   Terms: "Termos",
   and: "e",
+  "Delete account": "Excluir conta",
 };
 
 const ru: Dict = {
@@ -1314,6 +1320,7 @@ const ru: Dict = {
   "Privacy Policy": "Политика конфиденциальности",
   Terms: "Условия",
   and: "и",
+  "Delete account": "Удалить аккаунт",
 };
 
 const it: Dict = {
@@ -1496,6 +1503,7 @@ const it: Dict = {
   "Privacy Policy": "Informativa sulla privacy",
   Terms: "Termini",
   and: "e",
+  "Delete account": "Elimina account",
 };
 
 const hi: Dict = {
@@ -1678,6 +1686,7 @@ const hi: Dict = {
   "Privacy Policy": "गोपनीयता नीति",
   Terms: "नियम",
   and: "और",
+  "Delete account": "खाता हटाएँ",
 };
 
 const ja: Dict = {
@@ -1856,6 +1865,7 @@ const ja: Dict = {
   "Privacy Policy": "プライバシーポリシー",
   Terms: "利用規約",
   and: "と",
+  "Delete account": "アカウントを削除",
 };
 
 const ar: Dict = {
@@ -2038,6 +2048,7 @@ const ar: Dict = {
   "Privacy Policy": "سياسة الخصوصية",
   Terms: "الشروط",
   and: "و",
+  "Delete account": "حذف الحساب",
 };
 
 const tr: Dict = {
@@ -2220,6 +2231,7 @@ const tr: Dict = {
   "Privacy Policy": "Gizlilik Politikası",
   Terms: "Şartlar",
   and: "ve",
+  "Delete account": "Hesabı sil",
 };
 
 export const DICTS: Record<Lang, Dict> = { en, es, zh, fr, de, pt, ru, it, hi, ja, ar, tr };

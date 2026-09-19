@@ -164,6 +164,18 @@ function Login() {
                 <p className="text-sm text-fg-muted">{user.primaryEmail}</p>
               ) : null}
             </div>
+            <Link
+              to="/privacy"
+              className="block w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-center text-sm font-semibold text-fg no-underline shadow-sm transition hover:bg-bg-subtle active:scale-[0.98]"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/delete-account"
+              className="block w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-center text-sm font-semibold text-fg no-underline shadow-sm transition hover:bg-bg-subtle active:scale-[0.98]"
+            >
+              Delete account
+            </Link>
             <button
               type="button"
               onClick={() => void signOut("/")}

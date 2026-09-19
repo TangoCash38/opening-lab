@@ -7,7 +7,8 @@ export function LegalPage({
 }: {
   title: string;
   children: ReactNode;
-  updated?: string;
+  /** Pass `null` to hide the line (pages with no signed publish date). */
+  updated?: string | null;
 }) {
   return (
     <main className="relative z-10 min-h-dvh bg-bg px-4 py-8 text-fg">
@@ -21,9 +22,11 @@ export function LegalPage({
         <h1 className="mt-4 font-display text-[1.65rem] font-bold tracking-tight">
           {title}
         </h1>
-        <p className="mt-1 text-[0.78rem] text-fg-subtle">
-          Last updated {updated}
-        </p>
+        {updated ? (
+          <p className="mt-1 text-[0.78rem] text-fg-subtle">
+            Last updated {updated}
+          </p>
+        ) : null}
         <div className="mt-6 space-y-5 text-[0.95rem] leading-relaxed text-fg-muted">
           {children}
         </div>

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as DeleteAccountRouteImport } from './routes/delete-account'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
@@ -24,6 +25,7 @@ import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
 import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
+import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -43,6 +45,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeleteAccountRoute = DeleteAccountRouteImport.update({
+  id: '/delete-account',
+  path: '/delete-account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -100,12 +107,18 @@ const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
   path: '/api/practice-review-eval',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAccountDeleteRoute = ApiAccountDeleteRouteImport.update({
+  id: '/api/account/delete',
+  path: '/api/account/delete',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/privacy': typeof PrivacyRoute
+  '/delete-account': typeof DeleteAccountRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/payments': typeof ApiPaymentsRoute
@@ -117,12 +130,14 @@ export interface FileRoutesByFullPath {
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/account/delete': typeof ApiAccountDeleteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/privacy': typeof PrivacyRoute
+  '/delete-account': typeof DeleteAccountRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/payments': typeof ApiPaymentsRoute
@@ -134,6 +149,7 @@ export interface FileRoutesByTo {
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/account/delete': typeof ApiAccountDeleteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -141,6 +157,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/privacy': typeof PrivacyRoute
+  '/delete-account': typeof DeleteAccountRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/payments': typeof ApiPaymentsRoute
@@ -152,6 +169,7 @@ export interface FileRoutesById {
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/account/delete': typeof ApiAccountDeleteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,6 +178,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/privacy'
+    | '/delete-account'
     | '/terms'
     | '/api/checkout'
     | '/api/payments'
@@ -171,12 +190,14 @@ export interface FileRouteTypes {
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
     | '/api/practice-review-eval'
+    | '/api/account/delete'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/reset-password'
     | '/privacy'
+    | '/delete-account'
     | '/terms'
     | '/api/checkout'
     | '/api/payments'
@@ -188,12 +209,14 @@ export interface FileRouteTypes {
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
     | '/api/practice-review-eval'
+    | '/api/account/delete'
   id:
     | '__root__'
     | '/'
     | '/login'
     | '/reset-password'
     | '/privacy'
+    | '/delete-account'
     | '/terms'
     | '/api/checkout'
     | '/api/payments'
@@ -205,6 +228,7 @@ export interface FileRouteTypes {
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
     | '/api/practice-review-eval'
+    | '/api/account/delete'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -212,6 +236,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   PrivacyRoute: typeof PrivacyRoute
+  DeleteAccountRoute: typeof DeleteAccountRoute
   TermsRoute: typeof TermsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiPaymentsRoute: typeof ApiPaymentsRoute
@@ -221,6 +246,7 @@ export interface RootRouteChildren {
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
+  ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -251,6 +277,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delete-account': {
+      id: '/delete-account'
+      path: '/delete-account'
+      fullPath: '/delete-account'
+      preLoaderRoute: typeof DeleteAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -330,6 +363,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPracticeReviewEvalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/account/delete': {
+      id: '/api/account/delete'
+      path: '/api/account/delete'
+      fullPath: '/api/account/delete'
+      preLoaderRoute: typeof ApiAccountDeleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -362,6 +402,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   PrivacyRoute: PrivacyRoute,
+  DeleteAccountRoute: DeleteAccountRoute,
   TermsRoute: TermsRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiPaymentsRoute: ApiPaymentsRoute,
@@ -371,6 +412,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
+  ApiAccountDeleteRoute: ApiAccountDeleteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
