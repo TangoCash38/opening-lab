@@ -312,6 +312,7 @@ function OpeningLabInner() {
           <CreateOwnView
             initial={readGymLine()}
             onPractice={startGymLine}
+            onHome={goHome}
           />
         )}
         {view === "train" && active && canTrainPack(active.pack) && (

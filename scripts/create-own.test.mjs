@@ -45,6 +45,8 @@ test("gym line storage helpers format SAN chips and stay off the catalog", async
   assert.match(gymSrc, /GYM_STORAGE_KEY = "opening-lab:gym-line"/);
   assert.match(gymSrc, /GYM_AUTHOR_DEPTH = 12/);
   assert.match(gymSrc, /GYM_AUTHOR_DEBOUNCE_MS = 400/);
+  assert.match(gymSrc, /export function undoAuthorPlies/);
+  assert.match(gymSrc, /export function hasUnsavedAuthorPlies/);
   assert.doesNotMatch(catalog, /gym-line/);
   assert.doesNotMatch(packs, /id: "gym-line"/);
   assert.match(catalog, /VISIBLE_PACK_IDS = \[/);
@@ -75,6 +77,15 @@ test("gym line storage helpers format SAN chips and stay off the catalog", async
     assert.equal(pack.lines[0].side, "b");
     assert.equal(mod.isGymPack(pack), true);
     assert.equal(mod.isGymPack("scotch"), false);
+    assert.deepEqual(mod.undoAuthorPlies(["e4", "e5", "Nf3"]), ["e4", "e5"]);
+    assert.deepEqual(mod.undoAuthorPlies(["e4"]), []);
+    assert.deepEqual(mod.undoAuthorPlies([]), []);
+    assert.equal(mod.hasUnsavedAuthorPlies([], null), false);
+    assert.equal(mod.hasUnsavedAuthorPlies(["e4"], null), true);
+    assert.equal(mod.hasUnsavedAuthorPlies(["e4", "e5"], parsed), false);
+    assert.equal(mod.hasUnsavedAuthorPlies(["e4"], parsed), true);
+    assert.equal(mod.hasUnsavedAuthorPlies(["e4", "e5", "Nf3"], parsed), true);
+    assert.equal(mod.hasUnsavedAuthorPlies([], parsed), false);
   } finally {
     rmSync(loaded.dir, { recursive: true, force: true });
   }
@@ -110,6 +121,18 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.match(author, /Your line · build move by move/);
   assert.match(author, /data-board-theme="book"/);
   assert.match(author, /olOverlay: "gym-remember"/);
+  assert.match(author, /onHome/);
+  assert.match(author, /data-create-own-home/);
+  assert.match(author, /data-create-own-back/);
+  assert.match(author, /data-create-own-leave/);
+  assert.match(author, /t\("Home"\)/);
+  assert.match(author, /t\("Back"\)/);
+  assert.match(author, /t\("Discard unsaved moves\?"\)/);
+  assert.match(author, /disabled=\{plies\.length === 0\}/);
+  assert.match(author, /undoAuthorPlies/);
+  assert.match(author, /hasUnsavedAuthorPlies/);
+  assert.match(author, /stepBack/);
+  assert.match(author, /requestHome/);
   assert.doesNotMatch(author, /useOverlayHistory\(/);
   assert.doesNotMatch(author, /SF cloud/i);
   assert.doesNotMatch(author, /Stockfish/i);
@@ -127,8 +150,32 @@ test("Create-your-own author / remember copy matches the shipped mocks", () => {
   assert.match(css, /\.create-own-identity/);
   assert.match(css, /\.create-own-eval-track/);
   assert.match(css, /\.create-own-pvs/);
+  assert.match(css, /\.create-own-home/);
+  assert.match(css, /\.create-own-back/);
   assert.match(readme, /Create your own \(web\)/);
   assert.match(readme, /opening-identity/);
+});
+
+test("authoring Back / Home exist in all 12 language dicts", () => {
+  assert.equal(i18n.split("\n  Home: ").length - 1, 12);
+  assert.equal(i18n.split("\n  Discard: ").length - 1, 12);
+  assert.equal(i18n.split('"Discard unsaved moves?":').length - 1, 12);
+  for (const lang of [
+    "en",
+    "es",
+    "zh",
+    "fr",
+    "de",
+    "pt",
+    "ru",
+    "it",
+    "hi",
+    "ja",
+    "ar",
+    "tr",
+  ]) {
+    assert.match(i18n, new RegExp(`const ${lang}: Dict`));
+  }
 });
 
 test("Practice/Test gym chrome has no Engine badge; Test stays locked until Practice", () => {
@@ -136,8 +183,8 @@ test("Practice/Test gym chrome has no Engine badge; Test stays locked until Prac
   assert.match(train, /testLocked\?: boolean/);
   assert.match(train, /Yours · remembered/);
   assert.match(train, /My line · Black/);
-  assert.match(train, /if \(m === "practice" && testLocked\) return/);
-  assert.match(train, /disabled=\{testLocked\}/);
+  assert.match(train, /if \(m === "practice" && lockTest\) return/);
+  assert.match(train, /disabled=\{lockTest\}/);
   assert.doesNotMatch(train, /Engine · suggesting/);
   assert.doesNotMatch(train, /t\("Engine/);
   assert.doesNotMatch(train, /SF cloud|Stockfish cloud|Lichess/i);
@@ -152,6 +199,7 @@ test("Practice/Test gym chrome has no Engine badge; Test stays locked until Prac
   assert.match(shell, /gym=\{isGymPack\(active\.pack\)\}/);
   assert.match(shell, /testLocked=/);
   assert.match(shell, /CreateOwnView/);
+  assert.match(shell, /onHome=\{goHome\}/);
   assert.match(shell, /playSurface && view === "create"/);
   assert.match(list, /CreateOwnEntry/);
   assert.match(list, /!wrap && onCreateOwn/);

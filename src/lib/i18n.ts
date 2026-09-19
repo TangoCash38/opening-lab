@@ -163,6 +163,9 @@ const en: Dict = {
   White: "White",
   "Remember this line": "Remember this line",
   Clear: "Clear",
+  Home: "Home",
+  "Discard unsaved moves?": "Discard unsaved moves?",
+  Discard: "Discard",
   "Curated packs stay in the store — this is your gym line.":
     "Curated packs stay in the store — this is your gym line.",
   Remembered: "Remembered",
@@ -355,6 +358,9 @@ const es: Dict = {
   White: "Blancas",
   "Remember this line": "Recuerda esta línea",
   Clear: "Borrar",
+  Home: "Inicio",
+  "Discard unsaved moves?": "¿Descartar las jugadas sin guardar?",
+  Discard: "Descartar",
   "Curated packs stay in the store — this is your gym line.":
     "Los packs curados siguen en la tienda — esta es tu línea de gym.",
   Remembered: "Recordada",
@@ -542,6 +548,9 @@ const zh: Dict = {
   White: "白方",
   "Remember this line": "记住这条线路",
   Clear: "清空",
+  Home: "首页",
+  "Discard unsaved moves?": "放弃未保存的着法？",
+  Discard: "放弃",
   "Curated packs stay in the store — this is your gym line.":
     "精选包仍在商店 — 这是你的训练线路。",
   Remembered: "已记住",
@@ -729,6 +738,9 @@ const fr: Dict = {
   White: "Blancs",
   "Remember this line": "Retenir cette ligne",
   Clear: "Effacer",
+  Home: "Accueil",
+  "Discard unsaved moves?": "Abandonner les coups non retenus ?",
+  Discard: "Abandonner",
   "Curated packs stay in the store — this is your gym line.":
     "Les packs restent dans le store — c’est ta ligne de gym.",
   Remembered: "Retenue",
@@ -916,6 +928,9 @@ const de: Dict = {
   White: "Weiß",
   "Remember this line": "Diese Linie merken",
   Clear: "Leeren",
+  Home: "Startseite",
+  "Discard unsaved moves?": "Ungespeicherte Züge verwerfen?",
+  Discard: "Verwerfen",
   "Curated packs stay in the store — this is your gym line.":
     "Kuratierte Packs bleiben im Store — das ist deine Gym-Linie.",
   Remembered: "Gemerkt",
@@ -1103,6 +1118,9 @@ const pt: Dict = {
   White: "Brancas",
   "Remember this line": "Lembrar esta linha",
   Clear: "Limpar",
+  Home: "Início",
+  "Discard unsaved moves?": "Descartar lances não salvos?",
+  Discard: "Descartar",
   "Curated packs stay in the store — this is your gym line.":
     "Os packs continuam na loja — esta é a tua linha de gym.",
   Remembered: "Memorizada",
@@ -1289,6 +1307,9 @@ const ru: Dict = {
   White: "Белые",
   "Remember this line": "Запомнить линию",
   Clear: "Очистить",
+  Home: "Домой",
+  "Discard unsaved moves?": "Отменить незапомненные ходы?",
+  Discard: "Отменить",
   "Curated packs stay in the store — this is your gym line.":
     "Пакеты остаются в магазине — это твоя линия зала.",
   Remembered: "Запомнена",
@@ -1476,6 +1497,9 @@ const it: Dict = {
   White: "Bianco",
   "Remember this line": "Ricorda questa linea",
   Clear: "Cancella",
+  Home: "Home",
+  "Discard unsaved moves?": "Scartare le mosse non ricordate?",
+  Discard: "Scarta",
   "Curated packs stay in the store — this is your gym line.":
     "I pack restano nello store — questa è la tua linea da palestra.",
   Remembered: "Ricordata",
@@ -1663,6 +1687,9 @@ const hi: Dict = {
   White: "सफ़ेद",
   "Remember this line": "यह लाइन याद रखें",
   Clear: "साफ़",
+  Home: "होम",
+  "Discard unsaved moves?": "बिना याद की गई चालें छोड़ें?",
+  Discard: "छोड़ें",
   "Curated packs stay in the store — this is your gym line.":
     "पैक स्टोर में रहते हैं — यह आपकी जिम लाइन है।",
   Remembered: "याद रखी",
@@ -1848,6 +1875,9 @@ const ja: Dict = {
   White: "白",
   "Remember this line": "このラインを覚える",
   Clear: "クリア",
+  Home: "ホーム",
+  "Discard unsaved moves?": "覚えていない手を捨てますか？",
+  Discard: "捨てる",
   "Curated packs stay in the store — this is your gym line.":
     "パックはストアのまま — これはあなたのジムライン。",
   Remembered: "記憶した",
@@ -2033,6 +2063,9 @@ const ar: Dict = {
   White: "أبيض",
   "Remember this line": "احفظ هذا الخط",
   Clear: "مسح",
+  Home: "الرئيسية",
+  "Discard unsaved moves?": "تجاهل النقلات غير المحفوظة؟",
+  Discard: "تجاهل",
   "Curated packs stay in the store — this is your gym line.":
     "الباقات تبقى في المتجر — هذا خط صالتك.",
   Remembered: "محفوظ",
@@ -2220,6 +2253,9 @@ const tr: Dict = {
   White: "Beyaz",
   "Remember this line": "Bu hattı hatırla",
   Clear: "Temizle",
+  Home: "Ana sayfa",
+  "Discard unsaved moves?": "Kaydedilmemiş hamleler atılsın mı?",
+  Discard: "At",
   "Curated packs stay in the store — this is your gym line.":
     "Paketler mağazada kalır — bu senin salon hattın.",
   Remembered: "Hatırlandı",
