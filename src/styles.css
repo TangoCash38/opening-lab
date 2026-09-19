@@ -2043,41 +2043,48 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   scroll-margin-bottom: min(52dvh, 28rem);
 }
 
-/* Practice near-miss: book SAN + retry. Sits under the diagram, never over pieces. */
+/* Practice near-miss: cream toast above the action row — never over the board. */
 .near-miss-toast {
   position: relative;
   z-index: 6;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.45rem 0.75rem;
-  margin-top: 0.55rem;
-  padding: 0.55rem 0.7rem;
+  justify-content: flex-start;
+  gap: 0.4rem 0.65rem;
+  margin: 0.55rem 0 0;
+  padding: 0.45rem 0.65rem;
   border-radius: 0.85rem;
-  border: 1px solid color-mix(in oklab, var(--color-accent) 22%, var(--color-border));
-  background: color-mix(in oklab, var(--color-bg-elevated) 92%, var(--color-accent) 8%);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  box-shadow: 0 1px 2px rgba(28, 25, 21, 0.05);
+  color: var(--color-fg);
+  cursor: pointer;
 }
 
-.near-miss-toast-copy {
-  margin: 0;
-  flex: 1 1 10rem;
-  font-size: 0.82rem;
-  font-weight: 600;
+.near-miss-san-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.45rem;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  background: var(--color-light-sq);
   color: var(--color-fg);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .near-miss-toast-cta {
   flex: 0 0 auto;
-  min-height: 2.25rem;
-  padding: 0.35rem 0.8rem;
+  min-height: 2rem;
+  padding: 0.28rem 0.7rem;
   border-radius: 999px;
-  border: 0;
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-fg);
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .near-miss-toast-cta:active {
@@ -2085,7 +2092,44 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 }
 
 .home-warmup-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  margin-top: 0.45rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: -0.01em;
+}
+
+.home-warmup-chip:active {
+  transform: scale(0.98);
+}
+
+.pack-card-warmup {
+  padding: 0 1rem 0.75rem;
+}
+
+.book-solid-stamp {
+  position: absolute;
+  right: -0.18rem;
+  bottom: -0.16rem;
+  display: grid;
+  place-items: center;
+  width: 0.82rem;
+  height: 0.82rem;
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+  color: var(--color-success);
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-success) 45%, var(--color-border));
+  pointer-events: none;
 }
 
 /* trial: phone-centered board — revert if Sean dislikes */

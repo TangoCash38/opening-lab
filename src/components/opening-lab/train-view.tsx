@@ -304,6 +304,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [plyIndex, setPlyIndex] = useState(bookStartPly);
   const [viewPly, setViewPly] = useState(bookStartPly);
   const [nearMissSan, setNearMissSan] = useState<string | null>(null);
+  const [nearMissTick, setNearMissTick] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
   const [wrongUntil, setWrongUntil] = useState<Square | null>(null);
   const [status, setStatus] = useState({
@@ -1007,6 +1008,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         // Practice: toast with book SAN. Never a blocking sheet. Never in Test.
         setResultCard(null);
         setNearMissSan(exp.san);
+        setNearMissTick((n) => n + 1);
       }
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
       wrongTimer.current = setTimeout(() => setWrongUntil(null), 450);
@@ -1394,6 +1396,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     };
   }, [resultCard]);
 
+  useEffect(() => {
+    if (!nearMissSan || mode !== "learn" || playingOn || resultCard) return;
+    const id = window.setTimeout(() => setNearMissSan(null), 3000);
+    return () => window.clearTimeout(id);
+  }, [nearMissSan, nearMissTick, mode, playingOn, resultCard]);
+
 
   const canBack =
     !busy &&
@@ -1612,31 +1620,19 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               />
             ) : null}
           </div>
-          {nearMissSan && mode === "learn" && !playingOn ? (
-            <div
-              className="near-miss-toast"
-              role="status"
-              data-near-miss-toast
-            >
-              <p className="near-miss-toast-copy">
-                {t("The book move is {san}.", { san: nearMissSan })}
-              </p>
-              <button
-                type="button"
-                data-near-miss-retry
-                onClick={retryFromHere}
-                className="near-miss-toast-cta"
-              >
-                {t("Try again from here")}
-              </button>
-            </div>
-          ) : null}
         </div>
         {boardExpanded ? (
           <>
             <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
               {statusBody}
             </p>
+            {nearMissSan && mode === "learn" && !playingOn && !resultCard ? (
+              <NearMissToast
+                san={nearMissSan}
+                onRetry={retryFromHere}
+                onDismiss={() => setNearMissSan(null)}
+              />
+            ) : null}
             <div className="board-fs-actions">
               <button
                 type="button"
@@ -1746,6 +1742,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         </div>
       ) : null}
 
+      {nearMissSan && mode === "learn" && !playingOn && !resultCard && !boardExpanded ? (
+        <NearMissToast
+          san={nearMissSan}
+          onRetry={retryFromHere}
+          onDismiss={() => setNearMissSan(null)}
+        />
+      ) : null}
       <div className="trainer-actions">
         <div className="trainer-secondaries">
           <button
@@ -1921,6 +1924,42 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           onStart={() => setAboutOpen(false)}
         />
       ) : null}
+    </div>
+  );
+}
+
+function NearMissToast({
+  san,
+  onRetry,
+  onDismiss,
+}: {
+  san: string;
+  onRetry: () => void;
+  onDismiss: () => void;
+}) {
+  const t = useT();
+  return (
+    <div
+      className="near-miss-toast"
+      role="status"
+      data-near-miss-toast
+      aria-label={t("The book move is {san}.", { san })}
+      onClick={onDismiss}
+    >
+      <span className="near-miss-san-chip" data-near-miss-san>
+        {san}
+      </span>
+      <button
+        type="button"
+        data-near-miss-retry
+        onClick={(event) => {
+          event.stopPropagation();
+          onRetry();
+        }}
+        className="near-miss-toast-cta"
+      >
+        {t("Try again from here")}
+      </button>
     </div>
   );
 }
