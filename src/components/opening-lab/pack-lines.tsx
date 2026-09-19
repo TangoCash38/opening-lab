@@ -81,7 +81,7 @@ export function LineRow({
       onClick={onClick}
     >
       <span
-        className={`grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
+        className={`relative grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
           locked
             ? "bg-danger text-white"
             : complete
@@ -90,6 +90,11 @@ export function LineRow({
         }`}
       >
         {index + 1}
+        {!locked && complete ? (
+          <span className="book-solid-stamp" data-book-solid aria-label={t("Book solid")}>
+            ✓
+          </span>
+        ) : null}
       </span>
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-1.5 text-[0.88rem] font-semibold">

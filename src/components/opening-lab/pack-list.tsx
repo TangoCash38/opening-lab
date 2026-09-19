@@ -23,12 +23,14 @@ import {
   type CheckoutKind,
 } from "@/lib/checkout";
 import { isPlayWrap } from "@/lib/play-app";
+import { LONDON_PACK_ID, type TrainStartOptions } from "@/lib/london-warmup";
 import {
   hasPlayBillingBridge,
   restorePlayLabPlus,
   startPlayLabPlusYearly,
 } from "@/lib/play-billing";
 import { PackExpandHint } from "./pack-lines";
+import { LondonWarmupChip } from "./london-warmup-chip";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
@@ -43,7 +45,12 @@ import { readGymLine, subscribeGymLine, type GymLine } from "@/lib/gym-line";
 type TrainMode = "learn" | "practice";
 
 type Props = {
-  onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
+  onStartLine: (
+    pack: Pack,
+    line: OpeningLine,
+    mode?: TrainMode,
+    options?: TrainStartOptions,
+  ) => void;
   onHowToPlay: () => void;
   onOpenMate: () => void;
   onCreateOwn?: () => void;
@@ -103,11 +110,13 @@ function PackCard({
   unlocked,
   onSelectPack,
   onRequestUnlock,
+  onStartLine,
 }: {
   pack: Pack;
   unlocked: boolean;
   onSelectPack: (pack: Pack) => void;
   onRequestUnlock: (pack: Pack) => void;
+  onStartLine: Props["onStartLine"];
 }) {
   const t = useT();
   const free = packLooksFree(pack);
@@ -219,6 +228,12 @@ function PackCard({
           }
         />
       </button>
+
+      {pack.id === LONDON_PACK_ID ? (
+        <div className="pack-card-warmup">
+          <LondonWarmupChip pack={pack} onStartLine={onStartLine} />
+        </div>
+      ) : null}
 
       {locked && (
         <div className="border-t border-border px-3 pb-3 pt-2">
@@ -600,6 +615,7 @@ export function PackList({
             unlocked={canAccess(openingTraps)}
             onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
+            onStartLine={onStartLine}
           />
         ) : null}
 
@@ -609,6 +625,7 @@ export function PackList({
             unlocked={canAccess(classicGames)}
             onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
+            onStartLine={onStartLine}
           />
         ) : null}
 
@@ -618,6 +635,7 @@ export function PackList({
             unlocked={canAccess(vsLondon)}
             onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
+            onStartLine={onStartLine}
           />
         ) : null}
 
@@ -631,6 +649,7 @@ export function PackList({
                 unlocked={canAccess(p)}
                 onSelectPack={promotePack}
                 onRequestUnlock={requestUnlock}
+                onStartLine={onStartLine}
               />
             ))}
           </>
@@ -646,6 +665,7 @@ export function PackList({
                 unlocked={canAccess(p)}
                 onSelectPack={promotePack}
                 onRequestUnlock={requestUnlock}
+                onStartLine={onStartLine}
               />
             ))}
           </>
@@ -657,6 +677,7 @@ export function PackList({
             unlocked={canAccess(clubWeapons)}
             onSelectPack={promotePack}
             onRequestUnlock={requestUnlock}
+            onStartLine={onStartLine}
           />
         ) : null}
       </div>

@@ -13,8 +13,10 @@ import {
 } from "@/lib/find-mate";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
+import type { TrainStartOptions } from "@/lib/london-warmup";
 import { ChessBoard } from "./chess-board";
 import { BoardThemePicker } from "./board-theme-picker";
+import { LondonWarmupChip } from "./london-warmup-chip";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
 
@@ -22,7 +24,12 @@ type TrainMode = "learn" | "practice";
 
 type Props = {
   pack: Pack;
-  onStartLine: (pack: Pack, line: OpeningLine, mode?: TrainMode) => void;
+  onStartLine: (
+    pack: Pack,
+    line: OpeningLine,
+    mode?: TrainMode,
+    options?: TrainStartOptions,
+  ) => void;
   onHowToPlay: () => void;
   onOpenMate: () => void;
   onSubscribe: () => void;
@@ -135,6 +142,7 @@ export function HomeHero({
                 {title}
               </h2>
               <p className="mt-0.5 text-[0.82rem] text-fg-muted">{blurb}</p>
+              <LondonWarmupChip pack={pack} onStartLine={onStartLine} />
             </div>
 
             <div className="home-board pointer-events-none px-2">
@@ -209,9 +217,7 @@ export function HomeHero({
                         mastery={mastery}
                         locked={!unlocked}
                         showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
-                        testPercent={
-                          unlocked ? testPercentOf(item.id, item.plies.length) : null
-                        }
+                        testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
                         onClick={() => {
                           if (unlocked) {
                             if (pack.about) {

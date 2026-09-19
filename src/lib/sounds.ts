@@ -283,32 +283,24 @@ export function soundBad() {
   }
 }
 
-/** Short pleasant win arpeggio — clean Test pass celebration only. */
+/** Soft one-tone chime — clean Test pass only. ~320ms, quieter than a land thud. */
 export function soundWin() {
   try {
     const ctx = getCtx();
     if (!ctx) return;
+    // Same AudioContext as scrape/thud — a blocked/suspended context stays silent.
     const t = ctx.currentTime;
-    // Soft rising G-major: G4–B4–D5–G5 (~0.85s), sine only — not a toy buzzer.
-    const notes = [
-      { f: 392, at: 0, dur: 0.22, vol: 0.055 },
-      { f: 494, at: 0.12, dur: 0.22, vol: 0.05 },
-      { f: 587, at: 0.24, dur: 0.26, vol: 0.048 },
-      { f: 784, at: 0.4, dur: 0.42, vol: 0.04 },
-    ];
-    for (const n of notes) {
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = "sine";
-      o.frequency.setValueAtTime(n.f, t + n.at);
-      g.gain.setValueAtTime(0.0001, t + n.at);
-      g.gain.exponentialRampToValueAtTime(n.vol, t + n.at + 0.018);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + n.at + n.dur);
-      o.connect(g);
-      g.connect(ctx.destination);
-      o.start(t + n.at);
-      o.stop(t + n.at + n.dur + 0.02);
-    }
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(523.25, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.026, t + 0.018);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.start(t);
+    o.stop(t + 0.36);
   } catch {
     /* ignore audio failures */
   }

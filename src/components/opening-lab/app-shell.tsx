@@ -28,6 +28,7 @@ import {
   type ColorScheme,
 } from "@/lib/color-scheme";
 import { isPlayWrap } from "@/lib/play-app";
+import type { TrainStartOptions } from "@/lib/london-warmup";
 import { FindMate } from "./find-mate";
 import { GuideView } from "./guide-view";
 import { PackList } from "./pack-list";
@@ -77,6 +78,8 @@ function OpeningLabInner() {
     pack: Pack;
     line: OpeningLine;
     mode: TrainMode;
+    plyLimit?: number;
+    startPly?: number;
   } | null>(null);
   const [queue, setQueue] = useState<
     { pack: Pack; line: OpeningLine; mode: TrainMode }[]
@@ -133,12 +136,19 @@ function OpeningLabInner() {
     pack: Pack,
     line: OpeningLine,
     mode: TrainMode = "learn",
+    options?: TrainStartOptions,
   ) => {
     if (!canTrainPack(pack)) {
       goHome();
       return;
     }
-    setActive({ pack, line, mode });
+    setActive({
+      pack,
+      line,
+      mode,
+      plyLimit: options?.plyLimit,
+      startPly: options?.startPly,
+    });
     setView("train");
     soundSelect();
     scrollAppTop();
@@ -309,14 +319,17 @@ function OpeningLabInner() {
             key={
               isGymPack(active.pack)
                 ? `${active.pack.id}-${active.line.side}-${active.line.plies.join(",")}`
-                : `${active.pack.id}-${active.line.id}`
+                : `${active.pack.id}-${active.line.id}-${active.startPly ?? 0}-${active.plyLimit ?? "all"}`
             }
             pack={active.pack}
             line={active.line}
             initialMode={active.mode}
             gym={isGymPack(active.pack)}
+            plyLimit={active.plyLimit}
+            startPly={active.startPly}
             testLocked={
-              isGymPack(active.pack) && !lineProgress(active.line.id).learned
+              active.plyLimit != null ||
+              (isGymPack(active.pack) && !lineProgress(active.line.id).learned)
             }
             onModeChange={(mode) =>
               setActive((prev) => (prev ? { ...prev, mode } : prev))
