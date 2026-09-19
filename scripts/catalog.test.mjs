@@ -730,6 +730,18 @@ test("Ruy Lopez Mastery for White is an eighth visible free White pack: 18 rl li
   assert.doesNotMatch(rl, /Closed Ruy: Chigorin/);
   assert.doesNotMatch(rl, /Closed Ruy: Breyer/);
   assert.doesNotMatch(rl, /Anti-Berlin: Spanish shell/);
+
+  const allPlies = Array.from({ length: 18 }, (_, i) => linePlies(`rl${i + 1}`));
+  for (let i = 0; i < 18; i++) {
+    for (let j = 0; j < 18; j++) {
+      if (i === j) continue;
+      const a = allPlies[i];
+      const b = allPlies[j];
+      if (a.length < b.length && a.every((p, k) => p === b[k])) {
+        assert.fail(`rl${i + 1} is a ply-prefix of rl${j + 1}`);
+      }
+    }
+  }
 });
 
 
