@@ -199,9 +199,9 @@ function DeleteAccountSignIn() {
       </form>
       <p className="mt-3 text-sm text-fg-muted">
         Need to create an account or reset a password?{" "}
-        <Link to="/login" className="font-semibold text-accent">
+        <a href="/login" className="font-semibold text-accent">
           Account
-        </Link>
+        </a>
         .
       </p>
     </section>
