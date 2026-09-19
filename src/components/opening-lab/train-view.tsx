@@ -1611,26 +1611,26 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 onFinished={stopCelebrate}
               />
             ) : null}
-            {nearMissSan && mode === "learn" && !playingOn ? (
-              <div
-                className="near-miss-toast"
-                role="status"
-                data-near-miss-toast
-              >
-                <p className="near-miss-toast-copy">
-                  {t("The book move is {san}.", { san: nearMissSan })}
-                </p>
-                <button
-                  type="button"
-                  data-near-miss-retry
-                  onClick={retryFromHere}
-                  className="near-miss-toast-cta"
-                >
-                  {t("Try again from here")}
-                </button>
-              </div>
-            ) : null}
           </div>
+          {nearMissSan && mode === "learn" && !playingOn ? (
+            <div
+              className="near-miss-toast"
+              role="status"
+              data-near-miss-toast
+            >
+              <p className="near-miss-toast-copy">
+                {t("The book move is {san}.", { san: nearMissSan })}
+              </p>
+              <button
+                type="button"
+                data-near-miss-retry
+                onClick={retryFromHere}
+                className="near-miss-toast-cta"
+              >
+                {t("Try again from here")}
+              </button>
+            </div>
+          ) : null}
         </div>
         {boardExpanded ? (
           <>

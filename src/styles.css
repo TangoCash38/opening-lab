@@ -2043,18 +2043,16 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   scroll-margin-bottom: min(52dvh, 28rem);
 }
 
-/* Practice near-miss: book SAN + retry. Soft sheet, not a modal. */
+/* Practice near-miss: book SAN + retry. Sits under the diagram, never over pieces. */
 .near-miss-toast {
-  position: absolute;
-  left: 0.55rem;
-  right: 0.55rem;
-  bottom: 0.55rem;
+  position: relative;
   z-index: 6;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.45rem 0.75rem;
+  margin-top: 0.55rem;
   padding: 0.55rem 0.7rem;
   border-radius: 0.85rem;
   border: 1px solid color-mix(in oklab, var(--color-accent) 22%, var(--color-border));
