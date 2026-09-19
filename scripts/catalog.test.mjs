@@ -662,7 +662,7 @@ test("Ruy Lopez Mastery for White is an eighth visible free White pack: 18 rl li
   assert.match(rl, /isFree: false/);
   assert.match(rl, /isPremium: false/);
   assert.match(rl, /price: null/);
-  assert.match(rl, /blurb: "White · Closed, Berlin, Exchange, Open, Marshall, Schliemann"/);
+  assert.match(rl, /blurb: "White · Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, Noah’s Ark"/);
   assert.match(rl, /closedLabel: "Free · 18 lines"/);
   assert.match(rl, /Play the Ruy Lopez as White/);
   assert.match(rl, /Practice the main book moves with the green hint/);
@@ -703,6 +703,13 @@ test("Ruy Lopez Mastery for White is an eighth visible free White pack: 18 rl li
   }
 
   assert.deepEqual(linePlies("rl1"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3"]);
+  assert.deepEqual(linePlies("rl2"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "Qe2", "b5", "Bb3", "Be7", "c3", "O-O", "d4", "d6", "O-O", "Bg4"]);
+  assert.deepEqual(linePlies("rl3"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "Ne4", "O-O", "d5", "cxd4", "Bb6"]);
+  assert.deepEqual(linePlies("rl11"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "Bc5", "d3", "c6", "Ba4", "Ne7", "f4", "f5"]);
+  assert.deepEqual(linePlies("rl12"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nge7", "O-O", "g6", "c3", "a6", "Ba4", "Bg7", "d4", "exd4", "cxd4", "b5", "Bb3", "d5"]);
+  assert.deepEqual(linePlies("rl15"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Bxc6", "dxc6", "d3", "Nd7", "Nbd2", "O-O", "Nc4"]);
+  assert.deepEqual(linePlies("rl16"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "b5", "Bb3", "Bb7", "Re1", "Bc5", "c3", "d6", "d4", "Bb6"]);
+  assert.deepEqual(linePlies("rl17"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "d6", "c3", "f5", "exf5", "Bxf5", "O-O", "Bd3", "Re1", "Be7", "Bc2"]);
   assert.deepEqual(linePlies("rl18"), ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "d6", "d4", "b5", "Bb3", "Nxd4", "Nxd4", "exd4", "c3"]);
 
   const names = Object.fromEntries(
@@ -712,7 +719,17 @@ test("Ruy Lopez Mastery for White is an eighth visible free White pack: 18 rl li
     ]),
   );
   assert.equal(names.rl1, "Closed Ruy: basic shell");
+  assert.equal(names.rl2, "Worrall Attack");
+  assert.equal(names.rl3, "Classical (Cordel)");
+  assert.equal(names.rl11, "Bird’s Defence");
+  assert.equal(names.rl12, "Cozio");
+  assert.equal(names.rl15, "Delayed Exchange");
+  assert.equal(names.rl16, "Arkhangelsk");
+  assert.equal(names.rl17, "Siesta");
   assert.equal(names.rl18, "Noah’s Ark warning");
+  assert.doesNotMatch(rl, /Closed Ruy: Chigorin/);
+  assert.doesNotMatch(rl, /Closed Ruy: Breyer/);
+  assert.doesNotMatch(rl, /Anti-Berlin: Spanish shell/);
 });
 
 
@@ -2128,7 +2145,7 @@ test("Berlin Defence for Black is a twenty-ninth visible Black pack: 18 berb lin
   assert.equal(names.berb7, "Rio 5.Re1 Nd6 Be7");
   assert.equal(names.berb18, "Berlin Endgame …Bd7 Kc8 h5");
 
-  // ruy-white Berlin lines must remain untouched (standalone pack).
+  // ruy-white Berlin lines remain as standalone White entries (rl4, rl5).
   const ruyStart = packs.indexOf('id: "ruy-white"');
   assert.ok(ruyStart >= 0, "ruy-white pack must remain");
   const ruyNext = packs.indexOf("\n  {\n    id: \"", ruyStart + 1);
@@ -2138,7 +2155,8 @@ test("Berlin Defence for Black is a twenty-ninth visible Black pack: 18 berb lin
   assert.match(ruy, /id: "rl15"/);
   assert.match(ruy, /Berlin: quiet anti-Berlin/);
   assert.match(ruy, /Berlin Endgame: main entry/);
-  assert.match(ruy, /Anti-Berlin: Spanish shell/);
+  assert.match(ruy, /Delayed Exchange/);
+  assert.doesNotMatch(ruy, /Anti-Berlin: Spanish shell/);
 });
 
 test("King’s Indian Defence for Black is a thirtieth visible Black pack: 18 kidb lines, locked until purchase", () => {

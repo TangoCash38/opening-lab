@@ -42,8 +42,8 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "It is one of the oldest openings still played because the ideas are clean: develop, watch f7, and choose a quiet Giuoco Piano or a sharper d4 / Evans fight.",
   ],
   "ruy-white": [
-    "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5. White pressures e5 by pinning the knight, then builds a Spanish centre with c3 and d4. Black can go Closed, Berlin, Open, Exchange, Marshall, or Schliemann.",
-    "The Spanish is a long game of space and the e5 pawn. Learn the Closed shell, and know which Black choice you are in before you mix plans.",
+    "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5. White pressures e5 by pinning the knight, then builds a Spanish centre with c3 and d4. The pack is distinct systems: Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, and Noah’s Ark.",
+    "The Spanish is a long game of space and the e5 pawn. Learn which system you are in before you mix plans.",
   ],
   "french-white": [
     "The French Defence is 1.e4 e6 2.d4 d5. Black challenges the e-pawn at once and accepts a cramped light-squared bishop in return for a solid centre and a later …c5 break.",
