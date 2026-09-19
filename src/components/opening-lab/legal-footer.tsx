@@ -15,6 +15,15 @@ export function LegalFooter() {
       <span className="px-2" aria-hidden>
         ·
       </span>
+      <Link
+        to="/delete-account"
+        className="font-semibold text-fg-muted no-underline"
+      >
+        Delete account
+      </Link>
+      <span className="px-2" aria-hidden>
+        ·
+      </span>
       <a
         href="mailto:support@openinglab.co.uk"
         className="font-semibold text-fg-muted no-underline"

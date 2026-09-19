@@ -200,12 +200,19 @@ function waitForPopupToken(popup: Window): Promise<string | null> {
   });
 }
 
-/** Sign out of THIS app's local session, clear the preview token, then redirect. */
-export async function signOut(redirectTo = "/"): Promise<void> {
+/** Drop the local Better Auth session and live-preview bearer. No navigation. */
+export async function clearLocalSession(): Promise<void> {
   try {
     await authClient.signOut();
+  } catch {
+    // Session may already be gone after account deletion.
   } finally {
     setBearerToken(null);
   }
+}
+
+/** Sign out of THIS app's local session, clear the preview token, then redirect. */
+export async function signOut(redirectTo = "/"): Promise<void> {
+  await clearLocalSession();
   window.location.href = redirectTo;
 }

@@ -28,6 +28,9 @@ test("guide-view has no per-opening titles; still has gym blocks", () => {
   assert.match(guide, /Hint shows a stronger suggestion from the same engine/);
   assert.match(guide, /t\("Reviews"\)/);
   assert.match(guide, /t\("Account"\)/);
+  assert.match(guide, /to="\/privacy"/);
+  assert.match(guide, /to="\/delete-account"/);
+  assert.match(guide, /t\("Delete account"\)/);
   assert.match(guide, /LegalFooter/);
   assert.match(guide, /t\("← Back"\)/);
 });

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalPage, LegalSection } from "@/components/opening-lab/legal-page";
 
 export const Route = createFileRoute("/privacy")({
@@ -7,7 +7,7 @@ export const Route = createFileRoute("/privacy")({
 
 function Privacy() {
   return (
-    <LegalPage title="Privacy Policy">
+    <LegalPage title="Privacy Policy" updated="19 September 2026">
       <p>
         Opening Lab is a chess opening trainer run by Sean Paul in the United
         Kingdom. This page explains what we collect and why, in plain English.
@@ -15,15 +15,24 @@ function Privacy() {
 
       <LegalSection title="Who we are">
         <p>
-          Opening Lab is operated by Sean Paul, United Kingdom. Website:{" "}
+          Opening Lab is operated by Sean Paul, United Kingdom.
+          <br />
+          Website:{" "}
           <a href="https://www.openinglab.co.uk" className="text-accent">
             www.openinglab.co.uk
           </a>
-          . Email:{" "}
+          <br />
+          Email:{" "}
           <a href="mailto:support@openinglab.co.uk" className="text-accent">
             support@openinglab.co.uk
           </a>
-          .
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Who may use Opening Lab">
+        <p>
+          Opening Lab is for people aged 13 or over. Do not create an account if
+          you are under 13.
         </p>
       </LegalSection>
 
@@ -31,79 +40,85 @@ function Privacy() {
         <p>We keep this small:</p>
         <ul className="list-disc space-y-1 pl-5">
           <li>
-            Your account email is stored on our servers if you sign in.
+            Your account email, stored on our servers if you sign in.
           </li>
           <li>
-            Training progress (which lines are green) stays on your device.
+            Pack unlocks on your account if you buy packs or Buy all packs on
+            the website (so they follow you when you sign in).
           </li>
           <li>
-            If you later buy a pack on the website, that unlock is stored on
-            your account so it follows you when you sign in. Website payments
-            go through Stripe. We never see your full card number.
-          </li>
-          <li>
-            If you later install from Google Play, Google handles that store
-            payment. Play purchases (when offered) are taken by Google.
+            Training progress (which lines are green) stays on your device. We
+            do not store that progress on our servers.
           </li>
           <li>
             Necessary cookies so you can stay signed in and the site can work.
             Vercel Analytics records page views. We do not use advertising
-            cookies.
-          </li>
-        </ul>
-      </LegalSection>
-
-      <LegalSection title="Why we collect it">
-        <p>
-          We use this information to run your account and keep the trainer
-          working. If you pay on the website, we use it to record that
-          purchase. We do not sell your data.
-        </p>
-      </LegalSection>
-
-      <LegalSection title="How long we keep it">
-        <ul className="list-disc space-y-1 pl-5">
-          <li>
-            Account email: while you have an account, and for a short time
-            after if you ask us to delete it so we can finish the request.
-          </li>
-          <li>
-            Paid unlocks on your account (if you buy later): while you have an
-            account, and as long as we need the record for tax or legal
-            reasons.
-          </li>
-          <li>
-            Payments: Stripe keeps website payment records as the law
-            requires. We do not store card numbers. Play purchases (when
-            offered) are recorded by Google.
-          </li>
-          <li>
-            Progress on your device: until you clear your browser or app data.
+            cookies or an Advertising ID.
           </li>
         </ul>
       </LegalSection>
 
       <LegalSection title="Payments">
         <p>
-          Packs are currently free. If you later pay on the website, card
-          details go to Stripe, not to us. We never see your full card number.
-          Stripe acts as a processor for that payment. See Stripe’s own
-          privacy policy for how they handle card data.
+          Paid packs and Buy all packs (£19.99 UK) are sold on this website via
+          Stripe. Card details go to Stripe, not to us. We never see your full
+          card number. We store that you bought a pack or Buy all so we can
+          unlock the trainer on your account.
         </p>
         <p>
-          If you later install Opening Lab from Google Play, Google handles
-          that store payment. Play purchases (when offered) are taken by
-          Google, not by us. There is no Lab+ subscription and no pack billing
-          through Google Play at the moment.
+          Pack billing in the Google Play app is not on sale in this build.
+          There is no Lab+ subscription on sale. If Google Play billing is
+          offered later, Google would handle that store payment and we would
+          store only the unlock on your account.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Why we collect it">
+        <p>
+          We use this information to run your account, unlock packs you paid
+          for, and keep the trainer working. We do not sell your data.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="How long we keep it">
+        <ul className="list-disc space-y-1 pl-5">
+          <li>
+            Account email: while you have an account, and briefly after a
+            delete request so we can finish it.
+          </li>
+          <li>
+            Pack unlocks: while you have an account, and payment records as
+            long as tax or law requires (without card numbers).
+          </li>
+          <li>
+            Progress on your device: until you clear Opening Lab app or
+            browser data.
+          </li>
+        </ul>
+      </LegalSection>
+
+      <LegalSection title="Google Play app">
+        <p>
+          If you use the Opening Lab app from Google Play (uk.co.openinglab),
+          the same rules apply. Sign-in email and pack unlocks are stored on
+          our servers if you have an account. The app uses the same website, so
+          the same cookies and analytics apply.
         </p>
       </LegalSection>
 
       <LegalSection title="Your rights (UK GDPR)">
         <p>
-          You can ask us for a copy of the data we hold, ask us to correct it,
-          or ask us to delete it. You can also complain to the Information
-          Commissioner’s Office (ICO) if you are unhappy with how we handle
-          your data.
+          You can ask for a copy of the data we hold, ask us to correct it, or
+          ask us to delete it. To delete your account, use{" "}
+          <Link to="/delete-account" className="text-accent">
+            https://www.openinglab.co.uk/delete-account
+          </Link>{" "}
+          or Account → Delete account in the app. You can also email{" "}
+          <a href="mailto:support@openinglab.co.uk" className="text-accent">
+            support@openinglab.co.uk
+          </a>
+          . You can complain to the Information Commissioner’s Office (ICO) if
+          you are unhappy with how we handle your data.
         </p>
       </LegalSection>
 
