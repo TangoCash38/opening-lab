@@ -1787,9 +1787,9 @@ export const PACKS: Pack[] = [
       },
       {
         id: "rl2",
-        name: "Closed Ruy: Chigorin",
-        idea: "Against the Chigorin, regroup Bb3-c2 and claim the centre with d4. Central tension matters more than a fast attack.",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3", "Na5", "Bc2", "c5", "d4"],
+        name: "Worrall Attack",
+        idea: "5.Qe2 Worrall — distinct White system from move 5; not a Closed Spanish pad.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "Qe2", "b5", "Bb3", "Be7", "c3", "O-O", "d4", "d6", "O-O", "Bg4"],
         side: "w",
       },
       {
