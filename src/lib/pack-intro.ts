@@ -128,6 +128,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Ponziani Opening is 1.e4 e5 2.Nf3 Nc6 3.c3. White prepares d4 and a classical pawn centre, then meets …Nf6, …d5, the Countergambit, and the quieter side lines with their own book replies.",
     "You are not racing for a mate on move ten. Know which Ponziani shell you are in, and practise the main White moves before you mix plans.",
   ],
+  "alekhine-black": [
+    "The Alekhine Defence is 1.e4 Nf6. Black invites White to push e5 and take a big centre, then chips it with …d6 and piece pressure against Modern, Exchange, Four Pawns, and Two Pawns structures.",
+    "You are not racing for a mate on move ten. Know which Alekhine shell you are in, and practise the main Black moves before you mix plans.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
