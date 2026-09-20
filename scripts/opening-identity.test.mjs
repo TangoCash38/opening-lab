@@ -17,7 +17,6 @@ const train = src("src/components/opening-lab/train-view.tsx");
 const packs = src("src/data/packs.ts");
 const evalClient = src("src/lib/practice-review-eval.ts");
 const evalServer = src("src/lib/practice-review-eval.server.ts");
-const playEngine = src("src/lib/play-engine.ts");
 
 const ITALIAN_FEN = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3";
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -76,7 +75,6 @@ test("module is a local book helper for Create-your-own authoring identity", () 
   assert.doesNotMatch(packs, /lookupOpeningIdentity/);
   assert.doesNotMatch(evalClient, /opening-identity/);
   assert.doesNotMatch(evalServer, /opening-identity/);
-  assert.doesNotMatch(playEngine, /opening-identity/);
 });
 
 test("known early openings map to name + ECO; clocks do not matter", async (t) => {

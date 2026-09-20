@@ -2,12 +2,11 @@
 export const GAME_INTRO_TITLE = "How the gym works";
 
 export const GAME_INTRO =
-  "Opening Lab is a strict book-move trainer. Practice with the green hint. Test with none. Only the book move counts. Then Play on from the setup if you want.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed.";
+  "Opening Lab is a strict book-move trainer. Practice with the green hint. Test with none. Only the book move counts.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed.";
 
 const GYM_SNIPPETS = [
   "Practice the main book moves with the green hint",
   "Then Test with none",
-  "Play on from the setup",
 ];
 
 /** Fuller opening cards. Defence packs describe the attack, then how to meet it. */

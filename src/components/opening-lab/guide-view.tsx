@@ -36,10 +36,6 @@ export function GuideView({ onBack }: Props) {
         {t("No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.")}
       </Block>
 
-      <Block title={t("Play on")}>
-        {t("After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet. Hint shows a stronger suggestion from the same engine (not Stockfish).")}
-      </Block>
-
       <Block title={t("Reviews")}>
         {t("A clean Test turns the line green. You can train it again anytime.")}
       </Block>

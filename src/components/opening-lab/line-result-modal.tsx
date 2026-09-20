@@ -3,12 +3,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useT } from "@/lib/i18n";
 
-type PlayOnLevelOption = {
-  id: string;
-  label: string;
-  aria?: string;
-};
-
 type Props = {
   kind: "wrong" | "end";
   title: string;
@@ -21,11 +15,6 @@ type Props = {
   onAction?: () => void;
   /** Stronger dim when the trainer board is fullscreen behind the popup. */
   boardExpanded?: boolean;
-  /** Play on controls for end sheets only (Line complete / Practice done / missed). */
-  playOnLevels?: PlayOnLevelOption[];
-  playOnLevel?: string;
-  onPlayOnLevel?: (id: string) => void;
-  onPlayOn?: () => void;
 };
 
 export function LineResultModal({
@@ -39,16 +28,9 @@ export function LineResultModal({
   onPrimary,
   onAction,
   boardExpanded = false,
-  playOnLevels,
-  playOnLevel,
-  onPlayOnLevel,
-  onPlayOn,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
-  const showPlayOn =
-    kind === "end" &&
-    Boolean(playOnLevels?.length && onPlayOn && onPlayOnLevel);
   const handleAction = onAction ?? onClose;
   const isWrong = kind === "wrong";
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -56,12 +38,9 @@ export function LineResultModal({
   const [moreBelow, setMoreBelow] = useState(false);
   /** Docked slim bar — board stays visible to memorise. */
   const [minimized, setMinimized] = useState(false);
-  const [playOnPrompt, setPlayOnPrompt] = useState(false);
 
   // Mounted = open (including docked). Hardware Back closes the finish/result sheet.
   useOverlayHistory(true, onClose, "line-result");
-  // Nested Play-on level prompt peels first on Back.
-  useOverlayHistory(playOnPrompt, () => setPlayOnPrompt(false), "play-on-prompt");
 
   const updateScrollCue = useCallback(() => {
     const el = bodyRef.current;
@@ -91,22 +70,17 @@ export function LineResultModal({
 
   useEffect(() => {
     updateScrollCue();
-  }, [playOnPrompt, minimized, updateScrollCue]);
+  }, [minimized, updateScrollCue]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      if (playOnPrompt) {
-        e.preventDefault();
-        setPlayOnPrompt(false);
-        return;
-      }
       // Docked: close (same as Close), not restore.
       onClose();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [minimized, playOnPrompt, onClose]);
+  }, [onClose]);
 
   const dock = () => {
     setMinimized(true);
@@ -120,92 +94,19 @@ export function LineResultModal({
     <div
       className={
         compact
-          ? `shrink-0 px-3${showPlayOn ? " py-1.5 space-y-1.5" : showPrimary ? " py-2 space-y-1.5" : " py-1.5"}`
+          ? `shrink-0 px-3${showPrimary ? " py-2 space-y-1.5" : " py-1.5"}`
           : `shrink-0 border-t border-border px-5${
-              showPlayOn ? " py-2 space-y-1.5" : showPrimary ? " py-3 space-y-2" : " py-3"
+              showPrimary ? " py-3 space-y-2" : " py-3"
             }`
       }
     >
-      {showPlayOn && playOnPrompt ? (
-        <div
-          className="line-result-play-prompt"
-          data-result-play-on
-          data-result-play-prompt
-        >
-          <p className="line-result-play-prompt-caption">
-            {t("Pick a level, then Play on")}
-          </p>
-          <div
-            className="play-level-row"
-            role="group"
-            aria-label="Computer strength"
-          >
-            {playOnLevels!.map((level) => (
-              <button
-                key={level.id}
-                type="button"
-                onClick={() => onPlayOnLevel?.(level.id)}
-                className={`play-level-chip${
-                  playOnLevel === level.id ? " is-on" : ""
-                }`}
-                aria-label={level.aria ?? level.label}
-                aria-pressed={playOnLevel === level.id}
-              >
-                {level.label}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            data-result-play-on-btn
-            onClick={onPlayOn}
-            className="play-on-btn"
-          >
-            Play on
-          </button>
-          <button
-            type="button"
-            onClick={() => setPlayOnPrompt(false)}
-            className="line-result-play-prompt-back"
-          >
-            {t("Back")}
-          </button>
-        </div>
-      ) : null}
-      {showPlayOn && !playOnPrompt ? (
-        <div className="line-result-actions-row" data-result-play-on>
-          <button
-            type="button"
-            data-result-play-on-open
-            onClick={() => setPlayOnPrompt(true)}
-            className="line-result-play-on-btn"
-          >
-            Play on
-          </button>
-          {showPrimary ? (
-            <>
-              <span className="line-result-actions-or" aria-hidden="true">
-                {t("or")}
-              </span>
-              <button
-                type="button"
-                data-result-primary
-                onClick={onPrimary}
-                className="line-result-primary-btn"
-              >
-                {primaryLabel}
-              </button>
-            </>
-          ) : null}
-        </div>
-      ) : null}
-      {!showPlayOn && showPrimary && isWrong ? (
+      {showPrimary && isWrong ? (
         <div className="line-result-actions-row" data-result-wrong-actions>
           <button
             type="button"
             data-result-dismiss
             onClick={handleAction}
-            className="line-result-play-on-btn"
+            className="line-result-secondary-btn"
           >
             {actionLabel}
           </button>
@@ -222,7 +123,7 @@ export function LineResultModal({
           </button>
         </div>
       ) : null}
-      {!showPlayOn && showPrimary && !isWrong ? (
+      {showPrimary && !isWrong ? (
         <button
           type="button"
           data-result-primary
@@ -236,23 +137,19 @@ export function LineResultModal({
           {primaryLabel}
         </button>
       ) : null}
-      {!playOnPrompt && !(isWrong && showPrimary) ? (
+      {!(isWrong && showPrimary) ? (
         <button
           type="button"
           data-result-dismiss
           onClick={handleAction}
           className={
-            showPlayOn
+            showPrimary
               ? compact
-                ? "min-h-7 w-full rounded-lg px-2 py-1 text-[0.75rem] font-semibold text-fg-muted active:opacity-70"
-                : "min-h-8 w-full rounded-xl px-3 py-1.5 text-[0.8rem] font-semibold text-fg-muted active:opacity-70"
-              : showPrimary
-                ? compact
-                  ? "min-h-9 w-full rounded-xl px-3 py-1.5 text-[0.82rem] font-semibold text-fg-muted active:opacity-70"
-                  : "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
-                : compact
-                  ? "min-h-10 w-full rounded-xl bg-accent px-3 py-2 text-[0.88rem] font-bold text-accent-fg active:scale-[0.99]"
-                  : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+                ? "min-h-9 w-full rounded-xl px-3 py-1.5 text-[0.82rem] font-semibold text-fg-muted active:opacity-70"
+                : "min-h-11 w-full rounded-2xl px-4 py-2.5 text-[0.88rem] font-semibold text-fg-muted active:opacity-70"
+              : compact
+                ? "min-h-10 w-full rounded-xl bg-accent px-3 py-2 text-[0.88rem] font-bold text-accent-fg active:scale-[0.99]"
+                : "min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
           }
         >
           {actionLabel}
@@ -270,13 +167,10 @@ export function LineResultModal({
         aria-labelledby="line-result-title"
         data-result-kind={kind}
         data-result-actions={showPrimary ? 2 : 1}
-        data-result-play-prompt={playOnPrompt ? "1" : undefined}
         data-result-minimized="1"
       >
         <div
-          className={`line-result-dock${isWrong ? " line-result-dock--wrong" : ""}${
-            showPlayOn ? " line-result-dock--play-on" : ""
-          }`}
+          className={`line-result-dock${isWrong ? " line-result-dock--wrong" : ""}`}
           data-result-dock
           data-result-sheet
           onClick={(e) => e.stopPropagation()}
@@ -331,7 +225,6 @@ export function LineResultModal({
         aria-labelledby="line-result-title"
         data-result-kind={kind}
         data-result-actions={showPrimary ? 2 : 1}
-        data-result-play-prompt={playOnPrompt ? "1" : undefined}
         onClick={onClose}
     >
       <div
@@ -340,11 +233,8 @@ export function LineResultModal({
         data-result-dim-board-fs={boardExpanded ? "1" : undefined}
       />
       <div
-        className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}${
-          showPlayOn ? " line-result-sheet--play-on" : ""
-        }`}
+        className={`line-result-sheet${isWrong ? " line-result-sheet--wrong" : ""}`}
         data-result-sheet
-        data-result-has-play-on={showPlayOn ? "1" : undefined}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border px-5 py-3">

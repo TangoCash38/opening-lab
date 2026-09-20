@@ -20,27 +20,14 @@ import {
   formatOpeningIdentity,
   lookupOpeningIdentityPrefix,
 } from "@/lib/opening-identity";
-import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { getBoardTheme } from "@/lib/board-theme";
 import { warmupEndPly } from "@/lib/london-warmup";
-import { ChessBoard, type SlideAnim, type PromotionPiece } from "./chess-board";
-import { ChessPiece } from "./chess-pieces";
+import { ChessBoard, type SlideAnim } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
-
-type PlayLevel = "beginner" | "intermediate" | "advanced";
-
-type PlayEngine = {
-  pickMove: (
-    fen: string,
-    thinkMs: number,
-    level?: PlayLevel,
-  ) => Promise<{ from: string; to: string; promotion?: "q" | "r" | "b" | "n" } | null>;
-  dispose: () => void;
-};
 
 type Mode = "learn" | "practice";
 
@@ -100,26 +87,6 @@ function endResultCard(
 const OPPONENT_THINK_MS = 420;
 const HINT_REVEAL_MS = 180;
 
-const PLAY_THINK_MS: Record<PlayLevel, number> = {
-  beginner: 400,
-  intermediate: 800,
-  advanced: 1400,
-};
-
-const PLAY_LEVEL_LABEL: Record<PlayLevel, string> = {
-  beginner: "Level 1",
-  intermediate: "Level 2",
-  advanced: "Level 3",
-};
-
-const PLAY_LEVEL_ARIA: Record<PlayLevel, string> = {
-  beginner: "Level 1, about 800.",
-  intermediate: "Level 2, about 1200.",
-  advanced: "Level 3, about 1800.",
-};
-
-const PLAY_LEVELS: PlayLevel[] = ["beginner", "intermediate", "advanced"];
-
 function fenPieceAt(g: Chess, sq: Square): string | null {
   const p = g.get(sq);
   if (!p) return null;
@@ -178,58 +145,6 @@ function buildNotationPairs(
   return pairs;
 }
 
-function playOnGameOverText(g: Chess, userSide: "w" | "b"): string {
-  if (g.isCheckmate()) {
-    return g.turn() !== userSide ? "Checkmate — you win" : "Checkmate";
-  }
-  return "Draw";
-}
-
-/** Book lines that end in # / mate — Play on stays off (game over). */
-function lineEndsInMate(line: OpeningLine): boolean {
-  const last = line.plies[line.plies.length - 1];
-  if (last?.includes("#")) return true;
-  try {
-    return replaySans(line.plies, line.plies.length).isCheckmate();
-  } catch {
-    return false;
-  }
-}
-
-type PlayableReply = {
-  from: Square;
-  to: Square;
-  pieceCode: string;
-  next: Chess;
-  capturedCode?: string;
-};
-
-/** Capture if one exists, else the first legal move. Used when search fails. */
-function firstPlayableReply(game: Chess): PlayableReply | null {
-  try {
-    const moves = game.moves({ verbose: true });
-    if (moves.length === 0) return null;
-    const m = moves.find((mv) => mv.captured) ?? moves[0]!;
-    const pieceCode = fenPieceAt(game, m.from as Square);
-    const committed = cloneAndMove(game, {
-      from: m.from,
-      to: m.to,
-      promotion: m.promotion || "q",
-    });
-    if (!pieceCode || !committed) return null;
-    return {
-      from: m.from as Square,
-      to: m.to as Square,
-      pieceCode,
-      next: committed.next,
-      capturedCode: capturedCodeFromMove(committed.move),
-    };
-  } catch {
-    return null;
-  }
-}
-
-
 function safeMove(
   chess: Chess,
   move: string | { from: string; to: string; promotion?: string },
@@ -254,8 +169,7 @@ function replaySans(sans: string[], count: number): Chess {
 
 /**
  * Apply a move while keeping the full move history.
- * Never rebase with `new Chess(fen)` — that leaves history length 1 and
- * breaks Play on display (`replaySans(game.history(), viewPly)`).
+ * Never rebase with `new Chess(fen)` — that leaves history length 1.
  */
 function cloneAndMove(
   game: Chess,
@@ -331,17 +245,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     primaryLabel?: string;
     nextAction?: "learn" | "practiceNext" | "testYourself";
   } | null>(null);
-  const [playingOn, setPlayingOn] = useState(false);
-  const [engineReady, setEngineReady] = useState(false);
-  const [engineBusy, setEngineBusy] = useState(false);
-  const [playHint, setPlayHint] = useState<Move | null>(null);
-  const [hintBusy, setHintBusy] = useState(false);
-  const [pendingPromo, setPendingPromo] = useState<{
-    from: Square;
-    to: Square;
-  } | null>(null);
-
-  const [playLevel, setPlayLevel] = useState<PlayLevel | null>("beginner");
   const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
   const [resultCard, setResultCard] = useState<{
@@ -353,28 +256,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     primaryLabel?: string;
     nextAction?: ResultNextAction;
   } | null>(null);
-  // Play-on promotion picker: Back cancels like tapping the dimmed board.
-  useOverlayHistory(
-    Boolean(pendingPromo),
-    () => {
-      setPendingPromo(null);
-      setStatus({ text: "Your move — playing on", cls: "" });
-    },
-    "promo",
-  );
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notationStripRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
-  const playingOnRef = useRef(false);
   const gameRef = useRef(game);
   gameRef.current = game;
-  const playOnStartPlyRef = useRef(line.plies.length);
-  const engineRef = useRef<PlayEngine | null>(null);
-  const playLevelRef = useRef<PlayLevel>("beginner");
-  const thinkMsRef = useRef(PLAY_THINK_MS.beginner);
   const pendingCommit = useRef<{
     nextGame: Chess;
     nextPly: number;
@@ -382,8 +271,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     userMove: boolean;
   } | null>(null);
   const replyGenRef = useRef(0);
-  /** Bumped on every Play-on commit so late Hint resolves cannot paint a stale move. */
-  const hintGenRef = useRef(0);
 
   const clearReplyTimer = useCallback(() => {
     if (replyTimer.current) {
@@ -403,19 +290,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       hintTimer.current = null;
     }
   }, [clearReplyTimer]);
-
-  const dropEngine = useCallback(() => {
-    engineRef.current?.dispose();
-    engineRef.current = null;
-    playingOnRef.current = false;
-    setPlayingOn(false);
-    setEngineReady(false);
-    setEngineBusy(false);
-    setPlayHint(null);
-    setHintBusy(false);
-    setPendingPromo(null);
-    setPlayLevel("beginner");
-  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -460,14 +334,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       clearAllTimers();
       pendingCommit.current = null;
       replyGenRef.current += 1;
-      hintGenRef.current += 1;
-      dropEngine();
       setSlide(null);
       setBusy(false);
       setResultCard(null);
       setHintsReady(true);
-      setPlayHint(null);
-      setHintBusy(false);
       setNearMissSan(null);
       const start = replaySans(line.plies, bookStartPly);
       setGame(start);
@@ -475,9 +345,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setViewPly(bookStartPly);
       setLastMove(lastMoveSquares(start));
       setSelected(null);
-      setPendingPromo(null);
       setWrongUntil(null);
-      playOnStartPlyRef.current = line.plies.length;
       setStatus({
         text: (nextMode ?? mode) === "learn"
             ? "Your move (Practice)"
@@ -491,7 +359,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setMateBlast(null);
       setSession((s) => s + 1);
     },
-    [clearAllTimers, dropEngine, mode, line.plies, bookStartPly],
+    [clearAllTimers, mode, line.plies, bookStartPly],
   );
 
   const changeMode = (m: Mode) => {
@@ -578,9 +446,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setSelected(null);
       setBusy(true);
       setHintsReady(false);
-      setPlayHint(null);
-      // Invalidate in-flight Hint — gen check drops late resolves for the old FEN.
-      if (playingOnRef.current) hintGenRef.current += 1;
       // Brown last-move wash immediately; hint-from/to drop with showHints.
       setLastMove({ from, to });
       pendingCommit.current = {
@@ -615,26 +480,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     setSlide(null);
     setBusy(false);
 
-    // Play-on never writes book progress (no complete / learned / fail / SM-2).
-    if (playingOnRef.current) {
-      const g = pending.nextGame;
-      if (g.isGameOver()) {
-        setStatus({
-          text: playOnGameOverText(g, line.side),
-          cls: "ok",
-        });
-        // Gym Test celebration only — Play-on checkmate stays quiet.
-        return;
-      }
-      if (pending.userMove) {
-        soundOk();
-        setStatus({ text: "…", cls: "" });
-      } else {
-        setStatus({ text: "Your move — playing on", cls: "" });
-      }
-      return;
-    }
-
     // Persist Test (practice) book progress for pack list %.
     // Only advance while this attempt is still clean — a miss freezes Test %.
     if (mode === "practice" && !practiceMissedRef.current) {
@@ -660,9 +505,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
-          text: lineEndsInMate(line)
-            ? "Practice done — Test with no hints"
-            : "Practice done — Play on, or Test with no hints",
+          text: "Practice done — Test with no hints",
           cls: "done",
         });
         openEndCard(
@@ -678,9 +521,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
       if (practiceMissedRef.current) {
         setStatus({
-          text: lineEndsInMate(line)
-            ? "Finished, but you missed a move — Test again to go green"
-            : "Finished, but you missed a move — Play on, or Test again to go green",
+          text: "Finished, but you missed a move — Test again to go green",
           cls: "done",
         });
         openEndCard(
@@ -732,7 +573,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
   useEffect(() => {
     clearReplyTimer();
-    if (playingOn) return;
     if (busy || slide) return;
     if (plyIndex >= bookEndPly) return;
     if (isUserTurn(game)) return;
@@ -775,7 +615,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     busy,
     slide,
     session,
-    playingOn,
     line.plies.length,
     bookEndPly,
     isUserTurn,
@@ -784,125 +623,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     beginSlide,
   ]);
 
-  useEffect(() => {
-    if (!playingOn || !engineReady) return;
-    // Do not read engineBusy here or list it as a dep: setEngineBusy(true)
-    // would re-run this effect, cancel the search, and lock the board.
-    if (busy || slide) return;
-    if (isUserTurn(game)) return;
-    if (game.isGameOver()) return;
-    const engine = engineRef.current;
-    if (!engine) return;
-
-    let cancelled = false;
-    const gen = replyGenRef.current;
-    const fenNow = game.fen();
-    const idx = plyIndex;
-    setEngineBusy(true);
-    setStatus({ text: "…", cls: "" });
-
-    const applyReply = (
-      from: Square,
-      to: Square,
-      pieceCode: string,
-      next: Chess,
-      capturedCode?: string,
-    ) => {
-      if (cancelled || gen !== replyGenRef.current) return;
-      setEngineBusy(false);
-      beginSlide(from, to, pieceCode, next, idx + 1, false, capturedCode);
-    };
-
-    const playFallback = () => {
-      if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
-      const fb = firstPlayableReply(game);
-      if (fb) {
-        applyReply(fb.from, fb.to, fb.pieceCode, fb.next, fb.capturedCode);
-        return;
-      }
-      setEngineBusy(false);
-      setStatus({
-        text: playOnGameOverText(new Chess(fenNow), line.side),
-        cls: "ok",
-      });
-    };
-
-    engine
-      .pickMove(fenNow, thinkMsRef.current, playLevelRef.current)
-      .then((mv) => {
-        if (cancelled || !playingOnRef.current || gen !== replyGenRef.current) return;
-        if (mv) {
-          const probe = new Chess(fenNow);
-          const pieceCode = fenPieceAt(probe, mv.from as Square);
-          const committed = cloneAndMove(game, {
-            from: mv.from,
-            to: mv.to,
-            promotion: mv.promotion || "q",
-          });
-          if (pieceCode && committed) {
-            applyReply(
-              mv.from as Square,
-              mv.to as Square,
-              pieceCode,
-              committed.next,
-              capturedCodeFromMove(committed.move),
-            );
-            return;
-          }
-        }
-        playFallback();
-      })
-      .catch(() => {
-        playFallback();
-      });
-
-    return () => {
-      cancelled = true;
-      // Do not leave the board locked if this search was abandoned.
-      if (gen === replyGenRef.current) {
-        setEngineBusy(false);
-      }
-    };
-  }, [
-    playingOn,
-    engineReady,
-    plyIndex,
-    game,
-    busy,
-    slide,
-    session,
-    isUserTurn,
-    beginSlide,
-    line.side,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      playingOnRef.current = false;
-      engineRef.current?.dispose();
-      engineRef.current = null;
-    };
-  }, []);
-
   const playFromTo = (from: Square, to: Square) => {
     if (from === to) return;
-    if (busy || slide || engineBusy) return;
-    if (pendingPromo) return;
-    if (!playingOn && plyIndex >= bookEndPly) return;
+    if (busy || slide) return;
+    if (plyIndex >= bookEndPly) return;
     const live = gameRef.current;
     if (!isUserTurn(live)) return;
 
     const legalMoves = live.moves({ square: from, verbose: true });
     const legal = legalMoves.find((m) => m.to === to);
     if (legal) {
-      if (playingOn && legalMoves.some((m) => m.to === to && m.promotion)) {
-        // Always show the picker (even for a hinted promoting move) so the
-        // user chooses Q/R/B/N — never auto-apply hint.promotion.
-        setPendingPromo({ from, to });
-        setSelected(null);
-        setStatus({ text: t("Choose a piece"), cls: "" });
-        return;
-      }
       tryPlay(from, to, legal.promotion);
       return;
     }
@@ -917,68 +647,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   };
 
   const tryPlay = (from: Square, to: Square, promotion?: string) => {
-    if (playingOnRef.current) {
-      const live = gameRef.current;
-      const promoMoves = live
-        .moves({ square: from, verbose: true })
-        .filter((m) => m.to === to && m.promotion);
-      const isPromo = promoMoves.length > 0;
-      const promo =
-        (promotion as "q" | "r" | "b" | "n" | undefined) ||
-        (isPromo ? "q" : undefined);
-      // chess.js needs an explicit promotion letter for last-rank pawn moves.
-      if (isPromo && !promo) {
-        soundBad();
-        setStatus({ text: "Your move — playing on", cls: "" });
-        return;
-      }
-      const committed = cloneAndMove(live, {
-        from,
-        to,
-        promotion: promo || "q",
-      });
-      if (!committed) {
-        soundBad();
-        setStatus({ text: "Your move — playing on", cls: "" });
-        return;
-      }
-      // Instant place for promotions — sliding a pawn then snapping to Q/R/B/N
-      // looked broken and could fail to settle the piece on Play WebView.
-      if (isPromo) {
-        setSelected(null);
-        setBusy(false);
-        setSlide(null);
-        pendingCommit.current = null;
-        setGame(committed.next);
-        setPlyIndex((p) => p + 1);
-        setLastMove({ from, to });
-        soundMove();
-        const g = committed.next;
-        if (g.isGameOver()) {
-          setStatus({
-            text: playOnGameOverText(g, line.side),
-            cls: "ok",
-          });
-        } else {
-          soundOk();
-          setStatus({ text: "…", cls: "" });
-        }
-        return;
-      }
-      const pieceCode = fenPieceAt(live, from);
-      if (!pieceCode) return;
-      beginSlide(
-        from,
-        to,
-        pieceCode,
-        committed.next,
-        plyIndex + 1,
-        true,
-        capturedCodeFromMove(committed.move),
-      );
-      return;
-    }
-
     const exp = expectedMove(game, plyIndex);
     if (!exp) return;
     if (exp.from !== from || exp.to !== to) {
@@ -1038,9 +706,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   };
 
   const onSquare = (sq: Square) => {
-    if (busy || slide || engineBusy) return;
-    if (pendingPromo) return;
-    if (!playingOn && plyIndex >= bookEndPly) return;
+    if (busy || slide) return;
+    if (plyIndex >= bookEndPly) return;
     if (!isUserTurn(game)) return;
 
     const piece = game.get(sq);
@@ -1060,76 +727,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     }
   };
 
-  const startPlayOn = () => {
-    if (playingOnRef.current) return;
-    const level: PlayLevel = playLevel ?? "beginner";
-    playLevelRef.current = level;
-    thinkMsRef.current = PLAY_THINK_MS[level];
-    // Rebuild from the book line so chess.js history matches the board.
-    // FEN-rebase commits leave history length 1 and Play on jumps to start.
-    const full = replaySans(line.plies, line.plies.length);
-    const startPly = full.history().length;
-    replyGenRef.current += 1;
-    hintGenRef.current += 1;
-    playingOnRef.current = true;
-    playOnStartPlyRef.current = startPly;
-    setGame(full);
-    setPlyIndex(startPly);
-    setViewPly(startPly);
-    setPlayingOn(true);
-    setSelected(null);
-    setPendingPromo(null);
-    setEngineBusy(false);
-    setEngineReady(false);
-    setPlayHint(null);
-    setHintBusy(false);
-    setStatus({ text: "…", cls: "" });
-
-    void (async () => {
-      let mod: typeof import("@/lib/play-engine");
-      try {
-        mod = await import("@/lib/play-engine");
-      } catch {
-        // Only a rejected module load means this phone cannot run the engine.
-        if (!playingOnRef.current) return;
-        setStatus({
-          text: "Computer unavailable on this phone",
-          cls: "bad",
-        });
-        return;
-      }
-
-      let engine: PlayEngine;
-      try {
-        engine =
-          typeof mod.loadPlayEngine === "function"
-            ? await mod.loadPlayEngine(level)
-            : mod.createLiteEngine(level);
-      } catch {
-        // Module loaded — always play, even if the smoke search threw.
-        engine = mod.createLiteEngine(level);
-      }
-      if (!playingOnRef.current) {
-        engine.dispose();
-        return;
-      }
-      engineRef.current = engine;
-      setEngineReady(true);
-      if (full.isGameOver()) {
-        setStatus({
-          text: playOnGameOverText(full, line.side),
-          cls: "ok",
-        });
-        return;
-      }
-      if (isUserTurn(full)) {
-        setStatus({ text: "Your move — playing on", cls: "" });
-      }
-    })();
-  };
-
-
-  const livePly = playingOn ? game.history().length : plyIndex;
+  const livePly = plyIndex;
 
   // Snap the view to the live ply when a new ply lands or the line resets.
   useEffect(() => {
@@ -1137,62 +735,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   }, [livePly]);
 
   const viewingHistory = viewPly !== livePly;
-  const displayGame = playingOn
-    ? replaySans(game.history(), viewPly)
-    : replaySans(line.plies, viewPly);
+  const displayGame = replaySans(line.plies, viewPly);
   const displayLastMove = viewingHistory
     ? lastMoveSquares(displayGame)
     : lastMove;
 
-  const requestPlayHint = () => {
-    if (!playingOnRef.current) return;
-    if (busy || slide || engineBusy || hintBusy || viewingHistory) return;
-    if (!isUserTurn(game)) return;
-    const fen = game.fen();
-    const gen = hintGenRef.current;
-    setPlayHint(null);
-    setHintBusy(true);
-    setStatus({ text: t("Thinking…"), cls: "" });
-    void (async () => {
-      try {
-        let mv: { from: string; to: string; promotion?: string } | null = null;
-        const mod = await import("@/lib/play-engine");
-        if (typeof mod.pickHintMove === "function") {
-          mv = await mod.pickHintMove(fen);
-        } else {
-          const eng = engineRef.current ?? mod.createLiteEngine("advanced");
-          mv = await eng.pickMove(fen, 2500, "advanced");
-        }
-        // Stale if the user/engine committed since this Hint started.
-        if (gen !== hintGenRef.current || !playingOnRef.current) return;
-        if (!mv) {
-          setStatus({ text: "Your move — playing on", cls: "" });
-          return;
-        }
-        const legal = new Chess(fen)
-          .moves({ verbose: true })
-          .find(
-            (m) =>
-              m.from === mv!.from &&
-              m.to === mv!.to &&
-              (!mv!.promotion || m.promotion === mv!.promotion),
-          );
-        if (legal) {
-          setPlayHint(legal);
-          setStatus({ text: t("Hint ready"), cls: "" });
-        } else {
-          setStatus({ text: "Your move — playing on", cls: "" });
-        }
-      } catch {
-        if (gen !== hintGenRef.current || !playingOnRef.current) return;
-        setStatus({ text: "Your move — playing on", cls: "" });
-      } finally {
-        if (gen === hintGenRef.current) setHintBusy(false);
-      }
-    })();
-  };
-
-  const historySans = playingOn ? game.history() : line.plies;
+  const historySans = line.plies;
 
   const jumpToPly = (nextPly: number) => {
     if (busy || slide) return;
@@ -1245,15 +793,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       wrongTimer.current = null;
     }
     setSelected(null);
-    setPendingPromo(null);
     setWrongUntil(null);
     setNearMissSan(null);
     setStatus({
-      text: playingOnRef.current
-        ? "Your move — playing on"
-        : mode === "learn"
-          ? "Your move (Practice)"
-          : "Your move",
+      text: mode === "learn" ? "Your move (Practice)" : "Your move",
       cls: "",
     });
   };
@@ -1267,20 +810,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       return;
     }
 
-    if (pendingPromo) {
-      setPendingPromo(null);
-      setSelected(null);
-      setStatus({
-        text: playingOnRef.current
-          ? "Your move — playing on"
-          : mode === "learn"
-            ? "Your move (Practice)"
-            : "Your move",
-        cls: "",
-      });
-      return;
-    }
-
     if (viewPly > 0) scrubOnePly(-1);
     else setSelected(null);
   };
@@ -1290,23 +819,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (viewPly < livePly) scrubOnePly(1);
   };
 
-  const bookExp =
-    playingOn || viewingHistory ? null : expectedMove(game, plyIndex);
-  const userTurn =
-    isUserTurn(game) && !busy && !slide && !engineBusy && !viewingHistory;
-  const showHints = playingOn
-    ? Boolean(playHint) && userTurn
-    : !viewingHistory &&
-      mode === "learn" &&
-      userTurn &&
-      hintsReady &&
-      plyIndex < bookEndPly;
-  const exp = playingOn ? playHint : bookExp;
+  const bookExp = viewingHistory ? null : expectedMove(game, plyIndex);
+  const userTurn = isUserTurn(game) && !busy && !slide && !viewingHistory;
+  const showHints =
+    !viewingHistory &&
+    mode === "learn" &&
+    userTurn &&
+    hintsReady &&
+    plyIndex < bookEndPly;
+  const exp = bookExp;
 
-  const hint =
-    !playingOn && showHints && bookExp
-      ? `Play: ${line.plies[plyIndex]}`
-      : "";
+  const hint = showHints && bookExp ? `Play: ${line.plies[plyIndex]}` : "";
 
   const historyCount = livePly;
   const notationPairs = buildNotationPairs(historySans, historyCount, viewPly);
@@ -1350,17 +873,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             ? "text-accent font-bold"
             : "text-fg-muted";
 
-  const statusBody =
-    pendingPromo ? (
-      t("Choose a piece")
-    ) : playingOn && hintBusy ? (
-      <HintThinkingCue label={t("Thinking…")} />
-    ) : (
-      status.text
-    );
+  const statusBody = status.text;
 
-  const bookDone = status.cls === "done" && !playingOn;
-  const showPlayOn = bookDone && !warmup && !lineEndsInMate(line);
+  const bookDone = status.cls === "done";
 
   useEffect(() => {
     if (!boardExpanded) return;
@@ -1397,10 +912,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   }, [resultCard]);
 
   useEffect(() => {
-    if (!nearMissSan || mode !== "learn" || playingOn || resultCard) return;
+    if (!nearMissSan || mode !== "learn" || resultCard) return;
     const id = window.setTimeout(() => setNearMissSan(null), 3000);
     return () => window.clearTimeout(id);
-  }, [nearMissSan, nearMissTick, mode, playingOn, resultCard]);
+  }, [nearMissSan, nearMissTick, mode, resultCard]);
 
 
   const canBack =
@@ -1409,7 +924,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     (Boolean(wrongUntil) ||
       status.cls === "bad" ||
       Boolean(nearMissSan) ||
-      Boolean(pendingPromo) ||
       viewPly > 0);
   const canForward = !busy && !slide && viewPly < livePly;
   const gymOpening = gym ? lookupOpeningIdentityPrefix(line.plies) : null;
@@ -1446,11 +960,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       <h2 className="m-0 font-display text-[1.25rem] font-bold">
         Line {n} of {pack.lines.length}
       </h2>
-      {!playingOn ? (
-        <div className="mt-0.5 text-[0.78rem] text-fg-subtle">
-          {t("{pct}% complete", { pct })}
-        </div>
-      ) : null}
+      <div className="mt-0.5 text-[0.78rem] text-fg-subtle">
+        {t("{pct}% complete", { pct })}
+      </div>
       <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[0.95rem] font-semibold">
         <span>{line.name}</span>
       </div>
@@ -1589,29 +1101,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               expanded={boardExpanded}
               mateBlast={mateBlast}
               onMateBlastDone={stopMateBlast}
-              interactive={
-                !busy &&
-                !slide &&
-                !engineBusy &&
-                !pendingPromo &&
-                !viewingHistory
-              }
-              promotion={
-                pendingPromo
-                  ? {
-                      color: game.turn(),
-                      onPick: (piece: PromotionPiece) => {
-                        const dest = pendingPromo;
-                        setPendingPromo(null);
-                        tryPlay(dest.from, dest.to, piece);
-                      },
-                      onCancel: () => {
-                        setPendingPromo(null);
-                        setStatus({ text: "Your move — playing on", cls: "" });
-                      },
-                    }
-                  : null
-              }
+              interactive={!busy && !slide && !viewingHistory}
             />
             {celebratePiece ? (
               <LineCompleteBurst
@@ -1626,7 +1116,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
               {statusBody}
             </p>
-            {nearMissSan && mode === "learn" && !playingOn && !resultCard ? (
+            {nearMissSan && mode === "learn" && !resultCard ? (
               <NearMissToast
                 san={nearMissSan}
                 onRetry={retryFromHere}
@@ -1650,17 +1140,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               >
                 {t("Back")}
               </button>
-              {playingOn ? (
-                <button
-                  type="button"
-                  onClick={requestPlayHint}
-                  disabled={busy || !!slide || engineBusy || hintBusy || viewingHistory || !isUserTurn(game)}
-                  aria-label={t("Hint")}
-                  className="board-fs-action"
-                >
-                  {t("Hint")}
-                </button>
-              ) : null}
               {canForward || viewingHistory ? (
                 <button
                   type="button"
@@ -1736,13 +1215,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         {statusBody}
       </div>
 
-      {playingOn ? (
-        <div className="mb-2 text-center text-[0.72rem] text-fg-subtle">
-          Playing on — not testing the book.
-        </div>
-      ) : null}
-
-      {nearMissSan && mode === "learn" && !playingOn && !resultCard && !boardExpanded ? (
+      {nearMissSan && mode === "learn" && !resultCard && !boardExpanded ? (
         <NearMissToast
           san={nearMissSan}
           onRetry={retryFromHere}
@@ -1767,17 +1240,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           >
             {t("Back")}
           </button>
-          {playingOn ? (
-            <button
-              type="button"
-              onClick={requestPlayHint}
-              disabled={busy || !!slide || engineBusy || hintBusy || viewingHistory || !isUserTurn(game)}
-              aria-label={t("Hint")}
-              className="min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted active:scale-95 disabled:opacity-40 disabled:active:scale-100"
-            >
-              {t("Hint")}
-            </button>
-          ) : null}
           {canForward || viewingHistory ? (
             <button
               type="button"
@@ -1807,32 +1269,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           ) : null}
         </div>
         <div className="trainer-primary">
-          {showPlayOn ? (
-            <>
-              <p className="play-on-caption">Pick a level, then Play on</p>
-              <div className="play-level-row" role="group" aria-label="Computer strength">
-                {PLAY_LEVELS.map((level) => (
-                  <button
-                    key={level}
-                    type="button"
-                    onClick={() => setPlayLevel(level)}
-                    className={`play-level-chip${playLevel === level ? " is-on" : ""}`}
-                    aria-label={PLAY_LEVEL_ARIA[level]}
-                    aria-pressed={playLevel === level}
-                  >
-                    {PLAY_LEVEL_LABEL[level]}
-                  </button>
-                ))}
-              </div>
-              <button
-                type="button"
-                onClick={startPlayOn}
-                className="play-on-btn"
-              >
-                Play on
-              </button>
-            </>
-          ) : null}
           {bookDone && mode === "learn" && !warmup && !testLocked ? (
             <button
               type="button"
@@ -1855,33 +1291,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           actionLabel={resultCard.actionLabel}
           primaryLabel={resultCard.primaryLabel}
           boardExpanded={boardExpanded}
-          playOnLevels={
-            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
-              ? PLAY_LEVELS.map((id) => ({
-                  id,
-                  label: PLAY_LEVEL_LABEL[id],
-                  aria: PLAY_LEVEL_ARIA[id],
-                }))
-              : undefined
-          }
-          playOnLevel={
-            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
-              ? (playLevel ?? "beginner")
-              : undefined
-          }
-          onPlayOnLevel={
-            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
-              ? (id) => setPlayLevel(id as PlayLevel)
-              : undefined
-          }
-          onPlayOn={
-            resultCard.kind === "end" && !warmup && !lineEndsInMate(line)
-              ? () => {
-                  setResultCard(null);
-                  startPlayOn();
-                }
-              : undefined
-          }
           onClose={() => {
             setResultCard(null);
             if (warmup && resultCard.kind === "end") onBack();
@@ -1961,20 +1370,6 @@ function NearMissToast({
         {t("Try again from here")}
       </button>
     </div>
-  );
-}
-
-function HintThinkingCue({ label }: { label: string }) {
-  return (
-    <span className="hint-thinking-cue" role="status" aria-live="polite">
-      <ChessPiece code="N" className="hint-thinking-piece" />
-      <span className="hint-thinking-bubble" aria-hidden>
-        <span className="hint-thinking-dot" />
-        <span className="hint-thinking-dot" />
-        <span className="hint-thinking-dot" />
-      </span>
-      <span className="hint-thinking-label">{label}</span>
-    </span>
   );
 }
 

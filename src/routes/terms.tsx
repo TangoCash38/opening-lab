@@ -17,9 +17,8 @@ function Terms() {
         <p>
           Opening Lab helps you memorise set opening lines. You play only the
           book move for the line you chose. Practice uses a green hint. Test
-          has none. After Practice or Test you can Play on from that setup
-          against a weak engine at a strength you pick (about 800, 1200, or
-          1800). It is not rated play, not an online chess game against other
+          has none. When the book line ends, you reset or pick another line.
+          It is not rated play, not an online chess game against other
           people, and not a puzzle or social site.
         </p>
       </LegalSection>

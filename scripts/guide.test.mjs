@@ -24,8 +24,8 @@ test("guide-view has no per-opening titles; still has gym blocks", () => {
   assert.match(guide, /t\("White & Black \/ Special packs"\)/);
   assert.match(guide, /t\("Practice mode"\)/);
   assert.match(guide, /t\("Test mode"\)/);
-  assert.match(guide, /t\("Play on"\)/);
-  assert.match(guide, /Hint shows a stronger suggestion from the same engine/);
+  assert.doesNotMatch(guide, /t\("Play on"\)/);
+  assert.doesNotMatch(guide, /Play on/);
   assert.match(guide, /t\("Reviews"\)/);
   assert.match(guide, /t\("Account"\)/);
   assert.match(guide, /to="\/privacy"/);

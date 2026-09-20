@@ -36,5 +36,5 @@ test("hint row and % complete still reserve height", () => {
   assert.match(train, /min-h-\[1\.2em\]/);
   assert.match(train, /hint \|\| "\\u00a0"/);
   assert.match(train, /\{pct\}% complete/);
-  assert.match(train, /!playingOn \? \(/);
+  assert.doesNotMatch(train, /playingOn/);
 });

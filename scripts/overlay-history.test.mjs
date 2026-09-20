@@ -164,21 +164,21 @@ test("nested overlays: Back closes top only; second Back closes base", async (t)
       onPop: () => log.push("line-result"),
     });
     const nested = bindOverlayHistory(win, {
-      id: "play-on-prompt",
-      onPop: () => log.push("play-on-prompt"),
+      id: "nested-prompt",
+      onPop: () => log.push("nested-prompt"),
     });
 
     assert.equal(win._depth(), 2);
     assert.equal(win._listenerCount("popstate"), 1, "single shared listener");
 
     win.history.back();
-    assert.deepEqual(log, ["play-on-prompt"]);
+    assert.deepEqual(log, ["nested-prompt"]);
     assert.equal(nested.isActive(), false);
     assert.equal(base.isActive(), true);
     assert.equal(win._depth(), 1);
 
     win.history.back();
-    assert.deepEqual(log, ["play-on-prompt", "line-result"]);
+    assert.deepEqual(log, ["nested-prompt", "line-result"]);
     assert.equal(base.isActive(), false);
     assert.equal(win._depth(), 0);
     assert.equal(win._listenerCount("popstate"), 0);
@@ -192,8 +192,8 @@ test("nested overlays: Back closes top only; second Back closes base", async (t)
       onPop: () => log2.push("line-result"),
     });
     const nested2 = bindOverlayHistory(win2, {
-      id: "play-on-prompt",
-      onPop: () => log2.push("play-on-prompt"),
+      id: "nested-prompt",
+      onPop: () => log2.push("nested-prompt"),
     });
     nested2.release();
     base2.release();
@@ -204,7 +204,7 @@ test("nested overlays: Back closes top only; second Back closes base", async (t)
   }
 });
 
-test("language sheet, finish modal, and promo use useOverlayHistory", () => {
+test("language sheet and finish modal use useOverlayHistory", () => {
   const picker = src("src/components/opening-lab/lang-picker.tsx");
   const modal = src("src/components/opening-lab/line-result-modal.tsx");
   const train = src("src/components/opening-lab/train-view.tsx");
@@ -218,13 +218,9 @@ test("language sheet, finish modal, and promo use useOverlayHistory", () => {
   const remember = src("src/components/opening-lab/create-own-view.tsx");
   assert.match(remember, /olOverlay: "gym-remember"/);
   assert.doesNotMatch(remember, /useOverlayHistory\(/);
-  assert.match(
-    modal,
-    /useOverlayHistory\(playOnPrompt, \(\) => setPlayOnPrompt\(false\), "play-on-prompt"\)/,
-  );
-  assert.match(train, /useOverlayHistory\(/);
-  assert.match(train, /Boolean\(pendingPromo\)/);
-  assert.match(train, /"promo"/);
+  assert.doesNotMatch(modal, /playOnPrompt/);
+  assert.doesNotMatch(train, /useOverlayHistory\(/);
+  assert.doesNotMatch(train, /pendingPromo/);
 });
 
 test("lang-picker still has Escape + Back/X and no native select", () => {
