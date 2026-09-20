@@ -7,7 +7,7 @@
  * so the stack stays clean.
  *
  * A single shared stack + one popstate listener ensures nested overlays
- * (e.g. finish sheet + Play-on prompt) peel one at a time.
+ * (e.g. finish sheet + nested prompt) peel one at a time.
  */
 
 export const OVERLAY_HISTORY_KEY = "olOverlay";

@@ -56,23 +56,53 @@ type Props = {
 
 type ResultNextAction = "practiceNext" | "testYourself" | "learn";
 
+/** Same CTAs on miss and clean Test finishes. Tone/body differ at the call site. */
+function drillFinishActions(nextLine: OpeningLine | undefined, t: Translate) {
+  return {
+    actionLabel: nextLine ? t("Try next line") : t("Practice again"),
+    primaryLabel: nextLine ? t("Practice again") : undefined,
+    nextAction: "learn" as const,
+    secondaryAction: nextLine ? ("practiceNext" as const) : undefined,
+  };
+}
+
 function endResultCard(
   line: OpeningLine,
   pack: Pack,
   purchased: readonly string[],
   caption: string,
   t: Translate,
-  nextAction?: Exclude<ResultNextAction, "learn">,
+  nextAction?: Exclude<ResultNextAction, "learn"> | "practiceAgain",
   subscribed = false,
 ) {
   const unlockIds = subscribed ? [pack.id] : purchased;
   const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
+  const plan = (line.next ?? line.idea ?? "").trim();
+  const drill = drillFinishActions(nextLine, t);
+
+  if (nextAction === "practiceAgain") {
+    const spiel = t("Missed a move — practice again to lock it");
+    return {
+      kind: "end" as const,
+      title: line.name,
+      caption,
+      body: plan ? `${spiel}\n\n${plan}` : spiel,
+      ...drill,
+    };
+  }
+
+  if (nextAction === "practiceNext") {
+    return {
+      kind: "end" as const,
+      title: line.name,
+      caption,
+      body: (line.next ?? line.idea ?? "").trim(),
+      ...drill,
+    };
+  }
+
   const primaryLabel =
-    nextAction === "testYourself"
-      ? t("Test yourself")
-      : nextAction === "practiceNext" && nextLine
-        ? t("Practice next line")
-        : undefined;
+    nextAction === "testYourself" ? t("Test yourself") : undefined;
   return {
     kind: "end" as const,
     title: line.name,
@@ -243,7 +273,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     caption?: string;
     actionLabel: string;
     primaryLabel?: string;
-    nextAction?: "learn" | "practiceNext" | "testYourself";
+    nextAction?: ResultNextAction;
+    secondaryAction?: "practiceNext";
   } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
@@ -255,6 +286,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     actionLabel: string;
     primaryLabel?: string;
     nextAction?: ResultNextAction;
+    secondaryAction?: "practiceNext";
   } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -411,6 +443,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         actionLabel: string;
         primaryLabel?: string;
         nextAction?: ResultNextAction;
+        secondaryAction?: "practiceNext";
       },
       nextGame: Chess,
     ) => {
@@ -525,7 +558,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           cls: "done",
         });
         openEndCard(
-          endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t, undefined, subscribed),
+          endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t, "practiceAgain", subscribed),
           pending.nextGame,
         );
         return;
@@ -1302,6 +1335,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 : () => resetLine() // Try again (Practice miss)
               : warmup && resultCard.kind === "end"
                 ? onBack
+                : resultCard.secondaryAction === "practiceNext"
+                ? () => {
+                    const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
+                    setResultCard(null);
+                    if (nextLine) onPracticeNext?.(nextLine);
+                  }
                 : resultCard.nextAction === "learn"
                 ? () => changeMode("learn")
                 : undefined
@@ -1313,6 +1352,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 ? () => {
                     if (resultCard.nextAction === "testYourself") {
                       changeMode("practice");
+                      return;
+                    }
+                    if (resultCard.nextAction === "learn") {
+                      changeMode("learn");
                       return;
                     }
                     const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
