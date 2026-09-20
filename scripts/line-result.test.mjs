@@ -162,9 +162,10 @@ test("Practice complete offers Test yourself; clean Test offers next line", () =
   const missedAt = train.indexOf('t("Finished, but you missed a move")');
   assert.ok(missedAt > 0, "missed Test end card missing");
   const missedCall = train.slice(train.lastIndexOf("endResultCard", missedAt), train.indexOf(");", missedAt) + 2);
-  assert.doesNotMatch(missedCall, /practiceNext/);
+  assert.match(missedCall, /"practiceAgain"/);
+  assert.doesNotMatch(missedCall, /"practiceNext"/);
   assert.doesNotMatch(missedCall, /testYourself/);
-  assert.doesNotMatch(missedCall, /primaryLabel/);
+  assert.doesNotMatch(missedCall, /Well done/);
 
   const wrongs = kindBlocks(train, "wrong");
   assert.equal(wrongs.length, 1);
@@ -330,6 +331,7 @@ test("finish sheets have no Play on; wrong-move cards keep dual actions", () => 
   assert.doesNotMatch(modal, /data-result-play-on/);
   assert.doesNotMatch(train, /startPlayOn/);
   assert.doesNotMatch(train, /playOnLevels/);
+  assert.doesNotMatch(i18n, /"Play on"/);
   assert.match(modal, /line-result-actions-row/);
   assert.match(modal, /line-result-actions-or/);
   assert.match(modal, /t\("or"\)/);
@@ -453,4 +455,39 @@ test("book finish copy is Test / Book solid with no Play on offer", () => {
   assert.doesNotMatch(train, /playing on/);
   assert.match(train, /Practice done — Test with no hints/);
   assert.match(train, /t\("Book solid"\)/);
+});
+
+test("miss finish offers Practice again and Try next line, never Well done or Play on", () => {
+  const fn = train.slice(
+    train.indexOf("function endResultCard"),
+    train.indexOf("const OPPONENT_THINK_MS"),
+  );
+  assert.match(fn, /nextAction === "practiceAgain"/);
+  assert.match(fn, /t\("Practice again"\)/);
+  assert.match(fn, /t\("Try next line"\)/);
+  assert.match(fn, /t\("Missed a move — practice again to lock it"\)/);
+  assert.match(fn, /nextAction: "learn"/);
+  assert.match(fn, /secondaryAction: nextLine \? \("practiceNext" as const\)/);
+  assert.match(fn, /primaryLabel: nextLine \? t\("Practice again"\) : undefined/);
+  assert.match(fn, /actionLabel: nextLine \? t\("Try next line"\) : t\("Practice again"\)/);
+  assert.doesNotMatch(fn.slice(fn.indexOf("practiceAgain"), fn.indexOf("const primaryLabel")), /Well done/);
+  assert.doesNotMatch(fn, /Play on/);
+  assert.doesNotMatch(train, /playing on/);
+
+  const modalCall = train.slice(train.indexOf("<LineResultModal"), train.indexOf("</LineResultModal>"));
+  assert.match(modalCall, /secondaryAction === "practiceNext"/);
+  assert.match(modalCall, /nextAction === "learn"/);
+  assert.match(modalCall, /changeMode\("learn"\)/);
+  assert.doesNotMatch(modalCall, /Play on/);
+  assert.doesNotMatch(modalCall, /playOn/);
+
+  assert.equal(i18n.split('"Try next line":').length - 1, 12);
+  assert.equal(i18n.split('"Missed a move — practice again to lock it":').length - 1, 12);
+  assert.match(i18n, /"Try next line": "Try next line"/);
+  assert.match(i18n, /"Try next line": "Probar la siguiente línea"/);
+  assert.match(i18n, /"Try next line": "试试下一条线路"/);
+  assert.match(i18n, /"Try next line": "Essayer la ligne suivante"/);
+  assert.match(i18n, /"Missed a move — practice again to lock it": "Missed a move — practice again to lock it"/);
+  assert.doesNotMatch(i18n, /"Play on"/);
+  assert.doesNotMatch(i18n, /Play on is also on the finish sheet/);
 });
