@@ -2405,8 +2405,8 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 20 pw li
   assert.equal(names.pw8, "Steinitz");
   assert.equal(names.pw13, "Ponziani Countergambit");
   assert.equal(names.pw18, "Horwitz");
-  assert.equal(names.pw19, "Trap · …d6 Bb5+");
-  assert.equal(names.pw20, "Trap · …Nxf2 Bxg6");
+  assert.equal(names.pw19, "Punish the error · …d6 Bb5+");
+  assert.equal(names.pw20, "Punish the error · …Nxf2 Bxg6");
 
   const allPlies = Array.from({ length: 20 }, (_, i) => linePlies(`pw${i + 1}`));
   for (let i = 0; i < 20; i++) {
