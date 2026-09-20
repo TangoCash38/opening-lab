@@ -11,14 +11,13 @@
  * session from a wrong hit cannot poison Chrome.
  *
  * Play Console one-time IAPs (Path B): `pack_<pack_id_with_underscores>` and
- * `buy_all`. Legacy subscription `lab_plus_yearly` is restore-only — wrap
- * unlocks are not Lab+-only. Digital Goods will not work in this raw System
- * WebView — native BillingClient is required.
+ * `buy_all_packs`. No Lab+ / no subscriptions. Digital Goods will not work
+ * in this raw System WebView — native BillingClient is required.
  */
 export const PLAY_PACKAGE = "uk.co.openinglab";
 export const PLAY_UA_TOKEN = "OpeningLabPlay";
 
-/** Play Console subscription product ID. Yearly base plan only, GBP. Legacy restore. */
+/** @deprecated Path B does not sell Lab+. Kept so existing native strings compile. */
 export const PLAY_SKU_YEARLY = "lab_plus_yearly";
 
 export const PLAY_STORE_NOTICE =
@@ -53,19 +52,15 @@ export function isPlayBilledPacksActive(state: PlayWrapUnlocks): boolean {
   return state.playBilled === true && Array.isArray(state.packs) && state.packs.length > 0;
 }
 
-/** Any Play-granted entitlement the wrap may honour (packs, buy_all, or legacy yearly). */
+/** Play-granted Path B entitlement the wrap may honour (packs or buy_all). */
 export function isPlayBilledUnlockActive(state: PlayWrapUnlocks): boolean {
-  return (
-    isPlayBilledBuyAll(state) ||
-    isPlayBilledPacksActive(state) ||
-    isPlayBilledLabPlusActive(state)
-  );
+  return isPlayBilledBuyAll(state) || isPlayBilledPacksActive(state);
 }
 
 /**
- * Play wrap unlocks: honour Play-billed packs and buy_all so they stick.
- * Stripe website plan/packs without a Play billing marker are cleared.
- * Legacy Lab+ yearly is kept only when there is no pack / buy_all grant.
+ * Play wrap unlocks: honour Play-billed packs[] and plan === "buy_all"
+ * so GET /api/unlocks sync does not zero them. Stripe website plan/packs
+ * without a Play billing marker are cleared. No Lab+.
  */
 export function playWrapAccountUnlocks<T extends PlayWrapUnlocks>(state: T): T {
   if (state.playBilled !== true) {
@@ -76,9 +71,6 @@ export function playWrapAccountUnlocks<T extends PlayWrapUnlocks>(state: T): T {
   }
   if (isPlayBilledPacksActive(state)) {
     return { ...state, plan: null, expiresAt: null, playBilled: true };
-  }
-  if (isPlayBilledLabPlusActive(state)) {
-    return { ...state, packs: [], plan: "yearly", playBilled: true };
   }
   return { ...state, packs: [], plan: null, expiresAt: null, playBilled: false };
 }

@@ -39,14 +39,14 @@ async function loadPlayApp(t) {
 test("Play wrap gate ignores website Stripe packs and website Lab+", () => {
   const unlocks = src("src/lib/unlocks.ts");
   assert.match(unlocks, /isPlayApp\(\)/);
-  assert.match(unlocks, /isPlayBilledLabPlusActive/);
+  assert.match(unlocks, /isPlayBilledBuyAll/);
   assert.match(unlocks, /playWrapAccountUnlocks/);
   assert.match(unlocks, /playBilled/);
 
   const hook = src("src/hooks/use-unlocks.ts");
   assert.match(hook, /playWrapAccountUnlocks/);
   assert.match(hook, /isPlayBilledUnlockActive/);
-  assert.match(hook, /isPlayBilledLabPlusActive/);
+  assert.match(hook, /isPlayBilledBuyAll/);
 
   const play = src("src/lib/play-app.ts");
   assert.match(play, /OpeningLabPlay/);

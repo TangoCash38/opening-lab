@@ -1,36 +1,73 @@
 /**
  * Google Play one-time product IDs for Path B (packs + Buy all).
  *
+ * Package: uk.co.openinglab
  * Play Console product IDs may only use [a-z0-9._] — no hyphens.
- * Catalog pack ids use hyphens (`italian-white`), so the on-sale SKU is
- * `pack_` + packId with `-` → `_` (`pack_italian_white`).
+ * Catalog pack ids use hyphens (`qgd-black`), so the on-sale SKU is
+ * `pack_` + packId with `-` → `_` (`pack_qgd_black`).
  *
- * Console must create one managed (non-consumable) in-app product per SKU:
- *   pack_<pack_id_with_underscores>  ↔  PACKS[].id
- *   buy_all                          ↔  PurchaseApply kind "buy_all"
+ * Official Console SKUs:
+ *   pack_<id> for 31 paid visible packs + pack_caro_kann_black
+ *   buy_all_packs  →  applyPurchase({ kind: "buy_all" })
  *
- * `lab_plus_yearly` stays a subscription SKU for restore compatibility only.
- * Do not invent pack titles here — ids come from src/data/packs.ts.
+ * No Lab+ / no lab_plus_yearly / no subscriptions.
+ * Do not invent pack titles — ids match VISIBLE_PACK_IDS (except opening-traps).
  */
 
-/** Play Console subscription product ID. Yearly base plan only, GBP. Legacy restore. */
-export const PLAY_SKU_YEARLY = "lab_plus_yearly";
-export const PLAY_SKU_BUY_ALL = "buy_all";
+export const PLAY_SKU_BUY_ALL = "buy_all_packs";
 export const PLAY_SKU_PACK_PREFIX = "pack_";
 
+/**
+ * 31 paid visible packs + caro-kann-black (Caro rest is on sale as
+ * pack_caro_kann_black). opening-traps is not a Path B IAP.
+ */
+export const PLAY_PATH_B_PACK_IDS = [
+  "caro-kann-black",
+  "qgd-black",
+  "london-black",
+  "d4-sidelines-black",
+  "anti-sicilian-black",
+  "nimzo-larsen-white",
+  "italian-white",
+  "ruy-white",
+  "french-white",
+  "alapin-white",
+  "english-black",
+  "kg-black",
+  "scandinavian-white",
+  "pirc-150-white",
+  "dutch-fianchetto-white",
+  "caro-advance-panov-white",
+  "evans-black",
+  "englund-white",
+  "budapest-white",
+  "bdg-black",
+  "queens-gambit-white",
+  "scotch",
+  "english-white",
+  "catalan-white",
+  "nimzo-indian-black",
+  "grunfeld-black",
+  "petroff-black",
+  "berlin-black",
+  "kings-indian-black",
+  "stafford-black",
+  "ponziani-white",
+  "alekhine-black",
+] as const;
+
 export type PlayProduct =
-  | { kind: "yearly"; productId: string }
   | { kind: "buy_all"; productId: string }
   | { kind: "pack"; productId: string; packId: string };
 
-/** Play product ID for a catalog pack id (`italian-white` → `pack_italian_white`). */
+/** Play product ID for a catalog pack id (`qgd-black` → `pack_qgd_black`). */
 export function playSkuForPackId(packId: string): string {
   return `${PLAY_SKU_PACK_PREFIX}${packId.replace(/-/g, "_")}`;
 }
 
 /**
  * Catalog pack id from a `pack_*` SKU.
- * Prefers the hyphenated catalog form; if `knownPackIds` is given, only a
+ * strip `pack_`, underscores → hyphens. If `knownPackIds` is given, only a
  * matching catalog id is returned (hyphenated first, then the raw suffix).
  */
 export function packIdFromPlaySku(
@@ -50,7 +87,6 @@ export function packIdFromPlaySku(
 export function resolvePlayProduct(productId: string): PlayProduct | null {
   const sku = productId.trim();
   if (!sku) return null;
-  if (sku === PLAY_SKU_YEARLY) return { kind: "yearly", productId: sku };
   if (sku === PLAY_SKU_BUY_ALL) return { kind: "buy_all", productId: sku };
   if (!sku.startsWith(PLAY_SKU_PACK_PREFIX)) return null;
   const packId = packIdFromPlaySku(sku);
@@ -58,7 +94,7 @@ export function resolvePlayProduct(productId: string): PlayProduct | null {
   return { kind: "pack", productId: sku, packId };
 }
 
-/** Unique Play SKU → pack id for the given catalog ids (usually PACKS[].id). */
+/** Unique Play SKU → pack id for the given catalog ids. */
 export function playPackSkuMap(
   packIds: readonly string[],
 ): Readonly<Record<string, string>> {

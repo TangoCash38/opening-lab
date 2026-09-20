@@ -5,7 +5,6 @@
 import {
   isPlayApp,
   isPlayBilledBuyAll,
-  isPlayBilledLabPlusActive,
   playWrapAccountUnlocks,
 } from "@/lib/play-app";
 
@@ -79,7 +78,7 @@ export function isPackUnlocked(packId: string, isFree: boolean): boolean {
   const s = read();
   if (isPlayApp()) {
     const wrap = playWrapAccountUnlocks(s);
-    if (isPlayBilledBuyAll(wrap) || isPlayBilledLabPlusActive(wrap)) return true;
+    if (isPlayBilledBuyAll(wrap)) return true;
     return wrap.packs.includes(packId);
   }
   return isSubscriptionActive(s) || s.packs.includes(packId);

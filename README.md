@@ -137,8 +137,8 @@ https://github.com/TangoCash38/opening-lab
 ## Google Play (Android)
 
 The Play app is a raw System WebView (not Chrome TWA). Path B billing is
-one-time packs (`pack_<pack_id_with_underscores>`) and `buy_all` via the
-Android Publisher products API. Legacy `lab_plus_yearly` remains for restore.
-Set `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` on the host or confirm returns 503
+one-time packs (`pack_<pack_id_with_underscores>`) and `buy_all_packs` via
+`POST /api/play/subscribe` and the Android Publisher products API. No Lab+.
+Set `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` on the host or subscribe returns 503
 without granting. Project and build steps: [`android/README.md`](android/README.md).
 

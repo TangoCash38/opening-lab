@@ -73,10 +73,7 @@ function rowToUnlocks(row: PurchaseRow | undefined): UnlockState {
     plan,
     expiresAt: asExpiryMs(row.expires_at),
     // play_billed is set only by verified Play applyPurchase — not token-save-only.
-    // Legacy Lab+ yearly rows may only have a token (backfilled by 0006).
-    playBilled:
-      Boolean(row.play_billed) ||
-      (Boolean(row.play_purchase_token) && plan === "yearly"),
+    playBilled: Boolean(row.play_billed),
   };
 }
 

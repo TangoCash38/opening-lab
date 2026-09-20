@@ -24,7 +24,6 @@ import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhoo
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
-import { Route as ApiPlayConfirmRouteImport } from './routes/api/play.confirm'
 import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
 import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
 
@@ -103,11 +102,6 @@ const ApiPlaySubscribeRoute = ApiPlaySubscribeRouteImport.update({
   path: '/api/play/subscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPlayConfirmRoute = ApiPlayConfirmRouteImport.update({
-  id: '/api/play/confirm',
-  path: '/api/play/confirm',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
   id: '/api/practice-review-eval',
   path: '/api/practice-review-eval',
@@ -135,7 +129,6 @@ export interface FileRoutesByFullPath {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
-  '/api/play/confirm': typeof ApiPlayConfirmRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/account/delete': typeof ApiAccountDeleteRoute
 }
@@ -155,7 +148,6 @@ export interface FileRoutesByTo {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
-  '/api/play/confirm': typeof ApiPlayConfirmRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/account/delete': typeof ApiAccountDeleteRoute
 }
@@ -176,7 +168,6 @@ export interface FileRoutesById {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
-  '/api/play/confirm': typeof ApiPlayConfirmRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/account/delete': typeof ApiAccountDeleteRoute
 }
@@ -198,7 +189,6 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
-    | '/api/play/confirm'
     | '/api/practice-review-eval'
     | '/api/account/delete'
   fileRoutesByTo: FileRoutesByTo
@@ -218,7 +208,6 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
-    | '/api/play/confirm'
     | '/api/practice-review-eval'
     | '/api/account/delete'
   id:
@@ -238,7 +227,6 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/api/unlocks/claim'
     | '/api/play/subscribe'
-    | '/api/play/confirm'
     | '/api/practice-review-eval'
     | '/api/account/delete'
   fileRoutesById: FileRoutesById
@@ -257,7 +245,6 @@ export interface RootRouteChildren {
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
-  ApiPlayConfirmRoute: typeof ApiPlayConfirmRoute
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
   ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
 }
@@ -369,13 +356,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPlaySubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/play/confirm': {
-      id: '/api/play/confirm'
-      path: '/api/play/confirm'
-      fullPath: '/api/play/confirm'
-      preLoaderRoute: typeof ApiPlayConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/practice-review-eval': {
       id: '/api/practice-review-eval'
       path: '/api/practice-review-eval'
@@ -431,7 +411,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
-  ApiPlayConfirmRoute: ApiPlayConfirmRoute,
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
   ApiAccountDeleteRoute: ApiAccountDeleteRoute,
 }

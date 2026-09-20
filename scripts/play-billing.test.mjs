@@ -12,11 +12,6 @@ function src(rel) {
   return readFileSync(join(root, rel), "utf8");
 }
 
-function packIdsFromCatalog() {
-  const packs = src("src/data/packs.ts");
-  return [...packs.matchAll(/^    id: "([^"]+)",$/gm)].map((m) => m[1]);
-}
-
 async function loadTs(t, rel, dirName) {
   let ts;
   try {
@@ -41,24 +36,21 @@ async function loadTs(t, rel, dirName) {
   return import(pathToFileURL(tmp).href);
 }
 
-test("Play SKU mapping is pack_<underscores> and buy_all", async (t) => {
+test("Play SKU mapping is pack_<underscores> and buy_all_packs", async (t) => {
   const mod = await loadTs(t, "src/lib/play-skus.ts", ".generated-play-skus");
   if (!mod) return;
 
-  const ids = packIdsFromCatalog();
-  assert.ok(ids.includes("italian-white"));
-  assert.ok(ids.includes("caro-kann-black"));
-  assert.ok(ids.includes("opening-traps"));
-  assert.ok(ids.length >= 30, `expected catalog pack ids, got ${ids.length}`);
-
-  assert.equal(mod.playSkuForPackId("italian-white"), "pack_italian_white");
+  assert.equal(mod.PLAY_SKU_BUY_ALL, "buy_all_packs");
+  assert.equal(mod.playSkuForPackId("qgd-black"), "pack_qgd_black");
   assert.equal(mod.playSkuForPackId("caro-kann-black"), "pack_caro_kann_black");
-  assert.equal(mod.PLAY_SKU_BUY_ALL, "buy_all");
-  assert.equal(mod.PLAY_SKU_YEARLY, "lab_plus_yearly");
+  assert.equal(mod.PLAY_PATH_B_PACK_IDS.length, 32);
+  assert.ok(mod.PLAY_PATH_B_PACK_IDS.includes("caro-kann-black"));
+  assert.equal(mod.PLAY_PATH_B_PACK_IDS.includes("opening-traps"), false);
+  assert.equal(mod.PLAY_PATH_B_PACK_IDS.length - 1, 31);
 
-  const known = new Set(ids);
+  const known = new Set(mod.PLAY_PATH_B_PACK_IDS);
   const skus = new Set();
-  for (const id of ids) {
+  for (const id of mod.PLAY_PATH_B_PACK_IDS) {
     const sku = mod.playSkuForPackId(id);
     assert.match(sku, /^pack_[a-z0-9_]+$/);
     assert.doesNotMatch(sku, /-/);
@@ -70,30 +62,27 @@ test("Play SKU mapping is pack_<underscores> and buy_all", async (t) => {
     assert.equal(mod.packIdFromPlaySku(resolved.productId, known), id);
   }
 
-  assert.deepEqual(mod.resolvePlayProduct("buy_all"), {
+  assert.deepEqual(mod.resolvePlayProduct("buy_all_packs"), {
     kind: "buy_all",
-    productId: "buy_all",
+    productId: "buy_all_packs",
   });
-  assert.deepEqual(mod.resolvePlayProduct("lab_plus_yearly"), {
-    kind: "yearly",
-    productId: "lab_plus_yearly",
-  });
+  assert.equal(mod.resolvePlayProduct("buy_all"), null);
+  assert.equal(mod.resolvePlayProduct("lab_plus_yearly"), null);
   assert.equal(mod.resolvePlayProduct("not_a_sku"), null);
   assert.equal(mod.packIdFromPlaySku("pack_not_in_catalog", known), null);
-  assert.equal(mod.packIdFromPlaySku("buy_all"), null);
 });
 
-test("Play confirm verifies products API and applyPurchase kinds", () => {
+test("Play subscribe verifies products API and applyPurchase kinds", () => {
   const server = src("src/lib/play-billing.server.ts");
   assert.match(server, /purchases\/products\//);
   assert.match(server, /kind: "pack"/);
   assert.match(server, /kind: "buy_all"/);
-  assert.match(server, /kind: "yearly"/);
   assert.match(server, /GOOGLE_PLAY_SERVICE_ACCOUNT_JSON/);
   assert.match(server, /not_connected/);
   assert.match(server, /savePlayPurchaseToken/);
-  assert.match(server, /playPurchaseResponse/);
-  assert.match(server, /subscriptionsv2/);
+  assert.match(server, /playSubscribeResponse/);
+  assert.doesNotMatch(server, /purchases\/subscriptionsv2/);
+  assert.doesNotMatch(server, /kind: "yearly"/);
 
   const notConnected = server.slice(
     server.indexOf("async function notConnectedResponse"),
@@ -104,19 +93,16 @@ test("Play confirm verifies products API and applyPurchase kinds", () => {
   assert.match(notConnected, /503/);
 
   const client = src("src/lib/play-billing.ts");
-  assert.match(client, /\/api\/play\/confirm/);
+  assert.match(client, /\/api\/play\/subscribe/);
+  assert.doesNotMatch(client, /\/api\/play\/confirm/);
   assert.match(client, /confirmPlayPurchase/);
 
-  const confirm = src("src/routes/api/play.confirm.ts");
-  assert.match(confirm, /playPurchaseResponse/);
+  const route = src("src/routes/api/play.subscribe.ts");
+  assert.match(route, /playSubscribeResponse/);
 
   const purchases = src("src/lib/purchases.server.ts");
   assert.match(purchases, /play_billed/);
   assert.match(purchases, /Boolean\(input\.playPurchaseToken\)/);
-
-  const playApp = src("src/lib/play-app.ts");
-  assert.match(playApp, /export const PLAY_SKU_YEARLY = "lab_plus_yearly"/);
-  assert.match(src("src/lib/play-skus.ts"), /export const PLAY_SKU_YEARLY = "lab_plus_yearly"/);
 });
 
 test("playWrapAccountUnlocks keeps Play packs/buy_all and zeros Stripe", async (t) => {
@@ -163,8 +149,8 @@ test("playWrapAccountUnlocks keeps Play packs/buy_all and zeros Stripe", async (
     playBilled: true,
   });
   assert.deepEqual(legacyYearly.packs, []);
-  assert.equal(legacyYearly.plan, "yearly");
-  assert.equal(legacyYearly.playBilled, true);
+  assert.equal(legacyYearly.plan, null);
+  assert.equal(legacyYearly.playBilled, false);
 
   const tokenOnly = playWrapAccountUnlocks({
     packs: [],

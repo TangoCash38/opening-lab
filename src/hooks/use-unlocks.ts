@@ -7,7 +7,6 @@ import { fetchPaymentsEnabled } from "@/lib/checkout";
 import {
   isPlayApp,
   isPlayBilledBuyAll,
-  isPlayBilledLabPlusActive,
   isPlayBilledUnlockActive,
   playWrapAccountUnlocks,
 } from "@/lib/play-app";
@@ -138,9 +137,7 @@ export function useUnlocks() {
     };
   }, []);
 
-  const subscribed = isPlayApp()
-    ? isPlayBilledBuyAll(state) || isPlayBilledLabPlusActive(state)
-    : isSubscriptionActive(state);
+  const subscribed = isPlayApp() ? isPlayBilledBuyAll(state) : isSubscriptionActive(state);
 
   const canAccess = useCallback(
     (pack: Pack) => {
@@ -148,7 +145,7 @@ export function useUnlocks() {
       if (isPlayApp()) {
         if (isPackFree(pack)) return true;
         const wrap = playWrapAccountUnlocks(state);
-        if (isPlayBilledBuyAll(wrap) || isPlayBilledLabPlusActive(wrap)) return true;
+        if (isPlayBilledBuyAll(wrap)) return true;
         return wrap.packs.includes(pack.id);
       }
       return isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack));

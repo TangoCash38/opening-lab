@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { playPurchaseResponse } from "@/lib/play-billing.server";
+import { playSubscribeResponse } from "@/lib/play-billing.server";
 
 export const Route = createFileRoute("/api/play/subscribe")({
   server: {
     handlers: {
-      POST: ({ request }) => playPurchaseResponse(request),
+      POST: ({ request }) => playSubscribeResponse(request),
     },
   },
 });
