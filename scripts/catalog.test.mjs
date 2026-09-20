@@ -2332,7 +2332,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.match(ot, /Bg4#/);
 });
 
-test("Ponziani Opening for White is a thirty-second visible White pack: 18 pw lines, locked until purchase", () => {
+test("Ponziani Opening for White is a thirty-second visible White pack: 20 pw lines, locked until purchase", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "ponziani-white"');
   assert.ok(start >= 0, "ponziani-white pack missing");
@@ -2346,7 +2346,7 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 18 pw li
   assert.match(pw, /isPremium: false/);
   assert.match(pw, /price: null/);
   assert.match(pw, /blurb: "Jänisch, Steinitz & Countergambit"/);
-  assert.match(pw, /closedLabel: "Free · 18 lines"/);
+  assert.match(pw, /closedLabel: "Free · 20 lines"/);
   assert.match(pw, /Meet Jänisch, Steinitz, and Countergambit structures/);
   assert.match(pw, /Practice the main White moves with the hint/);
   assert.match(pw, /Then Test with none/);
@@ -2363,11 +2363,11 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 18 pw li
   const lineIds = [...pw.matchAll(/id: "(pw\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 18 }, (_, i) => `pw${i + 1}`),
+    Array.from({ length: 20 }, (_, i) => `pw${i + 1}`),
   );
 
   const sides = [...pw.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 18, "expected line sides");
+  assert.ok(sides.length >= 20, "expected line sides");
   assert.ok(sides.every((s) => s === "w"), "every line side must be w");
 
   function linePlies(id) {
@@ -2380,7 +2380,7 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 18 pw li
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  for (let i = 1; i <= 18; i++) {
+  for (let i = 1; i <= 20; i++) {
     const plies = linePlies(`pw${i}`);
     assert.deepEqual(plies.slice(0, 5), ["e4", "e5", "Nf3", "Nc6", "c3"], `pw${i} must start e4 e5 Nf3 Nc6 c3`);
   }
@@ -2391,6 +2391,8 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 18 pw li
   assert.deepEqual(linePlies("pw7"), ["e4", "e5", "Nf3", "Nc6", "c3", "d5", "exd5", "Qxd5", "d4", "Bf5", "dxe5", "Qxd1+", "Kxd1", "O-O-O+", "Nbd2", "Nge7", "Ke1", "Ng6"]);
   assert.deepEqual(linePlies("pw13"), ["e4", "e5", "Nf3", "Nc6", "c3", "f5", "d4", "fxe4", "Nxe5", "Nf6", "Bg5", "d6", "Nxc6", "bxc6", "Nd2", "d5", "f3", "Be7"]);
   assert.deepEqual(linePlies("pw18"), ["e4", "e5", "Nf3", "Nc6", "c3", "g6", "d4", "Bg7", "Bg5", "Bf6", "Be3", "d5", "Bb5", "exd4", "Bxc6+", "bxc6", "Nxd4", "Ne7"]);
+  assert.deepEqual(linePlies("pw19"), ["e4", "e5", "Nf3", "Nc6", "c3", "Nf6", "d4", "Nxe4", "d5", "Ne7", "Nxe5", "d6", "Bb5+", "c6", "dxc6", "bxc6", "Nxc6", "Qb6", "Nd4+", "Bd7", "Bxd7+", "Kxd7", "O-O"]);
+  assert.deepEqual(linePlies("pw20"), ["e4", "e5", "Nf3", "Nc6", "c3", "Nf6", "d4", "Nxe4", "d5", "Ne7", "Nxe5", "Ng6", "Bd3", "Nxf2", "Bxg6", "Nxd1", "Bxf7+", "Ke7", "Bg5+", "Kd6", "Nc4+", "Kc5", "Nba3", "Nxc3", "Bxd8"]);
 
   const names = Object.fromEntries(
     [...pw.matchAll(/id: "(pw\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
@@ -2403,10 +2405,12 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 18 pw li
   assert.equal(names.pw8, "Steinitz");
   assert.equal(names.pw13, "Ponziani Countergambit");
   assert.equal(names.pw18, "Horwitz");
+  assert.equal(names.pw19, "Trap · …d6 Bb5+");
+  assert.equal(names.pw20, "Trap · …Nxf2 Bxg6");
 
-  const allPlies = Array.from({ length: 18 }, (_, i) => linePlies(`pw${i + 1}`));
-  for (let i = 0; i < 18; i++) {
-    for (let j = 0; j < 18; j++) {
+  const allPlies = Array.from({ length: 20 }, (_, i) => linePlies(`pw${i + 1}`));
+  for (let i = 0; i < 20; i++) {
+    for (let j = 0; j < 20; j++) {
       if (i === j) continue;
       const a = allPlies[i];
       const b = allPlies[j];
@@ -2673,7 +2677,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   }
   const pwPack = {
     id: "ponziani-white",
-    lines: Array.from({ length: 18 }, (_, i) => ({ id: `pw${i + 1}` })),
+    lines: Array.from({ length: 20 }, (_, i) => ({ id: `pw${i + 1}` })),
   };
   for (const line of pwPack.lines) {
     assert.equal(isLineUnlocked(pwPack, line.id, []), false, line.id);
@@ -2735,7 +2739,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(pwPack, "pw1", ["ponziani-white"])?.id, "pw2");
 });
 
-test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–18, gfb1–18, peb1–18, berb1–18, kidb1–18, stb1–18, and pw1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–18, gfb1–18, peb1–18, berb1–18, kidb1–18, stb1–18, and pw1–20 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -2824,7 +2828,7 @@ test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   assertIdeas(berb, "berb", 18);
   assertIdeas(kidb, "kidb", 18);
   assertIdeas(stb, "stb", 18);
-  assertIdeas(pw, "pw", 18);
+  assertIdeas(pw, "pw", 20);
   assert.match(
     ck,
     /idea: "White has locked the centre\. Develop the light bishop before …e6, then challenge d4 with …c5\."/,
