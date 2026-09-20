@@ -25,7 +25,7 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          There are thirty opening packs. Some lines are free as samples (for
+          There are thirty-three opening packs. Some lines are free as samples (for
           example part of Caro-Kann). Other packs are one-time purchases on
           this website via Stripe, usually £1.99 or £2.99 in the UK. You can
           also buy Buy all packs for £19.99 (UK), which unlocks every opening
