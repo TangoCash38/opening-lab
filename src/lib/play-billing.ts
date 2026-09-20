@@ -147,7 +147,12 @@ export async function startPlayLabPlusYearly(): Promise<UnlockState | null> {
   if (!result.purchaseToken) {
     throw new Error("Google Play did not return a purchase.");
   }
-  return confirmPlaySubscribe(result);
+  return confirmPlaySubscribe({
+    purchaseToken: result.purchaseToken,
+    productId: result.productId,
+    packageName: result.packageName,
+    orderId: result.orderId,
+  });
 }
 
 export async function restorePlayLabPlus(): Promise<UnlockState> {
@@ -158,5 +163,10 @@ export async function restorePlayLabPlus(): Promise<UnlockState> {
   if (!result.purchaseToken) {
     throw new Error("No Lab+ purchase to restore.");
   }
-  return confirmPlaySubscribe(result);
+  return confirmPlaySubscribe({
+    purchaseToken: result.purchaseToken,
+    productId: result.productId,
+    packageName: result.packageName,
+    orderId: result.orderId,
+  });
 }
