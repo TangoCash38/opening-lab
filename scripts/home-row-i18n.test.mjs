@@ -109,7 +109,8 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.doesNotMatch(i18n, /search Opening Lab/i);
   assert.match(lines, /t\("Locked"\)/);
   assert.match(lines, /t\("Free"\)/);
-  assert.match(unlock, /Packs are not for sale in this Play test/);
+  assert.match(unlock, /Billed by Google Play/);
+  assert.match(unlock, /onUnlockPack/);
   assert.match(about, /Don't show again/);
   assert.match(about, /t\(GAME_INTRO_TITLE\)/);
   assert.match(train, /The book move is \{san\}\./);

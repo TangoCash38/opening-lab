@@ -19,8 +19,8 @@ const routeTree = src("src/routeTree.gen.ts");
 const legal = src("src/components/opening-lab/legal-page.tsx");
 const i18n = src("src/lib/i18n.ts");
 
-test("Privacy is the 19 September 2026 signed copy", () => {
-  assert.match(privacy, /updated="19 September 2026"/);
+test("Privacy is the 20 September 2026 signed copy", () => {
+  assert.match(privacy, /updated="20 September 2026"/);
   assert.match(privacy, /title="Who we are"/);
   assert.match(privacy, /title="Who may use Opening Lab"/);
   assert.match(
@@ -38,7 +38,7 @@ test("Privacy is the 19 September 2026 signed copy", () => {
   );
   assert.match(
     privacy,
-    /Pack billing in the Google Play app is not on sale in this build/,
+    /In the Google Play app, paid packs and Buy all are one-time Google/,
   );
   assert.match(privacy, /There is no Lab\+ subscription on sale/);
   assert.match(privacy, /uk\.co\.openinglab/);

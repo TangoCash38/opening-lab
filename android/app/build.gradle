@@ -40,8 +40,8 @@ android {
         applicationId "uk.co.openinglab"
         minSdk 24
         targetSdk 36
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 9
+        versionName "1.0.8"
 
         resValue "string", "appName", twaManifest.name
         resValue "string", "launcherName", twaManifest.launcherName
@@ -115,5 +115,5 @@ preBuild.dependsOn(generateShortcutsFile)
 
 dependencies {
     implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.2'
-    implementation 'com.android.billingclient:billing:7.1.1'
+    implementation 'com.android.billingclient:billing:8.3.0'
 }

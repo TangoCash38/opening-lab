@@ -48,11 +48,10 @@ function DeleteAccount() {
 
       <LegalSection title="Google Play billing">
         <p>
-          Deleting your account does not cancel a Google Play subscription or
-          Play purchase on Google’s side. Pack billing and Lab+ are not on
-          sale in the Play app in this build. If you later buy through Google
-          Play, cancel or manage that in Google Play (Payments & subscriptions)
-          as well.
+          Deleting your account does not cancel a Google Play purchase on
+          Google’s side. Paid packs and Buy all in the Play app are one-time
+          Google Play purchases. There is no Lab+ subscription. Manage Play
+          purchases in Google Play (Payments & subscriptions) as well.
         </p>
       </LegalSection>
 

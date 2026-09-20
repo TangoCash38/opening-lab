@@ -7,7 +7,7 @@ export const Route = createFileRoute("/privacy")({
 
 function Privacy() {
   return (
-    <LegalPage title="Privacy Policy" updated="19 September 2026">
+    <LegalPage title="Privacy Policy" updated="20 September 2026">
       <p>
         Opening Lab is a chess opening trainer run by Sean Paul in the United
         Kingdom. This page explains what we collect and why, in plain English.
@@ -66,10 +66,10 @@ function Privacy() {
           unlock the trainer on your account.
         </p>
         <p>
-          Pack billing in the Google Play app is not on sale in this build.
-          There is no Lab+ subscription on sale. If Google Play billing is
-          offered later, Google would handle that store payment and we would
-          store only the unlock on your account.
+          In the Google Play app, paid packs and Buy all are one-time Google
+          Play purchases. There is no Lab+ subscription on sale. Google
+          handles that store payment and we store only the unlock on your
+          account.
         </p>
       </LegalSection>
 

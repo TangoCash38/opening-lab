@@ -128,13 +128,13 @@ test("isPlayApp remembers only a hard UA/referrer hit and clears leftover sessio
 
 test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   const hero = src("src/components/opening-lab/home-hero.tsx");
-  assert.match(hero, /pack \? pack\.lines : \[\]/);
+  assert.match(hero, /const shownLines = pack\.lines/);
   assert.match(hero, /shownLines\.map/);
-  assert.match(hero, /See 18 lines/);
+  assert.match(hero, /See \{n\} \{pack\} lines/);
   assert.doesNotMatch(hero, /playableLines\(pack\)/);
   assert.doesNotMatch(hero, /See 3 lines/);
   assert.match(hero, /else onRequestUnlock\?\.\(pack\)/);
-  assert.match(hero, /if \(unlocked\) onStartLine\(pack, item, "learn"\)/);
+  assert.match(hero, /if \(unlocked\) \{/);
 
   const packList = src("src/components/opening-lab/pack-list.tsx");
   assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
@@ -148,36 +148,43 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.doesNotMatch(unlockFn, /\/api\/checkout/);
   assert.doesNotMatch(unlockFn, /fetch\(/);
   const payStart = packList.indexOf("const pay = async");
-  const payGuard = packList.slice(payStart, packList.indexOf("setPayError(null);", payStart));
+  const payGuard = packList.slice(payStart, packList.indexOf("setPayError(null);", payStart + 1));
   assert.match(payGuard, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
-  assert.match(payGuard, /setShowSub\(false\)/);
-  assert.match(payGuard, /setPayBusy\(false\)/);
-  assert.match(payGuard, /return;/);
+  assert.match(payGuard, /kind === "monthly" \|\| kind === "yearly"/);
   assert.doesNotMatch(payGuard, /startCheckout/);
-  assert.doesNotMatch(payGuard, /fetch\(/);
-  assert.doesNotMatch(payGuard, /Please wait/);
   assert.doesNotMatch(packList, /Card via Stripe/);
+  assert.match(packList, /startPlayPackBuy/);
+  assert.match(packList, /startPlayBuyAll/);
+  assert.match(packList, /restorePlayPacks/);
+  assert.doesNotMatch(packList, /startPlayLabPlusYearly/);
+  const wrapPay = packList.slice(payStart, packList.indexOf("setPayError(null);", payStart + 80));
+  assert.doesNotMatch(wrapPay, /startCheckout/);
 
   const modal = src("src/components/opening-lab/unlock-modal.tsx");
   assert.match(modal, /const wrap = playApp \|\| isPlayWrap\(\)/);
   assert.match(modal, /\{wrap \? \(/);
   assert.match(modal, /Card via Stripe/);
   assert.doesNotMatch(modal, /Yours to keep/);
-  assert.match(modal, /Packs are not for sale in this Play test/);
-  assert.match(modal, /three free Caro lines still train/i);
+  assert.doesNotMatch(modal, /lifetime/i);
+  assert.match(modal, /Billed by Google Play/);
   assert.match(modal, /Pay as you go/);
-  const wrapBranch = modal.slice(modal.indexOf("{wrap ? ("), modal.indexOf(") : ("));
-  const websiteBranch = modal.slice(modal.indexOf(") : ("));
+  const wrapStart = modal.indexOf("{wrap ? (");
+  const websiteStart = modal.indexOf('t("Card via Stripe.")');
+  const footerStart = modal.indexOf("{error ? (");
+  const wrapBranch = modal.slice(wrapStart, websiteStart);
+  const websiteBranch = modal.slice(websiteStart, footerStart);
   assert.doesNotMatch(wrapBranch, /Card via Stripe/);
-  assert.doesNotMatch(wrapBranch, /onUnlockPack/);
+  assert.match(wrapBranch, /onUnlockPack/);
+  assert.match(wrapBranch, /onBuyAll/);
+  assert.match(wrapBranch, /Restore purchases/);
   assert.doesNotMatch(wrapBranch, /Please wait/);
-  assert.doesNotMatch(wrapBranch, /Google will bill/i);
-  assert.doesNotMatch(wrapBranch, /Google Play Billing/i);
+  assert.doesNotMatch(wrapBranch, /sold on the website/i);
+  assert.doesNotMatch(wrapBranch, /buy on the website/i);
   assert.match(wrapBranch, /\{price\}/);
-  assert.match(wrapBranch, /Packs are not for sale in this Play test/);
+  assert.match(wrapBranch, /Billed by Google Play/);
   assert.match(websiteBranch, /Card via Stripe/);
   assert.doesNotMatch(websiteBranch, /Yours to keep/);
-  assert.doesNotMatch(websiteBranch, /Packs are not for sale in this Play test/);
+  assert.doesNotMatch(websiteBranch, /Billed by Google Play/);
 
   const i18n = src("src/lib/i18n.ts");
   assert.equal(i18n.split('"Card via Stripe.":').length - 1, 12);
@@ -190,9 +197,17 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.match(checkout, /Pack billing is not on sale in this build/);
 
   const catalog = src("src/lib/catalog.ts");
-  assert.match(catalog, /PLAY_PACK_SKUS: Readonly<Record<string, string>> = \{\}/);
+  assert.match(catalog, /const PLAY_PACK_SKUS: Readonly<Record<string, string>>/);
+  assert.match(catalog, /playPackSkuMap/);
+  assert.match(catalog, /PLAY_PATH_B_PACK_IDS/);
+  assert.match(catalog, /@\/lib\/play-skus/);
   assert.match(catalog, /export function catalogOffersLabPlus/);
   assert.match(catalog, /return false/);
+
+  const playSkus = src("src/lib/play-skus.ts");
+  assert.match(playSkus, /PLAY_SKU_BUY_ALL = "buy_all_packs"/);
+  assert.match(playSkus, /caro-kann-black/);
+  assert.doesNotMatch(playSkus, /"opening-traps"/);
 });
 
 test("website app prompt is website-only and uses closed testing, not a store page", () => {
@@ -209,7 +224,7 @@ test("website app prompt is website-only and uses closed testing, not a store pa
   assert.doesNotMatch(prompt, /play\.google\.com\/store\/apps\/details/);
   assert.doesNotMatch(prompt, /search Opening Lab/i);
   assert.doesNotMatch(prompt, /How to play/);
-  assert.match(prompt, /t\("Download the app"\)/);
+  assert.match(prompt, /t\("App coming soon"\)/);
   assert.match(prompt, /t\("Continue on the web"\)/);
 });
 

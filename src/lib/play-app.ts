@@ -21,9 +21,9 @@ export const PLAY_UA_TOKEN = "OpeningLabPlay";
 export const PLAY_SKU_YEARLY = "lab_plus_yearly";
 
 export const PLAY_STORE_NOTICE =
-  "Scotch is free. Lab+ yearly is billed by Google Play.";
+  "Two Opening Traps and three Caro lines are free. Paid packs are billed by Google Play.";
 
-export const PLAY_SKU_NOT_ON_SALE = "Lab+ isn’t on sale in the store yet";
+export const PLAY_SKU_NOT_ON_SALE = "This pack isn’t on sale in the store yet";
 
 export type PlayWrapUnlocks = {
   packs: string[];

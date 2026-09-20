@@ -1,4 +1,15 @@
 import type { OpeningLine, Pack } from "@/data/packs";
+import {
+  PLAY_PATH_B_PACK_IDS,
+  PLAY_SKU_BUY_ALL,
+  packIdFromPlaySku as packIdFromEnginePlaySku,
+  playPackSkuMap,
+} from "@/lib/play-skus";
+
+export {
+  PLAY_PATH_B_PACK_IDS,
+  playSkuForPackId,
+} from "@/lib/play-skus";
 
 /** Only these packs appear in the catalog while we check the rest. */
 export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white", "opening-traps", "scotch", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "stafford-black", "ponziani-white", "alekhine-black"] as const;
@@ -63,24 +74,40 @@ export function nextUnlockedLine(
     .find((l) => isLineUnlocked(pack, l.id, purchasedPackIds));
 }
 
+/** Play Console one-time Buy all SKU. Not a lifetime licence. */
+export const PLAY_BUY_ALL_SKU = PLAY_SKU_BUY_ALL;
+
 /**
- * Individual pack Play product IDs on sale in the wrap UI. Empty — Path B
- * backend mapping lives in play-skus.ts (`pack_<id_with_underscores>`).
- * Filling this object would flip hasPaidPlaySkuPath / playVisiblePacks.
+ * Path B Play INAPP map — same 32 pack ids as PLAY_PATH_B_PACK_IDS
+ * (includes caro-kann-black extras; excludes opening-traps).
  * Lab+ yearly is not a pack SKU path.
  */
-const PLAY_PACK_SKUS: Readonly<Record<string, string>> = {};
+const PLAY_PACK_SKUS: Readonly<Record<string, string>> = playPackSkuMap(
+  PLAY_PATH_B_PACK_IDS,
+);
 
-/** True only when this pack is paid and has a Play-billed SKU. */
+/** Pack catalog id for a Path B Play product id, or null for buy-all / unknown. */
+export function packIdFromPlaySku(productId: string): string | null {
+  const sku = productId.trim();
+  if (!sku || sku === PLAY_BUY_ALL_SKU) return null;
+  return packIdFromEnginePlaySku(sku, new Set(PLAY_PATH_B_PACK_IDS));
+}
+
+export function playSkuForVisiblePack(packId: string): string | null {
+  return PLAY_PACK_SKUS[packId] ?? null;
+}
+
+/** True when this pack has a Play-billed INAPP SKU (including paid extras on sample packs). */
 export function hasPaidPlaySkuPath(
   pack: Pick<Pack, "id" | "isFree">,
 ): boolean {
-  return !pack.isFree && pack.id in PLAY_PACK_SKUS;
+  return pack.id in PLAY_PACK_SKUS;
 }
 
 /**
- * Lab+ stays hidden (Path B: no Lab+). Pack SKUs are verified on the
- * server via play-skus.ts; this catalog gate must stay false.
+ * Lab+ stays hidden while the Play catalog is free — no paid/locked
+ * Play SKU path. An eleventh visible free pack must not unhide Lab+.
+ * A locked pack with no Play buy path is not a path (Path A).
  */
 export function catalogOffersLabPlus(
   _packs: readonly Pick<Pack, "id" | "isFree">[] = [],
