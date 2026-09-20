@@ -25,19 +25,25 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          There are thirty-three opening packs. Some lines are free as samples (for
-          example part of Caro-Kann). Other packs are one-time purchases on
-          this website via Stripe, usually £1.99 or £2.99 in the UK. You can
-          also buy Buy all packs for £19.99 (UK), which unlocks every opening
-          pack on the website. Prices include VAT where it applies. Pack
-          billing in the Google Play app is not on sale in this build.
+          There are thirty-three opening packs. Some lines are free as samples
+          (for example part of Caro-Kann). Other packs are one-time purchases,
+          usually £1.99 or £2.99 in the UK. You can also buy Buy all packs for
+          £19.99 (UK), which unlocks every opening pack. Prices include VAT
+          where it applies.
+        </p>
+        <p>
+          If you buy in the Opening Lab app from Google Play, packs and Buy all
+          are one-time purchases via Google Play Billing. If you buy on the
+          website, packs and Buy all are one-time purchases via Stripe. There
+          is no Lab+ subscription.
         </p>
       </LegalSection>
 
       <LegalSection title="Buy all packs">
         <p>
-          Buy all packs is a one-time website purchase. It is not a lifetime
-          licence and we do not sell lifetime access.
+          Buy all packs is a one-time purchase (Google Play Billing in the Play
+          app, or Stripe on the website). It is not a lifetime licence and we
+          do not sell lifetime access.
         </p>
         <p>
           What you get: full access on your account to every opening pack on
@@ -81,20 +87,38 @@ function Terms() {
         </p>
       </LegalSection>
 
+      <LegalSection title="Payments and refunds">
+        <p>
+          Website purchases are charged by Stripe. For website purchases, the
+          UK cooling-off rules below apply.
+        </p>
+        <p>
+          Play app purchases are charged by Google. Refunds and cancellations
+          for Google Play purchases are handled under Google Play’s refund
+          rules. Deleting your Opening Lab account does not by itself refund a
+          Google Play purchase.
+        </p>
+        <p>
+          Pack unlocks stay on your Opening Lab account so you can use them
+          when signed in on the website or in the app, subject to these terms.
+        </p>
+      </LegalSection>
+
       <LegalSection title="Cooling-off (UK)">
         <p>
           You have 14 days to cancel a digital purchase if you have not used
           the digital content. Once you start training a paid line, that
-          14-day right ends for that purchase.
+          14-day right ends for that purchase. For purchases made through
+          Google Play, Google’s refund process applies.
         </p>
       </LegalSection>
 
       <LegalSection title="Google Play">
         <p>
           The Opening Lab app from Google Play is the same trainer as the
-          website. Paid packs and Buy all in the Play app are one-time Google
-          Play purchases (not a lifetime licence). Website purchases use
-          Stripe, not Google Play.
+          website. In the Play app, packs and Buy all are sold as one-time
+          in-app purchases via Google Play Billing. There is no Lab+
+          subscription. Website purchases use Stripe.
         </p>
       </LegalSection>
 

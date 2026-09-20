@@ -44,7 +44,8 @@ function Privacy() {
           </li>
           <li>
             Pack unlocks on your account if you buy packs or Buy all packs on
-            the website (so they follow you when you sign in).
+            the website (Stripe) or in the Google Play app (Google Play
+            Billing), so they follow you when you sign in.
           </li>
           <li>
             Training progress (which lines are green) stays on your device. We
@@ -59,17 +60,19 @@ function Privacy() {
       </LegalSection>
 
       <LegalSection title="Payments">
+        <p>Paid packs and Buy all packs (£19.99 UK for Buy all) may be sold:</p>
+        <ul className="list-disc space-y-1 pl-5">
+          <li>on this website via Stripe, or</li>
+          <li>
+            in the Google Play app as one-time in-app purchases via Google Play
+            Billing.
+          </li>
+        </ul>
         <p>
-          Paid packs and Buy all packs (£19.99 UK) are sold on this website via
-          Stripe. Card details go to Stripe, not to us. We never see your full
-          card number. We store that you bought a pack or Buy all so we can
-          unlock the trainer on your account.
-        </p>
-        <p>
-          In the Google Play app, paid packs and Buy all are one-time Google
-          Play purchases. There is no Lab+ subscription on sale. Google
-          handles that store payment and we store only the unlock on your
-          account.
+          Card or Play payment details go to Stripe or Google, not to us. We
+          never see your full card number. We store that you bought a pack or
+          Buy all so we can unlock the trainer on your account. There is no
+          Lab+ subscription.
         </p>
       </LegalSection>
 
@@ -101,7 +104,8 @@ function Privacy() {
         <p>
           If you use the Opening Lab app from Google Play (uk.co.openinglab),
           the same rules apply. Sign-in email and pack unlocks are stored on
-          our servers if you have an account. The app uses the same website, so
+          our servers if you have an account. Play purchases are processed by
+          Google; we store only the unlock. The app uses the same website, so
           the same cookies and analytics apply.
         </p>
       </LegalSection>
