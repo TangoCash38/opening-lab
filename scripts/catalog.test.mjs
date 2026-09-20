@@ -2830,14 +2830,26 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     t.skip("typescript not installed");
     return;
   }
-  const js = ts.transpileModule(src, {
-    compilerOptions: {
-      module: ts.ModuleKind.ESNext,
-      target: ts.ScriptTarget.ES2022,
-    },
-  }).outputText;
   const dir = join(root, "scripts", ".generated-catalog");
   mkdirSync(dir, { recursive: true });
+  const skusJs = ts.transpileModule(
+    readFileSync(join(root, "src/lib/play-skus.ts"), "utf8"),
+    {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+      },
+    },
+  ).outputText;
+  writeFileSync(join(dir, "play-skus.mjs"), skusJs);
+  const js = ts
+    .transpileModule(src, {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+      },
+    })
+    .outputText.replaceAll("@/lib/play-skus", "./play-skus.mjs");
   const tmp = join(dir, "catalog.mjs");
   writeFileSync(tmp, js);
   t.after(() => {

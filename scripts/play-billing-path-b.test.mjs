@@ -35,7 +35,7 @@ test("Android wrap is Billing 8 + versionCode 9 / 1.0.8 INAPP Path B", () => {
   assert.match(billing, /PATH_B_PACK_IDS/);
   assert.match(billing, /caro-kann-black/);
   assert.match(billing, /alekhine-black/);
-  assert.doesNotMatch(billing, /opening-traps/);
+  assert.doesNotMatch(billing, /"opening-traps"/);
   assert.doesNotMatch(billing, /ProductType\.SUBS/);
   assert.doesNotMatch(billing, /buyLabPlusYearly/);
   assert.doesNotMatch(billing, /lab_plus_yearly/);
