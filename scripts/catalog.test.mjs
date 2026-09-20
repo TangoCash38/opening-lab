@@ -2328,10 +2328,19 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.match(ot, /id: "ot6"/);
   assert.match(ot, /Trap · Stafford/);
   assert.match(ot, /Bg4#/);
+  assert.match(ot, /id: "ot12"/);
+  assert.match(ot, /Trap · Grob …Qxg5/);
+  assert.match(ot, /Nxh3/);
+  assert.match(ot, /closedLabel: "Free · 12 traps"/);
   assert.match(ot, /Then Test with none/);
   assert.doesNotMatch(ot, /Play on/);
   assert.doesNotMatch(ot, /playing on/);
   assert.doesNotMatch(ot, /from the finish if you want/);
+  const otIds = [...ot.matchAll(/id: "(ot\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(
+    otIds,
+    Array.from({ length: 12 }, (_, i) => `ot${i + 1}`),
+  );
 });
 
 test("Ponziani Opening for White is a thirty-second visible White pack: 20 pw lines, locked until purchase", () => {
