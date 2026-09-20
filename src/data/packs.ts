@@ -177,15 +177,15 @@ export const PACKS: Pack[] = [
       {
         id: "s26",
         name: "Punish the error · …Nf6 Nxc6",
-        idea: "In the Classical Scotch after Be3, Black’s …Nf6?? hangs the c5-bishop — Nxc6 forces the queen trade and Bxc5 wins a piece.",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3", "Nf6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Bxc5"],
+        idea: "In the Classical Scotch after Be3, Black’s …Nf6?? hangs the c5-bishop — Nxc6 forces the queen trade and Bxc5 wins a piece.",
         side: "w",
       },
       {
         id: "s27",
         name: "Punish the error · Sea-Cadet …Ne5",
-        idea: "After Scotch Gambit 4.Bc4 …d6 and c3, Black’s …Ne5?? meets Nxe5 — taking the queen with …Bxd1 walks into Bxf7+ and Nd5#.",
         plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
+        idea: "After Scotch Gambit 4.Bc4 …d6 and c3, Black’s …Ne5?? meets Nxe5 — taking the queen with …Bxd1 walks into Bxf7+ and Nd5#.",
         side: "w",
       },
     ],
