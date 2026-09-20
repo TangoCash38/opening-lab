@@ -56,7 +56,7 @@ test("Practice near-miss is a cream toast above the action row; Test never shows
   );
   assert.doesNotMatch(testMiss, /setNearMissSan\(exp/);
   assert.match(testMiss, /Inaccurate move/);
-  assert.match(train, /nearMissSan && mode === "learn" && !playingOn && !resultCard/);
+  assert.match(train, /nearMissSan && mode === "learn" && !resultCard/);
 });
 
 test("clean Test is a quiet Book solid win — one-tone chime, no burst", () => {
