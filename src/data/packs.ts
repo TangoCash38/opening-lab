@@ -4768,7 +4768,7 @@ export const PACKS: Pack[] = [
     price: null,
     blurb: "…Nc6 vs 3.Nxe5 · traps & mains",
     about: "Meet the Stafford Gambit for Black: answer 3.Nxe5 with …Nc6, then hunt traps and solid shells after 4.Nxc6 dxc6.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
-    closedLabel: "Free · 18 lines",
+    closedLabel: "Free · 20 lines",
     lines: [
       {
         id: "stb1",
@@ -4913,7 +4913,23 @@ export const PACKS: Pack[] = [
         next: "Black has won the queen. Develop …Bg4 or …Be6, then castle. Against Be2 tuck the queen or trade. Do not hunt more pawns before the remaining pieces are out.",
         plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Bg5", "Nxe4", "dxe4", "Bxf2+", "Kxf2", "Qxd1"],
         side: "b",
-      }
+      },
+      {
+        id: "stb19",
+        name: "Punish the error · 6.e5 Ng4",
+        idea: "After 5.Nc3 Bc5, 6.e5?? hangs the centre. …Ng4 hits f2; if White tries f4, …Qh4+ and …Bf2+ force …Bxg3 and …Qxh1, winning the corner rook in book plies.",
+        next: "Black is up a rook. Keep developing (…Be6/…O-O-O) and don’t let White’s centre pawns roll for free.",
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Nc3", "Bc5", "e5", "Ng4", "f4", "Qh4+", "g3", "Bf2+", "Ke2", "Bxg3", "hxg3", "Qxh1"],
+        side: "b",
+      },
+      {
+        id: "stb20",
+        name: "5.f3 Bc5 shell",
+        idea: "5.f3 is a slow try against the Stafford. Develop …Bc5–…Bb6, castle, and break with …c5 before White clamps the centre.",
+        next: "Pressure e4 and d4. Typical plans: …cxd4, …Be6, and …Nd7–…Nc5 if the knight reroutes.",
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "f3", "Bc5", "d4", "Bb6", "c3", "O-O", "Bd3", "Re8", "O-O", "c5"],
+        side: "b",
+      },
     ],
   },
 

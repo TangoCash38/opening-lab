@@ -2274,7 +2274,7 @@ test("King’s Indian Defence for Black is a thirtieth visible Black pack: 18 ki
   assert.ok(packs.indexOf('id: "kings-indian-attack"') >= 0, "kings-indian-attack must remain");
 });
 
-test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lines, locked until purchase", () => {
+test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lines, locked until purchase", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "stafford-black"');
   assert.ok(start >= 0, "stafford-black pack missing");
@@ -2288,7 +2288,8 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.match(stb, /isPremium: false/);
   assert.match(stb, /price: null/);
   assert.match(stb, /blurb: "…Nc6 vs 3.Nxe5 · traps & mains"/);
-  assert.match(stb, /closedLabel: "Free · 18 lines"/);
+  assert.match(stb, /closedLabel: "Free · 20 lines"/);
+  assert.doesNotMatch(stb, /closedLabel: "Free · 18 lines"/);
   assert.match(stb, /Meet the Stafford Gambit for Black/);
   assert.match(stb, /Practice the main Black moves with the hint/);
   assert.match(stb, /Then Test with none/);
@@ -2305,11 +2306,11 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   const lineIds = [...stb.matchAll(/id: "(stb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 18 }, (_, i) => `stb${i + 1}`),
+    Array.from({ length: 20 }, (_, i) => `stb${i + 1}`),
   );
 
   const sides = [...stb.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 18, "expected line sides");
+  assert.ok(sides.length >= 20, "expected line sides");
   assert.ok(sides.every((s) => s === "b"), "every line side must be b");
 
   function linePlies(id) {
@@ -2322,7 +2323,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  for (let i = 1; i <= 18; i++) {
+  for (let i = 1; i <= 20; i++) {
     const plies = linePlies(`stb${i}`);
     assert.equal(plies[0], "e4", `stb${i} must start e4`);
     assert.deepEqual(plies.slice(0, 4), ["e4", "e5", "Nf3", "Nf6"], `stb${i} Petroff start`);
@@ -2335,6 +2336,12 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.ok(linePlies("stb14").includes("Bg4#"), "stb14 needs Bg4#");
   assert.ok(linePlies("stb18").includes("Qxd1"), "stb18 needs Qxd1");
   assert.deepEqual(linePlies("stb14").slice(0, 8), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6"]);
+  assert.deepEqual(linePlies("stb14"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Bg5", "Nxe4", "Bxd8", "Bxf2+", "Ke2", "Bg4#"]);
+  assert.deepEqual(linePlies("stb19"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Nc3", "Bc5", "e5", "Ng4", "f4", "Qh4+", "g3", "Bf2+", "Ke2", "Bxg3", "hxg3", "Qxh1"]);
+  assert.deepEqual(linePlies("stb20"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "f3", "Bc5", "d4", "Bb6", "c3", "O-O", "Bd3", "Re8", "O-O", "c5"]);
+  assert.ok(linePlies("stb19").includes("Qxh1"), "stb19 needs Qxh1");
+  assert.equal(linePlies("stb19")[10], "e5", "stb19 is 6.e5");
+  assert.equal(linePlies("stb20")[8], "f3", "stb20 is 5.f3");
 
   const names = Object.fromEntries(
     [...stb.matchAll(/id: "(stb\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
@@ -2345,6 +2352,26 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.equal(names.stb1, "Main 5.d3 Bc5 Be2 h5 shell");
   assert.equal(names.stb14, "Trap · Rosen queen-take mate Bg5 Nxe4");
   assert.equal(names.stb18, "Trap · Rosen dxe4 queen snatch");
+  assert.equal(names.stb19, "Punish the error · 6.e5 Ng4");
+  assert.equal(names.stb20, "5.f3 Bc5 shell");
+  assert.match(stb, /After 5\.Nc3 Bc5, 6\.e5\?\? hangs the centre/);
+  assert.match(stb, /5\.f3 is a slow try against the Stafford/);
+  assert.match(stb, /Black is up a rook/);
+  assert.match(stb, /Pressure e4 and d4/);
+  assert.doesNotMatch(names.stb14, /Punish the error/);
+  assert.doesNotMatch(names.stb18, /Punish the error/);
+
+  const allPlies = Array.from({ length: 20 }, (_, i) => linePlies(`stb${i + 1}`));
+  for (let i = 0; i < 20; i++) {
+    for (let j = 0; j < 20; j++) {
+      if (i === j) continue;
+      const a = allPlies[i];
+      const b = allPlies[j];
+      if (a.length < b.length && a.every((p, k) => p === b[k])) {
+        assert.fail(`stb${i + 1} is a ply-prefix of stb${j + 1}`);
+      }
+    }
+  }
 
   // opening-traps Stafford mate stays as its own ot6 line.
   const otStart = packs.indexOf('id: "opening-traps"');
@@ -2883,7 +2910,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(pwPack, "pw1", ["ponziani-white"])?.id, "pw2");
 });
 
-test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, stb1–18, and pw1–20 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, stb1–20, and pw1–20 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -2971,7 +2998,7 @@ test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   assertIdeas(peb, "peb", 18);
   assertIdeas(berb, "berb", 18);
   assertIdeas(kidb, "kidb", 18);
-  assertIdeas(stb, "stb", 18);
+  assertIdeas(stb, "stb", 20);
   assertIdeas(pw, "pw", 20);
   assert.match(
     ck,
