@@ -1,10 +1,28 @@
 /**
- * Server-only Google Play Lab+ yearly verification.
- * Uses Android Publisher API when GOOGLE_PLAY_SERVICE_ACCOUNT_JSON is set.
+ * Server-only Google Play Path B verification (one-time INAPP only).
+ *
+ * POST /api/play/subscribe
+ * { packageName, productId, purchaseToken, orderId? }
+ *
+ *   pack_*         → applyPurchase({ kind: "pack", packId })
+ *   buy_all_packs  → applyPurchase({ kind: "buy_all" })
+ *
+ * Verify via Android Publisher purchases/products/{productId}/tokens/{token}.
+ * Path B grants are one-time INAPP only (no subscriptions).
+ *
+ * Live grants require GOOGLE_PLAY_SERVICE_ACCOUNT_JSON (raw or base64 JSON
+ * with client_email + private_key). When it is missing, fail-soft 503
+ * `not_connected` and optionally save the token — never grant unlocks.
  * Never import from client code. Never log tokens or the service-account JSON.
  */
 import { createSign } from "node:crypto";
-import { PLAY_PACKAGE, PLAY_SKU_YEARLY } from "@/lib/play-app";
+import { PACKS } from "@/data/packs";
+import { PLAY_PACKAGE, playWrapAccountUnlocks } from "@/lib/play-app";
+import {
+  packIdFromPlaySku,
+  resolvePlayProduct,
+  type PlayProduct,
+} from "@/lib/play-skus";
 import {
   applyPurchase,
   getUnlocksForUser,
@@ -12,10 +30,12 @@ import {
   signedInUserId,
   userIdForPlayToken,
 } from "@/lib/purchases.server";
-import { YEAR_MS, type UnlockState } from "@/lib/unlocks";
+import type { UnlockState } from "@/lib/unlocks";
 
 const ANDROID_PUBLISHER_SCOPE = "https://www.googleapis.com/auth/androidpublisher";
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
+
+const KNOWN_PACK_IDS = new Set(PACKS.map((p) => p.id));
 
 function json(data: unknown, status = 200): Response {
   return Response.json(data, { status });
@@ -86,78 +106,135 @@ async function googleAccessToken(sa: ServiceAccount): Promise<string> {
   return data.access_token;
 }
 
-type PlayLineItem = {
-  productId?: string;
-  expiryTime?: string;
-};
-
-type PlaySubV2 = {
-  subscriptionState?: string;
-  latestOrderId?: string;
-  lineItems?: PlayLineItem[];
-};
-
-type PlaySubV1 = {
-  expiryTimeMillis?: string;
-  paymentState?: number;
+type PlayProductPurchase = {
+  purchaseState?: number;
+  acknowledgementState?: number;
   orderId?: string;
 };
 
-const GRANT_STATES = new Set([
-  "SUBSCRIPTION_STATE_ACTIVE",
-  "SUBSCRIPTION_STATE_IN_GRACE_PERIOD",
-  "SUBSCRIPTION_STATE_CANCELED",
-]);
-
-function expiryFromV2(sub: PlaySubV2, productId: string): number | null {
-  const item = (sub.lineItems ?? []).find((row) => row.productId === productId) ?? sub.lineItems?.[0];
-  if (!item?.expiryTime) return null;
-  const ms = Date.parse(item.expiryTime);
-  return Number.isFinite(ms) ? ms : null;
+function publisherAuthHeader(access: string): { Authorization: string } {
+  return { Authorization: `Bearer ${access}` };
 }
 
-async function verifyWithPublisher(input: {
+async function verifyOneTimeProduct(input: {
   packageName: string;
   productId: string;
   purchaseToken: string;
-}): Promise<{ expiresAt: number; orderId: string | null }> {
+}): Promise<{ orderId: string | null; acknowledgementState: number | null }> {
   const sa = serviceAccount();
   if (!sa) throw new Error("not_connected");
   const access = await googleAccessToken(sa);
-  const auth = { Authorization: `Bearer ${access}` };
-
-  const v2Url =
+  const url =
     `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/` +
-    `${encodeURIComponent(input.packageName)}/purchases/subscriptionsv2/tokens/${encodeURIComponent(input.purchaseToken)}`;
-  const v2res = await fetch(v2Url, { headers: auth });
-  if (v2res.ok) {
-    const sub = (await v2res.json()) as PlaySubV2;
-    const line = (sub.lineItems ?? []).find((row) => row.productId === input.productId);
-    if (!line && (sub.lineItems ?? []).length > 0) {
-      throw new Error("product");
-    }
-    if (sub.subscriptionState && !GRANT_STATES.has(sub.subscriptionState)) {
-      throw new Error("inactive");
-    }
-    const expiresAt = expiryFromV2(sub, input.productId) ?? Date.now() + YEAR_MS;
-    if (expiresAt <= Date.now()) throw new Error("inactive");
-    return { expiresAt, orderId: sub.latestOrderId ?? null };
-  }
-
-  const v1Url =
-    `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/` +
-    `${encodeURIComponent(input.packageName)}/purchases/subscriptions/` +
+    `${encodeURIComponent(input.packageName)}/purchases/products/` +
     `${encodeURIComponent(input.productId)}/tokens/${encodeURIComponent(input.purchaseToken)}`;
-  const v1res = await fetch(v1Url, { headers: auth });
-  if (!v1res.ok) {
+  const res = await fetch(url, { headers: publisherAuthHeader(access) });
+  if (!res.ok) {
     throw new Error("verify");
   }
-  const sub = (await v1res.json()) as PlaySubV1;
-  const expiresAt = sub.expiryTimeMillis ? Number(sub.expiryTimeMillis) : Date.now() + YEAR_MS;
-  if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
+  const purchase = (await res.json()) as PlayProductPurchase;
+  // 0 = purchased, 1 = canceled, 2 = pending
+  if (purchase.purchaseState !== 0) {
     throw new Error("inactive");
   }
-  return { expiresAt, orderId: sub.orderId ?? null };
+  return {
+    orderId: purchase.orderId ?? null,
+    acknowledgementState:
+      typeof purchase.acknowledgementState === "number" ? purchase.acknowledgementState : null,
+  };
+}
+
+async function acknowledgeOneTimeProduct(input: {
+  packageName: string;
+  productId: string;
+  purchaseToken: string;
+}): Promise<void> {
+  const sa = serviceAccount();
+  if (!sa) return;
+  try {
+    const access = await googleAccessToken(sa);
+    const url =
+      `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/` +
+      `${encodeURIComponent(input.packageName)}/purchases/products/` +
+      `${encodeURIComponent(input.productId)}/tokens/${encodeURIComponent(input.purchaseToken)}:acknowledge`;
+    await fetch(url, {
+      method: "POST",
+      headers: {
+        ...publisherAuthHeader(access),
+        "Content-Type": "application/json",
+      },
+      body: "{}",
+    });
+  } catch {
+    /* acknowledge is best-effort; grant already persisted */
+  }
+}
+
+function parsePlayProduct(productId: string): PlayProduct | null {
+  const resolved = resolvePlayProduct(productId);
+  if (!resolved) return null;
+  if (resolved.kind === "pack") {
+    const packId = packIdFromPlaySku(resolved.productId, KNOWN_PACK_IDS);
+    if (!packId) return null;
+    return { kind: "pack", productId: resolved.productId, packId };
+  }
+  return resolved;
+}
+
+function alreadyGranted(product: PlayProduct, existing: UnlockState): boolean {
+  if (!existing.playBilled) return false;
+  if (product.kind === "buy_all") return existing.plan === "buy_all";
+  return existing.packs.includes(product.packId);
+}
+
+/** UnlockState Mobile merges: packs, plan, expiresAt, playBilled. */
+function grantPayload(unlocks: UnlockState): UnlockState {
+  return playWrapAccountUnlocks({
+    packs: unlocks.packs,
+    plan: unlocks.plan,
+    expiresAt: unlocks.expiresAt,
+    playBilled: true,
+  });
+}
+
+async function notConnectedResponse(
+  userId: string,
+  purchaseToken: string,
+  orderId: string | null,
+): Promise<Response> {
+  try {
+    await savePlayPurchaseToken(userId, purchaseToken, orderId);
+  } catch {
+    /* persist is best-effort when Play is not connected */
+  }
+  return json(
+    {
+      error: "Play Billing is not connected on the server yet",
+      code: "not_connected",
+    },
+    503,
+  );
+}
+
+async function applyVerifiedGrant(
+  userId: string,
+  product: PlayProduct,
+  purchaseToken: string,
+  orderId: string | null,
+): Promise<UnlockState> {
+  if (product.kind === "pack") {
+    return applyPurchase(userId, {
+      kind: "pack",
+      packId: product.packId,
+      playPurchaseToken: purchaseToken,
+      playOrderId: orderId,
+    });
+  }
+  return applyPurchase(userId, {
+    kind: "buy_all",
+    playPurchaseToken: purchaseToken,
+    playOrderId: orderId,
+  });
 }
 
 export async function playSubscribeResponse(request: Request): Promise<Response> {
@@ -182,15 +259,16 @@ export async function playSubscribeResponse(request: Request): Promise<Response>
   const orderId = typeof body.orderId === "string" ? body.orderId.trim() : "";
 
   if (!purchaseToken) return json({ error: "Missing purchase token" }, 400);
+  if (!productId) return json({ error: "Unknown product" }, 400);
   if (packageName && packageName !== PLAY_PACKAGE) {
     return json({ error: "Wrong app" }, 400);
   }
-  if (productId && productId !== PLAY_SKU_YEARLY) {
-    return json({ error: "Unknown product" }, 400);
-  }
 
   const pkg = packageName || PLAY_PACKAGE;
-  const sku = productId || PLAY_SKU_YEARLY;
+  const product = parsePlayProduct(productId);
+  if (!product) {
+    return json({ error: "Unknown product" }, 400);
+  }
 
   try {
     const owner = await userIdForPlayToken(purchaseToken);
@@ -199,13 +277,8 @@ export async function playSubscribeResponse(request: Request): Promise<Response>
     }
     if (owner === userId) {
       const existing = await getUnlocksForUser(userId);
-      if (existing.plan === "yearly" && existing.expiresAt && existing.expiresAt > Date.now()) {
-        return json({
-          packs: [],
-          plan: "yearly",
-          expiresAt: existing.expiresAt,
-          playBilled: true,
-        });
+      if (alreadyGranted(product, existing)) {
+        return json(grantPayload(existing));
       }
     }
   } catch {
@@ -213,69 +286,49 @@ export async function playSubscribeResponse(request: Request): Promise<Response>
   }
 
   if (!serviceAccount()) {
-    try {
-      await savePlayPurchaseToken(userId, purchaseToken, orderId || null);
-    } catch {
-      /* persist is best-effort when Play is not connected */
-    }
-    return json(
-      {
-        error: "Play Billing is not connected on the server yet",
-        code: "not_connected",
-      },
-      503,
-    );
+    return notConnectedResponse(userId, purchaseToken, orderId || null);
   }
 
-  let verified: { expiresAt: number; orderId: string | null };
+  let verifiedOrderId: string | null = orderId || null;
   try {
-    verified = await verifyWithPublisher({
+    const verified = await verifyOneTimeProduct({
       packageName: pkg,
-      productId: sku,
+      productId: product.productId,
       purchaseToken,
     });
+    verifiedOrderId = verified.orderId || orderId || null;
+    if (verified.acknowledgementState === 0) {
+      await acknowledgeOneTimeProduct({
+        packageName: pkg,
+        productId: product.productId,
+        purchaseToken,
+      });
+    }
   } catch (err) {
     const reason = err instanceof Error ? err.message : "verify";
     if (reason === "not_connected") {
-      try {
-        await savePlayPurchaseToken(userId, purchaseToken, orderId || null);
-      } catch {
-        /* ignore */
-      }
-      return json(
-        {
-          error: "Play Billing is not connected on the server yet",
-          code: "not_connected",
-        },
-        503,
-      );
+      return notConnectedResponse(userId, purchaseToken, orderId || null);
     }
     if (reason === "inactive") {
-      return json({ error: "This Lab+ purchase is not active" }, 402);
-    }
-    if (reason === "product") {
-      return json({ error: "Unknown product" }, 400);
+      return json({ error: "This Google Play purchase is not active" }, 402);
     }
     console.error("[play] verify failed");
     return json({ error: "Could not verify this Google Play purchase" }, 502);
   }
 
   try {
-    const unlocks: UnlockState = await applyPurchase(userId, {
-      kind: "yearly",
-      plan: "yearly",
-      expiresAt: verified.expiresAt,
-      playPurchaseToken: purchaseToken,
-      playOrderId: verified.orderId || orderId || null,
-    });
-    return json({
-      packs: [],
-      plan: unlocks.plan,
-      expiresAt: unlocks.expiresAt,
-      playBilled: true,
-    });
+    const unlocks = await applyVerifiedGrant(
+      userId,
+      product,
+      purchaseToken,
+      verifiedOrderId,
+    );
+    return json(grantPayload(unlocks));
   } catch (err) {
     console.error("[play] grant failed", err);
-    return json({ error: "Could not save Lab+" }, 500);
+    return json({ error: "Could not save this Google Play purchase" }, 500);
   }
 }
+
+/** Same handler — Mobile Path B posts to /api/play/subscribe. */
+export const playPurchaseResponse = playSubscribeResponse;

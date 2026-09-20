@@ -1,13 +1,8 @@
 /**
- * Client helper for native Play Billing (Lab+ yearly only).
- * The System WebView has no Digital Goods API — calls go through
- * window.OpeningLabPlay (JavascriptInterface).
+ * Client helper for native Play Billing (Path B).
+ * Mobile POSTs one-time tokens to POST /api/play/subscribe (same-origin, session).
  */
-import {
-  PLAY_PACKAGE,
-  PLAY_SKU_NOT_ON_SALE,
-  PLAY_SKU_YEARLY,
-} from "@/lib/play-app";
+import { PLAY_PACKAGE, PLAY_SKU_NOT_ON_SALE } from "@/lib/play-app";
 import {
   normalizeUnlockState,
   replaceUnlocks,
@@ -77,9 +72,14 @@ function nativeCall(method: "buy" | "restore"): Promise<PlayNativeResult> {
   });
 }
 
-export async function confirmPlaySubscribe(input: {
+/**
+ * Confirm a Play purchase. Mobile POSTs
+ * `{ packageName, productId, purchaseToken, orderId? }` to /api/play/subscribe.
+ * Restore is one POST per { productId, purchaseToken }.
+ */
+export async function confirmPlayPurchase(input: {
   purchaseToken: string;
-  productId?: string;
+  productId: string;
   packageName?: string;
   orderId?: string;
 }): Promise<UnlockState> {
@@ -89,7 +89,7 @@ export async function confirmPlaySubscribe(input: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       packageName: input.packageName ?? PLAY_PACKAGE,
-      productId: input.productId ?? PLAY_SKU_YEARLY,
+      productId: input.productId,
       purchaseToken: input.purchaseToken,
       orderId: input.orderId,
     }),
@@ -99,11 +99,23 @@ export async function confirmPlaySubscribe(input: {
     code?: string;
   };
   if (!res.ok) {
-    throw new Error(data.error ?? "Could not confirm Lab+");
+    throw new Error(data.error ?? "Could not confirm this Google Play purchase");
   }
-  const unlocks = normalizeUnlockState({ ...data, playBilled: true });
+  const unlocks = normalizeUnlockState({
+    ...data,
+    playBilled: data.playBilled !== false,
+  });
   replaceUnlocks(unlocks);
   return unlocks;
+}
+
+export async function confirmPlaySubscribe(input: {
+  purchaseToken: string;
+  productId: string;
+  packageName?: string;
+  orderId?: string;
+}): Promise<UnlockState> {
+  return confirmPlayPurchase(input);
 }
 
 function friendlyNativeError(result: PlayNativeResult): Error {
@@ -113,17 +125,22 @@ function friendlyNativeError(result: PlayNativeResult): Error {
   return new Error(result.error ?? PLAY_SKU_NOT_ON_SALE);
 }
 
-/** Start native yearly purchase, then verify on the server. Null if the user cancelled. */
+/** Native yearly helpers remain for the existing bridge; Path B does not grant Lab+. */
 export async function startPlayLabPlusYearly(): Promise<UnlockState | null> {
   const result = await nativeCall("buy");
   if (!result.ok) {
     if (result.code === "USER_CANCELED") return null;
     throw friendlyNativeError(result);
   }
-  if (!result.purchaseToken) {
+  if (!result.purchaseToken || !result.productId) {
     throw new Error("Google Play did not return a purchase.");
   }
-  return confirmPlaySubscribe(result);
+  return confirmPlayPurchase({
+    purchaseToken: result.purchaseToken,
+    productId: result.productId,
+    packageName: result.packageName,
+    orderId: result.orderId,
+  });
 }
 
 export async function restorePlayLabPlus(): Promise<UnlockState> {
@@ -131,8 +148,13 @@ export async function restorePlayLabPlus(): Promise<UnlockState> {
   if (!result.ok) {
     throw friendlyNativeError(result);
   }
-  if (!result.purchaseToken) {
-    throw new Error("No Lab+ purchase to restore.");
+  if (!result.purchaseToken || !result.productId) {
+    throw new Error("No Play purchase to restore.");
   }
-  return confirmPlaySubscribe(result);
+  return confirmPlayPurchase({
+    purchaseToken: result.purchaseToken,
+    productId: result.productId,
+    packageName: result.packageName,
+    orderId: result.orderId,
+  });
 }

@@ -2,7 +2,11 @@
  * Client-side unlock store (localStorage).
  * Demo-ready — swap for real Play Billing later.
  */
-import { isPlayApp, isPlayBilledLabPlusActive } from "@/lib/play-app";
+import {
+  isPlayApp,
+  isPlayBilledBuyAll,
+  playWrapAccountUnlocks,
+} from "@/lib/play-app";
 
 const STORAGE_KEY = "opening-lab:unlocks:v2";
 
@@ -12,7 +16,7 @@ export type UnlockState = {
   packs: string[];
   plan: SubPlan | null;
   expiresAt: number | null;
-  /** True when Lab+ yearly was granted from Google Play (`lab_plus_yearly`). */
+  /** True when the entitlement was granted from a verified Google Play purchase. */
   playBilled?: boolean;
 };
 
@@ -73,7 +77,9 @@ export function isPackUnlocked(packId: string, isFree: boolean): boolean {
   if (isFree) return true;
   const s = read();
   if (isPlayApp()) {
-    return isPlayBilledLabPlusActive(s);
+    const wrap = playWrapAccountUnlocks(s);
+    if (isPlayBilledBuyAll(wrap)) return true;
+    return wrap.packs.includes(packId);
   }
   return isSubscriptionActive(s) || s.packs.includes(packId);
 }

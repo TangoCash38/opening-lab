@@ -10,14 +10,14 @@
  * If the current UA/referrer is not Play, clear that flag so a leftover
  * session from a wrong hit cannot poison Chrome.
  *
- * Play Console: create subscription product `lab_plus_yearly` with a yearly
- * base plan in GBP. Digital Goods will
- * not work in this raw System WebView — native BillingClient is required.
+ * Play Console one-time IAPs (Path B): `pack_<pack_id_with_underscores>` and
+ * `buy_all_packs`. No Lab+ / no subscriptions. Digital Goods will not work
+ * in this raw System WebView — native BillingClient is required.
  */
 export const PLAY_PACKAGE = "uk.co.openinglab";
 export const PLAY_UA_TOKEN = "OpeningLabPlay";
 
-/** Play Console subscription product ID. Yearly base plan only, GBP. */
+/** @deprecated Path B does not sell Lab+. Kept so existing native strings compile. */
 export const PLAY_SKU_YEARLY = "lab_plus_yearly";
 
 export const PLAY_STORE_NOTICE =
@@ -27,7 +27,7 @@ export const PLAY_SKU_NOT_ON_SALE = "Lab+ isn’t on sale in the store yet";
 
 export type PlayWrapUnlocks = {
   packs: string[];
-  plan: "monthly" | "yearly" | null;
+  plan: "monthly" | "yearly" | "buy_all" | null;
   expiresAt: number | null;
   playBilled?: boolean;
 };
@@ -42,9 +42,35 @@ export function isPlayBilledLabPlusActive(state: PlayWrapUnlocks): boolean {
   );
 }
 
+/** Play-billed one-time Buy all (plan buy_all). */
+export function isPlayBilledBuyAll(state: PlayWrapUnlocks): boolean {
+  return state.playBilled === true && state.plan === "buy_all";
+}
+
+/** Play-billed individual packs (token-save-only / Stripe-only must not set playBilled). */
+export function isPlayBilledPacksActive(state: PlayWrapUnlocks): boolean {
+  return state.playBilled === true && Array.isArray(state.packs) && state.packs.length > 0;
+}
+
+/** Play-granted Path B entitlement the wrap may honour (packs or buy_all). */
+export function isPlayBilledUnlockActive(state: PlayWrapUnlocks): boolean {
+  return isPlayBilledBuyAll(state) || isPlayBilledPacksActive(state);
+}
+
+/**
+ * Play wrap unlocks: honour Play-billed packs[] and plan === "buy_all"
+ * so GET /api/unlocks sync does not zero them. Stripe website plan/packs
+ * without a Play billing marker are cleared. No Lab+.
+ */
 export function playWrapAccountUnlocks<T extends PlayWrapUnlocks>(state: T): T {
-  if (isPlayBilledLabPlusActive(state)) {
-    return { ...state, packs: [], plan: "yearly", playBilled: true };
+  if (state.playBilled !== true) {
+    return { ...state, packs: [], plan: null, expiresAt: null, playBilled: false };
+  }
+  if (isPlayBilledBuyAll(state)) {
+    return { ...state, plan: "buy_all", playBilled: true };
+  }
+  if (isPlayBilledPacksActive(state)) {
+    return { ...state, plan: null, expiresAt: null, playBilled: true };
   }
   return { ...state, packs: [], plan: null, expiresAt: null, playBilled: false };
 }
