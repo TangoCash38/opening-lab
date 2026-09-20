@@ -56,6 +56,16 @@ type Props = {
 
 type ResultNextAction = "practiceNext" | "testYourself" | "learn";
 
+/** Same CTAs on miss and clean Test finishes. Tone/body differ at the call site. */
+function drillFinishActions(nextLine: OpeningLine | undefined, t: Translate) {
+  return {
+    actionLabel: nextLine ? t("Try next line") : t("Practice again"),
+    primaryLabel: nextLine ? t("Practice again") : undefined,
+    nextAction: "learn" as const,
+    secondaryAction: nextLine ? ("practiceNext" as const) : undefined,
+  };
+}
+
 function endResultCard(
   line: OpeningLine,
   pack: Pack,
@@ -68,6 +78,7 @@ function endResultCard(
   const unlockIds = subscribed ? [pack.id] : purchased;
   const nextLine = nextUnlockedLine(pack, line.id, unlockIds);
   const plan = (line.next ?? line.idea ?? "").trim();
+  const drill = drillFinishActions(nextLine, t);
 
   if (nextAction === "practiceAgain") {
     const spiel = t("Missed a move — practice again to lock it");
@@ -76,19 +87,22 @@ function endResultCard(
       title: line.name,
       caption,
       body: plan ? `${spiel}\n\n${plan}` : spiel,
-      actionLabel: nextLine ? t("Try next line") : t("Practice again"),
-      primaryLabel: nextLine ? t("Practice again") : undefined,
-      nextAction: "learn" as const,
-      secondaryAction: nextLine ? ("practiceNext" as const) : undefined,
+      ...drill,
+    };
+  }
+
+  if (nextAction === "practiceNext") {
+    return {
+      kind: "end" as const,
+      title: line.name,
+      caption,
+      body: (line.next ?? line.idea ?? "").trim(),
+      ...drill,
     };
   }
 
   const primaryLabel =
-    nextAction === "testYourself"
-      ? t("Test yourself")
-      : nextAction === "practiceNext" && nextLine
-        ? t("Practice next line")
-        : undefined;
+    nextAction === "testYourself" ? t("Test yourself") : undefined;
   return {
     kind: "end" as const,
     title: line.name,
