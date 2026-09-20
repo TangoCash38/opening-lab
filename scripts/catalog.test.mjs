@@ -2421,6 +2421,114 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 20 pw li
   }
 });
 
+test("Scotch pack is 20 lines: existing Trap · titles stay, s26/s27 are Punish the error, zero pads", () => {
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const start = packs.indexOf('id: "scotch"');
+  assert.ok(start >= 0, "scotch pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const sc = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+
+  assert.match(sc, /name: "Scotch Gambit and Scotch Game"/);
+  assert.match(sc, /side: "White"/);
+  assert.match(sc, /section: "white"/);
+  assert.match(sc, /blurb: "20 lines · Gambit 4\.Bc4 and Game 4\.Nxd4"/);
+  assert.doesNotMatch(sc, /blurb: "18 lines/);
+  assert.doesNotMatch(sc, /closedLabel: "Free · 18 lines"/);
+  assert.doesNotMatch(sc, /closedLabel: "Free · 20 lines"/);
+
+  const lineIds = [...sc.matchAll(/id: "(sg\d+|s\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, [
+    "s1",
+    "s2",
+    "s8",
+    "s13",
+    "s10",
+    "s19",
+    "s20",
+    "s21",
+    "s22",
+    "s23",
+    "s24",
+    "s25",
+    "sg1",
+    "sg2",
+    "sg3",
+    "sg4",
+    "sg5",
+    "sg6",
+    "s26",
+    "s27",
+  ]);
+
+  const sides = [...sc.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
+  assert.ok(sides.length >= 20, "expected line sides");
+  assert.ok(sides.every((s) => s === "w"), "every line side must be w");
+
+  function lineBlock(id) {
+    const from = sc.indexOf(`id: "${id}"`);
+    assert.ok(from >= 0, `${id} missing`);
+    const to = sc.indexOf('id: "', from + 10);
+    return sc.slice(from, to >= 0 ? to : undefined);
+  }
+
+  function linePlies(id) {
+    const line = lineBlock(id);
+    const m = line.match(/plies: \[([^\]]+)\]/);
+    assert.ok(m, `${id} plies missing`);
+    return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
+  }
+
+  function lineIdea(id) {
+    const m = lineBlock(id).match(/idea: "([^"]+)"/);
+    assert.ok(m && m[1].trim().length > 0, `${id} needs a non-empty idea`);
+    return m[1];
+  }
+
+  const names = Object.fromEntries(
+    [...sc.matchAll(/id: "(sg\d+|s\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
+      m[1],
+      m[2],
+    ]),
+  );
+  assert.equal(names.s19, "Trap · Greedy pawn (Haxo)");
+  assert.equal(names.s20, "Trap · …Be7");
+  assert.equal(names.sg6, "Scotch Game · Trap · Steinitz 7.Nb5");
+  assert.equal(names.s26, "Punish the error · …Nf6 Nxc6");
+  assert.equal(names.s27, "Punish the error · Sea-Cadet …Ne5");
+  assert.doesNotMatch(names.s19, /Punish the error/);
+  assert.doesNotMatch(names.s20, /Punish the error/);
+  assert.doesNotMatch(names.sg6, /Punish the error/);
+
+  assert.deepEqual(linePlies("s19"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+"]);
+  assert.deepEqual(linePlies("s20"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "bxc3", "Be7", "Qd5"]);
+  assert.deepEqual(linePlies("sg6"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Qh4", "Nc3", "Bb4", "Be2", "Qxe4", "Nb5", "Ba5", "Nxc7+", "Kd8", "Nxa8", "Qxg2", "Bf3", "Qh3"]);
+  assert.deepEqual(linePlies("s26"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3", "Nf6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Bxc5"]);
+  assert.deepEqual(linePlies("s27"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"]);
+  assert.deepEqual(linePlies("s26").slice(0, 9), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3"]);
+  assert.deepEqual(linePlies("s27").slice(0, 8), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6"]);
+
+  assert.match(lineIdea("s26"), /Classical Scotch after Be3/);
+  assert.match(lineIdea("s26"), /Nxc6/);
+  assert.match(lineIdea("s26"), /Bxc5/);
+  assert.match(lineIdea("s27"), /Sea-Cadet|…Ne5|Nxe5/);
+  assert.match(lineIdea("s27"), /Bxf7\+|Nd5#/);
+
+  assert.equal(lineBlock("s26").match(/side: "w"/)?.[0], 'side: "w"');
+  assert.equal(lineBlock("s27").match(/side: "w"/)?.[0], 'side: "w"');
+
+  const allPlies = lineIds.map((id) => ({ id, plies: linePlies(id) }));
+  for (let i = 0; i < allPlies.length; i++) {
+    for (let j = 0; j < allPlies.length; j++) {
+      if (i === j) continue;
+      const a = allPlies[i].plies;
+      const b = allPlies[j].plies;
+      if (a.length < b.length && a.every((p, k) => p === b[k])) {
+        assert.fail(`${allPlies[i].id} is a ply-prefix of ${allPlies[j].id}`);
+      }
+    }
+  }
+});
+
 
 test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for Caro", () => {
   assert.match(src, /export const FREE_SAMPLE_LINE_IDS/);
