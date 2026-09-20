@@ -37,7 +37,7 @@ type Vars = Record<string, string | number>;
 export type Translate = (key: string, vars?: Vars) => string;
 
 const GYM_INTRO =
-  "Opening Lab is a strict book-move trainer. Practice with the green hint. Test with none. Only the book move counts. Then Play on from the setup if you want.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed.";
+  "Opening Lab is a strict book-move trainer. Practice with the green hint. Test with none. Only the book move counts.\n\nThis way of learning builds a working repertoire of the opening: the main book replies, not a fog of ideas. Finding those moves without the hint makes your early decisions more informed.";
 
 const en: Dict = {
   "Train openings the strict way": "Train openings the strict way",
@@ -214,13 +214,6 @@ const en: Dict = {
   "Test mode": "Test mode",
   "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.":
     "No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.",
-  "Play on": "Play on",
-  Hint: "Hint",
-  "Hint ready": "Hint ready",
-  "Thinking…": "Thinking…",
-  "Choose a piece": "Choose a piece",
-  "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet. Hint shows a stronger suggestion from the same engine (not Stockfish).":
-    "After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800. A clean Test still turns the line green. Play on does not complete the line. Play on is also on the finish sheet. Hint shows a stronger suggestion from the same engine (not Stockfish).",
   Reviews: "Reviews",
   "A clean Test turns the line green. You can train it again anytime.":
     "A clean Test turns the line green. You can train it again anytime.",
@@ -330,7 +323,7 @@ const es: Dict = {
   Close: "Cerrar",
   "How the gym works": "Cómo funciona el gimnasio",
   [GYM_INTRO]:
-    "Opening Lab es un entrenador estricto de jugadas de libro. Practica con la pista verde. Haz Test sin pistas. Solo cuenta la jugada de libro. Luego Play on desde la posición si quieres.\n\nAsí se construye un repertorio que funciona: las respuestas de libro, no una niebla de ideas. Encontrar esas jugadas sin pista hace más informadas tus decisiones tempranas.",
+    "Opening Lab es un entrenador estricto de jugadas de libro. Practica con la pista verde. Haz Test sin pistas. Solo cuenta la jugada de libro.\n\nAsí se construye un repertorio que funciona: las respuestas de libro, no una niebla de ideas. Encontrar esas jugadas sin pista hace más informadas tus decisiones tempranas.",
   Continue: "Continuar",
   "Don't show again": "No volver a mostrar",
   "Wrong move": "Jugada incorrecta",
@@ -520,7 +513,7 @@ const zh: Dict = {
   Close: "关闭",
   "How the gym works": "训练馆怎么用",
   [GYM_INTRO]:
-    "Opening Lab 是严格的书谱着法训练器。Practice 看绿色提示。Test 不给提示。只算书谱着法。然后如需可以从该局面 Play on。\n\n这样练出能用的开局储备：主要书谱应对，而不是一团模糊想法。不看提示找出这些着法，会让你的开局选择更有依据。",
+    "Opening Lab 是严格的书谱着法训练器。Practice 看绿色提示。Test 不给提示。只算书谱着法。\n\n这样练出能用的开局储备：主要书谱应对，而不是一团模糊想法。不看提示找出这些着法，会让你的开局选择更有依据。",
   Continue: "继续",
   "Don't show again": "不再显示",
   "Wrong move": "走错了",
@@ -710,7 +703,7 @@ const fr: Dict = {
   Close: "Fermer",
   "How the gym works": "Comment marche la salle",
   [GYM_INTRO]:
-    "Opening Lab est un entraîneur strict de coups du livre. Practice avec l'indice vert. Test sans indice. Seul le coup du livre compte. Puis Play on depuis la position si tu veux.\n\nCette façon d'apprendre construit un répertoire qui marche : les réponses du livre, pas un brouillard d'idées. Trouver ces coups sans indice rend tes décisions d'ouverture plus informées.",
+    "Opening Lab est un entraîneur strict de coups du livre. Practice avec l'indice vert. Test sans indice. Seul le coup du livre compte.\n\nCette façon d'apprendre construit un répertoire qui marche : les réponses du livre, pas un brouillard d'idées. Trouver ces coups sans indice rend tes décisions d'ouverture plus informées.",
   Continue: "Continuer",
   "Don't show again": "Ne plus afficher",
   "Wrong move": "Mauvais coup",
@@ -900,7 +893,7 @@ const de: Dict = {
   Close: "Schließen",
   "How the gym works": "So funktioniert das Training",
   [GYM_INTRO]:
-    "Opening Lab ist ein strikter Buchzug-Trainer. Practice mit dem grünen Hinweis. Test ohne Hinweis. Nur der Buchzug zählt. Dann Play on von der Stellung, wenn du willst.\n\nSo entsteht ein Repertoire, das sitzt: die Buchantworten, kein Nebel aus Ideen. Diese Züge ohne Hinweis zu finden macht deine frühen Entscheidungen klarer.",
+    "Opening Lab ist ein strikter Buchzug-Trainer. Practice mit dem grünen Hinweis. Test ohne Hinweis. Nur der Buchzug zählt.\n\nSo entsteht ein Repertoire, das sitzt: die Buchantworten, kein Nebel aus Ideen. Diese Züge ohne Hinweis zu finden macht deine frühen Entscheidungen klarer.",
   Continue: "Weiter",
   "Don't show again": "Nicht mehr zeigen",
   "Wrong move": "Falscher Zug",
@@ -1090,7 +1083,7 @@ const pt: Dict = {
   Close: "Fechar",
   "How the gym works": "Como funciona o treino",
   [GYM_INTRO]:
-    "Opening Lab é um treinador estrito de lances de livro. Practice com a dica verde. Test sem dica. Só conta o lance de livro. Depois Play on da posição, se quiser.\n\nAssim se monta um repertório que funciona: as respostas de livro, não uma névoa de ideias. Achar esses lances sem dica deixa suas decisões iniciais mais informadas.",
+    "Opening Lab é um treinador estrito de lances de livro. Practice com a dica verde. Test sem dica. Só conta o lance de livro.\n\nAssim se monta um repertório que funciona: as respostas de livro, não uma névoa de ideias. Achar esses lances sem dica deixa suas decisões iniciais mais informadas.",
   Continue: "Continuar",
   "Don't show again": "Não mostrar de novo",
   "Wrong move": "Lance errado",
@@ -1279,7 +1272,7 @@ const ru: Dict = {
   Close: "Закрыть",
   "How the gym works": "Как устроен зал",
   [GYM_INTRO]:
-    "Opening Lab — строгий тренажёр книжных ходов. Practice с зелёной подсказкой. Test без подсказки. Считается только книжный ход. Потом Play on с позиции, если хочешь.\n\nТак собирается рабочий репертуар: главные книжные ответы, а не туман идей. Находить эти ходы без подсказки делает ранние решения осознаннее.",
+    "Opening Lab — строгий тренажёр книжных ходов. Practice с зелёной подсказкой. Test без подсказки. Считается только книжный ход.\n\nТак собирается рабочий репертуар: главные книжные ответы, а не туман идей. Находить эти ходы без подсказки делает ранние решения осознаннее.",
   Continue: "Далее",
   "Don't show again": "Больше не показывать",
   "Wrong move": "Неверный ход",
@@ -1469,7 +1462,7 @@ const it: Dict = {
   Close: "Chiudi",
   "How the gym works": "Come funziona la palestra",
   [GYM_INTRO]:
-    "Opening Lab è un allenatore rigoroso di mosse di libro. Practice con il suggerimento verde. Test senza suggerimenti. Conta solo la mossa di libro. Poi Play on dalla posizione, se vuoi.\n\nCosì si costruisce un repertorio che funziona: le risposte di libro, non una nebbia di idee. Trovare quelle mosse senza suggerimento rende più informate le tue decisioni iniziali.",
+    "Opening Lab è un allenatore rigoroso di mosse di libro. Practice con il suggerimento verde. Test senza suggerimenti. Conta solo la mossa di libro.\n\nCosì si costruisce un repertorio che funziona: le risposte di libro, non una nebbia di idee. Trovare quelle mosse senza suggerimento rende più informate le tue decisioni iniziali.",
   Continue: "Continua",
   "Don't show again": "Non mostrare più",
   "Wrong move": "Mossa sbagliata",
@@ -1659,7 +1652,7 @@ const hi: Dict = {
   Close: "बंद करें",
   "How the gym works": "जिम कैसे चलता है",
   [GYM_INTRO]:
-    "Opening Lab सख्त बुक-चाल ट्रेनर है। Practice हरे संकेत के साथ। Test बिना संकेत। केवल बुक चाल गिनी जाती है। फिर चाहें तो सेटअप से Play on।\n\nइस तरह काम का रेपर्टोयर बनता है: मुख्य बुक जवाब, विचारों का कोहरा नहीं। बिना संकेत वे चालें ढूँढना शुरुआती फैसलों को बेहतर बनाता है।",
+    "Opening Lab सख्त बुक-चाल ट्रेनर है। Practice हरे संकेत के साथ। Test बिना संकेत। केवल बुक चाल गिनी जाती है।\n\nइस तरह काम का रेपर्टोयर बनता है: मुख्य बुक जवाब, विचारों का कोहरा नहीं। बिना संकेत वे चालें ढूँढना शुरुआती फैसलों को बेहतर बनाता है।",
   Continue: "जारी रखें",
   "Don't show again": "फिर न दिखाएँ",
   "Wrong move": "गलत चाल",
@@ -1847,7 +1840,7 @@ const ja: Dict = {
   Close: "閉じる",
   "How the gym works": "ジムの使い方",
   [GYM_INTRO]:
-    "Opening Lab は厳密な定跡トレーナーです。Practice は緑のヒント付き。Test はヒントなし。定跡の手だけが正解。そのあと必要ならその局面から Play on。\n\nこうして使えるレパートリーができます。主な定跡の応じ手であり、ぼんやりした着想ではない。ヒントなしでその手を見つけると、序盤の判断に根拠がつく。",
+    "Opening Lab は厳密な定跡トレーナーです。Practice は緑のヒント付き。Test はヒントなし。定跡の手だけが正解。\n\nこうして使えるレパートリーができます。主な定跡の応じ手であり、ぼんやりした着想ではない。ヒントなしでその手を見つけると、序盤の判断に根拠がつく。",
   Continue: "続ける",
   "Don't show again": "今後表示しない",
   "Wrong move": "違う手",
@@ -2035,7 +2028,7 @@ const ar: Dict = {
   Close: "إغلاق",
   "How the gym works": "كيف يعمل الصالة",
   [GYM_INTRO]:
-    "Opening Lab مدرّب صارم لحركات الكتاب. Practice مع التلميح الأخضر. Test بلا تلميحات. فقط حركة الكتاب تُحسب. ثم Play on من الوضع إن أردت.\n\nهذه الطريقة تبني ذخيرة عملية للافتتاحية: ردود الكتاب الرئيسية، لا ضباب أفكار. إيجاد تلك الحركات بلا تلميح يجعل قراراتك المبكرة أوضح.",
+    "Opening Lab مدرّب صارم لحركات الكتاب. Practice مع التلميح الأخضر. Test بلا تلميحات. فقط حركة الكتاب تُحسب.\n\nهذه الطريقة تبني ذخيرة عملية للافتتاحية: ردود الكتاب الرئيسية، لا ضباب أفكار. إيجاد تلك الحركات بلا تلميح يجعل قراراتك المبكرة أوضح.",
   Continue: "متابعة",
   "Don't show again": "لا تظهر مرة أخرى",
   "Wrong move": "حركة خاطئة",
@@ -2225,7 +2218,7 @@ const tr: Dict = {
   Close: "Kapat",
   "How the gym works": "Salon nasıl işler",
   [GYM_INTRO]:
-    "Opening Lab katı bir kitap hamlesi eğitmenidir. Practice yeşil ipucuyla. Test ipucusuz. Yalnızca kitap hamlesi geçer. İstersen konumdan Play on.\n\nBu öğrenme yolu işleyen bir repertuar kurar: ana kitap cevapları, fikir sis değil. İpucusuz o hamleleri bulmak erken kararlarını daha bilinçli yapar.",
+    "Opening Lab katı bir kitap hamlesi eğitmenidir. Practice yeşil ipucuyla. Test ipucusuz. Yalnızca kitap hamlesi geçer.\n\nBu öğrenme yolu işleyen bir repertuar kurar: ana kitap cevapları, fikir sis değil. İpucusuz o hamleleri bulmak erken kararlarını daha bilinçli yapar.",
   Continue: "Devam",
   "Don't show again": "Bir daha gösterme",
   "Wrong move": "Yanlış hamle",

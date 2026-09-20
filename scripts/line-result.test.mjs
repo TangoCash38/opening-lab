@@ -322,37 +322,24 @@ test("finish sheet shows a scroll cue when plan text overflows", () => {
 });
 
 
-test("end finish sheets expose Play on Level 1/2/3; wrong-move cards do not", () => {
-  assert.match(modal, /playOnLevels\?/);
-  assert.match(modal, /onPlayOn\?/);
-  assert.match(modal, /kind === "end"/);
-  assert.match(modal, /data-result-play-on/);
-  assert.match(modal, /data-result-play-on-open/);
-  assert.match(modal, /data-result-play-on-btn/);
-  assert.match(modal, /playOnPrompt/);
-  assert.match(modal, /Pick a level, then Play on/);
-  assert.match(modal, /play-level-chip/);
+test("finish sheets have no Play on; wrong-move cards keep dual actions", () => {
+  assert.doesNotMatch(modal, /playOnLevels/);
+  assert.doesNotMatch(modal, /onPlayOn/);
+  assert.doesNotMatch(modal, /playOnPrompt/);
+  assert.doesNotMatch(modal, /Play on/);
+  assert.doesNotMatch(modal, /data-result-play-on/);
+  assert.doesNotMatch(train, /startPlayOn/);
+  assert.doesNotMatch(train, /playOnLevels/);
   assert.match(modal, /line-result-actions-row/);
   assert.match(modal, /line-result-actions-or/);
   assert.match(modal, /t\("or"\)/);
   assert.match(css, /\.line-result-actions-row/);
   assert.match(css, /\.line-result-actions-or/);
   assert.match(i18n, /or: "or"/);
-  assert.match(css, /\.line-result-play-prompt \.play-level-chip/);
-  assert.match(train, /resultCard\.kind === "end"/);
-  assert.match(train, /setResultCard\(null\);\s*startPlayOn\(\)/);
-  assert.match(train, /PLAY_LEVEL_LABEL\[id\]/);
   const modalCall = train.slice(train.indexOf("<LineResultModal"), train.indexOf("</LineResultModal>"));
-  assert.match(modalCall, /playOnLevels=/);
-  assert.match(modalCall, /onPlayOn=/);
-  assert.match(modalCall, /resultCard\.kind === "end"/);
+  assert.doesNotMatch(modalCall, /playOn/);
   const wrongs = kindBlocks(train, "wrong");
   assert.equal(wrongs.length, 1);
-  for (const w of wrongs) {
-    assert.doesNotMatch(w, /playOnLevels/);
-    assert.doesNotMatch(w, /startPlayOn/);
-  }
-  assert.match(css, /\.line-result-play-prompt/);
 });
 
 test("scrollAppTop on startLine/goHome; ChessBoard remounts on session; reset collapses board", () => {
@@ -366,15 +353,9 @@ test("scrollAppTop on startLine/goHome; ChessBoard remounts on session; reset co
 });
 
 
-test("finish sheet with Play on gets taller body so plan text is readable", () => {
-  assert.match(modal, /line-result-sheet--play-on/);
-  assert.match(modal, /showPlayOn \? " line-result-sheet--play-on"/);
-  assert.match(modal, /data-result-has-play-on=\{showPlayOn \? "1" : undefined\}/);
-  assert.match(css, /\.line-result-sheet--play-on/);
-  assert.match(css, /max-height:\s*min\(52dvh/);
-  assert.match(css, /\.line-result-sheet--play-on \.line-result-body[\s\S]*min-height:\s*10\.5rem/);
-  assert.match(css, /\.line-result-sheet--play-on \.line-result-body-wrap[\s\S]*min-height:\s*10\.5rem/);
-  // Default sheet still taller than the old 32dvh clip
+test("finish sheet body stays tall enough for plan text", () => {
+  assert.doesNotMatch(modal, /line-result-sheet--play-on/);
+  assert.doesNotMatch(css, /\.line-result-sheet--play-on/);
   assert.match(css, /max-height:\s*min\(42dvh/);
   assert.doesNotMatch(css, /max-height:\s*min\(32dvh/);
 });
@@ -419,7 +400,7 @@ test("ModeTab nudge is additive and keeps active/inactive chrome", () => {
 
 test("finish/result sheet is history-backed for Android Back", () => {
   assert.match(modal, /useOverlayHistory\(true, onClose, "line-result"\)/);
-  assert.match(modal, /useOverlayHistory\(playOnPrompt/);
+  assert.doesNotMatch(modal, /playOnPrompt/);
   assert.match(modal, /from "@\/hooks\/use-overlay-history"/);
 });
 
@@ -440,7 +421,7 @@ test("finish sheet can dock minimise so the board stays visible", () => {
   assert.match(modal, /setMinimized\(true\)/);
   assert.match(modal, /if \(minimized\)/);
   assert.match(modal, /renderActions\(true\)/);
-  assert.match(modal, /data-result-play-on-open/);
+  assert.doesNotMatch(modal, /data-result-play-on/);
   // Docked branch: board-visible class, no dim in that return
   const dockReturn = modal.indexOf("line-result-overlay--docked");
   assert.ok(dockReturn > 0);
@@ -466,10 +447,10 @@ test("finish sheet can dock minimise so the board stays visible", () => {
   assert.match(i18n, /"Restore": "恢复"/);
 });
 
-test("mate book finishes omit Play on from the end sheet", () => {
-  assert.match(train, /function lineEndsInMate/);
-  assert.match(train, /bookDone && !warmup && !lineEndsInMate\(line\)/);
-  assert.match(train, /resultCard\.kind === "end" && !warmup && !lineEndsInMate\(line\)/);
-  // Status copy skips Play on when the book ends in mate.
+test("book finish copy is Test / Book solid with no Play on offer", () => {
+  assert.doesNotMatch(train, /function lineEndsInMate/);
+  assert.doesNotMatch(train, /Play on/);
+  assert.doesNotMatch(train, /playing on/);
   assert.match(train, /Practice done — Test with no hints/);
+  assert.match(train, /t\("Book solid"\)/);
 });

@@ -26,12 +26,11 @@ test("trainer Back/Forward review the board without a Take back button", () => {
 test("trainer shows {pct}% complete through the book line", () => {
   assert.match(train, /t\("\{pct\}% complete"/);
   assert.match(train, /plyIndex - bookStartPly\) \/ bookLen/);
-  assert.match(train, /!playingOn \? \(/);
 });
 
 test("viewPly is wired as a view-only cursor on the live ply", () => {
   assert.match(train, /const \[viewPly, setViewPly\] = useState\(bookStartPly\)/);
-  assert.match(train, /const livePly = playingOn \? game\.history\(\)\.length : plyIndex/);
+  assert.match(train, /const livePly = plyIndex/);
   assert.match(train, /setViewPly\(\(v\) => \(livePly > v \|\| livePly === 0 \? livePly : v\)\)/);
   assert.match(train, /replaySans\(line\.plies, viewPly\)/);
   assert.match(train, /const viewingHistory = viewPly !== livePly/);
@@ -61,24 +60,13 @@ test("Back, Forward, and {pct}% complete exist in all 12 language dicts", () => 
   }
 });
 
-test("Play on preserves chess.js history (no FEN-rebase commits)", () => {
+test("book trainer preserves chess.js history (no FEN-rebase commits)", () => {
   assert.match(train, /function cloneAndMove/);
   assert.match(train, /function safeMove/);
-  assert.match(train, /const full = replaySans\(line\.plies, line\.plies\.length\)/);
-  assert.match(train, /playOnStartPlyRef\.current = startPly/);
   assert.doesNotMatch(train, /new Chess\(game\.fen\(\)\)/);
   assert.doesNotMatch(train, /const next = new Chess\(fenNow\)/);
   assert.doesNotMatch(train, /const next = new Chess\(fen\)/);
-  assert.match(train, /firstPlayableReply\(game\)/);
-  assert.match(
-    train,
-    /if \(gen === replyGenRef\.current\) \{[\s\S]*?setEngineBusy\(false\)/,
-  );
-});
-
-test("Play-on Hint uses hintGenRef so late resolves cannot paint a stale move", () => {
-  assert.match(train, /const hintGenRef = useRef\(0\)/);
-  assert.match(train, /if \(playingOnRef\.current\) hintGenRef\.current \+= 1/);
-  assert.match(train, /const gen = hintGenRef\.current/);
-  assert.match(train, /gen !== hintGenRef\.current/);
+  assert.doesNotMatch(train, /playOnStartPlyRef/);
+  assert.doesNotMatch(train, /firstPlayableReply/);
+  assert.doesNotMatch(train, /hintGenRef/);
 });

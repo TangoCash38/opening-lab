@@ -98,11 +98,9 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /All twenty are free/);
   assert.doesNotMatch(guide, /£1\.99/);
 
-  assert.match(guide, /t\("Play on"\)/);
-  assert.match(guide, /After Practice or Test, pick Level 1, 2, or 3 and Play on from the setup\. Level 1 is about 800 strength, Level 2 about 1200, Level 3 about 1800\. A clean Test still turns the line green\. Play on does not complete the line\. Play on is also on the finish sheet\./);
-  assert.match(guide, /800/);
-  assert.match(guide, /1200/);
-  assert.match(guide, /1800/);
+  assert.doesNotMatch(guide, /t\("Play on"\)/);
+  assert.doesNotMatch(guide, /Play on/);
+  assert.doesNotMatch(guide, /playing on/);
 
   assert.match(hero, /Train openings the strict way/);
   assert.match(hero, /How to play/);
@@ -224,7 +222,7 @@ test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1
   assert.match(ck, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(ck, /Practice the main book moves with the green hint/);
   assert.match(ck, /Then Test with none to prove you remember them/);
-  assert.match(ck, /Play on from the setup if you want/);
+  assert.doesNotMatch(ck, /Play on/);
   assert.match(ck, /eco: "B10–B19"/);
   assert.doesNotMatch(ck, /setups/);
   assert.doesNotMatch(ck, /follow-ups/);
@@ -279,7 +277,7 @@ test("Queen’s Gambit Declined for Black stays fully visible with chess names",
   assert.match(qgd, /solid answer to 1\.d4/);
   assert.match(qgd, /Practice the main book moves with the green hint/);
   assert.match(qgd, /Then Test with none to prove you remember them/);
-  assert.match(qgd, /Play on from the setup and see where the game goes/);
+  assert.doesNotMatch(qgd, /Play on/);
   assert.match(qgd, /eco: "D30–D69"/);
   assert.doesNotMatch(qgd, /setups/);
   assert.doesNotMatch(qgd, /follow-ups/);
@@ -322,7 +320,7 @@ test("Fight the London is a visible Black pack: 18 alb lines, locked until purch
   assert.match(lon, /Master Anti-London systems for Black/);
   assert.match(lon, /Practice the main Black moves with the hint/);
   assert.match(lon, /Then Test with none to prove you remember them/);
-  assert.match(lon, /Play on from the setup and see where the game goes/);
+  assert.doesNotMatch(lon, /Play on/);
   assert.match(lon, /eco: "D00–D02"/);
   assert.doesNotMatch(lon, /setups/);
   assert.doesNotMatch(lon, /follow-ups/);
@@ -406,7 +404,7 @@ test("1.d4 Sideline Survival Kit is a fourth visible free Black pack: 18 d4s lin
   assert.match(d4s, /Meet White's 1\.d4 sidelines as Black/);
   assert.match(d4s, /Practice the main book moves with the green hint/);
   assert.match(d4s, /Then Test with none to prove you remember them/);
-  assert.match(d4s, /Play on from the setup if you want/);
+  assert.doesNotMatch(d4s, /Play on/);
   assert.match(d4s, /eco: "D00–D05"/);
   assert.doesNotMatch(d4s, /setups/);
   assert.doesNotMatch(d4s, /follow-ups/);
@@ -468,7 +466,7 @@ test("Anti-Sicilian Survival Kit is a fifth visible free Black pack: 18 as lines
   assert.match(asb, /Meet White's anti-Sicilians as Black/);
   assert.match(asb, /Practice the main book moves with the green hint/);
   assert.match(asb, /Then Test with none to prove you remember them/);
-  assert.match(asb, /Play on from the setup if you want/);
+  assert.doesNotMatch(asb, /Play on/);
   assert.match(asb, /eco: "B20–B30"/);
   assert.doesNotMatch(asb, /setups/);
   assert.doesNotMatch(asb, /follow-ups/);
@@ -531,7 +529,7 @@ test("Nimzo-Larsen Attack for White is a sixth visible free White pack: 18 nl li
   assert.match(nl, /Play the Nimzo-Larsen as White/);
   assert.match(nl, /Practice the main book moves with the green hint/);
   assert.match(nl, /Then Test with none to prove you remember them/);
-  assert.match(nl, /Play on from the setup if you want/);
+  assert.doesNotMatch(nl, /Play on/);
   assert.match(nl, /eco: "A01"/);
   assert.doesNotMatch(nl, /setups/);
   assert.doesNotMatch(nl, /follow-ups/);
@@ -599,7 +597,7 @@ test("Italian Game Mastery for White is a seventh visible free White pack: 18 it
   assert.match(it, /Play the Italian as White/);
   assert.match(it, /Practice the main book moves with the green hint/);
   assert.match(it, /Then Test with none to prove you remember them/);
-  assert.match(it, /Play on from the setup if you want/);
+  assert.doesNotMatch(it, /Play on/);
   assert.match(it, /eco: "C50"/);
   assert.doesNotMatch(it, /setups/);
   assert.doesNotMatch(it, /follow-ups/);
@@ -668,7 +666,7 @@ test("Ruy Lopez Mastery for White is an eighth visible free White pack: 18 rl li
   assert.match(rl, /Play the Ruy Lopez as White/);
   assert.match(rl, /Practice the main book moves with the green hint/);
   assert.match(rl, /Then Test with none to prove you remember them/);
-  assert.match(rl, /Play on from the setup if you want/);
+  assert.doesNotMatch(rl, /Play on/);
   assert.match(rl, /eco: "C60"/);
   assert.doesNotMatch(rl, /setups/);
   assert.doesNotMatch(rl, /follow-ups/);
@@ -764,7 +762,7 @@ test("French Defence for White is a ninth visible free White pack: 18 fr lines, 
   assert.match(fr, /Meet the French as White/);
   assert.match(fr, /Practice the main book moves with the green hint/);
   assert.match(fr, /Then Test with none to prove you remember them/);
-  assert.match(fr, /Play on from the setup if you want/);
+  assert.doesNotMatch(fr, /Play on/);
   assert.match(fr, /eco: "C00"/);
   assert.doesNotMatch(fr, /setups/);
   assert.doesNotMatch(fr, /follow-ups/);
@@ -831,7 +829,7 @@ test("How to Meet the Sicilian: The Alapin for White is a tenth visible free Whi
   assert.match(al, /Meet the Sicilian as White with the Alapin/);
   assert.match(al, /Practice the main book moves with the green hint/);
   assert.match(al, /Then Test with none to prove you remember them/);
-  assert.match(al, /Play on from the setup if you want/);
+  assert.doesNotMatch(al, /Play on/);
   assert.match(al, /eco: "B22"/);
   assert.doesNotMatch(al, /setups/);
   assert.doesNotMatch(al, /follow-ups/);
@@ -899,7 +897,7 @@ test("How to Meet 1.c4: The Symmetrical English for Black is an eleventh visible
   assert.match(en, /Meet 1\.c4 as Black with the Symmetrical English/);
   assert.match(en, /Practice the main book moves with the green hint/);
   assert.match(en, /Then Test with none to prove you remember them/);
-  assert.match(en, /Play on from the setup if you want/);
+  assert.doesNotMatch(en, /Play on/);
   assert.match(en, /eco: "A30"/);
   assert.doesNotMatch(en, /setups/);
   assert.doesNotMatch(en, /follow-ups/);
@@ -977,7 +975,7 @@ test("How to Defend Against the King’s Gambit is a twelfth visible free Black 
   assert.match(kg, /Defend the King\u2019s Gambit as Black/);
   assert.match(kg, /Practice the main book moves with the green hint/);
   assert.match(kg, /Then Test with none to prove you remember them/);
-  assert.match(kg, /Play on from the setup if you want/);
+  assert.doesNotMatch(kg, /Play on/);
   assert.match(kg, /eco: "C30"/);
   assert.doesNotMatch(kg, /setups/);
   assert.doesNotMatch(kg, /follow-ups/);
@@ -1076,7 +1074,7 @@ test("How to Meet the Scandinavian Defence: White’s Safe Edge is a thirteenth 
   assert.match(sc, /Meet the Scandinavian as White/);
   assert.match(sc, /Practice the main book moves with the green hint/);
   assert.match(sc, /Then Test with none to prove you remember them/);
-  assert.match(sc, /Play on from the setup if you want/);
+  assert.doesNotMatch(sc, /Play on/);
   assert.match(sc, /eco: "B01"/);
   assert.doesNotMatch(sc, /setups/);
   assert.doesNotMatch(sc, /follow-ups/);
@@ -1144,7 +1142,7 @@ test("How to Meet the Pirc & Modern Defence: The 150 Attack is a fourteenth visi
   assert.match(pm, /Meet the Pirc and Modern as White with the 150 Attack/);
   assert.match(pm, /Practice the main book moves with the green hint/);
   assert.match(pm, /Then Test with none to prove you remember them/);
-  assert.match(pm, /Play on from the setup if you want/);
+  assert.doesNotMatch(pm, /Play on/);
   assert.match(pm, /eco: "B07"/);
   assert.doesNotMatch(pm, /setups/);
   assert.doesNotMatch(pm, /follow-ups/);
@@ -1214,7 +1212,7 @@ test("How to Meet the Dutch Defence: The Fianchetto System for White is a fiftee
   assert.match(du, /Meet the Dutch as White with the fianchetto/);
   assert.match(du, /Practice the main book moves with the green hint/);
   assert.match(du, /Then Test with none to prove you remember them/);
-  assert.match(du, /Play on from the setup if you want/);
+  assert.doesNotMatch(du, /Play on/);
   assert.match(du, /eco: "A90"/);
   assert.doesNotMatch(du, /setups/);
   assert.doesNotMatch(du, /follow-ups/);
@@ -1284,7 +1282,7 @@ test("How to Meet the Caro-Kann: Advance & Panov for White is a sixteenth visibl
   assert.match(ckw, /Meet the Caro-Kann as White with the Advance and the Panov/);
   assert.match(ckw, /Practice the main book moves with the green hint/);
   assert.match(ckw, /Then Test with none to prove you remember them/);
-  assert.match(ckw, /Play on from the setup if you want/);
+  assert.doesNotMatch(ckw, /Play on/);
   assert.match(ckw, /eco: "B12"/);
   assert.doesNotMatch(ckw, /setups/);
   assert.doesNotMatch(ckw, /follow-ups/);
@@ -1353,7 +1351,7 @@ test("How to Defend Against the Evans Gambit for Black is a seventeenth visible 
   assert.match(evb, /Defend the Evans Gambit as Black/);
   assert.match(evb, /Practice the main book moves with the green hint/);
   assert.match(evb, /Then Test with none/);
-  assert.match(evb, /Play on from the setup/);
+  assert.doesNotMatch(evb, /Play on/);
   assert.match(evb, /eco: "C51/);
   assert.doesNotMatch(evb, /setups/);
   assert.doesNotMatch(evb, /follow-ups/);
@@ -1426,7 +1424,7 @@ test("How to Meet the Englund Gambit: White’s Safe Route is an eighteenth visi
   assert.match(eg, /Meet the Englund Gambit as White/);
   assert.match(eg, /Practice the main book moves with the green hint/);
   assert.match(eg, /Then Test with none/);
-  assert.match(eg, /Play on from the setup/);
+  assert.doesNotMatch(eg, /Play on/);
   assert.match(eg, /eco: "A40"/);
   assert.doesNotMatch(eg, /setups/);
   assert.doesNotMatch(eg, /follow-ups/);
@@ -1500,7 +1498,7 @@ test("How to Meet the Budapest Gambit: White’s Safe Route is a nineteenth visi
   assert.match(bp, /Meet the Budapest as White/);
   assert.match(bp, /Practice the main book moves with the green hint/);
   assert.match(bp, /Then Test with none/);
-  assert.match(bp, /Play on from the setup/);
+  assert.doesNotMatch(bp, /Play on/);
   assert.match(bp, /eco: "A51/);
   assert.doesNotMatch(bp, /setups/);
   assert.doesNotMatch(bp, /follow-ups/);
@@ -1573,7 +1571,7 @@ test("How to Defend Against the Blackmar–Diemer Gambit for Black is a twentiet
   assert.match(bdg, /Defend the Blackmar-Diemer as Black/);
   assert.match(bdg, /Practice the main book moves with the green hint/);
   assert.match(bdg, /Then Test with none/);
-  assert.match(bdg, /Play on from the setup/);
+  assert.doesNotMatch(bdg, /Play on/);
   assert.match(bdg, /eco: "D00"/);
   assert.doesNotMatch(bdg, /setups/);
   assert.doesNotMatch(bdg, /follow-ups/);
@@ -1650,7 +1648,7 @@ test("Queen’s Gambit for White is a twenty-first visible White pack: 18 qgw li
   assert.match(qgw, /After 1\.d4 d5 2\.c4/);
   assert.match(qgw, /Practice the main White moves with the hint/);
   assert.match(qgw, /Then Test with none/);
-  assert.match(qgw, /Play on from the setup/);
+  assert.doesNotMatch(qgw, /Play on/);
   assert.match(qgw, /eco: "D06/);
   assert.doesNotMatch(qgw, /setups/);
   assert.doesNotMatch(qgw, /follow-ups/);
@@ -1721,7 +1719,7 @@ test("English Opening for White is a twenty-fourth visible White pack: 18 engw l
   assert.match(engw, /Meet 1…e5, 1…c5, and 1…Nf6 with English book for White/);
   assert.match(engw, /Practice the main White moves with the hint/);
   assert.match(engw, /Then Test with none/);
-  assert.match(engw, /Play on from the setup/);
+  assert.doesNotMatch(engw, /Play on/);
   assert.match(engw, /eco: "A10/);
   assert.doesNotMatch(engw, /setups/);
   assert.doesNotMatch(engw, /follow-ups/);
@@ -1795,7 +1793,7 @@ test("Catalan Opening for White is a twenty-fifth visible White pack: 18 catw li
   assert.match(catw, /Meet Open, Closed, and Bogo-Catalan structures/);
   assert.match(catw, /Practice the main White moves with the hint/);
   assert.match(catw, /Then Test with none/);
-  assert.match(catw, /Play on from the setup/);
+  assert.doesNotMatch(catw, /Play on/);
   assert.match(catw, /eco: "E00/);
   assert.doesNotMatch(catw, /setups/);
   assert.doesNotMatch(catw, /follow-ups/);
@@ -1868,7 +1866,7 @@ test("Nimzo-Indian Defence for Black is a twenty-sixth visible Black pack: 18 ni
   assert.match(nib, /Meet Classical, Rubinstein, and Sämisch structures/);
   assert.match(nib, /Practice the main Black moves with the hint/);
   assert.match(nib, /Then Test with none/);
-  assert.match(nib, /Play on from the setup/);
+  assert.doesNotMatch(nib, /Play on/);
   assert.match(nib, /eco: "E20/);
   assert.doesNotMatch(nib, /setups/);
   assert.doesNotMatch(nib, /follow-ups/);
@@ -1945,7 +1943,7 @@ test("Grünfeld Defence for Black is a twenty-seventh visible Black pack: 18 gfb
   assert.match(gfb, /Meet Exchange, Russian, and Fianchetto structures/);
   assert.match(gfb, /Practice the main Black moves with the hint/);
   assert.match(gfb, /Then Test with none/);
-  assert.match(gfb, /Play on from the setup/);
+  assert.doesNotMatch(gfb, /Play on/);
   assert.match(gfb, /eco: "D70/);
   assert.doesNotMatch(gfb, /setups/);
   assert.doesNotMatch(gfb, /follow-ups/);
@@ -2025,7 +2023,7 @@ test("Petroff Defence for Black is a twenty-eighth visible Black pack: 18 peb li
   assert.match(peb, /Meet Classical, Steinitz, and Nimzowitsch structures/);
   assert.match(peb, /Practice the main Black moves with the hint/);
   assert.match(peb, /Then Test with none/);
-  assert.match(peb, /Play on from the setup/);
+  assert.doesNotMatch(peb, /Play on/);
   assert.match(peb, /eco: "C42/);
   assert.doesNotMatch(peb, /setups/);
   assert.doesNotMatch(peb, /follow-ups/);
@@ -2106,7 +2104,7 @@ test("Berlin Defence for Black is a twenty-ninth visible Black pack: 18 berb lin
   assert.match(berb, /Meet Berlin Wall, Rio, and Anti-Berlin structures/);
   assert.match(berb, /Practice the main Black moves with the hint/);
   assert.match(berb, /Then Test with none/);
-  assert.match(berb, /Play on from the setup/);
+  assert.doesNotMatch(berb, /Play on/);
   assert.match(berb, /eco: "C65/);
   assert.doesNotMatch(berb, /setups/);
   assert.doesNotMatch(berb, /follow-ups/);
@@ -2190,7 +2188,7 @@ test("King’s Indian Defence for Black is a thirtieth visible Black pack: 18 ki
   assert.match(kidb, /Meet Classical, Sämisch, and Fianchetto structures/);
   assert.match(kidb, /Practice the main Black moves with the hint/);
   assert.match(kidb, /Then Test with none/);
-  assert.match(kidb, /Play on from the setup/);
+  assert.doesNotMatch(kidb, /Play on/);
   assert.match(kidb, /eco: "E60/);
   assert.doesNotMatch(kidb, /setups/);
   assert.doesNotMatch(kidb, /follow-ups/);
@@ -2268,7 +2266,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.match(stb, /Meet the Stafford Gambit for Black/);
   assert.match(stb, /Practice the main Black moves with the hint/);
   assert.match(stb, /Then Test with none/);
-  assert.match(stb, /Play on from the setup/);
+  assert.doesNotMatch(stb, /Play on/);
   assert.match(stb, /eco: "C42"/);
   assert.doesNotMatch(stb, /setups/);
   assert.doesNotMatch(stb, /follow-ups/);
@@ -2350,7 +2348,7 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 20 pw li
   assert.match(pw, /Meet Jänisch, Steinitz, and Countergambit structures/);
   assert.match(pw, /Practice the main White moves with the hint/);
   assert.match(pw, /Then Test with none/);
-  assert.match(pw, /Play on from the setup/);
+  assert.doesNotMatch(pw, /Play on/);
   assert.match(pw, /eco: "C44"/);
   assert.doesNotMatch(pw, /setups/);
   assert.doesNotMatch(pw, /follow-ups/);
@@ -2956,49 +2954,30 @@ test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   assert.match(feedback, /If we confirm your move is book/);
 });
 
-test("Play on chips are Level 1 / 2 / 3 after Practice or Test; green still needs a clean Test", () => {
+test("Play on is gone; book finish still offers Test / Book solid", () => {
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
     "utf8",
   );
-  const engine = readFileSync(join(root, "src/lib/play-engine.ts"), "utf8");
   const css = readFileSync(join(root, "src/styles.css"), "utf8");
 
-  assert.match(train, /showPlayOn = bookDone && !warmup && !lineEndsInMate\(line\)/);
-  assert.doesNotMatch(train, /showPlayOn = bookDone && mode === "practice"/);
-  assert.match(train, /Pick a level, then Play on/);
-  assert.match(train, /Practice done — Play on, or Test with no hints/);
-  assert.match(train, /Finished, but you missed a move — Play on, or Test again to go green/);
+  assert.doesNotMatch(train, /Play on/);
+  assert.doesNotMatch(train, /playing on/);
+  assert.doesNotMatch(train, /showPlayOn/);
+  assert.doesNotMatch(train, /startPlayOn/);
+  assert.doesNotMatch(train, /play-engine/);
+  assert.doesNotMatch(train, /loadPlayEngine/);
+  assert.doesNotMatch(train, /pickHintMove/);
+  assert.doesNotMatch(train, /play-level-chip/);
+  assert.match(train, /Practice done — Test with no hints/);
+  assert.match(train, /Finished, but you missed a move — Test again to go green/);
   assert.match(train, /t\("Book solid"\)/);
   assert.match(train, /if \(practiceMissedRef\.current\)/);
   assert.match(train, /onLineComplete\?\.\(\)/);
-  assert.doesNotMatch(train, /bookDone && mode === "practice" && !showPlayOn/);
-  assert.match(train, /beginner: "Level 1"/);
-  assert.match(train, /intermediate: "Level 2"/);
-  assert.match(train, /advanced: "Level 3"/);
-  assert.match(train, /Level 1, about 800\./);
-  assert.match(train, /Level 2, about 1200\./);
-  assert.match(train, /Level 3, about 1800\./);
-  assert.match(train, /useState<PlayLevel \| null>\("beginner"\)/);
-  assert.doesNotMatch(train, /cyclePlayLevel/);
-  assert.doesNotMatch(train, /strength-cycle/);
-  assert.match(train, /play-level-chip/);
+  assert.doesNotMatch(css, /\.play-on-caption/);
+  assert.doesNotMatch(css, /\.play-level-chip/);
+  assert.doesNotMatch(css, /\.play-on-btn/);
 
-  assert.match(train, /beginner: 400,/);
-  assert.match(train, /intermediate: 800,/);
-  assert.match(train, /advanced: 1400,/);
-
-  assert.match(engine, /beginner: \{ thinkMs: 400, depth: 2, randomize: true, slack: 80 \}/);
-  assert.match(engine, /intermediate: \{ thinkMs: 800, depth: 3, randomize: true, slack: 40 \}/);
-  assert.match(engine, /advanced: \{ thinkMs: 1400, depth: 5, randomize: false, slack: 0 \}/);
-
-  assert.match(engine, /function hangsPiece/);
-  assert.match(engine, /HANG_CP = 250/);
-
-  assert.match(css, /\.play-level-chip/);
-  assert.match(css, /\.play-level-chip\.is-on/);
-  assert.match(css, /\.play-on-caption/);
-  assert.doesNotMatch(css, /\.strength-cycle/);
 });
 
 test("two-step pack intro exists; gym copy is not the only opening text; no setups/follow-ups", () => {

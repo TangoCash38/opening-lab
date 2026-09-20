@@ -56,10 +56,10 @@ type Props = {
   slide: SlideAnim | null;
   onSlideComplete?: () => void;
   onSquare: (sq: Square) => void;
-  /** Drag-drop from→to. Same book / play-on rules as click-to-click. */
+  /** Drag-drop from→to. Same book-trainer rules as click-to-click. */
   onPlay?: (from: Square, to: Square) => void;
   interactive: boolean;
-  /** Play-on only. Book Practice/Test keep auto-queen. */
+  /** Optional promotion picker. Book Practice/Test keep auto-queen. */
   promotion?: PromotionPrompt | null;
   /** Trainer full-screen: drop the 420px cap so the parent can size the board. */
   expanded?: boolean;

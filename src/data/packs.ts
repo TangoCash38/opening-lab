@@ -32,7 +32,7 @@ export type Pack = {
   /** Display price when paid; null when free */
   price: string | null;
   blurb: string;
-  /** What the opening is, then what the pack drills + Play on. */
+  /** What the opening is, then what the pack drills. */
   about?: string;
   /** Collapsed card hint, e.g. "Free · 5 book lines + 3 traps" */
   closedLabel?: string;
@@ -764,7 +764,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Advance, Classical, Exchange",
-    about: "The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get the light bishop out, and keep a solid structure.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get the light bishop out, and keep a solid structure.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 3 lines",
     lines: [
       {
@@ -923,7 +923,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black vs 1.d4",
-    about: "The Queen’s Gambit Declined is Black's solid answer to 1.d4. You hold the centre, develop, then challenge it.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "The Queen’s Gambit Declined is Black's solid answer to 1.d4. You hold the centre, develop, then challenge it.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1064,7 +1064,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Anti-London for Black",
-    about: "Master Anti-London systems for Black: Sedlak’s Caro-Kann, Classical, Dubov, Bd6/Carlsen, Symmetry and Grünfeld shells, plus Jobava and early …c5 denials.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Master Anti-London systems for Black: Sedlak’s Caro-Kann, Classical, Dubov, Bd6/Carlsen, Symmetry and Grünfeld shells, plus Jobava and early …c5 denials.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1223,7 +1223,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black vs Colle, Torre, Trompowsky, Veresov, Blackmar-Diemer",
-    about: "Meet White's 1.d4 sidelines as Black: Colle, Torre, Trompowsky, Veresov, and the Blackmar-Diemer.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet White's 1.d4 sidelines as Black: Colle, Torre, Trompowsky, Veresov, and the Blackmar-Diemer.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1364,7 +1364,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black vs Alapin, Grand Prix, Closed, Smith-Morra, Rossolimo, Wing Gambit",
-    about: "Meet White's anti-Sicilians as Black: Alapin, Grand Prix, Closed, Smith-Morra, Rossolimo, and the Wing Gambit.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet White's anti-Sicilians as Black: Alapin, Grand Prix, Closed, Smith-Morra, Rossolimo, and the Wing Gambit.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1505,7 +1505,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · 1.b3 Bb2",
-    about: "Play the Nimzo-Larsen as White: 1.b3, Bb2, and the central plans against …e5, …d5, …c5, and the fianchetto.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Play the Nimzo-Larsen as White: 1.b3, Bb2, and the central plans against …e5, …d5, …c5, and the fianchetto.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1647,7 +1647,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · quiet Italian, Giuoco Piano, Two Knights, Evans, Hungarian",
-    about: "Play the Italian as White: quiet d3 systems, the Giuoco Piano, Two Knights, Evans Gambit, and the Hungarian.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Play the Italian as White: quiet d3 systems, the Giuoco Piano, Two Knights, Evans Gambit, and the Hungarian.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1789,7 +1789,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, Noah’s Ark",
-    about: "Play the Ruy Lopez as White: Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, and Noah’s Ark.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Play the Ruy Lopez as White: Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, and Noah’s Ark.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -1931,7 +1931,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · Advance, Tarrasch, Classical, Winawer, Exchange",
-    about: "Meet the French as White: Advance, Tarrasch, Classical, Winawer, and Exchange.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the French as White: Advance, Tarrasch, Classical, Winawer, and Exchange.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2073,7 +2073,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · 2.c3 vs …Nc6, …d5, …Nf6, …e6, …d6, …g6",
-    about: "Meet the Sicilian as White with the Alapin: 2.c3 and d4 against …Nc6, …d5, …Nf6, …e6, …d6, and …g6.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Sicilian as White with the Alapin: 2.c3 and d4 against …Nc6, …d5, …Nf6, …e6, …d6, and …g6.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2215,7 +2215,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black · Four Knights, Botvinnik, Hedgehog, reversed Sicilian",
-    about: "Meet 1.c4 as Black with the Symmetrical English: Four Knights, Botvinnik, Hedgehog, and reversed-Sicilian centres.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet 1.c4 as Black with the Symmetrical English: Four Knights, Botvinnik, Hedgehog, and reversed-Sicilian centres.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2357,7 +2357,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black · Knight’s Gambit, Fischer, Classical, Bishop’s Gambit, Falkbeer",
-    about: "Defend the King’s Gambit as Black: Knight’s Gambit, Fischer, Classical Accepted, Bishop’s Gambit, and Falkbeer.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Defend the King’s Gambit as Black: Knight’s Gambit, Fischer, Classical Accepted, Bishop’s Gambit, and Falkbeer.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2499,7 +2499,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · Qa5, Qd6, Qd8, Modern 2…Nf6, Portuguese, Icelandic",
-    about: "Meet the Scandinavian as White: the queen lines, Modern 2…Nf6, Portuguese, and Icelandic.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Scandinavian as White: the queen lines, Modern 2…Nf6, Portuguese, and Icelandic.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2641,7 +2641,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · Be3 Qd2 vs Pirc and Modern",
-    about: "Meet the Pirc and Modern as White with the 150 Attack: Be3, Qd2, and a supported centre.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Pirc and Modern as White with the 150 Attack: Be3, Qd2, and a supported centre.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2783,7 +2783,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · g3 Bg2 vs Classical, Stonewall, Leningrad",
-    about: "Meet the Dutch as White with the fianchetto: g3, Bg2, and c4 against Classical, Stonewall, and Leningrad.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Dutch as White with the fianchetto: g3, Bg2, and c4 against Classical, Stonewall, and Leningrad.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -2925,7 +2925,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · Advance and Panov",
-    about: "Meet the Caro-Kann as White with the Advance and the Panov.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Caro-Kann as White with the Advance and the Panov.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3067,7 +3067,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black · accepted Ba5/Be7 and declined Bb6",
-    about: "Defend the Evans Gambit as Black: accepted Ba5 and Be7, and declined Bb6.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Defend the Evans Gambit as Black: accepted Ba5 and Be7, and declined Bb6.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3209,7 +3209,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · 1.d4 e5 accepted",
-    about: "Meet the Englund Gambit as White: take on e5, develop, and do not let the queen raid dictate the game.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Englund Gambit as White: take on e5, develop, and do not let the queen raid dictate the game.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3350,7 +3350,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White · Alekhine, main line, Fajarowicz",
-    about: "Meet the Budapest as White: Alekhine 4.Bf4/e3/Nf3, the main-line Qd5, and the Fajarowicz.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Meet the Budapest as White: Alekhine 4.Bf4/e3/Nf3, the main-line Qd5, and the Fajarowicz.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3491,7 +3491,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White vs 1...d5",
-    about: "After 1.d4 d5 2.c4, meet Black’s named replies with book development and a stable centre.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "After 1.d4 d5 2.c4, meet Black’s named replies with book development and a stable centre.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3633,7 +3633,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "White vs 1…e5 / 1…c5 / 1…Nf6",
-    about: "Meet 1…e5, 1…c5, and 1…Nf6 with English book for White: Four Knights, Botvinnik, Symmetrical, Mikenas, and related structures.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet 1…e5, 1…c5, and 1…Nf6 with English book for White: Four Knights, Botvinnik, Symmetrical, Mikenas, and related structures.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3793,7 +3793,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Open, Closed & Bogo-Catalan",
-    about: "Meet Open, Closed, and Bogo-Catalan structures with the g3 fianchetto for White: recover c4, clamp the centre, and use the long diagonal.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Open, Closed, and Bogo-Catalan structures with the g3 fianchetto for White: recover c4, clamp the centre, and use the long diagonal.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -3953,7 +3953,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Classical, Rubinstein & Sämisch",
-    about: "Meet Classical, Rubinstein, and Sämisch structures in the Nimzo-Indian for Black: pin the knight, fight doubled c-pawns, and strike with …c5 or …d5.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Classical, Rubinstein, and Sämisch structures in the Nimzo-Indian for Black: pin the knight, fight doubled c-pawns, and strike with …c5 or …d5.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -4112,7 +4112,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Exchange, Russian & Fianchetto",
-    about: "Meet Exchange, Russian, and Fianchetto structures in the Grünfeld for Black: invite the big centre, then strike it with …c5 or active pieces.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Exchange, Russian, and Fianchetto structures in the Grünfeld for Black: invite the big centre, then strike it with …c5 or active pieces.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -4271,7 +4271,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Classical, Steinitz & Nimzowitsch",
-    about: "Meet Classical, Steinitz, and Nimzowitsch structures in the Petroff for Black: answer 2.Nf3 with …Nf6, then reclaim the centre with …d5 or solid piece play.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Classical, Steinitz, and Nimzowitsch structures in the Petroff for Black: answer 2.Nf3 with …Nf6, then reclaim the centre with …d5 or solid piece play.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -4431,7 +4431,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Berlin Wall, Rio & Anti-Berlin",
-    about: "Meet Berlin Wall, Rio, and Anti-Berlin structures for Black: answer 3.Bb5 with …Nf6, then steer into the endgame, Rio trades, or quiet 4.d3 shells.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Berlin Wall, Rio, and Anti-Berlin structures for Black: answer 3.Bb5 with …Nf6, then steer into the endgame, Rio trades, or quiet 4.d3 shells.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -4591,7 +4591,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Classical, Sämisch & Fianchetto",
-    about: "Meet Classical, Sämisch, and Fianchetto structures in the King’s Indian for Black: fianchetto, clamp with …d6, then strike with …e5 or …c5 against White’s big centre.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Classical, Sämisch, and Fianchetto structures in the King’s Indian for Black: fianchetto, clamp with …d6, then strike with …e5 or …c5 against White’s big centre.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -4751,7 +4751,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "…Nc6 vs 3.Nxe5 · traps & mains",
-    about: "Meet the Stafford Gambit for Black: answer 3.Nxe5 with …Nc6, then hunt traps and solid shells after 4.Nxc6 dxc6.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet the Stafford Gambit for Black: answer 3.Nxe5 with …Nc6, then hunt traps and solid shells after 4.Nxc6 dxc6.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -4911,7 +4911,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Jänisch, Steinitz & Countergambit",
-    about: "Meet Jänisch, Steinitz, and Countergambit structures in the Ponziani for White: prepare d4 with 3.c3, take the centre, and treat each Black reply as its own book.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
+    about: "Meet Jänisch, Steinitz, and Countergambit structures in the Ponziani for White: prepare d4 with 3.c3, take the centre, and treat each Black reply as its own book.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 20 lines",
     lines: [
       {
@@ -5087,7 +5087,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Black · Gunderam, Teichmann, Euwe, Bogoljubow",
-    about: "Defend the Blackmar-Diemer as Black: Gunderam, Teichmann, Euwe, and Bogoljubow.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them. Play on from the setup if you want.",
+    about: "Defend the Blackmar-Diemer as Black: Gunderam, Teichmann, Euwe, and Bogoljubow.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
     closedLabel: "Free · 18 lines",
     lines: [
       {
@@ -5825,7 +5825,7 @@ export const PACKS: Pack[] = [
     isPremium: false,
     price: null,
     blurb: "Famous punish-the-take traps",
-    about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none. Play on from the finish if you want.",
+    about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none.",
     closedLabel: "Free · 2 traps",
     lines: [
       {
