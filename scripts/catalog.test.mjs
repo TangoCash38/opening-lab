@@ -2354,10 +2354,9 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   assert.match(ot, /id: "ot6"/);
   assert.match(ot, /Trap · Stafford/);
   assert.match(ot, /Bg4#/);
-  assert.match(ot, /id: "ot12"/);
-  assert.match(ot, /Trap · Grob …Qxg5/);
-  assert.match(ot, /Nxh3/);
-  assert.match(ot, /closedLabel: "Free · 12 traps"/);
+  assert.doesNotMatch(ot, /id: "ot12"/);
+  assert.doesNotMatch(ot, /Trap · Grob/);
+  assert.match(ot, /closedLabel: "Free · 11 traps"/);
   assert.match(ot, /Then Test with none/);
   assert.doesNotMatch(ot, /Play on/);
   assert.doesNotMatch(ot, /playing on/);
@@ -2365,7 +2364,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 18 stb lin
   const otIds = [...ot.matchAll(/id: "(ot\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     otIds,
-    Array.from({ length: 12 }, (_, i) => `ot${i + 1}`),
+    Array.from({ length: 11 }, (_, i) => `ot${i + 1}`),
   );
 });
 
