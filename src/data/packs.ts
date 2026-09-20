@@ -5842,7 +5842,7 @@ export const PACKS: Pack[] = [
     price: null,
     blurb: "Famous punish-the-take traps",
     about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none.",
-    closedLabel: "Free · 12 traps",
+    closedLabel: "Free · 11 traps",
     lines: [
       {
         id: "ot1",
@@ -5930,14 +5930,6 @@ export const PACKS: Pack[] = [
         idea: "White’s Alien sac Nxf7 starts the attack. After Bxe6+ and g5, …Bxh1 takes the rook and walks into g6#. That rook grab is the trap.",
         next: "Checkmate with the pawn on g6. Reset and drill Bxe6+ Kh7 g5, then g6# after the rook take. Mate finishes the line.",
         plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nf6", "Ng5", "h6", "Nxf7", "Kxf7", "Nf3", "Bf5", "Ne5+", "Kg8", "Bc4+", "e6", "g4", "b5", "Bb3", "Be4", "Bxe6+", "Kh7", "g5", "Bxh1", "g6#"],
-        side: "w",
-      },
-      {
-        id: "ot12",
-        name: "Trap · Grob …Qxg5",
-        idea: "…Qxg5 takes the g-pawn bait. After Bxf7+ and Rg1, …Qh3 walks into Ng5+ forking king and queen — Nxh3 cashes the queen.",
-        next: "White is a queen up; the knight sits on h3 and Black’s king is on e8. Develop with d3 or Nc3, castle, and keep the rook on the g-file. Do not give the extra material back for a random pawn grab.",
-        plies: ["g4", "e5", "Bg2", "d5", "g5", "Qxg5", "Bxd5", "Nf6", "Nf3", "Qh5", "Bxf7+", "Kxf7", "Rg1", "Qh3", "Ng5+", "Ke8", "Nxh3"],
         side: "w",
       }
     ],
