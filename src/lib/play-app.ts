@@ -10,14 +10,15 @@
  * If the current UA/referrer is not Play, clear that flag so a leftover
  * session from a wrong hit cannot poison Chrome.
  *
- * Play Console: create subscription product `lab_plus_yearly` with a yearly
- * base plan in GBP. Digital Goods will
- * not work in this raw System WebView — native BillingClient is required.
+ * Play Console one-time IAPs (Path B): `pack_<pack_id_with_underscores>` and
+ * `buy_all`. Legacy subscription `lab_plus_yearly` is restore-only — wrap
+ * unlocks are not Lab+-only. Digital Goods will not work in this raw System
+ * WebView — native BillingClient is required.
  */
 export const PLAY_PACKAGE = "uk.co.openinglab";
 export const PLAY_UA_TOKEN = "OpeningLabPlay";
 
-/** Play Console subscription product ID. Yearly base plan only, GBP. */
+/** Play Console subscription product ID. Yearly base plan only, GBP. Legacy restore. */
 export const PLAY_SKU_YEARLY = "lab_plus_yearly";
 
 export const PLAY_STORE_NOTICE =
@@ -27,7 +28,7 @@ export const PLAY_SKU_NOT_ON_SALE = "Lab+ isn’t on sale in the store yet";
 
 export type PlayWrapUnlocks = {
   packs: string[];
-  plan: "monthly" | "yearly" | null;
+  plan: "monthly" | "yearly" | "buy_all" | null;
   expiresAt: number | null;
   playBilled?: boolean;
 };
@@ -42,7 +43,40 @@ export function isPlayBilledLabPlusActive(state: PlayWrapUnlocks): boolean {
   );
 }
 
+/** Play-billed one-time Buy all (plan buy_all). */
+export function isPlayBilledBuyAll(state: PlayWrapUnlocks): boolean {
+  return state.playBilled === true && state.plan === "buy_all";
+}
+
+/** Play-billed individual packs (token-save-only / Stripe-only must not set playBilled). */
+export function isPlayBilledPacksActive(state: PlayWrapUnlocks): boolean {
+  return state.playBilled === true && Array.isArray(state.packs) && state.packs.length > 0;
+}
+
+/** Any Play-granted entitlement the wrap may honour (packs, buy_all, or legacy yearly). */
+export function isPlayBilledUnlockActive(state: PlayWrapUnlocks): boolean {
+  return (
+    isPlayBilledBuyAll(state) ||
+    isPlayBilledPacksActive(state) ||
+    isPlayBilledLabPlusActive(state)
+  );
+}
+
+/**
+ * Play wrap unlocks: honour Play-billed packs and buy_all so they stick.
+ * Stripe website plan/packs without a Play billing marker are cleared.
+ * Legacy Lab+ yearly is kept only when there is no pack / buy_all grant.
+ */
 export function playWrapAccountUnlocks<T extends PlayWrapUnlocks>(state: T): T {
+  if (state.playBilled !== true) {
+    return { ...state, packs: [], plan: null, expiresAt: null, playBilled: false };
+  }
+  if (isPlayBilledBuyAll(state)) {
+    return { ...state, plan: "buy_all", playBilled: true };
+  }
+  if (isPlayBilledPacksActive(state)) {
+    return { ...state, plan: null, expiresAt: null, playBilled: true };
+  }
   if (isPlayBilledLabPlusActive(state)) {
     return { ...state, packs: [], plan: "yearly", playBilled: true };
   }

@@ -36,6 +36,7 @@ type PurchaseRow = {
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   play_purchase_token?: string | null;
+  play_billed?: boolean | null;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -71,7 +72,11 @@ function rowToUnlocks(row: PurchaseRow | undefined): UnlockState {
     packs: normalizePacks(row.packs),
     plan,
     expiresAt: asExpiryMs(row.expires_at),
-    playBilled: Boolean(row.play_purchase_token) && plan === "yearly",
+    // play_billed is set only by verified Play applyPurchase — not token-save-only.
+    // Legacy Lab+ yearly rows may only have a token (backfilled by 0006).
+    playBilled:
+      Boolean(row.play_billed) ||
+      (Boolean(row.play_purchase_token) && plan === "yearly"),
   };
 }
 
@@ -146,11 +151,19 @@ function unlocksForSignedIn(
 
 export async function getUnlocksForUser(userId: string): Promise<UnlockState> {
   const sql = await getSql();
-  const rows = await sql.query<PurchaseRow>(
-    "select user_id, packs, plan, expires_at, stripe_customer_id, stripe_subscription_id, play_purchase_token from purchases where user_id = $1",
-    [userId],
-  );
-  return rowToUnlocks(rows[0]);
+  try {
+    const rows = await sql.query<PurchaseRow>(
+      "select user_id, packs, plan, expires_at, stripe_customer_id, stripe_subscription_id, play_purchase_token, play_billed from purchases where user_id = $1",
+      [userId],
+    );
+    return rowToUnlocks(rows[0]);
+  } catch {
+    const rows = await sql.query<PurchaseRow>(
+      "select user_id, packs, plan, expires_at, stripe_customer_id, stripe_subscription_id, play_purchase_token from purchases where user_id = $1",
+      [userId],
+    );
+    return rowToUnlocks(rows[0]);
+  }
 }
 
 async function upsertMerged(
@@ -162,14 +175,15 @@ async function upsertMerged(
   stripeSubscriptionId?: string | null,
   playPurchaseToken?: string | null,
   playOrderId?: string | null,
+  playBilled?: boolean | null,
 ): Promise<UnlockState> {
   const sql = await getSql();
   await sql.query(
     `insert into purchases (
        user_id, packs, plan, expires_at,
        stripe_customer_id, stripe_subscription_id,
-       play_purchase_token, play_order_id, updated_at
-     ) values ($1, $2::text[], $3, $4, $5, $6, $7, $8, now())
+       play_purchase_token, play_order_id, play_billed, updated_at
+     ) values ($1, $2::text[], $3, $4, $5, $6, $7, $8, $9, now())
      on conflict (user_id) do update set
        packs = (
          select coalesce(array_agg(distinct p), '{}')
@@ -191,6 +205,7 @@ async function upsertMerged(
        stripe_subscription_id = coalesce(excluded.stripe_subscription_id, purchases.stripe_subscription_id),
        play_purchase_token = coalesce(excluded.play_purchase_token, purchases.play_purchase_token),
        play_order_id = coalesce(excluded.play_order_id, purchases.play_order_id),
+       play_billed = purchases.play_billed or excluded.play_billed,
        updated_at = now()`,
     [
       userId,
@@ -201,6 +216,7 @@ async function upsertMerged(
       stripeSubscriptionId ?? null,
       playPurchaseToken ?? null,
       playOrderId ?? null,
+      Boolean(playBilled),
     ],
   );
   return getUnlocksForUser(userId);
@@ -244,6 +260,7 @@ export async function applyPurchase(
     input.stripeSubscriptionId,
     input.playPurchaseToken,
     input.playOrderId,
+    Boolean(input.playPurchaseToken),
   );
   // After the paid row is saved. Retries are no-ops (notice columns).
   // Never throw — checkout / webhook must still succeed if mail fails.
@@ -298,7 +315,7 @@ export async function userIdForPlayToken(token: string): Promise<string | null> 
   return rows[0]?.user_id ?? null;
 }
 
-/** Persist a Play token without granting Lab+. Used when Publisher API creds are missing. */
+/** Persist a Play token without granting unlocks. Used when Publisher API creds are missing. */
 export async function savePlayPurchaseToken(
   userId: string,
   token: string,

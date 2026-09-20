@@ -14,7 +14,7 @@ is not launched, so there is no splash handoff and the app works with or without
 | Theme | `#2f5d50` |
 | Splash / background | `#f4efe6` |
 | Surface | In-app WebView only (no TWA / Chrome handoff) |
-| Billing | Play Billing Library 7.1.1 + `com.android.vending.BILLING`. Lab+ **yearly only** (`lab_plus_yearly`, yearly base plan, GBP). Packs stay on the website (Stripe). Digital Goods does not work in this raw System WebView. |
+| Billing | Play Billing Library 7.1.1 + `com.android.vending.BILLING`. Native client is still Lab+ yearly (`lab_plus_yearly`). Server Path B verifies one-time `pack_*` / `buy_all`. Digital Goods does not work in this raw System WebView. |
 
 Launcher icons come from `public/icons/icon-512.png` and
 `icon-512-maskable.png`.
@@ -94,19 +94,21 @@ Print a local upload-key fingerprint (after you have created the keystore):
 keytool -list -v -keystore upload-keystore.jks -alias upload
 ```
 
-## Play product (Console)
+## Play products (Console)
 
-Create a **subscription** product:
+Path B (no Lab+ on sale): create **managed, non-consumable** one-time products. Play product IDs cannot contain hyphens, so catalog pack ids (`italian-white`) become `pack_` + underscores (`pack_italian_white`). Mapping is in `src/lib/play-skus.ts`.
 
-| | |
-|---|---|
-| Product ID | `lab_plus_yearly` |
-| Base plan | Yearly |
-| Price | GBP (match the website Lab+ yearly price, £29.99) |
+| Product ID | Type | Grants |
+|---|---|---|
+| `pack_<pack_id_with_underscores>` | One-time managed | That `PACKS[].id` via `applyPurchase({ kind: "pack", packId })` |
+| `buy_all` | One-time managed | `{ kind: "buy_all" }` |
+| `lab_plus_yearly` | Subscription, yearly, GBP | Legacy restore only (`subscriptionsv2`) |
 
-Purchases will fail in Console until the merchant card / bank check on **16 September 2026**. The app shows “Lab+ isn’t on sale in the store yet” instead of crashing.
+Do not invent pack titles in Console — use the catalog id, not a marketing name, as the SKU suffix.
 
-Server verify uses Android Publisher API only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` is set on the host (Vercel). Never put that JSON in the repo.
+Server verify (products API for one-time, subscriptionsv2 for yearly) runs only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` is set on the host (Vercel). Missing env → 503 `not_connected` and token save only — **no unlock grant**. Never put that JSON in the repo.
+
+The wrap still talks to `/api/play/confirm` (alias `/api/play/subscribe`) with `{ packageName, productId, purchaseToken, orderId? }`. Native BillingClient in this folder is still Lab+ yearly only until Mobile ships pack / buy_all SKUs.
 
 App version for the next AAB: **versionCode 8 / versionName 1.0.7**. Do not upload an AAB from this note alone.
 
@@ -114,4 +116,4 @@ App version for the next AAB: **versionCode 8 / versionName 1.0.7**. Do not uplo
 
 - Digital Goods API (raw System WebView)
 - Monthly Lab+ on Play
-- Pack IAP on Play (packs stay on the website)
+- Native pack / Buy all BillingClient (backend Path B is ready; this wrapper is still yearly-only)

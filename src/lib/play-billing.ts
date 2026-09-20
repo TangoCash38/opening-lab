@@ -1,7 +1,9 @@
 /**
- * Client helper for native Play Billing (Lab+ yearly only).
- * The System WebView has no Digital Goods API — calls go through
- * window.OpeningLabPlay (JavascriptInterface).
+ * Client helper for native Play Billing.
+ * Path B: one POST confirms pack_* / buy_all / legacy lab_plus_yearly.
+ * The System WebView has no Digital Goods API — buy/restore still go through
+ * window.OpeningLabPlay (JavascriptInterface) for yearly; Mobile posts
+ * one-time tokens to /api/play/confirm.
  */
 import {
   PLAY_PACKAGE,
@@ -77,19 +79,24 @@ function nativeCall(method: "buy" | "restore"): Promise<PlayNativeResult> {
   });
 }
 
-export async function confirmPlaySubscribe(input: {
+/**
+ * Confirm a Play purchase. Mobile should POST
+ * `{ packageName, productId, purchaseToken, orderId? }` here.
+ * productId branches: pack_* → pack grant, buy_all → buy_all, lab_plus_yearly → legacy.
+ */
+export async function confirmPlayPurchase(input: {
   purchaseToken: string;
-  productId?: string;
+  productId: string;
   packageName?: string;
   orderId?: string;
 }): Promise<UnlockState> {
-  const res = await fetch("/api/play/subscribe", {
+  const res = await fetch("/api/play/confirm", {
     method: "POST",
     credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       packageName: input.packageName ?? PLAY_PACKAGE,
-      productId: input.productId ?? PLAY_SKU_YEARLY,
+      productId: input.productId,
       purchaseToken: input.purchaseToken,
       orderId: input.orderId,
     }),
@@ -99,11 +106,28 @@ export async function confirmPlaySubscribe(input: {
     code?: string;
   };
   if (!res.ok) {
-    throw new Error(data.error ?? "Could not confirm Lab+");
+    throw new Error(data.error ?? "Could not confirm this Google Play purchase");
   }
-  const unlocks = normalizeUnlockState({ ...data, playBilled: true });
+  const unlocks = normalizeUnlockState({
+    ...data,
+    playBilled: data.playBilled !== false,
+  });
   replaceUnlocks(unlocks);
   return unlocks;
+}
+
+export async function confirmPlaySubscribe(input: {
+  purchaseToken: string;
+  productId?: string;
+  packageName?: string;
+  orderId?: string;
+}): Promise<UnlockState> {
+  return confirmPlayPurchase({
+    purchaseToken: input.purchaseToken,
+    productId: input.productId ?? PLAY_SKU_YEARLY,
+    packageName: input.packageName,
+    orderId: input.orderId,
+  });
 }
 
 function friendlyNativeError(result: PlayNativeResult): Error {

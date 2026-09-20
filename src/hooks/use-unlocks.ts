@@ -4,7 +4,13 @@ import { isPackVisible } from "@/lib/catalog";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import type { Pack } from "@/data/packs";
 import { fetchPaymentsEnabled } from "@/lib/checkout";
-import { isPlayApp, isPlayBilledLabPlusActive, playWrapAccountUnlocks } from "@/lib/play-app";
+import {
+  isPlayApp,
+  isPlayBilledBuyAll,
+  isPlayBilledLabPlusActive,
+  isPlayBilledUnlockActive,
+  playWrapAccountUnlocks,
+} from "@/lib/play-app";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import {
   claimAccountUnlocks,
@@ -52,7 +58,10 @@ function syncAccountUnlocks(userId: string): Promise<void> {
       writeClaimedUser(userId);
       const account = await fetchAccountUnlocks();
       const local = getUnlocks();
-      const source = account && isPlayBilledLabPlusActive(account) ? account : local;
+      const source =
+        account && isPlayBilledUnlockActive(playWrapAccountUnlocks(account))
+          ? account
+          : local;
       replaceUnlocks(playWrapAccountUnlocks(source));
       return;
     }
@@ -129,13 +138,18 @@ export function useUnlocks() {
     };
   }, []);
 
-  const subscribed = isPlayApp() ? isPlayBilledLabPlusActive(state) : isSubscriptionActive(state);
+  const subscribed = isPlayApp()
+    ? isPlayBilledBuyAll(state) || isPlayBilledLabPlusActive(state)
+    : isSubscriptionActive(state);
 
   const canAccess = useCallback(
     (pack: Pack) => {
       if (!isPackVisible(pack)) return false;
       if (isPlayApp()) {
-        return isPackFree(pack) || isPlayBilledLabPlusActive(state);
+        if (isPackFree(pack)) return true;
+        const wrap = playWrapAccountUnlocks(state);
+        if (isPlayBilledBuyAll(wrap) || isPlayBilledLabPlusActive(wrap)) return true;
+        return wrap.packs.includes(pack.id);
       }
       return isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack));
     },

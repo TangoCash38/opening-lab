@@ -64,7 +64,9 @@ export function nextUnlockedLine(
 }
 
 /**
- * Individual pack Play product IDs on sale. Empty until billing returns.
+ * Individual pack Play product IDs on sale in the wrap UI. Empty — Path B
+ * backend mapping lives in play-skus.ts (`pack_<id_with_underscores>`).
+ * Filling this object would flip hasPaidPlaySkuPath / playVisiblePacks.
  * Lab+ yearly is not a pack SKU path.
  */
 const PLAY_PACK_SKUS: Readonly<Record<string, string>> = {};
@@ -77,9 +79,8 @@ export function hasPaidPlaySkuPath(
 }
 
 /**
- * Lab+ stays hidden while the Play catalog is free — no paid/locked
- * Play SKU path. An eleventh visible free pack must not unhide Lab+.
- * A locked pack with no Play buy path is not a path (Path A).
+ * Lab+ stays hidden (Path B: no Lab+). Pack SKUs are verified on the
+ * server via play-skus.ts; this catalog gate must stay false.
  */
 export function catalogOffersLabPlus(
   _packs: readonly Pick<Pack, "id" | "isFree">[] = [],
