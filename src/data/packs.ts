@@ -3954,7 +3954,7 @@ export const PACKS: Pack[] = [
     price: null,
     blurb: "Classical, Rubinstein & Sämisch",
     about: "Meet Classical, Rubinstein, and Sämisch structures in the Nimzo-Indian for Black: pin the knight, fight doubled c-pawns, and strike with …c5 or …d5.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
-    closedLabel: "Free · 18 lines",
+    closedLabel: "Free · 20 lines",
     lines: [
       {
         id: "nib1",
@@ -4098,6 +4098,22 @@ export const PACKS: Pack[] = [
         idea: "Romanishin …b6 and …Ba6 pressure c4 early. After a3, drop the bishop to e7; taking on f1 costs White castling while you keep a solid centre.",
         next: "White to move. Against Kg2, play …c5 or …Re8; if White develops with Bg2 and Qc2, keep the d5–c5 structure. Do not rush …c5 while the king is still finding cover with …Re8 and …Nbd7.",
         plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "b6", "Ne2", "Ba6", "a3", "Be7", "Nf4", "d5", "cxd5", "Bxf1", "Kxf1", "exd5", "g3", "O-O"],
+        side: "b",
+      },
+      {
+        id: "nib19",
+        name: "Kasparov 4.g3",
+        idea: "Kasparov 4.g3: castle, then …d5 and take on c4. After a3, drop the bishop to e7 rather than giving the pair; …Nc6 and …a6 let White recapture with the queen.",
+        next: "Black to move. Continue …Bd7 or …Rb8, then …b5 when the queen sits on c4. Against Ne5 or Rd1, keep the centre flexible with …Na5 later. Do not rush …b5 while the c6 knight is loose to d5.",
+        plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "g3", "O-O", "Bg2", "d5", "Nf3", "dxc4", "O-O", "Nc6", "a3", "Be7", "Qa4", "a6", "Qxc4"],
+        side: "b",
+      },
+      {
+        id: "nib20",
+        name: "Classical 4.Qc2 O-O 5.e4",
+        idea: "Meet Classical 4.Qc2 O-O 5.e4 with …d5 at once. After e5 Ne4, hit with …c5 and …cxd4; …Nd7 supports the outpost and eyes c5.",
+        next: "White to move. Against O-O play …Ndc5 or …Qa5; if White takes on e4, recapture toward the centre. Meet f3 with …Ndc5. Do not leave the e4 outpost hanging without a recapture or retreat.",
+        plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "Qc2", "O-O", "e4", "d5", "e5", "Ne4", "Bd3", "c5", "Nf3", "cxd4", "Nxd4", "Nd7"],
         side: "b",
       },
     ],
