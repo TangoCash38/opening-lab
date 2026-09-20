@@ -16,6 +16,8 @@ type Props = {
   busy?: boolean;
   error?: string | null;
   playApp?: boolean;
+  /** True when this pack has a Path B Play INAPP SKU. */
+  playSku?: boolean;
 };
 
 export function UnlockModal({
@@ -24,11 +26,13 @@ export function UnlockModal({
   onClose,
   onUnlockPack,
   onBuyAll,
+  onRestore,
   paymentsEnabled = false,
   needsAccount = false,
   busy = false,
   error = null,
   playApp = false,
+  playSku = false,
 }: Props) {
   const t = useT();
   const wrap = playApp || isPlayWrap();
@@ -80,19 +84,62 @@ export function UnlockModal({
           {wrap ? (
             <>
               <p className="m-0 text-[0.88rem] leading-relaxed text-fg-muted">
-                {t("Packs are not for sale in this Play test. The three free Caro lines still train here.")}
+                {playSku
+                  ? t("One-time purchase. Billed by Google Play.")
+                  : t("This pack is not on Google Play yet. Free sample lines still train here.")}
               </p>
-              <div className="flex w-full items-center justify-between rounded-xl border-2 border-border bg-bg-subtle px-4 py-3.5 text-left">
-                <span>
-                  <span className="block text-[0.92rem] font-bold">
-                    {caroRest ? t("Rest of this pack") : t("This pack")}
+              {playSku ? (
+                <button
+                  type="button"
+                  onClick={onUnlockPack}
+                  disabled={busy}
+                  className="flex w-full items-center justify-between rounded-xl border-2 border-accent/35 bg-success-soft px-4 py-3.5 text-left active:scale-[0.99] disabled:opacity-60"
+                >
+                  <span>
+                    <span className="block text-[0.92rem] font-bold text-accent">
+                      {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
+                    </span>
+                    <span className="block text-[0.75rem] text-fg-muted">
+                      {t("Pay as you go. Billed by Google Play.")}
+                    </span>
                   </span>
-                  <span className="block text-[0.75rem] text-fg-muted">
-                    {t("Pay as you go. Not for sale in this Play test.")}
+                  <span className="text-base font-bold text-accent">{price}</span>
+                </button>
+              ) : (
+                <div className="flex w-full items-center justify-between rounded-xl border-2 border-border bg-bg-subtle px-4 py-3.5 text-left">
+                  <span>
+                    <span className="block text-[0.92rem] font-bold">
+                      {caroRest ? t("Rest of this pack") : t("This pack")}
+                    </span>
+                    <span className="block text-[0.75rem] text-fg-muted">
+                      {t("Pay as you go. Not for sale on Google Play yet.")}
+                    </span>
                   </span>
-                </span>
-                <span className="text-base font-bold">{price}</span>
-              </div>
+                  <span className="text-base font-bold">{price}</span>
+                </div>
+              )}
+              {onBuyAll ? (
+                <button
+                  type="button"
+                  onClick={onBuyAll}
+                  disabled={busy}
+                  className="flex w-full items-center justify-center rounded-xl border border-border bg-bg-subtle px-4 py-3 text-center active:scale-[0.99] disabled:opacity-60"
+                >
+                  <span className="text-[0.92rem] font-semibold text-fg">
+                    {t("or buy all for just £19.99")}
+                  </span>
+                </button>
+              ) : null}
+              {onRestore ? (
+                <button
+                  type="button"
+                  onClick={onRestore}
+                  disabled={busy}
+                  className="w-full rounded-xl border border-border bg-bg-elevated px-4 py-2.5 text-[0.85rem] font-semibold text-fg-muted disabled:opacity-60"
+                >
+                  {t("Restore purchases")}
+                </button>
+              ) : null}
             </>
           ) : (
             <>
@@ -132,8 +179,18 @@ export function UnlockModal({
               {error}
             </p>
           ) : busy ? (
-            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">{t("Opening checkout…")}</p>
-          ) : wrap ? null : needsAccount ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              {wrap ? t("Opening Google Play…") : t("Opening checkout…")}
+            </p>
+          ) : wrap && needsAccount ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              {t("Sign in so this stays on your account.")}
+            </p>
+          ) : wrap ? (
+            <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
+              {t("Billed by Google Play. One-time purchase.")}
+            </p>
+          ) : needsAccount ? (
             <p className="m-0 text-center text-[0.72rem] text-fg-subtle">
               {t("Sign in so this stays on your account.")}
             </p>

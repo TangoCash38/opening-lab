@@ -41,14 +41,26 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
     t.skip("typescript not installed");
     return;
   }
-  const js = ts.transpileModule(catalog, {
-    compilerOptions: {
-      module: ts.ModuleKind.ESNext,
-      target: ts.ScriptTarget.ES2022,
-    },
-  }).outputText;
   const dir = join(root, "scripts", ".generated-pack-price");
   mkdirSync(dir, { recursive: true });
+  const skusJs = ts.transpileModule(
+    readFileSync(join(root, "src/lib/play-skus.ts"), "utf8"),
+    {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+      },
+    },
+  ).outputText;
+  writeFileSync(join(dir, "play-skus.mjs"), skusJs);
+  const js = ts
+    .transpileModule(catalog, {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+      },
+    })
+    .outputText.replaceAll("@/lib/play-skus", "./play-skus.mjs");
   const tmp = join(dir, "catalog.mjs");
   writeFileSync(tmp, js);
   t.after(() => {
@@ -121,7 +133,7 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
   assert.match(terms, /thirty-three opening packs/);
   assert.match(terms, /Buy all packs for £19\.99/);
-  assert.match(terms, /10 September 2026/);
+  assert.match(terms, /20 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
 });

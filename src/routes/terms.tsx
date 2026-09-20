@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="10 September 2026">
+    <LegalPage title="Terms of Use" updated="20 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -92,8 +92,9 @@ function Terms() {
       <LegalSection title="Google Play">
         <p>
           The Opening Lab app from Google Play is the same trainer as the
-          website. Pack billing in the Play app is not on sale in this build.
-          Website purchases use Stripe, not Google Play.
+          website. Paid packs and Buy all in the Play app are one-time Google
+          Play purchases (not a lifetime licence). Website purchases use
+          Stripe, not Google Play.
         </p>
       </LegalSection>
 

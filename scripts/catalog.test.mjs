@@ -38,7 +38,16 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(src, /return false/);
   assert.doesNotMatch(src, /packs\.some\(hasPaidPlaySkuPath\)/);
   assert.doesNotMatch(src, /packs\.length > 1/);
-  assert.match(src, /PLAY_PACK_SKUS: Readonly<Record<string, string>> = \{\}/);
+  assert.match(src, /const PLAY_PACK_SKUS: Readonly<Record<string, string>>/);
+  assert.match(src, /playPackSkuMap/);
+  assert.match(src, /PLAY_PATH_B_PACK_IDS/);
+  assert.match(src, /@\/lib\/play-skus/);
+
+  const playSkus = readFileSync(join(root, "src/lib/play-skus.ts"), "utf8");
+  assert.match(playSkus, /PLAY_SKU_BUY_ALL = "buy_all_packs"/);
+  assert.match(playSkus, /caro-kann-black/);
+  assert.match(playSkus, /qgd-black/);
+  assert.doesNotMatch(playSkus, /"opening-traps"/);
 
   const packList = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
   const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
@@ -197,12 +206,13 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(packList, /alekhine-black/);
 });
 
-test("Play listing copy is unchanged", () => {
+test("Play listing copy is Path B packs, not Lab+", () => {
   const playApp = readFileSync(join(root, "src/lib/play-app.ts"), "utf8");
   assert.match(
     playApp,
-    /export const PLAY_STORE_NOTICE =\s*"Scotch is free\. Lab\+ yearly is billed by Google Play\."/,
+    /export const PLAY_STORE_NOTICE =\s*"Two Opening Traps and three Caro lines are free\. Paid packs are billed by Google Play\."/,
   );
+  assert.doesNotMatch(playApp, /Lab\+ yearly is billed/);
 });
 
 test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1e2 on ckb9", () => {
@@ -2820,14 +2830,26 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     t.skip("typescript not installed");
     return;
   }
-  const js = ts.transpileModule(src, {
-    compilerOptions: {
-      module: ts.ModuleKind.ESNext,
-      target: ts.ScriptTarget.ES2022,
-    },
-  }).outputText;
   const dir = join(root, "scripts", ".generated-catalog");
   mkdirSync(dir, { recursive: true });
+  const skusJs = ts.transpileModule(
+    readFileSync(join(root, "src/lib/play-skus.ts"), "utf8"),
+    {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+      },
+    },
+  ).outputText;
+  writeFileSync(join(dir, "play-skus.mjs"), skusJs);
+  const js = ts
+    .transpileModule(src, {
+      compilerOptions: {
+        module: ts.ModuleKind.ESNext,
+        target: ts.ScriptTarget.ES2022,
+      },
+    })
+    .outputText.replaceAll("@/lib/play-skus", "./play-skus.mjs");
   const tmp = join(dir, "catalog.mjs");
   writeFileSync(tmp, js);
   t.after(() => {

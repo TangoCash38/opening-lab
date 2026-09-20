@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Lock, X } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { catalogOffersLabPlus, FREE_SAMPLE_LINE_IDS, visiblePacks } from "@/lib/catalog";
+import {
+  catalogOffersLabPlus,
+  FREE_SAMPLE_LINE_IDS,
+  hasPaidPlaySkuPath,
+  visiblePacks,
+} from "@/lib/catalog";
 import {
   DEFAULT_FEATURED_PACK_ID,
   packShortLabel,
@@ -26,8 +31,9 @@ import { isPlayWrap } from "@/lib/play-app";
 import { LONDON_PACK_ID, type TrainStartOptions } from "@/lib/london-warmup";
 import {
   hasPlayBillingBridge,
-  restorePlayLabPlus,
-  startPlayLabPlusYearly,
+  restorePlayPacks,
+  startPlayBuyAll,
+  startPlayPackBuy,
 } from "@/lib/play-billing";
 import { PackExpandHint } from "./pack-lines";
 import { LondonWarmupChip } from "./london-warmup-chip";
@@ -243,7 +249,7 @@ function PackCard({
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-bg-subtle py-2.5 text-[0.82rem] font-semibold text-fg-muted active:scale-[0.99]"
           >
             <Lock className="size-3.5" strokeWidth={2.5} />
-            {t("Pay as you go · {price}", { price })}
+            {t("Pay as you go · {price}", { price: price ?? "" })}
           </button>
         </div>
       )}
@@ -394,43 +400,7 @@ export function PackList({
     window.location.href = "/login?next=checkout";
   };
 
-  const playYearly = async () => {
-    if (!offerPlayLabPlus) return;
-    setPayError(null);
-    setPayBusy(true);
-    try {
-      if (isPending) {
-        setPayError("Please wait…");
-        return;
-      }
-      if (!signedIn) {
-        goToSignIn("yearly");
-        return;
-      }
-      if (!hasPlayBillingBridge()) {
-        setPayError("This app build cannot open Google Play Billing yet.");
-        return;
-      }
-      const unlocks = await startPlayLabPlusYearly();
-      if (!unlocks) return;
-      subscribe("yearly");
-      setModal(null);
-      setShowSub(false);
-      setUnlockNotice(t("Unlocked"));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Payment failed";
-      if (message === "Sign in required") {
-        goToSignIn("yearly");
-        return;
-      }
-      setPayError(message);
-    } finally {
-      setPayBusy(false);
-    }
-  };
-
   const playRestore = async () => {
-    if (!offerPlayLabPlus) return;
     setPayError(null);
     setPayBusy(true);
     try {
@@ -439,22 +409,21 @@ export function PackList({
         return;
       }
       if (!signedIn) {
-        goToSignIn("yearly");
+        goToSignIn("buy_all");
         return;
       }
       if (!hasPlayBillingBridge()) {
         setPayError("This app build cannot open Google Play Billing yet.");
         return;
       }
-      await restorePlayLabPlus();
-      subscribe("yearly");
+      await restorePlayPacks();
       setModal(null);
       setShowSub(false);
       setUnlockNotice(t("Unlocked"));
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Could not restore Lab+";
+      const message = err instanceof Error ? err.message : "Could not restore purchases";
       if (message === "Sign in required") {
-        goToSignIn("yearly");
+        goToSignIn("buy_all");
         return;
       }
       setPayError(message);
@@ -465,8 +434,52 @@ export function PackList({
 
   const pay = async (kind: CheckoutKind, packId?: string) => {
     if (playApp || isPlayWrap()) {
-      setShowSub(false);
-      setPayBusy(false);
+      if (kind === "monthly" || kind === "yearly") {
+        setShowSub(false);
+        setPayBusy(false);
+        return;
+      }
+      setPayError(null);
+      setPayBusy(true);
+      try {
+        if (isPending) {
+          setPayError("Please wait…");
+          return;
+        }
+        if (!signedIn) {
+          goToSignIn(kind, packId);
+          return;
+        }
+        if (!hasPlayBillingBridge()) {
+          setPayError("This app build cannot open Google Play Billing yet.");
+          return;
+        }
+        if (kind === "pack") {
+          if (!packId || !hasPaidPlaySkuPath({ id: packId, isFree: false })) {
+            setPayError("This pack isn’t on sale in the store yet");
+            return;
+          }
+          const unlocks = await startPlayPackBuy(packId);
+          if (!unlocks) return;
+        } else if (kind === "buy_all") {
+          const unlocks = await startPlayBuyAll();
+          if (!unlocks) return;
+        } else {
+          return;
+        }
+        setModal(null);
+        setShowSub(false);
+        setUnlockNotice(t("Unlocked"));
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Payment failed";
+        if (message === "Sign in required") {
+          goToSignIn(kind, packId);
+          return;
+        }
+        setPayError(message);
+      } finally {
+        setPayBusy(false);
+      }
       return;
     }
     setPayError(null);
@@ -511,13 +524,12 @@ export function PackList({
   useEffect(() => {
     if (resumedCheckout.current) return;
     if (playApp || isPlayWrap()) {
-      if (!offerPlayLabPlus) return;
       if (isPending || !signedIn) return;
       const pending = readPendingCheckout();
-      if (!pending || pending.kind !== "yearly") return;
+      if (!pending || (pending.kind !== "pack" && pending.kind !== "buy_all")) return;
       resumedCheckout.current = true;
       clearPendingCheckout();
-      void playYearly();
+      void pay(pending.kind, pending.packId);
       return;
     }
     if (isPending || !signedIn || paymentsEnabled !== true) return;
@@ -546,11 +558,9 @@ export function PackList({
       ) : null}
 
       {wrap ? (
-        offerPlayLabPlus ? (
-          <div className="mb-3">
-            <PlayStoreNotice />
-          </div>
-        ) : null
+        <div className="mb-3">
+          <PlayStoreNotice />
+        </div>
       ) : (
         <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
           {t("Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.")}
@@ -710,6 +720,7 @@ export function PackList({
         <UnlockModal
           packName={modal.pack.name}
           price={modal.price}
+          playSku={hasPaidPlaySkuPath(modal.pack)}
           onClose={() => {
             if (!payBusy) setModal(null);
           }}

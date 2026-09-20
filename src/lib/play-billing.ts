@@ -1,13 +1,32 @@
 /**
- * Client helper for native Play Billing (Path B).
- * Mobile POSTs one-time tokens to POST /api/play/subscribe (same-origin, session).
+ * Client helper for native Play Billing (Path B INAPP packs + buy all).
+ * The System WebView has no Digital Goods API — calls go through
+ * window.OpeningLabPlay (JavascriptInterface).
+ *
+ * Confirm posts productId + purchaseToken to the existing Play confirm
+ * endpoint (`/api/play/subscribe`). Engine owns products verify +
+ * applyPurchase for pack / buy_all — this is not a second grant path.
  */
-import { PLAY_PACKAGE, PLAY_SKU_NOT_ON_SALE } from "@/lib/play-app";
+import {
+  PLAY_PATH_B_PACK_IDS,
+  PLAY_SKU_BUY_ALL,
+  playSkuForPackId,
+} from "@/lib/play-skus";
+import {
+  PLAY_PACKAGE,
+  PLAY_SKU_NOT_ON_SALE,
+} from "@/lib/play-app";
 import {
   normalizeUnlockState,
   replaceUnlocks,
   type UnlockState,
 } from "@/lib/unlocks";
+
+export type PlayNativePurchase = {
+  productId?: string;
+  purchaseToken?: string;
+  orderId?: string;
+};
 
 export type PlayNativeResult = {
   ok: boolean;
@@ -16,11 +35,16 @@ export type PlayNativeResult = {
   productId?: string;
   purchaseToken?: string;
   orderId?: string;
+  purchases?: PlayNativePurchase[];
   code?: string;
   error?: string;
 };
 
 type PlayBridge = {
+  buyPack?: (packId: string) => void;
+  buyAll?: () => void;
+  restorePurchases?: () => void;
+  restorePacks?: () => void;
   buyLabPlusYearly?: () => void;
   restoreLabPlus?: () => void;
 };
@@ -33,13 +57,21 @@ type PlayWindow = Window & {
 export function hasPlayBillingBridge(
   win: PlayWindow | undefined = typeof window === "undefined" ? undefined : window,
 ): boolean {
-  return typeof win?.OpeningLabPlay?.buyLabPlusYearly === "function";
+  const bridge = win?.OpeningLabPlay;
+  return (
+    typeof bridge?.buyPack === "function" &&
+    typeof bridge?.buyAll === "function" &&
+    (typeof bridge?.restorePurchases === "function" ||
+      typeof bridge?.restorePacks === "function")
+  );
 }
 
-function nativeCall(method: "buy" | "restore"): Promise<PlayNativeResult> {
+function nativeCall(
+  run: (bridge: PlayBridge) => void,
+): Promise<PlayNativeResult> {
   const w = window as PlayWindow;
   const bridge = w.OpeningLabPlay;
-  if (!bridge || typeof bridge.buyLabPlusYearly !== "function") {
+  if (!bridge) {
     return Promise.reject(new Error("This app build cannot open Google Play Billing yet."));
   }
   return new Promise((resolve, reject) => {
@@ -63,8 +95,7 @@ function nativeCall(method: "buy" | "restore"): Promise<PlayNativeResult> {
     };
     w.__openingLabPlayBilling = handler;
     try {
-      if (method === "buy") bridge.buyLabPlusYearly?.();
-      else bridge.restoreLabPlus?.();
+      run(bridge);
     } catch (err) {
       cleanup();
       reject(err instanceof Error ? err : new Error("Play Billing failed"));
@@ -72,14 +103,29 @@ function nativeCall(method: "buy" | "restore"): Promise<PlayNativeResult> {
   });
 }
 
+function purchasesFromResult(result: PlayNativeResult): PlayNativePurchase[] {
+  if (Array.isArray(result.purchases) && result.purchases.length > 0) {
+    return result.purchases.filter((row) => !!row?.purchaseToken);
+  }
+  if (result.purchaseToken) {
+    return [
+      {
+        productId: result.productId,
+        purchaseToken: result.purchaseToken,
+        orderId: result.orderId,
+      },
+    ];
+  }
+  return [];
+}
+
 /**
- * Confirm a Play purchase. Mobile POSTs
- * `{ packageName, productId, purchaseToken, orderId? }` to /api/play/subscribe.
- * Restore is one POST per { productId, purchaseToken }.
+ * Confirm a Play INAPP token via the existing Play confirm API.
+ * Engine extends this handler for pack / buy_all applyPurchase.
  */
 export async function confirmPlayPurchase(input: {
   purchaseToken: string;
-  productId: string;
+  productId?: string;
   packageName?: string;
   orderId?: string;
 }): Promise<UnlockState> {
@@ -118,6 +164,25 @@ export async function confirmPlaySubscribe(input: {
   return confirmPlayPurchase(input);
 }
 
+async function confirmNativeResult(result: PlayNativeResult): Promise<UnlockState> {
+  const rows = purchasesFromResult(result);
+  if (rows.length === 0) {
+    throw new Error("Google Play did not return a purchase.");
+  }
+  let last: UnlockState | null = null;
+  for (const row of rows) {
+    if (!row.purchaseToken) continue;
+    last = await confirmPlayPurchase({
+      purchaseToken: row.purchaseToken,
+      productId: row.productId ?? result.productId,
+      packageName: result.packageName,
+      orderId: row.orderId ?? result.orderId,
+    });
+  }
+  if (!last) throw new Error("Google Play did not return a purchase.");
+  return last;
+}
+
 function friendlyNativeError(result: PlayNativeResult): Error {
   if (result.code === "ITEM_UNAVAILABLE" || result.code === "FEATURE_NOT_SUPPORTED") {
     return new Error(PLAY_SKU_NOT_ON_SALE);
@@ -125,36 +190,67 @@ function friendlyNativeError(result: PlayNativeResult): Error {
   return new Error(result.error ?? PLAY_SKU_NOT_ON_SALE);
 }
 
-/** Native yearly helpers remain for the existing bridge; Path B does not grant Lab+. */
-export async function startPlayLabPlusYearly(): Promise<UnlockState | null> {
-  const result = await nativeCall("buy");
+async function afterNative(result: PlayNativeResult): Promise<UnlockState | null> {
   if (!result.ok) {
     if (result.code === "USER_CANCELED") return null;
     throw friendlyNativeError(result);
   }
-  if (!result.purchaseToken || !result.productId) {
-    throw new Error("Google Play did not return a purchase.");
-  }
-  return confirmPlayPurchase({
-    purchaseToken: result.purchaseToken,
-    productId: result.productId,
-    packageName: result.packageName,
-    orderId: result.orderId,
-  });
+  return confirmNativeResult(result);
 }
 
-export async function restorePlayLabPlus(): Promise<UnlockState> {
-  const result = await nativeCall("restore");
+const PATH_B_PACK_SET = new Set<string>(PLAY_PATH_B_PACK_IDS);
+
+/** Start native pack purchase, then verify on the server. Null if the user cancelled. */
+export async function startPlayPackBuy(packId: string): Promise<UnlockState | null> {
+  if (!PATH_B_PACK_SET.has(packId)) {
+    throw new Error(PLAY_SKU_NOT_ON_SALE);
+  }
+  const sku = playSkuForPackId(packId);
+  const result = await nativeCall((bridge) => {
+    if (typeof bridge.buyPack !== "function") {
+      throw new Error("This app build cannot open Google Play Billing yet.");
+    }
+    bridge.buyPack(sku);
+  });
+  return afterNative(result);
+}
+
+export async function startPlayBuyAll(): Promise<UnlockState | null> {
+  const result = await nativeCall((bridge) => {
+    if (typeof bridge.buyAll !== "function") {
+      throw new Error("This app build cannot open Google Play Billing yet.");
+    }
+    bridge.buyAll();
+  });
+  return afterNative(result);
+}
+
+export async function restorePlayPacks(): Promise<UnlockState> {
+  const result = await nativeCall((bridge) => {
+    if (typeof bridge.restorePurchases === "function") {
+      bridge.restorePurchases();
+      return;
+    }
+    if (typeof bridge.restorePacks === "function") {
+      bridge.restorePacks();
+      return;
+    }
+    throw new Error("This app build cannot open Google Play Billing yet.");
+  });
   if (!result.ok) {
     throw friendlyNativeError(result);
   }
-  if (!result.purchaseToken || !result.productId) {
-    throw new Error("No Play purchase to restore.");
-  }
-  return confirmPlayPurchase({
-    purchaseToken: result.purchaseToken,
-    productId: result.productId,
-    packageName: result.packageName,
-    orderId: result.orderId,
-  });
+  return confirmNativeResult(result);
 }
+
+/** @deprecated Path B does not sell Lab+. Kept so old calls fail closed. */
+export async function startPlayLabPlusYearly(): Promise<UnlockState | null> {
+  return null;
+}
+
+/** @deprecated Path B restores INAPP packs via restorePlayPacks. */
+export async function restorePlayLabPlus(): Promise<UnlockState> {
+  return restorePlayPacks();
+}
+
+export { PLAY_SKU_BUY_ALL as PLAY_BUY_ALL_SKU };
