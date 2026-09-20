@@ -2485,7 +2485,7 @@ test("Ponziani Opening for White is a thirty-second visible White pack: 20 pw li
   }
 });
 
-test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lines, locked until purchase", () => {
+test("Alekhine Defence for Black is a thirty-third visible Black pack: 20 ab lines, locked until purchase", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "alekhine-black"');
   assert.ok(start >= 0, "alekhine-black pack missing");
@@ -2499,7 +2499,8 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   assert.match(ab, /isPremium: false/);
   assert.match(ab, /price: null/);
   assert.match(ab, /blurb: "Modern, Exchange, Four Pawns, Two Pawns"/);
-  assert.match(ab, /closedLabel: "Free · 18 lines"/);
+  assert.match(ab, /closedLabel: "Free · 20 lines"/);
+  assert.doesNotMatch(ab, /closedLabel: "Free · 18 lines"/);
   assert.match(ab, /Meet the Alekhine Defence for Black/);
   assert.match(ab, /Practice the main Black moves with the hint/);
   assert.match(ab, /Then Test with none/);
@@ -2516,11 +2517,11 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   const lineIds = [...ab.matchAll(/id: "(ab\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 18 }, (_, i) => `ab${i + 1}`),
+    Array.from({ length: 20 }, (_, i) => `ab${i + 1}`),
   );
 
   const sides = [...ab.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 18, "expected line sides");
+  assert.ok(sides.length >= 20, "expected line sides");
   assert.ok(sides.every((s) => s === "b"), "every line side must be b");
 
   function linePlies(id) {
@@ -2533,16 +2534,17 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  for (let i = 1; i <= 18; i++) {
+  for (let i = 1; i <= 20; i++) {
     const plies = linePlies(`ab${i}`);
     assert.deepEqual(plies.slice(0, 2), ["e4", "Nf6"], `ab${i} must start e4 Nf6`);
   }
 
-  for (let i = 1; i <= 17; i++) {
+  for (const i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19]) {
     const plies = linePlies(`ab${i}`);
     assert.deepEqual(plies.slice(0, 4), ["e4", "Nf6", "e5", "Nd5"], `ab${i} Alekhine main`);
   }
   assert.deepEqual(linePlies("ab18").slice(0, 4), ["e4", "Nf6", "Nc3", "d5"]);
+  assert.deepEqual(linePlies("ab20").slice(0, 4), ["e4", "Nf6", "Nc3", "d5"]);
 
   assert.ok(linePlies("ab1").includes("Nd7"), "ab1 Flohr needs …Nd7");
   assert.ok(linePlies("ab6").includes("g6"), "ab6 Alburt needs …g6");
@@ -2555,6 +2557,10 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   assert.ok(linePlies("ab13").includes("O-O-O"), "ab13 Tartakower needs O-O-O");
   assert.ok(linePlies("ab16").includes("c5"), "ab16 Two Pawns needs c5");
   assert.deepEqual(linePlies("ab17").slice(0, 8), ["e4", "Nf6", "e5", "Nd5", "c4", "Nb6", "c5", "Nd5"]);
+  assert.deepEqual(linePlies("ab19"), ["e4", "Nf6", "e5", "Nd5", "c4", "Nb6", "c5", "Nd5", "Nc3", "e6", "d4", "b6", "Ba6", "Nxc3", "bxc3", "Bxa6"]);
+  assert.deepEqual(linePlies("ab20"), ["e4", "Nf6", "Nc3", "d5", "exd5", "Nxd5", "Bc4", "Nc6", "Nge2", "Bg4", "g3", "Ne5", "Bxd5", "Qxd5", "Nxd5", "Nf3+", "Kf1", "Bh3#"]);
+  assert.ok(linePlies("ab19").includes("Ba6"), "ab19 needs Ba6??");
+  assert.ok(linePlies("ab20").includes("Bh3#"), "ab20 needs Bh3#");
 
   const names = Object.fromEntries(
     [...ab.matchAll(/id: "(ab\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
@@ -2567,10 +2573,17 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   assert.equal(names.ab12, "Four Pawns · main …Be7");
   assert.equal(names.ab16, "Two Pawns · Lasker");
   assert.equal(names.ab18, "Scandinavian · 2.Nc3 d5");
+  assert.equal(names.ab19, "Punish the error · Two Pawns · Ba6??");
+  assert.equal(names.ab20, "Punish the error · Alekhine–Scandinavian · Bxd5??");
+  assert.match(ab, /White’s 7\.Ba6\?\? hangs the bishop/);
+  assert.match(ab, /greedy Bxd5\?\? walks into/);
+  assert.match(ab, /Mate in book plies/);
+  assert.doesNotMatch(names.ab16, /Punish the error/);
+  assert.doesNotMatch(names.ab18, /Punish the error/);
 
-  const allPlies = Array.from({ length: 18 }, (_, i) => linePlies(`ab${i + 1}`));
-  for (let i = 0; i < 18; i++) {
-    for (let j = 0; j < 18; j++) {
+  const allPlies = Array.from({ length: 20 }, (_, i) => linePlies(`ab${i + 1}`));
+  for (let i = 0; i < 20; i++) {
+    for (let j = 0; j < 20; j++) {
       if (i === j) continue;
       const a = allPlies[i];
       const b = allPlies[j];
@@ -2963,7 +2976,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   }
   const abPack = {
     id: "alekhine-black",
-    lines: Array.from({ length: 18 }, (_, i) => ({ id: `ab${i + 1}` })),
+    lines: Array.from({ length: 20 }, (_, i) => ({ id: `ab${i + 1}` })),
   };
   for (const line of abPack.lines) {
     assert.equal(isLineUnlocked(abPack, line.id, []), false, line.id);
@@ -3028,7 +3041,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(abPack, "ab1", ["alekhine-black"])?.id, "ab2");
 });
 
-test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, stb1–20, pw1–20, and ab1–20 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -3119,7 +3132,7 @@ test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   assertIdeas(kidb, "kidb", 18);
   assertIdeas(stb, "stb", 20);
   assertIdeas(pw, "pw", 20);
-  assertIdeas(ab, "ab", 18);
+  assertIdeas(ab, "ab", 20);
   assert.match(
     ck,
     /idea: "White has locked the centre\. Develop the light bishop before …e6, then challenge d4 with …c5\."/,
