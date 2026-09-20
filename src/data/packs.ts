@@ -4898,7 +4898,7 @@ export const PACKS: Pack[] = [
     price: null,
     blurb: "Jänisch, Steinitz & Countergambit",
     about: "Meet Jänisch, Steinitz, and Countergambit structures in the Ponziani for White: prepare d4 with 3.c3, take the centre, and treat each Black reply as its own book.\n\nPractice the main White moves with the hint. Then Test with none to prove you remember them. Play on from the setup and see where the game goes.",
-    closedLabel: "Free · 18 lines",
+    closedLabel: "Free · 20 lines",
     lines: [
       {
         id: "pw1",
@@ -5043,6 +5043,22 @@ export const PACKS: Pack[] = [
         side: "w",
         idea: "Horwitz vs …g6: d4 and Bg5. After …d5, Bb5, take on c6, and recapture on d4.",
         next: "White to move. Nc3 and Qd2 complete development; castle next. Against …O-O, keep the extra pawn. Do not leave the d4 knight hanging without a recapture.",
+      },
+      {
+        id: "pw19",
+        name: "Trap · …d6 Bb5+",
+        idea: "After …Ne7 and Nxe5, Black’s …d6?? walks into Bb5+ and discovered checks — don’t retreat the knight; punish.",
+        next: "White is a pawn up and the king sits on d7. Develop Nc3 or Re1. Against …Ke8, keep the extra pawn. Do not retreat the e5 knight after …d6 — Bb5+ is the punish.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "c3", "Nf6", "d4", "Nxe4", "d5", "Ne7", "Nxe5", "d6", "Bb5+", "c6", "dxc6", "bxc6", "Nxc6", "Qb6", "Nd4+", "Bd7", "Bxd7+", "Kxd7", "O-O"],
+        side: "w",
+      },
+      {
+        id: "pw20",
+        name: "Trap · …Nxf2 Bxg6",
+        idea: "After Bd3, Black’s …Nxf2?? forks queen and rook — ignore the queen with Bxg6!, then hunt the king and take the queen back.",
+        next: "White has won the queen. Against …Kb4 keep the extra piece and castle when safe. Do not take the queen first — Bxg6, then hunt the king.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "c3", "Nf6", "d4", "Nxe4", "d5", "Ne7", "Nxe5", "Ng6", "Bd3", "Nxf2", "Bxg6", "Nxd1", "Bxf7+", "Ke7", "Bg5+", "Kd6", "Nc4+", "Kc5", "Nba3", "Nxc3", "Bxd8"],
+        side: "w",
       },
     ],
   },
