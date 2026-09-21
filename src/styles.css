@@ -487,6 +487,15 @@ html[data-color-scheme="dark"] {
     background: var(--color-bg);
   }
 
+  .app-header-sub {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--color-fg-subtle);
+    white-space: normal;
+  }
+
   .app-header-inner,
   .app-main {
     max-width: 520px;
