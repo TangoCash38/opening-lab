@@ -1,4 +1,4 @@
-/** First-run strict-trainer page. Return visits skip it. */
+/** First-run intro (two pages). Return visits skip it once this is "1". */
 export const HOME_INTRO_STORAGE_KEY = "opening-lab:home-intro";
 
 export function hasSeenHomeIntro(): boolean {

@@ -257,8 +257,8 @@ function OpeningLabInner() {
               <strong className="block truncate text-[0.95rem] font-semibold tracking-tight">
                 Opening Lab
               </strong>
-              <span className="block truncate text-[0.65rem] font-medium text-fg-subtle">
-                {t("Strict lines · memory training")}
+              <span className="app-header-sub">
+                {t("Guided practice · memory tests")}
               </span>
             </div>
           </button>

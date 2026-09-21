@@ -27,7 +27,7 @@ const REQUIRED = [
   "Tap to practice",
   "See 18 lines",
   "Free sample",
-  "Strict lines · memory training",
+  "Guided practice · memory tests",
   "Your opening training packs",
   "Menu",
   "Report incorrect line",

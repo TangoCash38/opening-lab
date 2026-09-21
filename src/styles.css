@@ -487,6 +487,15 @@ html[data-color-scheme="dark"] {
     background: var(--color-bg);
   }
 
+  .app-header-sub {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--color-fg-subtle);
+    white-space: normal;
+  }
+
   .app-header-inner,
   .app-main {
     max-width: 520px;
@@ -2661,4 +2670,195 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--color-fg-muted);
+}
+
+/* First-run intro: cream and walnut frame around the promo art. */
+.home-intro-art {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 1.05rem;
+  padding: 0.45rem;
+  border-radius: 1.2rem;
+  background: linear-gradient(180deg, #fbf6ee 0%, #f3e6d2 100%);
+  border: 1px solid #c4a882;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 242, 0.9),
+    0 10px 22px rgba(62, 42, 24, 0.12);
+}
+
+.home-intro-art img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(68vh, 540px);
+  margin-inline: auto;
+  border-radius: 0.85rem;
+  background: #f4ecdf;
+}
+
+.home-intro-art-second {
+  margin-top: 0.95rem;
+}
+
+.home-intro-art-second img {
+  max-height: min(56vh, 460px);
+  background: #140e0c;
+}
+
+.home-intro-title {
+  margin: 0;
+  text-align: start;
+}
+
+.home-intro-copy {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: var(--color-fg-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.home-intro-copy p {
+  margin: 0;
+}
+
+.home-intro-copy p:first-child {
+  color: var(--color-fg);
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.home-intro-back {
+  margin: 0 0 0.65rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-fg-muted);
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.home-intro-steps {
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.home-intro-steps li {
+  margin: 0;
+  padding: 0.8rem 0.9rem 0.85rem;
+  border-radius: 1rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid #e4d3bc;
+  box-shadow: 0 1px 0 rgba(255, 250, 242, 0.6);
+}
+
+html[data-color-scheme="dark"] .home-intro-steps li {
+  border-color: #4a3d32;
+}
+
+.home-intro-steps strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 650;
+  color: #6b4428;
+}
+
+html[data-color-scheme="dark"] .home-intro-steps strong {
+  color: #e2c39a;
+}
+
+.home-intro-steps span {
+  display: block;
+  color: var(--color-fg-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.home-intro-close {
+  margin: 0.9rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.home-intro-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.home-intro-pair p {
+  margin: 0;
+  padding: 0.7rem 0.55rem;
+  border-radius: 0.9rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.home-intro-pair p:first-child {
+  background: #f7f1e6;
+  color: #3d2b1c;
+  border: 1px solid #c4a882;
+}
+
+.home-intro-pair p:last-child {
+  background: #1c140e;
+  color: #f3e6c8;
+}
+
+.home-intro-go {
+  margin-top: 1.05rem;
+  min-height: 3rem;
+  width: 100%;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--color-accent);
+  padding: 0.85rem 1rem;
+  color: var(--color-accent-fg);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.home-intro-go:active {
+  transform: scale(0.99);
+}
+
+.home-intro-again {
+  margin: 0.75rem 0 0;
+  text-align: center;
+  color: var(--color-fg-subtle);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.home-intro-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.95rem;
+}
+
+.home-intro-dots span {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #ddcbb6;
+}
+
+.home-intro-dots span[data-on="true"] {
+  width: 1.05rem;
+  background: #6b4428;
 }

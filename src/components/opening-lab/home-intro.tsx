@@ -1,51 +1,149 @@
+import { useState } from "react";
 import { useT } from "@/lib/i18n";
 
 type Props = {
   onContinue: () => void;
 };
 
-/** First page: strict gym copy lives here so the pack list stays clean. */
+function scrollIntroTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+}
+
+/** Two-page first visit. Return visits skip it via opening-lab:home-intro. */
 export function HomeIntro({ onContinue }: Props) {
+  const [page, setPage] = useState<1 | 2>(1);
+
+  const showPage = (next: 1 | 2) => {
+    setPage(next);
+    scrollIntroTop();
+  };
+
+  return (
+    <section
+      className="home-intro"
+      data-home-intro
+      data-home-intro-page={page}
+      aria-labelledby="home-intro-title"
+    >
+      {page === 1 ? (
+        <WelcomePage onNext={() => showPage(2)} />
+      ) : (
+        <HowPage onBack={() => showPage(1)} onContinue={onContinue} />
+      )}
+      <div className="home-intro-dots" aria-hidden="true">
+        <span data-on={page === 1 ? "true" : "false"} />
+        <span data-on={page === 2 ? "true" : "false"} />
+      </div>
+    </section>
+  );
+}
+
+function WelcomePage({ onNext }: { onNext: () => void }) {
   const t = useT();
 
   return (
-    <section className="home-intro" data-home-intro>
-      <p className="m-0 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+    <>
+      <figure className="home-intro-art" data-art="drill">
+        <img
+          src="/intro/opening-drill.webp"
+          width={900}
+          height={1350}
+          alt={t("Poster: opening drill, learn with help, test without.")}
+          decoding="async"
+        />
+      </figure>
+      <h1
+        id="home-intro-title"
+        className="home-intro-title font-display text-[1.85rem] font-bold leading-tight tracking-tight"
+      >
         Opening Lab
-      </p>
-      <h1 className="mt-2 font-display text-[1.7rem] font-bold leading-tight tracking-tight">
-        {t("A strict opening trainer")}
       </h1>
-      <div className="mt-4 space-y-3 text-[0.95rem] leading-relaxed text-fg-muted">
-        <p className="m-0">
+      <div className="home-intro-copy">
+        <p>{t("Learn openings through practice and recall.")}</p>
+        <p>
           {t(
-            "Opening Lab is a strict opening trainer. Practice with hints, then Test with none.",
+            "Learn each line with guidance, then repeat it from memory without help. Work through each pack to build familiarity, recognise the opening in real games, and create a strong foundation for further study.",
           )}
-        </p>
-        <p className="m-0">
-          {t(
-            "Only book moves count. Drill the line, meet the traps, and punish the error.",
-          )}
-        </p>
-        <p className="m-0">
-          {t(
-            "There is no Play on and no game versus the computer. That mode is gone for good.",
-          )}
-        </p>
-        <p className="m-0">
-          {t("Two Opening Traps and three Caro lines are free to start.")}
         </p>
       </div>
-      <button
-        type="button"
-        onClick={onContinue}
-        className="mt-6 min-h-12 w-full rounded-2xl bg-accent px-4 py-3.5 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-      >
-        {t("See your packs")}
+      <button type="button" className="home-intro-go" onClick={onNext}>
+        {t("Start training")}
       </button>
-      <p className="mt-3 text-center text-[0.78rem] leading-relaxed text-fg-subtle">
+    </>
+  );
+}
+
+function HowPage({
+  onBack,
+  onContinue,
+}: {
+  onBack: () => void;
+  onContinue: () => void;
+}) {
+  const t = useT();
+
+  return (
+    <>
+      <button type="button" className="home-intro-back" onClick={onBack}>
+        {t("← Back")}
+      </button>
+      <h1
+        id="home-intro-title"
+        className="home-intro-title font-display text-[1.7rem] font-bold leading-tight tracking-tight"
+      >
+        {t("Practise. Remember. Recognise.")}
+      </h1>
+      <ol className="home-intro-steps">
+        <li>
+          <strong>{t("First, learn the line")}</strong>
+          <span>
+            {t(
+              "Play through the moves with guidance and repeat them until they become familiar.",
+            )}
+          </span>
+        </li>
+        <li>
+          <strong>{t("Then, test your memory")}</strong>
+          <span>
+            {t(
+              "Play the same line again without help. If you forget a move, practise the line and try again.",
+            )}
+          </span>
+        </li>
+        <li>
+          <strong>{t("Finally, complete the pack")}</strong>
+          <span>
+            {t(
+              "Work through its key lines and variations to build a fuller picture of the opening.",
+            )}
+          </span>
+        </li>
+      </ol>
+      <p className="home-intro-close">
+        {t(
+          "With repetition, you'll become familiar with the moves, recognise the opening in real games, and be ready to take your study further.",
+        )}
+      </p>
+      <figure className="home-intro-art home-intro-art-second" data-art="shield">
+        <img
+          src="/intro/learn-drill.webp"
+          width={900}
+          height={1350}
+          alt={t("Poster: learn, drill, and remember the line.")}
+          decoding="async"
+        />
+      </figure>
+      <div className="home-intro-pair">
+        <p>{t("Learn with help")}</p>
+        <p>{t("Test without")}</p>
+      </div>
+      <button type="button" className="home-intro-go" onClick={onContinue}>
+        {t("Choose a pack")}
+      </button>
+      <p className="home-intro-again">
         {t("You can read this again from Menu, then Help.")}
       </p>
-    </section>
+    </>
   );
 }
