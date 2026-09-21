@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
 import { type OpeningLine, type Pack } from "@/data/packs";
@@ -6,11 +6,6 @@ import { packPrice } from "@/data/pricing";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isLineUnlocked } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
-import {
-  formatUnlockRemaining,
-  mateDoneToday,
-  mateUnlockRemainingMs,
-} from "@/lib/find-mate";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
@@ -30,27 +25,27 @@ type Props = {
     mode?: TrainMode,
     options?: TrainStartOptions,
   ) => void;
-  onHowToPlay: () => void;
-  onOpenMate: () => void;
-  onSubscribe: () => void;
   onRequestUnlock?: (pack: Pack) => void;
   playApp?: boolean;
+  /** Expanded pack card: lines start open so the structure is visible. */
+  linesInitiallyOpen?: boolean;
+  embedded?: boolean;
 };
 
 export function HomeHero({
   pack,
   onStartLine,
-  onHowToPlay,
-  onOpenMate,
   onRequestUnlock,
   playApp,
+  linesInitiallyOpen = false,
+  embedded = false,
 }: Props) {
   const t = useT();
   const { masteryOf, isComplete, testPercentOf } = useProgress();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const shownLines = pack.lines;
-  const [linesOpen, setLinesOpen] = useState(false);
+  const [linesOpen, setLinesOpen] = useState(linesInitiallyOpen);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
 
@@ -74,10 +69,10 @@ export function HomeHero({
   }, [websiteSplit]);
 
   useEffect(() => {
-    setLinesOpen(false);
+    setLinesOpen(linesInitiallyOpen);
     setAboutOpen(false);
     setPendingLine(null);
-  }, [pack.id]);
+  }, [pack.id, linesInitiallyOpen]);
 
   const game = useMemo(() => new Chess(), []);
 
@@ -103,28 +98,16 @@ export function HomeHero({
   };
 
   const openIntroThenPractice = () => {
-    if (pack.about) setAboutOpen(true);
+    if (pack?.about) setAboutOpen(true);
     else startAdvance();
   };
 
   return (
-    <section className={`home-hero mb-5${websiteSplit ? " home-hero-split" : ""}`}>
-      <div className="home-heading-row">
-        <h1 className="font-display text-[1.65rem] font-bold tracking-tight">
-          {t("Train openings the strict way")}
-        </h1>
-        <div className="home-heading-actions">
-          <button
-            type="button"
-            onClick={onHowToPlay}
-            className="how-to-play inline-flex min-h-11 items-center rounded-full border border-border bg-bg-elevated px-4 py-2 text-[0.88rem] font-semibold active:opacity-70"
-          >
-            {t("How to play")}
-          </button>
-          <MoreGamesMenu onMate={onOpenMate} />
-        </div>
-      </div>
-
+    <section
+      className={`home-hero${embedded ? " home-hero-embedded" : " mb-5"}${
+        websiteSplit ? " home-hero-split" : ""
+      }`}
+    >
       <div className="home-sample-card overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="home-hero-split-inner">
           <div className="home-hero-board-col">
@@ -257,87 +240,5 @@ export function HomeHero({
         />
       ) : null}
     </section>
-  );
-}
-
-function MoreGamesMenu({ onMate }: { onMate: () => void }) {
-  const t = useT();
-  const [open, setOpen] = useState(false);
-  const [mateDone, setMateDone] = useState(false);
-  const [mateWait, setMateWait] = useState("");
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const refresh = () => {
-      const done = mateDoneToday();
-      setMateDone(done);
-      setMateWait(done ? formatUnlockRemaining(mateUnlockRemainingMs()) : "");
-    };
-    refresh();
-    const id = window.setInterval(refresh, 60_000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onPointer = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointer);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("pointerdown", onPointer);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  return (
-    <div className="more-games relative z-20" ref={rootRef}>
-      <button
-        type="button"
-        className="more-games-btn inline-flex min-h-11 items-center gap-1 rounded-full border border-border bg-bg-elevated px-4 py-2 text-[0.88rem] font-semibold active:opacity-70"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        aria-label={t("More games")}
-      >
-        <span>{t("More games")}</span>
-        <ChevronDown
-          className={`size-4 shrink-0 text-fg-muted transition-transform duration-150 ${
-            open ? "rotate-180" : ""
-          }`}
-          strokeWidth={2.5}
-          aria-hidden
-        />
-      </button>
-      {open ? (
-        <div
-          role="menu"
-          className="absolute end-0 top-full z-40 mt-1.5 flex min-w-[14rem] flex-col gap-1 rounded-2xl border-[1.5px] border-accent/25 bg-bg-elevated p-1.5 shadow-[var(--shadow-card)]"
-        >
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setOpen(false);
-              onMate();
-            }}
-            className="min-h-11 w-full rounded-xl px-3 py-2 text-left active:bg-bg-subtle"
-          >
-            <span className="block text-[0.88rem] font-semibold">{t("Find the mate")}</span>
-            {mateDone ? (
-              <span className="mt-0.5 block text-[0.72rem] font-semibold text-fg-muted">
-                {mateWait
-                  ? t("Next 5 unlock in {time}", { time: mateWait })
-                  : t("Done for today")}
-              </span>
-            ) : null}
-          </button>
-        </div>
-      ) : null}
-    </div>
   );
 }

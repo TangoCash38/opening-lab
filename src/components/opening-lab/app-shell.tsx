@@ -27,11 +27,13 @@ import {
   subscribeColorScheme,
   type ColorScheme,
 } from "@/lib/color-scheme";
+import { hasSeenHomeIntro, markHomeIntroSeen } from "@/lib/home-intro";
 import { isPlayWrap } from "@/lib/play-app";
 import type { TrainStartOptions } from "@/lib/london-warmup";
-import { FindMate } from "./find-mate";
 import { GuideView } from "./guide-view";
+import { HomeIntro } from "./home-intro";
 import { PackList } from "./pack-list";
+import { ReportLineView } from "./report-line";
 import { TrainView } from "./train-view";
 import { CreateOwnView } from "./create-own-view";
 import { Onboarding } from "./onboarding";
@@ -43,7 +45,7 @@ import {
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "home" | "train" | "guide" | "mate" | "create";
+type View = "home" | "train" | "guide" | "create" | "intro" | "report";
 type TrainMode = "learn" | "practice";
 
 
@@ -101,6 +103,13 @@ function OpeningLabInner() {
   const goHome = () => {
     setQueue([]);
     setActive(null);
+    setView(hasSeenHomeIntro() ? "home" : "intro");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
+  const finishIntro = () => {
+    markHomeIntroSeen();
     setView("home");
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
@@ -129,8 +138,8 @@ function OpeningLabInner() {
   }, [view, active]);
 
   useEffect(() => {
-    if (playSurface && view === "create") goHome();
-  }, [playSurface, view]);
+    if (!hasSeenHomeIntro()) setView("intro");
+  }, []);
 
   const startLine = (
     pack: Pack,
@@ -281,6 +290,7 @@ function OpeningLabInner() {
           paddingBottom: "max(3rem, env(safe-area-inset-bottom, 0px))",
         }}
       >
+        {view === "intro" && <HomeIntro onContinue={finishIntro} />}
         {view === "home" && (
           <PackList
             onStartLine={startLine}
@@ -289,26 +299,30 @@ function OpeningLabInner() {
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());
             }}
-            onOpenMate={() => {
-              setView("mate");
+            onCreateOwn={() => {
+              setView("create");
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());
             }}
-            onCreateOwn={
-              playSurface
-                ? undefined
-                : () => {
-                    setView("create");
-                    scrollAppTop();
-                    requestAnimationFrame(() => scrollAppTop());
-                  }
-            }
-            onPracticeGym={playSurface ? undefined : startGymLine}
+            onReportLine={() => {
+              setView("report");
+              scrollAppTop();
+              requestAnimationFrame(() => scrollAppTop());
+            }}
           />
         )}
-        {view === "guide" && <GuideView onBack={goHome} />}
-        {view === "mate" && <FindMate onBack={goHome} />}
-        {view === "create" && !playSurface && (
+        {view === "guide" && (
+          <GuideView
+            onBack={goHome}
+            onShowIntro={() => {
+              setView("intro");
+              scrollAppTop();
+              requestAnimationFrame(() => scrollAppTop());
+            }}
+          />
+        )}
+        {view === "report" && <ReportLineView onBack={goHome} />}
+        {view === "create" && (
           <CreateOwnView
             initial={readGymLine()}
             onPractice={startGymLine}

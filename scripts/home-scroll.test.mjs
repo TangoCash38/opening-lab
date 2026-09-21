@@ -20,6 +20,6 @@ test("home Caro board does not start practice; only Tap to practice does", () =>
 });
 
 test("home board lets the page scroll", () => {
-  assert.match(css, /\.home-board[\\s\\S]*touch-action: pan-y !important/);
-  assert.match(css, /\.home-board[\\s\\S]*pointer-events: none/);
+  assert.match(css, /\.home-board[\s\S]*touch-action: pan-y !important/);
+  assert.match(css, /\.home-board[\s\S]*pointer-events: none/);
 });

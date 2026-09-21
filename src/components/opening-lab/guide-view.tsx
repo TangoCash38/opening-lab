@@ -2,9 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 
-type Props = { onBack: () => void };
+type Props = { onBack: () => void; onShowIntro?: () => void };
 
-export function GuideView({ onBack }: Props) {
+export function GuideView({ onBack, onShowIntro }: Props) {
   const t = useT();
 
   return (
@@ -22,6 +22,15 @@ export function GuideView({ onBack }: Props) {
 
       <Block title={t("What is Opening Lab?")}>
         {t("Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.")}
+        {onShowIntro ? (
+          <button
+            type="button"
+            onClick={onShowIntro}
+            className="mt-3 min-h-11 rounded-full border border-border bg-bg px-4 py-2 text-[0.85rem] font-semibold text-fg"
+          >
+            {t("Read the trainer intro")}
+          </button>
+        ) : null}
       </Block>
 
       <Block title={t("White & Black / Special packs")}>

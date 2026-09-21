@@ -39,6 +39,7 @@ test("LineRow shows Test percent badge when testPercent is passed", () => {
   assert.match(src, /showPct = !locked && testPercent != null/);
   assert.match(src, /t\("\{pct\}%", \{ pct: testPercent \}\)/);
   assert.match(hero, /testPercent=\{unlocked \? testPercentOf\(item\.id, item\.plies\.length\) : null\}/);
-  assert.match(list, /testPercent=\{rowLocked \? null : testPercentOf\(line\.id, line\.plies\.length\)\}/);
+  assert.match(list, /<HomeHero/);
+  assert.match(hero, /testPercent=\{unlocked \? testPercentOf\(item\.id, item\.plies\.length\) : null\}/);
   assert.equal(i18n.split('"{pct}%":').length - 1, 12);
 });

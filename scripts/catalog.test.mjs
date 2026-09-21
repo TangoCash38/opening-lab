@@ -111,19 +111,13 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /Play on/);
   assert.doesNotMatch(guide, /playing on/);
 
-  assert.match(hero, /Train openings the strict way/);
-  assert.match(hero, /How to play/);
-  assert.match(hero, /rounded-full/);
-  assert.match(hero, /border-border/);
-  assert.match(hero, /min-h-11/);
-  assert.match(hero, /bg-bg-elevated/);
   assert.match(hero, /Tap to practice/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
   assert.match(hero, /showHints=\{false\}/);
   assert.match(hero, /expected=\{null\}/);
   assert.match(hero, /openIntroThenPractice/);
   assert.match(hero, /onClick=\{openIntroThenPractice\}/);
-  assert.match(hero, /See 18 lines/);
+  assert.match(hero, /See \{n\} \{pack\} lines/);
   assert.match(hero, /aria-expanded=\{linesOpen\}/);
   assert.match(hero, /Free sample/);
   assert.match(hero, /Advance, Classical, Exchange/);
@@ -134,7 +128,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(hero, /id === "ckb1"/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.match(hero, /isLineUnlocked/);
-  assert.match(hero, /pack \? pack\.lines : \[\]/);
+  assert.match(hero, /const shownLines = pack\.lines/);
   assert.match(hero, /shownLines\.map/);
   assert.doesNotMatch(hero, /playableLines\(pack\)/);
   assert.doesNotMatch(hero, /See 3 lines/);
@@ -148,22 +142,21 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   );
   assert.doesNotMatch(hero, /Start free Caro-Kann Core 1/);
   assert.match(hero, /id === "caro-kann-black"/);
-  assert.match(hero, /flip=\{true\}/);
+  assert.match(hero, /flip=\{pack\.side === "Black"\}/);
   assert.doesNotMatch(hero, /Lab\+/);
+  assert.doesNotMatch(hero, /Find the mate/);
+  assert.doesNotMatch(hero, /Play on/);
 
   const packList = readFileSync(
     join(root, "src/components/opening-lab/pack-list.tsx"),
     "utf8",
   );
-  assert.match(
-    packList,
-    /Three Caro lines are free\. Unlock the rest of that pack for £1\.99\. Other packs are £2\.99\./,
-  );
-  assert.match(packList, /isLineUnlocked\(pack, line\.id/);
-  assert.match(packList, /pack\.lines\.map/);
-  assert.match(packList, /pack\.about/);
-  assert.match(packList, /PackAboutModal/);
-  assert.match(packList, /aboutOpen/);
+  assert.match(packList, /Your opening training packs/);
+  assert.match(packList, /\["opening-traps", "caro-kann-black"\]/);
+  assert.match(packList, /data-pack-progress/);
+  assert.match(packList, /data-locked=\{locked \? "true" : "false"\}/);
+  assert.doesNotMatch(packList, /Find the mate/);
+  assert.doesNotMatch(packList, /Play on/);
   const aboutModal = readFileSync(
     join(root, "src/components/opening-lab/pack-about-modal.tsx"),
     "utf8",
@@ -2791,16 +2784,16 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     "utf8",
   );
   assert.match(hero, /isLineUnlocked\(pack, item\.id/);
-  assert.match(hero, /pack \? pack\.lines : \[\]/);
+  assert.match(hero, /const shownLines = pack\.lines/);
   assert.match(hero, /shownLines\.map/);
   assert.doesNotMatch(hero, /playableLines\(pack\)/);
   assert.match(hero, /else onRequestUnlock\?\.\(pack\)/);
-  assert.match(packList, /pack\.lines\.map/);
   assert.match(packList, /visiblePacks\(PACKS\)/);
+  assert.match(packList, /<HomeHero/);
   assert.doesNotMatch(packList, /playVisiblePacks/);
   assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
   assert.match(packList, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
-  assert.match(packList, /isLineUnlocked\(pack, line\.id/);
+  assert.match(hero, /isLineUnlocked\(pack, item\.id/);
   assert.match(packList, /WebsiteAppPrompt/);
   const today = readFileSync(
     join(root, "src/components/opening-lab/today-strip.tsx"),
@@ -3285,8 +3278,9 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.match(hero, /startLabel=\{t\("Start"\)\}/);
   assert.match(hero, /openIntroThenPractice/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
-  assert.match(packList, /packId=\{pack\.id\}/);
-  assert.match(packList, /startLabel=\{t\("Start"\)\}/);
+  assert.match(hero, /packId=\{pack\.id\}/);
+  assert.match(hero, /startLabel=\{t\("Start"\)\}/);
+  assert.match(packList, /<HomeHero/);
   assert.match(train, /PackAboutModal/);
   assert.doesNotMatch(train, /hasSeenPackIntro/);
   assert.match(train, /startLabel=\{t\("Train"\)\}/);

@@ -200,8 +200,9 @@ test("Practice/Test gym chrome has no Engine badge; Test stays locked until Prac
   assert.match(shell, /testLocked=/);
   assert.match(shell, /CreateOwnView/);
   assert.match(shell, /onHome=\{goHome\}/);
-  assert.match(shell, /playSurface && view === "create"/);
-  assert.match(list, /CreateOwnEntry/);
-  assert.match(list, /!wrap && onCreateOwn/);
-  assert.doesNotMatch(list, /onCreateOwn=\{/);
+  assert.match(shell, /view === "create"/);
+  assert.match(shell, /onCreateOwn=\{\(\) =>/);
+  assert.match(list, /HomeMenu/);
+  assert.match(list, /onCreateOwn=\{onCreateOwn\}/);
+  assert.match(src("src/components/opening-lab/home-menu.tsx"), /data-menu-create/);
 });

@@ -8,14 +8,10 @@ import {
   hasPaidPlaySkuPath,
   visiblePacks,
 } from "@/lib/catalog";
-import {
-  DEFAULT_FEATURED_PACK_ID,
-  packShortLabel,
-  readFeaturedPackId,
-  writeFeaturedPackId,
-} from "@/lib/featured-pack";
+import { packShortLabel } from "@/lib/featured-pack";
 import { packLooksFree } from "@/lib/review-free";
 import { packMatchesQuery } from "@/lib/pack-search";
+import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import {
@@ -42,11 +38,10 @@ import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
 import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
-import { CreateOwnEntry } from "./create-own-view";
+import { HomeMenu } from "./home-menu";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 import { WebsiteAppPrompt } from "./website-app-prompt";
-import { readGymLine, subscribeGymLine, type GymLine } from "@/lib/gym-line";
 
 type TrainMode = "learn" | "practice";
 
@@ -58,10 +53,51 @@ type Props = {
     options?: TrainStartOptions,
   ) => void;
   onHowToPlay: () => void;
-  onOpenMate: () => void;
   onCreateOwn?: () => void;
-  onPracticeGym?: (line: GymLine) => void;
+  onReportLine: () => void;
 };
+
+const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
+
+function packTrainPercent(
+  pack: Pack,
+  isComplete: (lineId: string) => boolean,
+  testPercentOf: (lineId: string, bookLen: number) => number | null,
+): number {
+  if (pack.lines.length === 0) return 0;
+  let sum = 0;
+  for (const line of pack.lines) {
+    if (isComplete(line.id)) sum += 100;
+    else sum += testPercentOf(line.id, line.plies.length) ?? 0;
+  }
+  return Math.round(sum / pack.lines.length);
+}
+
+function PackProgress({ locked, percent }: { locked: boolean; percent: number }) {
+  const t = useT();
+  return (
+    <div
+      className="pack-progress"
+      data-pack-progress
+      data-locked={locked ? "true" : "false"}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={locked ? 0 : percent}
+      aria-label={locked ? t("Locked") : t("{pct}%", { pct: percent })}
+    >
+      <div className="pack-progress-track">
+        <div
+          className="pack-progress-fill"
+          style={{ width: locked ? "100%" : `${percent}%` }}
+        />
+      </div>
+      <span className="pack-progress-label">
+        {locked ? t("Locked") : t("{pct}%", { pct: percent })}
+      </span>
+    </div>
+  );
+}
 
 type ModalTarget = { pack: Pack; price: string };
 
@@ -114,20 +150,28 @@ function PackSearchField({
 function PackCard({
   pack,
   unlocked,
-  onSelectPack,
+  open,
+  onToggle,
   onRequestUnlock,
   onStartLine,
+  playApp,
 }: {
   pack: Pack;
   unlocked: boolean;
-  onSelectPack: (pack: Pack) => void;
+  open: boolean;
+  onToggle: (pack: Pack) => void;
   onRequestUnlock: (pack: Pack) => void;
   onStartLine: Props["onStartLine"];
+  playApp: boolean;
 }) {
   const t = useT();
+  const { isComplete, testPercentOf } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
   const locked = !unlocked;
+  const hasFreeLines = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
+  const barLocked = locked && !hasFreeLines;
+  const percent = packTrainPercent(pack, isComplete, testPercentOf);
   const shortPack = packShortLabel(pack);
 
   const sideClass =
@@ -139,14 +183,17 @@ function PackCard({
 
   return (
     <div
-      className={`mb-3.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
-        locked ? "border-border/80" : "border-border"
-      }`}
+      className={`pack-card mb-3.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
+        open ? "pack-list-full " : ""
+      }${locked ? "border-border/80" : "border-border"}`}
+      data-pack-card={pack.id}
+      data-pack-open={open ? "true" : "false"}
     >
       <button
         type="button"
-        className="flex w-full flex-col px-4 pb-3 pt-3.5 text-left"
-        onClick={() => onSelectPack(pack)}
+        className="flex w-full flex-col px-4 pb-3 pt-3.5 text-start"
+        onClick={() => onToggle(pack)}
+        aria-expanded={open}
       >
         <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
           <div className="relative">
@@ -217,8 +264,9 @@ function PackCard({
             </div>
           </div>
         </div>
+        <PackProgress locked={barLocked} percent={percent} />
         <PackExpandHint
-          open={false}
+          open={open}
           free={free}
           closedLabel={
             price
@@ -235,7 +283,20 @@ function PackCard({
         />
       </button>
 
-      {pack.id === LONDON_PACK_ID ? (
+      {open ? (
+        <div className="border-t border-border px-2 pb-3 pt-2">
+          <HomeHero
+            pack={pack}
+            playApp={playApp}
+            embedded
+            linesInitiallyOpen
+            onStartLine={onStartLine}
+            onRequestUnlock={onRequestUnlock}
+          />
+        </div>
+      ) : null}
+
+      {pack.id === LONDON_PACK_ID && !open ? (
         <div className="pack-card-warmup">
           <LondonWarmupChip pack={pack} onStartLine={onStartLine} />
         </div>
@@ -260,9 +321,8 @@ function PackCard({
 export function PackList({
   onStartLine,
   onHowToPlay,
-  onOpenMate,
   onCreateOwn,
-  onPracticeGym,
+  onReportLine,
 }: Props) {
   const t = useT();
   const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled } = useUnlocks();
@@ -274,78 +334,52 @@ export function PackList({
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
-  const [featuredId, setFeaturedId] = useState(DEFAULT_FEATURED_PACK_ID);
   const [packQuery, setPackQuery] = useState("");
+  const [openPackId, setOpenPackId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
-  const heroAnchorRef = useRef<HTMLDivElement>(null);
   const wrap = playApp || isPlayWrap();
-  const [gymLine, setGymLine] = useState<GymLine | null>(null);
-
-  useEffect(() => {
-    setGymLine(readGymLine());
-    return subscribeGymLine(() => setGymLine(readGymLine()));
-  }, []);
 
   useEffect(() => {
     setPlayApp(isPlayWrap());
   }, []);
 
-  useEffect(() => {
-    setFeaturedId(readFeaturedPackId());
-  }, []);
-
   const catalog = visiblePacks(PACKS);
-  const featuredPack =
-    catalog.find((p) => p.id === featuredId) ??
-    catalog.find((p) => p.id === DEFAULT_FEATURED_PACK_ID) ??
-    catalog[0];
-
-  const promotePack = (pack: Pack) => {
-    setFeaturedId(pack.id);
-    writeFeaturedPackId(pack.id);
-    const scrollTop = () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      heroAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-    requestAnimationFrame(scrollTop);
-  };
-
-  const notFeatured = (p: Pack) => p.id !== featuredPack?.id;
   const q = packQuery.trim();
   const searching = q.length > 0;
   const inMoreList = (p: Pack) => !searching || packMatchesQuery(p, q);
+  const isLead = (p: Pack) =>
+    (LEAD_PACK_IDS as readonly string[]).includes(p.id);
+  const lead = LEAD_PACK_IDS.map((id) => catalog.find((p) => p.id === id)).filter(
+    (p): p is Pack => !!p && inMoreList(p),
+  );
   const white = catalog.filter(
-    (p) => p.section === "white" && notFeatured(p) && inMoreList(p),
+    (p) => p.section === "white" && !isLead(p) && inMoreList(p),
   );
   const black = catalog.filter(
-    (p) =>
-      p.section === "black" &&
-      p.id !== "vs-london" &&
-      notFeatured(p) &&
-      inMoreList(p),
+    (p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black" && inMoreList(p),
   );
   const classicGames = catalog.find(
-    (p) => p.id === "classic-games" && notFeatured(p) && inMoreList(p),
+    (p) => p.id === "classic-games" && !isLead(p) && inMoreList(p),
   );
   const vsLondon = catalog.find(
-    (p) => p.id === "vs-london" && notFeatured(p) && inMoreList(p),
+    (p) => p.id === "vs-london" && !isLead(p) && inMoreList(p),
   );
   const clubWeapons = catalog.find(
-    (p) => p.id === "club-weapons" && notFeatured(p) && inMoreList(p),
+    (p) => p.id === "club-weapons" && !isLead(p) && inMoreList(p),
   );
-  const openingTraps = catalog.find(
-    (p) => p.id === "opening-traps" && notFeatured(p) && inMoreList(p),
-  );
-  const morePacks = catalog.some((p) => notFeatured(p));
+  const morePacks = catalog.length > 0;
   const moreMatches =
+    lead.length > 0 ||
     !!classicGames ||
     !!vsLondon ||
     !!clubWeapons ||
-    !!openingTraps ||
     white.length > 0 ||
     black.length > 0;
-  const featuredMatches = featuredPack ? packMatchesQuery(featuredPack, q) : false;
-  const showNoMatches = searching && !moreMatches && !featuredMatches;
+  const showNoMatches = searching && !moreMatches;
+
+  const togglePack = (pack: Pack) => {
+    setOpenPackId((id) => (id === pack.id ? null : pack.id));
+  };
 
   const offerPlayLabPlus = catalogOffersLabPlus(catalog);
 
@@ -541,9 +575,34 @@ export function PackList({
     void pay(pending.kind, pending.packId);
   }, [isPending, signedIn, paymentsEnabled, playApp]);
 
+  const renderCard = (pack: Pack) => (
+    <PackCard
+      key={pack.id}
+      pack={pack}
+      unlocked={canAccess(pack)}
+      open={openPackId === pack.id}
+      onToggle={togglePack}
+      onRequestUnlock={requestUnlock}
+      onStartLine={onStartLine}
+      playApp={wrap}
+    />
+  );
+
   return (
     <div className="pack-list">
       <WebsiteAppPrompt />
+      <div className="home-heading-row">
+        <h1 className="font-display text-[1.45rem] font-bold tracking-tight sm:text-[1.65rem]">
+          {t("Your opening training packs")}
+        </h1>
+        <div className="home-heading-actions">
+          <HomeMenu
+            onCreateOwn={onCreateOwn}
+            onHelp={onHowToPlay}
+            onReport={onReportLine}
+          />
+        </div>
+      </div>
       {unlockNotice ? (
         <p
           className={`mb-3 rounded-xl px-4 py-2.5 text-center text-[0.85rem] font-semibold ${
@@ -561,37 +620,7 @@ export function PackList({
         <div className="mb-3">
           <PlayStoreNotice />
         </div>
-      ) : (
-        <p className="mb-3 rounded-xl bg-bg-subtle px-4 py-2.5 text-center text-[0.85rem] text-fg-muted">
-          {t("Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.")}
-        </p>
-      )}
-
-      {!wrap && onCreateOwn ? (
-        <CreateOwnEntry
-          remembered={gymLine}
-          onOpen={onCreateOwn}
-          onPractice={onPracticeGym}
-        />
       ) : null}
-
-      <div ref={heroAnchorRef}>
-        {featuredPack ? (
-          <HomeHero
-            pack={featuredPack}
-            playApp={wrap}
-            onStartLine={onStartLine}
-            onHowToPlay={onHowToPlay}
-            onOpenMate={onOpenMate}
-            onRequestUnlock={requestUnlock}
-            onSubscribe={() => {
-              if (wrap && !offerPlayLabPlus) return;
-              setPayError(null);
-              setShowSub(true);
-            }}
-          />
-        ) : null}
-      </div>
 
       {morePacks ? (
         <div className="pack-search-sticky pack-list-full">
@@ -600,12 +629,6 @@ export function PackList({
       ) : null}
 
       <div className="pack-list-grid">
-        {morePacks ? (
-          <p className="pack-list-full mb-3 mt-2 text-[0.88rem] font-semibold text-fg">
-            {t("More opening packs")}
-          </p>
-        ) : null}
-
         {showNoMatches ? (
           <div className="pack-list-full mb-3 px-1" role="status">
             <p className="text-[0.85rem] text-fg-muted">{t("No packs match")}</p>
@@ -619,77 +642,27 @@ export function PackList({
           </div>
         ) : null}
 
-        {openingTraps ? (
-          <PackCard
-            pack={openingTraps}
-            unlocked={canAccess(openingTraps)}
-            onSelectPack={promotePack}
-            onRequestUnlock={requestUnlock}
-            onStartLine={onStartLine}
-          />
-        ) : null}
+        {lead.map((pack) => renderCard(pack))}
 
-        {classicGames ? (
-          <PackCard
-            pack={classicGames}
-            unlocked={canAccess(classicGames)}
-            onSelectPack={promotePack}
-            onRequestUnlock={requestUnlock}
-            onStartLine={onStartLine}
-          />
-        ) : null}
+        {classicGames ? renderCard(classicGames) : null}
 
-        {vsLondon ? (
-          <PackCard
-            pack={vsLondon}
-            unlocked={canAccess(vsLondon)}
-            onSelectPack={promotePack}
-            onRequestUnlock={requestUnlock}
-            onStartLine={onStartLine}
-          />
-        ) : null}
+        {vsLondon ? renderCard(vsLondon) : null}
 
         {white.length ? (
           <>
             <QuietLabel>White</QuietLabel>
-            {white.map((p) => (
-              <PackCard
-                key={p.id}
-                pack={p}
-                unlocked={canAccess(p)}
-                onSelectPack={promotePack}
-                onRequestUnlock={requestUnlock}
-                onStartLine={onStartLine}
-              />
-            ))}
+            {white.map((p) => renderCard(p))}
           </>
         ) : null}
 
         {black.length ? (
           <>
             <QuietLabel>Black</QuietLabel>
-            {black.map((p) => (
-              <PackCard
-                key={p.id}
-                pack={p}
-                unlocked={canAccess(p)}
-                onSelectPack={promotePack}
-                onRequestUnlock={requestUnlock}
-                onStartLine={onStartLine}
-              />
-            ))}
+            {black.map((p) => renderCard(p))}
           </>
         ) : null}
 
-        {clubWeapons ? (
-          <PackCard
-            pack={clubWeapons}
-            unlocked={canAccess(clubWeapons)}
-            onSelectPack={promotePack}
-            onRequestUnlock={requestUnlock}
-            onStartLine={onStartLine}
-          />
-        ) : null}
+        {clubWeapons ? renderCard(clubWeapons) : null}
       </div>
 
       <LegalFooter />
