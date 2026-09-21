@@ -47,15 +47,13 @@ test("packMatchesQuery is case-insensitive on name and blurb only", () => {
   assert.doesNotMatch(helperSrc, /pack\.lines/);
 });
 
-test("sticky search strip sits under the hero and above More opening packs", () => {
-  const heroAt = list.indexOf("<HomeHero");
+test("sticky search strip sits under the heading and above the lead packs", () => {
+  const headingAt = list.indexOf('t("Your opening training packs")');
   const searchAt = list.indexOf("<PackSearchField");
-  const headingAt = list.indexOf('t("More opening packs")');
-  const trapsAt = list.indexOf("{openingTraps ? (");
-  assert.ok(heroAt > -1, "hero stays on the page");
-  assert.ok(searchAt > heroAt, "search sits under the hero");
-  assert.ok(headingAt > searchAt, "More opening packs heading sits after search");
-  assert.ok(trapsAt > headingAt, "pack lists sit after the heading");
+  const trapsAt = list.indexOf('["opening-traps", "caro-kann-black"]');
+  assert.ok(headingAt > -1, "pack heading stays on the page");
+  assert.ok(searchAt > headingAt, "search sits under the heading");
+  assert.ok(trapsAt > -1, "Opening Traps and Caro lead the catalog");
   assert.match(list, /from "@\/lib\/pack-search"/);
   assert.match(list, /packMatchesQuery/);
   assert.match(list, /pack-search-sticky/);
@@ -65,12 +63,12 @@ test("sticky search strip sits under the hero and above More opening packs", () 
   assert.doesNotMatch(list, /t\("No openings match\."\)/);
   assert.match(list, /type="search"/);
   assert.match(list, /placeholder=\{t\("Search openings"\)\}/);
-  assert.match(list, /onSelectPack=\{promotePack\}/);
-  assert.match(list, /setFeaturedId\(pack\.id\)/);
+  assert.match(list, /onToggle=\{togglePack\}/);
+  assert.doesNotMatch(list, /setFeaturedId\(pack\.id\)/);
   assert.match(css, /\.pack-search-sticky/);
   assert.match(css, /position:\s*sticky/);
   assert.match(css, /\.pack-search-input::-webkit-search-cancel-button/);
-  assert.doesNotMatch(list, /home-hero[\s\S]{0,200}PackSearchField/);
+  assert.doesNotMatch(list, /home-heading-row[\s\S]{0,200}PackSearchField/);
 });
 
 test("search copy is translated; required home-row English keys stay intact", () => {
@@ -80,7 +78,7 @@ test("search copy is translated; required home-row English keys stay intact", ()
   assert.match(i18n, /"Search openings": "Buscar aperturas"/);
   assert.match(i18n, /"Search openings": "搜索开局"/);
   for (const key of [
-    "Train openings the strict way",
+    "Your opening training packs",
     "How to play",
     "Download the app",
     "Continue on the web",

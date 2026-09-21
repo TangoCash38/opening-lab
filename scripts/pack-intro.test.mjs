@@ -87,9 +87,10 @@ test("hero and pack-list line taps show opening info then Start that line", () =
   assert.match(hero, /pendingLine/);
   assert.match(hero, /setPendingLine\(item\)/);
   assert.match(hero, /setAboutOpen\(true\)/);
-  assert.match(list, /PackAboutModal/);
-  assert.match(list, /setAboutOpen\(true\)/);
-  assert.match(list, /pendingLine/);
-  assert.match(list, /onClick=\{\(\) => setOpen\(\(v\) => !v\)\}/);
+  assert.match(hero, /PackAboutModal/);
+  assert.match(list, /<HomeHero/);
+  assert.match(list, /linesInitiallyOpen/);
+  assert.match(list, /onToggle=\{togglePack\}/);
   assert.doesNotMatch(list, /!shouldSkipPackIntro\(\)/);
+  assert.doesNotMatch(hero, /!shouldSkipPackIntro\(\)/);
 });

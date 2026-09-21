@@ -28,7 +28,10 @@ const REQUIRED = [
   "See 18 lines",
   "Free sample",
   "Strict lines · memory training",
-  "Three Caro lines are free. Unlock the rest of that pack for £1.99. Other packs are £2.99.",
+  "Your opening training packs",
+  "Menu",
+  "Report incorrect line",
+  "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.",
   "How the gym works",
   "Continue",
   "Don't show again",
@@ -40,22 +43,27 @@ const REQUIRED = [
   "{pct}%",
 ];
 
-test("home heading sits on one row with How to play as a real button", () => {
-  assert.match(hero, /home-heading-row/);
+test("home heading sits on one row with Menu as a real button", () => {
+  assert.match(list, /home-heading-row/);
   assert.match(css, /\.home-heading-row/);
   assert.match(css, /align-items:\s*center/);
-  assert.match(hero, /<h1[\s\S]*Train openings the strict way/);
-  assert.match(hero, /<button[\s\S]*How to play/);
-  assert.match(hero, /type="button"/);
-  assert.match(hero, /onClick=\{onHowToPlay\}/);
-  assert.match(hero, /rounded-full/);
-  assert.match(hero, /min-h-11/);
-  const start = hero.indexOf("home-heading-row");
-  const row = hero.slice(start, hero.indexOf("</div>", start) + 6);
+  assert.match(list, /<h1[\s\S]*Your opening training packs/);
+  assert.match(list, /<HomeMenu/);
+  assert.match(list, /onHelp=\{onHowToPlay\}/);
+  const menu = src("src/components/opening-lab/home-menu.tsx");
+  assert.match(menu, /type="button"/);
+  assert.match(menu, /rounded-full/);
+  assert.match(menu, /min-h-11/);
+  assert.match(menu, /t\("Menu"\)/);
+  assert.doesNotMatch(menu, /Find the mate/);
+  assert.doesNotMatch(menu, /More games/);
+  assert.doesNotMatch(list, /Find the mate/);
+  assert.doesNotMatch(hero, /Find the mate/);
+  assert.doesNotMatch(hero, /More games/);
+  const start = list.indexOf("home-heading-row");
+  const row = list.slice(start, list.indexOf("</div>", start) + 6);
   assert.match(row, /<h1/);
-  assert.match(row, /<button/);
-  assert.match(row, /How to play/);
-  assert.doesNotMatch(hero, /mb-1\.5 font-display text-\[1\.65rem\]/);
+  assert.match(row, /HomeMenu/);
 });
 
 test("languages are EN, ES, Simplified Chinese, FR, DE, PT, RU, IT, HI, JA, AR, TR and persist", () => {
@@ -96,10 +104,10 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.doesNotMatch(i18n, /"Exchange":/);
   assert.doesNotMatch(i18n, /"Caro-Kann for Black":/);
   assert.match(splash, /Most people dive into opening theory/);
-  assert.match(list, /Three Caro lines are free/);
+  assert.match(list, /Your opening training packs/);
   assert.match(list, /WebsiteAppPrompt/);
   const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
-  assert.match(prompt, /Download the app/);
+  assert.match(prompt, /App coming soon/);
   assert.match(prompt, /Continue on the web/);
   assert.match(prompt, /isPlayWrap\(\)/);
   assert.match(prompt, /sessionStorage/);
