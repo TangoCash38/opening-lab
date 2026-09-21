@@ -52,6 +52,7 @@ test("first-run intro is two pages and is remembered", () => {
   assert.match(seen, /export function markHomeIntroSeen/);
   assert.match(intro, /data-home-intro/);
   assert.match(intro, /data-home-intro-page/);
+  assert.match(intro, /scrollTo\(\{ top: 0/);
   assert.match(intro, /Opening Lab/);
   assert.match(intro, /Learn openings through practice and recall/);
   assert.match(intro, /Start training/);

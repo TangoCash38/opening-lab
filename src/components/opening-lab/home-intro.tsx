@@ -5,9 +5,19 @@ type Props = {
   onContinue: () => void;
 };
 
+function scrollIntroTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+}
+
 /** Two-page first visit. Return visits skip it via opening-lab:home-intro. */
 export function HomeIntro({ onContinue }: Props) {
   const [page, setPage] = useState<1 | 2>(1);
+
+  const showPage = (next: 1 | 2) => {
+    setPage(next);
+    scrollIntroTop();
+  };
 
   return (
     <section
@@ -17,9 +27,9 @@ export function HomeIntro({ onContinue }: Props) {
       aria-labelledby="home-intro-title"
     >
       {page === 1 ? (
-        <WelcomePage onNext={() => setPage(2)} />
+        <WelcomePage onNext={() => showPage(2)} />
       ) : (
-        <HowPage onBack={() => setPage(1)} onContinue={onContinue} />
+        <HowPage onBack={() => showPage(1)} onContinue={onContinue} />
       )}
       <div className="home-intro-dots" aria-hidden="true">
         <span data-on={page === 1 ? "true" : "false"} />
