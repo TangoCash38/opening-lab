@@ -258,7 +258,7 @@ function OpeningLabInner() {
                 Opening Lab
               </strong>
               <span className="block truncate text-[0.65rem] font-medium text-fg-subtle">
-                {t("Strict lines · memory training")}
+                {t("Guided practice · memory tests")}
               </span>
             </div>
           </button>

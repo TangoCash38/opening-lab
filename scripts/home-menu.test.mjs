@@ -45,24 +45,34 @@ test("Menu replaces Find the mate on the phone home heading", () => {
   assert.match(shell, /setView\("create"\)/);
 });
 
-test("first-run intro explains the strict trainer and is remembered", () => {
+test("first-run intro is two pages and is remembered", () => {
   assert.match(seen, /opening-lab:home-intro/);
   assert.match(seen, /localStorage/);
   assert.match(seen, /export function hasSeenHomeIntro/);
   assert.match(seen, /export function markHomeIntroSeen/);
   assert.match(intro, /data-home-intro/);
-  assert.match(intro, /A strict opening trainer/);
-  assert.match(intro, /Practice with hints, then Test with none/);
-  assert.match(intro, /Only book moves count/);
-  assert.match(intro, /punish the error/);
-  assert.match(intro, /There is no Play on and no game versus the computer/);
-  assert.match(intro, /See your packs/);
+  assert.match(intro, /data-home-intro-page/);
+  assert.match(intro, /Opening Lab/);
+  assert.match(intro, /Learn openings through practice and recall/);
+  assert.match(intro, /Start training/);
+  assert.match(intro, /Practise\. Remember\. Recognise\./);
+  assert.match(intro, /First, learn the line/);
+  assert.match(intro, /Then, test your memory/);
+  assert.match(intro, /Finally, complete the pack/);
+  assert.match(intro, /Choose a pack/);
+  assert.match(intro, /opening-drill\.webp/);
+  assert.match(intro, /learn-drill\.webp/);
+  assert.match(intro, /Learn with help/);
+  assert.match(intro, /Test without/);
   assert.match(intro, /Menu, then Help/);
+  assert.match(shell, /Guided practice · memory tests/);
   assert.match(shell, /hasSeenHomeIntro/);
   assert.match(shell, /markHomeIntroSeen/);
   assert.match(shell, /view === "intro"/);
   assert.match(guide, /Read the trainer intro/);
   assert.match(guide, /onShowIntro/);
+  assert.doesNotMatch(intro, /Play on/);
+  assert.doesNotMatch(intro, /versus the computer/);
   assert.doesNotMatch(guide, /Play on/);
   assert.doesNotMatch(list, /There is no Play on/);
 });
@@ -101,8 +111,11 @@ test("Opening Traps and Caro lead, with green percent and red locked bars", () =
     "Your opening training packs",
     "Report incorrect line",
     "Thanks for spotting it.",
-    "A strict opening trainer",
-    "See your packs",
+    "Learn openings through practice and recall.",
+    "Start training",
+    "Practise. Remember. Recognise.",
+    "Choose a pack",
+    "Guided practice · memory tests",
     "Read the trainer intro",
   ]) {
     assert.equal(i18n.split(`"${key}":`).length - 1, 12, key);

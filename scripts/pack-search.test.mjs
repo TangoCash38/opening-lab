@@ -85,7 +85,7 @@ test("search copy is translated; required home-row English keys stay intact", ()
     "Tap to practice",
     "See 18 lines",
     "Free sample",
-    "Strict lines · memory training",
+    "Guided practice · memory tests",
     "How the gym works",
     "Continue",
     "Don't show again",
