@@ -5120,7 +5120,7 @@ export const PACKS: Pack[] = [
     price: null,
     blurb: "Modern, Exchange, Four Pawns, Two Pawns",
     about: "Meet the Alekhine Defence for Black: after 1.e4 Nf6 invite 2.e5, then chip White's centre in Modern, Exchange, Four Pawns, and Two Pawns structures.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
-    closedLabel: "Free · 20 lines",
+    closedLabel: "Free · 18 lines",
     lines: [
       {
         id: "ab1",
@@ -5264,22 +5264,6 @@ export const PACKS: Pack[] = [
         idea: "Against 2.Nc3, strike …d5 à la Scandinavian; after exd5 Nxd5 and Bc4–Bb3, develop …Nc6/…Bf5 and castle-ready …e6/…Be7.",
         next: "Castle, then …O-O and …Na5 to trim the Bb3, or …Bf6 pressure on d4.",
         plies: ["e4", "Nf6", "Nc3", "d5", "exd5", "Nxd5", "Bc4", "Nb6", "Bb3", "Nc6", "Nf3", "Bf5", "O-O", "e6", "d4", "Be7"],
-        side: "b",
-      },
-      {
-        id: "ab19",
-        name: "Punish the error · Two Pawns · Ba6??",
-        idea: "Two Pawns/Lasker shell. White’s 7.Ba6?? hangs the bishop to 7…Nxc3! 8.bxc3 Bxa6 — full minor up.",
-        next: "Piece-up middlegame; develop …Nc6/…Be7 and castle.",
-        plies: ["e4", "Nf6", "e5", "Nd5", "c4", "Nb6", "c5", "Nd5", "Nc3", "e6", "d4", "b6", "Ba6", "Nxc3", "bxc3", "Bxa6"],
-        side: "b",
-      },
-      {
-        id: "ab20",
-        name: "Punish the error · Alekhine–Scandinavian · Bxd5??",
-        idea: "After Nge2 Bg4 g3 Ne5, greedy Bxd5?? walks into …Qxd5!!. Accepting Nxd5? Nf3+ Kf1 Bh3# is mate (g3 emptied the diagonal). Declining still drops heavy material.",
-        next: "Mate in book plies.",
-        plies: ["e4", "Nf6", "Nc3", "d5", "exd5", "Nxd5", "Bc4", "Nc6", "Nge2", "Bg4", "g3", "Ne5", "Bxd5", "Qxd5", "Nxd5", "Nf3+", "Kf1", "Bh3#"],
         side: "b",
       }
     ],
