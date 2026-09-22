@@ -312,7 +312,7 @@ export function PackList({
   onReportLine,
 }: Props) {
   const t = useT();
-  const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } =
+  const { buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } =
     useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
