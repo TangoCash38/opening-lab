@@ -291,6 +291,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** Invalidates in-flight slides and wrong-square flashes on reset / mode switch. */
+  const animGen = useRef(0);
+  const slideGen = useRef(0);
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notationStripRef = useRef<HTMLDivElement | null>(null);
   const activeMoveRef = useRef<HTMLSpanElement | null>(null);
@@ -366,6 +369,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       clearAllTimers();
       pendingCommit.current = null;
       replyGenRef.current += 1;
+      animGen.current += 1;
       setSlide(null);
       setBusy(false);
       setResultCard(null);
@@ -487,6 +491,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         move: { from, to },
         userMove,
       };
+      slideGen.current = animGen.current;
       setSlide({
         from,
         to,
@@ -500,6 +505,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   );
 
   const onSlideComplete = useCallback(() => {
+    if (slideGen.current !== animGen.current) {
+      pendingCommit.current = null;
+      setSlide(null);
+      setBusy(false);
+      return;
+    }
     const pending = pendingCommit.current;
     if (!pending) {
       setSlide(null);
@@ -712,7 +723,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         setNearMissTick((n) => n + 1);
       }
       if (wrongTimer.current) clearTimeout(wrongTimer.current);
-      wrongTimer.current = setTimeout(() => setWrongUntil(null), 450);
+      const wrongGen = animGen.current;
+      wrongTimer.current = setTimeout(() => {
+        if (wrongGen !== animGen.current) return;
+        setWrongUntil(null);
+      }, 450);
       return;
     }
 
@@ -799,6 +814,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       const piece = pieceCodeFromVerbose(m);
       // No pendingCommit — onSlideComplete only clears the scrub animation.
       pendingCommit.current = null;
+      slideGen.current = animGen.current;
       setBusy(true);
       if (dir === -1) {
         // Reverse slide: piece walks back to its from-square.
