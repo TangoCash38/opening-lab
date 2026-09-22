@@ -14,8 +14,8 @@ function scrollIntroTop() {
 }
 
 /**
- * First-run / Help reopen: brand + hobbyist note → full-bleed poster + Start
- * → home. Seen flag via opening-lab:home-intro:v2.
+ * Every open and Help reopen: brand + hobbyist note → full-bleed poster +
+ * Start → home. The page stays on home until the next full load.
  */
 export function HomeIntro({ onContinue, onPhaseChange }: Props) {
   const [phase, setPhase] = useState<IntroPhase>("brand");

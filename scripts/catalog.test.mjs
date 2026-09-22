@@ -3372,8 +3372,9 @@ test("app open skips AppSplash and starts on the two-page home intro", () => {
   assert.doesNotMatch(shell, /showSplash/);
   assert.doesNotMatch(shell, /from "\.\/app-splash"/);
   assert.match(shell, /HomeIntro/);
-  assert.match(shell, /hasSeenHomeIntro/);
-  assert.match(shell, /useState<View>\("intro"\)/);
+  assert.doesNotMatch(shell, /hasSeenHomeIntro/);
+  assert.doesNotMatch(shell, /opening-lab:home-intro/);
+  assert.match(shell, /introFinished \? "home" : "intro"/);
   assert.match(intro, /data-intro="brand"/);
   assert.match(intro, /data-intro="splash"/);
   assert.doesNotMatch(intro, /data-intro="welcome"/);
