@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { CircleHelp, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isPackVisible, readRequestedPackId } from "@/lib/catalog";
@@ -37,11 +37,6 @@ import { ReportLineView } from "./report-line";
 import { TrainView } from "./train-view";
 import { CreateOwnView } from "./create-own-view";
 import { Onboarding } from "./onboarding";
-import {
-  AppSplash,
-  hasSeenAppSplash,
-  markAppSplashSeen,
-} from "./app-splash";
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
@@ -75,7 +70,8 @@ export function OpeningLabApp() {
 
 function OpeningLabInner() {
   const t = useT();
-  const [view, setView] = useState<View>("home");
+  const [view, setView] = useState<View>("intro");
+  const [introPhase, setIntroPhase] = useState<"brand" | "splash">("brand");
   const [active, setActive] = useState<{
     pack: Pack;
     line: OpeningLine;
@@ -89,7 +85,6 @@ function OpeningLabInner() {
   const [showOnboarding, setShowOnboarding] = useState(
     false /* onboard after mount */
   );
-  const [showSplash, setShowSplash] = useState(true);
   const [playSurface, setPlaySurface] = useState(() => isPlayWrap());
 
   useEffect(() => {
@@ -115,8 +110,8 @@ function OpeningLabInner() {
     requestAnimationFrame(() => scrollAppTop());
   };
 
-  useEffect(() => {
-    if (hasSeenAppSplash()) setShowSplash(false);
+  useLayoutEffect(() => {
+    if (hasSeenHomeIntro()) setView("home");
   }, []);
 
   useEffect(() => {
@@ -136,10 +131,6 @@ function OpeningLabInner() {
       goHome();
     }
   }, [view, active]);
-
-  useEffect(() => {
-    if (!hasSeenHomeIntro()) setView("intro");
-  }, []);
 
   const startLine = (
     pack: Pack,
@@ -222,24 +213,15 @@ function OpeningLabInner() {
     setShowOnboarding(false);
   };
 
-  const finishSplash = useCallback(() => {
-    markAppSplashSeen();
-    setShowSplash(false);
-  }, []);
-
   const surface = playSurface ? "play" : "website";
-
-  if (showSplash) {
-    return (
-      <div className="app-shell bg-bg text-fg" data-surface={surface}>
-        <AppSplash onDone={finishSplash} />
-      </div>
-    );
-  }
+  const posterIntro = view === "intro" && introPhase === "splash";
 
   return (
     <div className="app-shell bg-bg text-fg" data-surface={surface}>
-      <header className="app-header z-30 border-b border-border/80">
+      <header
+        className="app-header z-30 border-b border-border/80"
+        hidden={posterIntro}
+      >
         <div
           className="app-header-inner mx-auto flex w-full items-center gap-2 px-3 pb-2.5"
           style={{ paddingTop: "0.65rem" }}
@@ -293,7 +275,9 @@ function OpeningLabInner() {
           paddingRight: "max(0.9rem, env(safe-area-inset-right, 0px))",
         }}
       >
-        {view === "intro" && <HomeIntro onContinue={finishIntro} />}
+        {view === "intro" && (
+          <HomeIntro onContinue={finishIntro} onPhaseChange={setIntroPhase} />
+        )}
         {view === "home" && (
           <PackList
             onStartLine={startLine}
@@ -318,6 +302,7 @@ function OpeningLabInner() {
           <GuideView
             onBack={goHome}
             onShowIntro={() => {
+              setIntroPhase("brand");
               setView("intro");
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());

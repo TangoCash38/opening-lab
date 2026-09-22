@@ -21,12 +21,14 @@ export function GuideView({ onBack, onShowIntro }: Props) {
       </h1>
 
       <Block title={t("What is Opening Lab?")}>
-        {t("Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.")}
+        <p className="guide-intro-copy">
+          {t("Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.")}
+        </p>
         {onShowIntro ? (
           <button
             type="button"
             onClick={onShowIntro}
-            className="mt-3 min-h-11 rounded-full border border-border bg-bg px-4 py-2 text-[0.85rem] font-semibold text-fg"
+            className="guide-intro-reopen"
           >
             {t("Read the trainer intro")}
           </button>

@@ -1,5 +1,8 @@
-/** First-run intro (brand → splash → welcome). Return visits skip it once this is "1". */
-export const HOME_INTRO_STORAGE_KEY = "opening-lab:home-intro";
+/**
+ * First-run intro (brand → poster). v2 so testers who finished the old
+ * three-phase intro see this flow once. Return visits skip it once this is "1".
+ */
+export const HOME_INTRO_STORAGE_KEY = "opening-lab:home-intro:v2";
 
 export function hasSeenHomeIntro(): boolean {
   if (typeof localStorage === "undefined") return true;

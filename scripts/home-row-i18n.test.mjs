@@ -11,7 +11,7 @@ const i18n = src("src/lib/i18n.ts");
 const hero = src("src/components/opening-lab/home-hero.tsx");
 const shell = src("src/components/opening-lab/app-shell.tsx");
 const css = src("src/styles.css");
-const splash = src("src/components/opening-lab/app-splash.tsx");
+const intro = src("src/components/opening-lab/home-intro.tsx");
 const list = src("src/components/opening-lab/pack-list.tsx");
 const lines = src("src/components/opening-lab/pack-lines.tsx");
 const unlock = src("src/components/opening-lab/unlock-modal.tsx");
@@ -103,7 +103,8 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.doesNotMatch(i18n, /"Classical":/);
   assert.doesNotMatch(i18n, /"Exchange":/);
   assert.doesNotMatch(i18n, /"Caro-Kann for Black":/);
-  assert.match(splash, /Most people dive into opening theory/);
+  assert.match(intro, /developed by a hobbyist with a strong technical curiosity/);
+  assert.doesNotMatch(shell, /AppSplash/);
   assert.doesNotMatch(list, /Learn Drill Know/);
   assert.match(list, /WebsiteAppPrompt/);
   const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
@@ -136,15 +137,12 @@ test("home board still only starts from Tap to practice", () => {
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
 });
 
-test("splash has Language picker before Play (custom sheet, not native select)", () => {
-  assert.match(splash, /useI18n\(\)/);
-  assert.match(splash, /LangToggle/);
-  assert.match(splash, /from "\.\/lang-picker"/);
-  assert.doesNotMatch(splash, /<select/);
-  assert.match(splash, /splash-lang/);
-  const toggleAt = splash.indexOf("<LangToggle");
-  const playAt = splash.indexOf('{t("Play")}');
-  assert.ok(toggleAt > -1 && playAt > toggleAt, "Language picker sits before Play");
-  assert.match(splash, /SESSION_KEY = "opening-lab:splash:v4"/);
-  assert.match(css, /\.splash-lang/);
+test("language picker stays in the header; AppSplash does not gate open", () => {
+  assert.match(shell, /LangToggle/);
+  assert.match(shell, /from "\.\/lang-picker"/);
+  assert.doesNotMatch(shell, /<select/);
+  assert.doesNotMatch(shell, /AppSplash/);
+  assert.doesNotMatch(shell, /opening-lab:splash:v4/);
+  assert.doesNotMatch(intro, /t\("Play"\)/);
+  assert.match(css, /\.lang-toggle/);
 });
