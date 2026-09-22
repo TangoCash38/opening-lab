@@ -332,9 +332,11 @@ html[data-color-scheme="dark"] {
   .home-heading-row {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    /* Bottom-align so a short h1 does not float above a taller Menu and
+       leave a dead band before search (common in Android WebView). */
+    align-items: flex-end;
     gap: 0.65rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     position: relative;
     z-index: 5;
   }
@@ -343,7 +345,11 @@ html[data-color-scheme="dark"] {
     flex: 1 1 auto;
     min-width: 0;
     margin: 0;
-    line-height: 1.15;
+    /* Fraunces ships a large line-gap. Android WebView adds it under the
+       glyphs, which left a dead band between the heading and search. */
+    line-height: 1.05;
+    max-height: 2.4em;
+    overflow: hidden;
   }
 
   .home-heading-row .home-heading-actions {
@@ -411,21 +417,29 @@ html[data-color-scheme="dark"] {
   .pack-progress {
     display: flex;
     align-items: center;
+    width: 100%;
+    min-width: 0;
     gap: 0.55rem;
-    margin-top: 0.7rem;
+    margin-top: 0.65rem;
   }
 
   .pack-progress-track {
-    flex: 1 1 auto;
-    height: 0.45rem;
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 0;
+    height: 0.5rem;
     overflow: hidden;
     border-radius: 999px;
     background: var(--color-bg-subtle);
   }
 
   .pack-progress-fill {
+    display: block;
     height: 100%;
-    border-radius: inherit;
+    max-width: 100%;
+    /* Rectangle, not inherit: a 999px radius on a 3% sliver was clipped to
+       nothing inside the pill, so the label said 3% over an empty track. */
+    border-radius: 0;
     background: var(--color-success);
   }
 
@@ -597,9 +611,40 @@ html[data-color-scheme="dark"] {
     top: calc(env(safe-area-inset-top, 0px) + 3.35rem);
     z-index: 20;
     background: var(--color-bg);
-    padding-top: 0.35rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.35rem;
+    margin-top: 0;
     margin-bottom: 0.15rem;
+  }
+
+  /* Phone / Play WebView (~390px). Desktop board-beside-lines stays at 960px. */
+  @media (max-width: 959px) {
+    .app-main {
+      padding-top: 0.55rem;
+      padding-left: max(0.9rem, env(safe-area-inset-left, 0px));
+      padding-right: max(0.9rem, env(safe-area-inset-right, 0px));
+    }
+
+    .home-heading-row {
+      margin-bottom: 0.3rem;
+      gap: 0.45rem;
+    }
+
+    .home-heading-row .home-menu-btn {
+      min-height: 2.5rem;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+    }
+
+    .pack-list-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .pack-card {
+      margin-bottom: 0.65rem;
+    }
   }
 
   .pack-search-input::-webkit-search-cancel-button,

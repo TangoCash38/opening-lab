@@ -285,9 +285,12 @@ function OpeningLabInner() {
       </header>
 
       <main
-        className="app-main mx-auto w-full px-4 pt-5"
+        className="app-main mx-auto w-full"
         style={{
-          paddingBottom: "max(3rem, env(safe-area-inset-bottom, 0px))",
+          paddingTop: "0.55rem",
+          paddingBottom: "max(2.75rem, env(safe-area-inset-bottom, 0px))",
+          paddingLeft: "max(0.9rem, env(safe-area-inset-left, 0px))",
+          paddingRight: "max(0.9rem, env(safe-area-inset-right, 0px))",
         }}
       >
         {view === "intro" && <HomeIntro onContinue={finishIntro} />}

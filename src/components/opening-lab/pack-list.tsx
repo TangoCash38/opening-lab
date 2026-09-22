@@ -63,6 +63,7 @@ const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
 function PackProgress({ percent }: { percent: number }) {
   const t = useT();
   const label = t("{pct}%", { pct: percent });
+  const shown = Math.max(0, Math.min(100, percent));
   return (
     <div
       className="pack-progress"
@@ -70,11 +71,11 @@ function PackProgress({ percent }: { percent: number }) {
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuenow={percent}
+      aria-valuenow={shown}
       aria-label={label}
     >
       <div className="pack-progress-track">
-        <div className="pack-progress-fill" style={{ width: `${percent}%` }} />
+        <div className="pack-progress-fill" style={{ width: `${shown}%` }} />
       </div>
       <span className="pack-progress-label">{label}</span>
     </div>
@@ -85,7 +86,7 @@ type ModalTarget = { pack: Pack; price: string };
 
 function QuietLabel({ children }: { children: string }) {
   return (
-    <p className="pack-list-full mb-2 mt-5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
+    <p className="pack-list-full mb-1.5 mt-3.5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
       {children}
     </p>
   );
@@ -131,7 +132,6 @@ function PackSearchField({
 
 function PackCard({
   pack,
-  unlocked,
   open,
   onToggle,
   onRequestUnlock,
@@ -141,7 +141,6 @@ function PackCard({
   purchased,
 }: {
   pack: Pack;
-  unlocked: boolean;
   open: boolean;
   onToggle: (pack: Pack) => void;
   onRequestUnlock: (pack: Pack) => void;
@@ -151,17 +150,19 @@ function PackCard({
   purchased: readonly string[];
 }) {
   const t = useT();
-  const { isComplete } = useProgress();
+  const { line: lineProgress } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
-  const locked = !unlocked;
   const openLineCount = pack.lines.filter(
     (line) => subscribed || isLineUnlocked(pack, line.id, purchased),
   ).length;
   const anyOpen = openLineCount > 0;
   const percent = packCompletePercent(
-    pack.lines.map((line) => line.id),
-    isComplete,
+    pack.lines.map((line) => ({ id: line.id, bookLen: line.plies.length })),
+    (id) => {
+      const p = lineProgress(id);
+      return { cleanPractice: p.cleanPractice, testBestPly: p.testBestPly };
+    },
   );
   const shortPack = packShortLabel(pack);
 
@@ -174,7 +175,7 @@ function PackCard({
 
   return (
     <div
-      className={`pack-card mb-3.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
+      className={`pack-card mb-2.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
         open ? "pack-list-full " : ""
       }`}
       data-pack-card={pack.id}
@@ -182,10 +183,10 @@ function PackCard({
       data-pack-access={anyOpen ? "open" : "locked"}
     >
       <div className="flex w-full flex-col px-4 pb-1 pt-3.5 text-start">
-        <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
+        <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
           <div className="relative">
             <MiniBoard />
-            {locked && (
+            {!anyOpen && (
               <span
                 className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-fg text-bg-elevated shadow-sm"
                 aria-hidden
@@ -194,10 +195,10 @@ function PackCard({
               </span>
             )}
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <div className="text-[0.95rem] font-bold">{pack.name}</div>
-              {locked && (
+              <div className="min-w-0 break-words text-[0.95rem] font-bold leading-snug">{pack.name}</div>
+              {!anyOpen && (
                 <Lock
                   className="size-3.5 shrink-0 text-fg-subtle"
                   strokeWidth={2.5}
@@ -216,7 +217,7 @@ function PackCard({
                     ? t("{n} free", { n: FREE_SAMPLE_LINE_IDS[pack.id].length })
                     : t("Free")}
                 </span>
-              ) : unlocked ? (
+              ) : anyOpen ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
                   {t("Unlocked")}
                 </span>
@@ -300,19 +301,6 @@ function PackCard({
           <LondonWarmupChip pack={pack} onStartLine={onStartLine} />
         </div>
       ) : null}
-
-      {locked && (
-        <div className="border-t border-border px-3 pb-3 pt-2">
-          <button
-            type="button"
-            onClick={() => onRequestUnlock(pack)}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-bg-subtle py-2.5 text-[0.82rem] font-semibold text-fg-muted active:scale-[0.99]"
-          >
-            <Lock className="size-3.5" strokeWidth={2.5} />
-            {t("Pay as you go · {price}", { price: price ?? "" })}
-          </button>
-        </div>
-      )}
     </div>
   );
 }
@@ -324,7 +312,7 @@ export function PackList({
   onReportLine,
 }: Props) {
   const t = useT();
-  const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } =
+  const { buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } =
     useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
@@ -579,7 +567,6 @@ export function PackList({
     <PackCard
       key={pack.id}
       pack={pack}
-      unlocked={canAccess(pack)}
       open={openPackId === pack.id}
       onToggle={togglePack}
       onRequestUnlock={requestUnlock}
@@ -594,8 +581,8 @@ export function PackList({
     <div className="pack-list">
       <WebsiteAppPrompt />
       <div className="home-heading-row">
-        <h1 className="font-display text-[1.45rem] font-bold tracking-tight sm:text-[1.65rem]">
-          {t("Your opening training packs")}
+        <h1 className="font-display text-[1.4rem] font-bold tracking-tight sm:text-[1.65rem]">
+          {t("Learn Drill Know")}
         </h1>
         <div className="home-heading-actions">
           <HomeMenu
