@@ -43,6 +43,13 @@ import { accessibleCandidates } from "./today-strip";
 type View = "home" | "train" | "guide" | "create" | "intro" | "report";
 type TrainMode = "learn" | "practice";
 
+/**
+ * Play wrap only. True after Start in this JS session so in-app Home stays on
+ * the pack list. A fresh WebView load resets it, so the intro runs again.
+ * Not sessionStorage — that would skip the intro across app reopens.
+ */
+let playIntroFinished = false;
+
 
 function scrollAppTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -53,7 +60,7 @@ function canTrainPack(pack: Pick<Pack, "id"> | string): boolean {
 }
 
 export function OpeningLabApp() {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stopBoard = initBoardTheme();
     const stopColor = initColorScheme();
     return () => {
@@ -85,11 +92,7 @@ function OpeningLabInner() {
   const [showOnboarding, setShowOnboarding] = useState(
     false /* onboard after mount */
   );
-  const [playSurface, setPlaySurface] = useState(() => isPlayWrap());
-
-  useEffect(() => {
-    setPlaySurface(isPlayWrap());
-  }, []);
+  const [playSurface, setPlaySurface] = useState(false);
 
   const { complete, markLearned, failPractice, markTest, dueQueue, line: lineProgress } =
     useProgress();
@@ -98,19 +101,32 @@ function OpeningLabInner() {
   const goHome = () => {
     setQueue([]);
     setActive(null);
-    setView(hasSeenHomeIntro() ? "home" : "intro");
+    setIntroPhase("brand");
+    if (isPlayWrap()) {
+      setView(playIntroFinished ? "home" : "intro");
+    } else {
+      setView(hasSeenHomeIntro() ? "home" : "intro");
+    }
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
 
   const finishIntro = () => {
-    markHomeIntroSeen();
+    if (isPlayWrap()) playIntroFinished = true;
+    else markHomeIntroSeen();
+    setIntroPhase("brand");
     setView("home");
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
 
   useLayoutEffect(() => {
+    const play = isPlayWrap();
+    setPlaySurface(play);
+    if (play) {
+      if (playIntroFinished) setView("home");
+      return;
+    }
     if (hasSeenHomeIntro()) setView("home");
   }, []);
 
@@ -376,7 +392,7 @@ function ColorSchemeToggle() {
   const t = useT();
   const [scheme, setScheme] = useState<ColorScheme>("light");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setScheme(getColorScheme());
     return subscribeColorScheme(() => setScheme(getColorScheme()));
   }, []);

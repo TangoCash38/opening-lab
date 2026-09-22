@@ -1,6 +1,7 @@
 /**
- * First-run intro (brand → poster). v2 so testers who finished the old
- * three-phase intro see this flow once. Return visits skip it once this is "1".
+ * Website first-run intro (brand → poster). v2 so testers who finished the
+ * old three-phase intro see this flow once. Website return visits skip it
+ * once this is "1". The Play wrap does not read this flag.
  */
 export const HOME_INTRO_STORAGE_KEY = "opening-lab:home-intro:v2";
 

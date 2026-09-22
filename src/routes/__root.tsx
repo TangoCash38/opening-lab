@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
+import { COLOR_SCHEME_BOOT_SCRIPT } from "@/lib/color-scheme";
 
 const APP_NAME = "Opening Lab";
 const host = import.meta.env.VITE_PUBLIC_HOSTNAME;
@@ -70,6 +71,7 @@ function RootDocument() {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: COLOR_SCHEME_BOOT_SCRIPT }} />
         <HeadContent />
       </head>
       <body>
