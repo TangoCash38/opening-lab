@@ -42,7 +42,7 @@ export function GuideView({ onBack, onShowIntro }: Props) {
       </Block>
 
       <Block title={t("Test mode")}>
-        {t("No hints. Play your side only. Wrong squares flash red until you find the book move. Pack-list % is a Test streak of correct book moves from the start of that Test; a wrong move freezes the % there. 100% / green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.")}
+        {t("No hints. Play your side only. Wrong squares flash red until you find the book move. The pack percentage counts lines finished with a clean Test, out of every line in the pack. A finished pack shows 100%. A line is green only after a clean Test with zero mistakes. If you think a rejected move is book, send it with Wrong move? If we confirm it, you get a pack free.")}
       </Block>
 
       <Block title={t("Reviews")}>

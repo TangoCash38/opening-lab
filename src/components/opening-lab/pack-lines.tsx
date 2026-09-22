@@ -4,15 +4,18 @@ import type { Mastery } from "@/lib/progress";
 import { useT } from "@/lib/i18n";
 import { MasteryChip } from "./mastery-chip";
 
-/** Shared expand cue — same look on Scotch and every paid pack. */
+/** Shared expand cue — one control, at the bottom of the pack card. */
 export function PackExpandHint({
   open,
   free = false,
   closedLabel,
+  lockedBar = false,
 }: {
   open: boolean;
   free?: boolean;
   closedLabel?: string;
+  /** Light red price bar when the pack has no unlocked lines. */
+  lockedBar?: boolean;
 }) {
   const t = useT();
   const label = open
@@ -25,10 +28,12 @@ export function PackExpandHint({
 
   return (
     <span
-      className={`mt-2.5 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 px-3 text-[0.95rem] font-bold ${
+      className={`flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 px-3 text-[0.95rem] font-bold ${
         open
           ? "border-border bg-bg-subtle text-fg-muted"
-          : "border-accent bg-accent/14 text-accent"
+          : lockedBar
+            ? "pack-fold-locked border-danger/40 bg-danger-soft text-fg"
+            : "border-accent bg-accent/14 text-accent"
       }`}
     >
       <ChevronDown

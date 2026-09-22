@@ -6,6 +6,7 @@ import {
   catalogOffersLabPlus,
   FREE_SAMPLE_LINE_IDS,
   hasPaidPlaySkuPath,
+  isLineUnlocked,
   visiblePacks,
 } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
@@ -24,6 +25,7 @@ import {
   type CheckoutKind,
 } from "@/lib/checkout";
 import { isPlayWrap } from "@/lib/play-app";
+import { packCompletePercent } from "@/lib/progress";
 import { LONDON_PACK_ID, type TrainStartOptions } from "@/lib/london-warmup";
 import {
   hasPlayBillingBridge,
@@ -36,7 +38,6 @@ import { LondonWarmupChip } from "./london-warmup-chip";
 import { MiniBoard } from "./mini-board";
 import { UnlockModal } from "./unlock-modal";
 import { SubscribeModal } from "./subscribe-modal";
-import { PlayStoreNotice } from "./play-store-notice";
 import { HomeHero } from "./home-hero";
 import { HomeMenu } from "./home-menu";
 import { LegalFooter } from "./legal-footer";
@@ -59,42 +60,23 @@ type Props = {
 
 const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
 
-function packTrainPercent(
-  pack: Pack,
-  isComplete: (lineId: string) => boolean,
-  testPercentOf: (lineId: string, bookLen: number) => number | null,
-): number {
-  if (pack.lines.length === 0) return 0;
-  let sum = 0;
-  for (const line of pack.lines) {
-    if (isComplete(line.id)) sum += 100;
-    else sum += testPercentOf(line.id, line.plies.length) ?? 0;
-  }
-  return Math.round(sum / pack.lines.length);
-}
-
-function PackProgress({ locked, percent }: { locked: boolean; percent: number }) {
+function PackProgress({ percent }: { percent: number }) {
   const t = useT();
+  const label = t("{pct}%", { pct: percent });
   return (
     <div
       className="pack-progress"
       data-pack-progress
-      data-locked={locked ? "true" : "false"}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuenow={locked ? 0 : percent}
-      aria-label={locked ? t("Locked") : t("{pct}%", { pct: percent })}
+      aria-valuenow={percent}
+      aria-label={label}
     >
       <div className="pack-progress-track">
-        <div
-          className="pack-progress-fill"
-          style={{ width: locked ? "100%" : `${percent}%` }}
-        />
+        <div className="pack-progress-fill" style={{ width: `${percent}%` }} />
       </div>
-      <span className="pack-progress-label">
-        {locked ? t("Locked") : t("{pct}%", { pct: percent })}
-      </span>
+      <span className="pack-progress-label">{label}</span>
     </div>
   );
 }
@@ -155,6 +137,8 @@ function PackCard({
   onRequestUnlock,
   onStartLine,
   playApp,
+  subscribed,
+  purchased,
 }: {
   pack: Pack;
   unlocked: boolean;
@@ -163,15 +147,22 @@ function PackCard({
   onRequestUnlock: (pack: Pack) => void;
   onStartLine: Props["onStartLine"];
   playApp: boolean;
+  subscribed: boolean;
+  purchased: readonly string[];
 }) {
   const t = useT();
-  const { isComplete, testPercentOf } = useProgress();
+  const { isComplete } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
   const locked = !unlocked;
-  const hasFreeLines = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
-  const barLocked = locked && !hasFreeLines;
-  const percent = packTrainPercent(pack, isComplete, testPercentOf);
+  const openLineCount = pack.lines.filter(
+    (line) => subscribed || isLineUnlocked(pack, line.id, purchased),
+  ).length;
+  const anyOpen = openLineCount > 0;
+  const percent = packCompletePercent(
+    pack.lines.map((line) => line.id),
+    isComplete,
+  );
   const shortPack = packShortLabel(pack);
 
   const sideClass =
@@ -185,16 +176,12 @@ function PackCard({
     <div
       className={`pack-card mb-3.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
         open ? "pack-list-full " : ""
-      }${locked ? "border-border/80" : "border-border"}`}
+      }`}
       data-pack-card={pack.id}
       data-pack-open={open ? "true" : "false"}
+      data-pack-access={anyOpen ? "open" : "locked"}
     >
-      <button
-        type="button"
-        className="flex w-full flex-col px-4 pb-3 pt-3.5 text-start"
-        onClick={() => onToggle(pack)}
-        aria-expanded={open}
-      >
+      <div className="flex w-full flex-col px-4 pb-1 pt-3.5 text-start">
         <div className="grid w-full grid-cols-[auto_1fr] items-center gap-3.5">
           <div className="relative">
             <MiniBoard />
@@ -264,24 +251,8 @@ function PackCard({
             </div>
           </div>
         </div>
-        <PackProgress locked={barLocked} percent={percent} />
-        <PackExpandHint
-          open={open}
-          free={free}
-          closedLabel={
-            price
-              ? t("{price} · See {n} {pack} lines", {
-                  price,
-                  n: pack.lines.length,
-                  pack: shortPack,
-                })
-              : t("Tap to see {n} {pack} lines", {
-                  n: pack.lines.length,
-                  pack: shortPack,
-                })
-          }
-        />
-      </button>
+        {percent != null ? <PackProgress percent={percent} /> : null}
+      </div>
 
       {open ? (
         <div className="border-t border-border px-2 pb-3 pt-2">
@@ -295,6 +266,34 @@ function PackCard({
           />
         </div>
       ) : null}
+
+      <div className="px-4 pb-3 pt-2">
+        <button
+          type="button"
+          className="block w-full border-0 bg-transparent p-0 text-inherit"
+          onClick={() => onToggle(pack)}
+          aria-expanded={open}
+          data-pack-fold
+        >
+          <PackExpandHint
+            open={open}
+            free={free}
+            lockedBar={!anyOpen}
+            closedLabel={
+              price
+                ? t("{price} · See {n} {pack} lines", {
+                    price,
+                    n: pack.lines.length,
+                    pack: shortPack,
+                  })
+                : t("Tap to see {n} {pack} lines", {
+                    n: pack.lines.length,
+                    pack: shortPack,
+                  })
+            }
+          />
+        </button>
+      </div>
 
       {pack.id === LONDON_PACK_ID && !open ? (
         <div className="pack-card-warmup">
@@ -325,7 +324,8 @@ export function PackList({
   onReportLine,
 }: Props) {
   const t = useT();
-  const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled } = useUnlocks();
+  const { canAccess, buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } =
+    useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -585,6 +585,8 @@ export function PackList({
       onRequestUnlock={requestUnlock}
       onStartLine={onStartLine}
       playApp={wrap}
+      subscribed={subscribed}
+      purchased={state.packs}
     />
   );
 
@@ -614,12 +616,6 @@ export function PackList({
         >
           {unlockNotice}
         </p>
-      ) : null}
-
-      {wrap ? (
-        <div className="mb-3">
-          <PlayStoreNotice />
-        </div>
       ) : null}
 
       {morePacks ? (

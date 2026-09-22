@@ -59,6 +59,29 @@ test("lineTestPercent mid values round from testBestPly / bookLen; never 100 wit
   assert.equal(lineTestPercent({ ...base, testBestPly: 20 }, 10), 99);
 });
 
+test("packCompletePercent is Test-complete lines over total, or null", () => {
+  const start = progressSrc.indexOf("export function packCompletePercent");
+  assert.ok(start >= 0, "packCompletePercent missing");
+  const end = progressSrc.indexOf("\nexport ", start + 1);
+  const block = progressSrc.slice(start, end < 0 ? undefined : end);
+  assert.match(block, /if \(done === 0\) return null/);
+  assert.match(block, /return Math\.round\(\(done \/ total\) \* 100\)/);
+  const fn = new Function(
+    `${block
+      .replace(/^export /, "")
+      .replace(/: readonly string\[\]/g, "")
+      .replace(/: \(lineId: string\) => boolean/g, "")
+      .replace(/: number \| null/g, "")}\nreturn packCompletePercent;`,
+  )();
+  const ids = ["a", "b", "c", "d"];
+  const done = new Set(["a", "b", "c", "d"]);
+  assert.equal(fn([], () => true), null);
+  assert.equal(fn(ids, () => false), null);
+  assert.equal(fn(ids, (id) => id === "a"), 25);
+  assert.equal(fn(ids, (id) => done.has(id)), 100);
+  assert.equal(fn(["a", "b", "c"], (id) => id !== "c"), 67);
+});
+
 test("progress store persists testBestPly via markTestPly without cleanPractice", () => {
   assert.match(progressSrc, /testBestPly: number/);
   assert.match(progressSrc, /testBestPly: 0/);

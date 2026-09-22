@@ -23,6 +23,19 @@ function Terms() {
         </p>
       </LegalSection>
 
+      {/*
+        TODO(legal): Counsel is reviewing this in parallel. Draft for the
+        live page — hobbyist disclaimer, and an incorrect-line report that
+        a person checks, then we fix and refund. Not an automatic Google
+        Play refund. Do not call BillingClient or purchases.refund.
+      */}
+      <LegalSection title="Who makes Opening Lab">
+        <p>
+          Opening Lab was created by a hobbyist with a strong technical
+          curiosity. Your support and feedback is invaluable and appreciated.
+        </p>
+      </LegalSection>
+
       <LegalSection title="The catalog">
         <p>
           There are thirty-three opening packs. Some lines are free as samples
@@ -74,6 +87,15 @@ function Terms() {
           . We will check it. If we agree it is the book move for that line,
           we will give you a pack free. We decide whether the move is book.
           If we agree, we will give you a pack free.
+        </p>
+        {/*
+          TODO(legal): Draft remedy alongside the signed “pack free” line
+          above. A person checks the report. No Play Billing refund API.
+        */}
+        <p>
+          Thanks for spotting it. If a line is not a real book move, we check
+          it, fix the line, and refund you. A person does that check. This is
+          not an automatic store refund.
         </p>
       </LegalSection>
 

@@ -154,7 +154,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.match(packList, /Your opening training packs/);
   assert.match(packList, /\["opening-traps", "caro-kann-black"\]/);
   assert.match(packList, /data-pack-progress/);
-  assert.match(packList, /data-locked=\{locked \? "true" : "false"\}/);
+  assert.match(packList, /data-pack-access=\{anyOpen \? "open" : "locked"\}/);
   assert.doesNotMatch(packList, /Find the mate/);
   assert.doesNotMatch(packList, /Play on/);
   const aboutModal = readFileSync(

@@ -439,16 +439,18 @@ html[data-color-scheme="dark"] {
     text-align: end;
   }
 
-  .pack-progress[data-locked="true"] .pack-progress-track {
+  .pack-card[data-pack-access="open"] {
+    border-color: var(--color-success);
+  }
+
+  .pack-card[data-pack-access="locked"] {
+    border-color: var(--color-danger);
+  }
+
+  .pack-fold-locked {
+    border-color: color-mix(in srgb, var(--color-danger) 55%, var(--color-border));
     background: var(--color-danger-soft);
-  }
-
-  .pack-progress[data-locked="true"] .pack-progress-fill {
-    background: var(--color-danger);
-  }
-
-  .pack-progress[data-locked="true"] .pack-progress-label {
-    color: var(--color-danger);
+    color: var(--color-fg);
   }
 
   @media (min-width: 640px) {
@@ -2706,6 +2708,66 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   background: #140e0c;
 }
 
+.home-intro-art-knight img {
+  width: 100%;
+  max-height: none;
+  background: #071422;
+}
+
+.home-intro-brand {
+  display: flex;
+  min-height: min(68vh, 34rem);
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-intro-brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.home-intro-brand-mark {
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  font-size: 1.7rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-card);
+}
+
+.home-intro-brand-name {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.home-intro-brand-sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--color-fg-subtle);
+}
+
+.home-intro-welcome {
+  margin-top: 0.9rem;
+  color: var(--color-fg);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.home-intro-welcome p {
+  margin: 0;
+}
+
 .home-intro-title {
   margin: 0;
   text-align: start;
@@ -2861,4 +2923,18 @@ html[data-color-scheme="dark"] .home-intro-steps strong {
 .home-intro-dots span[data-on="true"] {
   width: 1.05rem;
   background: #6b4428;
+}
+
+.pack-card[data-pack-access="open"],
+.pack-card[data-pack-access="locked"] {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.pack-card[data-pack-access="open"] {
+  border-color: var(--color-success);
+}
+
+.pack-card[data-pack-access="locked"] {
+  border-color: var(--color-danger);
 }

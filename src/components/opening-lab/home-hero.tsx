@@ -75,6 +75,8 @@ export function HomeHero({
   }, [pack.id, linesInitiallyOpen]);
 
   const game = useMemo(() => new Chess(), []);
+  const showLinesToggle = !embedded;
+  const linesVisible = embedded || linesOpen;
 
   const pickPracticeLine = (): OpeningLine | undefined => {
     if (pack.id === "caro-kann-black") {
@@ -158,34 +160,36 @@ export function HomeHero({
           </div>
 
           <div className="home-hero-copy-col">
-            <div className="space-y-2.5 px-4 pb-3 pt-3.5">
-              <button
-                type="button"
-                onClick={() => setLinesOpen((v) => !v)}
-                aria-expanded={linesOpen}
-                className={`flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 py-3 text-[0.95rem] font-bold active:scale-[0.99] ${
-                  linesOpen
-                    ? "border-border bg-bg-subtle text-fg-muted"
-                    : "border-accent bg-accent/14 text-accent"
-                }`}
-              >
-                <ChevronDown
-                  className={`size-5 shrink-0 transition-transform duration-150 ${
-                    linesOpen ? "rotate-180" : ""
+            {showLinesToggle ? (
+              <div className="space-y-2.5 px-4 pb-3 pt-3.5">
+                <button
+                  type="button"
+                  onClick={() => setLinesOpen((v) => !v)}
+                  aria-expanded={linesOpen}
+                  className={`flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 py-3 text-[0.95rem] font-bold active:scale-[0.99] ${
+                    linesOpen
+                      ? "border-border bg-bg-subtle text-fg-muted"
+                      : "border-accent bg-accent/14 text-accent"
                   }`}
-                  strokeWidth={2.75}
-                  aria-hidden
-                />
-                {linesOpen
-                  ? t("Tap to hide")
-                  : t("See {n} {pack} lines", {
-                      n: shownLines.length,
-                      pack: shortPack,
-                    })}
-              </button>
-            </div>
+                >
+                  <ChevronDown
+                    className={`size-5 shrink-0 transition-transform duration-150 ${
+                      linesOpen ? "rotate-180" : ""
+                    }`}
+                    strokeWidth={2.75}
+                    aria-hidden
+                  />
+                  {linesOpen
+                    ? t("Tap to hide")
+                    : t("See {n} {pack} lines", {
+                        n: shownLines.length,
+                        pack: shortPack,
+                      })}
+                </button>
+              </div>
+            ) : null}
 
-            {linesOpen ? (
+            {linesVisible ? (
               <div className="home-lines-panel border-t border-border">
                 {shownLines.map((item, i) => {
                   const unlocked = subscribed || isLineUnlocked(pack, item.id, purchased);
