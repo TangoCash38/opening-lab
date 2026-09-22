@@ -83,14 +83,6 @@ function PackProgress({ percent }: { percent: number }) {
 
 type ModalTarget = { pack: Pack; price: string };
 
-function QuietLabel({ children }: { children: string }) {
-  return (
-    <p className="pack-list-full mb-1.5 mt-3.5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
-      {children}
-    </p>
-  );
-}
-
 function PackCard({
   pack,
   open,
@@ -526,9 +518,6 @@ export function PackList({
     <div className="pack-list">
       <WebsiteAppPrompt />
       <div className="home-heading-row">
-        <h1 className="font-display text-[1.4rem] font-bold tracking-tight sm:text-[1.65rem]">
-          {t("Learn Drill Know")}
-        </h1>
         <div className="home-heading-actions">
           <HomeMenu
             onCreateOwn={onCreateOwn}
@@ -557,19 +546,9 @@ export function PackList({
 
         {vsLondon ? renderCard(vsLondon) : null}
 
-        {white.length ? (
-          <>
-            <QuietLabel>White</QuietLabel>
-            {white.map((p) => renderCard(p))}
-          </>
-        ) : null}
+        {white.map((p) => renderCard(p))}
 
-        {black.length ? (
-          <>
-            <QuietLabel>Black</QuietLabel>
-            {black.map((p) => renderCard(p))}
-          </>
-        ) : null}
+        {black.map((p) => renderCard(p))}
 
         {clubWeapons ? renderCard(clubWeapons) : null}
       </div>

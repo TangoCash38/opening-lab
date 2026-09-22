@@ -28,7 +28,6 @@ const REQUIRED = [
   "See 18 lines",
   "Free sample",
   "Guided practice · memory tests",
-  "Learn Drill Know",
   "Menu",
   "Report incorrect line",
   "Two Opening Traps and three Caro lines are free. Unlock the rest of each for £1.99. Other packs are £2.99.",
@@ -47,7 +46,8 @@ test("home heading sits on one row with Menu as a real button", () => {
   assert.match(list, /home-heading-row/);
   assert.match(css, /\.home-heading-row/);
   assert.match(css, /align-items:\s*center/);
-  assert.match(list, /<h1[\s\S]*Learn Drill Know/);
+  assert.doesNotMatch(list, /Learn Drill Know/);
+  assert.doesNotMatch(list, /<h1[\s\S]*Learn Drill Know/);
   assert.match(list, /<HomeMenu/);
   assert.match(list, /onHelp=\{onHowToPlay\}/);
   const menu = src("src/components/opening-lab/home-menu.tsx");
@@ -62,7 +62,7 @@ test("home heading sits on one row with Menu as a real button", () => {
   assert.doesNotMatch(hero, /More games/);
   const start = list.indexOf("home-heading-row");
   const row = list.slice(start, list.indexOf("</div>", start) + 6);
-  assert.match(row, /<h1/);
+  assert.doesNotMatch(row, /<h1/);
   assert.match(row, /HomeMenu/);
 });
 
@@ -104,7 +104,7 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.doesNotMatch(i18n, /"Exchange":/);
   assert.doesNotMatch(i18n, /"Caro-Kann for Black":/);
   assert.match(splash, /Most people dive into opening theory/);
-  assert.match(list, /Learn Drill Know/);
+  assert.doesNotMatch(list, /Learn Drill Know/);
   assert.match(list, /WebsiteAppPrompt/);
   const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
   assert.match(prompt, /App coming soon/);

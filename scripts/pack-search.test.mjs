@@ -31,19 +31,20 @@ test("home list has no search field, sticky strip, or pack-query filter", () => 
   assert.doesNotMatch(i18n, /"Clear search"/);
   assert.doesNotMatch(i18n, /"No packs match"/);
 
-  const headingAt = list.indexOf('t("Learn Drill Know")');
+  const headingAt = list.indexOf("home-heading-row");
   const gridAt = list.indexOf("pack-list-grid");
   const trapsAt = list.indexOf('["opening-traps", "caro-kann-black"]');
-  assert.ok(headingAt > -1, "pack heading stays on the page");
-  assert.ok(gridAt > headingAt, "pack grid sits under the heading");
+  assert.ok(headingAt > -1, "Menu row stays on the page");
+  assert.ok(gridAt > headingAt, "pack grid sits under the Menu row");
   assert.ok(trapsAt > -1, "Opening Traps and Caro lead the catalog");
+  assert.doesNotMatch(list, /Learn Drill Know/);
+  assert.doesNotMatch(list, /QuietLabel/);
   assert.match(list, /onToggle=\{togglePack\}/);
   assert.doesNotMatch(list, /setFeaturedId\(pack\.id\)/);
 });
 
 test("required home-row English keys stay intact", () => {
   for (const key of [
-    "Learn Drill Know",
     "How to play",
     "Download the app",
     "Continue on the web",

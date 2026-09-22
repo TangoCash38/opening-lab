@@ -151,7 +151,9 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
     join(root, "src/components/opening-lab/pack-list.tsx"),
     "utf8",
   );
-  assert.match(packList, /Learn Drill Know/);
+  assert.match(packList, /home-heading-row/);
+  assert.doesNotMatch(packList, /Learn Drill Know/);
+  assert.doesNotMatch(packList, /QuietLabel/);
   assert.match(packList, /\["opening-traps", "caro-kann-black"\]/);
   assert.match(packList, /data-pack-progress/);
   assert.match(packList, /data-pack-access=\{anyOpen \? "open" : "locked"\}/);
