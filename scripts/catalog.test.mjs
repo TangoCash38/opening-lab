@@ -3351,8 +3351,18 @@ test("wrong-move reports go to support; confirmed book move earns a free pack", 
   assert.match(feedback, /If we confirm your move is book/);
   assert.match(guide, /send it with Wrong move\?/);
   assert.match(guide, /you get a pack free/);
-  assert.match(terms, /Book-move reports/);
-  assert.match(terms, /we will give you a pack free/);
+  assert.match(terms, /Who makes Opening Lab/);
+  assert.match(
+    terms,
+    /hobbyist developer with a strong interest\s+in chess and software/,
+  );
+  assert.match(terms, /Opening content/);
+  assert.match(terms, /not a guarantee of\s+master-level or error-free opening theory/);
+  assert.match(terms, /Wrong book moves/);
+  assert.match(terms, /refund that pack purchase \(or an equivalent\s+credit if you unlocked it through Buy all\)/);
+  assert.match(terms, /Google must issue it/);
+  assert.doesNotMatch(terms, /we will give you a pack free/);
+  assert.doesNotMatch(terms, /Book-move reports/);
   assert.doesNotMatch(feedback, /Lab\+/);
   assert.doesNotMatch(guide, /Lab\+/);
 });

@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="20 September 2026">
+    <LegalPage title="Terms of Use" updated="22 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -20,19 +20,6 @@ function Terms() {
           has none. When the book line ends, you reset or pick another line.
           It is not rated play, not an online chess game against other
           people, and not a puzzle or social site.
-        </p>
-      </LegalSection>
-
-      {/*
-        TODO(legal): Counsel is reviewing this in parallel. Draft for the
-        live page — hobbyist disclaimer, and an incorrect-line report that
-        a person checks, then we fix and refund. Not an automatic Google
-        Play refund. Do not call BillingClient or purchases.refund.
-      */}
-      <LegalSection title="Who makes Opening Lab">
-        <p>
-          Opening Lab was created by a hobbyist with a strong technical
-          curiosity. Your support and feedback is invaluable and appreciated.
         </p>
       </LegalSection>
 
@@ -77,25 +64,44 @@ function Terms() {
         </p>
       </LegalSection>
 
-      <LegalSection title="Book-move reports">
+      <LegalSection title="Who makes Opening Lab">
         <p>
-          Only the book move counts in the trainer. If you think a rejected
-          move is book, send it with Wrong move? in the app or email{" "}
+          Opening Lab is built by a hobbyist developer with a strong interest
+          in chess and software. We take care with the lines we publish, but
+          Opening Lab is an educational trainer, not a guarantee of
+          master-level or error-free opening theory.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Opening content">
+        <p>
+          Some lines may contain mistakes or may not match every book or
+          engine source. We reserve the right that opening content can include
+          errors even when we have taken reasonable care. Nothing in this
+          section takes away your rights as a UK consumer.
+        </p>
+      </LegalSection>
+
+      <LegalSection title="Wrong book moves">
+        <p>
+          Only the book move for the line you chose counts in the trainer. If
+          you think a rejected move is a real book move, or that a published
+          line is wrong, report it in the app (Wrong move?) or email{" "}
           <a href="mailto:support@openinglab.co.uk" className="text-accent">
             support@openinglab.co.uk
-          </a>
-          . We will check it. If we agree it is the book move for that line,
-          we will give you a pack free. We decide whether the move is book.
-          If we agree, we will give you a pack free.
+          </a>.
         </p>
-        {/*
-          TODO(legal): Draft remedy alongside the signed “pack free” line
-          above. A person checks the report. No Play Billing refund API.
-        */}
         <p>
-          Thanks for spotting it. If a line is not a real book move, we check
-          it, fix the line, and refund you. A person does that check. This is
-          not an automatic store refund.
+          We will check it. If we agree the published line or rejection is
+          wrong, we will fix it, refund that pack purchase (or an equivalent
+          credit if you unlocked it through Buy all), and thank you for
+          helping improve Opening Lab. We decide whether the move or line is
+          wrong for this product.
+        </p>
+        <p>
+          For Google Play purchases, any cash refund still follows Google
+          Play’s refund process where Google must issue it; we will help with
+          that when we agree the content was wrong.
         </p>
       </LegalSection>
 
