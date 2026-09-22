@@ -97,6 +97,10 @@ test("first-run intro is brand + hobbyist, then full-bleed poster Start", () => 
   assert.match(shell, /markHomeIntroSeen/);
   assert.match(shell, /view === "intro"/);
   assert.match(shell, /useLayoutEffect/);
+  assert.match(shell, /playIntroFinished/);
+  assert.match(shell, /if \(isPlayWrap\(\)\) playIntroFinished = true/);
+  assert.match(shell, /if \(play\) \{\s*if \(playIntroFinished\) setView\("home"\);\s*return;\s*\}/);
+  assert.doesNotMatch(shell, /sessionStorage\.(get|set)Item/);
   assert.doesNotMatch(shell, /AppSplash/);
   assert.doesNotMatch(shell, /hasSeenAppSplash/);
   assert.doesNotMatch(shell, /opening-lab:splash:v4/);

@@ -10,6 +10,7 @@ const src = (rel) => readFileSync(join(root, rel), "utf8");
 const scheme = src("src/lib/color-scheme.ts");
 const css = src("src/styles.css");
 const shell = src("src/components/opening-lab/app-shell.tsx");
+const rootDoc = src("src/routes/__root.tsx");
 const i18n = src("src/lib/i18n.ts");
 const boardTheme = src("src/lib/board-theme.ts");
 
@@ -30,6 +31,15 @@ test("color-scheme helper validates unknown → light and persists", () => {
     /return isColorScheme\(value\) \? value : DEFAULT_COLOR_SCHEME/,
   );
   assert.match(scheme, /DEFAULT_COLOR_SCHEME:\s*ColorScheme\s*=\s*"light"/);
+  assert.match(scheme, /isPlayWrap\(\)/);
+  assert.match(scheme, /return "dark"/);
+  assert.match(scheme, /COLOR_SCHEME_BOOT_SCRIPT/);
+  assert.match(scheme, /OpeningLabPlay/);
+  assert.match(scheme, /PLAY_UA_TOKEN/);
+  assert.match(rootDoc, /COLOR_SCHEME_BOOT_SCRIPT/);
+  const initBody = scheme.slice(scheme.indexOf("export function initColorScheme"));
+  assert.doesNotMatch(initBody, /setItem/);
+  assert.doesNotMatch(initBody, /localStorage\.setItem/);
 });
 
 test("dark CSS overrides chrome tokens without changing board squares", () => {
