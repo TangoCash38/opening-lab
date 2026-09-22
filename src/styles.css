@@ -2704,8 +2704,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   flex-direction: column;
   width: calc(100% + 1.8rem);
   max-width: none;
-  min-height: min(100dvh - 4.5rem, 56rem);
-  margin: -0.55rem -0.9rem 0;
+  min-height: calc(100dvh - 4.25rem);
+  margin: -0.55rem -0.9rem -2.75rem;
   background: #0a0a0a;
   border-radius: 0;
   overflow: hidden;
@@ -2713,9 +2713,13 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 @supports (padding: max(0px)) {
   .home-intro-splash {
-    width: calc(100% + max(0.9rem, env(safe-area-inset-left, 0px)) + max(0.9rem, env(safe-area-inset-right, 0px)));
+    width: calc(
+      100% + max(0.9rem, env(safe-area-inset-left, 0px)) +
+        max(0.9rem, env(safe-area-inset-right, 0px))
+    );
     margin-left: calc(0px - max(0.9rem, env(safe-area-inset-left, 0px)));
     margin-right: calc(0px - max(0.9rem, env(safe-area-inset-right, 0px)));
+    margin-bottom: calc(0px - max(2.75rem, env(safe-area-inset-bottom, 0px)));
   }
 }
 
@@ -2745,17 +2749,18 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin: 0;
   flex: 1 1 auto;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
-  min-height: min(100dvh - 4.5rem, 56rem);
+  min-height: calc(100dvh - 4.25rem);
+  background: #0a0a0a;
 }
 
 .home-intro-splash-art img {
   display: block;
   width: 100%;
-  height: 100%;
-  min-height: min(100dvh - 4.5rem, 56rem);
-  object-fit: cover;
+  height: auto;
+  max-height: calc(100dvh - 4.25rem);
+  object-fit: contain;
   object-position: center top;
   background: #0a0a0a;
 }
@@ -2764,8 +2769,24 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  min-height: min(40vh, 18rem);
-  padding: 0.85rem 0.15rem 1.25rem;
+  min-height: calc(100dvh - 4.25rem);
+  margin: -0.55rem -0.9rem -2.75rem;
+  width: calc(100% + 1.8rem);
+  max-width: none;
+  padding: 1rem 0.85rem 1.5rem;
+  background: #0a0a0a;
+}
+
+@supports (padding: max(0px)) {
+  .home-intro-welcome-phase {
+    width: calc(
+      100% + max(0.9rem, env(safe-area-inset-left, 0px)) +
+        max(0.9rem, env(safe-area-inset-right, 0px))
+    );
+    margin-left: calc(0px - max(0.9rem, env(safe-area-inset-left, 0px)));
+    margin-right: calc(0px - max(0.9rem, env(safe-area-inset-right, 0px)));
+    margin-bottom: calc(0px - max(2.75rem, env(safe-area-inset-bottom, 0px)));
+  }
 }
 
 .home-intro-welcome-banner {
@@ -2776,9 +2797,10 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   max-width: 36rem;
   padding: 0.7rem 0.75rem;
   border-radius: 0.85rem;
-  border: 1px solid color-mix(in oklab, var(--color-accent) 28%, transparent);
-  background: var(--color-bg-elevated);
-  box-shadow: var(--shadow-card);
+  border: 1px solid color-mix(in oklab, #c4a882 45%, transparent);
+  background: #16120e;
+  color: #f3e6c8;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .home-intro-horse {
@@ -2787,6 +2809,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   height: 1.55rem;
   margin-top: 0.1rem;
   animation: home-intro-horse-trot 0.85s ease-in-out infinite;
+  filter: drop-shadow(0 0 0.15rem rgba(226, 195, 154, 0.45));
 }
 
 @keyframes home-intro-horse-trot {
@@ -2810,7 +2833,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.45;
-  color: var(--color-fg);
+  color: #f3e6c8;
 }
 
 .home-intro-skip {
@@ -2820,7 +2843,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   border: 0;
   border-radius: 0.55rem;
   background: transparent;
-  color: var(--color-fg-muted);
+  color: #e2c39a;
   font-size: 0.78rem;
   font-weight: 700;
 }
