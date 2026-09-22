@@ -109,6 +109,9 @@ const en: Dict = {
   "Welcome to Opening Lab": "Welcome to Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.",
+  Skip: "Skip",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.",
   "Learn with help, then test without.": "Learn with help, then test without.",
   "Read the trainer intro": "Read the trainer intro",
   "Find the mate": "Find the mate",
@@ -337,6 +340,9 @@ const es: Dict = {
   "Welcome to Opening Lab": "Bienvenido a Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Esta app la creó un aficionado con una gran curiosidad técnica. Tu apoyo y tus comentarios son valiosos y se agradecen.",
+  Skip: "Omitir",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Bienvenido a Opening Lab. Esta app la desarrolló un aficionado con mucha curiosidad técnica. Informa cualquier inexactitud a support@openinglab.co.uk. Gracias por tu apoyo — disfruta.",
   "Learn with help, then test without.": "Aprende con ayuda y luego ponte a prueba sin ella.",
   "Read the trainer intro": "Leer la introducción del entrenador",
   "Find the mate": "Encuentra el mate",
@@ -553,6 +559,9 @@ const zh: Dict = {
   "Welcome to Opening Lab": "欢迎来到 Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "这款应用由一位技术好奇心很强的爱好者制作。你的支持和反馈非常宝贵，我们心怀感谢。",
+  Skip: "跳过",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "欢迎使用 Opening Lab。本应用由一位充满技术好奇心的爱好者开发。如有任何不准确之处，请发邮件至 support@openinglab.co.uk。感谢支持 — 祝你玩得开心。",
   "Learn with help, then test without.": "先在帮助下学习，再在没有帮助时测验。",
   "Read the trainer intro": "阅读训练介绍",
   "Find the mate": "找出将杀",
@@ -769,6 +778,9 @@ const fr: Dict = {
   "Welcome to Opening Lab": "Bienvenue dans Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Cette application a été créée par un amateur animé d'une forte curiosité technique. Ton soutien et tes retours sont précieux et appréciés.",
+  Skip: "Passer",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Bienvenue dans Opening Lab. Cette appli a été développée par un passionné très curieux techniquement. Signalez toute inexactitude à support@openinglab.co.uk. Merci de votre soutien — bonne pratique.",
   "Learn with help, then test without.": "Apprends avec de l'aide, puis teste sans.",
   "Read the trainer intro": "Lire l'intro de l'entraîneur",
   "Find the mate": "Trouve le mat",
@@ -985,6 +997,9 @@ const de: Dict = {
   "Welcome to Opening Lab": "Willkommen bei Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Diese App wurde von einem Hobbyisten mit großer technischer Neugier erstellt. Deine Unterstützung und dein Feedback sind wertvoll und willkommen.",
+  Skip: "Überspringen",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Willkommen bei Opening Lab. Diese App wurde von einem Hobbyisten mit starker technischer Neugier entwickelt. Melde Ungenauigkeiten an support@openinglab.co.uk. Danke für deine Unterstützung — viel Spaß.",
   "Learn with help, then test without.": "Lerne mit Hilfe, dann teste ohne.",
   "Read the trainer intro": "Trainer-Intro lesen",
   "Find the mate": "Finde das Matt",
@@ -1201,6 +1216,9 @@ const pt: Dict = {
   "Welcome to Opening Lab": "Bem-vindo ao Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Esta app foi criada por um amador com uma forte curiosidade técnica. O teu apoio e o teu feedback são valiosos e apreciados.",
+  Skip: "Saltar",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Bem-vindo ao Opening Lab. Esta app foi desenvolvida por um amador com grande curiosidade técnica. Reporta qualquer imprecisão para support@openinglab.co.uk. Obrigado pelo apoio — aproveita.",
   "Learn with help, then test without.": "Aprende com ajuda e depois testa sem.",
   "Read the trainer intro": "Ler a introdução do treinador",
   "Find the mate": "Encontre o mate",
@@ -1417,6 +1435,9 @@ const ru: Dict = {
   "Welcome to Opening Lab": "Добро пожаловать в Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Это приложение создал любитель с сильным техническим любопытством. Ваша поддержка и отзывы бесценны и очень важны.",
+  Skip: "Пропустить",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Добро пожаловать в Opening Lab. Это приложение сделал энтузиаст с сильным техническим любопытством. Сообщайте о неточностях на support@openinglab.co.uk. Спасибо за поддержку — удачи.",
   "Learn with help, then test without.": "Учи с подсказкой, потом проверь без неё.",
   "Read the trainer intro": "Прочитать вступление тренажёра",
   "Find the mate": "Найди мат",
@@ -1632,6 +1653,9 @@ const it: Dict = {
   "Welcome to Opening Lab": "Benvenuto in Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Questa app è stata creata da un hobbista con una forte curiosità tecnica. Il tuo sostegno e i tuoi commenti sono preziosi e apprezzati.",
+  Skip: "Salta",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Benvenuto in Opening Lab. Questa app è stata sviluppata da un appassionato con forte curiosità tecnica. Segnala qualsiasi imprecisione a support@openinglab.co.uk. Grazie per il supporto — buon divertimento.",
   "Learn with help, then test without.": "Impara con l'aiuto, poi mettiti alla prova senza.",
   "Read the trainer intro": "Leggi l'introduzione",
   "Find the mate": "Trova il matto",
@@ -1848,6 +1872,9 @@ const hi: Dict = {
   "Welcome to Opening Lab": "Opening Lab में आपका स्वागत है",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "यह ऐप एक शौक़ीन ने बनाया है जिसे तकनीकी जिज्ञासा बहुत है। आपका सहयोग और प्रतिक्रिया अनमोल है और उसकी कद्र है।",
+  Skip: "छोड़ें",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Opening Lab में आपका स्वागत है। यह ऐप एक शौकिया ने मजबूत तकनीकी जिज्ञासा के साथ बनाया है। कोई भी अशुद्धि support@openinglab.co.uk पर बताएँ। आपके समर्थन के लिए धन्यवाद — आनंद लें।",
   "Learn with help, then test without.": "मदद के साथ सीखें, फिर बिना मदद के जाँचें।",
   "Read the trainer intro": "ट्रेनर परिचय पढ़ें",
   "Find the mate": "मैट खोजें",
@@ -2064,6 +2091,9 @@ const ja: Dict = {
   "Welcome to Opening Lab": "Opening Lab へようこそ",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "このアプリは、技術への好奇心が強い趣味の開発者が作りました。ご支援とご意見は何よりありがたく、大切にします。",
+  Skip: "スキップ",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Opening Lab へようこそ。このアプリは技術への強い好奇心を持つ趣味の開発者が作りました。不正確な点は support@openinglab.co.uk までご報告ください。ご支援ありがとうございます — 楽しんでください。",
   "Learn with help, then test without.": "助けありで学び、助けなしで試す。",
   "Read the trainer intro": "練習の紹介を読む",
   "Find the mate": "メイトを見つける",
@@ -2276,6 +2306,9 @@ const ar: Dict = {
   "Welcome to Opening Lab": "مرحبًا بك في Opening Lab",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "أنشأ هذا التطبيق هاوٍ لديه فضول تقني كبير. دعمك وملاحظاتك ثمينان ومقدَّران.",
+  Skip: "تخطَّ",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "مرحبًا بك في Opening Lab. طوّر هذا التطبيق هاوٍ لديه فضول تقني قوي. أبلغ عن أي عدم دقة إلى support@openinglab.co.uk. شكرًا لدعمك — استمتع.",
   "Learn with help, then test without.": "تعلّم مع المساعدة، ثم اختبر بدونها.",
   "Read the trainer intro": "اقرأ مقدمة المدرّب",
   "Find the mate": "جد المات",
@@ -2492,6 +2525,9 @@ const tr: Dict = {
   "Welcome to Opening Lab": "Opening Lab'e hoş geldin",
   "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.":
     "Bu uygulamayı teknik meraki güçlü bir hobi geliştiricisi yaptı. Desteğin ve geri bildirimin çok değerli ve takdir ediliyor.",
+  Skip: "Atla",
+  "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.":
+    "Opening Lab'e hoş geldin. Bu uygulama güçlü teknik merakı olan bir amatör tarafından geliştirildi. Herhangi bir yanlışlığı support@openinglab.co.uk adresine bildir. Desteğin için teşekkürler — keyfini çıkar.",
   "Learn with help, then test without.": "Yardımla öğren, sonra yardımsız dene.",
   "Read the trainer intro": "Antrenör girişini oku",
   "Find the mate": "Matı bul",

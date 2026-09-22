@@ -1,4 +1,4 @@
-/** First-run intro (four pages). Return visits skip it once this is "1". */
+/** First-run intro (brand → splash → welcome). Return visits skip it once this is "1". */
 export const HOME_INTRO_STORAGE_KEY = "opening-lab:home-intro";
 
 export function hasSeenHomeIntro(): boolean {

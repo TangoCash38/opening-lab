@@ -20,7 +20,10 @@ const hero = src("src/components/opening-lab/home-hero.tsx");
 const train = src("src/components/opening-lab/train-view.tsx");
 
 test("Menu replaces Find the mate on the phone home heading", () => {
-  assert.match(list, /Learn Drill Know/);
+  assert.doesNotMatch(list, /Learn Drill Know/);
+  assert.doesNotMatch(list, /QuietLabel/);
+  assert.doesNotMatch(list, />White</);
+  assert.doesNotMatch(list, />Black</);
   assert.match(list, /<HomeMenu/);
   assert.match(menu, /data-home-menu/);
   assert.match(menu, /data-home-menu-sheet/);
@@ -53,30 +56,39 @@ test("Menu includes Feedback mail to support", () => {
   assert.equal(i18n.split("\n  Feedback:").length - 1, 12, "Feedback");
 });
 
-test("first-run intro is four pages and is remembered", () => {
+test("first-run intro is brand, splash+Start, then welcome banner", () => {
   assert.match(seen, /opening-lab:home-intro/);
   assert.match(seen, /localStorage/);
   assert.match(seen, /export function hasSeenHomeIntro/);
   assert.match(seen, /export function markHomeIntroSeen/);
   assert.match(intro, /data-home-intro/);
   assert.match(intro, /data-home-intro-page/);
+  assert.match(intro, /data-home-intro-phase/);
   assert.match(intro, /scrollTo\(\{ top: 0/);
   assert.match(intro, /Opening Lab/);
   assert.match(intro, /Guided practice · memory tests/);
   assert.match(intro, /data-intro="brand"/);
-  assert.match(intro, /learn-with-help\.webp/);
-  assert.match(intro, /Welcome to Opening Lab/);
-  assert.match(intro, /hobbyist with a strong technical curiosity/);
-  assert.match(intro, /Practise\. Remember\. Recognise\./);
-  assert.match(intro, /First, learn the line/);
-  assert.match(intro, /Then, test your memory/);
-  assert.match(intro, /Finally, complete the pack/);
-  assert.match(intro, /Choose a pack/);
-  assert.match(intro, /Continue/);
-  assert.match(intro, /Menu, then Help/);
+  assert.match(intro, /data-intro="splash"/);
+  assert.match(intro, /data-intro="welcome"/);
+  assert.match(intro, /learn-drill-splash\.webp/);
+  assert.match(intro, /home-intro-start/);
+  assert.match(intro, /t\("Start"\)/);
+  assert.match(intro, /pieces\/wN\.svg/);
+  assert.match(intro, /home-intro-horse/);
+  assert.match(intro, /WELCOME_MS = 5000/);
+  assert.match(intro, /t\("Skip"\)/);
+  assert.match(
+    intro,
+    /developed by a hobbyist with a strong technical curiosity\. Please report any inaccuracy to support@openinglab\.co\.uk/,
+  );
+  assert.doesNotMatch(intro, /learn-with-help\.webp/);
   assert.doesNotMatch(intro, /opening-drill\.webp/);
   assert.doesNotMatch(intro, /learn-drill\.webp/);
   assert.doesNotMatch(intro, /OPENING DRILL/);
+  assert.doesNotMatch(intro, /Practise\. Remember\. Recognise\./);
+  assert.doesNotMatch(intro, /First, learn the line/);
+  assert.doesNotMatch(intro, /Choose a pack/);
+  assert.doesNotMatch(intro, /home-intro-dots/);
   assert.doesNotMatch(intro, /Learn openings through practice and recall/);
   assert.doesNotMatch(intro, /Start training/);
   assert.match(shell, /Guided practice · memory tests/);
@@ -90,6 +102,11 @@ test("first-run intro is four pages and is remembered", () => {
   assert.doesNotMatch(guide, /Play on/);
   assert.doesNotMatch(list, /There is no Play on/);
   assert.equal(i18n.split('"Welcome to Opening Lab":').length - 1, 12);
+  assert.equal(i18n.split("\n  Skip:").length - 1, 12, "Skip");
+  assert.match(css, /\.home-intro-splash/);
+  assert.match(css, /\.home-intro-start/);
+  assert.match(css, /\.home-intro-welcome-banner/);
+  assert.match(css, /home-intro-horse-trot/);
 });
 
 test("report incorrect line is a support promise, not an automatic store refund", () => {
@@ -129,7 +146,6 @@ test("Opening Traps and Caro lead, with real complete % and access borders", () 
   assert.doesNotMatch(list, /Lab\+/);
   assert.equal(i18n.split("\n  Menu:").length - 1, 12, "Menu");
   for (const key of [
-    "Learn Drill Know",
     "Report incorrect line",
     "Thanks for spotting it.",
     "Learn openings through practice and recall.",
@@ -138,7 +154,12 @@ test("Opening Traps and Caro lead, with real complete % and access borders", () 
     "Choose a pack",
     "Guided practice · memory tests",
     "Read the trainer intro",
+    "Skip",
   ]) {
-    assert.equal(i18n.split(`"${key}":`).length - 1, 12, key);
+    assert.equal(
+      i18n.split(key === "Skip" ? "\n  Skip:" : `"${key}":`).length - 1,
+      12,
+      key,
+    );
   }
 });
