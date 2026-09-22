@@ -606,17 +606,6 @@ html[data-color-scheme="dark"] {
     touch-action: pan-y;
   }
 
-  .pack-search-sticky {
-    position: sticky;
-    top: calc(env(safe-area-inset-top, 0px) + 3.35rem);
-    z-index: 20;
-    background: var(--color-bg);
-    padding-top: 0.1rem;
-    padding-bottom: 0.35rem;
-    margin-top: 0;
-    margin-bottom: 0.15rem;
-  }
-
   /* Phone / Play WebView (~390px). Desktop board-beside-lines stays at 960px. */
   @media (max-width: 959px) {
     .app-main {
@@ -645,12 +634,6 @@ html[data-color-scheme="dark"] {
     .pack-card {
       margin-bottom: 0.65rem;
     }
-  }
-
-  .pack-search-input::-webkit-search-cancel-button,
-  .pack-search-input::-webkit-search-decoration {
-    -webkit-appearance: none;
-    appearance: none;
   }
 
   .sq-light {

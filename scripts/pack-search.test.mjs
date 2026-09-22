@@ -1,82 +1,47 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = (rel) => readFileSync(join(root, rel), "utf8");
 
-const helperSrc = src("src/lib/pack-search.ts");
 const list = src("src/components/opening-lab/pack-list.tsx");
 const i18n = src("src/lib/i18n.ts");
 const css = src("src/styles.css");
 const intro = src("src/lib/pack-intro.ts");
 
-function toRunnableJs(text) {
-  return text
-    .replace(/import type \{ Pack \} from "@\/data\/packs";\n*/, "")
-    .replace(/: Pick<Pack, [^>]+>/g, "")
-    .replace(/: string/g, "")
-    .replace(/\): boolean/g, ")");
-}
+test("home list has no search field, sticky strip, or pack-query filter", () => {
+  assert.ok(
+    !existsSync(join(root, "src/lib/pack-search.ts")),
+    "pack-search helper is removed",
+  );
+  assert.doesNotMatch(list, /PackSearchField/);
+  assert.doesNotMatch(list, /packMatchesQuery/);
+  assert.doesNotMatch(list, /pack-search/);
+  assert.doesNotMatch(list, /packQuery/);
+  assert.doesNotMatch(list, /type="search"/);
+  assert.doesNotMatch(list, /Search openings/);
+  assert.doesNotMatch(list, /Clear search/);
+  assert.doesNotMatch(list, /No packs match/);
+  assert.doesNotMatch(css, /\.pack-search-sticky/);
+  assert.doesNotMatch(css, /\.pack-search-input/);
+  assert.doesNotMatch(i18n, /"Search openings"/);
+  assert.doesNotMatch(i18n, /"Clear search"/);
+  assert.doesNotMatch(i18n, /"No packs match"/);
 
-const dir = mkdtempSync(join(tmpdir(), "ol-pack-search-"));
-const jsPath = join(dir, "pack-search.mjs");
-writeFileSync(jsPath, toRunnableJs(helperSrc));
-const { packMatchesQuery } = await import(pathToFileURL(jsPath).href);
-
-const sample = {
-  name: "Caro-Kann for Black",
-  blurb: "18 lines · Advance, Classical, Exchange",
-};
-
-test("packMatchesQuery is case-insensitive on name and blurb only", () => {
-  assert.equal(packMatchesQuery(sample, ""), true);
-  assert.equal(packMatchesQuery(sample, "   "), true);
-  assert.equal(packMatchesQuery(sample, "caro"), true);
-  assert.equal(packMatchesQuery(sample, "CARO-KANN"), true);
-  assert.equal(packMatchesQuery(sample, "classical"), true);
-  assert.equal(packMatchesQuery(sample, "black"), true);
-  assert.equal(packMatchesQuery(sample, "b12"), false);
-  assert.equal(packMatchesQuery(sample, "4.h4"), false);
-  assert.equal(packMatchesQuery(sample, "sicilian"), false);
-  assert.doesNotMatch(helperSrc, /pack\.eco/);
-  assert.doesNotMatch(helperSrc, /pack\.side/);
-  assert.doesNotMatch(helperSrc, /pack\.lines/);
-});
-
-test("sticky search strip sits under the heading and above the lead packs", () => {
   const headingAt = list.indexOf('t("Learn Drill Know")');
-  const searchAt = list.indexOf("<PackSearchField");
+  const gridAt = list.indexOf("pack-list-grid");
   const trapsAt = list.indexOf('["opening-traps", "caro-kann-black"]');
   assert.ok(headingAt > -1, "pack heading stays on the page");
-  assert.ok(searchAt > headingAt, "search sits under the heading");
+  assert.ok(gridAt > headingAt, "pack grid sits under the heading");
   assert.ok(trapsAt > -1, "Opening Traps and Caro lead the catalog");
-  assert.match(list, /from "@\/lib\/pack-search"/);
-  assert.match(list, /packMatchesQuery/);
-  assert.match(list, /pack-search-sticky/);
-  assert.match(list, /t\("Search openings"\)/);
-  assert.match(list, /t\("Clear search"\)/);
-  assert.match(list, /t\("No packs match"\)/);
-  assert.doesNotMatch(list, /t\("No openings match\."\)/);
-  assert.match(list, /type="search"/);
-  assert.match(list, /placeholder=\{t\("Search openings"\)\}/);
   assert.match(list, /onToggle=\{togglePack\}/);
   assert.doesNotMatch(list, /setFeaturedId\(pack\.id\)/);
-  assert.match(css, /\.pack-search-sticky/);
-  assert.match(css, /position:\s*sticky/);
-  assert.match(css, /\.pack-search-input::-webkit-search-cancel-button/);
-  assert.doesNotMatch(list, /home-heading-row[\s\S]{0,200}PackSearchField/);
 });
 
-test("search copy is translated; required home-row English keys stay intact", () => {
-  assert.match(i18n, /"Search openings": "Search openings"/);
-  assert.match(i18n, /"Clear search": "Clear search"/);
-  assert.match(i18n, /"No packs match": "No packs match"/);
-  assert.match(i18n, /"Search openings": "Buscar aperturas"/);
-  assert.match(i18n, /"Search openings": "搜索开局"/);
+test("required home-row English keys stay intact", () => {
   for (const key of [
     "Learn Drill Know",
     "How to play",

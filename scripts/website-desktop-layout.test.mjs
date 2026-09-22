@@ -43,7 +43,8 @@ test("desktop home split classes and website-only CSS exist", () => {
   assert.match(css, /home-hero-copy-col/);
   assert.match(css, /min\(420px,\s*45vw\)/);
   assert.match(list, /pack-list-grid/);
-  assert.match(list, /pack-list-full pack-search/);
+  assert.match(list, /home-heading-row/);
+  assert.doesNotMatch(list, /pack-search/);
   assert.match(css, /\[data-surface="website"\] \.pack-list-grid/);
 });
 
