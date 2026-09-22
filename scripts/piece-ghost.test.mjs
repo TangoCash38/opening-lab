@@ -18,9 +18,8 @@ test("piece layer remounts on a position jump and clips sprites", () => {
     board,
     /className="piece-layer pointer-events-none absolute inset-0 z-10 overflow-hidden"/,
   );
-  assert.match(board, /function releasePieceSprites/);
-  assert.match(board, /releasePieceSprites\(el\)/);
   assert.match(board, /transition: isMover[\s\S]*: "none"/);
+  assert.doesNotMatch(board, /releasePieceSprites/);
   // Same-type pieces must not keep a DOM node from another square.
   assert.doesNotMatch(board, /const fallback = prev\.find/);
 });

@@ -1,5 +1,4 @@
 import {
-  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -139,18 +138,6 @@ function squareFromPoint(x: number, y: number): Square | null {
     if (sq) return sq;
   }
   return null;
-}
-
-/** Drop filtered / promoted piece layers before the board leaves the tree. */
-function releasePieceSprites(root: ParentNode) {
-  root.querySelectorAll<HTMLElement>(".piece-abs, .piece-abs-inner, .chess-piece-img").forEach((el) => {
-    el.style.transition = "none";
-    el.style.animation = "none";
-    el.style.willChange = "auto";
-    el.style.filter = "none";
-    el.style.opacity = "0";
-    el.style.visibility = "hidden";
-  });
 }
 
 function placementKey(pieces: { code: string; sq: string }[]) {
@@ -350,10 +337,6 @@ export function ChessBoard({
   onPlayRef.current = onPlay;
 
   const surfaceRef = useRef<HTMLDivElement | null>(null);
-  const bindPieceLayer = useCallback((node: HTMLDivElement | null) => {
-    if (!node) return;
-    return () => releasePieceSprites(node);
-  }, []);
   const [boardTheme, setBoardThemeState] = useState(getBoardTheme);
   useEffect(() => {
     setBoardThemeState(getBoardTheme());
@@ -522,11 +505,7 @@ export function ChessBoard({
       if (dragRef.current?.moved) e.preventDefault();
     };
     el.addEventListener("touchmove", blockScroll, { passive: false });
-    return () => {
-      el.removeEventListener("touchmove", blockScroll);
-      releasePieceSprites(el);
-      if (el.isConnected) void el.offsetWidth;
-    };
+    return () => el.removeEventListener("touchmove", blockScroll);
   }, []);
 
   const dragOrigin = drag?.moved ? drag.from : null;
@@ -857,7 +836,6 @@ export function ChessBoard({
                 from the previous FEN cannot linger. */}
             <div
               key={pieceEpoch}
-              ref={bindPieceLayer}
               className="piece-layer pointer-events-none absolute inset-0 z-10 overflow-hidden"
             >
               {pieceNodes}
