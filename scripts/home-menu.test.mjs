@@ -13,7 +13,6 @@ const report = src("src/components/opening-lab/report-line.tsx");
 const list = src("src/components/opening-lab/pack-list.tsx");
 const shell = src("src/components/opening-lab/app-shell.tsx");
 const guide = src("src/components/opening-lab/guide-view.tsx");
-const seen = src("src/lib/home-intro.ts");
 const i18n = src("src/lib/i18n.ts");
 const css = src("src/styles.css");
 const hero = src("src/components/opening-lab/home-hero.tsx");
@@ -56,11 +55,12 @@ test("Menu includes Feedback mail to support", () => {
   assert.equal(i18n.split("\n  Feedback:").length - 1, 12, "Feedback");
 });
 
-test("first-run intro is brand + hobbyist, then full-bleed poster Start", () => {
-  assert.match(seen, /opening-lab:home-intro:v2/);
-  assert.match(seen, /localStorage/);
-  assert.match(seen, /export function hasSeenHomeIntro/);
-  assert.match(seen, /export function markHomeIntroSeen/);
+test("every open runs brand + hobbyist, then full-bleed poster Start", () => {
+  assert.doesNotMatch(shell, /opening-lab:home-intro/);
+  assert.doesNotMatch(shell, /hasSeenHomeIntro/);
+  assert.doesNotMatch(shell, /markHomeIntroSeen/);
+  assert.doesNotMatch(shell, /from "@\/lib\/home-intro"/);
+  assert.doesNotMatch(intro, /opening-lab:home-intro/);
   assert.match(intro, /data-home-intro/);
   assert.match(intro, /data-home-intro-page/);
   assert.match(intro, /data-home-intro-phase/);
@@ -93,14 +93,15 @@ test("first-run intro is brand + hobbyist, then full-bleed poster Start", () => 
   assert.doesNotMatch(intro, /Learn openings through practice and recall/);
   assert.doesNotMatch(intro, /Start training/);
   assert.match(shell, /Guided practice · memory tests/);
-  assert.match(shell, /hasSeenHomeIntro/);
-  assert.match(shell, /markHomeIntroSeen/);
+  assert.match(shell, /let introFinished = false/);
+  assert.match(shell, /introFinished = true/);
+  assert.match(shell, /setView\(introFinished \? "home" : "intro"\)/);
+  assert.match(shell, /if \(introFinished\) setView\("home"\)/);
   assert.match(shell, /view === "intro"/);
   assert.match(shell, /useLayoutEffect/);
-  assert.match(shell, /playIntroFinished/);
-  assert.match(shell, /if \(isPlayWrap\(\)\) playIntroFinished = true/);
-  assert.match(shell, /if \(play\) \{\s*if \(playIntroFinished\) setView\("home"\);\s*return;\s*\}/);
+  assert.match(shell, /onShowIntro/);
   assert.doesNotMatch(shell, /sessionStorage\.(get|set)Item/);
+  assert.doesNotMatch(shell, /localStorage\.(get|set)Item/);
   assert.doesNotMatch(shell, /AppSplash/);
   assert.doesNotMatch(shell, /hasSeenAppSplash/);
   assert.doesNotMatch(shell, /opening-lab:splash:v4/);

@@ -27,7 +27,6 @@ import {
   subscribeColorScheme,
   type ColorScheme,
 } from "@/lib/color-scheme";
-import { hasSeenHomeIntro, markHomeIntroSeen } from "@/lib/home-intro";
 import { isPlayWrap } from "@/lib/play-app";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { GuideView } from "./guide-view";
@@ -44,11 +43,11 @@ type View = "home" | "train" | "guide" | "create" | "intro" | "report";
 type TrainMode = "learn" | "practice";
 
 /**
- * Play wrap only. True after Start in this JS session so in-app Home stays on
- * the pack list. A fresh WebView load resets it, so the intro runs again.
- * Not sessionStorage — that would skip the intro across app reopens.
+ * Website and Play. True after Start in this JS session so Home stays on the
+ * pack list. A full page load or app reopen resets it, so the intro runs again.
+ * Not localStorage or sessionStorage — a stored seen flag must not skip it.
  */
-let playIntroFinished = false;
+let introFinished = false;
 
 
 function scrollAppTop() {
@@ -77,7 +76,7 @@ export function OpeningLabApp() {
 
 function OpeningLabInner() {
   const t = useT();
-  const [view, setView] = useState<View>("intro");
+  const [view, setView] = useState<View>(() => (introFinished ? "home" : "intro"));
   const [introPhase, setIntroPhase] = useState<"brand" | "splash">("brand");
   const [active, setActive] = useState<{
     pack: Pack;
@@ -102,18 +101,13 @@ function OpeningLabInner() {
     setQueue([]);
     setActive(null);
     setIntroPhase("brand");
-    if (isPlayWrap()) {
-      setView(playIntroFinished ? "home" : "intro");
-    } else {
-      setView(hasSeenHomeIntro() ? "home" : "intro");
-    }
+    setView(introFinished ? "home" : "intro");
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
 
   const finishIntro = () => {
-    if (isPlayWrap()) playIntroFinished = true;
-    else markHomeIntroSeen();
+    introFinished = true;
     setIntroPhase("brand");
     setView("home");
     scrollAppTop();
@@ -121,13 +115,8 @@ function OpeningLabInner() {
   };
 
   useLayoutEffect(() => {
-    const play = isPlayWrap();
-    setPlaySurface(play);
-    if (play) {
-      if (playIntroFinished) setView("home");
-      return;
-    }
-    if (hasSeenHomeIntro()) setView("home");
+    setPlaySurface(isPlayWrap());
+    if (introFinished) setView("home");
   }, []);
 
   useEffect(() => {
