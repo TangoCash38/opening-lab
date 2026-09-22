@@ -5,16 +5,18 @@ type Props = {
   onContinue: () => void;
 };
 
+type IntroPage = 1 | 2 | 3 | 4;
+
 function scrollIntroTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
 }
 
-/** Two-page first visit. Return visits skip it via opening-lab:home-intro. */
+/** Four-page first visit. Return visits skip it via opening-lab:home-intro. */
 export function HomeIntro({ onContinue }: Props) {
-  const [page, setPage] = useState<1 | 2>(1);
+  const [page, setPage] = useState<IntroPage>(1);
 
-  const showPage = (next: 1 | 2) => {
+  const showPage = (next: IntroPage) => {
     setPage(next);
     scrollIntroTop();
   };
@@ -26,49 +28,96 @@ export function HomeIntro({ onContinue }: Props) {
       data-home-intro-page={page}
       aria-labelledby="home-intro-title"
     >
-      {page === 1 ? (
-        <WelcomePage onNext={() => showPage(2)} />
-      ) : (
-        <HowPage onBack={() => showPage(1)} onContinue={onContinue} />
-      )}
+      {page === 1 ? <BrandPage onNext={() => showPage(2)} /> : null}
+      {page === 2 ? (
+        <KnightPage onBack={() => showPage(1)} onNext={() => showPage(3)} />
+      ) : null}
+      {page === 3 ? (
+        <WelcomePage onBack={() => showPage(2)} onNext={() => showPage(4)} />
+      ) : null}
+      {page === 4 ? <HowPage onBack={() => showPage(3)} onContinue={onContinue} /> : null}
       <div className="home-intro-dots" aria-hidden="true">
-        <span data-on={page === 1 ? "true" : "false"} />
-        <span data-on={page === 2 ? "true" : "false"} />
+        {([1, 2, 3, 4] as const).map((n) => (
+          <span key={n} data-on={page === n ? "true" : "false"} />
+        ))}
       </div>
     </section>
   );
 }
 
-function WelcomePage({ onNext }: { onNext: () => void }) {
+function BrandPage({ onNext }: { onNext: () => void }) {
+  const t = useT();
+
+  return (
+    <div className="home-intro-brand" data-intro="brand">
+      <div className="home-intro-brand-lockup">
+        <div className="home-intro-brand-mark" aria-hidden="true">
+          ♔
+        </div>
+        <div>
+          <h1 id="home-intro-title" className="home-intro-brand-name">
+            Opening Lab
+          </h1>
+          <p className="home-intro-brand-sub">{t("Guided practice · memory tests")}</p>
+        </div>
+      </div>
+      <button type="button" className="home-intro-go" onClick={onNext}>
+        {t("Continue")}
+      </button>
+    </div>
+  );
+}
+
+function KnightPage({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
   const t = useT();
 
   return (
     <>
-      <figure className="home-intro-art" data-art="drill">
+      <button type="button" className="home-intro-back" onClick={onBack}>
+        {t("← Back")}
+      </button>
+      <h1 id="home-intro-title" className="sr-only">
+        Opening Lab
+      </h1>
+      <figure className="home-intro-art home-intro-art-knight" data-art="learn-test">
         <img
-          src="/intro/opening-drill.webp"
+          src="/intro/learn-with-help.webp"
           width={900}
-          height={1350}
-          alt={t("Poster: opening drill, learn with help, test without.")}
+          height={1194}
+          alt={t("Learn with help, then test without.")}
           decoding="async"
         />
       </figure>
+      <button type="button" className="home-intro-go" onClick={onNext}>
+        {t("Continue")}
+      </button>
+    </>
+  );
+}
+
+function WelcomePage({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
+  const t = useT();
+
+  return (
+    <>
+      <button type="button" className="home-intro-back" onClick={onBack}>
+        {t("← Back")}
+      </button>
       <h1
         id="home-intro-title"
-        className="home-intro-title font-display text-[1.85rem] font-bold leading-tight tracking-tight"
+        className="home-intro-title font-display text-[1.7rem] font-bold leading-tight tracking-tight"
       >
-        Opening Lab
+        {t("Welcome to Opening Lab")}
       </h1>
-      <div className="home-intro-copy">
-        <p>{t("Learn openings through practice and recall.")}</p>
+      <div className="home-intro-welcome">
         <p>
           {t(
-            "Learn each line with guidance, then repeat it from memory without help. Work through each pack to build familiarity, recognise the opening in real games, and create a strong foundation for further study.",
+            "This app was created by a hobbyist with a strong technical curiosity. Your support and feedback is invaluable and appreciated.",
           )}
         </p>
       </div>
       <button type="button" className="home-intro-go" onClick={onNext}>
-        {t("Start training")}
+        {t("Continue")}
       </button>
     </>
   );
@@ -120,24 +169,6 @@ function HowPage({
           </span>
         </li>
       </ol>
-      <p className="home-intro-close">
-        {t(
-          "With repetition, you'll become familiar with the moves, recognise the opening in real games, and be ready to take your study further.",
-        )}
-      </p>
-      <figure className="home-intro-art home-intro-art-second" data-art="shield">
-        <img
-          src="/intro/learn-drill.webp"
-          width={900}
-          height={1350}
-          alt={t("Poster: learn, drill, and remember the line.")}
-          decoding="async"
-        />
-      </figure>
-      <div className="home-intro-pair">
-        <p>{t("Learn with help")}</p>
-        <p>{t("Test without")}</p>
-      </div>
       <button type="button" className="home-intro-go" onClick={onContinue}>
         {t("Choose a pack")}
       </button>

@@ -81,6 +81,14 @@ export function HomeMenu({ onCreateOwn, onHelp, onReport }: Props) {
               >
                 {t("Help")}
               </button>
+              <a
+                href="mailto:support@openinglab.co.uk?subject=Opening%20Lab%20feedback"
+                className="home-menu-item no-underline"
+                data-menu-feedback
+                onClick={() => setOpen(false)}
+              >
+                {t("Feedback")}
+              </a>
               <button
                 type="button"
                 className="home-menu-item"

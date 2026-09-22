@@ -45,7 +45,15 @@ test("Menu replaces Find the mate on the phone home heading", () => {
   assert.match(shell, /setView\("create"\)/);
 });
 
-test("first-run intro is two pages and is remembered", () => {
+test("Menu includes Feedback mail to support", () => {
+  assert.match(menu, /data-menu-feedback/);
+  assert.match(menu, /t\("Feedback"\)/);
+  assert.match(menu, /mailto:support@openinglab\.co\.uk/);
+  assert.match(menu, /Opening%20Lab%20feedback/);
+  assert.equal(i18n.split("\n  Feedback:").length - 1, 12, "Feedback");
+});
+
+test("first-run intro is four pages and is remembered", () => {
   assert.match(seen, /opening-lab:home-intro/);
   assert.match(seen, /localStorage/);
   assert.match(seen, /export function hasSeenHomeIntro/);
@@ -54,18 +62,23 @@ test("first-run intro is two pages and is remembered", () => {
   assert.match(intro, /data-home-intro-page/);
   assert.match(intro, /scrollTo\(\{ top: 0/);
   assert.match(intro, /Opening Lab/);
-  assert.match(intro, /Learn openings through practice and recall/);
-  assert.match(intro, /Start training/);
+  assert.match(intro, /Guided practice · memory tests/);
+  assert.match(intro, /data-intro="brand"/);
+  assert.match(intro, /learn-with-help\.webp/);
+  assert.match(intro, /Welcome to Opening Lab/);
+  assert.match(intro, /hobbyist with a strong technical curiosity/);
   assert.match(intro, /Practise\. Remember\. Recognise\./);
   assert.match(intro, /First, learn the line/);
   assert.match(intro, /Then, test your memory/);
   assert.match(intro, /Finally, complete the pack/);
   assert.match(intro, /Choose a pack/);
-  assert.match(intro, /opening-drill\.webp/);
-  assert.match(intro, /learn-drill\.webp/);
-  assert.match(intro, /Learn with help/);
-  assert.match(intro, /Test without/);
+  assert.match(intro, /Continue/);
   assert.match(intro, /Menu, then Help/);
+  assert.doesNotMatch(intro, /opening-drill\.webp/);
+  assert.doesNotMatch(intro, /learn-drill\.webp/);
+  assert.doesNotMatch(intro, /OPENING DRILL/);
+  assert.doesNotMatch(intro, /Learn openings through practice and recall/);
+  assert.doesNotMatch(intro, /Start training/);
   assert.match(shell, /Guided practice · memory tests/);
   assert.match(shell, /hasSeenHomeIntro/);
   assert.match(shell, /markHomeIntroSeen/);
@@ -76,6 +89,7 @@ test("first-run intro is two pages and is remembered", () => {
   assert.doesNotMatch(intro, /versus the computer/);
   assert.doesNotMatch(guide, /Play on/);
   assert.doesNotMatch(list, /There is no Play on/);
+  assert.equal(i18n.split('"Welcome to Opening Lab":').length - 1, 12);
 });
 
 test("report incorrect line is a support promise, not an automatic store refund", () => {
@@ -91,16 +105,22 @@ test("report incorrect line is a support promise, not an automatic store refund"
   assert.match(shell, /setView\("report"\)/);
 });
 
-test("Opening Traps and Caro lead, with green percent and red locked bars", () => {
+test("Opening Traps and Caro lead, with real complete % and access borders", () => {
   const lead = list.indexOf('["opening-traps", "caro-kann-black"]');
   const black = list.indexOf(
     'p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black"',
   );
   assert.ok(lead > -1 && black > lead, "Caro is pulled out of the black section into the lead pair");
   assert.match(list, /data-pack-progress/);
-  assert.match(list, /data-locked=\{locked \? "true" : "false"\}/);
+  assert.match(list, /data-pack-access=\{anyOpen \? "open" : "locked"\}/);
+  assert.match(list, /data-pack-fold/);
+  assert.match(list, /packCompletePercent/);
+  assert.doesNotMatch(list, /PlayStoreNotice/);
+  assert.doesNotMatch(list, /data-locked=/);
   assert.match(css, /\.pack-progress-fill[\s\S]*--color-success/);
-  assert.match(css, /\.pack-progress\[data-locked="true"\] \.pack-progress-fill[\s\S]*--color-danger/);
+  assert.match(css, /\.pack-card\[data-pack-access="open"\][\s\S]*--color-success/);
+  assert.match(css, /\.pack-card\[data-pack-access="locked"\][\s\S]*--color-danger/);
+  assert.match(css, /\.pack-fold-locked/);
   assert.match(list, /linesInitiallyOpen/);
   assert.match(list, /FREE_SAMPLE_LINE_IDS/);
   assert.doesNotMatch(list, /setFeaturedId/);

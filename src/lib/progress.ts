@@ -271,13 +271,32 @@ export function markTestPly(lineId: string, plyIndex: number): LineProgress {
   return updated;
 }
 
-/** Percent through Test for pack list. null = not started in Test (or invalid book). */
+/** Percent through Test for one line. null = not started in Test (or invalid book). */
 export function lineTestPercent(p: LineProgress, bookLen: number): number | null {
   if (bookLen <= 0) return null;
   if (p.cleanPractice) return 100;
   if (p.testBestPly <= 0) return null;
   // Cap at 99 without a clean Test — 100% / green only via cleanPractice.
   return Math.min(99, Math.max(0, Math.round((p.testBestPly / bookLen) * 100)));
+}
+
+/**
+ * Pack complete % = lines finished with a clean Test / lines in the pack.
+ * null when none are Test-complete, so a partial ply average is not shown as
+ * a complete %. 100 when every line is Test-complete.
+ */
+export function packCompletePercent(
+  lineIds: readonly string[],
+  isComplete: (lineId: string) => boolean,
+): number | null {
+  const total = lineIds.length;
+  if (total === 0) return null;
+  let done = 0;
+  for (const id of lineIds) {
+    if (isComplete(id)) done += 1;
+  }
+  if (done === 0) return null;
+  return Math.round((done / total) * 100);
 }
 
 export type QueueItem = {
