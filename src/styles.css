@@ -2690,55 +2690,53 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   color: var(--color-fg-muted);
 }
 
-/* First-run intro: brand chrome, then full-bleed splash + Start. */
-.home-intro[data-home-intro-phase="splash"],
-.home-intro[data-home-intro-phase="welcome"] {
+/* First-run intro: cream brand page, then full-bleed poster + Start. */
+.app-header[hidden] {
+  display: none !important;
+}
+
+.home-intro[data-home-intro-phase="splash"] {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
   margin: 0;
   padding: 0;
+  width: 100%;
   max-width: none;
+  height: 100%;
+  min-height: 100dvh;
+  background: #0f1013;
 }
 
 .home-intro-splash {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  width: calc(100% + 1.8rem);
-  max-width: none;
-  min-height: calc(100dvh - 4.25rem);
-  margin: -0.55rem -0.9rem -2.75rem;
-  background: #0a0a0a;
-  border-radius: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  background: #0f1013;
   overflow: hidden;
-}
-
-@supports (padding: max(0px)) {
-  .home-intro-splash {
-    width: calc(
-      100% + max(0.9rem, env(safe-area-inset-left, 0px)) +
-        max(0.9rem, env(safe-area-inset-right, 0px))
-    );
-    margin-left: calc(0px - max(0.9rem, env(safe-area-inset-left, 0px)));
-    margin-right: calc(0px - max(0.9rem, env(safe-area-inset-right, 0px)));
-    margin-bottom: calc(0px - max(2.75rem, env(safe-area-inset-bottom, 0px)));
-  }
 }
 
 .home-intro-start {
   position: absolute;
-  top: max(0.75rem, env(safe-area-inset-top, 0px));
   left: 50%;
+  bottom: max(6.5%, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
   z-index: 2;
   transform: translateX(-50%);
   min-height: 2.75rem;
-  min-width: 7.5rem;
-  padding: 0.65rem 1.35rem;
-  border: 0;
+  min-width: 8.75rem;
+  padding: 0.7rem 1.65rem;
+  border: 1.5px solid rgba(232, 214, 176, 0.92);
   border-radius: 999px;
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
-  font-size: 0.95rem;
+  background: rgba(15, 16, 19, 0.46);
+  color: #f7f1e6;
+  font-size: 0.98rem;
   font-weight: 700;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
 }
 
 .home-intro-start:active {
@@ -2746,113 +2744,48 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 }
 
 .home-intro-splash-art {
+  position: absolute;
+  inset: 0;
   margin: 0;
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100dvh - 4.25rem);
-  background: #0a0a0a;
+  background: #0f1013;
 }
 
 .home-intro-splash-art img {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: calc(100dvh - 4.25rem);
-  object-fit: contain;
-  object-position: center top;
-  background: #0a0a0a;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  background: #0f1013;
 }
 
-.home-intro-welcome-phase {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  min-height: calc(100dvh - 4.25rem);
-  margin: -0.55rem -0.9rem -2.75rem;
-  width: calc(100% + 1.8rem);
-  max-width: none;
-  padding: 1rem 0.85rem 1.5rem;
-  background: #0a0a0a;
-}
-
-@supports (padding: max(0px)) {
-  .home-intro-welcome-phase {
-    width: calc(
-      100% + max(0.9rem, env(safe-area-inset-left, 0px)) +
-        max(0.9rem, env(safe-area-inset-right, 0px))
-    );
-    margin-left: calc(0px - max(0.9rem, env(safe-area-inset-left, 0px)));
-    margin-right: calc(0px - max(0.9rem, env(safe-area-inset-right, 0px)));
-    margin-bottom: calc(0px - max(2.75rem, env(safe-area-inset-bottom, 0px)));
+/* Wider than the 9:16 poster: show the whole art on a matching ground
+   so side space stays the poster colour instead of a letterbox frame. */
+@media (min-aspect-ratio: 9/16) {
+  .home-intro-splash-art img {
+    object-fit: contain;
+    object-position: center center;
   }
-}
-
-.home-intro-welcome-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-  width: 100%;
-  max-width: 36rem;
-  padding: 0.7rem 0.75rem;
-  border-radius: 0.85rem;
-  border: 1px solid color-mix(in oklab, #c4a882 45%, transparent);
-  background: #16120e;
-  color: #f3e6c8;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
-.home-intro-horse {
-  flex: 0 0 auto;
-  width: 1.55rem;
-  height: 1.55rem;
-  margin-top: 0.1rem;
-  animation: home-intro-horse-trot 0.85s ease-in-out infinite;
-  filter: drop-shadow(0 0 0.15rem rgba(226, 195, 154, 0.45));
-}
-
-@keyframes home-intro-horse-trot {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-6deg);
-  }
-  50% {
-    transform: translateY(-0.28rem) rotate(6deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-intro-horse {
-    animation: none;
-  }
-}
-
-.home-intro-welcome-copy {
-  flex: 1 1 auto;
-  margin: 0;
-  font-size: 0.82rem;
-  line-height: 1.45;
-  color: #f3e6c8;
-}
-
-.home-intro-skip {
-  flex: 0 0 auto;
-  margin: 0;
-  padding: 0.35rem 0.55rem;
-  border: 0;
-  border-radius: 0.55rem;
-  background: transparent;
-  color: #e2c39a;
-  font-size: 0.78rem;
-  font-weight: 700;
 }
 
 .home-intro-brand {
   display: flex;
-  min-height: min(68vh, 34rem);
+  min-height: calc(100dvh - 8.5rem - env(safe-area-inset-top, 0px));
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 0.85rem;
+  padding-bottom: 0.35rem;
+}
+
+.home-intro-hobbyist {
+  margin: 1.15rem 0 0;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-card);
+  border: 1px solid color-mix(in srgb, var(--color-dark-sq) 42%, var(--color-border));
+  background: var(--color-bg-elevated);
+  color: var(--color-fg);
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .home-intro-brand-lockup {
@@ -2892,16 +2825,39 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 }
 
 .home-intro-go {
-  margin-top: 1.05rem;
+  margin-top: auto;
   min-height: 3rem;
   width: 100%;
-  border: 0;
-  border-radius: 1rem;
-  background: var(--color-accent);
+  border: 1.5px solid color-mix(in srgb, var(--color-dark-sq) 62%, var(--color-border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-bg-elevated) 78%, var(--color-light-sq));
   padding: 0.85rem 1rem;
-  color: var(--color-accent-fg);
+  color: var(--color-fg);
   font-size: 0.95rem;
   font-weight: 700;
+}
+
+.guide-intro-copy {
+  margin: 0;
+}
+
+.guide-intro-reopen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 0.9rem;
+  position: static;
+  clear: both;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-size: 0.85rem;
+  font-weight: 650;
 }
 
 .home-intro-go:active {

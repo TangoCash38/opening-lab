@@ -3363,30 +3363,20 @@ test("wrong-move reports go to support; confirmed book move earns a free pack", 
   assert.doesNotMatch(guide, /Lab\+/);
 });
 
-test("app open splash: gym story then logo spin then home", () => {
-  const splash = readFileSync(join(root, "src/components/opening-lab/app-splash.tsx"), "utf8");
+test("app open skips AppSplash and starts on the two-page home intro", () => {
   const shell = readFileSync(join(root, "src/components/opening-lab/app-shell.tsx"), "utf8");
-  const css = readFileSync(join(root, "src/styles.css"), "utf8");
-  assert.match(splash, /dive into opening theory/);
-  assert.match(splash, /algebra before you can count/);
-  assert.match(splash, /Strict lines/);
-  assert.match(splash, /spot the opening/);
-  assert.match(splash, /opening-lab:splash:v4/);
-  assert.doesNotMatch(splash, /Most players remember five moves and hope/);
-  assert.doesNotMatch(splash, /A line is a routine/);
-  assert.doesNotMatch(splash, /Chessable/i);
-  assert.match(splash, /onClick=\{onDone\}/);
-  assert.match(splash, /t\("Play"\)/);
-  assert.doesNotMatch(splash, /SPLASH_MS/);
-  assert.doesNotMatch(splash, /setTimeout/);
-  assert.doesNotMatch(splash, /Start Scotch Line 1/);
-  assert.doesNotMatch(splash, /Lab\+/);
-  assert.doesNotMatch(splash, /grandmaster/i);
-  assert.match(shell, /AppSplash/);
-  assert.match(shell, /hasSeenAppSplash/);
-  assert.match(shell, /useState\(true\)/);
-  assert.match(shell, /AppSplash onDone=\{finishSplash\}/);
-  assert.match(shell, /if \(showSplash\)/);
-  assert.match(css, /splash-logo-spin/);
-  assert.match(css, /prefers-reduced-motion/);
+  const intro = readFileSync(join(root, "src/components/opening-lab/home-intro.tsx"), "utf8");
+  assert.doesNotMatch(shell, /AppSplash/);
+  assert.doesNotMatch(shell, /hasSeenAppSplash/);
+  assert.doesNotMatch(shell, /opening-lab:splash:v4/);
+  assert.doesNotMatch(shell, /showSplash/);
+  assert.doesNotMatch(shell, /from "\.\/app-splash"/);
+  assert.match(shell, /HomeIntro/);
+  assert.match(shell, /hasSeenHomeIntro/);
+  assert.match(shell, /useState<View>\("intro"\)/);
+  assert.match(intro, /data-intro="brand"/);
+  assert.match(intro, /data-intro="splash"/);
+  assert.doesNotMatch(intro, /data-intro="welcome"/);
+  assert.doesNotMatch(intro, /t\("Play"\)/);
+  assert.doesNotMatch(intro, /setTimeout/);
 });

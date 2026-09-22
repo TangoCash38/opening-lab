@@ -9,17 +9,14 @@ const src = (rel) => readFileSync(join(root, rel), "utf8");
 
 const picker = src("src/components/opening-lab/lang-picker.tsx");
 const shell = src("src/components/opening-lab/app-shell.tsx");
-const splash = src("src/components/opening-lab/app-splash.tsx");
 const css = src("src/styles.css");
 
 test("language UI uses custom sheet, not native select", () => {
   assert.doesNotMatch(picker, /<select/);
   assert.doesNotMatch(shell, /<select/);
-  assert.doesNotMatch(splash, /<select/);
   assert.match(shell, /from "\.\/lang-picker"/);
-  assert.match(splash, /from "\.\/lang-picker"/);
   assert.match(shell, /<LangToggle/);
-  assert.match(splash, /<LangToggle/);
+  assert.doesNotMatch(shell, /AppSplash/);
 });
 
 test("lang picker sheet has Back, dialog a11y, Escape, backdrop close", () => {

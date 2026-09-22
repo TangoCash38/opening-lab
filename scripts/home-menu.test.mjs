@@ -56,8 +56,8 @@ test("Menu includes Feedback mail to support", () => {
   assert.equal(i18n.split("\n  Feedback:").length - 1, 12, "Feedback");
 });
 
-test("first-run intro is brand, splash+Start, then welcome banner", () => {
-  assert.match(seen, /opening-lab:home-intro/);
+test("first-run intro is brand + hobbyist, then full-bleed poster Start", () => {
+  assert.match(seen, /opening-lab:home-intro:v2/);
   assert.match(seen, /localStorage/);
   assert.match(seen, /export function hasSeenHomeIntro/);
   assert.match(seen, /export function markHomeIntroSeen/);
@@ -69,14 +69,15 @@ test("first-run intro is brand, splash+Start, then welcome banner", () => {
   assert.match(intro, /Guided practice · memory tests/);
   assert.match(intro, /data-intro="brand"/);
   assert.match(intro, /data-intro="splash"/);
-  assert.match(intro, /data-intro="welcome"/);
+  assert.doesNotMatch(intro, /data-intro="welcome"/);
+  assert.doesNotMatch(intro, /WelcomeBanner/);
+  assert.doesNotMatch(intro, /WELCOME_MS/);
+  assert.doesNotMatch(intro, /home-intro-horse/);
   assert.match(intro, /learn-drill-splash\.webp/);
   assert.match(intro, /home-intro-start/);
   assert.match(intro, /t\("Start"\)/);
-  assert.match(intro, /pieces\/wN\.svg/);
-  assert.match(intro, /home-intro-horse/);
-  assert.match(intro, /WELCOME_MS = 5000/);
-  assert.match(intro, /t\("Skip"\)/);
+  assert.match(intro, /t\("Continue"\)/);
+  assert.match(intro, /SplashPage onStart=\{onContinue\}/);
   assert.match(
     intro,
     /developed by a hobbyist with a strong technical curiosity\. Please report any inaccuracy to support@openinglab\.co\.uk/,
@@ -95,8 +96,15 @@ test("first-run intro is brand, splash+Start, then welcome banner", () => {
   assert.match(shell, /hasSeenHomeIntro/);
   assert.match(shell, /markHomeIntroSeen/);
   assert.match(shell, /view === "intro"/);
+  assert.match(shell, /useLayoutEffect/);
+  assert.doesNotMatch(shell, /AppSplash/);
+  assert.doesNotMatch(shell, /hasSeenAppSplash/);
+  assert.doesNotMatch(shell, /opening-lab:splash:v4/);
+  assert.doesNotMatch(shell, /showSplash/);
   assert.match(guide, /Read the trainer intro/);
   assert.match(guide, /onShowIntro/);
+  assert.match(guide, /guide-intro-copy/);
+  assert.match(guide, /guide-intro-reopen/);
   assert.doesNotMatch(intro, /Play on/);
   assert.doesNotMatch(intro, /versus the computer/);
   assert.doesNotMatch(guide, /Play on/);
@@ -105,8 +113,12 @@ test("first-run intro is brand, splash+Start, then welcome banner", () => {
   assert.equal(i18n.split("\n  Skip:").length - 1, 12, "Skip");
   assert.match(css, /\.home-intro-splash/);
   assert.match(css, /\.home-intro-start/);
-  assert.match(css, /\.home-intro-welcome-banner/);
-  assert.match(css, /home-intro-horse-trot/);
+  assert.match(css, /\.home-intro-hobbyist/);
+  assert.match(css, /\.home-intro-splash-art img[\s\S]*object-fit:\s*cover/);
+  assert.match(css, /\.guide-intro-reopen[\s\S]*display:\s*flex/);
+  assert.doesNotMatch(css, /\.home-intro-welcome-banner/);
+  assert.doesNotMatch(css, /home-intro-horse-trot/);
+  assert.doesNotMatch(intro, /t\("Play"\)/);
 });
 
 test("report incorrect line is a support promise, not an automatic store refund", () => {
