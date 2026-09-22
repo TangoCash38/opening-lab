@@ -48,7 +48,7 @@ test("packMatchesQuery is case-insensitive on name and blurb only", () => {
 });
 
 test("sticky search strip sits under the heading and above the lead packs", () => {
-  const headingAt = list.indexOf('t("Your opening training packs")');
+  const headingAt = list.indexOf('t("Learn Drill Know")');
   const searchAt = list.indexOf("<PackSearchField");
   const trapsAt = list.indexOf('["opening-traps", "caro-kann-black"]');
   assert.ok(headingAt > -1, "pack heading stays on the page");
@@ -78,7 +78,7 @@ test("search copy is translated; required home-row English keys stay intact", ()
   assert.match(i18n, /"Search openings": "Buscar aperturas"/);
   assert.match(i18n, /"Search openings": "搜索开局"/);
   for (const key of [
-    "Your opening training packs",
+    "Learn Drill Know",
     "How to play",
     "Download the app",
     "Continue on the web",

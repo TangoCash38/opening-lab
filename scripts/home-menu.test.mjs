@@ -20,7 +20,7 @@ const hero = src("src/components/opening-lab/home-hero.tsx");
 const train = src("src/components/opening-lab/train-view.tsx");
 
 test("Menu replaces Find the mate on the phone home heading", () => {
-  assert.match(list, /Your opening training packs/);
+  assert.match(list, /Learn Drill Know/);
   assert.match(list, /<HomeMenu/);
   assert.match(menu, /data-home-menu/);
   assert.match(menu, /data-home-menu-sheet/);
@@ -129,7 +129,7 @@ test("Opening Traps and Caro lead, with real complete % and access borders", () 
   assert.doesNotMatch(list, /Lab\+/);
   assert.equal(i18n.split("\n  Menu:").length - 1, 12, "Menu");
   for (const key of [
-    "Your opening training packs",
+    "Learn Drill Know",
     "Report incorrect line",
     "Thanks for spotting it.",
     "Learn openings through practice and recall.",

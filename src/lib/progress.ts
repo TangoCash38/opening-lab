@@ -280,23 +280,47 @@ export function lineTestPercent(p: LineProgress, bookLen: number): number | null
   return Math.min(99, Math.max(0, Math.round((p.testBestPly / bookLen) * 100)));
 }
 
+export type PackPercentLine = {
+  id: string;
+  bookLen: number;
+};
+
 /**
- * Pack complete % = lines finished with a clean Test / lines in the pack.
- * null when none are Test-complete, so a partial ply average is not shown as
- * a complete %. 100 when every line is Test-complete.
+ * Pack-list % from Test reality.
+ *
+ * Each line contributes its Test percent (clean Test = 100, partial book ply =
+ * that line's %, not started = 0). The pack figure is the mean. 100 only when
+ * every line is a clean Test. null when the mean rounds to 0.
+ *
+ * A refund does not wipe local Test plies, and Scotch stays Unlocked if any
+ * line is still open. One stray ply on a 20-line pack is under half a percent
+ * and must stay hidden — it used to round, with a clipped fill, into an empty
+ * bar labelled 3%. A real slice (about three fifths of one line) still shows
+ * as that small %, and the bar uses the same number.
  */
 export function packCompletePercent(
-  lineIds: readonly string[],
-  isComplete: (lineId: string) => boolean,
+  lines: readonly PackPercentLine[],
+  progressOf: (lineId: string) => Pick<LineProgress, "cleanPractice" | "testBestPly">,
 ): number | null {
-  const total = lineIds.length;
+  const total = lines.length;
   if (total === 0) return null;
-  let done = 0;
-  for (const id of lineIds) {
-    if (isComplete(id)) done += 1;
+  let sum = 0;
+  let allClean = true;
+  for (const line of lines) {
+    const p = progressOf(line.id);
+    if (p.cleanPractice === true) {
+      sum += 100;
+      continue;
+    }
+    allClean = false;
+    if (line.bookLen <= 0 || p.testBestPly <= 0) continue;
+    const partial = Math.min(99, Math.round((p.testBestPly / line.bookLen) * 100));
+    if (partial > 0) sum += partial;
   }
-  if (done === 0) return null;
-  return Math.round((done / total) * 100);
+  if (allClean) return 100;
+  const shown = Math.round(sum / total);
+  if (shown <= 0) return null;
+  return shown;
 }
 
 export type QueueItem = {
