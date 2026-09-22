@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Lock, X } from "lucide-react";
+import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import {
@@ -11,7 +11,6 @@ import {
 } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
 import { packLooksFree } from "@/lib/review-free";
-import { packMatchesQuery } from "@/lib/pack-search";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
@@ -88,44 +87,6 @@ function QuietLabel({ children }: { children: string }) {
     <p className="pack-list-full mb-2 mt-5 px-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
       {children}
     </p>
-  );
-}
-
-function PackSearchField({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (next: string) => void;
-}) {
-  const t = useT();
-  return (
-    <div className="pack-list-full pack-search">
-      <div className="relative">
-        <input
-          type="search"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={t("Search openings")}
-          aria-label={t("Search openings")}
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-          enterKeyHint="search"
-          className="pack-search-input w-full min-h-11 rounded-full border border-border bg-bg-elevated px-4 py-3 pe-11 text-sm text-fg outline-none ring-accent/30 placeholder:text-fg-subtle focus:ring-2"
-        />
-        {value ? (
-          <button
-            type="button"
-            onClick={() => onChange("")}
-            className="absolute inset-y-0 end-1 my-auto grid size-9 place-items-center rounded-full text-fg-muted"
-            aria-label={t("Clear search")}
-          >
-            <X className="size-4" strokeWidth={2.5} />
-          </button>
-        ) : null}
-      </div>
-    </div>
   );
 }
 
@@ -334,7 +295,6 @@ export function PackList({
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
-  const [packQuery, setPackQuery] = useState("");
   const [openPackId, setOpenPackId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
   const wrap = playApp || isPlayWrap();
@@ -344,38 +304,23 @@ export function PackList({
   }, []);
 
   const catalog = visiblePacks(PACKS);
-  const q = packQuery.trim();
-  const searching = q.length > 0;
-  const inMoreList = (p: Pack) => !searching || packMatchesQuery(p, q);
   const isLead = (p: Pack) =>
     (LEAD_PACK_IDS as readonly string[]).includes(p.id);
   const lead = LEAD_PACK_IDS.map((id) => catalog.find((p) => p.id === id)).filter(
-    (p): p is Pack => !!p && inMoreList(p),
+    (p): p is Pack => !!p,
   );
-  const white = catalog.filter(
-    (p) => p.section === "white" && !isLead(p) && inMoreList(p),
-  );
+  const white = catalog.filter((p) => p.section === "white" && !isLead(p));
   const black = catalog.filter(
-    (p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black" && inMoreList(p),
+    (p) =>
+      p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black",
   );
   const classicGames = catalog.find(
-    (p) => p.id === "classic-games" && !isLead(p) && inMoreList(p),
+    (p) => p.id === "classic-games" && !isLead(p),
   );
-  const vsLondon = catalog.find(
-    (p) => p.id === "vs-london" && !isLead(p) && inMoreList(p),
-  );
+  const vsLondon = catalog.find((p) => p.id === "vs-london" && !isLead(p));
   const clubWeapons = catalog.find(
-    (p) => p.id === "club-weapons" && !isLead(p) && inMoreList(p),
+    (p) => p.id === "club-weapons" && !isLead(p),
   );
-  const morePacks = catalog.length > 0;
-  const moreMatches =
-    lead.length > 0 ||
-    !!classicGames ||
-    !!vsLondon ||
-    !!clubWeapons ||
-    white.length > 0 ||
-    black.length > 0;
-  const showNoMatches = searching && !moreMatches;
 
   const togglePack = (pack: Pack) => {
     setOpenPackId((id) => (id === pack.id ? null : pack.id));
@@ -618,26 +563,7 @@ export function PackList({
         </p>
       ) : null}
 
-      {morePacks ? (
-        <div className="pack-search-sticky pack-list-full">
-          <PackSearchField value={packQuery} onChange={setPackQuery} />
-        </div>
-      ) : null}
-
       <div className="pack-list-grid">
-        {showNoMatches ? (
-          <div className="pack-list-full mb-3 px-1" role="status">
-            <p className="text-[0.85rem] text-fg-muted">{t("No packs match")}</p>
-            <button
-              type="button"
-              onClick={() => setPackQuery("")}
-              className="mt-1 text-[0.85rem] font-semibold text-accent"
-            >
-              {t("Clear search")}
-            </button>
-          </div>
-        ) : null}
-
         {lead.map((pack) => renderCard(pack))}
 
         {classicGames ? renderCard(classicGames) : null}

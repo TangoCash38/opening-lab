@@ -592,22 +592,6 @@ html[data-color-scheme="dark"] {
     touch-action: pan-y;
   }
 
-  .pack-search-sticky {
-    position: sticky;
-    top: calc(env(safe-area-inset-top, 0px) + 3.35rem);
-    z-index: 20;
-    background: var(--color-bg);
-    padding-top: 0.35rem;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.15rem;
-  }
-
-  .pack-search-input::-webkit-search-cancel-button,
-  .pack-search-input::-webkit-search-decoration {
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
   .sq-light {
     background-color: #f3e5c8;
   }
