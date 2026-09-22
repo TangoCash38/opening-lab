@@ -140,6 +140,13 @@ function squareFromPoint(x: number, y: number): Square | null {
   return null;
 }
 
+function placementKey(pieces: { code: string; sq: string }[]) {
+  return pieces
+    .map((p) => `${p.code}@${p.sq}`)
+    .sort()
+    .join("|");
+}
+
 const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
   { key: "q", label: "Q" },
   { key: "r", label: "R" },
@@ -375,10 +382,18 @@ export function ChessBoard({
 
   const moverIdRef = useRef<string | null>(null);
   const lastSlideRef = useRef<SlideAnim | null>(null);
+  const piecesRef = useRef(pieces);
+  piecesRef.current = pieces;
+  /** Bumped when the position jumps (notation, reset) so the piece DOM is replaced. */
+  const [pieceEpoch, setPieceEpoch] = useState(0);
 
   useLayoutEffect(() => {
+    const next = parsePieces(fenBoard);
+    const jumped =
+      !slide &&
+      !lastSlideRef.current &&
+      placementKey(piecesRef.current) !== placementKey(next);
     setPieces((prev) => {
-      const next = parsePieces(fenBoard);
 
       if (slide) {
         lastSlideRef.current = slide;
@@ -392,19 +407,21 @@ export function ChessBoard({
         );
         if (prevMover) moverIdRef.current = prevMover.id;
 
+        const used = new Set<string>();
         return base.map((p) => {
           if (p.sq === slide.from && p.code === slide.piece) {
             const id =
               moverIdRef.current ?? prevMover?.id ?? newId(p.code, p.sq);
             moverIdRef.current = id;
+            used.add(id);
             return { id, code: p.code, sq: p.sq };
           }
-          const old = prev.find((x) => x.sq === p.sq && x.code === p.code);
-          return {
-            id: old?.id ?? newId(p.code, p.sq),
-            code: p.code,
-            sq: p.sq,
-          };
+          const old = prev.find(
+            (x) => !used.has(x.id) && x.sq === p.sq && x.code === p.code,
+          );
+          const id = old?.id ?? newId(p.code, p.sq);
+          used.add(id);
+          return { id, code: p.code, sq: p.sq };
         });
       }
 
@@ -442,28 +459,17 @@ export function ChessBoard({
           continue;
         }
 
-        const fallback = prev.find(
-          (x) =>
-            !used.has(x.id) &&
-            x.code === p.code &&
-            x.id !== moverIdRef.current,
-        );
-        if (fallback) {
-          used.add(fallback.id);
-          result.push({ id: fallback.id, code: p.code, sq: p.sq });
-          continue;
-        }
-
+        // New sprite. Reusing a same-type piece from another square keeps the
+        // old compositor layer (dark-mode ghosts on fold and mode switch).
         result.push({ id: newId(p.code, p.sq), code: p.code, sq: p.sq });
       }
 
-      if (!slide) {
-        lastSlideRef.current = null;
-        moverIdRef.current = null;
-      }
+      lastSlideRef.current = null;
+      moverIdRef.current = null;
 
       return result;
     });
+    if (jumped) setPieceEpoch((n) => n + 1);
   }, [fenBoard, slide]);
 
   const [glideOn, setGlideOn] = useState(false);
@@ -724,8 +730,8 @@ export function ChessBoard({
             zIndex: isMover ? 40 : 5,
             transition: isMover
               ? `left ${slideMs}ms ${slideEase}, top ${slideMs}ms ${slideEase}`
-              : undefined,
-            willChange: isMover ? "left, top" : undefined,
+              : "none",
+            willChange: isMover ? "left, top" : "auto",
           }}
         >
           <span className="piece-abs-inner">
@@ -742,7 +748,7 @@ export function ChessBoard({
         <div className="board-frame-inner">
           <div
             ref={surfaceRef}
-            className={`board-play relative aspect-square w-full${wrongUntil ? " board-wrong-dim" : ""}`}
+            className={`board-play relative aspect-square w-full`}
             onPointerDown={interactive ? onPointerDown : undefined}
             onPointerMove={interactive ? onPointerMove : undefined}
             onPointerUp={interactive ? onPointerUp : undefined}
@@ -825,8 +831,13 @@ export function ChessBoard({
               </svg>
             ) : null}
 
-            {/* Pieces paint above squares but never steal clicks */}
-            <div className="pointer-events-none absolute inset-0 z-10 overflow-visible">
+            {/* Pieces paint above squares but never steal clicks.
+                Epoch remounts the layer when the position jumps so sprites
+                from the previous FEN cannot linger. */}
+            <div
+              key={pieceEpoch}
+              className="piece-layer pointer-events-none absolute inset-0 z-10 overflow-hidden"
+            >
               {pieceNodes}
               {arcadeBlast ? (
                 <ArcadeCaptureBlast
@@ -847,6 +858,8 @@ export function ChessBoard({
                 />
               ) : null}
             </div>
+
+            {wrongUntil ? <div className="board-wrong-dim" aria-hidden /> : null}
 
             {/* Play-on promo: inside board-play so it centers on squares and stays above pieces */}
             {promotion ? (
