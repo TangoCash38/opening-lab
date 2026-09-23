@@ -40,20 +40,6 @@ export function scotchCoachBeatIndex(
   return Math.min(count - 1, Math.max(0, index));
 }
 
-/**
- * Cartoon jaw opening, 0 (closed) to 1 (wide), from the narration's RMS.
- * Paused, muted, ended, or quiet audio stays shut. Not a viseme deepfake.
- */
-export function scotchCoachMouthOpen(
-  rms: number,
-  state: { paused: boolean; muted: boolean; ended: boolean },
-): number {
-  if (state.paused || state.muted || state.ended) return 0;
-  if (!Number.isFinite(rms) || rms <= 0) return 0;
-  const boosted = Math.max(0, rms - 0.015) / 0.07;
-  return Math.min(1, boosted);
-}
-
 export function scotchCoachApplies(input: {
   packId: string;
   playApp: boolean;

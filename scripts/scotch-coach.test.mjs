@@ -93,35 +93,14 @@ test("Sean narration plays on the coach card and skip stops it", () => {
   assert.match(skip, /onDone\(\)/);
 });
 
-test("cartoon mouth follows narration level and shuts when silent", () => {
-  assert.match(intro, /data-scotch-coach-mouth/);
-  assert.match(intro, /subscribeScotchCoachMouth/);
+test("coach is the seated picture plus Sean's voice, with no mouth overlay", () => {
+  assert.doesNotMatch(intro, /scotch-coach-mouth|subscribeScotchCoachMouth/);
+  assert.doesNotMatch(css, /\.scotch-coach-mouth/);
+  assert.doesNotMatch(audio, /createAnalyser|scotchCoachMouthOpen|AudioContext/);
+  assert.doesNotMatch(lib, /scotchCoachMouthOpen/);
   assert.match(intro, /coach-seated-v2\.png/);
-  assert.match(css, /\.scotch-coach-mouth/);
-  assert.match(audio, /createAnalyser/);
-  assert.match(audio, /getByteTimeDomainData/);
-  assert.match(audio, /scotchCoachMouthOpen/);
+  assert.match(audio, /SCOTCH_COACH_NARRATION_MP3/);
   assert.doesNotMatch(intro, /deepfake|speechSynthesis/i);
-  const run = spawnSync(
-    process.execPath,
-    [
-      "--experimental-strip-types",
-      "--input-type=module",
-      "-e",
-      `
-      import { scotchCoachMouthOpen } from "./src/lib/scotch-coach.ts";
-      const live = { paused: false, muted: false, ended: false };
-      if (scotchCoachMouthOpen(0.2, live) <= 0.5) throw new Error("loud should open");
-      if (scotchCoachMouthOpen(0.2, live) > 1) throw new Error("capped");
-      if (scotchCoachMouthOpen(0.004, live) !== 0) throw new Error("quiet stays shut");
-      if (scotchCoachMouthOpen(0.2, { ...live, muted: true }) !== 0) throw new Error("muted");
-      if (scotchCoachMouthOpen(0.2, { ...live, paused: true }) !== 0) throw new Error("paused");
-      if (scotchCoachMouthOpen(0.2, { ...live, ended: true }) !== 0) throw new Error("ended");
-      `,
-    ],
-    { cwd: root, encoding: "utf8" },
-  );
-  assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
 test("narration quarters land on the four cream beats", () => {

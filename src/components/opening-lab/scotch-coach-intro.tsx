@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SCOTCH_COACH_BEATS,
   SCOTCH_COACH_TITLE,
@@ -8,43 +8,21 @@ import {
   setScotchCoachNarrationMuted,
   startScotchCoachNarration,
   stopScotchCoachNarration,
-  subscribeScotchCoachMouth,
 } from "@/lib/scotch-coach-audio";
 import { useT } from "@/lib/i18n";
 
 /** Rises out of the board, then sits with the Opening Lab mug. Decorative. */
 export function ScotchCoachFigure() {
-  const mouthRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    return subscribeScotchCoachMouth((open) => {
-      const mouth = mouthRef.current;
-      if (!mouth) return;
-      const jaw = open < 0.04 ? 0.07 : 0.07 + open * 0.93;
-      mouth.style.setProperty("--mouth", jaw.toFixed(3));
-      mouth.dataset.open = open > 0.12 ? "true" : "false";
-    });
-  }, []);
-
   return (
     <div className="scotch-coach-stage" aria-hidden="true">
-      <div className="scotch-coach-figure">
-        <img
-          src="/scotch-coach/coach-seated-v2.png"
-          alt=""
-          width={640}
-          height={1071}
-          draggable={false}
-        />
-        {/* Shape over the drawn mouth. Volume opens it; silence keeps it shut. */}
-        <span
-          ref={mouthRef}
-          className="scotch-coach-mouth"
-          data-scotch-coach-mouth
-          data-open="false"
-          style={{ ["--mouth" as string]: "0.07" }}
-        />
-      </div>
+      <img
+        className="scotch-coach-figure"
+        src="/scotch-coach/coach-seated-v2.png"
+        alt=""
+        width={640}
+        height={1071}
+        draggable={false}
+      />
     </div>
   );
 }
