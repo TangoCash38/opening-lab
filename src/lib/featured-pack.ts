@@ -37,6 +37,7 @@ export function packShortLabel(pack: { id: string; name: string }): string {
     "petroff-black": "Petroff",
     "berlin-black": "Berlin",
     "kings-indian-black": "King’s Indian",
+    "old-indian-black": "Old Indian",
     "stafford-black": "Stafford",
     "ponziani-white": "Ponziani",
     "alekhine-black": "Alekhine",

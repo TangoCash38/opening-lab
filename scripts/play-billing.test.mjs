@@ -43,10 +43,12 @@ test("Play SKU mapping is pack_<underscores> and buy_all_packs", async (t) => {
   assert.equal(mod.PLAY_SKU_BUY_ALL, "buy_all_packs");
   assert.equal(mod.playSkuForPackId("qgd-black"), "pack_qgd_black");
   assert.equal(mod.playSkuForPackId("caro-kann-black"), "pack_caro_kann_black");
-  assert.equal(mod.PLAY_PATH_B_PACK_IDS.length, 32);
+  assert.equal(mod.PLAY_PATH_B_PACK_IDS.length, 33);
   assert.ok(mod.PLAY_PATH_B_PACK_IDS.includes("caro-kann-black"));
+  assert.ok(mod.PLAY_PATH_B_PACK_IDS.includes("old-indian-black"));
+  assert.equal(mod.playSkuForPackId("old-indian-black"), "pack_old_indian_black");
   assert.equal(mod.PLAY_PATH_B_PACK_IDS.includes("opening-traps"), false);
-  assert.equal(mod.PLAY_PATH_B_PACK_IDS.length - 1, 31);
+  assert.equal(mod.PLAY_PATH_B_PACK_IDS.length - 1, 32);
 
   const known = new Set(mod.PLAY_PATH_B_PACK_IDS);
   const skus = new Set();

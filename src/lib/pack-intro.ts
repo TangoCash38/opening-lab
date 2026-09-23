@@ -120,6 +120,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The King’s Indian Defence is 1.d4 Nf6 2.c4 g6 with …Bg7 and …d6. Black fianchettoes, clamps the centre, then strikes with …e5 or …c5 against Classical, Sämisch, and Fianchetto structures.",
     "You are not racing for a mate on move ten. Know which King’s Indian shell you are in, and practise the main Black moves before you mix plans.",
   ],
+  "old-indian-black": [
+    "The Old Indian Defence is 1.d4 d6 2.c4 Nf6 3.Nc3 Nbd7 4.Qc2. Black holds a flexible centre and meets Classical …e5, the exchange, a closed d5, the Bg5 pin, and the …c6, …c5, and …e6 branches with their own book replies.",
+    "You are not racing for a mate on move ten. Know which Old Indian shell you are in, and practise the main Black moves before you mix plans.",
+  ],
   "stafford-black": [
     "The Stafford Gambit is 1.e4 e5 2.Nf3 Nf6 3.Nxe5 Nc6. Black answers the Petroff take with …Nc6, then after 4.Nxc6 dxc6 hunts traps and solid Bc5 shells.",
     "You are not racing for a mate on move ten. Know which Stafford shell you are in, and practise the main Black moves before you mix plans.",
