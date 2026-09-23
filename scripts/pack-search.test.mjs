@@ -174,9 +174,21 @@ test("pack search aliases and false friends against the live catalog", () => {
   ]) {
     assert.deepEqual(ids(query), ["kings-indian-black"], query);
   }
-  assert.deepEqual(ids("old indian"), []);
-  assert.deepEqual(ids("oid"), []);
-  assert.deepEqual(ids("old indian defence"), []);
+  const old = catalog.find((pack) => pack.id === "old-indian-black");
+  assert.ok(old, "old-indian-black is on the visible catalog");
+  assert.equal(old.name, "Old Indian Defence");
+  assert.equal(old.side, "Black");
+  assert.equal(old.section, "black");
+  assert.match(old.closedLabel, /£1\.50/);
+  const kidIndex = catalog.findIndex((pack) => pack.id === "kings-indian-black");
+  const oldIndex = catalog.findIndex((pack) => pack.id === "old-indian-black");
+  assert.equal(oldIndex, kidIndex + 1, "Old Indian sits next to King’s Indian in the catalog");
+  assert.deepEqual(ids("old indian"), ["old-indian-black"]);
+  assert.deepEqual(ids("oid"), ["old-indian-black"]);
+  assert.deepEqual(ids("old indian defence"), ["old-indian-black"]);
+  assert.deepEqual(ids("zzzzpack"), []);
+  assert.ok(!ids("kid").includes("old-indian-black"));
+  assert.ok(!ids("old indian").includes("kings-indian-black"));
 
   for (const query of ["caro", "caro-kann", "caro kann", "Caro-Kann"]) {
     assert.deepEqual(ids(query), ["caro-kann-black", "caro-advance-panov-white"], query);
@@ -231,7 +243,7 @@ test("pack search aliases and false friends against the live catalog", () => {
   assert.deepEqual(ids("kings gambit"), ["kg-black"]);
 
   const indian = ids("indian");
-  assert.deepEqual(indian, ["nimzo-indian-black", "kings-indian-black"]);
+  assert.deepEqual(indian, ["nimzo-indian-black", "kings-indian-black", "old-indian-black"]);
 
   assert.deepEqual(ids("legal"), []);
   assert.deepEqual(ids("e4"), []);
