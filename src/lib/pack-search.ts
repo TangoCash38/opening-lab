@@ -63,12 +63,17 @@ const NAME_MATCH = 220;
 const SUBSTRING_MATCH = 140;
 const OTHER_MATCH = 60;
 
+// NFD splits Latin accents into a base letter plus a mark in these blocks.
+// Explicit ranges, not Unicode property escapes: older Android System WebView
+// throws SyntaxError while parsing those escapes and blanks the Play wrap.
+const COMBINING_MARKS = /[\u0300-\u036f\u1ab0-\u1aff\u1dc0-\u1dff\u20d0-\u20ff\ufe20-\ufe2f]/g;
+
 function normalize(raw: string): string {
-  let s = raw.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  let s = raw.normalize("NFD").replace(COMBINING_MARKS, "").toLowerCase();
   s = s.replace(/[’‘ʼ′`']/g, "");
   s = s.replace(/defense/g, "defence");
   s = s.replace(/[-‐‑‒–—−/·.]/g, " ");
-  s = s.replace(/[^\p{L}\p{N}\s]/gu, " ");
+  s = s.replace(/[^a-z0-9\s]/g, " ");
   return s.replace(/\s+/g, " ").trim();
 }
 
@@ -79,9 +84,12 @@ function words(raw: string): string[] {
 }
 
 function hyphenJoins(raw: string): string[] {
-  const found = raw.matchAll(/[\p{L}\p{N}]+(?:[-‐‑‒–—−][\p{L}\p{N}]+)+/gu);
-  return [...found]
-    .map((match) => normalize(match[0]).replace(/ /g, ""))
+  const found = raw.match(
+    /[A-Za-z0-9\u00C0-\u024F\u1E00-\u1EFF]+(?:[\-\u2010\u2011\u2012\u2013\u2014\u2212][A-Za-z0-9\u00C0-\u024F\u1E00-\u1EFF]+)+/g,
+  );
+  if (!found) return [];
+  return found
+    .map((token) => normalize(token).replace(/ /g, ""))
     .filter((token) => token.length >= 4);
 }
 
@@ -128,7 +136,7 @@ function prepare<T extends PackSearchFields>(pack: T, index: number): Prepared {
 }
 
 function prefixHit(token: string, vocab: Set<string>): boolean {
-  if (token.length < 4) return false;
+  if (!token) return false;
   for (const word of vocab) {
     if (word.length > token.length && word.startsWith(token)) return true;
   }
@@ -184,7 +192,7 @@ export function rankPacks<T extends PackSearchFields>(packs: readonly T[], query
   const sides = new Set<string>();
   const tokens: string[] = [];
   for (const token of normalized.split(" ")) {
-    if (token.length < 2) continue;
+    if (!token) continue;
     if (SIDE_TOKENS.has(token)) sides.add(token);
     else tokens.push(token);
   }
