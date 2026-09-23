@@ -10,6 +10,10 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { scotchCoachApplies } from "@/lib/scotch-coach";
+import {
+  startScotchCoachNarration,
+  stopScotchCoachNarration,
+} from "@/lib/scotch-coach-audio";
 import { soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 import { BoardThemePicker } from "./board-theme-picker";
@@ -99,11 +103,16 @@ export function HomeHero({
   }, [websiteSplit]);
 
   useEffect(() => {
+    return () => stopScotchCoachNarration();
+  }, []);
+
+  useEffect(() => {
     setLinesOpen(linesInitiallyOpen);
     setAboutOpen(false);
     setPendingLine(null);
     setFrame(null);
     setCoach(null);
+    stopScotchCoachNarration();
   }, [pack.id, linesInitiallyOpen]);
 
   const preferInFrame = () => {
@@ -130,6 +139,7 @@ export function HomeHero({
         websiteDesktop: websiteDesktopFrame(),
       })
     ) {
+      startScotchCoachNarration();
       setCoach({
         line,
         mode: "learn",
@@ -152,6 +162,7 @@ export function HomeHero({
   };
 
   const finishCoach = () => {
+    stopScotchCoachNarration();
     if (!coach) return;
     openInFrame(coach.line, {
       plyLimit: coach.plyLimit,
