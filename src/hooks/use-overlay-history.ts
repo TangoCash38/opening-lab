@@ -19,11 +19,23 @@ export function useOverlayHistory(
     if (!open) return;
     if (typeof window === "undefined") return;
 
-    const binding = bindOverlayHistory(window, {
-      id,
-      onPop: () => onCloseRef.current(),
+    let binding: ReturnType<typeof bindOverlayHistory> | null = null;
+    let cancelled = false;
+    // Strict Mode runs setup → cleanup → setup synchronously. Binding
+    // immediately would pushState and then history.back() before the pop
+    // lands, so the next dismiss (Test yourself) leaves the page or jumps
+    // to the top. Wait one microtask so the throwaway setup is cancelled.
+    queueMicrotask(() => {
+      if (cancelled) return;
+      binding = bindOverlayHistory(window, {
+        id,
+        onPop: () => onCloseRef.current(),
+      });
     });
 
-    return () => binding.release();
+    return () => {
+      cancelled = true;
+      if (binding) binding.release();
+    };
   }, [open, id]);
 }
