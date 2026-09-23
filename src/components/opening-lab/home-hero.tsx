@@ -9,12 +9,14 @@ import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
+import { scotchCoachApplies } from "@/lib/scotch-coach";
 import { soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 import { BoardThemePicker } from "./board-theme-picker";
 import { LondonWarmupChip } from "./london-warmup-chip";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
+import { ScotchCoachCard, ScotchCoachFigure } from "./scotch-coach-intro";
 import { TrainView } from "./train-view";
 
 type TrainMode = "learn" | "practice";
@@ -74,6 +76,7 @@ export function HomeHero({
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
   const [frame, setFrame] = useState<FrameSession | null>(null);
+  const [coach, setCoach] = useState<FrameSession | null>(null);
 
   const websiteSplit = !playApp;
   const hasFreeSample = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
@@ -100,6 +103,7 @@ export function HomeHero({
     setAboutOpen(false);
     setPendingLine(null);
     setFrame(null);
+    setCoach(null);
   }, [pack.id, linesInitiallyOpen]);
 
   const preferInFrame = () => {
@@ -108,9 +112,25 @@ export function HomeHero({
     return frame !== null;
   };
 
+  const openInFrame = (line: OpeningLine, options?: TrainStartOptions) => {
+    setCoach(null);
+    setFrame({
+      line,
+      mode: "learn",
+      plyLimit: options?.plyLimit,
+      startPly: options?.startPly,
+    });
+  };
+
   const launchLine = (line: OpeningLine, options?: TrainStartOptions) => {
-    if (preferInFrame()) {
-      setFrame({
+    if (
+      scotchCoachApplies({
+        packId: pack.id,
+        playApp: Boolean(playApp),
+        websiteDesktop: websiteDesktopFrame(),
+      })
+    ) {
+      setCoach({
         line,
         mode: "learn",
         plyLimit: options?.plyLimit,
@@ -119,11 +139,24 @@ export function HomeHero({
       soundSelect();
       return;
     }
+    if (preferInFrame()) {
+      openInFrame(line, options);
+      soundSelect();
+      return;
+    }
     if (options?.plyLimit != null || options?.startPly != null) {
       onStartLine(pack, line, "learn", options);
       return;
     }
     onStartLine(pack, line, "learn");
+  };
+
+  const finishCoach = () => {
+    if (!coach) return;
+    openInFrame(coach.line, {
+      plyLimit: coach.plyLimit,
+      startPly: coach.startPly,
+    });
   };
 
   const game = useMemo(() => new Chess(), []);
@@ -160,7 +193,7 @@ export function HomeHero({
     <section
       className={`home-hero${embedded ? " home-hero-embedded" : " mb-5"}${
         websiteSplit ? " home-hero-split" : ""
-      }${frame ? " home-hero--live" : ""}`}
+      }${frame || coach ? " home-hero--live" : ""}`}
     >
       <div className="home-sample-card overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="home-hero-split-inner">
@@ -229,7 +262,7 @@ export function HomeHero({
               </div>
             ) : (
               <>
-            <div className="home-board pointer-events-none px-2">
+            <div className={`home-board pointer-events-none px-2${coach ? " home-board--coach" : ""}`}>
               <ChessBoard
                 game={game}
                 flip={pack.side === "Black"}
@@ -243,11 +276,17 @@ export function HomeHero({
                 interactive={false}
                 frameCoords={!playApp}
               />
-              <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
-                <BoardThemePicker compact className="w-full" />
-              </div>
+              {coach ? <ScotchCoachFigure key={coach.line.id} /> : null}
+              {!coach ? (
+                <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
+                  <BoardThemePicker compact className="w-full" />
+                </div>
+              ) : null}
             </div>
 
+            {coach ? (
+              <ScotchCoachCard key={coach.line.id} onDone={finishCoach} />
+            ) : (
             <div className="space-y-2.5 px-4 pb-3 pt-1">
               <button
                 type="button"
@@ -257,6 +296,7 @@ export function HomeHero({
                 {t("Tap to practice")}
               </button>
             </div>
+            )}
               </>
             )}
           </div>

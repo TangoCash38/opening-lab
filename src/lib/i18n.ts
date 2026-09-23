@@ -46,6 +46,14 @@ const en: Dict = {
   "App coming soon": "App coming soon",
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
+  "Scotch coach": "Scotch coach",
+  "Scotch Gambit": "Scotch Gambit",
+  Practice: "Practice",
+  "The Scotch Gambit: after 1.e4 e5 2.Nf3 Nc6 3.d4, White often plays Bc4, aiming at f7 with rapid development.":
+    "The Scotch Gambit: after 1.e4 e5 2.Nf3 Nc6 3.d4, White often plays Bc4, aiming at f7 with rapid development.",
+  "A hobbyist favourite: open play, with clear attacking ideas.":
+    "A hobbyist favourite: open play, with clear attacking ideas.",
+  "Let’s practice the book moves.": "Let’s practice the book moves.",
   "See 18 lines": "See 18 lines",
   "See {n} lines": "See {n} lines",
   "See {n} {pack} lines": "See {n} {pack} lines",
