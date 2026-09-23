@@ -62,17 +62,23 @@ function visibleCatalog() {
 
 const catalog = visibleCatalog();
 
-test("home search sits in normal flow between Menu and the pack list", () => {
+test("home search is a cream pill that filters the pack list in place", () => {
   assert.match(list, /rankPacks/);
   assert.match(list, /pack-search-strip/);
   assert.match(list, /data-pack-search/);
   assert.match(list, /type="search"/);
   assert.match(list, /Search openings/);
   assert.match(list, /Clear search/);
-  assert.match(list, /No openings match/);
+  assert.match(list, /No packs match/);
+  assert.doesNotMatch(list, /No openings match/);
   assert.match(list, /Escape/);
+  assert.match(list, /onPointerDown=\{\(event\) => event\.preventDefault\(\)\}/);
+  assert.match(list, /matchIds/);
+  assert.match(list, /leadShown/);
+  assert.doesNotMatch(list, /ranked\.map/);
+  assert.doesNotMatch(list, /pack-search-empty-clear/);
   assert.doesNotMatch(list, /pack-search-sticky/);
-  assert.doesNotMatch(list, /position:\s*sticky/);
+  assert.doesNotMatch(list, /role="listbox"/);
 
   const headingAt = list.indexOf("home-heading-row");
   const searchAt = list.indexOf("<PackSearchField", headingAt);
@@ -81,19 +87,29 @@ test("home search sits in normal flow between Menu and the pack list", () => {
 
   const searchCss = css.slice(css.indexOf(".pack-search-strip"), css.indexOf(".sq-light"));
   assert.match(searchCss, /\.pack-search-strip/);
-  assert.match(searchCss, /position:\s*static/);
-  assert.match(searchCss, /max-width:\s*22rem/);
-  assert.doesNotMatch(searchCss, /sticky/);
+  assert.match(searchCss, /position:\s*sticky/);
+  assert.match(searchCss, /--pack-search-stick/);
+  assert.match(searchCss, /#faf8f2/);
+  assert.match(searchCss, /#f7f2e6/);
+  assert.match(searchCss, /9999px/);
+  assert.match(searchCss, /rgba\(92,\s*64,\s*51,\s*0\.35\)/);
+  assert.match(searchCss, /max-width:\s*26rem/);
+  assert.match(searchCss, /font-size:\s*0\.9375rem/);
+  assert.doesNotMatch(searchCss, /--color-accent/);
+  assert.doesNotMatch(searchCss, /position:\s*static/);
   assert.doesNotMatch(css, /\.pack-search-sticky/);
 
   assert.equal(i18n.split('"Search openings":').length - 1, 12);
   assert.equal(i18n.split('"Clear search":').length - 1, 12);
-  assert.equal(i18n.split('"No openings match “{query}”":').length - 1, 12);
+  assert.equal(i18n.split('"No packs match":').length - 1, 12);
   assert.match(i18n, /"Search openings": "ابحث عن افتتاحات"/);
   assert.match(i18n, /"Search openings": "Açılış ara"/);
   assert.match(i18n, /"Clear search": "مسح البحث"/);
   assert.match(i18n, /"Clear search": "Aramayı temizle"/);
+  assert.match(i18n, /"No packs match": "لا توجد حزم مطابقة"/);
+  assert.match(i18n, /"No packs match": "Eşleşen paket yok"/);
   assert.doesNotMatch(i18n, /search Opening Lab/i);
+  assert.doesNotMatch(i18n, /No openings match/);
 
   const trapsAt = list.indexOf('["opening-traps", "caro-kann-black"]');
   assert.ok(trapsAt > -1, "Opening Traps and Caro lead the catalog");

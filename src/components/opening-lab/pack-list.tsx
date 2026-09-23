@@ -62,18 +62,46 @@ const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
 
 function PackSearchField({ value, onChange }: { value: string; onChange: (next: string) => void }) {
   const t = useT();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const strip = stripRef.current;
+    const header = document.querySelector(".app-header");
+    if (!strip) return;
+    const apply = () => {
+      const height = header instanceof HTMLElement ? header.getBoundingClientRect().height : 0;
+      if (height > 0) strip.style.setProperty("--pack-search-stick", `${Math.round(height)}px`);
+    };
+    apply();
+    const observer =
+      header && typeof ResizeObserver !== "undefined" ? new ResizeObserver(apply) : null;
+    if (header && observer) observer.observe(header);
+    window.addEventListener("resize", apply);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", apply);
+    };
+  }, []);
+
+  const clear = () => {
+    onChange("");
+    inputRef.current?.focus();
+  };
+
   return (
-    <div className="pack-search-strip">
+    <div className="pack-search-strip" ref={stripRef}>
       <div className="pack-search-field">
-        <Search className="pack-search-icon" strokeWidth={2} aria-hidden />
+        <Search className="pack-search-icon" strokeWidth={1.5} aria-hidden />
         <input
+          ref={inputRef}
           type="search"
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
               event.preventDefault();
-              onChange("");
+              clear();
             }
           }}
           placeholder={t("Search openings")}
@@ -90,10 +118,11 @@ function PackSearchField({ value, onChange }: { value: string; onChange: (next: 
           <button
             type="button"
             className="pack-search-clear"
-            onClick={() => onChange("")}
+            onPointerDown={(event) => event.preventDefault()}
+            onClick={clear}
             aria-label={t("Clear search")}
           >
-            <X aria-hidden />
+            <X strokeWidth={1.5} aria-hidden />
           </button>
         ) : null}
       </div>
@@ -314,6 +343,7 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
   const [packQuery, setPackQuery] = useState("");
+  const [appliedQuery, setAppliedQuery] = useState("");
   const [openPackId, setOpenPackId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
   const wrap = playApp || isPlayWrap();
@@ -322,10 +352,21 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
     setPlayApp(isPlayWrap());
   }, []);
 
+  useEffect(() => {
+    const trimmed = packQuery.trim();
+    if (!trimmed) {
+      setAppliedQuery("");
+      return;
+    }
+    const timer = window.setTimeout(() => setAppliedQuery(trimmed), 120);
+    return () => window.clearTimeout(timer);
+  }, [packQuery]);
+
   const catalog = visiblePacks(PACKS);
-  const query = packQuery.trim();
-  const searching = query.length > 0;
-  const ranked = searching ? rankPacks(catalog, query) : catalog;
+  const searching = appliedQuery.length > 0;
+  const matchIds = searching
+    ? new Set(rankPacks(catalog, appliedQuery).map((pack) => pack.id))
+    : null;
   const isLead = (p: Pack) => (LEAD_PACK_IDS as readonly string[]).includes(p.id);
   const lead = LEAD_PACK_IDS.map((id) => catalog.find((p) => p.id === id)).filter(
     (p): p is Pack => !!p,
@@ -337,6 +378,20 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   const classicGames = catalog.find((p) => p.id === "classic-games" && !isLead(p));
   const vsLondon = catalog.find((p) => p.id === "vs-london" && !isLead(p));
   const clubWeapons = catalog.find((p) => p.id === "club-weapons" && !isLead(p));
+  const shown = (pack: Pack | undefined) => !!pack && (!matchIds || matchIds.has(pack.id));
+  const leadShown = lead.filter((pack) => shown(pack));
+  const whiteShown = white.filter((pack) => shown(pack));
+  const blackShown = black.filter((pack) => shown(pack));
+  const classicShown = classicGames && shown(classicGames) ? classicGames : null;
+  const londonShown = vsLondon && shown(vsLondon) ? vsLondon : null;
+  const clubShown = clubWeapons && shown(clubWeapons) ? clubWeapons : null;
+  const anyShown =
+    leadShown.length > 0 ||
+    whiteShown.length > 0 ||
+    blackShown.length > 0 ||
+    !!classicShown ||
+    !!londonShown ||
+    !!clubShown;
 
   const togglePack = (pack: Pack) => {
     setOpenPackId((id) => (id === pack.id ? null : pack.id));
@@ -574,34 +629,22 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
       <PackSearchField value={packQuery} onChange={setPackQuery} />
 
       <div className="pack-list-grid">
-        {searching && ranked.length === 0 ? (
+        {searching && !anyShown ? (
           <p className="pack-search-empty" role="status">
-            {t("No openings match “{query}”", { query })}
-            <button
-              type="button"
-              className="pack-search-empty-clear"
-              onClick={() => setPackQuery("")}
-            >
-              {t("Clear search")}
-            </button>
+            {t("No packs match")}
           </p>
-        ) : searching ? (
-          ranked.map((pack) => renderCard(pack))
-        ) : (
-          <>
-            {lead.map((pack) => renderCard(pack))}
+        ) : null}
+        {leadShown.map((pack) => renderCard(pack))}
 
-            {classicGames ? renderCard(classicGames) : null}
+        {classicShown ? renderCard(classicShown) : null}
 
-            {vsLondon ? renderCard(vsLondon) : null}
+        {londonShown ? renderCard(londonShown) : null}
 
-            {white.map((p) => renderCard(p))}
+        {whiteShown.map((p) => renderCard(p))}
 
-            {black.map((p) => renderCard(p))}
+        {blackShown.map((p) => renderCard(p))}
 
-            {clubWeapons ? renderCard(clubWeapons) : null}
-          </>
-        )}
+        {clubShown ? renderCard(clubShown) : null}
       </div>
 
       <LegalFooter />
