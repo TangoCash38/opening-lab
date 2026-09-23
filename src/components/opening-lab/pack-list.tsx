@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Lock } from "lucide-react";
+import { Lock, Search, X } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import {
@@ -10,6 +10,7 @@ import {
   visiblePacks,
 } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
+import { rankPacks } from "@/lib/pack-search";
 import { packLooksFree } from "@/lib/review-free";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
@@ -58,6 +59,47 @@ type Props = {
 };
 
 const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
+
+function PackSearchField({ value, onChange }: { value: string; onChange: (next: string) => void }) {
+  const t = useT();
+  return (
+    <div className="pack-search-strip">
+      <div className="pack-search-field">
+        <Search className="pack-search-icon" strokeWidth={2} aria-hidden />
+        <input
+          type="search"
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              onChange("");
+            }
+          }}
+          placeholder={t("Search openings")}
+          aria-label={t("Search openings")}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          enterKeyHint="search"
+          className="pack-search-input"
+          data-pack-search
+        />
+        {value ? (
+          <button
+            type="button"
+            className="pack-search-clear"
+            onClick={() => onChange("")}
+            aria-label={t("Clear search")}
+          >
+            <X aria-hidden />
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
 
 function PackProgress({ percent }: { percent: number }) {
   const t = useT();
@@ -150,7 +192,9 @@ function PackCard({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <div className="min-w-0 break-words text-[0.95rem] font-bold leading-snug">{pack.name}</div>
+              <div className="min-w-0 break-words text-[0.95rem] font-bold leading-snug">
+                {pack.name}
+              </div>
               {!anyOpen && (
                 <Lock
                   className="size-3.5 shrink-0 text-fg-subtle"
@@ -159,9 +203,7 @@ function PackCard({
                 />
               )}
             </div>
-            {pack.blurb ? (
-              <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
-            ) : null}
+            {pack.blurb ? <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div> : null}
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
                 {t("{n} lines", { n: pack.lines.length })}
@@ -260,15 +302,9 @@ function PackCard({
   );
 }
 
-export function PackList({
-  onStartLine,
-  onHowToPlay,
-  onCreateOwn,
-  onReportLine,
-}: Props) {
+export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }: Props) {
   const t = useT();
-  const { buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } =
-    useUnlocks();
+  const { buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
   const [modal, setModal] = useState<ModalTarget | null>(null);
@@ -277,6 +313,7 @@ export function PackList({
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
+  const [packQuery, setPackQuery] = useState("");
   const [openPackId, setOpenPackId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
   const wrap = playApp || isPlayWrap();
@@ -286,23 +323,20 @@ export function PackList({
   }, []);
 
   const catalog = visiblePacks(PACKS);
-  const isLead = (p: Pack) =>
-    (LEAD_PACK_IDS as readonly string[]).includes(p.id);
+  const query = packQuery.trim();
+  const searching = query.length > 0;
+  const ranked = searching ? rankPacks(catalog, query) : catalog;
+  const isLead = (p: Pack) => (LEAD_PACK_IDS as readonly string[]).includes(p.id);
   const lead = LEAD_PACK_IDS.map((id) => catalog.find((p) => p.id === id)).filter(
     (p): p is Pack => !!p,
   );
   const white = catalog.filter((p) => p.section === "white" && !isLead(p));
   const black = catalog.filter(
-    (p) =>
-      p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black",
+    (p) => p.section === "black" && p.id !== "vs-london" && p.id !== "caro-kann-black",
   );
-  const classicGames = catalog.find(
-    (p) => p.id === "classic-games" && !isLead(p),
-  );
+  const classicGames = catalog.find((p) => p.id === "classic-games" && !isLead(p));
   const vsLondon = catalog.find((p) => p.id === "vs-london" && !isLead(p));
-  const clubWeapons = catalog.find(
-    (p) => p.id === "club-weapons" && !isLead(p),
-  );
+  const clubWeapons = catalog.find((p) => p.id === "club-weapons" && !isLead(p));
 
   const togglePack = (pack: Pack) => {
     setOpenPackId((id) => (id === pack.id ? null : pack.id));
@@ -521,11 +555,7 @@ export function PackList({
       <WebsiteAppPrompt />
       <div className="home-heading-row">
         <div className="home-heading-actions">
-          <HomeMenu
-            onCreateOwn={onCreateOwn}
-            onHelp={onHowToPlay}
-            onReport={onReportLine}
-          />
+          <HomeMenu onCreateOwn={onCreateOwn} onHelp={onHowToPlay} onReport={onReportLine} />
         </div>
       </div>
       {unlockNotice ? (
@@ -541,18 +571,37 @@ export function PackList({
         </p>
       ) : null}
 
+      <PackSearchField value={packQuery} onChange={setPackQuery} />
+
       <div className="pack-list-grid">
-        {lead.map((pack) => renderCard(pack))}
+        {searching && ranked.length === 0 ? (
+          <p className="pack-search-empty" role="status">
+            {t("No openings match “{query}”", { query })}
+            <button
+              type="button"
+              className="pack-search-empty-clear"
+              onClick={() => setPackQuery("")}
+            >
+              {t("Clear search")}
+            </button>
+          </p>
+        ) : searching ? (
+          ranked.map((pack) => renderCard(pack))
+        ) : (
+          <>
+            {lead.map((pack) => renderCard(pack))}
 
-        {classicGames ? renderCard(classicGames) : null}
+            {classicGames ? renderCard(classicGames) : null}
 
-        {vsLondon ? renderCard(vsLondon) : null}
+            {vsLondon ? renderCard(vsLondon) : null}
 
-        {white.map((p) => renderCard(p))}
+            {white.map((p) => renderCard(p))}
 
-        {black.map((p) => renderCard(p))}
+            {black.map((p) => renderCard(p))}
 
-        {clubWeapons ? renderCard(clubWeapons) : null}
+            {clubWeapons ? renderCard(clubWeapons) : null}
+          </>
+        )}
       </div>
 
       <LegalFooter />

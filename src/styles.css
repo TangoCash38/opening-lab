@@ -629,6 +629,130 @@ html[data-color-scheme="dark"] {
     }
   }
 
+  /* Book-index strip under Menu. Static on purpose: a sticky field
+     covered the first pack card (removed in #249). */
+  .pack-search-strip {
+    position: static;
+    z-index: auto;
+    margin: 0.2rem 0 0.95rem;
+  }
+
+  .pack-search-field {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+    max-width: 22rem;
+    min-height: 2.4rem;
+    padding: 0.15rem 0.35rem 0.15rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--color-dark-sq) 34%, var(--color-border));
+    border-radius: 0.7rem;
+    background: color-mix(in srgb, var(--color-light-sq) 46%, var(--color-bg-elevated));
+    color: var(--color-fg);
+    box-shadow: inset 0 1px 0 rgba(255, 252, 247, 0.45);
+  }
+
+  .pack-search-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex: 0 0 auto;
+    color: var(--color-fg-muted);
+  }
+
+  .pack-search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    margin: 0;
+    padding: 0.35rem 0;
+    background: transparent;
+    color: var(--color-fg);
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.2;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .pack-search-input::placeholder {
+    color: var(--color-fg-muted);
+    opacity: 1;
+  }
+
+  .pack-search-input::-webkit-search-cancel-button,
+  .pack-search-input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .pack-search-field:focus-within {
+    border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-dark-sq));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+
+  .pack-search-clear {
+    display: grid;
+    place-items: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-fg-muted);
+    padding: 0;
+  }
+
+  .pack-search-clear svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .pack-search-clear:hover,
+  .pack-search-clear:focus-visible {
+    background: color-mix(in srgb, var(--color-dark-sq) 16%, transparent);
+    color: var(--color-fg);
+  }
+
+  .pack-search-empty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.75rem;
+    margin: 0.1rem 0 0.85rem;
+    color: var(--color-fg-muted);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .pack-search-empty-clear {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--color-accent);
+    font: inherit;
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+  }
+
+  html[data-color-scheme="dark"] .pack-search-field {
+    background: color-mix(in srgb, var(--color-dark-sq) 28%, var(--color-bg-elevated));
+    border-color: color-mix(in srgb, var(--color-dark-sq) 55%, var(--color-border));
+    box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.04);
+    color: var(--color-fg);
+  }
+
+  html[data-color-scheme="dark"] .pack-search-input,
+  html[data-color-scheme="dark"] .pack-search-icon {
+    color: var(--color-fg);
+  }
+
+  html[data-color-scheme="dark"] .pack-search-input::placeholder {
+    color: var(--color-fg-muted);
+  }
+
   .sq-light {
     background-color: #f3e5c8;
   }
