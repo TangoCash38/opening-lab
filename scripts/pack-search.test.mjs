@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -259,6 +259,22 @@ test("pack search aliases and false friends against the live catalog", () => {
   assert.deepEqual(kings[0], "kg-black");
   assert.ok(kings.includes("kings-indian-black"));
   assert.ok(kings.indexOf("kg-black") < kings.indexOf("kings-indian-black"));
+});
+
+test("client pack search has no unicode property escapes", () => {
+  const files = [];
+  const walk = (dir) => {
+    for (const name of readdirSync(dir)) {
+      const path = join(dir, name);
+      if (statSync(path).isDirectory()) walk(path);
+      else if (/\.(ts|tsx|js|mjs|jsx)$/.test(name)) files.push(path);
+    }
+  };
+  walk(join(root, "src/components"));
+  walk(join(root, "src/routes"));
+  files.push(join(root, "src/lib/pack-search.ts"));
+  const hits = files.filter((file) => /\\p\{|\\P\{/.test(readFileSync(file, "utf8")));
+  assert.deepEqual(hits, []);
 });
 
 test("progressive prefixes o, ol, and old", () => {
