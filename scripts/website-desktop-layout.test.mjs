@@ -44,12 +44,11 @@ test("desktop home split classes and website-only CSS exist", () => {
   assert.match(css, /min\(420px,\s*45vw\)/);
   assert.match(list, /pack-list-grid/);
   assert.match(list, /home-heading-row/);
-  assert.match(list, /pack-search-strip/);
-  assert.doesNotMatch(list, /pack-search-sticky/);
+  assert.doesNotMatch(list, /pack-search-strip/);
+  assert.doesNotMatch(list, /PackSearchField/);
   const headingAt = list.indexOf("home-heading-row");
-  const searchAt = list.indexOf("<PackSearchField", headingAt);
-  const gridAt = list.indexOf("pack-list-grid", searchAt);
-  assert.ok(headingAt < searchAt && searchAt < gridAt);
+  const gridAt = list.indexOf("pack-list-grid");
+  assert.ok(headingAt > -1 && gridAt > headingAt);
   assert.match(css, /\[data-surface="website"\] \.pack-list-grid/);
 });
 
