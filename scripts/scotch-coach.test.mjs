@@ -37,7 +37,7 @@ test("coach narrates the scotch gambit then starts book practice", () => {
   assert.match(intro, /onDone/);
   assert.match(hero, /finishCoach/);
   assert.match(hero, /mode: "learn"/);
-  assert.match(intro, /coach-seated\.png/);
+  assert.match(intro, /coach-seated-v2\.png/);
   assert.match(css, /scotch-coach-emerge/);
   assert.match(css, /#fbf6ea/);
   assert.doesNotMatch(intro, /vs-computer|playComputer|Play on/i);

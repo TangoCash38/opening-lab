@@ -8,10 +8,10 @@ export function ScotchCoachFigure() {
     <div className="scotch-coach-stage" aria-hidden="true">
       <img
         className="scotch-coach-figure"
-        src="/scotch-coach/coach-seated.png"
+        src="/scotch-coach/coach-seated-v2.png"
         alt=""
-        width={442}
-        height={1056}
+        width={640}
+        height={1071}
         draggable={false}
       />
     </div>
