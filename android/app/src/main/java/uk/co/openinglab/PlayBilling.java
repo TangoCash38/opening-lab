@@ -44,7 +44,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
 
     /**
      * Mirror of PLAY_PATH_B_PACK_IDS in src/lib/play-skus.ts.
-     * 32 packs (includes caro-kann-black extras). Opening Traps is not an IAP.
+     * 33 packs (includes caro-kann-black extras). Opening Traps is not an IAP.
      */
     static final String[] PATH_B_PACK_IDS = {
             "caro-kann-black",
@@ -76,6 +76,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "petroff-black",
             "berlin-black",
             "kings-indian-black",
+            "old-indian-black",
             "stafford-black",
             "ponziani-white",
             "alekhine-black",

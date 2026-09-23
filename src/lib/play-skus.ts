@@ -7,7 +7,7 @@
  * `pack_` + packId with `-` → `_` (`pack_qgd_black`).
  *
  * Official Console SKUs:
- *   pack_<id> for 31 paid visible packs + pack_caro_kann_black
+ *   pack_<id> for 32 paid visible packs + pack_caro_kann_black
  *   buy_all_packs  →  applyPurchase({ kind: "buy_all" })
  *
  * No Lab+ / no lab_plus_yearly / no subscriptions.
@@ -18,7 +18,7 @@ export const PLAY_SKU_BUY_ALL = "buy_all_packs";
 export const PLAY_SKU_PACK_PREFIX = "pack_";
 
 /**
- * 31 paid visible packs + caro-kann-black (Caro rest is on sale as
+ * 32 paid visible packs + caro-kann-black (Caro rest is on sale as
  * pack_caro_kann_black). opening-traps is not a Path B IAP.
  */
 export const PLAY_PATH_B_PACK_IDS = [
@@ -51,6 +51,7 @@ export const PLAY_PATH_B_PACK_IDS = [
   "petroff-black",
   "berlin-black",
   "kings-indian-black",
+  "old-indian-black",
   "stafford-black",
   "ponziani-white",
   "alekhine-black",
