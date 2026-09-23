@@ -3050,37 +3050,13 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   bottom: 0;
   height: 98%;
   width: auto;
-  aspect-ratio: 640 / 1071;
   max-width: none;
   transform: translateX(-50%) translateY(0) scale(1);
   transform-origin: center bottom;
   filter: drop-shadow(0 12px 16px rgba(60, 36, 18, 0.28));
   animation: scotch-coach-emerge 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) both;
-}
-
-.scotch-coach-figure img {
-  display: block;
-  width: 100%;
-  height: 100%;
   -webkit-user-drag: none;
   user-select: none;
-}
-
-/* Cartoon mouth painted on the seated PNG. --mouth is 0.07 shut … 1 wide. */
-.scotch-coach-mouth {
-  position: absolute;
-  left: 49.05%;
-  top: 36.5%;
-  width: 6.3%;
-  height: 2.55%;
-  pointer-events: none;
-  transform: translate(-50%, 0) scaleX(calc(0.7 + var(--mouth, 0.07) * 0.45)) scaleY(var(--mouth, 0.07));
-  transform-origin: 50% 10%;
-  border-radius: 42% 42% 48% 48% / 28% 28% 72% 72%;
-  background: #3c140e;
-  box-shadow:
-    inset 0 0.12em 0 #fff3e4,
-    0 0 0 0.04em #2a0c08;
 }
 
 @keyframes scotch-coach-emerge {
