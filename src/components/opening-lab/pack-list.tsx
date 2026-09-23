@@ -159,7 +159,9 @@ function PackCard({
                 />
               )}
             </div>
-            <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
+            {pack.blurb ? (
+              <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div>
+            ) : null}
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
                 {t("{n} lines", { n: pack.lines.length })}

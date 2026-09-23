@@ -2389,6 +2389,8 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.match(ot, /Bg4#/);
   assert.doesNotMatch(ot, /id: "ot12"/);
   assert.doesNotMatch(ot, /Trap · Grob/);
+  assert.match(ot, /blurb: ""/);
+  assert.doesNotMatch(ot, /punish-the-take/);
   assert.match(ot, /closedLabel: "Free · 11 traps"/);
   assert.match(ot, /Then Test with none/);
   assert.doesNotMatch(ot, /Play on/);

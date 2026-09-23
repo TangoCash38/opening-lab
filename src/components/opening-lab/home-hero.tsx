@@ -80,8 +80,9 @@ export function HomeHero({
   const price = packPrice(pack);
   const shortPack = packShortLabel(pack);
   // Keep default Caro-Kann for Black / Advance, Classical, Exchange strings for tests.
+  // An empty blurb is an intentional omit, not the Caro fallback.
   const title = pack.name || "Caro-Kann for Black";
-  const blurb = pack.blurb || "Advance, Classical, Exchange";
+  const blurb = pack.blurb ?? "Advance, Classical, Exchange";
 
   useEffect(() => {
     if (!websiteSplit || typeof window === "undefined") return;
@@ -177,7 +178,9 @@ export function HomeHero({
               <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">
                 {title}
               </h2>
-              <p className="mt-0.5 text-[0.82rem] text-fg-muted">{blurb}</p>
+              {blurb ? (
+                <p className="mt-0.5 text-[0.82rem] text-fg-muted">{blurb}</p>
+              ) : null}
               <LondonWarmupChip
                 pack={pack}
                 onStartLine={(nextPack, nextLine, mode, options) => {
