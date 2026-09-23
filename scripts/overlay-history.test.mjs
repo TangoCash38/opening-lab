@@ -204,6 +204,70 @@ test("nested overlays: Back closes top only; second Back closes base", async (t)
   }
 });
 
+test("UI dismiss keeps the viewport and swallows the synthetic pop", async (t) => {
+  let ts;
+  try {
+    ts = require("typescript");
+  } catch {
+    t.skip("typescript not installed");
+    return;
+  }
+  void ts;
+
+  const { mod, dir } = await loadMod();
+  try {
+    const { bindOverlayHistory, resetOverlayHistoryStackForTests } = mod;
+    resetOverlayHistoryStackForTests();
+
+    const win = makeMockWindow();
+    win.scrollX = 4;
+    win.scrollY = 240;
+    const scrolls = [];
+    win.scrollTo = (x, y) => {
+      win.scrollX = x;
+      win.scrollY = y;
+      scrolls.push(y);
+    };
+    const originalBack = win.history.back.bind(win.history);
+    win.history.back = () => {
+      win.scrollY = 0;
+      originalBack();
+    };
+    let stopped = 0;
+    const originalAdd = win.addEventListener.bind(win);
+    win.addEventListener = (type, fn, options) => {
+      if (type !== "popstate") {
+        originalAdd(type, fn, options);
+        return;
+      }
+      originalAdd(type, (ev) => {
+        ev.stopImmediatePropagation = () => {
+          stopped += 1;
+        };
+        fn(ev);
+      }, options);
+    };
+
+    let closed = 0;
+    const binding = bindOverlayHistory(win, {
+      id: "line-result",
+      onPop: () => {
+        closed += 1;
+      },
+    });
+    binding.dismiss();
+    assert.equal(closed, 0, "Test yourself must not also run the Back closer");
+    assert.equal(win._depth(), 0);
+    assert.equal(win.scrollY, 240);
+    assert.equal(stopped, 1, "router popstate listener must not see the dismiss");
+    assert.ok(scrolls.includes(240));
+
+    resetOverlayHistoryStackForTests();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("language sheet and finish modal use useOverlayHistory", () => {
   const picker = src("src/components/opening-lab/lang-picker.tsx");
   const modal = src("src/components/opening-lab/line-result-modal.tsx");
@@ -212,6 +276,12 @@ test("language sheet and finish modal use useOverlayHistory", () => {
 
   assert.match(hook, /bindOverlayHistory/);
   assert.match(hook, /binding\.release/);
+  assert.match(hook, /queueMicrotask/);
+  const history = src("src/lib/overlay-history.ts");
+  assert.match(history, /History\.prototype\.pushState/);
+  assert.match(history, /stopImmediatePropagation/);
+  assert.match(history, /pinWindowScroll/);
+  assert.match(src("src/components/opening-lab/line-result-modal.tsx"), /function blurActive/);
 
   assert.match(picker, /useOverlayHistory\(open, close, "lang"\)/);
   assert.match(modal, /useOverlayHistory\(true, onClose, "line-result"\)/);

@@ -3,6 +3,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useT } from "@/lib/i18n";
 
+/** Unfocus the sheet control before it unmounts. Chrome scrolls to the top if a focused node is removed. */
+function blurActive() {
+  if (typeof document === "undefined") return;
+  const active = document.activeElement;
+  if (active instanceof HTMLElement) active.blur();
+}
+
 type Props = {
   kind: "wrong" | "end";
   title: string;
@@ -32,6 +39,18 @@ export function LineResultModal({
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
   const handleAction = onAction ?? onClose;
+  const dismiss = () => {
+    blurActive();
+    onClose();
+  };
+  const runAction = () => {
+    blurActive();
+    handleAction();
+  };
+  const runPrimary = () => {
+    blurActive();
+    onPrimary?.();
+  };
   const isWrong = kind === "wrong";
   const bodyRef = useRef<HTMLDivElement>(null);
   const [hasOverflow, setHasOverflow] = useState(false);
@@ -76,6 +95,7 @@ export function LineResultModal({
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       // Docked: close (same as Close), not restore.
+      blurActive();
       onClose();
     };
     document.addEventListener("keydown", onKey);
@@ -105,7 +125,7 @@ export function LineResultModal({
           <button
             type="button"
             data-result-dismiss
-            onClick={handleAction}
+            onClick={runAction}
             className="line-result-secondary-btn"
           >
             {actionLabel}
@@ -116,7 +136,7 @@ export function LineResultModal({
           <button
             type="button"
             data-result-primary
-            onClick={onPrimary}
+            onClick={runPrimary}
             className="line-result-primary-btn"
           >
             {primaryLabel}
@@ -127,7 +147,7 @@ export function LineResultModal({
         <button
           type="button"
           data-result-primary
-          onClick={onPrimary}
+          onClick={runPrimary}
           className={
             compact
               ? "min-h-10 w-full rounded-xl bg-accent px-3 py-2 text-[0.88rem] font-bold text-accent-fg active:scale-[0.99]"
@@ -141,7 +161,7 @@ export function LineResultModal({
         <button
           type="button"
           data-result-dismiss
-          onClick={handleAction}
+          onClick={runAction}
           className={
             showPrimary
               ? compact
@@ -203,7 +223,7 @@ export function LineResultModal({
               </button>
               <button
                 type="button"
-                onClick={onClose}
+                onClick={dismiss}
                 className="grid size-8 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
                 aria-label="Close"
               >
@@ -225,7 +245,7 @@ export function LineResultModal({
         aria-labelledby="line-result-title"
         data-result-kind={kind}
         data-result-actions={showPrimary ? 2 : 1}
-        onClick={onClose}
+        onClick={dismiss}
     >
       <div
         className={`line-result-dim${boardExpanded ? " line-result-dim--board-fs" : ""}`}
@@ -265,7 +285,7 @@ export function LineResultModal({
             </button>
             <button
               type="button"
-              onClick={onClose}
+              onClick={dismiss}
               className="grid size-9 shrink-0 place-items-center rounded-full bg-bg-subtle text-fg-muted"
               aria-label="Close"
             >
