@@ -52,6 +52,13 @@ type Props = {
   /** Cap this session at startPly + plyLimit book plies (London warm-up). */
   plyLimit?: number;
   startPly?: number;
+  /**
+   * Website pack card: practice stays on the hero board.
+   * Play wrap keeps the full-page trainer.
+   */
+  embedded?: boolean;
+  /** Wood-margin file/rank labels. Off once the board is expanded. */
+  frameCoords?: boolean;
 };
 
 type ResultNextAction = "practiceNext" | "testYourself" | "learn";
@@ -230,7 +237,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, plyLimit, startPly = 0 }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, plyLimit, startPly = 0, embedded = false, frameCoords = false }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -327,8 +334,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   }, [clearReplyTimer]);
 
   useEffect(() => {
+    if (embedded) return;
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  }, [embedded]);
 
   const expectedMove = useCallback(
     (g: Chess, idx: number): Move | null => {
@@ -978,7 +986,48 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const gymOpening = gym ? lookupOpeningIdentityPrefix(line.plies) : null;
 
   return (
-    <div className="train-layout">
+    <div
+      className={`train-layout${embedded ? " train-embedded" : ""}`}
+      data-frame-practice={embedded ? "true" : undefined}
+    >
+      {embedded ? (
+        <div className="train-frame-chrome">
+          <div className="flex items-center gap-2">
+            <p className="m-0 min-w-0 flex-1 truncate text-[0.92rem] font-semibold">{line.name}</p>
+            {!boardExpanded ? (
+              <button
+                type="button"
+                onClick={() => setBoardExpanded(true)}
+                className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border border-border bg-bg-elevated px-3 py-1.5 text-[0.82rem] font-semibold text-fg-muted active:scale-95"
+              >
+                <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
+                Expand
+              </button>
+            ) : null}
+          </div>
+          <div className="mt-1.5 flex gap-1.5 rounded-full bg-bg-subtle p-1">
+            <ModeTab active={mode === "learn"} onClick={() => changeMode("learn")}>
+              Practice
+            </ModeTab>
+            <ModeTab
+              active={mode === "practice"}
+              onClick={() => changeMode("practice")}
+              nudge={nudgeTest}
+              disabled={lockTest}
+              title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
+            >
+              Test
+            </ModeTab>
+          </div>
+          <div
+            className={`mt-1 min-h-[1.2em] text-center text-[0.82rem] font-semibold text-accent transition-opacity duration-200 ${
+              hint ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {hint || "\u00a0"}
+          </div>
+        </div>
+      ) : (
       <div className="train-top-chrome">
       {gym ? (
         <div className="create-own-train-head" data-gym-line>
@@ -1077,9 +1126,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         {hint || "\u00a0"}
       </div>
       </div>
+      )}
 
       <div className="train-board-band">
-      {!boardExpanded ? (
+      {!boardExpanded && !embedded ? (
         <div className="mb-1 flex items-center justify-end">
           <button
             type="button"
@@ -1148,6 +1198,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               onSquare={onSquare}
               onPlay={playFromTo}
               expanded={boardExpanded}
+              frameCoords={frameCoords && !boardExpanded}
               mateBlast={mateBlast}
               onMateBlastDone={stopMateBlast}
               interactive={!busy && !slide && !viewingHistory}
@@ -1206,7 +1257,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
       </div>
 
-      <div className="train-below">
+      <div className={`train-below${embedded ? " train-frame-below" : ""}`}>
       {/* Move history — single-row horizontal scroller (no wrap → no board jump) */}
       <div
         ref={notationStripRef}
@@ -1307,7 +1358,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           >
             Done
           </button>
-          {bookDone && mode === "practice" ? (
+          {!embedded && bookDone && mode === "practice" ? (
             <button
               type="button"
               onClick={onTrainNext ?? onBack}
@@ -1329,7 +1380,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           ) : null}
         </div>
       </div>
-      <LineFeedback pack={pack} line={line} />
+      {embedded ? null : <LineFeedback pack={pack} line={line} />}
       </div>
       {resultCard ? (
         <LineResultModal

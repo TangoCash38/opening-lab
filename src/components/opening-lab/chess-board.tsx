@@ -70,6 +70,11 @@ type Props = {
   arrows?: BoardArrow[];
   /** Extra soft-green hint moves (authoring MultiPV first plies). */
   hintMoves?: { from: Square; to: Square }[];
+  /**
+   * File/rank on the wood margin (book diagram). In-square labels stay the
+   * default everywhere else — the pack frame only opts in when they fit.
+   */
+  frameCoords?: boolean;
 };
 
 type PlacedPiece = {
@@ -328,6 +333,7 @@ export function ChessBoard({
   onMateBlastDone,
   arrows,
   hintMoves,
+  frameCoords = false,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -675,7 +681,7 @@ export function ChessBoard({
               aria-hidden
             />
           )}
-          {r === 7 && (
+          {!frameCoords && r === 7 && (
             <span
               className={`sq-coord pointer-events-none absolute bottom-0.5 right-1 z-[2] text-[0.72rem] font-bold leading-none ${
                 light ? "sq-coord--on-light" : "sq-coord--on-dark"
@@ -684,7 +690,7 @@ export function ChessBoard({
               {file}
             </span>
           )}
-          {c === 0 && (
+          {!frameCoords && c === 0 && (
             <span
               className={`sq-coord pointer-events-none absolute left-1 top-0.5 z-[2] text-[0.72rem] font-bold leading-none ${
                 light ? "sq-coord--on-light" : "sq-coord--on-dark"
@@ -742,9 +748,26 @@ export function ChessBoard({
     });
   }, [pieces, slide, glideOn, flip, drag, slideMs, slideEase, mateBlast]);
 
+  const marginFiles = (flip ? "hgfedcba" : "abcdefgh").split("");
+  const marginRanks = flip
+    ? ["1", "2", "3", "4", "5", "6", "7", "8"]
+    : ["8", "7", "6", "5", "4", "3", "2", "1"];
+
   return (
-    <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : "mb-4 max-w-[420px]"}`}>
-      <div className="board-frame" dir="ltr">
+    <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : frameCoords ? "mb-1 max-w-[420px]" : "mb-4 max-w-[420px]"}`}>
+      <div
+        className={`board-frame${frameCoords ? " board-frame--margin-coords" : ""}`}
+        dir="ltr"
+      >
+        {frameCoords ? (
+          <div className="board-margin-ranks" aria-hidden>
+            {marginRanks.map((label) => (
+              <span key={label} className="board-margin-label">
+                {label}
+              </span>
+            ))}
+          </div>
+        ) : null}
         <div className="board-frame-inner">
           <div
             ref={surfaceRef}
@@ -908,6 +931,15 @@ export function ChessBoard({
             ) : null}
           </div>
         </div>
+        {frameCoords ? (
+          <div className="board-margin-files" aria-hidden>
+            {marginFiles.map((label) => (
+              <span key={label} className="board-margin-label">
+                {label}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
       {drag?.moved && drag.code ? (
         <div
