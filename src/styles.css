@@ -3111,6 +3111,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin-top: 0.7rem;
 }
 
+.scotch-coach-mute,
 .scotch-coach-skip {
   min-height: 2.6rem;
   padding: 0.35rem 0.85rem;
@@ -3122,8 +3123,13 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   font-weight: 650;
 }
 
+.scotch-coach-mute:active,
 .scotch-coach-skip:active {
   opacity: 0.7;
+}
+
+.scotch-coach-mute[aria-pressed="true"] {
+  color: #6b4428;
 }
 
 .scotch-coach-next {

@@ -18,6 +18,28 @@ export const SCOTCH_COACH_BEATS = [
   "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
 ] as const;
 
+/** Sean's recorded reading of SCOTCH_COACH_BEATS. Not synthetic speech. */
+export const SCOTCH_COACH_NARRATION_MP3 = "/scotch-coach/sean-coach-narration.mp3";
+export const SCOTCH_COACH_NARRATION_OGG = "/scotch-coach/sean-coach-narration.ogg";
+/** Equal quarters until the element reports a duration. The file is ~44s. */
+export const SCOTCH_COACH_NARRATION_FALLBACK_SEC = 44;
+
+/** Map playback time onto the four cream beats. Never past the last beat. */
+export function scotchCoachBeatIndex(
+  currentTimeSec: number,
+  durationSec: number,
+  beatCount = SCOTCH_COACH_BEATS.length,
+): number {
+  const count = Math.max(1, beatCount);
+  const duration =
+    Number.isFinite(durationSec) && durationSec > 0
+      ? durationSec
+      : SCOTCH_COACH_NARRATION_FALLBACK_SEC;
+  if (!Number.isFinite(currentTimeSec) || currentTimeSec <= 0) return 0;
+  const index = Math.floor(currentTimeSec / (duration / count));
+  return Math.min(count - 1, Math.max(0, index));
+}
+
 export function scotchCoachApplies(input: {
   packId: string;
   playApp: boolean;
