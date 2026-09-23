@@ -128,7 +128,7 @@ function prepare<T extends PackSearchFields>(pack: T, index: number): Prepared {
 }
 
 function prefixHit(token: string, vocab: Set<string>): boolean {
-  if (token.length < 4) return false;
+  if (!token) return false;
   for (const word of vocab) {
     if (word.length > token.length && word.startsWith(token)) return true;
   }
@@ -184,7 +184,7 @@ export function rankPacks<T extends PackSearchFields>(packs: readonly T[], query
   const sides = new Set<string>();
   const tokens: string[] = [];
   for (const token of normalized.split(" ")) {
-    if (token.length < 2) continue;
+    if (!token) continue;
     if (SIDE_TOKENS.has(token)) sides.add(token);
     else tokens.push(token);
   }

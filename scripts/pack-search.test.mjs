@@ -261,6 +261,31 @@ test("pack search aliases and false friends against the live catalog", () => {
   assert.ok(kings.indexOf("kg-black") < kings.indexOf("kings-indian-black"));
 });
 
+test("progressive prefixes o, ol, and old", () => {
+  const ids = (query) => rankPacks(catalog, query).map((pack) => pack.id);
+
+  assert.deepEqual(ids("o"), [
+    "opening-traps",
+    "english-white",
+    "catalan-white",
+    "old-indian-black",
+    "ponziani-white",
+  ]);
+  assert.ok(ids("o").includes("opening-traps"));
+  assert.ok(ids("o").includes("old-indian-black"));
+
+  assert.deepEqual(ids("ol"), ["old-indian-black"]);
+  assert.ok(!ids("ol").includes("opening-traps"));
+
+  assert.deepEqual(ids("old"), ["old-indian-black"]);
+
+  assert.deepEqual(ids("kid"), ["kings-indian-black"]);
+  assert.ok(!ids("kid").includes("old-indian-black"));
+  assert.deepEqual(ids("oid"), ["old-indian-black"]);
+  assert.deepEqual(ids("old indian"), ["old-indian-black"]);
+  assert.deepEqual(ids("zzzzpack"), []);
+});
+
 test("Old Indian stays distinct from King's Indian, including line text", () => {
   const kid = {
     id: "kings-indian-black",
