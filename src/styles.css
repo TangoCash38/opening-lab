@@ -70,7 +70,7 @@ html[data-color-scheme="dark"] {
     -webkit-tap-highlight-color: transparent;
     touch-action: pan-y pinch-zoom;
     overscroll-behavior-y: auto;
-    overflow-x: hidden;
+    overflow-x: clip;
     overflow-y: auto;
     height: auto;
     -webkit-overflow-scrolling: touch;
@@ -88,8 +88,9 @@ html[data-color-scheme="dark"] {
     -webkit-user-select: none;
     user-select: none;
     overscroll-behavior-y: auto;
-    overflow-x: hidden;
-    overflow-y: auto;
+    /* Visible so the document (html) is the only scrollport. hidden here
+       makes body a scroll container and position:sticky never meets the viewport. */
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -484,11 +485,13 @@ html[data-color-scheme="dark"] {
     background: var(--color-bg-elevated);
   }
 
-  /* Document / body stays the scroller (native WebView scroll).
-     Do not lock body or nest a second overflow pane on the pack list. */
+  /* Document (html) stays the scroller (native WebView scroll).
+     Do not lock body or nest a second overflow pane on the pack list.
+     clip, not hidden: hidden promotes the other axis to auto and traps sticky. */
   .app-shell {
     min-height: 100dvh;
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     background: var(--color-bg);
   }
 
@@ -507,7 +510,8 @@ html[data-color-scheme="dark"] {
   }
 
   .app-main {
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
   }

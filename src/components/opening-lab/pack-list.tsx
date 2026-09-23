@@ -363,7 +363,8 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   }, [packQuery]);
 
   const catalog = visiblePacks(PACKS);
-  const searching = appliedQuery.length > 0;
+  const liveQuery = packQuery.trim();
+  const searching = liveQuery.length > 0 && appliedQuery.length > 0;
   const matchIds = searching
     ? new Set(rankPacks(catalog, appliedQuery).map((pack) => pack.id))
     : null;

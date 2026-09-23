@@ -98,6 +98,9 @@ test("home search is a cream pill that filters the pack list in place", () => {
   assert.doesNotMatch(searchCss, /--color-accent/);
   assert.doesNotMatch(searchCss, /position:\s*static/);
   assert.doesNotMatch(css, /\.pack-search-sticky/);
+  assert.match(css, /\.app-shell\s*\{[^}]*overflow-x:\s*clip/);
+  assert.match(css, /\.app-main\s*\{[^}]*overflow-x:\s*clip/);
+  assert.match(css, /html\s*\{[^}]*overflow-x:\s*clip/);
 
   assert.equal(i18n.split('"Search openings":').length - 1, 12);
   assert.equal(i18n.split('"Clear search":').length - 1, 12);
