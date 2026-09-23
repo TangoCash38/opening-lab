@@ -9,11 +9,13 @@ export const SCOTCH_PACK_ID = "scotch";
 /** Flip off to hide the intro without changing Practice, Test, or other packs. */
 export const SCOTCH_COACH_ENABLED = true;
 
-/** Placeholder history. Opening Expert can replace these beats. */
+export const SCOTCH_COACH_TITLE = "Scotch Gambit · a cuppa and the open board";
+
 export const SCOTCH_COACH_BEATS = [
-  "The Scotch Gambit: after 1.e4 e5 2.Nf3 Nc6 3.d4, White often plays Bc4, aiming at f7 with rapid development.",
-  "A hobbyist favourite: open play, with clear attacking ideas.",
-  "Let’s practice the book moves.",
+  "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.",
+  "When Black takes on d4, White can leave the pawn and plant the bishop on c4. That is the gambit — develop fast, aim at f7, and put Black under pressure before they tidy up.",
+  "The Scotch family got its name from those Edinburgh–London correspondence matches in the eighteen-twenties. Hobbyists still love this line because the board opens up and the plans are concrete — not a long quiet squeeze.",
+  "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
 ] as const;
 
 export function scotchCoachApplies(input: {

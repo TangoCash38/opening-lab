@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SCOTCH_COACH_BEATS } from "@/lib/scotch-coach";
+import { SCOTCH_COACH_BEATS, SCOTCH_COACH_TITLE } from "@/lib/scotch-coach";
 import { useT } from "@/lib/i18n";
 
 /** Rises out of the board, then sits with the Opening Lab mug. Decorative. */
@@ -37,7 +37,7 @@ export function ScotchCoachCard({ onDone }: CardProps) {
       role="region"
       aria-label={t("Scotch coach")}
     >
-      <p className="scotch-coach-kicker">{t("Scotch Gambit")}</p>
+      <p className="scotch-coach-kicker">{t(SCOTCH_COACH_TITLE)}</p>
       <p key={beat} className="scotch-coach-beat" data-scotch-coach-line>
         {t(text)}
       </p>

@@ -28,10 +28,13 @@ test("scotch coach is flag- and pack-gated to website desktop practice", () => {
 });
 
 test("coach narrates the scotch gambit then starts book practice", () => {
-  assert.match(lib, /1\.e4 e5 2\.Nf3 Nc6 3\.d4/);
-  assert.match(lib, /Bc4, aiming at f7/);
-  assert.match(lib, /hobbyist favourite/);
-  assert.match(lib, /Let’s practice the book moves\./);
+  assert.match(lib, /Scotch Gambit · a cuppa and the open board/);
+  assert.match(lib, /Right — Scotch Gambit\. It starts like a proper open game/);
+  assert.match(lib, /plant the bishop on c4/);
+  assert.match(lib, /Edinburgh–London correspondence matches in the eighteen-twenties/);
+  assert.match(lib, /Grab your tea\. Practice the book moves with me/);
+  assert.doesNotMatch(lib, /placeholder|Opening Expert can replace/);
+  assert.match(intro, /SCOTCH_COACH_TITLE/);
   assert.match(intro, /data-scotch-coach-skip/);
   assert.match(intro, /data-scotch-coach-next/);
   assert.match(intro, /onDone/);
