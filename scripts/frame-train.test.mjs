@@ -41,6 +41,18 @@ test("in-frame trainer can expand and collapse without leaving the card", () => 
   assert.match(train, /if \(embedded\) return/);
 });
 
+test("in-frame practice pulls the buttons up under the move prompt", () => {
+  assert.match(hero, /home-sample-meta px-4 pb-2 pt-3\.5\$\{frame \? " hidden"/);
+  assert.match(train, /train-frame-notation/);
+  assert.match(train, /train-frame-status/);
+  assert.match(train, /min-h-\[3\.2em\]/);
+  assert.match(css, /\.train-frame-below \.train-frame-notation/);
+  assert.match(css, /margin-top:\s*0\.3rem/);
+  assert.match(css, /\.train-frame-below \.train-frame-status/);
+  assert.match(css, /min-height:\s*1\.35em/);
+  assert.match(css, /margin-bottom:\s*0\.2rem/);
+});
+
 test("pack-frame coordinates sit on the wood margin, not on the squares", () => {
   assert.match(board, /frameCoords\?: boolean/);
   assert.match(board, /board-frame--margin-coords/);
