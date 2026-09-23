@@ -14,8 +14,9 @@ function scrollIntroTop() {
 }
 
 /**
- * Every open and Help reopen: brand + hobbyist note → full-bleed poster +
- * Start → home. The page stays on home until the next full load.
+ * Every open and Help reopen: brand + hobbyist note → Start pinned at the
+ * top of the full-bleed poster → home. The page stays on home until the next
+ * full load.
  */
 export function HomeIntro({ onContinue, onPhaseChange }: Props) {
   const [phase, setPhase] = useState<IntroPhase>("brand");
@@ -80,6 +81,9 @@ function SplashPage({ onStart }: { onStart: () => void }) {
       <h1 id="home-intro-title" className="sr-only">
         Opening Lab
       </h1>
+      <button type="button" className="home-intro-start" onClick={onStart}>
+        {t("Start")}
+      </button>
       <figure className="home-intro-splash-art" data-art="learn-drill">
         <img
           src="/intro/learn-drill-splash.webp"
@@ -89,9 +93,6 @@ function SplashPage({ onStart }: { onStart: () => void }) {
           decoding="async"
         />
       </figure>
-      <button type="button" className="home-intro-start" onClick={onStart}>
-        {t("Start")}
-      </button>
     </div>
   );
 }

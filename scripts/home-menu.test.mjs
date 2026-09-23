@@ -75,6 +75,11 @@ test("every open runs brand + hobbyist, then full-bleed poster Start", () => {
   assert.doesNotMatch(intro, /home-intro-horse/);
   assert.match(intro, /learn-drill-splash\.webp/);
   assert.match(intro, /home-intro-start/);
+  assert.ok(
+    intro.indexOf('className="home-intro-start"') <
+      intro.indexOf('className="home-intro-splash-art"'),
+    "Start sits above the splash art",
+  );
   assert.match(intro, /t\("Start"\)/);
   assert.match(intro, /t\("Continue"\)/);
   assert.match(intro, /SplashPage onStart=\{onContinue\}/);
@@ -118,6 +123,11 @@ test("every open runs brand + hobbyist, then full-bleed poster Start", () => {
   assert.equal(i18n.split("\n  Skip:").length - 1, 12, "Skip");
   assert.match(css, /\.home-intro-splash/);
   assert.match(css, /\.home-intro-start/);
+  assert.match(css, /\.home-intro-start\s*\{[^}]*top:\s*max\(/);
+  assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*bottom:/);
+  assert.match(css, /\.home-intro-start\s*\{[^}]*rgba\(232,\s*214,\s*176/);
+  assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*var\(--color-accent\)/);
+  assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*var\(--color-success\)/);
   assert.match(css, /\.home-intro-hobbyist/);
   assert.match(css, /\.home-intro-splash-art img[\s\S]*object-fit:\s*cover/);
   assert.match(css, /\.guide-intro-reopen[\s\S]*display:\s*flex/);
