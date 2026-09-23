@@ -9,13 +9,30 @@ import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
+import { soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 import { BoardThemePicker } from "./board-theme-picker";
 import { LondonWarmupChip } from "./london-warmup-chip";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
+import { TrainView } from "./train-view";
 
 type TrainMode = "learn" | "practice";
+
+type FrameSession = {
+  line: OpeningLine;
+  mode: TrainMode;
+  plyLimit?: number;
+  startPly?: number;
+};
+
+/** Website desktop split card. Play wrap and narrow website keep the train route. */
+function websiteDesktopFrame(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(min-width: 960px)").matches
+  );
+}
 
 type Props = {
   pack: Pack;
@@ -41,13 +58,22 @@ export function HomeHero({
   embedded = false,
 }: Props) {
   const t = useT();
-  const { masteryOf, isComplete, testPercentOf } = useProgress();
+  const {
+    masteryOf,
+    isComplete,
+    testPercentOf,
+    complete: markComplete,
+    markLearned,
+    failPractice,
+    markTest,
+  } = useProgress();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const shownLines = pack.lines;
   const [linesOpen, setLinesOpen] = useState(linesInitiallyOpen);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
+  const [frame, setFrame] = useState<FrameSession | null>(null);
 
   const websiteSplit = !playApp;
   const hasFreeSample = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
@@ -72,7 +98,32 @@ export function HomeHero({
     setLinesOpen(linesInitiallyOpen);
     setAboutOpen(false);
     setPendingLine(null);
+    setFrame(null);
   }, [pack.id, linesInitiallyOpen]);
+
+  const preferInFrame = () => {
+    if (playApp) return false;
+    if (websiteDesktopFrame()) return true;
+    return frame !== null;
+  };
+
+  const launchLine = (line: OpeningLine, options?: TrainStartOptions) => {
+    if (preferInFrame()) {
+      setFrame({
+        line,
+        mode: "learn",
+        plyLimit: options?.plyLimit,
+        startPly: options?.startPly,
+      });
+      soundSelect();
+      return;
+    }
+    if (options?.plyLimit != null || options?.startPly != null) {
+      onStartLine(pack, line, "learn", options);
+      return;
+    }
+    onStartLine(pack, line, "learn");
+  };
 
   const game = useMemo(() => new Chess(), []);
   const showLinesToggle = !embedded;
@@ -95,7 +146,7 @@ export function HomeHero({
 
   const startAdvance = () => {
     const line = pickPracticeLine();
-    if (line) onStartLine(pack, line, "learn");
+    if (line) launchLine(line);
     else onRequestUnlock?.(pack);
   };
 
@@ -108,7 +159,7 @@ export function HomeHero({
     <section
       className={`home-hero${embedded ? " home-hero-embedded" : " mb-5"}${
         websiteSplit ? " home-hero-split" : ""
-      }`}
+      }${frame ? " home-hero--live" : ""}`}
     >
       <div className="home-sample-card overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="home-hero-split-inner">
@@ -127,9 +178,54 @@ export function HomeHero({
                 {title}
               </h2>
               <p className="mt-0.5 text-[0.82rem] text-fg-muted">{blurb}</p>
-              <LondonWarmupChip pack={pack} onStartLine={onStartLine} />
+              <LondonWarmupChip
+                pack={pack}
+                onStartLine={(nextPack, nextLine, mode, options) => {
+                  if (preferInFrame()) {
+                    setFrame({
+                      line: nextLine,
+                      mode: mode ?? "learn",
+                      plyLimit: options?.plyLimit,
+                      startPly: options?.startPly,
+                    });
+                    soundSelect();
+                    return;
+                  }
+                  onStartLine(nextPack, nextLine, mode, options);
+                }}
+              />
             </div>
 
+            {frame ? (
+              <div className="home-frame-train px-2 pb-1">
+                <TrainView
+                  key={`${pack.id}-${frame.line.id}-${frame.startPly ?? 0}-${frame.plyLimit ?? "all"}`}
+                  pack={pack}
+                  line={frame.line}
+                  initialMode={frame.mode}
+                  plyLimit={frame.plyLimit}
+                  startPly={frame.startPly}
+                  testLocked={frame.plyLimit != null}
+                  embedded
+                  frameCoords={!playApp}
+                  onBack={() => setFrame(null)}
+                  onModeChange={(mode) =>
+                    setFrame((prev) => (prev ? { ...prev, mode } : prev))
+                  }
+                  onLineComplete={() => markComplete(frame.line.id)}
+                  onLearnDone={() => markLearned(frame.line.id)}
+                  onPracticeFail={() => failPractice(frame.line.id)}
+                  onTestPly={(plyIndex) => markTest(frame.line.id, plyIndex)}
+                  onPracticeNext={(nextLine) =>
+                    setFrame({ line: nextLine, mode: "learn" })
+                  }
+                />
+                <div className="pointer-events-auto px-1 pb-0.5 pt-1">
+                  <BoardThemePicker compact className="w-full" />
+                </div>
+              </div>
+            ) : (
+              <>
             <div className="home-board pointer-events-none px-2">
               <ChessBoard
                 game={game}
@@ -142,6 +238,7 @@ export function HomeHero({
                 slide={null}
                 onSquare={() => {}}
                 interactive={false}
+                frameCoords={!playApp}
               />
               <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
                 <BoardThemePicker compact className="w-full" />
@@ -157,6 +254,8 @@ export function HomeHero({
                 {t("Tap to practice")}
               </button>
             </div>
+              </>
+            )}
           </div>
 
           <div className="home-hero-copy-col">
@@ -210,7 +309,7 @@ export function HomeHero({
                             if (pack.about) {
                               setPendingLine(item);
                               setAboutOpen(true);
-                            } else onStartLine(pack, item, "learn");
+                            } else launchLine(item);
                           } else onRequestUnlock?.(pack);
                         }}
                       />
@@ -238,7 +337,7 @@ export function HomeHero({
             setAboutOpen(false);
             const line = pendingLine;
             setPendingLine(null);
-            if (line) onStartLine(pack, line, "learn");
+            if (line) launchLine(line);
             else startAdvance();
           }}
         />

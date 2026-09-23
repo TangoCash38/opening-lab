@@ -550,6 +550,11 @@ html[data-color-scheme="dark"] {
       padding-bottom: 0.35rem;
     }
 
+    /* In-frame practice grows with the board; don't clip Expand or the wood margin. */
+    [data-surface="website"] .home-hero-split.home-hero--live .home-hero-board-col {
+      overflow: visible;
+    }
+
     [data-surface="website"] .home-hero-split .home-hero-copy-col {
       grid-column: 2;
       grid-row: 2;
@@ -760,6 +765,55 @@ html[data-color-scheme="dark"] {
     border-radius: 3px;
     padding: 2px;
     background: rgba(28, 25, 21, 0.22);
+  }
+
+  /* Book-diagram coords live in the wood gutter, not on the squares. */
+  .board-frame.board-frame--margin-coords {
+    display: grid;
+    grid-template-columns: 0.95rem minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 0.85rem;
+    align-items: stretch;
+    column-gap: 0.04rem;
+    row-gap: 0;
+    padding: 0.42rem 0.5rem 0.12rem 0.14rem;
+  }
+
+  .board-frame.board-frame--margin-coords .board-frame-inner {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .board-margin-ranks,
+  .board-margin-files {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .board-margin-ranks {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    align-items: center;
+    justify-items: center;
+  }
+
+  .board-margin-files {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: center;
+    justify-items: center;
+  }
+
+  .board-margin-label {
+    color: #f3e5c8;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
   }
 
   .board-play {
@@ -1323,6 +1377,30 @@ html[data-color-scheme="dark"] {
   border-radius: 0;
   padding: 1px;
   background: #4a3228;
+}
+
+/* Margin coords need a real wood gutter on every theme (unlayered so it wins). */
+[data-board-theme="future"] .board-frame.board-frame--margin-coords,
+[data-board-theme="tournament"] .board-frame.board-frame--margin-coords,
+[data-board-theme="arcade"] .board-frame.board-frame--margin-coords,
+[data-board-theme="print"] .board-frame.board-frame--margin-coords {
+  padding: 0.4rem 0.46rem 0.1rem 0.12rem;
+}
+
+[data-board-theme="future"] .board-margin-label {
+  color: #d7e6f2;
+}
+
+[data-board-theme="tournament"] .board-margin-label {
+  color: #eeeed2;
+}
+
+[data-board-theme="arcade"] .board-margin-label {
+  color: #e8f7ff;
+}
+
+[data-board-theme="print"] .board-margin-label {
+  color: #faf8f2;
 }
 
 /* Book piece set — light ink outline only (no extra filters). */
@@ -2082,6 +2160,33 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 .train-board-anchor {
   scroll-margin-top: 4.75rem;
   scroll-margin-bottom: min(52dvh, 28rem);
+}
+
+/* Website pack card: trainer sits in the left column, not a full-page route. */
+.train-embedded.train-layout {
+  min-height: 0;
+}
+
+.train-embedded .train-board-band {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+}
+
+.train-frame-chrome {
+  padding: 0 0.2rem 0.15rem;
+}
+
+.train-frame-below {
+  padding: 0 0.15rem 0.15rem;
+}
+
+.home-frame-train .train-embedded .trainer-actions {
+  margin-top: 0.15rem;
+}
+
+/* Piece drags in the pack card must win over the list's pan-y buttons. */
+.home-frame-train .board-play button {
+  touch-action: none;
 }
 
 /* Practice near-miss: cream toast above the action row — never over the board. */
