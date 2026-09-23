@@ -2180,6 +2180,18 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   padding: 0 0.15rem 0.15rem;
 }
 
+.train-frame-below .train-frame-notation {
+  margin-top: 0.3rem;
+  margin-bottom: 0.15rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+.train-frame-below .train-frame-status {
+  margin-bottom: 0.2rem;
+  min-height: 1.35em;
+}
+
 .home-frame-train .train-embedded .trainer-actions {
   margin-top: 0.15rem;
 }

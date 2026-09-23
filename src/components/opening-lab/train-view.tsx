@@ -1261,7 +1261,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       {/* Move history — single-row horizontal scroller (no wrap → no board jump) */}
       <div
         ref={notationStripRef}
-        className="mt-2.5 mb-1 flex flex-nowrap gap-x-1.5 overflow-x-auto rounded-xl border border-border bg-bg-elevated px-2.5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="train-frame-notation mt-2.5 mb-1 flex flex-nowrap gap-x-1.5 overflow-x-auto rounded-xl border border-border bg-bg-elevated px-2.5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         aria-label="Move history"
       >
         {notationPairs.length === 0 ? (
@@ -1310,7 +1310,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
 
       <div
-        className={`mb-3 min-h-[3.2em] text-center text-[0.9rem] transition-opacity duration-200 ${statusColor}`}
+        className={`train-frame-status mb-3 min-h-[3.2em] text-center text-[0.9rem] transition-opacity duration-200 ${statusColor}`}
       >
         {statusBody}
       </div>

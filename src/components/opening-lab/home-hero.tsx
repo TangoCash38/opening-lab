@@ -164,7 +164,7 @@ export function HomeHero({
       <div className="home-sample-card overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="home-hero-split-inner">
           <div className="home-hero-board-col">
-            <div className="home-sample-meta px-4 pb-2 pt-3.5">
+            <div className={`home-sample-meta px-4 pb-2 pt-3.5${frame ? " hidden" : ""}`}>
               {hasFreeSample ? (
                 <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
                   {t("Free sample")}
