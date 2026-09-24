@@ -1,15 +1,19 @@
 /**
- * Scotch Gambit coach intro — Scotch pack Practice only.
+ * Scotch Gambit coach — Scotch pack Practice only. Professor Potato Pie.
  *
- * Flag + pack id + the pack's main Practice control (`Tap to practice`).
+ * Two talks, same seated portrait and cream plate / desktop dock:
+ * - Main `Tap to practice`: cuppa and history (`scotchCoachApplies`).
+ * - First variation, Canal Variation: what the ten lines teach
+ *   (`scotchCanalCoachApplies`). Later variations do not open him.
+ *
  * Phone and the Play wrap mount the same dock; a narrow cream plate keeps
- * him off the squares. Line taps, Test, line switches, and other packs
- * never match.
+ * him off the squares. Test, line switches, and other packs never match.
  *
- * Once per browser session. `opening-lab:scotch-coach-session` is set in
- * sessionStorage the first time Practice opens the coach. Closing the tab
- * or window clears it, so the next visit's main Practice brings him back.
- * Skip is the escape for the rest of that visit — there is no forever hide.
+ * Once per browser session, separately for each talk.
+ * `opening-lab:scotch-coach-session` is the cuppa intro.
+ * `opening-lab:scotch-canal-coach-session` is the Canal pack talk.
+ * Closing the tab or window clears them. Skip is the escape for the rest
+ * of that visit — there is no forever hide.
  */
 export const SCOTCH_PACK_ID = "scotch";
 
@@ -28,6 +32,9 @@ const SCOTCH_COACH_FOREVER_KEYS = [
   "opening-lab:scotch-coach-dock-seen",
 ] as const;
 
+/** Visible name on the cream plate, the desktop dock, and coach alt / aria. */
+export const SCOTCH_COACH_NAME = "Professor Potato Pie";
+
 export const SCOTCH_COACH_TITLE = "Scotch Gambit · a cuppa and the open board";
 
 export const SCOTCH_COACH_BEATS = [
@@ -42,6 +49,39 @@ export const SCOTCH_COACH_NARRATION_MP3 = "/scotch-coach/sean-coach-narration.mp
 export const SCOTCH_COACH_NARRATION_OGG = "/scotch-coach/sean-coach-narration.ogg";
 /** Equal quarters until the element reports a duration. The file is ~44s. */
 export const SCOTCH_COACH_NARRATION_FALLBACK_SEC = 44;
+
+/**
+ * First variation in the Scotch pack. The pack-recipe talk opens only here.
+ */
+export const SCOTCH_CANAL_LINE_ID = "sg1";
+
+export const SCOTCH_CANAL_TITLE = "Canal Variation · ten lines from the gambit";
+
+/** Sean's pack-recipe substance, in on-screen beats until his recording arrives. */
+export const SCOTCH_CANAL_BEATS = [
+  "We have ten lines from the gambit.",
+  "The first five are solid book moves people would play if they knew the opening. That lets you play the book moves back and stay firmly in the game.",
+  "The last five lines let you punish the not-so-good moves people could make, so you play the right moves to gain a firm advantage and sometimes a checkmate.",
+] as const;
+
+/**
+ * Sean's Canal reading, same pair as the cuppa narration.
+ * Drop these beside sean-coach-narration when the take arrives:
+ *   public/scotch-coach/sean-canal-narration.mp3
+ *   public/scotch-coach/sean-canal-narration.ogg
+ * Then set SCOTCH_CANAL_NARRATION_READY. Until then the beats stay on screen.
+ * No synthetic speech and no stand-in file.
+ */
+export const SCOTCH_CANAL_NARRATION_MP3 = "/scotch-coach/sean-canal-narration.mp3";
+export const SCOTCH_CANAL_NARRATION_OGG = "/scotch-coach/sean-canal-narration.ogg";
+export const SCOTCH_CANAL_NARRATION_READY = false;
+
+/**
+ * Canal session flag. Set when Canal Variation opens this talk.
+ * Distinct from the cuppa intro so Skip on one does not hide the other.
+ * Gone when the tab closes.
+ */
+export const SCOTCH_CANAL_SESSION_KEY = "opening-lab:scotch-canal-coach-session";
 
 /**
  * Scotch Gambit stem Sean names while he speaks:
@@ -60,7 +100,7 @@ export const SCOTCH_COACH_STEM_AT_SEC = [5.28, 6.28, 7.42, 7.92, 10.25, 12.95, 1
 export function scotchCoachBeatIndex(
   currentTimeSec: number,
   durationSec: number,
-  beatCount = SCOTCH_COACH_BEATS.length,
+  beatCount: number = SCOTCH_COACH_BEATS.length,
 ): number {
   const count = Math.max(1, beatCount);
   const duration =
@@ -119,6 +159,26 @@ export function markScotchCoachSeen(): void {
   }
 }
 
+/** True after Canal Variation has opened the pack-recipe talk in this tab. */
+export function scotchCanalCoachAlreadySeen(): boolean {
+  if (typeof sessionStorage === "undefined") return false;
+  try {
+    return sessionStorage.getItem(SCOTCH_CANAL_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+/** Remember the Canal talk for this visit only. Closing the tab brings it back. */
+export function markScotchCanalCoachSeen(): void {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.setItem(SCOTCH_CANAL_SESSION_KEY, "1");
+  } catch {
+    /* private mode / quota */
+  }
+}
+
 /**
  * Website side-dock starts here. Narrower viewports, and every Play wrap,
  * use the cream plate above the wood (see styles.css).
@@ -145,5 +205,25 @@ export function scotchCoachApplies(input: {
   if (!SCOTCH_COACH_ENABLED) return false;
   if (input.packId !== SCOTCH_PACK_ID) return false;
   if (!input.practiceEntry) return false;
+  return true;
+}
+
+/**
+ * Pack-recipe talk. Scotch only, and only the first variation (Canal).
+ * Main Tap to practice stays on the cuppa intro. Test never calls this.
+ */
+export function scotchCanalCoachApplies(input: {
+  packId: string;
+  lineId: string;
+  /** Index in the pack. Canal is variation 0. */
+  lineIndex: number;
+  /** True for Tap to practice — that mount keeps the cuppa intro. */
+  practiceEntry: boolean;
+}): boolean {
+  if (!SCOTCH_COACH_ENABLED) return false;
+  if (input.practiceEntry) return false;
+  if (input.packId !== SCOTCH_PACK_ID) return false;
+  if (input.lineIndex !== 0) return false;
+  if (input.lineId !== SCOTCH_CANAL_LINE_ID) return false;
   return true;
 }

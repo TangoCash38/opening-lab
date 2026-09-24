@@ -46,7 +46,7 @@ const en: Dict = {
   "App coming soon": "App coming soon",
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
-  "Scotch coach": "Scotch coach",
+  "Professor Potato Pie": "Professor Potato Pie",
   "Read the intro": "Read the intro",
   "Hide the intro": "Hide the intro",
   Mute: "Mute",
@@ -62,6 +62,13 @@ const en: Dict = {
     "The Scotch family got its name from those Edinburgh–London correspondence matches in the eighteen-twenties. Hobbyists still love this line because the board opens up and the plans are concrete — not a long quiet squeeze.",
   "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.":
     "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
+  "Canal Variation · ten lines from the gambit":
+    "Canal Variation · ten lines from the gambit",
+  "We have ten lines from the gambit.": "We have ten lines from the gambit.",
+  "The first five are solid book moves people would play if they knew the opening. That lets you play the book moves back and stay firmly in the game.":
+    "The first five are solid book moves people would play if they knew the opening. That lets you play the book moves back and stay firmly in the game.",
+  "The last five lines let you punish the not-so-good moves people could make, so you play the right moves to gain a firm advantage and sometimes a checkmate.":
+    "The last five lines let you punish the not-so-good moves people could make, so you play the right moves to gain a firm advantage and sometimes a checkmate.",
   "See 18 lines": "See 18 lines",
   "See {n} lines": "See {n} lines",
   "See {n} {pack} lines": "See {n} {pack} lines",

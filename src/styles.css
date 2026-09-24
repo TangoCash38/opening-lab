@@ -3127,6 +3127,16 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   animation: scotch-coach-card-in 0.4s ease 0.72s both;
 }
 
+.scotch-coach-name {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: #5c3b22;
+}
+
 .scotch-coach-kicker {
   margin: 0 0 0.4rem;
   font-family: var(--font-display), Georgia, serif;
@@ -3325,9 +3335,15 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
     box-shadow: none;
   }
 
+  .home-coach-practice .scotch-coach-name {
+    margin: 0 0 0.08rem;
+    font-size: 0.92rem;
+    line-height: 1.15;
+  }
+
   .home-coach-practice .scotch-coach-kicker {
-    margin: 0 0 0.22rem;
-    font-size: 0.84rem;
+    margin: 0 0 0.18rem;
+    font-size: 0.72rem;
     line-height: 1.2;
   }
 
@@ -3426,9 +3442,15 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   box-shadow: none;
 }
 
+[data-surface="play"] .home-coach-practice .scotch-coach-name {
+  margin: 0 0 0.08rem;
+  font-size: 0.92rem;
+  line-height: 1.15;
+}
+
 [data-surface="play"] .home-coach-practice .scotch-coach-kicker {
-  margin: 0 0 0.22rem;
-  font-size: 0.84rem;
+  margin: 0 0 0.18rem;
+  font-size: 0.72rem;
   line-height: 1.2;
 }
 
@@ -3487,6 +3509,15 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   border: 1.5px solid #e4d2b0;
   background: #fbf6ea;
   color: #3a2a1c;
+}
+
+.scotch-coach-reading-name {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.2;
+  color: #5c3b22;
 }
 
 .scotch-coach-reading-title {
