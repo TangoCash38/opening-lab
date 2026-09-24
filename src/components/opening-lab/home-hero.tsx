@@ -307,19 +307,19 @@ export function HomeHero({
                 </div>
               </div>
             ) : coach ? (
-              <>
-                <div className="home-coach-practice" data-scotch-coach-dock>
+              <div className="home-coach-practice" data-scotch-coach-dock>
+                <div className="scotch-coach-plate" data-scotch-coach-plate>
                   <ScotchCoachFigure key={coach.line.id} />
-                  <div className="home-board pointer-events-none">
-                    <ScotchCoachBoard
-                      key={coach.line.id}
-                      flip={pack.side === "Black"}
-                      frameCoords={!playApp}
-                    />
-                  </div>
+                  <ScotchCoachCard key={coach.line.id} onDone={finishCoach} />
                 </div>
-                <ScotchCoachCard key={coach.line.id} onDone={finishCoach} />
-              </>
+                <div className="home-board pointer-events-none">
+                  <ScotchCoachBoard
+                    key={coach.line.id}
+                    flip={pack.side === "Black"}
+                    frameCoords={!playApp}
+                  />
+                </div>
+              </div>
             ) : (
               <>
                 <div className="home-board pointer-events-none px-2">
