@@ -57,6 +57,8 @@ type LineRowProps = {
   showFree?: boolean;
   /** Test progress % from lineTestPercent; null = not started in Test. */
   testPercent?: number | null;
+  /** This row is the line currently open in Practice or Test. */
+  selected?: boolean;
   onClick: () => void;
 };
 
@@ -69,6 +71,7 @@ export function LineRow({
   locked,
   showFree = false,
   testPercent = null,
+  selected = false,
   onClick,
 }: LineRowProps) {
   const t = useT();
@@ -76,22 +79,29 @@ export function LineRow({
   return (
     <button
       type="button"
-      className={`mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left ${
-        locked
-          ? "border-danger bg-danger-soft text-fg active:scale-[0.99]"
-          : complete
-            ? "border-success/35 bg-success-soft/55 active:scale-[0.99]"
-            : "border-border bg-bg-elevated active:scale-[0.99]"
+      className={`line-row mb-1.5 flex w-full items-start gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left ${
+        selected
+          ? "line-row-active border-accent bg-accent/25 active:scale-[0.99]"
+          : locked
+            ? "border-danger bg-danger-soft text-fg active:scale-[0.99]"
+            : complete
+              ? "border-success/35 bg-success-soft/55 active:scale-[0.99]"
+              : "border-border bg-bg-elevated active:scale-[0.99]"
       }`}
+      data-line-id={line.id}
+      data-line-active={selected ? "true" : "false"}
+      aria-current={selected ? "true" : undefined}
       onClick={onClick}
     >
       <span
-        className={`relative grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
-          locked
-            ? "bg-danger text-white"
-            : complete
-              ? "bg-success text-white"
-              : "bg-bg-subtle text-fg"
+        className={`line-row-index relative grid size-7 shrink-0 place-items-center rounded-full text-sm font-bold ${
+          selected
+            ? "bg-accent text-accent-fg"
+            : locked
+              ? "bg-danger text-white"
+              : complete
+                ? "bg-success text-white"
+                : "bg-bg-subtle text-fg"
         }`}
       >
         {index + 1}

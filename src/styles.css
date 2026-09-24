@@ -562,6 +562,8 @@ html[data-color-scheme="dark"] {
     [data-surface="website"] .home-hero-split .home-hero-copy-col {
       grid-column: 2;
       grid-row: 2;
+      position: relative;
+      z-index: 2;
       min-height: 0;
       max-height: min(70vh, 40rem);
       overflow: auto;
@@ -2276,6 +2278,18 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   padding: 0 1rem 0.75rem;
 }
 
+/* Active book line — obvious fill and border, not a focus ring. */
+.line-row-active {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 28%, var(--color-bg-elevated));
+  box-shadow: inset 5px 0 0 var(--color-accent);
+}
+
+.pack-list .line-row,
+.home-lines-panel .line-row {
+  touch-action: manipulation;
+}
+
 .book-solid-stamp {
   position: absolute;
   right: -0.18rem;
@@ -3041,10 +3055,12 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 .scotch-coach-stage {
   position: absolute;
   z-index: 4;
-  left: 0.5rem;
-  right: 0.5rem;
-  top: 0;
-  bottom: 0;
+  top: 0.2rem;
+  right: 0.35rem;
+  left: auto;
+  bottom: auto;
+  width: min(6.75rem, 26%);
+  height: min(11rem, 42%);
   overflow: hidden;
   pointer-events: none;
 }
@@ -3053,7 +3069,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   position: absolute;
   left: 50%;
   bottom: 0;
-  height: 98%;
+  height: 100%;
   width: auto;
   max-width: none;
   transform: translateX(-50%) translateY(0) scale(1);

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   SCOTCH_COACH_BEATS,
+  SCOTCH_COACH_NARRATION_FALLBACK_SEC,
   SCOTCH_COACH_TITLE,
   scotchCoachBeatIndex,
 } from "@/lib/scotch-coach";
@@ -36,22 +37,37 @@ export function ScotchCoachCard({ onDone }: CardProps) {
   const t = useT();
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
   const text = SCOTCH_COACH_BEATS[beat] ?? SCOTCH_COACH_BEATS[0];
   const last = beat >= SCOTCH_COACH_BEATS.length - 1;
 
   useEffect(() => {
+    let finished = false;
+    const finishIntro = () => {
+      if (finished) return;
+      finished = true;
+      setBeat(SCOTCH_COACH_BEATS.length - 1);
+      onDoneRef.current();
+    };
     const audio = startScotchCoachNarration();
-    if (!audio) return;
+    const backup = window.setTimeout(
+      finishIntro,
+      (SCOTCH_COACH_NARRATION_FALLBACK_SEC + 1.2) * 1000,
+    );
+    if (!audio) return () => window.clearTimeout(backup);
     const sync = () => {
       const index = scotchCoachBeatIndex(audio.currentTime, audio.duration);
       setBeat((current) => (index > current ? index : current));
     };
     const onNarrationEnded = () => {
       setBeat(SCOTCH_COACH_BEATS.length - 1);
+      onDoneRef.current();
     };
     audio.addEventListener("timeupdate", sync);
     audio.addEventListener("ended", onNarrationEnded);
     return () => {
+      window.clearTimeout(backup);
       audio.removeEventListener("timeupdate", sync);
       audio.removeEventListener("ended", onNarrationEnded);
     };

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
 import { type OpeningLine, type Pack } from "@/data/packs";
@@ -9,7 +9,11 @@ import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
-import { scotchCoachApplies } from "@/lib/scotch-coach";
+import {
+  markScotchCoachSeen,
+  scotchCoachAlreadySeen,
+  scotchCoachApplies,
+} from "@/lib/scotch-coach";
 import {
   startScotchCoachNarration,
   stopScotchCoachNarration,
@@ -20,6 +24,7 @@ import { BoardThemePicker } from "./board-theme-picker";
 import { LondonWarmupChip } from "./london-warmup-chip";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
+import { ScotchCoachBoard } from "./scotch-coach-board";
 import { ScotchCoachCard, ScotchCoachFigure } from "./scotch-coach-intro";
 import { TrainView } from "./train-view";
 
@@ -81,6 +86,7 @@ export function HomeHero({
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
   const [frame, setFrame] = useState<FrameSession | null>(null);
   const [coach, setCoach] = useState<FrameSession | null>(null);
+  const coachRef = useRef<FrameSession | null>(null);
 
   const websiteSplit = !playApp;
   const hasFreeSample = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
@@ -111,6 +117,7 @@ export function HomeHero({
     setAboutOpen(false);
     setPendingLine(null);
     setFrame(null);
+    coachRef.current = null;
     setCoach(null);
     stopScotchCoachNarration();
   }, [pack.id, linesInitiallyOpen]);
@@ -121,14 +128,19 @@ export function HomeHero({
     return frame !== null;
   };
 
-  const openInFrame = (line: OpeningLine, options?: TrainStartOptions) => {
+  const openInFrame = (
+    line: OpeningLine,
+    options?: TrainStartOptions,
+    mode?: TrainMode,
+  ) => {
+    coachRef.current = null;
     setCoach(null);
-    setFrame({
+    setFrame((prev) => ({
       line,
-      mode: "learn",
+      mode: mode ?? prev?.mode ?? "learn",
       plyLimit: options?.plyLimit,
       startPly: options?.startPly,
-    });
+    }));
   };
 
   const launchLine = (line: OpeningLine, options?: TrainStartOptions) => {
@@ -137,15 +149,19 @@ export function HomeHero({
         packId: pack.id,
         playApp: Boolean(playApp),
         websiteDesktop: websiteDesktopFrame(),
-      })
+      }) &&
+      !scotchCoachAlreadySeen()
     ) {
+      markScotchCoachSeen();
       startScotchCoachNarration();
-      setCoach({
+      const session: FrameSession = {
         line,
         mode: "learn",
         plyLimit: options?.plyLimit,
         startPly: options?.startPly,
-      });
+      };
+      coachRef.current = session;
+      setCoach(session);
       soundSelect();
       return;
     }
@@ -162,14 +178,22 @@ export function HomeHero({
   };
 
   const finishCoach = () => {
+    const current = coachRef.current;
+    coachRef.current = null;
     stopScotchCoachNarration();
-    if (!coach) return;
-    openInFrame(coach.line, {
-      plyLimit: coach.plyLimit,
-      startPly: coach.startPly,
-    });
+    setCoach(null);
+    if (!current) return;
+    openInFrame(
+      current.line,
+      {
+        plyLimit: current.plyLimit,
+        startPly: current.startPly,
+      },
+      "learn",
+    );
   };
 
+  const activeLineId = frame?.line.id ?? coach?.line.id ?? null;
   const game = useMemo(() => new Chess(), []);
   const showLinesToggle = !embedded;
   const linesVisible = embedded || linesOpen;
@@ -274,19 +298,27 @@ export function HomeHero({
             ) : (
               <>
             <div className={`home-board pointer-events-none px-2${coach ? " home-board--coach" : ""}`}>
-              <ChessBoard
-                game={game}
-                flip={pack.side === "Black"}
-                selected={null}
-                wrongUntil={null}
-                expected={null}
-                showHints={false}
-                lastMove={null}
-                slide={null}
-                onSquare={() => {}}
-                interactive={false}
-                frameCoords={!playApp}
-              />
+              {coach ? (
+                <ScotchCoachBoard
+                  key={coach.line.id}
+                  flip={pack.side === "Black"}
+                  frameCoords={!playApp}
+                />
+              ) : (
+                <ChessBoard
+                  game={game}
+                  flip={pack.side === "Black"}
+                  selected={null}
+                  wrongUntil={null}
+                  expected={null}
+                  showHints={false}
+                  lastMove={null}
+                  slide={null}
+                  onSquare={() => {}}
+                  interactive={false}
+                  frameCoords={!playApp}
+                />
+              )}
               {coach ? <ScotchCoachFigure key={coach.line.id} /> : null}
               {!coach ? (
                 <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
@@ -358,6 +390,7 @@ export function HomeHero({
                         locked={!unlocked}
                         showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
                         testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
+                        selected={item.id === activeLineId}
                         onClick={() => {
                           if (unlocked) {
                             if (pack.about) {
