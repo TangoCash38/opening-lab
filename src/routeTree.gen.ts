@@ -10,26 +10,31 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as DeleteAccountRouteImport } from './routes/delete-account'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
-import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
+import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
+import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
+import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
+import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.session'
-import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
-import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
-import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
-import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
-import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
+import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeleteAccountRoute = DeleteAccountRouteImport.update({
+  id: '/delete-account',
+  path: '/delete-account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -37,19 +42,14 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DeleteAccountRoute = DeleteAccountRouteImport.update({
-  id: '/delete-account',
-  path: '/delete-account',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -62,14 +62,29 @@ const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
   path: '/api/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFeedbackRoute = ApiFeedbackRouteImport.update({
+  id: '/api/feedback',
+  path: '/api/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPaymentsRoute = ApiPaymentsRouteImport.update({
   id: '/api/payments',
   path: '/api/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiFeedbackRoute = ApiFeedbackRouteImport.update({
-  id: '/api/feedback',
-  path: '/api/feedback',
+const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
+  id: '/api/practice-review-eval',
+  path: '/api/practice-review-eval',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUnlocksRoute = ApiUnlocksRouteImport.update({
+  id: '/api/unlocks',
+  path: '/api/unlocks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAccountDeleteRoute = ApiAccountDeleteRouteImport.update({
+  id: '/api/account/delete',
+  path: '/api/account/delete',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -82,14 +97,14 @@ const ApiCheckoutSessionRoute = ApiCheckoutSessionRouteImport.update({
   path: '/session',
   getParentRoute: () => ApiCheckoutRoute,
 } as any)
+const ApiPlaySubscribeRoute = ApiPlaySubscribeRouteImport.update({
+  id: '/api/play/subscribe',
+  path: '/api/play/subscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe/webhook',
   path: '/api/stripe/webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiUnlocksRoute = ApiUnlocksRouteImport.update({
-  id: '/api/unlocks',
-  path: '/api/unlocks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiUnlocksClaimRoute = ApiUnlocksClaimRouteImport.update({
@@ -97,156 +112,141 @@ const ApiUnlocksClaimRoute = ApiUnlocksClaimRouteImport.update({
   path: '/claim',
   getParentRoute: () => ApiUnlocksRoute,
 } as any)
-const ApiPlaySubscribeRoute = ApiPlaySubscribeRouteImport.update({
-  id: '/api/play/subscribe',
-  path: '/api/play/subscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
-  id: '/api/practice-review-eval',
-  path: '/api/practice-review-eval',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAccountDeleteRoute = ApiAccountDeleteRouteImport.update({
-  id: '/api/account/delete',
-  path: '/api/account/delete',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/privacy': typeof PrivacyRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
-  '/api/payments': typeof ApiPaymentsRoute
   '/api/feedback': typeof ApiFeedbackRoute
+  '/api/payments': typeof ApiPaymentsRoute
+  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
-  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
-  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
-  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
-  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
-  '/api/account/delete': typeof ApiAccountDeleteRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/privacy': typeof PrivacyRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
-  '/api/payments': typeof ApiPaymentsRoute
   '/api/feedback': typeof ApiFeedbackRoute
+  '/api/payments': typeof ApiPaymentsRoute
+  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
-  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
-  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
-  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
-  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
-  '/api/account/delete': typeof ApiAccountDeleteRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/privacy': typeof PrivacyRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/login': typeof LoginRoute
+  '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
-  '/api/payments': typeof ApiPaymentsRoute
   '/api/feedback': typeof ApiFeedbackRoute
+  '/api/payments': typeof ApiPaymentsRoute
+  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
-  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
-  '/api/unlocks': typeof ApiUnlocksRouteWithChildren
-  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
-  '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
-  '/api/account/delete': typeof ApiAccountDeleteRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/login'
-    | '/reset-password'
-    | '/privacy'
     | '/delete-account'
+    | '/login'
+    | '/privacy'
+    | '/reset-password'
     | '/terms'
     | '/api/checkout'
-    | '/api/payments'
     | '/api/feedback'
+    | '/api/payments'
+    | '/api/practice-review-eval'
+    | '/api/unlocks'
+    | '/api/account/delete'
     | '/api/auth/$'
     | '/api/checkout/session'
-    | '/api/stripe/webhook'
-    | '/api/unlocks'
-    | '/api/unlocks/claim'
     | '/api/play/subscribe'
-    | '/api/practice-review-eval'
-    | '/api/account/delete'
+    | '/api/stripe/webhook'
+    | '/api/unlocks/claim'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/login'
-    | '/reset-password'
-    | '/privacy'
     | '/delete-account'
+    | '/login'
+    | '/privacy'
+    | '/reset-password'
     | '/terms'
     | '/api/checkout'
-    | '/api/payments'
     | '/api/feedback'
+    | '/api/payments'
+    | '/api/practice-review-eval'
+    | '/api/unlocks'
+    | '/api/account/delete'
     | '/api/auth/$'
     | '/api/checkout/session'
-    | '/api/stripe/webhook'
-    | '/api/unlocks'
-    | '/api/unlocks/claim'
     | '/api/play/subscribe'
-    | '/api/practice-review-eval'
-    | '/api/account/delete'
+    | '/api/stripe/webhook'
+    | '/api/unlocks/claim'
   id:
     | '__root__'
     | '/'
-    | '/login'
-    | '/reset-password'
-    | '/privacy'
     | '/delete-account'
+    | '/login'
+    | '/privacy'
+    | '/reset-password'
     | '/terms'
     | '/api/checkout'
-    | '/api/payments'
     | '/api/feedback'
+    | '/api/payments'
+    | '/api/practice-review-eval'
+    | '/api/unlocks'
+    | '/api/account/delete'
     | '/api/auth/$'
     | '/api/checkout/session'
-    | '/api/stripe/webhook'
-    | '/api/unlocks'
-    | '/api/unlocks/claim'
     | '/api/play/subscribe'
-    | '/api/practice-review-eval'
-    | '/api/account/delete'
+    | '/api/stripe/webhook'
+    | '/api/unlocks/claim'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LoginRoute: typeof LoginRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
-  PrivacyRoute: typeof PrivacyRoute
   DeleteAccountRoute: typeof DeleteAccountRoute
+  LoginRoute: typeof LoginRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
-  ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiFeedbackRoute: typeof ApiFeedbackRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
-  ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
-  ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
+  ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
+  ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,18 +258,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/delete-account': {
+      id: '/delete-account'
+      path: '/delete-account'
+      fullPath: '/delete-account'
+      preLoaderRoute: typeof DeleteAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -279,11 +279,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/delete-account': {
-      id: '/delete-account'
-      path: '/delete-account'
-      fullPath: '/delete-account'
-      preLoaderRoute: typeof DeleteAccountRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -300,6 +300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/feedback': {
+      id: '/api/feedback'
+      path: '/api/feedback'
+      fullPath: '/api/feedback'
+      preLoaderRoute: typeof ApiFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/payments': {
       id: '/api/payments'
       path: '/api/payments'
@@ -307,11 +314,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/feedback': {
-      id: '/api/feedback'
-      path: '/api/feedback'
-      fullPath: '/api/feedback'
-      preLoaderRoute: typeof ApiFeedbackRouteImport
+    '/api/practice-review-eval': {
+      id: '/api/practice-review-eval'
+      path: '/api/practice-review-eval'
+      fullPath: '/api/practice-review-eval'
+      preLoaderRoute: typeof ApiPracticeReviewEvalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/unlocks': {
+      id: '/api/unlocks'
+      path: '/api/unlocks'
+      fullPath: '/api/unlocks'
+      preLoaderRoute: typeof ApiUnlocksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/account/delete': {
+      id: '/api/account/delete'
+      path: '/api/account/delete'
+      fullPath: '/api/account/delete'
+      preLoaderRoute: typeof ApiAccountDeleteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -328,18 +349,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCheckoutSessionRouteImport
       parentRoute: typeof ApiCheckoutRoute
     }
+    '/api/play/subscribe': {
+      id: '/api/play/subscribe'
+      path: '/api/play/subscribe'
+      fullPath: '/api/play/subscribe'
+      preLoaderRoute: typeof ApiPlaySubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe/webhook': {
       id: '/api/stripe/webhook'
       path: '/api/stripe/webhook'
       fullPath: '/api/stripe/webhook'
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/unlocks': {
-      id: '/api/unlocks'
-      path: '/api/unlocks'
-      fullPath: '/api/unlocks'
-      preLoaderRoute: typeof ApiUnlocksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/unlocks/claim': {
@@ -348,27 +369,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/unlocks/claim'
       preLoaderRoute: typeof ApiUnlocksClaimRouteImport
       parentRoute: typeof ApiUnlocksRoute
-    }
-    '/api/play/subscribe': {
-      id: '/api/play/subscribe'
-      path: '/api/play/subscribe'
-      fullPath: '/api/play/subscribe'
-      preLoaderRoute: typeof ApiPlaySubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/practice-review-eval': {
-      id: '/api/practice-review-eval'
-      path: '/api/practice-review-eval'
-      fullPath: '/api/practice-review-eval'
-      preLoaderRoute: typeof ApiPracticeReviewEvalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/account/delete': {
-      id: '/api/account/delete'
-      path: '/api/account/delete'
-      fullPath: '/api/account/delete'
-      preLoaderRoute: typeof ApiAccountDeleteRouteImport
-      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -399,20 +399,20 @@ const ApiUnlocksRouteWithChildren = ApiUnlocksRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LoginRoute: LoginRoute,
-  ResetPasswordRoute: ResetPasswordRoute,
-  PrivacyRoute: PrivacyRoute,
   DeleteAccountRoute: DeleteAccountRoute,
+  LoginRoute: LoginRoute,
+  PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
-  ApiPaymentsRoute: ApiPaymentsRoute,
   ApiFeedbackRoute: ApiFeedbackRoute,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
-  ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
-  ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
+  ApiPaymentsRoute: ApiPaymentsRoute,
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
+  ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   ApiAccountDeleteRoute: ApiAccountDeleteRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

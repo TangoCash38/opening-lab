@@ -19,8 +19,9 @@ export const PLAY_SKU_PACK_PREFIX = "pack_";
 
 /**
  * 32 paid visible packs + caro-kann-black (Caro rest is
- * pack_caro_kann_black) + opening-traps (pack_opening_traps, £0.99 in
- * Play Console). The product id is the usual pack_ prefix.
+ * pack_caro_kann_black) + opening-traps (pack_opening_traps).
+ * Set the Play Console price for pack_opening_traps to £1.99.
+ * The product id stays pack_opening_traps.
  */
 export const PLAY_PATH_B_PACK_IDS = [
   "caro-kann-black",

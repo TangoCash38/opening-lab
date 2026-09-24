@@ -45,7 +45,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
     /**
      * Mirror of PLAY_PATH_B_PACK_IDS in src/lib/play-skus.ts.
      * 34 packs (includes caro-kann-black extras and opening-traps).
-     * Opening Traps product id is pack_opening_traps. Set its Play Console price to £0.99.
+     * Opening Traps product id is pack_opening_traps. Set its Play Console price to £1.99.
      */
     static final String[] PATH_B_PACK_IDS = {
             "caro-kann-black",
@@ -82,6 +82,18 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "stafford-black",
             "ponziani-white",
             "alekhine-black",
+    };
+
+    /**
+     * Packs the wrap may launch a purchase for. Mirror of LIVE_PACK_IDS.
+     * Coming-soon packs stay in PATH_B_PACK_IDS so an owned purchase can restore.
+     * Buy all is not in this list; the site only calls buyAll() when
+     * BUY_ALL_FOR_SALE is true in src/lib/catalog.ts.
+     */
+    static final String[] LIVE_SALE_PACK_IDS = {
+            "scotch",
+            "opening-traps",
+            "caro-kann-black",
     };
 
     private static final Set<String> PATH_B_SKUS;
@@ -162,6 +174,15 @@ public class PlayBilling implements PurchasesUpdatedListener {
         return productId != null && PATH_B_SKUS.contains(productId);
     }
 
+    /** True for a live pack SKU the wrap may sell. Buy all is not a live pack SKU. */
+    static boolean isLiveSaleSku(@Nullable String productId) {
+        if (productId == null) return false;
+        for (String id : LIVE_SALE_PACK_IDS) {
+            if (productId.equals("pack_" + id.replace('-', '_'))) return true;
+        }
+        return false;
+    }
+
     private void ensureClient() {
         if (client != null) return;
         client = BillingClient.newBuilder(activity)
@@ -203,6 +224,12 @@ public class PlayBilling implements PurchasesUpdatedListener {
     private void startBuy(String productId) {
         restoring = false;
         if (productId == null || productId.isEmpty() || !isPathBSku(productId)) {
+            emitError("purchase", "ITEM_UNAVAILABLE", "This pack isn’t on sale in the store yet");
+            return;
+        }
+        // Coming-soon packs are never offered. Buy all launches only if the site
+        // calls buyAll(), which it does only while BUY_ALL_FOR_SALE is true.
+        if (!BUY_ALL_SKU.equals(productId) && !isLiveSaleSku(productId)) {
             emitError("purchase", "ITEM_UNAVAILABLE", "This pack isn’t on sale in the store yet");
             return;
         }

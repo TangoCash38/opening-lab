@@ -612,7 +612,7 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
         <UnlockModal
           packName={modal.pack.name}
           price={modal.price}
-          playSku={hasPaidPlaySkuPath(modal.pack)}
+          playSku={hasPaidPlaySkuPath(modal.pack) && canPurchasePack(modal.pack.id)}
           onClose={() => {
             if (!payBusy) setModal(null);
           }}
