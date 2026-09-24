@@ -74,7 +74,7 @@ test("end-of-line popup prefers line.next, else the catalog idea", () => {
   assert.doesNotMatch(packs, /next: `/);
 });
 
-test("Caro line-complete next notes: ckb1.next exists; ckb12 recommends Qb4 and warns off Qa3", () => {
+test("Caro line-complete next notes: Line 1 through Line 10 each keep a next plan", () => {
   const start = packs.indexOf('id: "caro-kann-black"');
   assert.ok(start >= 0, "caro-kann-black pack missing");
   const nextPack = packs.indexOf("\n  {\n    id: \"", start + 1);
@@ -84,24 +84,20 @@ test("Caro line-complete next notes: ckb1.next exists; ckb12 recommends Qb4 and 
     const s = ck.indexOf(`id: "${id}"`);
     assert.ok(s >= 0, `${id} missing`);
     const n = Number(id.slice(3));
-    const end = n === 18 ? ck.length : ck.indexOf(`id: "ckb${n + 1}"`, s);
+    const end = n === 10 ? ck.length : ck.indexOf(`id: "ckb${n + 1}"`, s);
     const block = ck.slice(s, end);
     const m = block.match(/next: "((?:\\.|[^"\\])*)"/);
     assert.ok(m, `${id}.next missing`);
     return m[1];
   }
 
-  const ckb1 = lineNext("ckb1");
-  assert.ok(ckb1.length > 0, "ckb1.next exists");
-
-  const ckb12 = lineNext("ckb12");
-  assert.match(ckb12, /Qb4/);
-  assert.match(ckb12, /Qb6/);
-  assert.match(ckb12, /Do not play …Qa3/);
-  assert.match(ckb12, /hangs to Nxa3/);
-  const bring = ckb12.match(/Bring it out with [^.]+/);
-  assert.ok(bring, "ckb12 bring-it-out sentence missing");
-  assert.doesNotMatch(bring[0], /Qa3/);
+  for (let i = 1; i <= 10; i += 1) {
+    const text = lineNext(`ckb${i}`);
+    assert.ok(text.length > 0, `ckb${i}.next exists`);
+  }
+  assert.match(lineNext("ckb1"), /Castle short next/);
+  assert.match(lineNext("ckb1"), /Do not play …f6 before your king is safe/);
+  assert.match(lineNext("ckb10"), /Black is a full piece up/);
 });
 
 test("end modal has two buttons; Practice miss is a toast, not a sheet", () => {
@@ -253,7 +249,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   assert.match(list, /onStartLine=\{onStartLine\}/);
 
   const sample = ["ckb1", "ckb3", "ckb5"];
-  const caro = Array.from({ length: 18 }, (_, i) => `ckb${i + 1}`);
+  const caro = Array.from({ length: 10 }, (_, i) => `ckb${i + 1}`);
   function isLineUnlocked(packId, lineId, purchased) {
     if (packId !== "scotch" && !purchased.includes(packId)) return false;
     const ids = packId === "caro-kann-black" ? sample : null;
@@ -276,7 +272,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
     nextUnlockedLine(caro, "ckb1", "caro-kann-black", ["caro-kann-black"]),
     "ckb2",
   );
-  assert.equal(nextUnlockedLine(caro, "ckb18", "caro-kann-black", ["caro-kann-black"]), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb10", "caro-kann-black", ["caro-kann-black"]), undefined);
   const qgd = Array.from({ length: 18 }, (_, i) => `qgdb${i + 1}`);
   assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", []), undefined);
   assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", ["qgd-black"]), "qgdb2");

@@ -50,6 +50,11 @@ export type CoachLineBeat = {
    * talk without this cue does the same.
    */
   plyAtSec?: number;
+  /**
+   * Further SANs spoken during this same caption, after `ply`, in order.
+   * Each lands when its `plyAtSec` is reached. A one-move beat leaves this out.
+   */
+  extraPlies?: readonly { ply: string; plyAtSec: number }[];
 };
 
 export type CoachPackConfig = {
@@ -165,6 +170,165 @@ const OPENING_TRAPS_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+const CARO_KANN_BLACK_PACK_ID = "caro-kann-black";
+
+export const CARO_KANN_INTRO_MP3 = "/coach/caro-kann-black/professor-potato-pie-caro-intro.mp3";
+export const CARO_KANN_LINE_MP3 = "/coach/caro-kann-black/professor-potato-pie-caro-line1.mp3";
+/** Professor Potato Pie's Caro intro. Beat times below were read off this clip. */
+export const CARO_KANN_INTRO_SEC = 112.8;
+/** Professor Potato Pie's Line 1 talk. Beat and spoken-move times were read off this clip. */
+export const CARO_KANN_LINE_SEC = 135;
+
+const CARO_KANN_INTRO = [
+  "Ah, hello again. Professor Potato Pie, tea in hand. And today, we turn our attention to the Caro-Kann Defence, a splendidly resilient opening with excellent manners and a surprisingly sharp pair of elbows.",
+  "It begins with e4 c6, and takes its name from Horatio Caro and Marcus Kann, two nineteenth-century players whose analytical work gave this venerable defence its identity.",
+  "The strategic premise is admirably economical. Black prepares d5, challenging White's centre at once, while keeping the light-squared bishop free rather than incarcerating it behind the pawn chain.",
+  "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.",
+  "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.",
+  "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.",
+  "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.",
+  "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.",
+  "The object is not to play aimlessly on, but to absorb the moves, comprehend the ideas and recognise the patterns when you return over the board.",
+  "Right then. Tea settled, pieces ready. Let's begin.",
+] as const;
+
+const CARO_KANN_INTRO_AT_SEC = [0, 17.4, 31.9, 45.9, 62.3, 74.3, 85, 94, 100.4, 109] as const;
+
+const CARO_KANN_LINE: readonly CoachLineBeat[] = [
+  {
+    caption:
+      "Right then, welcome to Line 1, the Advance Variation. White claims the centre with e4.",
+    ply: "e4",
+    atSec: 0,
+    plyAtSec: 7.1,
+  },
+  {
+    caption: "We answer c6, preparing the thematic d5 advance.",
+    ply: "c6",
+    atSec: 8.1,
+    plyAtSec: 8.7,
+  },
+  {
+    caption:
+      "White establishes a broad centre with d4, and we challenge it immediately with d5.",
+    ply: "d4",
+    atSec: 13.3,
+    plyAtSec: 15.9,
+    extraPlies: [{ ply: "d5", plyAtSec: 18.8 }],
+  },
+  {
+    caption: "White pushes on to e5, gaining space.",
+    ply: "e5",
+    atSec: 20.2,
+    plyAtSec: 21.4,
+  },
+  {
+    caption:
+      "Before closing the pawn chain with e6, our bishop escapes to f5. That, in essence, is the Caro-Kann's first piece of good housekeeping. The bishop gets out before the door closes.",
+    ply: "Bf5",
+    atSec: 24,
+    plyAtSec: 28.1,
+  },
+  {
+    caption:
+      "Knight f3 follows, then e6. With the bishop safely developed, e6 is now entirely comfortable.",
+    ply: "Nf3",
+    atSec: 37,
+    plyAtSec: 37.2,
+    extraPlies: [{ ply: "e6", plyAtSec: 38.9 }],
+  },
+  {
+    caption:
+      "White chooses the quiet and sensible bishop e2 set-up, a system popularised by the English grandmaster Nigel Short.",
+    ply: "Be2",
+    atSec: 44.7,
+    plyAtSec: 47.4,
+  },
+  {
+    caption: "We strike with c5, attacking the base of White's pawn chain on d4.",
+    ply: "c5",
+    atSec: 53.3,
+    plyAtSec: 54.1,
+  },
+  {
+    caption: "White castles, and knight c6 adds another piece to the pressure.",
+    ply: "O-O",
+    atSec: 58.9,
+    plyAtSec: 59.3,
+    extraPlies: [{ ply: "Nc6", plyAtSec: 61 }],
+  },
+  {
+    caption: "White reinforces d4 with c3.",
+    ply: "c3",
+    atSec: 64.4,
+    plyAtSec: 66.5,
+  },
+  {
+    caption:
+      "We exchange pawns on d4, opening the c-file and giving our counterplay a useful avenue.",
+    ply: "cxd4",
+    atSec: 67.7,
+    plyAtSec: 69.2,
+    extraPlies: [{ ply: "cxd4", plyAtSec: 70.4 }],
+  },
+  {
+    caption:
+      "The remaining knight develops to e7, bound for f5, where it can question d4 once again.",
+    ply: "Nge7",
+    atSec: 74.7,
+    plyAtSec: 76.5,
+  },
+  {
+    caption: "White plays knight c3, and our bishop applies the pin from g4.",
+    ply: "Nc3",
+    atSec: 82.3,
+    plyAtSec: 83.1,
+    extraPlies: [{ ply: "Bg4", plyAtSec: 86.2 }],
+  },
+  {
+    caption: "White answers with knight e1, breaking the pin.",
+    ply: "Ne1",
+    atSec: 87.8,
+    plyAtSec: 89.2,
+  },
+  {
+    caption:
+      "We therefore exchange White's useful bishop on e2. Recapturing with the knight keeps d4 securely defended.",
+    ply: "Bxe2",
+    atSec: 91.7,
+    plyAtSec: 94.4,
+    extraPlies: [{ ply: "Nxe2", plyAtSec: 96.7 }],
+  },
+  {
+    caption: "Our knight settles on f5, still eyeing d4.",
+    ply: "Nf5",
+    atSec: 100.3,
+    plyAtSec: 101.5,
+  },
+  {
+    caption:
+      "White protects it with bishop e3, and we calmly develop the bishop to e7, ready to castle.",
+    ply: "Be3",
+    atSec: 104.4,
+    plyAtSec: 105.8,
+    extraPlies: [{ ply: "Be7", plyAtSec: 108.8 }],
+  },
+  {
+    caption:
+      "The result is an equal position with a coherent plan. Maintain the pressure on d4 and make purposeful use of the c-file.",
+    atSec: 111.7,
+  },
+  {
+    caption:
+      "No fireworks required, just sound structure, patient pressure and every piece gainfully employed.",
+    atSec: 120.7,
+  },
+  {
+    caption: "Over to you. Drill the line until the moves feel less like memory and more like good sense.",
+    atSec: 128.7,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -195,6 +359,18 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: OPENING_TRAPS_LINE,
     firstLineAudio: OPENING_TRAPS_LINE_MP3,
     firstLineAudioFallbackSec: OPENING_TRAPS_LINE_SEC,
+  },
+  [CARO_KANN_BLACK_PACK_ID]: {
+    introTitle: "Caro-Kann for Black",
+    introBeats: CARO_KANN_INTRO,
+    introAudio: CARO_KANN_INTRO_MP3,
+    introAudioFallbackSec: CARO_KANN_INTRO_SEC,
+    introBeatAtSec: CARO_KANN_INTRO_AT_SEC,
+    firstLineId: "ckb1",
+    firstLineTitle: "Line 1",
+    firstLineBeats: CARO_KANN_LINE,
+    firstLineAudio: CARO_KANN_LINE_MP3,
+    firstLineAudioFallbackSec: CARO_KANN_LINE_SEC,
   },
 };
 
@@ -234,6 +410,21 @@ export function isCoachTextOnly(packId: string, talk: "intro" | "line" | "canal"
 
 const plyCache = new Map<string, readonly (string | undefined)[]>();
 
+/** Caption-aligned SANs. A beat with extra moves contributes each SAN, in order. */
+function lineBeatScript(beats: readonly CoachLineBeat[]): (string | undefined)[] {
+  const out: (string | undefined)[] = [];
+  for (const beat of beats) {
+    const extras = beat.extraPlies ?? [];
+    if (!beat.ply && extras.length === 0) {
+      out.push(undefined);
+      continue;
+    }
+    if (beat.ply) out.push(beat.ply);
+    for (const extra of extras) out.push(extra.ply);
+  }
+  return out;
+}
+
 /**
  * Beat-aligned plies for a text talk (or a future audio talk that follows beats).
  * Null when this talk uses the Scotch narration clock instead.
@@ -252,10 +443,7 @@ export function coachTalkPlies(
   const key = `${packId}:${talk}`;
   const cached = plyCache.get(key);
   if (cached) return cached;
-  const plies =
-    talk === "intro"
-      ? pack.introBeats.map(() => undefined)
-      : pack.firstLineBeats.map((beat) => beat.ply);
+  const plies = talk === "intro" ? pack.introBeats.map(() => undefined) : lineBeatScript(pack.firstLineBeats);
   plyCache.set(key, plies);
   return plies;
 }
@@ -297,9 +485,19 @@ export function coachTextPlayedSans(
 export function coachLinePlyCues(packId: string): readonly number[] | null {
   const pack = COACH_PACKS[packId];
   if (!pack?.firstLineAudio) return null;
-  const moves = pack.firstLineBeats.filter((beat) => beat.ply);
-  if (moves.length === 0 || moves.some((beat) => beat.plyAtSec == null)) return null;
-  return moves.map((beat) => beat.plyAtSec ?? 0);
+  const times: number[] = [];
+  for (const beat of pack.firstLineBeats) {
+    const moves: { ply?: string; plyAtSec?: number }[] = [];
+    if (beat.ply) moves.push({ ply: beat.ply, plyAtSec: beat.plyAtSec });
+    for (const extra of beat.extraPlies ?? []) moves.push(extra);
+    for (const move of moves) {
+      if (!move.ply) continue;
+      if (move.plyAtSec == null) return null;
+      times.push(move.plyAtSec);
+    }
+  }
+  if (times.length === 0) return null;
+  return times;
 }
 
 /**

@@ -7,6 +7,14 @@ const STORAGE_KEY = "opening-lab:progress:v1";
 const ONBOARDING_KEY = "opening-lab:onboarding:v1";
 const EVENT = "opening-lab:progress";
 
+/**
+ * Caro-Kann for Black was replaced in place (ckb1–ckb10 are new book lines).
+ * Revision 0 stores drills for the old book. Those keys are dropped once.
+ * A ckb id outside 1–10 is not a current line and is dropped whenever it
+ * is still sitting in saved progress.
+ */
+export const CARO_LINE_PROGRESS_REVISION = 2;
+
 export type Mastery = "new" | "learning" | "fresh" | "due" | "weak";
 
 export type LineProgress = {
@@ -31,6 +39,8 @@ export type ProgressStore = {
   globalStreak: number;
   globalBestStreak: number;
   lastGlobalDay: string | null;
+  /** Book revision for caro-kann-black line ids. Missing means the old book. */
+  caroLinesRevision?: number;
 };
 
 const EMPTY_LINE: LineProgress = {
@@ -120,18 +130,57 @@ function normalizeLines(raw: unknown): Record<string, LineProgress> {
   return out;
 }
 
+function isCurrentCaroLineId(id: string): boolean {
+  if (!/^ckb\d+$/.test(id)) return false;
+  const n = Number(id.slice(3));
+  return Number.isInteger(n) && n >= 1 && n <= 10;
+}
+
+/**
+ * Drop drills that belong to the replaced Caro book, and any ckb id that is
+ * not one of the ten current lines. Other packs and the gym line stay.
+ */
+export function migrateProgressLines(
+  lines: Record<string, LineProgress>,
+  revision: number,
+): { lines: Record<string, LineProgress>; revision: number; changed: boolean } {
+  const next: Record<string, LineProgress> = { ...lines };
+  let changed = false;
+  let nextRevision = Number.isFinite(revision) ? revision : 0;
+  if (nextRevision < CARO_LINE_PROGRESS_REVISION) {
+    for (const id of Object.keys(next)) {
+      if (/^ckb\d+$/.test(id)) delete next[id];
+    }
+    nextRevision = CARO_LINE_PROGRESS_REVISION;
+    changed = true;
+  }
+  for (const id of Object.keys(next)) {
+    if (!/^ckb\d+$/.test(id) || isCurrentCaroLineId(id)) continue;
+    delete next[id];
+    changed = true;
+  }
+  return { lines: next, revision: nextRevision, changed };
+}
+
 function read(): ProgressStore {
   if (typeof window === "undefined") return { ...EMPTY_STORE, lines: {} };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return { ...EMPTY_STORE, lines: {} };
     const parsed = JSON.parse(raw) as Partial<ProgressStore>;
-    return {
-      lines: normalizeLines(parsed.lines),
+    const migrated = migrateProgressLines(
+      normalizeLines(parsed.lines),
+      Number(parsed.caroLinesRevision) || 0,
+    );
+    const store: ProgressStore = {
+      lines: migrated.lines,
       globalStreak: Number(parsed.globalStreak) || 0,
       globalBestStreak: Number(parsed.globalBestStreak) || 0,
       lastGlobalDay: parsed.lastGlobalDay ?? null,
+      caroLinesRevision: migrated.revision,
     };
+    if (migrated.changed) write(store);
+    return store;
   } catch {
     return { ...EMPTY_STORE, lines: {} };
   }

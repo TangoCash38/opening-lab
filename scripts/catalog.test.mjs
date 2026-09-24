@@ -211,7 +211,7 @@ test("Play listing copy is Path B packs, not Lab+", () => {
   assert.doesNotMatch(playApp, /Lab\+ yearly is billed/);
 });
 
-test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1e2 on ckb9", () => {
+test("Caro-Kann for Black is a 3-line free sample; 10 lines titled Line 1 to Line 10", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "caro-kann-black"');
   assert.ok(start >= 0, "caro-kann-black pack missing");
@@ -239,11 +239,11 @@ test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1
   const lineIds = [...ck.matchAll(/id: "(ckb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 18 }, (_, i) => `ckb${i + 1}`),
+    Array.from({ length: 10 }, (_, i) => `ckb${i + 1}`),
   );
 
   const sides = [...ck.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 18, "expected line sides");
+  assert.ok(sides.length >= 10, "expected line sides");
   assert.ok(sides.every((s) => s === "b"), "every line side must be b");
 
   const names = Object.fromEntries(
@@ -252,18 +252,10 @@ test("Caro-Kann for Black is a 3-line free sample; 18 lines stay in packs.ts, N1
       m[2],
     ]),
   );
-  assert.equal(names.ckb1, "Advance");
-  assert.equal(names.ckb3, "Classical");
-  assert.equal(names.ckb5, "Exchange");
-  assert.equal(names.ckb9, "Classical, N1e2");
-
-  const ckb9Start = ck.indexOf('id: "ckb9"');
-  assert.ok(ckb9Start >= 0, "ckb9 missing");
-  const ckb9Next = ck.indexOf('id: "ckb10"', ckb9Start);
-  const ckb9 = ck.slice(ckb9Start, ckb9Next >= 0 ? ckb9Next : undefined);
-  assert.match(ckb9, /"N1e2"/);
-  assert.doesNotMatch(ckb9, /"Ne2"/);
-  assert.doesNotMatch(ckb9, /"Nge2"/);
+  for (let i = 1; i <= 10; i += 1) {
+    assert.equal(names[`ckb${i}`], `Line ${i}`);
+  }
+  assert.doesNotMatch(ck, /id: "ckb1[1-8]"/);
 });
 
 test("Queen’s Gambit Declined for Black stays fully visible with chess names", () => {
@@ -2844,7 +2836,7 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     lineIds.filter((id) => sample.includes(id)),
     sample,
   );
-  assert.equal(lineIds.length, 18);
+  assert.equal(lineIds.length, 10);
 
   const hero = readFileSync(
     join(root, "src/components/opening-lab/home-hero.tsx"),
@@ -2937,7 +2929,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   };
   const caro = {
     id: "caro-kann-black",
-    lines: Array.from({ length: 18 }, (_, i) => ({ id: `ckb${i + 1}` })),
+    lines: Array.from({ length: 10 }, (_, i) => ({ id: `ckb${i + 1}` })),
   };
 
   for (const line of nimzo.lines) {
@@ -3093,10 +3085,10 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(isLineUnlocked(caro, "ckb5", []), true);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb4", []), false);
-  assert.equal(isLineUnlocked(caro, "ckb18", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb10", []), false);
   assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
-  assert.equal(isLineUnlocked(caro, "ckb18", ["caro-kann-black"]), true);
+  assert.equal(isLineUnlocked(caro, "ckb10", ["caro-kann-black"]), true);
 
   assert.deepEqual(playableLines(nimzo), []);
   assert.deepEqual(playableLines(qgwPack), []);
@@ -3115,6 +3107,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
 
   assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
   assert.equal(nextUnlockedLine(caro, "ckb3", [])?.id, "ckb5");
+  assert.equal(nextUnlockedLine(caro, "ckb5", []), undefined);
   assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
   assert.equal(nextUnlockedLine(nimzo, "nl1", []), undefined);
   assert.equal(nextUnlockedLine(nimzo, "nl1", ["nimzo-larsen-white"])?.id, "nl2");
@@ -3144,7 +3137,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(abPack, "ab1", ["alekhine-black"])?.id, "ab2");
 });
 
-test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -3206,7 +3199,7 @@ test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   const stb = packBlock("stafford-black");
   const pw = packBlock("ponziani-white");
   const ab = packBlock("alekhine-black");
-  assertIdeas(ck, "ckb", 18);
+  assertIdeas(ck, "ckb", 10);
   assertIdeas(qgd, "qgdb", 18);
   assertIdeas(lon, "alb", 18);
   assertIdeas(d4s, "d4s", 18);
@@ -3240,7 +3233,7 @@ test("every ckb1–18, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   assertIdeas(ab, "ab", 18);
   assert.match(
     ck,
-    /idea: "White has locked the centre\. Develop the light bishop before …e6, then challenge d4 with …c5\."/,
+    /idea: "White gains space with e5\. Develop the bishop to f5 before …e6, hit d4 with …c5 and …Nc6, swap off White's good bishop with …Bg4, then put a knight on f5 to press d4\."/,
   );
   assert.match(
     qgd,
