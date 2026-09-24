@@ -73,7 +73,7 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   const nimzo = { id: "nimzo-larsen-white", lines: [{ id: "nl1" }, { id: "nl7" }] };
   const caro = {
     id: "caro-kann-black",
-    lines: ["ckb1", "ckb2", "ckb3", "ckb5", "ckb18"].map((id) => ({ id })),
+    lines: ["ckb1", "ckb2", "ckb3", "ckb5", "ckb10"].map((id) => ({ id })),
   };
 
   assert.equal(isLineUnlocked(nimzo, "nl1", []), false);
@@ -83,10 +83,14 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   assert.equal(isLineUnlocked(caro, "ckb3", []), true);
   assert.equal(isLineUnlocked(caro, "ckb5", []), true);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
-  assert.equal(isLineUnlocked(caro, "ckb18", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb10", []), false);
   assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
-  assert.equal(isLineUnlocked(caro, "ckb18", ["caro-kann-black"]), true);
+  assert.equal(isLineUnlocked(caro, "ckb10", ["caro-kann-black"]), true);
+  assert.deepEqual(
+    playableLines(caro).map((line) => line.id),
+    ["ckb1", "ckb3", "ckb5"],
+  );
   assert.deepEqual(playableLines(nimzo), []);
 
   const traps = {

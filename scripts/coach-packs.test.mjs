@@ -262,7 +262,7 @@ test("opening traps mounts on ot1 by line id, with narration clips and per-pack 
 
       if (coachPackIntroApplies("scotch")) throw new Error("scotch intro uses its own gate");
       if (!coachPackIntroApplies("opening-traps")) throw new Error("traps intro");
-      if (coachPackIntroApplies("caro-kann-black")) throw new Error("uncoached pack");
+      if (coachPackIntroApplies("qgd-black")) throw new Error("uncoached pack");
       const line = { packId: "opening-traps", lineId: "ot1" };
       if (!coachPackLineApplies(line)) throw new Error("ot1 should mount");
       if (coachPackLineApplies({ ...line, lineId: "ot2" })) throw new Error("ot2 must not mount");
