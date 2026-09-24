@@ -28,6 +28,22 @@ test("locked lines are red, unfinished are natural, Test-passed are green", () =
   assert.doesNotMatch(src, /red until a clean Test/);
 });
 
+test("the open line is a filled accent row, and a click keeps Practice or Test", () => {
+  assert.match(src, /selected\?: boolean/);
+  assert.match(src, /line-row-active border-accent bg-accent\/25/);
+  assert.match(src, /data-line-id=\{line\.id\}/);
+  assert.match(src, /data-line-active=\{selected \? "true" : "false"\}/);
+  assert.match(src, /aria-current=\{selected \? "true" : undefined\}/);
+  assert.match(hero, /const activeLineId = frame\?\.line\.id \?\? coach\?\.line\.id \?\? null/);
+  assert.match(hero, /selected=\{item\.id === activeLineId\}/);
+  assert.match(hero, /mode: mode \?\? prev\?\.mode \?\? "learn"/);
+  const css = readFileSync(join(root, "src/styles.css"), "utf8");
+  assert.match(css, /\.line-row-active \{/);
+  assert.match(css, /border-color:\s*var\(--color-accent\)/);
+  assert.match(css, /inset 5px 0 0 var\(--color-accent\)/);
+  assert.match(css, /\.home-lines-panel \.line-row \{\s*touch-action:\s*manipulation;/);
+});
+
 test("locked rows still fire onClick so a tap can open unlock", () => {
   assert.doesNotMatch(src, /if \(locked\) return/);
   assert.doesNotMatch(src, /aria-disabled=\{locked\}/);

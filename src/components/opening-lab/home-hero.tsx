@@ -128,15 +128,19 @@ export function HomeHero({
     return frame !== null;
   };
 
-  const openInFrame = (line: OpeningLine, options?: TrainStartOptions) => {
+  const openInFrame = (
+    line: OpeningLine,
+    options?: TrainStartOptions,
+    mode?: TrainMode,
+  ) => {
     coachRef.current = null;
     setCoach(null);
-    setFrame({
+    setFrame((prev) => ({
       line,
-      mode: "learn",
+      mode: mode ?? prev?.mode ?? "learn",
       plyLimit: options?.plyLimit,
       startPly: options?.startPly,
-    });
+    }));
   };
 
   const launchLine = (line: OpeningLine, options?: TrainStartOptions) => {
@@ -179,12 +183,17 @@ export function HomeHero({
     stopScotchCoachNarration();
     setCoach(null);
     if (!current) return;
-    openInFrame(current.line, {
-      plyLimit: current.plyLimit,
-      startPly: current.startPly,
-    });
+    openInFrame(
+      current.line,
+      {
+        plyLimit: current.plyLimit,
+        startPly: current.startPly,
+      },
+      "learn",
+    );
   };
 
+  const activeLineId = frame?.line.id ?? coach?.line.id ?? null;
   const game = useMemo(() => new Chess(), []);
   const showLinesToggle = !embedded;
   const linesVisible = embedded || linesOpen;
@@ -381,6 +390,7 @@ export function HomeHero({
                         locked={!unlocked}
                         showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
                         testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
+                        selected={item.id === activeLineId}
                         onClick={() => {
                           if (unlocked) {
                             if (pack.about) {
