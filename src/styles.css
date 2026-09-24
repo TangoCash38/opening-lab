@@ -532,6 +532,11 @@ html[data-color-scheme="dark"] {
       align-items: start;
     }
 
+    /* Coach dock needs room beside the wood without shrinking the lines away. */
+    [data-surface="website"] .home-hero-split.home-hero--coach {
+      grid-template-columns: minmax(34rem, min(46rem, 62vw)) minmax(15rem, 1fr);
+    }
+
     [data-surface="website"] .home-hero-split > .home-heading-row {
       grid-column: 2;
       grid-row: 1;
@@ -3047,49 +3052,58 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   border-color: var(--color-danger);
 }
 
-/* Scotch coach — cream/walnut book card on the website board. Play and phone never mount it. */
-.home-board--coach {
-  position: relative;
+/* Scotch coach — docked in the cream panel, left of the wood. Play and phone never mount it. */
+.home-coach-practice {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0.15rem 0.55rem 0.1rem 0.65rem;
+}
+
+.home-coach-practice .home-board {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+}
+
+/* Snug to the dock. ChessBoard centers itself with mx-auto; keep the wood against the coach. */
+.home-coach-practice .home-board .mx-auto {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .scotch-coach-stage {
-  position: absolute;
-  z-index: 4;
-  top: 0.2rem;
-  right: 0.35rem;
-  left: auto;
-  bottom: auto;
-  width: min(6.75rem, 26%);
-  height: min(11rem, 42%);
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: 10.75rem;
+  aspect-ratio: 640 / 1071;
   overflow: hidden;
   pointer-events: none;
+  align-self: center;
 }
 
 .scotch-coach-figure {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  height: 100%;
-  width: auto;
+  display: block;
+  width: 100%;
+  height: auto;
   max-width: none;
-  transform: translateX(-50%) translateY(0) scale(1);
-  transform-origin: center bottom;
-  filter: drop-shadow(0 12px 16px rgba(60, 36, 18, 0.28));
-  animation: scotch-coach-emerge 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) both;
+  transform-origin: left center;
+  filter: drop-shadow(0 10px 12px rgba(60, 36, 18, 0.22));
+  animation: scotch-coach-emerge 0.9s cubic-bezier(0.16, 0.84, 0.24, 1) both;
   -webkit-user-drag: none;
   user-select: none;
 }
 
 @keyframes scotch-coach-emerge {
   0% {
-    transform: translateX(-50%) translateY(68%) scale(0.18);
+    transform: translateX(-42%);
     opacity: 0;
   }
-  16% {
-    opacity: 1;
-  }
   100% {
-    transform: translateX(-50%) translateY(0) scale(1);
+    transform: translateX(0);
     opacity: 1;
   }
 }

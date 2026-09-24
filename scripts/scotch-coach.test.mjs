@@ -126,8 +126,15 @@ test("practice board auto-plays the scotch gambit stem during the intro", () => 
   assert.match(board, /scotchCoachNarration\(\)/);
   assert.match(board, /onSlideComplete/);
   assert.match(hero, /ScotchCoachBoard/);
+  assert.match(hero, /data-scotch-coach-dock/);
+  assert.match(hero, /home-coach-practice/);
   assert.match(intro, /onDoneRef\.current\(\)/);
-  assert.match(css, /width: min\(6\.75rem, 26%\)/);
+  assert.match(css, /\.home-coach-practice\s*\{[^}]*display:\s*flex/);
+  const stage = css.slice(css.indexOf(".scotch-coach-stage {"), css.indexOf(".scotch-coach-figure"));
+  assert.match(stage, /position:\s*relative/);
+  assert.doesNotMatch(stage, /position:\s*absolute/);
+  assert.doesNotMatch(stage, /top:\s*0\.2rem/);
+  assert.match(css, /home-hero--coach/);
   assert.doesNotMatch(board, /vs-computer|playComputer|Play on/i);
   assert.doesNotMatch(train, /SCOTCH_COACH_STEM|scotchCoachStemPlyCount/);
 
