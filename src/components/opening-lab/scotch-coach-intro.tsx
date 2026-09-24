@@ -48,6 +48,27 @@ export function ScotchCoachFigure() {
 export type CoachDoneReason = "skip" | "done";
 type CoachDone = (reason?: CoachDoneReason) => void;
 
+/**
+ * One completion per card. The clip ending and the Practice button can both
+ * fire; the second one must not run, or it stops the line talk that the
+ * first completion just opened.
+ */
+function useOnceCoachLeave(onDone: CoachDone): CoachDone {
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+  const leaveRef = useRef<CoachDone | null>(null);
+  if (!leaveRef.current) {
+    let left = false;
+    leaveRef.current = (reason: CoachDoneReason = "done") => {
+      if (left) return;
+      left = true;
+      stopScotchCoachNarration();
+      onDoneRef.current(reason);
+    };
+  }
+  return leaveRef.current;
+}
+
 type CardProps = {
   onDone: CoachDone;
   /** Cuppa intro, the Line 1 (sg1) pack-recipe talk, or another pack's first line. */
@@ -145,8 +166,9 @@ function TextOnlyCoachCard({
   onBeat?: (beat: number) => void;
 }) {
   const [beat, setBeat] = useState(0);
-  const onDoneRef = useRef(onDone);
-  onDoneRef.current = onDone;
+  const leave = useOnceCoachLeave(onDone);
+  const leaveRef = useRef(leave);
+  leaveRef.current = leave;
   const onBeatRef = useRef(onBeat);
   onBeatRef.current = onBeat;
   const text = captions[beat] ?? captions[0] ?? "";
@@ -159,16 +181,11 @@ function TextOnlyCoachCard({
   useEffect(() => {
     const delay = COACH_TEXT_BEAT_SEC * 1000;
     const id = window.setTimeout(() => {
-      if (last) onDoneRef.current();
+      if (last) leaveRef.current();
       else setBeat((n) => Math.min(captions.length - 1, n + 1));
     }, delay);
     return () => window.clearTimeout(id);
   }, [beat, last, captions.length]);
-
-  const leave = (reason: "skip" | "done" = "done") => {
-    stopScotchCoachNarration();
-    onDone(reason);
-  };
 
   return (
     <CoachCardFrame
@@ -219,8 +236,9 @@ function AudioPackCoachCard({
 }) {
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
-  const onDoneRef = useRef(onDone);
-  onDoneRef.current = onDone;
+  const leave = useOnceCoachLeave(onDone);
+  const leaveRef = useRef(leave);
+  leaveRef.current = leave;
   const onBeatRef = useRef(onBeat);
   onBeatRef.current = onBeat;
   const text = captions[beat] ?? captions[0] ?? "";
@@ -236,7 +254,7 @@ function AudioPackCoachCard({
       if (finished) return;
       finished = true;
       setBeat(Math.max(0, captions.length - 1));
-      onDoneRef.current();
+      leaveRef.current();
     };
     const audio = startCoachPackNarration(mp3, ogg ?? null, kind);
     const backup = window.setTimeout(finishTalk, (fallbackSec + 1.2) * 1000);
@@ -267,11 +285,6 @@ function AudioPackCoachCard({
   useEffect(() => {
     setScotchCoachNarrationMuted(muted);
   }, [muted]);
-
-  const leave = (reason: "skip" | "done" = "done") => {
-    stopScotchCoachNarration();
-    onDone(reason);
-  };
 
   return (
     <CoachCardFrame
@@ -346,8 +359,9 @@ function PackCoachCard({
 function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
-  const onDoneRef = useRef(onDone);
-  onDoneRef.current = onDone;
+  const leave = useOnceCoachLeave(onDone);
+  const leaveRef = useRef(leave);
+  leaveRef.current = leave;
   const text = SCOTCH_COACH_BEATS[beat] ?? SCOTCH_COACH_BEATS[0];
   const last = beat >= SCOTCH_COACH_BEATS.length - 1;
 
@@ -357,7 +371,7 @@ function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
       if (finished) return;
       finished = true;
       setBeat(SCOTCH_COACH_BEATS.length - 1);
-      onDoneRef.current();
+      leaveRef.current();
     };
     const audio = startScotchCoachNarration();
     const backup = window.setTimeout(
@@ -371,7 +385,7 @@ function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
     };
     const onNarrationEnded = () => {
       setBeat(SCOTCH_COACH_BEATS.length - 1);
-      onDoneRef.current();
+      leaveRef.current();
     };
     audio.addEventListener("timeupdate", sync);
     audio.addEventListener("ended", onNarrationEnded);
@@ -385,11 +399,6 @@ function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
   useEffect(() => {
     setScotchCoachNarrationMuted(muted);
   }, [muted]);
-
-  const leave = (reason: "skip" | "done" = "done") => {
-    stopScotchCoachNarration();
-    onDone(reason);
-  };
 
   return (
     <CoachCardFrame
@@ -416,8 +425,9 @@ function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
 function ScotchCoachCanalCard({ onDone }: { onDone: CoachDone }) {
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
-  const onDoneRef = useRef(onDone);
-  onDoneRef.current = onDone;
+  const leave = useOnceCoachLeave(onDone);
+  const leaveRef = useRef(leave);
+  leaveRef.current = leave;
   const text = SCOTCH_CANAL_BEATS[beat] ?? SCOTCH_CANAL_BEATS[0];
   const last = beat >= SCOTCH_CANAL_BEATS.length - 1;
 
@@ -427,7 +437,7 @@ function ScotchCoachCanalCard({ onDone }: { onDone: CoachDone }) {
       if (finished) return;
       finished = true;
       setBeat(SCOTCH_CANAL_BEATS.length - 1);
-      onDoneRef.current();
+      leaveRef.current();
     };
     const audio = startScotchCanalNarration();
     if (!audio) return;
@@ -458,11 +468,6 @@ function ScotchCoachCanalCard({ onDone }: { onDone: CoachDone }) {
   useEffect(() => {
     setScotchCoachNarrationMuted(muted);
   }, [muted]);
-
-  const leave = (reason: "skip" | "done" = "done") => {
-    stopScotchCoachNarration();
-    onDone(reason);
-  };
 
   return (
     <CoachCardFrame

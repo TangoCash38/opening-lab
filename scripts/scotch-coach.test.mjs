@@ -103,11 +103,11 @@ test("narration plays on the coach card and skip stops it", () => {
     intro.indexOf('audio.addEventListener("ended"'),
   );
   assert.match(ended, /setBeat\(SCOTCH_COACH_BEATS\.length - 1\)/);
-  assert.match(ended, /onDoneRef\.current\(\)/);
-  const leaveAt = intro.indexOf("const leave");
-  const skip = intro.slice(leaveAt, intro.indexOf("return (", leaveAt));
-  assert.match(skip, /stopScotchCoachNarration\(\)/);
-  assert.match(skip, /onDone\(reason\)/);
+  assert.match(ended, /leaveRef\.current\(\)/);
+  const once = intro.slice(intro.indexOf("function useOnceCoachLeave"), intro.indexOf("type CardProps"));
+  assert.match(once, /if \(left\) return/);
+  assert.match(once, /stopScotchCoachNarration\(\)/);
+  assert.match(once, /onDoneRef\.current\(reason\)/);
   assert.match(intro, /onSkip=\{\(\) => leave\("skip"\)\}/);
 });
 
@@ -277,7 +277,7 @@ test("practice board auto-plays the scotch gambit stem during the intro", () => 
   assert.match(hero, /ScotchCoachBoard/);
   assert.match(hero, /data-scotch-coach-dock/);
   assert.match(hero, /home-coach-practice/);
-  assert.match(intro, /onDoneRef\.current\(\)/);
+  assert.match(intro, /onDoneRef\.current\(reason\)/);
   assert.match(css, /\.home-coach-practice\s*\{[^}]*display:\s*flex/);
   const stage = css.slice(css.indexOf(".scotch-coach-stage {"), css.indexOf(".scotch-coach-figure"));
   assert.match(stage, /position:\s*relative/);

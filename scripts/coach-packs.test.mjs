@@ -320,6 +320,8 @@ test("finishing the pack intro opens the first-line talk; Skip and the gym pages
   assert.doesNotMatch(modal, /markScotchCoachSeen|markCoachIntroSeen|markCoachLineSeen|coach-intro|scotch-coach-session/);
   assert.match(card, /onSkip=\{\(\) => leave\("skip"\)\}/);
   assert.match(card, /if \(last\) leave\(\)/);
+  assert.match(card, /function useOnceCoachLeave/);
+  assert.match(card, /if \(left\) return/);
   assert.doesNotMatch(card, /onSkip=\{leave\}/);
   const finish = hero.slice(hero.indexOf("const finishCoach"), hero.indexOf("const activeLineId"));
   assert.match(finish, /coachTalkAfterPackIntro/);
