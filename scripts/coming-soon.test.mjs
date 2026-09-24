@@ -102,7 +102,7 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
   };
   const traps = {
     id: "opening-traps",
-    lines: ["ot1", "ot2", "ot3"].map((id) => ({ id })),
+    lines: ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7"].map((id) => ({ id })),
   };
   const scotch = {
     id: "scotch",
@@ -121,12 +121,12 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     assert.equal(isLineUnlocked(caro, line.id, []), false, line.id);
   }
   assert.equal(isLineUnlocked(traps, "ot1", []), true);
-  assert.equal(isLineUnlocked(traps, "ot2", []), true);
-  assert.equal(isLineUnlocked(traps, "ot3", []), false);
+  assert.equal(isLineUnlocked(traps, "ot6", []), true);
+  assert.equal(isLineUnlocked(traps, "ot7", []), false);
   assert.deepEqual(playableLines(caro), []);
   assert.deepEqual(
     playableLines(traps).map((line) => line.id),
-    ["ot1", "ot2"],
+    ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
   );
   assert.equal(nextUnlockedLine(caro, "ckb1", []), undefined);
 
@@ -134,7 +134,7 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     assert.equal(isLineUnlocked(caro, line.id, ["caro-kann-black"]), true, line.id);
   }
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
-  assert.equal(isLineUnlocked(traps, "ot3", ["opening-traps"]), true);
+  assert.equal(isLineUnlocked(traps, "ot7", ["opening-traps"]), true);
   assert.equal(isComingSoonClosed(caro.id, ["caro-kann-black"]), false);
   assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
 

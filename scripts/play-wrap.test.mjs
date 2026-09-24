@@ -207,7 +207,7 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   const playSkus = src("src/lib/play-skus.ts");
   assert.match(playSkus, /PLAY_SKU_BUY_ALL = "buy_all_packs"/);
   assert.match(playSkus, /caro-kann-black/);
-  assert.doesNotMatch(playSkus, /"opening-traps"/);
+  assert.match(playSkus, /"opening-traps"/);
 });
 
 test("website app prompt is website-only and uses closed testing, not a store page", () => {

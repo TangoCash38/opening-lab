@@ -37,6 +37,12 @@ export function UnlockModal({
   const t = useT();
   const wrap = playApp || isPlayWrap();
   const caroRest = packName.toLowerCase().includes("caro");
+  const trapsRest = packName === "Opening Traps";
+  const unlockLabel = trapsRest
+    ? t("Unlock all 11 traps for 99p")
+    : caroRest
+      ? t("Unlock the rest of this pack")
+      : t("Unlock this pack");
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center"
@@ -63,9 +69,11 @@ export function UnlockModal({
                 {t("Unlock {packName}", { packName })}
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
-                {caroRest
-                  ? t("Three lines stay free. This unlocks the rest of the pack.")
-                  : t("One-time purchase. This pack only.")}
+                {trapsRest
+                  ? t("Unlock all 11 traps for 99p")
+                  : caroRest
+                    ? t("Three lines stay free. This unlocks the rest of the pack.")
+                    : t("One-time purchase. This pack only.")}
               </p>
             </div>
           </div>
@@ -97,7 +105,7 @@ export function UnlockModal({
                 >
                   <span>
                     <span className="block text-[0.92rem] font-bold text-accent">
-                      {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
+                      {unlockLabel}
                     </span>
                     <span className="block text-[0.75rem] text-fg-muted">
                       {t("Pay as you go. Billed by Google Play.")}
@@ -151,7 +159,7 @@ export function UnlockModal({
               >
                 <span>
                   <span className="block text-[0.92rem] font-bold text-accent">
-                    {caroRest ? t("Unlock the rest of this pack") : t("Unlock this pack")}
+                    {unlockLabel}
                   </span>
                   <span className="block text-[0.75rem] text-fg-muted">
                     {t("Card via Stripe.")}

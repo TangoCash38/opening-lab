@@ -75,7 +75,7 @@ export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T
 
 export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> = {
   "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
-  "opening-traps": ["ot1", "ot2"],
+  "opening-traps": ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
 };
 
 export function playableLines(pack: Pack): OpeningLine[] {
@@ -128,8 +128,8 @@ export function nextUnlockedLine(
 export const PLAY_BUY_ALL_SKU = PLAY_SKU_BUY_ALL;
 
 /**
- * Path B Play INAPP map — same 33 pack ids as PLAY_PATH_B_PACK_IDS
- * (includes caro-kann-black extras; excludes opening-traps).
+ * Path B Play INAPP map — same 34 pack ids as PLAY_PATH_B_PACK_IDS
+ * (includes caro-kann-black extras and opening-traps).
  * Lab+ yearly is not a pack SKU path.
  */
 const PLAY_PACK_SKUS: Readonly<Record<string, string>> = playPackSkuMap(

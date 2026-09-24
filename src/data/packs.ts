@@ -6012,10 +6012,10 @@ export const PACKS: Pack[] = [
     section: "special",
     isFree: true,
     isPremium: false,
-    price: null,
+    price: "£0.99",
     blurb: "",
     about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none.",
-    closedLabel: "Free · 11 traps",
+    closedLabel: "6 free · 99p",
     lines: [
       {
         id: "ot1",

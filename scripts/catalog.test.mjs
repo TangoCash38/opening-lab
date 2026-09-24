@@ -47,7 +47,7 @@ test("Lab+ offer gate is a paid Play SKU path, not visible pack count", () => {
   assert.match(playSkus, /PLAY_SKU_BUY_ALL = "buy_all_packs"/);
   assert.match(playSkus, /caro-kann-black/);
   assert.match(playSkus, /qgd-black/);
-  assert.doesNotMatch(playSkus, /"opening-traps"/);
+  assert.match(playSkus, /"opening-traps"/);
 
   const packList = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
   const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
@@ -2392,7 +2392,8 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.doesNotMatch(ot, /Trap · Grob/);
   assert.match(ot, /blurb: ""/);
   assert.doesNotMatch(ot, /punish-the-take/);
-  assert.match(ot, /closedLabel: "Free · 11 traps"/);
+  assert.match(ot, /closedLabel: "6 free · 99p"/);
+  assert.match(ot, /price: "£0\.99"/);
   assert.match(ot, /Then Test with none/);
   assert.doesNotMatch(ot, /Play on/);
   assert.doesNotMatch(ot, /playing on/);
