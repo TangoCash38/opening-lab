@@ -156,7 +156,7 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(packList, /QuietLabel/);
   assert.match(packList, /\["opening-traps", "caro-kann-black"\]/);
   assert.match(packList, /data-pack-progress/);
-  assert.match(packList, /data-pack-access=\{anyOpen \? "open" : "locked"\}/);
+  assert.match(packList, /data-pack-access=\{comingSoonClosed \? "coming-soon" : anyOpen \? "open" : "locked"\}/);
   assert.doesNotMatch(packList, /Find the mate/);
   assert.doesNotMatch(packList, /Play on/);
   const aboutModal = readFileSync(
@@ -206,7 +206,7 @@ test("Play listing copy is Path B packs, not Lab+", () => {
   const playApp = readFileSync(join(root, "src/lib/play-app.ts"), "utf8");
   assert.match(
     playApp,
-    /export const PLAY_STORE_NOTICE =\s*"Two Opening Traps and three Caro lines are free\. Paid packs are billed by Google Play\."/,
+    /export const PLAY_STORE_NOTICE =\s*"Scotch Gambit is available\. Other packs are coming soon with Professor Potato Pie\. Paid packs are billed by Google Play\."/,
   );
   assert.doesNotMatch(playApp, /Lab\+ yearly is billed/);
 });
@@ -3087,12 +3087,13 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
       line.id,
     );
   }
-  assert.equal(isLineUnlocked(caro, "ckb1", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb1", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), false);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb4", []), false);
   assert.equal(isLineUnlocked(caro, "ckb18", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb18", ["caro-kann-black"]), true);
 
@@ -3109,14 +3110,11 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.deepEqual(playableLines(stbPack), []);
   assert.deepEqual(playableLines(pwPack), []);
   assert.deepEqual(playableLines(abPack), []);
-  assert.deepEqual(
-    playableLines(caro).map((l) => l.id),
-    ["ckb1", "ckb3", "ckb5"],
-  );
+  assert.deepEqual(playableLines(caro).map((l) => l.id), []);
 
-  assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
-  assert.equal(nextUnlockedLine(caro, "ckb3", [])?.id, "ckb5");
-  assert.equal(nextUnlockedLine(caro, "ckb5", []), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb1", []), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb3", []), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
   assert.equal(nextUnlockedLine(nimzo, "nl1", []), undefined);
   assert.equal(nextUnlockedLine(nimzo, "nl1", ["nimzo-larsen-white"])?.id, "nl2");
   assert.equal(nextUnlockedLine(qgwPack, "qgw1", []), undefined);

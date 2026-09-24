@@ -3,10 +3,14 @@ import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import {
+  canPurchaseBuyAll,
+  canPurchasePack,
   catalogOffersLabPlus,
   FREE_SAMPLE_LINE_IDS,
   hasPaidPlaySkuPath,
+  isComingSoonClosed,
   isLineUnlocked,
+  isPackComingSoon,
   visiblePacks,
 } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
@@ -92,6 +96,8 @@ function PackCard({
   playApp,
   subscribed,
   purchased,
+  soonNote,
+  onComingSoon,
 }: {
   pack: Pack;
   open: boolean;
@@ -101,11 +107,15 @@ function PackCard({
   playApp: boolean;
   subscribed: boolean;
   purchased: readonly string[];
+  soonNote: boolean;
+  onComingSoon: (pack: Pack) => void;
 }) {
   const t = useT();
   const { line: lineProgress } = useProgress();
   const free = packLooksFree(pack);
   const price = packPrice(pack);
+  const comingSoon = isPackComingSoon(pack.id);
+  const comingSoonClosed = isComingSoonClosed(pack.id, purchased, subscribed);
   const openLineCount = pack.lines.filter(
     (line) => subscribed || isLineUnlocked(pack, line.id, purchased),
   ).length;
@@ -133,13 +143,15 @@ function PackCard({
       }`}
       data-pack-card={pack.id}
       data-pack-open={open ? "true" : "false"}
-      data-pack-access={anyOpen ? "open" : "locked"}
+      data-pack-access={comingSoonClosed ? "coming-soon" : anyOpen ? "open" : "locked"}
+      data-pack-coming-soon={comingSoon ? "true" : "false"}
+      onClick={comingSoonClosed ? () => onComingSoon(pack) : undefined}
     >
       <div className="flex w-full flex-col px-4 pb-1 pt-3.5 text-start">
         <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-center gap-3">
           <div className="relative">
             <MiniBoard />
-            {!anyOpen && (
+            {!anyOpen && !comingSoonClosed && (
               <span
                 className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-fg text-bg-elevated shadow-sm"
                 aria-hidden
@@ -153,7 +165,7 @@ function PackCard({
               <div className="min-w-0 break-words text-[0.95rem] font-bold leading-snug">
                 {pack.name}
               </div>
-              {!anyOpen && (
+              {!anyOpen && !comingSoonClosed && (
                 <Lock
                   className="size-3.5 shrink-0 text-fg-subtle"
                   strokeWidth={2.5}
@@ -166,7 +178,12 @@ function PackCard({
               <span className="rounded-full bg-accent/12 px-2 py-0.5 text-[0.65rem] font-semibold text-accent">
                 {t("{n} lines", { n: pack.lines.length })}
               </span>
-              {free ? (
+              {comingSoon ? (
+                <span className="pack-coming-soon-label" data-coming-soon-label>
+                  {t("Coming soon")}
+                </span>
+              ) : null}
+              {comingSoonClosed ? null : free ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
                   {(FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0
                     ? t("{n} free", { n: FREE_SAMPLE_LINE_IDS[pack.id].length })
@@ -219,6 +236,7 @@ function PackCard({
             linesInitiallyOpen
             onStartLine={onStartLine}
             onRequestUnlock={onRequestUnlock}
+            onComingSoon={onComingSoon}
           />
         </div>
       ) : null}
@@ -227,31 +245,43 @@ function PackCard({
         <button
           type="button"
           className="block w-full border-0 bg-transparent p-0 text-inherit"
-          onClick={() => onToggle(pack)}
-          aria-expanded={open}
+          onClick={(event) => {
+            event.stopPropagation();
+            if (comingSoonClosed) onComingSoon(pack);
+            else onToggle(pack);
+          }}
+          aria-expanded={comingSoonClosed ? false : open}
           data-pack-fold
         >
           <PackExpandHint
             open={open}
             free={free}
-            lockedBar={!anyOpen}
+            soon={comingSoonClosed}
+            lockedBar={!anyOpen && !comingSoonClosed}
             closedLabel={
-              price
-                ? t("{price} · See {n} {pack} lines", {
-                    price,
-                    n: pack.lines.length,
-                    pack: shortPack,
-                  })
-                : t("Tap to see {n} {pack} lines", {
-                    n: pack.lines.length,
-                    pack: shortPack,
-                  })
+              comingSoonClosed
+                ? t("Coming soon")
+                : price
+                  ? t("{price} · See {n} {pack} lines", {
+                      price,
+                      n: pack.lines.length,
+                      pack: shortPack,
+                    })
+                  : t("Tap to see {n} {pack} lines", {
+                      n: pack.lines.length,
+                      pack: shortPack,
+                    })
             }
           />
         </button>
+        {soonNote ? (
+          <p className="pack-coming-soon-note" data-coming-soon-note role="status">
+            {t("Coming soon with Professor Potato Pie.")}
+          </p>
+        ) : null}
       </div>
 
-      {pack.id === LONDON_PACK_ID && !open ? (
+      {pack.id === LONDON_PACK_ID && !open && !comingSoonClosed ? (
         <div className="pack-card-warmup">
           <LondonWarmupChip pack={pack} onStartLine={onStartLine} />
         </div>
@@ -272,6 +302,7 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
   const [openPackId, setOpenPackId] = useState<string | null>(null);
+  const [soonNoteId, setSoonNoteId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
   const wrap = playApp || isPlayWrap();
 
@@ -292,7 +323,13 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   const vsLondon = catalog.find((p) => p.id === "vs-london" && !isLead(p));
   const clubWeapons = catalog.find((p) => p.id === "club-weapons" && !isLead(p));
 
+  const showComingSoon = (pack: Pack) => {
+    setOpenPackId(null);
+    setSoonNoteId(pack.id);
+  };
+
   const togglePack = (pack: Pack) => {
+    setSoonNoteId(null);
     setOpenPackId((id) => (id === pack.id ? null : pack.id));
   };
 
@@ -338,6 +375,10 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   }, [buyPack, buyAll, subscribe]);
 
   const requestUnlock = (pack: Pack) => {
+    if (isComingSoonClosed(pack.id, state.packs, subscribed) || !canPurchasePack(pack.id)) {
+      showComingSoon(pack);
+      return;
+    }
     const price = packPrice(pack);
     if (!price) return;
     setPayError(null);
@@ -382,6 +423,8 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   };
 
   const pay = async (kind: CheckoutKind, packId?: string) => {
+    if (kind === "buy_all" && !canPurchaseBuyAll()) return;
+    if (kind === "pack" && (!packId || !canPurchasePack(packId))) return;
     if (playApp || isPlayWrap()) {
       if (kind === "monthly" || kind === "yearly") {
         setShowSub(false);
@@ -501,6 +544,8 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
       playApp={wrap}
       subscribed={subscribed}
       purchased={state.packs}
+      soonNote={soonNoteId === pack.id}
+      onComingSoon={showComingSoon}
     />
   );
 
@@ -574,9 +619,13 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
           onUnlockPack={() => {
             void pay("pack", modal.pack.id);
           }}
-          onBuyAll={() => {
-            void pay("buy_all");
-          }}
+          onBuyAll={
+            canPurchaseBuyAll()
+              ? () => {
+                  void pay("buy_all");
+                }
+              : undefined
+          }
           onSubscribeMonthly={() => {
             void pay("monthly");
           }}

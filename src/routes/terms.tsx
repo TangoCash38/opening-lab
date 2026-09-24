@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="23 September 2026">
+    <LegalPage title="Terms of Use" updated="24 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -25,25 +25,27 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          There are thirty-four opening packs. Some lines are free as samples
-          (for example part of Caro-Kann). Other packs are one-time purchases,
-          usually £1.99 or £2.99 in the UK. You can also buy Buy all packs for
-          £19.99 (UK), which unlocks every opening pack. Prices include VAT
-          where it applies.
+          Scotch Gambit is available now. The other opening packs are coming
+          soon with Professor Potato Pie and are not for sale until they
+          relaunch. If you already own a pack, it stays unlocked. Buy all
+          packs for £19.99 (UK) is not on sale while those packs are coming
+          soon. Prices include VAT where it applies.
         </p>
         <p>
-          If you buy in the Opening Lab app from Google Play, packs and Buy all
-          are one-time purchases via Google Play Billing. If you buy on the
-          website, packs and Buy all are one-time purchases via Stripe. There
-          is no Lab+ subscription.
+          When a pack is on sale in the Opening Lab app from Google Play, it
+          is a one-time purchase via Google Play Billing. When a pack is on
+          sale on the website, it is a one-time purchase via Stripe. There is
+          no Lab+ subscription.
         </p>
       </LegalSection>
 
       <LegalSection title="Buy all packs">
         <p>
-          Buy all packs is a one-time purchase (Google Play Billing in the Play
-          app, or Stripe on the website). It is not a lifetime licence and we
-          do not sell lifetime access.
+          Buy all packs for £19.99 is not on sale while other opening packs
+          are coming soon. Purchases already made stay on your account. When
+          it is on sale, it is a one-time purchase (Google Play Billing in the
+          Play app, or Stripe on the website). It is not a lifetime licence
+          and we do not sell lifetime access.
         </p>
         <p>
           What you get: full access on your account to every opening pack on

@@ -255,6 +255,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   const sample = ["ckb1", "ckb3", "ckb5"];
   const caro = Array.from({ length: 18 }, (_, i) => `ckb${i + 1}`);
   function isLineUnlocked(packId, lineId, purchased) {
+    if (packId !== "scotch" && !purchased.includes(packId)) return false;
     const ids = packId === "caro-kann-black" ? sample : null;
     if (ids) {
       if (ids.includes(lineId)) return true;
@@ -267,10 +268,10 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
     if (idx < 0) return undefined;
     return lines.slice(idx + 1).find((id) => isLineUnlocked(packId, id, purchased));
   }
-  assert.equal(nextUnlockedLine(caro, "ckb1", "caro-kann-black", []), "ckb3");
-  assert.equal(nextUnlockedLine(caro, "ckb3", "caro-kann-black", []), "ckb5");
+  assert.equal(nextUnlockedLine(caro, "ckb1", "caro-kann-black", []), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb3", "caro-kann-black", []), undefined);
   assert.equal(nextUnlockedLine(caro, "ckb5", "caro-kann-black", []), undefined);
-  assert.equal(nextUnlockedLine(caro, "ckb4", "caro-kann-black", []), "ckb5");
+  assert.equal(nextUnlockedLine(caro, "ckb4", "caro-kann-black", []), undefined);
   assert.equal(
     nextUnlockedLine(caro, "ckb1", "caro-kann-black", ["caro-kann-black"]),
     "ckb2",

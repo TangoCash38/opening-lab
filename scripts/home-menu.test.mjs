@@ -161,7 +161,7 @@ test("Opening Traps and Caro lead, with real complete % and access borders", () 
   );
   assert.ok(lead > -1 && black > lead, "Caro is pulled out of the black section into the lead pair");
   assert.match(list, /data-pack-progress/);
-  assert.match(list, /data-pack-access=\{anyOpen \? "open" : "locked"\}/);
+  assert.match(list, /data-pack-access=\{comingSoonClosed \? "coming-soon" : anyOpen \? "open" : "locked"\}/);
   assert.match(list, /data-pack-fold/);
   assert.match(list, /packCompletePercent/);
   assert.doesNotMatch(list, /PlayStoreNotice/);

@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { CircleHelp, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
-import { isPackVisible, readRequestedPackId } from "@/lib/catalog";
+import { isComingSoonClosed, isPackVisible, readRequestedPackId } from "@/lib/catalog";
 import {
   gymPackFromLine,
   isGymPack,
@@ -54,10 +54,6 @@ function scrollAppTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
-function canTrainPack(pack: Pick<Pack, "id"> | string): boolean {
-  return isGymPack(pack) || isPackVisible(pack);
-}
-
 export function OpeningLabApp() {
   useLayoutEffect(() => {
     const stopBoard = initBoardTheme();
@@ -97,6 +93,16 @@ function OpeningLabInner() {
     useProgress();
   const { canAccess, state, subscribed } = useUnlocks();
 
+  const canTrainPack = useCallback(
+    (pack: Pick<Pack, "id"> | string): boolean => {
+      if (isGymPack(pack)) return true;
+      if (!isPackVisible(pack)) return false;
+      const id = typeof pack === "string" ? pack : pack.id;
+      return !isComingSoonClosed(id, state.packs, subscribed);
+    },
+    [state.packs, subscribed],
+  );
+
   const goHome = () => {
     setQueue([]);
     setActive(null);
@@ -135,7 +141,7 @@ function OpeningLabInner() {
     if (view === "train" && active && !canTrainPack(active.pack)) {
       goHome();
     }
-  }, [view, active]);
+  }, [view, active, canTrainPack]);
 
   const startLine = (
     pack: Pack,
