@@ -11,6 +11,11 @@
  * keys those talks already use. Other packs get their own session keys.
  * Test never mounts a talk: only the Practice button and a learn-mode line
  * open pass these gates.
+ *
+ * Finishing the pack intro (the last Practice button, or the clip) opens the
+ * first-line talk before book Practice, on the line that Practice started.
+ * Skip dismisses only the talk on screen. The gym intro pages do not set
+ * these session keys.
  */
 import {
   SCOTCH_CANAL_BEATS,
@@ -30,6 +35,7 @@ import {
   SCOTCH_COACH_TITLE,
   SCOTCH_PACK_ID,
   scotchCanalCoachAlreadySeen,
+  scotchCanalCoachApplies,
   scotchCoachAlreadySeen,
   markScotchCanalCoachSeen,
   markScotchCoachSeen,
@@ -393,6 +399,34 @@ export function coachPackLineApplies(input: { packId: string; lineId: string }):
   const pack = COACH_PACKS[input.packId];
   if (!pack) return false;
   return input.lineId === pack.firstLineId;
+}
+
+/**
+ * Talk to open when the pack intro finishes.
+ * `null` for Skip, a line that is not the coached first line, or a talk
+ * already played this visit. Scotch sg1 is the canal talk; other packs use
+ * `firstLineId`.
+ */
+export function coachTalkAfterPackIntro(input: {
+  packId: string;
+  lineId: string;
+  lineIndex: number;
+  skipped: boolean;
+  lineAlreadySeen: boolean;
+}): "canal" | "line" | null {
+  if (input.skipped || input.lineAlreadySeen) return null;
+  if (
+    scotchCanalCoachApplies({
+      packId: input.packId,
+      lineId: input.lineId,
+      lineIndex: input.lineIndex,
+      practiceEntry: false,
+    })
+  ) {
+    return "canal";
+  }
+  if (coachPackLineApplies({ packId: input.packId, lineId: input.lineId })) return "line";
+  return null;
 }
 
 export function coachTalkHasAudio(packId: string, talk: "intro" | "line" | "canal"): boolean {

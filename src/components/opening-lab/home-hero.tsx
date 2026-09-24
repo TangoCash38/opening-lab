@@ -15,6 +15,7 @@ import {
   coachPackLineApplies,
   coachLinePlyCues,
   coachPack,
+  coachTalkAfterPackIntro,
   coachTalkPlies,
   markCoachIntroSeen,
   markCoachLineSeen,
@@ -310,12 +311,36 @@ export function HomeHero({
     onStartLine(pack, line, "learn");
   };
 
-  const finishCoach = () => {
+  const finishCoach = (reason?: "skip" | "done") => {
     const current = coachRef.current;
+    if (!current) {
+      stopScotchCoachNarration();
+      return;
+    }
+    // The intro used to drop straight into Line 1. The first-line talk only
+    // mounted from a line-card tap, so Next…Practice never reached it.
+    // Completing the intro is the main Practice entry: open that talk first.
+    // Skip dismisses this talk only and does not mark the other one seen.
+    if (current.talk === "intro") {
+      const nextTalk = coachTalkAfterPackIntro({
+        packId: pack.id,
+        lineId: current.line.id,
+        lineIndex: pack.lines.findIndex((item) => item.id === current.line.id),
+        skipped: reason === "skip",
+        lineAlreadySeen: coachLineAlreadySeen(pack.id, current.line.id),
+      });
+      if (nextTalk) {
+        launchLine(
+          current.line,
+          { plyLimit: current.plyLimit, startPly: current.startPly },
+          false,
+        );
+        return;
+      }
+    }
     coachRef.current = null;
     stopScotchCoachNarration();
     setCoach(null);
-    if (!current) return;
     // Canal demo playback stops here. Line 1 Practice starts on ply 0
     // with hints, the same as a line tap after the talk has already played.
     const options = {

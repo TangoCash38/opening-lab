@@ -107,7 +107,8 @@ test("narration plays on the coach card and skip stops it", () => {
   const leaveAt = intro.indexOf("const leave");
   const skip = intro.slice(leaveAt, intro.indexOf("return (", leaveAt));
   assert.match(skip, /stopScotchCoachNarration\(\)/);
-  assert.match(skip, /onDone\(\)/);
+  assert.match(skip, /onDone\(reason\)/);
+  assert.match(intro, /onSkip=\{\(\) => leave\("skip"\)\}/);
 });
 
 test("coach is the seated picture plus playback, with no mouth overlay", () => {
@@ -516,6 +517,9 @@ test("canal board plays sg1 in order, finishes before the clip, then Practice st
   assert.match(dock, /ScotchCoachBoard/);
   assert.doesNotMatch(dock, /<ChessBoard/);
   const finish = hero.slice(hero.indexOf("const finishCoach"), hero.indexOf("const activeLineId"));
+  assert.match(finish, /coachTalkAfterPackIntro/);
+  assert.match(finish, /skipped: reason === "skip"/);
+  assert.match(finish, /launchLine\(\s*current\.line,/);
   assert.match(finish, /current\.talk === "canal" \? SCOTCH_CANAL_PRACTICE_START_PLY/);
   assert.match(finish, /mode: "learn"|openInFrame\(current\.line, options, "learn"\)/);
   assert.doesNotMatch(finish, /data-scotch-canal-ply|canalPly|playedRef/);

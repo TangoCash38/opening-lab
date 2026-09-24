@@ -45,8 +45,11 @@ export function ScotchCoachFigure() {
   );
 }
 
+export type CoachDoneReason = "skip" | "done";
+type CoachDone = (reason?: CoachDoneReason) => void;
+
 type CardProps = {
-  onDone: () => void;
+  onDone: CoachDone;
   /** Cuppa intro, the Line 1 (sg1) pack-recipe talk, or another pack's first line. */
   talk?: "intro" | "canal" | "line";
   /** Set for a per-pack talk. Scotch keeps the cuppa and Canal cards. */
@@ -138,7 +141,7 @@ function TextOnlyCoachCard({
   talk: PackTalk;
   title: string;
   captions: readonly string[];
-  onDone: () => void;
+  onDone: CoachDone;
   onBeat?: (beat: number) => void;
 }) {
   const [beat, setBeat] = useState(0);
@@ -162,9 +165,9 @@ function TextOnlyCoachCard({
     return () => window.clearTimeout(id);
   }, [beat, last, captions.length]);
 
-  const leave = () => {
+  const leave = (reason: "skip" | "done" = "done") => {
     stopScotchCoachNarration();
-    onDone();
+    onDone(reason);
   };
 
   return (
@@ -177,7 +180,7 @@ function TextOnlyCoachCard({
       muted={false}
       textOnly
       onMute={() => {}}
-      onSkip={leave}
+      onSkip={() => leave("skip")}
       onNext={() => {
         if (last) leave();
         else setBeat((n) => Math.min(captions.length - 1, n + 1));
@@ -211,7 +214,7 @@ function AudioPackCoachCard({
   atSec: readonly number[] | undefined;
   fallbackSec: number;
   talk: PackTalk;
-  onDone: () => void;
+  onDone: CoachDone;
   onBeat?: (beat: number) => void;
 }) {
   const [beat, setBeat] = useState(0);
@@ -265,9 +268,9 @@ function AudioPackCoachCard({
     setScotchCoachNarrationMuted(muted);
   }, [muted]);
 
-  const leave = () => {
+  const leave = (reason: "skip" | "done" = "done") => {
     stopScotchCoachNarration();
-    onDone();
+    onDone(reason);
   };
 
   return (
@@ -279,7 +282,7 @@ function AudioPackCoachCard({
       last={last}
       muted={muted}
       onMute={() => setMuted((value) => !value)}
-      onSkip={leave}
+      onSkip={() => leave("skip")}
       onNext={() => {
         if (last) leave();
         else setBeat((n) => Math.min(captions.length - 1, n + 1));
@@ -298,7 +301,7 @@ function PackCoachCard({
   packId: string;
   config: CoachPackConfig;
   talk: PackTalk;
-  onDone: () => void;
+  onDone: CoachDone;
   onBeat?: (beat: number) => void;
 }) {
   const audio = talk === "intro" ? config.introAudio : config.firstLineAudio;
@@ -340,7 +343,7 @@ function PackCoachCard({
 }
 
 /** Cream history beats. Skip or the last beat starts book Practice. */
-function ScotchCoachIntroCard({ onDone }: { onDone: () => void }) {
+function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
   const onDoneRef = useRef(onDone);
@@ -383,9 +386,9 @@ function ScotchCoachIntroCard({ onDone }: { onDone: () => void }) {
     setScotchCoachNarrationMuted(muted);
   }, [muted]);
 
-  const leave = () => {
+  const leave = (reason: "skip" | "done" = "done") => {
     stopScotchCoachNarration();
-    onDone();
+    onDone(reason);
   };
 
   return (
@@ -397,7 +400,7 @@ function ScotchCoachIntroCard({ onDone }: { onDone: () => void }) {
       last={last}
       muted={muted}
       onMute={() => setMuted((value) => !value)}
-      onSkip={leave}
+      onSkip={() => leave("skip")}
       onNext={() => {
         if (last) leave();
         else setBeat((n) => Math.min(SCOTCH_COACH_BEATS.length - 1, n + 1));
@@ -410,7 +413,7 @@ function ScotchCoachIntroCard({ onDone }: { onDone: () => void }) {
  * Canal pack-recipe beats. professor-potato-pie-canal.mp3 advances them.
  * Mute, Skip, and Next still work. The last beat starts Practice.
  */
-function ScotchCoachCanalCard({ onDone }: { onDone: () => void }) {
+function ScotchCoachCanalCard({ onDone }: { onDone: CoachDone }) {
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
   const onDoneRef = useRef(onDone);
@@ -456,9 +459,9 @@ function ScotchCoachCanalCard({ onDone }: { onDone: () => void }) {
     setScotchCoachNarrationMuted(muted);
   }, [muted]);
 
-  const leave = () => {
+  const leave = (reason: "skip" | "done" = "done") => {
     stopScotchCoachNarration();
-    onDone();
+    onDone(reason);
   };
 
   return (
@@ -470,7 +473,7 @@ function ScotchCoachCanalCard({ onDone }: { onDone: () => void }) {
       last={last}
       muted={muted}
       onMute={() => setMuted((value) => !value)}
-      onSkip={leave}
+      onSkip={() => leave("skip")}
       onNext={() => {
         if (last) leave();
         else setBeat((n) => Math.min(SCOTCH_CANAL_BEATS.length - 1, n + 1));
