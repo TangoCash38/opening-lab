@@ -121,9 +121,9 @@ export const PACKS: Pack[] = [
       },
       {
         id: "sg10",
-        name: "Punish the error · …d6 vs 5.e5",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d6", "exf6", "Qxf6", "Bg5", "Qg6", "O-O"],
-        idea: "Canal 5.e5, …d6? hangs Nf6; exf6 Qxf6 Bg5 pins, O-O consolidates. Best defence stays ≥+350 — single error, no second howler.",
+        name: "Punish the error · …f6",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "f6", "Nxd4", "Nxd4", "Qxd4", "Ne7", "Nc3", "Nc6", "Qe3", "Bb4", "O-O", "Bxc3", "Qxc3"],
+        idea: "Club anti-development 4…f6? softens e8–h5 and the dark squares; White grabs the centre with Nxd4 and consolidates Qxd4–Nc3–Qe3, meeting …Bb4 O-O …Bxc3 with Qxc3. Single error — best defence stays ≥+150.",
         side: "w",
       },
     ],
