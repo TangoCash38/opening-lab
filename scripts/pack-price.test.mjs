@@ -91,15 +91,18 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
     id: "opening-traps",
     lines: ["ot1", "ot2", "ot3", "ot4", "ot10"].map((id) => ({ id })),
   };
-  assert.equal(isLineUnlocked(traps, "ot1", []), false);
-  assert.equal(isLineUnlocked(traps, "ot2", []), false);
+  assert.equal(isLineUnlocked(traps, "ot1", []), true);
+  assert.equal(isLineUnlocked(traps, "ot2", []), true);
   assert.equal(isLineUnlocked(traps, "ot3", []), false);
   assert.equal(isLineUnlocked(traps, "ot4", []), false);
   assert.equal(isLineUnlocked(traps, "ot10", []), false);
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot3", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot10", ["opening-traps"]), true);
-  assert.deepEqual(playableLines(traps).map((l) => l.id), []);
+  assert.deepEqual(
+    playableLines(traps).map((l) => l.id),
+    ["ot1", "ot2"],
+  );
 });
 
 test("opening-traps free samples are ot1 and ot2 only", () => {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
 import { type OpeningLine, type Pack } from "@/data/packs";
@@ -8,6 +8,15 @@ import { FREE_SAMPLE_LINE_IDS, isComingSoonClosed, isLineUnlocked } from "@/lib/
 import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
+import {
+  coachIntroAlreadySeen,
+  coachLineAlreadySeen,
+  coachPackIntroApplies,
+  coachPackLineApplies,
+  coachTalkPlies,
+  markCoachIntroSeen,
+  markCoachLineSeen,
+} from "@/lib/coach-packs";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import {
   SCOTCH_CANAL_PRACTICE_START_PLY,
@@ -34,7 +43,7 @@ import { ScotchCoachCard, ScotchCoachFigure } from "./scotch-coach-intro";
 import { TrainView } from "./train-view";
 
 type TrainMode = "learn" | "practice";
-type CoachTalk = "intro" | "canal";
+type CoachTalk = "intro" | "canal" | "line";
 
 type FrameSession = {
   line: OpeningLine;
@@ -98,7 +107,15 @@ export function HomeHero({
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
   const [frame, setFrame] = useState<FrameSession | null>(null);
   const [coach, setCoach] = useState<CoachSession | null>(null);
+  const [textBeat, setTextBeat] = useState(0);
   const coachRef = useRef<CoachSession | null>(null);
+  const onCoachBeat = useCallback((beat: number) => {
+    setTextBeat(beat);
+  }, []);
+  const textScript = useMemo(
+    () => (coach ? coachTalkPlies(pack.id, coach.talk) : null),
+    [coach, pack.id],
+  );
 
   const websiteSplit = !playApp;
   const comingSoonClosed = isComingSoonClosed(pack.id, purchased, subscribed);
@@ -133,6 +150,7 @@ export function HomeHero({
     setFrame(null);
     coachRef.current = null;
     setCoach(null);
+    setTextBeat(0);
     stopScotchCoachNarration();
   }, [pack.id, linesInitiallyOpen]);
 
@@ -181,6 +199,8 @@ export function HomeHero({
         startPly: options?.startPly,
         talk: "intro",
       };
+      // An in-frame train board would hide the plate. The talk replaces it.
+      setFrame(null);
       coachRef.current = session;
       setCoach(session);
       soundSelect();
@@ -207,6 +227,52 @@ export function HomeHero({
         startPly: options?.startPly,
         talk: "canal",
       };
+      setFrame(null);
+      coachRef.current = session;
+      setCoach(session);
+      soundSelect();
+      return;
+    }
+    // Other coached packs. The first-line talk mounts by line id, not title.
+    // Test never reaches here with a coach: line switches and Test pass practiceEntry false
+    // and are not the configured firstLineId, and this launch is always learn mode.
+    if (
+      practiceEntry &&
+      coachPackIntroApplies(pack.id) &&
+      !coachIntroAlreadySeen(pack.id)
+    ) {
+      markCoachIntroSeen(pack.id);
+      stopScotchCoachNarration();
+      setTextBeat(0);
+      const session: CoachSession = {
+        line,
+        mode: "learn",
+        plyLimit: options?.plyLimit,
+        startPly: options?.startPly,
+        talk: "intro",
+      };
+      setFrame(null);
+      coachRef.current = session;
+      setCoach(session);
+      soundSelect();
+      return;
+    }
+    if (
+      !practiceEntry &&
+      coachPackLineApplies({ packId: pack.id, lineId: line.id }) &&
+      !coachLineAlreadySeen(pack.id, line.id)
+    ) {
+      stopScotchCoachNarration();
+      markCoachLineSeen(pack.id, line.id);
+      setTextBeat(0);
+      const session: CoachSession = {
+        line,
+        mode: "learn",
+        plyLimit: options?.plyLimit,
+        startPly: options?.startPly,
+        talk: "line",
+      };
+      setFrame(null);
       coachRef.current = session;
       setCoach(session);
       soundSelect();
@@ -238,6 +304,7 @@ export function HomeHero({
       startPly:
         current.talk === "canal" ? SCOTCH_CANAL_PRACTICE_START_PLY : current.startPly,
     };
+    if (current.talk === "line") options.startPly = SCOTCH_CANAL_PRACTICE_START_PLY;
     // Desktop stays in the pack card. Phone and Play continue on the train route.
     if (preferInFrame()) {
       openInFrame(current.line, options, "learn");
@@ -371,20 +438,31 @@ export function HomeHero({
                   <ScotchCoachCard
                     key={`card-${coach.talk}-${coach.line.id}`}
                     talk={coach.talk}
+                    packId={pack.id}
+                    onBeat={onCoachBeat}
                     onDone={finishCoach}
                   />
                 </div>
                 <div className="home-board pointer-events-none">
-                  {coach.talk === "intro" ? (
+                  {coach.talk === "intro" && !textScript ? (
                     <ScotchCoachBoard
                       key={coach.line.id}
                       flip={pack.side === "Black"}
                       frameCoords={!playApp}
                     />
-                  ) : (
+                  ) : coach.talk === "canal" ? (
                     <ScotchCoachBoard
                       key={`canal-${coach.line.id}`}
                       talk="canal"
+                      flip={pack.side === "Black"}
+                      frameCoords={!playApp}
+                    />
+                  ) : (
+                    <ScotchCoachBoard
+                      key={`beats-${coach.talk}-${coach.line.id}`}
+                      talk={coach.talk === "line" ? "line" : "intro"}
+                      beatIndex={textBeat}
+                      beatPlies={textScript}
                       flip={pack.side === "Black"}
                       frameCoords={!playApp}
                     />

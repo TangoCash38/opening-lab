@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { PACKS } from "@/data/packs";
+import { coachTextPlyCount } from "@/lib/coach-packs";
 import {
   SCOTCH_CANAL_LINE_ID,
   SCOTCH_CANAL_NARRATION_FALLBACK_SEC,
@@ -14,20 +15,29 @@ import { scotchCoachNarration } from "@/lib/scotch-coach-audio";
 import { soundCapture, soundMove } from "@/lib/sounds";
 import { ChessBoard, type SlideAnim } from "./chess-board";
 
-type Talk = "intro" | "canal";
+type Talk = "intro" | "canal" | "line";
 
 type Props = {
   flip: boolean;
   frameCoords?: boolean;
   /**
    * Cuppa intro plays the gambit stem. Canal plays Scotch line sg1 from the
-   * pack, paced to the pack-recipe clip. Practice itself is a different mount.
+   * pack, paced to the pack-recipe clip. A text talk passes `beatPlies` and
+   * plays each beat's ply as that beat shows. Practice itself is a different mount.
    */
   talk?: Talk;
+  /** Script plies aligned to captions. Set for text-only (and future beat-timed audio). */
+  beatPlies?: readonly (string | undefined)[] | null;
+  beatIndex?: number;
 };
 
 /** SAN for the talk. Canal reads pack id sg1. The cuppa stem stays the named moves. */
-function talkSans(talk: Talk): readonly string[] {
+function talkSans(
+  talk: Talk,
+  beatPlies?: readonly (string | undefined)[] | null,
+): readonly string[] {
+  if (beatPlies) return beatPlies.filter((ply): ply is string => Boolean(ply));
+  if (talk === "line") return [];
   if (talk !== "canal") return SCOTCH_COACH_STEM;
   const pack = PACKS.find((item) => item.id === SCOTCH_PACK_ID);
   const line = pack?.lines.find((item) => item.id === SCOTCH_CANAL_LINE_ID);
@@ -63,8 +73,14 @@ function narrationClock(
  * coach speaks. Slide plus the soft yellow last-move wash. No hint squares
  * and no arrows. The final position holds until the card unmounts this board.
  */
-export function ScotchCoachBoard({ flip, frameCoords, talk = "intro" }: Props) {
-  const sans = useMemo(() => talkSans(talk), [talk]);
+export function ScotchCoachBoard({
+  flip,
+  frameCoords,
+  talk = "intro",
+  beatPlies = null,
+  beatIndex = 0,
+}: Props) {
+  const sans = useMemo(() => talkSans(talk, beatPlies), [talk, beatPlies]);
   const [game, setGame] = useState(() => new Chess());
   const [slide, setSlide] = useState<SlideAnim | null>(null);
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
@@ -76,8 +92,12 @@ export function ScotchCoachBoard({ flip, frameCoords, talk = "intro" }: Props) {
   const aliveRef = useRef(true);
   const sansRef = useRef(sans);
   const talkRef = useRef(talk);
+  const beatPliesRef = useRef(beatPlies);
+  const beatIndexRef = useRef(beatIndex);
   sansRef.current = sans;
   talkRef.current = talk;
+  beatPliesRef.current = beatPlies;
+  beatIndexRef.current = beatIndex;
 
   const pump = useCallback(() => {
     if (!aliveRef.current || slidingRef.current) return;
@@ -146,6 +166,12 @@ export function ScotchCoachBoard({ flip, frameCoords, talk = "intro" }: Props) {
     aliveRef.current = true;
     const started = performance.now();
     const tick = () => {
+      const script = beatPliesRef.current;
+      if (script) {
+        targetRef.current = coachTextPlyCount(script, beatIndexRef.current);
+        pump();
+        return;
+      }
       const canal = talkRef.current === "canal";
       const clock = narrationClock(
         started,
@@ -168,8 +194,9 @@ export function ScotchCoachBoard({ flip, frameCoords, talk = "intro" }: Props) {
   return (
     <div
       className="w-full"
-      data-scotch-coach-stem={talk === "intro" ? ply : undefined}
+      data-scotch-coach-stem={talk === "intro" && !beatPlies ? ply : undefined}
       data-scotch-canal-ply={talk === "canal" ? ply : undefined}
+      data-coach-line-ply={beatPlies ? ply : undefined}
     >
       <ChessBoard
         game={game}
