@@ -366,9 +366,10 @@ export function HomeHero({
                 data-scotch-coach-talk={coach.talk}
               >
                 <div className="scotch-coach-plate" data-scotch-coach-plate>
-                  <ScotchCoachFigure key={`${coach.talk}-${coach.line.id}`} />
+                  {/* Distinct keys so a talk change deletes the previous figure. */}
+                  <ScotchCoachFigure key={`figure-${coach.talk}-${coach.line.id}`} />
                   <ScotchCoachCard
-                    key={`${coach.talk}-${coach.line.id}`}
+                    key={`card-${coach.talk}-${coach.line.id}`}
                     talk={coach.talk}
                     onDone={finishCoach}
                   />

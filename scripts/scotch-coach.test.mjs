@@ -613,6 +613,35 @@ test("canal board plays sg1 in order, finishes before the clip, then Practice st
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
+test("canal plate mounts a single coach figure", () => {
+  const dockAt = hero.indexOf("data-scotch-coach-dock");
+  const dock = hero.slice(dockAt, hero.indexOf("home-board pointer-events-none px-2", dockAt));
+  const plate = dock.slice(dock.indexOf("scotch-coach-plate"), dock.indexOf("home-board"));
+  assert.equal(plate.split("ScotchCoachFigure").length - 1, 1);
+  assert.equal(plate.split("<img").length - 1, 0);
+  assert.match(plate, /key=\{`figure-\$\{coach\.talk\}-\$\{coach\.line\.id\}`\}/);
+  assert.match(plate, /key=\{`card-\$\{coach\.talk\}-\$\{coach\.line\.id\}`\}/);
+  assert.doesNotMatch(plate, /key=\{`\$\{coach\.talk\}-\$\{coach\.line\.id\}`\}/);
+  assert.match(dock, /talk="canal"/);
+  const canalFn = intro.slice(
+    intro.indexOf("function ScotchCoachCanalCard"),
+    intro.indexOf("export function ScotchCoachCard"),
+  );
+  assert.doesNotMatch(canalFn, /ScotchCoachFigure|coach-seated|<img/);
+  const introFn = intro.slice(
+    intro.indexOf("function ScotchCoachIntroCard"),
+    intro.indexOf("function ScotchCoachCanalCard"),
+  );
+  assert.doesNotMatch(introFn, /ScotchCoachFigure|coach-seated|<img/);
+  const phone = css.slice(css.indexOf("Phone column and the Play wrap"));
+  assert.match(phone, /\.home-coach-practice \.scotch-coach-actions\s*\{[^}]*flex-wrap:\s*wrap/);
+  assert.match(
+    phone,
+    /\[data-surface="play"\] \.home-coach-practice \.scotch-coach-actions\s*\{[^}]*flex-wrap:\s*wrap/,
+  );
+  assert.match(phone, /min-width:\s*min\(100%,\s*5\.6rem\)/);
+});
+
 test("narration quarters land on the four cream beats", () => {
   const run = spawnSync(
     process.execPath,
