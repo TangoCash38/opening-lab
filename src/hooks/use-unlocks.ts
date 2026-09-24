@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { isPackFree } from "@/data/pricing";
-import { isPackVisible } from "@/lib/catalog";
+import { isPackComingSoon, isPackVisible } from "@/lib/catalog";
 import { isWebsiteReviewFree } from "@/lib/review-free";
 import type { Pack } from "@/data/packs";
 import { fetchPaymentsEnabled } from "@/lib/checkout";
@@ -143,10 +143,14 @@ export function useUnlocks() {
     (pack: Pack) => {
       if (!isPackVisible(pack)) return false;
       if (isPlayApp()) {
-        if (isPackFree(pack)) return true;
         const wrap = playWrapAccountUnlocks(state);
         if (isPlayBilledBuyAll(wrap)) return true;
-        return wrap.packs.includes(pack.id);
+        if (wrap.packs.includes(pack.id)) return true;
+        if (isPackComingSoon(pack.id)) return false;
+        return isPackFree(pack);
+      }
+      if (isPackComingSoon(pack.id)) {
+        return isWebsiteReviewFree() || isPackUnlocked(pack.id, false);
       }
       return isWebsiteReviewFree() || isPackUnlocked(pack.id, isPackFree(pack));
     },

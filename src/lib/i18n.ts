@@ -44,6 +44,8 @@ const en: Dict = {
   "How to play": "How to play",
   "Download the app": "Download the app",
   "App coming soon": "App coming soon",
+  "Coming soon": "Coming soon",
+  "Coming soon with Professor Potato Pie.": "Coming soon with Professor Potato Pie.",
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
   "Professor Potato Pie": "Professor Potato Pie",

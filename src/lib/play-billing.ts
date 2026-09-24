@@ -7,6 +7,7 @@
  * endpoint (`/api/play/subscribe`). Engine owns products verify +
  * applyPurchase for pack / buy_all — this is not a second grant path.
  */
+import { canPurchaseBuyAll, canPurchasePack } from "@/lib/catalog";
 import {
   PLAY_PATH_B_PACK_IDS,
   PLAY_SKU_BUY_ALL,
@@ -202,7 +203,7 @@ const PATH_B_PACK_SET = new Set<string>(PLAY_PATH_B_PACK_IDS);
 
 /** Start native pack purchase, then verify on the server. Null if the user cancelled. */
 export async function startPlayPackBuy(packId: string): Promise<UnlockState | null> {
-  if (!PATH_B_PACK_SET.has(packId)) {
+  if (!canPurchasePack(packId) || !PATH_B_PACK_SET.has(packId)) {
     throw new Error(PLAY_SKU_NOT_ON_SALE);
   }
   const sku = playSkuForPackId(packId);
@@ -216,6 +217,9 @@ export async function startPlayPackBuy(packId: string): Promise<UnlockState | nu
 }
 
 export async function startPlayBuyAll(): Promise<UnlockState | null> {
+  if (!canPurchaseBuyAll()) {
+    throw new Error(PLAY_SKU_NOT_ON_SALE);
+  }
   const result = await nativeCall((bridge) => {
     if (typeof bridge.buyAll !== "function") {
       throw new Error("This app build cannot open Google Play Billing yet.");

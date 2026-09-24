@@ -3,6 +3,7 @@
  */
 import Stripe from "stripe";
 import { PACKS } from "@/data/packs";
+import { canPurchaseBuyAll, canPurchasePack } from "@/lib/catalog";
 import {
   LAB_PLUS_LABEL,
   PRICE_BUY_ALL,
@@ -193,6 +194,9 @@ export async function createCheckoutSession(request: Request): Promise<Response>
       },
     };
   } else if (kind === "buy_all") {
+    if (!canPurchaseBuyAll()) {
+      return json({ error: "Coming soon" }, 400);
+    }
     const pence = priceToPence(PRICE_BUY_ALL);
     if (!pence) return json({ error: "Invalid price" }, 400);
     mode = "payment";
@@ -209,7 +213,7 @@ export async function createCheckoutSession(request: Request): Promise<Response>
       return json({ error: "Missing pack" }, 400);
     }
     const pack = PACKS.find((p) => p.id === body.packId);
-    if (!pack) {
+    if (!pack || !canPurchasePack(pack.id)) {
       return json({ error: "Unknown or free pack" }, 400);
     }
     // Caro is the free sample; checkout still sells the rest of that pack.

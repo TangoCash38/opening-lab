@@ -16,6 +16,54 @@ export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black",
 
 export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
 
+/**
+ * Packs that stay fully live (buy, Practice, Test, coach).
+ * Every other pack id is coming soon.
+ * Relaunch a pack by adding its id here — one line.
+ */
+export const LIVE_PACK_IDS = ["scotch"] as const;
+
+export type LivePackId = (typeof LIVE_PACK_IDS)[number];
+
+export function isPackComingSoon(pack: Pick<Pack, "id"> | string): boolean {
+  const id = typeof pack === "string" ? pack : pack.id;
+  return !(LIVE_PACK_IDS as readonly string[]).includes(id);
+}
+
+/** Visible catalog packs that are not live. Derived from LIVE_PACK_IDS. */
+export const COMING_SOON_PACK_IDS: readonly VisiblePackId[] = VISIBLE_PACK_IDS.filter(
+  (id) => isPackComingSoon(id),
+);
+
+/** New purchases only. Existing unlocks are not touched. */
+export function canPurchasePack(packId: string): boolean {
+  return !isPackComingSoon(packId);
+}
+
+/**
+ * Buy-all covers every catalog pack, including coming-soon ones.
+ * It stays off sale until every visible pack is live.
+ */
+export function canPurchaseBuyAll(): boolean {
+  return !VISIBLE_PACK_IDS.some((id) => isPackComingSoon(id));
+}
+
+/**
+ * Coming-soon gate for people who do not already own the pack.
+ * Ownership is a pack id on the unlock list, or an active buy-all / subscription
+ * passed in by the caller (`subscribed`).
+ */
+export function isComingSoonClosed(
+  pack: Pick<Pack, "id"> | string,
+  purchasedPackIds: readonly string[] = [],
+  subscribed = false,
+): boolean {
+  const id = typeof pack === "string" ? pack : pack.id;
+  if (!isPackComingSoon(id)) return false;
+  if (subscribed) return false;
+  return !purchasedPackIds.includes(id);
+}
+
 export function isPackVisible(pack: Pick<Pack, "id"> | string): boolean {
   const id = typeof pack === "string" ? pack : pack.id;
   return (VISIBLE_PACK_IDS as readonly string[]).includes(id);
@@ -31,6 +79,7 @@ export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> =
 };
 
 export function playableLines(pack: Pack): OpeningLine[] {
+  if (isPackComingSoon(pack.id)) return [];
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
   if (!ids) return [];
   return pack.lines.filter((l) => ids.includes(l.id));
@@ -49,6 +98,7 @@ export function isLineUnlocked(
   lineId: string,
   purchasedPackIds: readonly string[] = [],
 ): boolean {
+  if (isComingSoonClosed(pack.id, purchasedPackIds)) return false;
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
   if (ids) {
     if (ids.includes(lineId)) return true;

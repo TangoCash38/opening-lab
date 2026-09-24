@@ -451,6 +451,42 @@ html[data-color-scheme="dark"] {
     border-color: var(--color-danger);
   }
 
+  .pack-card[data-pack-access="coming-soon"] {
+    border-color: #c4b29a;
+  }
+
+  .pack-coming-soon-label {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #a97850;
+    border-radius: 999px;
+    background: #f3e5c8;
+    padding: 0.125rem 0.5rem;
+    color: #1c1915;
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 0.65rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+  }
+
+  .pack-fold-soon {
+    border-color: #a97850;
+    background: #f3e5c8;
+    color: #1c1915;
+  }
+
+  .pack-coming-soon-note {
+    margin: 0.15rem 0 0.15rem;
+    border: 1px solid #a97850;
+    border-radius: 0.85rem;
+    background: #f3e5c8;
+    padding: 0.7rem 0.85rem;
+    color: #1c1915;
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
   .pack-fold-locked {
     border-color: color-mix(in srgb, var(--color-danger) 55%, var(--color-border));
     background: var(--color-danger-soft);
@@ -3050,6 +3086,10 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 .pack-card[data-pack-access="locked"] {
   border-color: var(--color-danger);
+}
+
+.pack-card[data-pack-access="coming-soon"] {
+  border-color: #c4b29a;
 }
 
 /* Scotch coach — cream dock left of the wood on website desktop.

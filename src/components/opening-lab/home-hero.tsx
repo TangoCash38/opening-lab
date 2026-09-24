@@ -4,7 +4,7 @@ import { Chess } from "chess.js";
 import { type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import { useProgress } from "@/hooks/use-progress";
-import { FREE_SAMPLE_LINE_IDS, isLineUnlocked } from "@/lib/catalog";
+import { FREE_SAMPLE_LINE_IDS, isComingSoonClosed, isLineUnlocked } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
@@ -64,6 +64,7 @@ type Props = {
     options?: TrainStartOptions,
   ) => void;
   onRequestUnlock?: (pack: Pack) => void;
+  onComingSoon?: (pack: Pack) => void;
   playApp?: boolean;
   /** Expanded pack card: lines start open so the structure is visible. */
   linesInitiallyOpen?: boolean;
@@ -74,6 +75,7 @@ export function HomeHero({
   pack,
   onStartLine,
   onRequestUnlock,
+  onComingSoon,
   playApp,
   linesInitiallyOpen = false,
   embedded = false,
@@ -99,7 +101,9 @@ export function HomeHero({
   const coachRef = useRef<CoachSession | null>(null);
 
   const websiteSplit = !playApp;
-  const hasFreeSample = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
+  const comingSoonClosed = isComingSoonClosed(pack.id, purchased, subscribed);
+  const hasFreeSample =
+    !comingSoonClosed && (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
   const price = packPrice(pack);
   const shortPack = packShortLabel(pack);
   // Keep default Caro-Kann for Black / Advance, Classical, Exchange strings for tests.
@@ -252,6 +256,7 @@ export function HomeHero({
   const linesVisible = embedded || linesOpen;
 
   const pickPracticeLine = (): OpeningLine | undefined => {
+    if (isComingSoonClosed(pack.id, purchased, subscribed)) return undefined;
     if (pack.id === "caro-kann-black") {
       return pack.lines.find((l) => l.id === "ckb1");
     }
@@ -267,6 +272,10 @@ export function HomeHero({
   };
 
   const startAdvance = () => {
+    if (isComingSoonClosed(pack.id, purchased, subscribed)) {
+      onComingSoon?.(pack);
+      return;
+    }
     const line = pickPracticeLine();
     if (line) launchLine(line, undefined, true);
     else onRequestUnlock?.(pack);
@@ -302,22 +311,24 @@ export function HomeHero({
               {blurb ? (
                 <p className="mt-0.5 text-[0.82rem] text-fg-muted">{blurb}</p>
               ) : null}
-              <LondonWarmupChip
-                pack={pack}
-                onStartLine={(nextPack, nextLine, mode, options) => {
-                  if (preferInFrame()) {
-                    setFrame({
-                      line: nextLine,
-                      mode: mode ?? "learn",
-                      plyLimit: options?.plyLimit,
-                      startPly: options?.startPly,
-                    });
-                    soundSelect();
-                    return;
-                  }
-                  onStartLine(nextPack, nextLine, mode, options);
-                }}
-              />
+              {!comingSoonClosed ? (
+                <LondonWarmupChip
+                  pack={pack}
+                  onStartLine={(nextPack, nextLine, mode, options) => {
+                    if (preferInFrame()) {
+                      setFrame({
+                        line: nextLine,
+                        mode: mode ?? "learn",
+                        plyLimit: options?.plyLimit,
+                        startPly: options?.startPly,
+                      });
+                      soundSelect();
+                      return;
+                    }
+                    onStartLine(nextPack, nextLine, mode, options);
+                  }}
+                />
+              ) : null}
             </div>
 
             {frame ? (
@@ -460,6 +471,10 @@ export function HomeHero({
                         testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
                         selected={item.id === activeLineId}
                         onClick={() => {
+                          if (isComingSoonClosed(pack.id, purchased, subscribed)) {
+                            onComingSoon?.(pack);
+                            return;
+                          }
                           if (unlocked) {
                             if (pack.about) {
                               setPendingLine(item);

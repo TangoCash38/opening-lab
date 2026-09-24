@@ -10,12 +10,15 @@ export function PackExpandHint({
   free = false,
   closedLabel,
   lockedBar = false,
+  soon = false,
 }: {
   open: boolean;
   free?: boolean;
   closedLabel?: string;
   /** Light red price bar when the pack has no unlocked lines. */
   lockedBar?: boolean;
+  /** Cream book bar for a coming-soon pack the viewer does not own. */
+  soon?: boolean;
 }) {
   const t = useT();
   const label = open
@@ -31,9 +34,11 @@ export function PackExpandHint({
       className={`flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border-2 px-3 text-[0.95rem] font-bold ${
         open
           ? "border-border bg-bg-subtle text-fg-muted"
-          : lockedBar
-            ? "pack-fold-locked border-danger/40 bg-danger-soft text-fg"
-            : "border-accent bg-accent/14 text-accent"
+          : soon
+            ? "pack-fold-soon"
+            : lockedBar
+              ? "pack-fold-locked border-danger/40 bg-danger-soft text-fg"
+              : "border-accent bg-accent/14 text-accent"
       }`}
     >
       <ChevronDown

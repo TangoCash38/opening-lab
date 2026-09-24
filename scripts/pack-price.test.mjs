@@ -77,11 +77,12 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   assert.equal(isLineUnlocked(nimzo, "nl1", []), false);
   assert.equal(isLineUnlocked(nimzo, "nl7", []), false);
   assert.equal(isLineUnlocked(nimzo, "nl1", ["nimzo-larsen-white"]), true);
-  assert.equal(isLineUnlocked(caro, "ckb1", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb1", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), false);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb18", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb18", ["caro-kann-black"]), true);
   assert.deepEqual(playableLines(nimzo), []);
@@ -90,17 +91,15 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
     id: "opening-traps",
     lines: ["ot1", "ot2", "ot3", "ot4", "ot10"].map((id) => ({ id })),
   };
-  assert.equal(isLineUnlocked(traps, "ot1", []), true);
-  assert.equal(isLineUnlocked(traps, "ot2", []), true);
+  assert.equal(isLineUnlocked(traps, "ot1", []), false);
+  assert.equal(isLineUnlocked(traps, "ot2", []), false);
   assert.equal(isLineUnlocked(traps, "ot3", []), false);
   assert.equal(isLineUnlocked(traps, "ot4", []), false);
   assert.equal(isLineUnlocked(traps, "ot10", []), false);
+  assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot3", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot10", ["opening-traps"]), true);
-  assert.deepEqual(
-    playableLines(traps).map((l) => l.id),
-    ["ot1", "ot2"],
-  );
+  assert.deepEqual(playableLines(traps).map((l) => l.id), []);
 });
 
 test("opening-traps free samples are ot1 and ot2 only", () => {
@@ -131,9 +130,10 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   const migration = readFileSync(join(root, "migrations/0005_buy_all.sql"), "utf8");
   assert.match(migration, /'buy_all'/);
   const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
-  assert.match(terms, /thirty-four opening packs/);
+  assert.match(terms, /Scotch Gambit is available now/);
+  assert.doesNotMatch(terms, /thirty-four opening packs/);
   assert.match(terms, /Buy all packs for\s+£19\.99/);
-  assert.match(terms, /23 September 2026/);
+  assert.match(terms, /24 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
 });
