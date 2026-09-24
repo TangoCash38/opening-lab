@@ -47,6 +47,8 @@ const en: Dict = {
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
   "Scotch coach": "Scotch coach",
+  "Read the intro": "Read the intro",
+  "Hide the intro": "Hide the intro",
   Mute: "Mute",
   Unmute: "Unmute",
   "Scotch Gambit · a cuppa and the open board":

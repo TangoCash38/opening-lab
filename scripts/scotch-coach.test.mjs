@@ -120,10 +120,15 @@ test("coach is the seated picture plus Sean's voice, with no mouth overlay", () 
   assert.doesNotMatch(intro, /deepfake|speechSynthesis/i);
 });
 
-test("coach speaks once per browser until the seen flag is cleared", () => {
-  assert.match(lib, /SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-seen"/);
-  assert.match(lib, /localStorage\.getItem\(SCOTCH_COACH_SEEN_KEY\) === "1"/);
-  assert.match(lib, /localStorage\.setItem\(SCOTCH_COACH_SEEN_KEY, "1"\)/);
+test("coach speaks once per session, not from a forever localStorage flag", () => {
+  assert.match(lib, /SCOTCH_COACH_SESSION_KEY = "opening-lab:scotch-coach-session"/);
+  assert.match(lib, /sessionStorage\.getItem\(SCOTCH_COACH_SESSION_KEY\) === "1"/);
+  assert.match(lib, /sessionStorage\.setItem\(SCOTCH_COACH_SESSION_KEY, "1"\)/);
+  assert.match(lib, /"opening-lab:scotch-coach-seen"/);
+  assert.match(lib, /"opening-lab:scotch-coach-dock-seen"/);
+  assert.match(lib, /localStorage\.removeItem\(key\)/);
+  assert.doesNotMatch(lib, /localStorage\.setItem/);
+  assert.doesNotMatch(lib, /localStorage\.getItem/);
   const gateAt = hero.indexOf("scotchCoachApplies({");
   const branch = hero.slice(gateAt, hero.indexOf("preferInFrame()", gateAt));
   assert.match(branch, /!scotchCoachAlreadySeen\(\)/);
@@ -131,6 +136,63 @@ test("coach speaks once per browser until the seen flag is cleared", () => {
   assert.match(branch, /mode: "learn"/);
   assert.doesNotMatch(train, /scotchCoachAlreadySeen|markScotchCoachSeen|ScotchCoachBoard/);
   assert.doesNotMatch(hero, /isPlayWrap\(\)/);
+
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+      function memory() {
+        const data = new Map();
+        return {
+          getItem: (key) => (data.has(key) ? data.get(key) : null),
+          setItem: (key, value) => data.set(key, String(value)),
+          removeItem: (key) => data.delete(key),
+        };
+      }
+      globalThis.localStorage = memory();
+      globalThis.sessionStorage = memory();
+      localStorage.setItem("opening-lab:scotch-coach-seen", "1");
+      localStorage.setItem("opening-lab:scotch-coach-dock-seen", "1");
+      const { scotchCoachAlreadySeen, markScotchCoachSeen, SCOTCH_COACH_SESSION_KEY } = await import("./src/lib/scotch-coach.ts");
+      if (scotchCoachAlreadySeen()) throw new Error("forever flag still gates");
+      if (localStorage.getItem("opening-lab:scotch-coach-seen") !== null) throw new Error("seen key remains");
+      if (localStorage.getItem("opening-lab:scotch-coach-dock-seen") !== null) throw new Error("dock key remains");
+      markScotchCoachSeen();
+      if (!scotchCoachAlreadySeen()) throw new Error("session not marked");
+      if (sessionStorage.getItem(SCOTCH_COACH_SESSION_KEY) !== "1") throw new Error("session value");
+      if (localStorage.getItem("opening-lab:scotch-coach-seen") !== null) throw new Error("seen rewritten");
+      sessionStorage.removeItem(SCOTCH_COACH_SESSION_KEY);
+      if (scotchCoachAlreadySeen()) throw new Error("new visit still seen");
+      markScotchCoachSeen();
+      if (sessionStorage.getItem(SCOTCH_COACH_SESSION_KEY) !== "1") throw new Error("remark");
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
+test("book practice can open the coach transcript without covering the board", () => {
+  assert.match(train, /ScotchCoachReading/);
+  assert.match(train, /pack\.id === SCOTCH_PACK_ID/);
+  assert.match(intro, /function ScotchCoachReading/);
+  assert.match(intro, /data-scotch-coach-read/);
+  assert.match(intro, /data-scotch-coach-transcript/);
+  assert.match(intro, /aria-expanded=\{open\}/);
+  assert.match(intro, /useState\(false\)/);
+  assert.match(intro, /Read the intro/);
+  assert.match(intro, /Hide the intro/);
+  assert.match(intro, /SCOTCH_COACH_BEATS\.map/);
+  assert.match(intro, /scotchCoachAlreadySeen\(\)/);
+  assert.doesNotMatch(intro, /role="dialog"|fixed inset-0/);
+  const reading = css.slice(css.indexOf(".scotch-coach-reading {"));
+  assert.match(reading, /position:\s*static/);
+  assert.doesNotMatch(reading, /position:\s*fixed|position:\s*absolute/);
+  assert.match(reading, /#fbf6ea/);
+  assert.doesNotMatch(train, /startScotchCoachNarration|sean-coach-narration/);
 });
 
 test("phone and Play seat the coach on a cream plate above the wood", () => {
