@@ -2697,47 +2697,25 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
   }
 });
 
-test("Scotch pack is 20 lines: existing Trap · titles stay, s26/s27 are Punish the error, zero pads", () => {
+test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7–sg10 punish, zero pads", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "scotch"');
   assert.ok(start >= 0, "scotch pack missing");
   const next = packs.indexOf("\n  {\n    id: \"", start + 1);
   const sc = next >= 0 ? packs.slice(start, next) : packs.slice(start);
 
-  assert.match(sc, /name: "Scotch Gambit and Scotch Game"/);
+  assert.match(sc, /name: "Scotch Gambit \(White\)"/);
   assert.match(sc, /side: "White"/);
   assert.match(sc, /section: "white"/);
-  assert.match(sc, /blurb: "20 lines · Gambit 4\.Bc4 and Game 4\.Nxd4"/);
-  assert.doesNotMatch(sc, /blurb: "18 lines/);
-  assert.doesNotMatch(sc, /closedLabel: "Free · 18 lines"/);
-  assert.doesNotMatch(sc, /closedLabel: "Free · 20 lines"/);
+  assert.match(sc, /blurb: "5 book lines \+ 5 punish"/);
+  assert.doesNotMatch(sc, /Scotch Game/);
+  assert.doesNotMatch(sc, /Nxd4", "Bc5"/);
 
-  const lineIds = [...sc.matchAll(/id: "(sg\d+|s\d+)"/g)].map((m) => m[1]);
-  assert.deepEqual(lineIds, [
-    "s1",
-    "s2",
-    "s8",
-    "s13",
-    "s10",
-    "s19",
-    "s20",
-    "s21",
-    "s22",
-    "s23",
-    "s24",
-    "s25",
-    "sg1",
-    "sg2",
-    "sg3",
-    "sg4",
-    "sg5",
-    "sg6",
-    "s26",
-    "s27",
-  ]);
+  const lineIds = [...sc.matchAll(/id: "(sg\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, ["sg1", "sg2", "sg3", "sg4", "sg5", "sg6", "sg7", "sg8", "sg9", "sg10"]);
 
   const sides = [...sc.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 20, "expected line sides");
+  assert.equal(sides.length, 10);
   assert.ok(sides.every((s) => s === "w"), "every line side must be w");
 
   function lineBlock(id) {
@@ -2754,43 +2732,46 @@ test("Scotch pack is 20 lines: existing Trap · titles stay, s26/s27 are Punish 
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  function lineIdea(id) {
-    const m = lineBlock(id).match(/idea: "([^"]+)"/);
-    assert.ok(m && m[1].trim().length > 0, `${id} needs a non-empty idea`);
-    return m[1];
+  const names = Object.fromEntries(
+    [...sc.matchAll(/id: "(sg\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
+  );
+  assert.equal(names.sg1, "Canal Variation");
+  assert.equal(names.sg2, "Greco / Haxo · 5.c3 Nf6");
+  assert.equal(names.sg3, "Max Lange Attack");
+  assert.equal(names.sg4, "Ghulam-Kassim Gambit");
+  assert.equal(names.sg5, "Decline · 4…d6");
+  assert.equal(names.sg6, "Trap · Sea-Cadet Mate");
+  assert.equal(names.sg7, "Punish the error · …dxc3 Bxf7+");
+  assert.equal(names.sg8, "Punish the error · …Ne5 vs 5.Ng5");
+  assert.equal(names.sg9, "Punish the error · …Qe7 vs 5.e5");
+  assert.equal(names.sg10, "Punish the error · …d6 vs 5.e5");
+  assert.equal(Object.values(names).filter((n) => n.startsWith("Trap ·")).length, 1);
+  for (const id of ["sg1", "sg2", "sg3", "sg4", "sg5"]) {
+    assert.doesNotMatch(names[id], /^(Trap ·|Punish the error ·)/);
+  }
+  for (const id of ["sg7", "sg8", "sg9", "sg10"]) {
+    assert.match(names[id], /^Punish the error ·/);
   }
 
-  const names = Object.fromEntries(
-    [...sc.matchAll(/id: "(sg\d+|s\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
-      m[1],
-      m[2],
-    ]),
-  );
-  assert.equal(names.s19, "Trap · Greedy pawn (Haxo)");
-  assert.equal(names.s20, "Trap · …Be7");
-  assert.equal(names.sg6, "Scotch Game · Trap · Steinitz 7.Nb5");
-  assert.equal(names.s26, "Punish the error · …Nf6 Nxc6");
-  assert.equal(names.s27, "Punish the error · Sea-Cadet …Ne5");
-  assert.doesNotMatch(names.s19, /Punish the error/);
-  assert.doesNotMatch(names.s20, /Punish the error/);
-  assert.doesNotMatch(names.sg6, /Punish the error/);
-
-  assert.deepEqual(linePlies("s19"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+"]);
-  assert.deepEqual(linePlies("s20"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "bxc3", "Be7", "Qd5"]);
-  assert.deepEqual(linePlies("sg6"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Qh4", "Nc3", "Bb4", "Be2", "Qxe4", "Nb5", "Ba5", "Nxc7+", "Kd8", "Nxa8", "Qxg2", "Bf3", "Qh3"]);
-  assert.deepEqual(linePlies("s26"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3", "Nf6", "Nxc6", "dxc6", "Qxd8+", "Kxd8", "Bxc5"]);
-  assert.deepEqual(linePlies("s27"), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"]);
-  assert.deepEqual(linePlies("s26").slice(0, 9), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Nxd4", "Bc5", "Be3"]);
-  assert.deepEqual(linePlies("s27").slice(0, 8), ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6"]);
-
-  assert.match(lineIdea("s26"), /Classical Scotch after Be3/);
-  assert.match(lineIdea("s26"), /Nxc6/);
-  assert.match(lineIdea("s26"), /Bxc5/);
-  assert.match(lineIdea("s27"), /Sea-Cadet|…Ne5|Nxe5/);
-  assert.match(lineIdea("s27"), /Bxf7\+|Nd5#/);
-
-  assert.equal(lineBlock("s26").match(/side: "w"/)?.[0], 'side: "w"');
-  assert.equal(lineBlock("s27").match(/side: "w"/)?.[0], 'side: "w"');
+  const stem = ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"];
+  const expected = {
+    sg1: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5", "Be3"],
+    sg2: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
+    sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4", "Re1+", "Be6", "Ng5", "Qd5", "Nc3", "Qf5"],
+    sg4: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
+    sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "Nxd4", "Nf6", "Nc3", "Be7", "O-O", "O-O", "h3", "Nxd4", "Qxd4", "Be6", "Bxe6", "fxe6"],
+    sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
+    sg7: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3"],
+    sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Ne5", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5"],
+    sg9: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "Qe7", "O-O", "Nxe5", "Nxe5", "Qxe5", "Re1"],
+    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d6", "exf6", "Qxf6", "Bg5", "Qg6", "O-O"],
+  };
+  for (const id of lineIds) {
+    const plies = linePlies(id);
+    assert.deepEqual(plies.slice(0, 7), stem, `${id} stem`);
+    assert.deepEqual(plies, expected[id], id);
+    assert.equal(lineBlock(id).match(/side: "w"/)?.[0], 'side: "w"');
+  }
 
   const allPlies = lineIds.map((id) => ({ id, plies: linePlies(id) }));
   for (let i = 0; i < allPlies.length; i++) {
