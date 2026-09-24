@@ -2735,22 +2735,19 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   const names = Object.fromEntries(
     [...sc.matchAll(/id: "(sg\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
   );
-  assert.equal(names.sg1, "Canal Variation");
-  assert.equal(names.sg2, "Greco / Haxo · 5.c3 Nf6");
-  assert.equal(names.sg3, "Max Lange Attack");
-  assert.equal(names.sg4, "Ghulam-Kassim Gambit");
-  assert.equal(names.sg5, "Decline · 4…d6");
-  assert.equal(names.sg6, "Trap · Sea-Cadet Mate");
-  assert.equal(names.sg7, "Punish the error · …dxc3 Bxf7+");
-  assert.equal(names.sg8, "Punish the error · …Ne5 vs 5.Ng5");
-  assert.equal(names.sg9, "Punish the error · …Qe7 vs 5.e5");
-  assert.equal(names.sg10, "Punish the error · …f6");
-  assert.equal(Object.values(names).filter((n) => n.startsWith("Trap ·")).length, 1);
-  for (const id of ["sg1", "sg2", "sg3", "sg4", "sg5"]) {
-    assert.doesNotMatch(names[id], /^(Trap ·|Punish the error ·)/);
-  }
-  for (const id of ["sg7", "sg8", "sg9", "sg10"]) {
-    assert.match(names[id], /^Punish the error ·/);
+  assert.equal(names.sg1, "Line 1");
+  assert.equal(names.sg2, "Line 2");
+  assert.equal(names.sg3, "Line 3");
+  assert.equal(names.sg4, "Line 4");
+  assert.equal(names.sg5, "Line 5");
+  assert.equal(names.sg6, "Line 6");
+  assert.equal(names.sg7, "Line 7");
+  assert.equal(names.sg8, "Line 8");
+  assert.equal(names.sg9, "Line 9");
+  assert.equal(names.sg10, "Line 10");
+  for (const id of lineIds) {
+    assert.equal(names[id], `Line ${Number(id.slice(2))}`);
+    assert.doesNotMatch(names[id], /Canal|Greco|Haxo|Lange|Ghulam|Sea-Cadet|Trap ·|Punish the error/);
   }
 
   const stem = ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"];
