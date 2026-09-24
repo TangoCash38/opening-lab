@@ -38,7 +38,7 @@ export function ScotchCoachFigure() {
 
 type CardProps = {
   onDone: () => void;
-  /** Cuppa intro, or the Canal Variation pack-recipe talk. */
+  /** Cuppa intro, or the Dubois–Réti (sg1) pack-recipe talk. */
   talk?: "intro" | "canal";
 };
 

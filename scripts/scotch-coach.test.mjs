@@ -348,9 +348,12 @@ test("Professor Potato Pie names the scotch coach on the plate and in alt text",
   assert.doesNotMatch(`${intro}\n${hero}\n${lib}`, /Play on|vs-computer|playComputer/i);
 });
 
-test("Canal Variation opens the pack-recipe talk once per session, not other lines", () => {
+test("Dubois–Réti (sg1) opens the pack-recipe talk once per session, not other lines", () => {
   assert.match(lib, /SCOTCH_CANAL_LINE_ID = "sg1"/);
-  assert.match(lib, /SCOTCH_CANAL_TITLE = "Canal Variation · ten lines from the gambit"/);
+  assert.match(lib, /SCOTCH_CANAL_TITLE = "Dubois–Réti · ten lines from the gambit"/);
+  assert.match(lib, /welcome to Dubois–Réti/);
+  assert.doesNotMatch(lib, /Canal Variation/);
+  assert.doesNotMatch(lib, /line\.name|input\.lineName/);
   assert.match(lib, /ten carefully selected lines/);
   assert.match(lib, /principled book moves you'd expect from somebody who knows the opening/);
   assert.match(lib, /stay firmly in the game/);
@@ -432,8 +435,8 @@ test("Canal Variation opens the pack-recipe talk once per session, not other lin
       const { PACKS } = await import("./src/data/packs.ts");
       const scotch = PACKS.find((pack) => pack.id === "scotch");
       if (!scotch) throw new Error("missing scotch pack");
-      if (scotch.lines[0]?.id !== "sg1" || scotch.lines[0]?.name !== "Canal Variation") {
-        throw new Error("first variation is not Canal");
+      if (scotch.lines[0]?.id !== "sg1" || scotch.lines[0]?.name !== "Dubois–Réti · 5.e5 d5") {
+        throw new Error("first variation is not sg1 Dubois–Réti");
       }
       if (SCOTCH_CANAL_BEATS.length !== 9) throw new Error("canal beats");
       if (SCOTCH_CANAL_BEAT_AT_SEC.length !== SCOTCH_CANAL_BEATS.length) throw new Error("canal cues");

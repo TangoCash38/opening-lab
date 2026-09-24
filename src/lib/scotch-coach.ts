@@ -3,7 +3,7 @@
  *
  * Two talks, same seated portrait and cream plate / desktop dock:
  * - Main `Tap to practice`: cuppa and history (`scotchCoachApplies`).
- * - First variation, Canal Variation: what the ten lines teach
+ * - First variation, Dubois–Réti (`sg1`): what the ten lines teach
  *   (`scotchCanalCoachApplies`). Later variations do not open him.
  *
  * Phone and the Play wrap mount the same dock; a narrow cream plate keeps
@@ -55,7 +55,7 @@ export const SCOTCH_COACH_NARRATION_FALLBACK_SEC = 44;
  */
 export const SCOTCH_CANAL_LINE_ID = "sg1";
 
-export const SCOTCH_CANAL_TITLE = "Canal Variation · ten lines from the gambit";
+export const SCOTCH_CANAL_TITLE = "Dubois–Réti · ten lines from the gambit";
 
 /**
  * Sean's Canal pack-recipe reading. Same mp3 family as the cuppa narration
@@ -68,7 +68,7 @@ export const SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95;
 
 /** On-screen beats for professor-potato-pie-canal.mp3. Same substance as the take. */
 export const SCOTCH_CANAL_BEATS = [
-  "Right then — welcome to the Canal Variation. Professor Potato Pie, at your service.",
+  "Right then — welcome to Dubois–Réti. Professor Potato Pie, at your service.",
   "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
   "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.",
   "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.",
@@ -89,7 +89,7 @@ export const SCOTCH_CANAL_BEAT_AT_SEC = [
 ] as const;
 
 /**
- * Canal session flag. Set when Canal Variation opens this talk.
+ * Session flag for the sg1 pack-recipe talk. Set when that line opens it.
  * Distinct from the cuppa intro so Skip on one does not hide the other.
  * Gone when the tab closes.
  */
@@ -187,7 +187,7 @@ export function markScotchCoachSeen(): void {
   }
 }
 
-/** True after Canal Variation has opened the pack-recipe talk in this tab. */
+/** True after sg1 has opened the pack-recipe talk in this tab. */
 export function scotchCanalCoachAlreadySeen(): boolean {
   if (typeof sessionStorage === "undefined") return false;
   try {
@@ -237,13 +237,13 @@ export function scotchCoachApplies(input: {
 }
 
 /**
- * Pack-recipe talk. Scotch only, and only the first variation (Canal).
- * Main Tap to practice stays on the cuppa intro. Test never calls this.
+ * Pack-recipe talk. Scotch only, and only line id sg1 (the first book line).
+ * The display name is not the gate. Main Tap to practice stays on the cuppa intro.
  */
 export function scotchCanalCoachApplies(input: {
   packId: string;
   lineId: string;
-  /** Index in the pack. Canal is variation 0. */
+  /** Index in the pack. sg1 is variation 0. */
   lineIndex: number;
   /** True for Tap to practice — that mount keeps the cuppa intro. */
   practiceEntry: boolean;
