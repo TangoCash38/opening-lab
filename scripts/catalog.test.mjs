@@ -2744,7 +2744,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1鈥搒g5 book, sg6 trap, sg7鈥
   assert.equal(names.sg7, "Punish the error 路 鈥xc3 Bxf7+");
   assert.equal(names.sg8, "Punish the error 路 鈥e5 vs 5.Ng5");
   assert.equal(names.sg9, "Punish the error 路 鈥e7 vs 5.e5");
-  assert.equal(names.sg10, "Punish the error 路 鈥6 vs 5.e5");
+  assert.equal(names.sg10, "Punish the error 路 鈥6");
   assert.equal(Object.values(names).filter((n) => n.startsWith("Trap 路")).length, 1);
   for (const id of ["sg1", "sg2", "sg3", "sg4", "sg5"]) {
     assert.doesNotMatch(names[id], /^(Trap 路|Punish the error 路)/);
@@ -2764,7 +2764,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1鈥搒g5 book, sg6 trap, sg7鈥
     sg7: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3"],
     sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Ne5", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5"],
     sg9: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "Qe7", "O-O", "Nxe5", "Nxe5", "Qxe5", "Re1"],
-    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d6", "exf6", "Qxf6", "Bg5", "Qg6", "O-O"],
+    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "f6", "Nxd4", "Nxd4", "Qxd4", "Ne7", "Nc3", "Nc6", "Qe3", "Bb4", "O-O", "Bxc3", "Qxc3"],
   };
   for (const id of lineIds) {
     const plies = linePlies(id);
