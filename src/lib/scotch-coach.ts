@@ -3,8 +3,12 @@
  *
  * Two talks, same seated portrait and cream plate / desktop dock:
  * - Main `Tap to practice`: cuppa and history (`scotchCoachApplies`).
+ *   The board auto-plays the gambit stem while he speaks.
  * - First book line, Line 1 (`sg1`): what the ten lines teach
- *   (`scotchCanalCoachApplies`). Later variations do not open him.
+ *   (`scotchCanalCoachApplies`). The board auto-plays that line's SAN
+ *   from the pack (not a hardcoded copy) and holds the final position
+ *   until the talk ends. Practice then starts again at ply 0.
+ *   Later variations do not open him.
  *
  * Phone and the Play wrap mount the same dock; a narrow cream plate keeps
  * him off the squares. Test, line switches, and other packs never match.
@@ -138,6 +142,72 @@ export function scotchCanalBeatIndex(currentTimeSec: number, durationSec: number
     else break;
   }
   return index;
+}
+
+/**
+ * Seconds of the final Line 1 position held before the Canal clip ends.
+ * The demo finishes a few seconds early, then Practice restarts at ply 0.
+ */
+export const SCOTCH_CANAL_LINE_END_LEAD_SEC = 5;
+
+/** After the Canal demo, book Practice always begins on the start position. */
+export const SCOTCH_CANAL_PRACTICE_START_PLY = 0;
+
+function scotchCanalNarrationDuration(durationSec: number): number {
+  return Number.isFinite(durationSec) && durationSec > 0
+    ? durationSec
+    : SCOTCH_CANAL_NARRATION_FALLBACK_SEC;
+}
+
+/**
+ * Second when the last Line 1 ply should already be on the board.
+ * A few seconds before the clip so the final position can sit there.
+ */
+export function scotchCanalLineFinishSec(durationSec: number): number {
+  const duration = scotchCanalNarrationDuration(durationSec);
+  const lead = Math.min(SCOTCH_CANAL_LINE_END_LEAD_SEC, duration / 2);
+  return duration - lead;
+}
+
+/** Second when this 1-based ply belongs on the board. Evenly paced up to the finish. */
+export function scotchCanalLineCueSec(
+  ply: number,
+  durationSec: number,
+  plyCount: number,
+): number {
+  const count = Math.max(1, Math.floor(plyCount));
+  const n = Math.min(count, Math.max(1, Math.floor(ply)));
+  return (n / count) * scotchCanalLineFinishSec(durationSec);
+}
+
+/**
+ * How many Line 1 plies should already be on the board at this narration time.
+ * `plyCount` is the pack line length (sg1). Never past that length.
+ * Duration 0 / NaN uses SCOTCH_CANAL_NARRATION_FALLBACK_SEC.
+ */
+export function scotchCanalLinePlyCount(
+  currentTimeSec: number,
+  durationSec: number,
+  plyCount: number,
+): number {
+  const count = Math.max(0, Math.floor(plyCount));
+  if (count === 0) return 0;
+  if (!Number.isFinite(currentTimeSec) || currentTimeSec <= 0) return 0;
+  let played = 0;
+  for (let i = 1; i <= count; i += 1) {
+    if (currentTimeSec + 1e-9 >= scotchCanalLineCueSec(i, durationSec, count)) played = i;
+    else break;
+  }
+  return played;
+}
+
+/** Prefix of `sans` that belongs on the board, in pack order. */
+export function scotchCanalLinePlayed<T>(
+  sans: readonly T[],
+  currentTimeSec: number,
+  durationSec: number,
+): readonly T[] {
+  return sans.slice(0, scotchCanalLinePlyCount(currentTimeSec, durationSec, sans.length));
 }
 
 /** How many stem plies should already be on the board at this narration time. */

@@ -489,6 +489,130 @@ test("Line 1 (sg1) opens the pack-recipe talk once per session, not other lines"
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
+test("canal board plays sg1 in order, finishes before the clip, then Practice starts at ply 0", () => {
+  assert.match(lib, /SCOTCH_CANAL_LINE_END_LEAD_SEC = 5/);
+  assert.match(lib, /SCOTCH_CANAL_PRACTICE_START_PLY = 0/);
+  assert.match(lib, /function scotchCanalLinePlyCount/);
+  assert.match(lib, /function scotchCanalLineFinishSec/);
+  assert.match(lib, /function scotchCanalLinePlayed/);
+  assert.match(board, /SCOTCH_CANAL_LINE_ID/);
+  assert.match(board, /PACKS\.find/);
+  assert.match(board, /item\.id === SCOTCH_CANAL_LINE_ID/);
+  assert.match(board, /line\?\.plies/);
+  assert.match(board, /scotchCanalLinePlyCount/);
+  assert.match(board, /SCOTCH_CANAL_NARRATION_FALLBACK_SEC/);
+  assert.match(board, /data-scotch-canal-ply/);
+  assert.match(board, /showHints=\{false\}/);
+  assert.match(board, /interactive=\{false\}/);
+  assert.match(board, /lastMove=\{lastMove\}/);
+  assert.match(board, /slide=\{slide\}/);
+  assert.doesNotMatch(board, /arrows=|hintMoves/);
+  assert.doesNotMatch(board, /Bxd5|cxb2|Qxd1|Nxe4/);
+  assert.doesNotMatch(lib, /Bxd5|cxb2|Qxd1/);
+  const dockStart = hero.indexOf("data-scotch-coach-dock");
+  const dock = hero.slice(dockStart, hero.indexOf("home-board pointer-events-none px-2", dockStart));
+  assert.match(dock, /talk="canal"/);
+  assert.match(dock, /flip=\{pack\.side === "Black"\}/);
+  assert.match(dock, /ScotchCoachBoard/);
+  assert.doesNotMatch(dock, /<ChessBoard/);
+  const finish = hero.slice(hero.indexOf("const finishCoach"), hero.indexOf("const activeLineId"));
+  assert.match(finish, /current\.talk === "canal" \? SCOTCH_CANAL_PRACTICE_START_PLY/);
+  assert.match(finish, /mode: "learn"|openInFrame\(current\.line, options, "learn"\)/);
+  assert.doesNotMatch(finish, /data-scotch-canal-ply|canalPly|playedRef/);
+  assert.match(train, /startPly = 0/);
+  assert.doesNotMatch(train, /scotchCanalLinePlyCount|SCOTCH_CANAL_LINE_ID/);
+  assert.doesNotMatch(`${board}\n${hero}`, /vs-computer|playComputer|Play on/i);
+
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+      import { Chess } from "chess.js";
+      import { PACKS } from "./src/data/packs.ts";
+      import {
+        SCOTCH_CANAL_LINE_END_LEAD_SEC,
+        SCOTCH_CANAL_NARRATION_FALLBACK_SEC,
+        SCOTCH_CANAL_PRACTICE_START_PLY,
+        scotchCanalLineCueSec,
+        scotchCanalLineFinishSec,
+        scotchCanalLinePlayed,
+        scotchCanalLinePlyCount,
+      } from "./src/lib/scotch-coach.ts";
+      const scotch = PACKS.find((pack) => pack.id === "scotch");
+      const sg1 = scotch?.lines.find((line) => line.id === "sg1");
+      const sg2 = scotch?.lines.find((line) => line.id === "sg2");
+      if (!sg1 || sg1.name !== "Line 1") throw new Error("sg1 missing");
+      if (!sg2) throw new Error("sg2 missing");
+      const sans = sg1.plies;
+      if (sans.length < 8) throw new Error("sg1 too short");
+      const game = new Chess();
+      for (const san of sans) {
+        if (!game.move(san)) throw new Error("illegal " + san);
+      }
+      if (SCOTCH_CANAL_PRACTICE_START_PLY !== 0) throw new Error("practice must restart at ply 0");
+      const duration = SCOTCH_CANAL_NARRATION_FALLBACK_SEC;
+      const finish = scotchCanalLineFinishSec(duration);
+      if (!(finish < duration - 3)) throw new Error("finish " + finish + " is not a few seconds early");
+      if (Math.abs(duration - finish - SCOTCH_CANAL_LINE_END_LEAD_SEC) > 1e-9) {
+        throw new Error("lead " + (duration - finish));
+      }
+      if (scotchCanalLinePlyCount(0, duration, sans.length) !== 0) throw new Error("start empty");
+      if (scotchCanalLinePlyCount(-1, duration, sans.length) !== 0) throw new Error("negative");
+      let previous = 0;
+      for (let ply = 1; ply <= sans.length; ply += 1) {
+        const cue = scotchCanalLineCueSec(ply, duration, sans.length);
+        if (!(cue > 0 && cue <= finish)) throw new Error("cue out of window " + ply);
+        const justBefore = scotchCanalLinePlyCount(cue - 0.02, duration, sans.length);
+        const atCue = scotchCanalLinePlyCount(cue, duration, sans.length);
+        if (justBefore !== ply - 1) throw new Error("before " + ply + " -> " + justBefore);
+        if (atCue !== ply) throw new Error("at " + ply + " -> " + atCue);
+        if (atCue < previous) throw new Error("rewound");
+        previous = atCue;
+        const played = scotchCanalLinePlayed(sans, cue, duration);
+        if (played.length !== ply) throw new Error("prefix " + ply);
+        if (played[ply - 1] !== sans[ply - 1]) throw new Error("order " + played[ply - 1]);
+        if (played.some((san, index) => san !== sans[index])) throw new Error("reordered");
+      }
+      const lastCue = scotchCanalLineCueSec(sans.length, duration, sans.length);
+      if (!(lastCue < duration)) throw new Error("last move at clip end");
+      if (scotchCanalLinePlyCount(duration, duration, sans.length) !== sans.length) {
+        throw new Error("clip end should hold the full line");
+      }
+      const full = scotchCanalLinePlayed(sans, duration, duration);
+      if (full.length !== sans.length || full.some((san, index) => san !== sans[index])) {
+        throw new Error("full line mismatch");
+      }
+      if (scotchCanalLinePlyCount(lastCue, 0, sans.length) !== sans.length) throw new Error("fallback duration");
+      if (scotchCanalLinePlyCount(lastCue, Number.NaN, sans.length) !== sans.length) throw new Error("nan duration");
+      const doubled = duration * 2;
+      const doubledFinish = scotchCanalLineFinishSec(doubled);
+      if (!(doubledFinish < doubled - 3)) throw new Error("scaled finish");
+      if (scotchCanalLinePlyCount(lastCue, doubled, sans.length) >= sans.length) {
+        throw new Error("longer clip should still be mid-line at the short-clip finish");
+      }
+      if (scotchCanalLinePlyCount(doubledFinish, doubled, sans.length) !== sans.length) {
+        throw new Error("longer clip should finish on its own clock");
+      }
+      if (!(scotchCanalLineCueSec(sans.length, doubled, sans.length) < doubled)) {
+        throw new Error("longer clip last move at the end");
+      }
+      if (scotchCanalLinePlayed(sg2.plies, duration, duration).join(" ") === sans.join(" ")) {
+        throw new Error("sg2 must not be the canal line");
+      }
+      const practice = new Chess();
+      if (practice.history().length !== SCOTCH_CANAL_PRACTICE_START_PLY) {
+        throw new Error("practice board not at ply 0");
+      }
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
 test("narration quarters land on the four cream beats", () => {
   const run = spawnSync(
     process.execPath,
