@@ -48,7 +48,7 @@ export const SCOTCH_COACH_BEATS = [
   "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
 ] as const;
 
-/** Sean's recorded reading of SCOTCH_COACH_BEATS. Not synthetic speech. */
+/** AI-generated narration of SCOTCH_COACH_BEATS. Playback only. */
 export const SCOTCH_COACH_NARRATION_MP3 = "/scotch-coach/sean-coach-narration.mp3";
 export const SCOTCH_COACH_NARRATION_OGG = "/scotch-coach/sean-coach-narration.ogg";
 /** Equal quarters until the element reports a duration. The file is ~44s. */
@@ -62,9 +62,8 @@ export const SCOTCH_CANAL_LINE_ID = "sg1";
 export const SCOTCH_CANAL_TITLE = "Line 1 · ten lines from the gambit";
 
 /**
- * Sean's Canal pack-recipe reading. Same mp3 family as the cuppa narration
- * (24 kHz mono). The wav from the take is not shipped. This file does not
- * replace sean-coach-narration.
+ * AI-generated Canal pack-recipe narration. Same mp3 family as the cuppa
+ * narration (24 kHz mono). This file does not replace sean-coach-narration.
  */
 export const SCOTCH_CANAL_NARRATION_MP3 = "/scotch-coach/professor-potato-pie-canal.mp3";
 /** The file is ~95s. Used when the element has not reported a duration yet. */
@@ -100,7 +99,7 @@ export const SCOTCH_CANAL_BEAT_AT_SEC = [
 export const SCOTCH_CANAL_SESSION_KEY = "opening-lab:scotch-canal-coach-session";
 
 /**
- * Scotch Gambit stem Sean names while he speaks:
+ * Scotch Gambit stem the narration names:
  * e4, e5, knights out, d4, pawn takes, bishop to c4.
  */
 export const SCOTCH_COACH_STEM = ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"] as const;

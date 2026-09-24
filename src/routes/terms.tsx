@@ -23,8 +23,7 @@ function Terms() {
           people, and not a puzzle or social site.
         </p>
         <p>
-          Some packs include Professor Potato Pie, a narrated coach. Professor
-          Potato Pie is a character, not a real professor or titled player.
+          Some packs include Professor Potato Pie, a narrated coach. Professor Potato Pie is a character, not a real professor or titled player. The narration voice is AI-generated.
         </p>
       </LegalSection>
 

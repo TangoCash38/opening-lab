@@ -155,7 +155,7 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   );
   assert.match(
     terms,
-    /Professor\s+Potato Pie is a character, not a real professor or titled player\./,
+    /Some packs include Professor Potato Pie, a narrated coach\. Professor Potato Pie is a character, not a real professor or titled player\. The narration voice is AI-generated\./,
   );
   assert.match(
     terms,

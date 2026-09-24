@@ -4,7 +4,7 @@
  * Practice opens `introBeats`. The first book line (`firstLineId`, never the
  * line title) opens `firstLineBeats`. Optional `introAudio` / `firstLineAudio`
  * are mp3 paths. With no audio, captions advance on Next and a short timer,
- * and each first-line beat plays its `ply` on the board. A recording uses
+ * and each first-line beat plays its `ply` on the board. An audio file uses
  * `atSec` for captions and `plyAtSec` for the moment each move is spoken.
  *
  * Scotch keeps the cuppa clip and the sg1 Canal clip, including the session
@@ -83,9 +83,9 @@ const OPENING_TRAPS_PACK_ID = "opening-traps";
 
 export const OPENING_TRAPS_INTRO_MP3 = "/coach/opening-traps/professor-potato-pie-traps-intro.mp3";
 export const OPENING_TRAPS_LINE_MP3 = "/coach/opening-traps/professor-potato-pie-traps-legals-mate.mp3";
-/** Sean's intro take. Beat times below were read off this clip. */
+/** AI-generated intro. Beat times below were read off this clip. */
 export const OPENING_TRAPS_INTRO_SEC = 46.4;
-/** Sean's Legal's Mate take. Beat and spoken-move times were read off this clip. */
+/** AI-generated Legal's Mate narration. Beat times were read off this clip. */
 export const OPENING_TRAPS_LINE_SEC = 92.7;
 
 const OPENING_TRAPS_INTRO = [

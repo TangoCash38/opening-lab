@@ -60,7 +60,7 @@ test("coach config is keyed by pack id and keeps the Scotch recordings", () => {
   assert.doesNotMatch(packs, /Play on|vs-computer|playComputer/i);
 });
 
-test("opening traps mounts on ot1 by line id, with Sean's clips and per-pack session keys", (t) => {
+test("opening traps mounts on ot1 by line id, with narration clips and per-pack session keys", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   assert.match(packs, /firstLineId: "ot1"/);
@@ -174,7 +174,7 @@ test("opening traps mounts on ot1 by line id, with Sean's clips and per-pack ses
         throw new Error("scotch is not text-only");
       }
       if (isCoachTextOnly("opening-traps", "intro") || isCoachTextOnly("opening-traps", "line")) {
-        throw new Error("traps clips are recorded");
+        throw new Error("traps clips are missing");
       }
       if (traps.introAudio !== "/coach/opening-traps/professor-potato-pie-traps-intro.mp3") {
         throw new Error("traps intro audio " + traps.introAudio);

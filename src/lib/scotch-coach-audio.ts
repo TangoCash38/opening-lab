@@ -1,9 +1,9 @@
 /**
- * Sean's Scotch coach narration. One element, started from the Practice tap
- * (same gate as the cream card) and stopped by Skip, Practice, or leaving.
- * Line 1 (sg1) uses the same element with professor-potato-pie-canal.mp3.
- * The cuppa intro keeps sean-coach-narration. The seated picture stays still.
- * No mouth overlay and no second recording.
+ * Professor Potato Pie narration. Playback only — one element, started from
+ * the Practice tap (same gate as the cream card) and stopped by Skip,
+ * Practice, or leaving. Line 1 (sg1) uses the same element with
+ * professor-potato-pie-canal.mp3. The cuppa intro keeps sean-coach-narration.
+ * The seated picture stays still. No mouth overlay and no microphone.
  */
 import {
   SCOTCH_CANAL_NARRATION_MP3,
@@ -64,7 +64,7 @@ export function startScotchCanalNarration(): HTMLAudioElement | null {
 }
 
 /**
- * A later pack recording. Same element as the Scotch clips.
+ * A later pack's AI-generated narration. Same element as the Scotch clips.
  * Text-only talks never call this — they advance captions on a timer.
  */
 export function startCoachPackNarration(

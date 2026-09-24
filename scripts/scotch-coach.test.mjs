@@ -67,7 +67,7 @@ test("coach narrates the scotch gambit then starts book practice", () => {
   assert.doesNotMatch(train, /startScotchCoachNarration|sean-coach-narration/);
 });
 
-test("Sean narration plays on the coach card and skip stops it", () => {
+test("narration plays on the coach card and skip stops it", () => {
   for (const file of [
     "public/scotch-coach/sean-coach-narration.mp3",
     "public/scotch-coach/sean-coach-narration.ogg",
@@ -110,7 +110,7 @@ test("Sean narration plays on the coach card and skip stops it", () => {
   assert.match(skip, /onDone\(\)/);
 });
 
-test("coach is the seated picture plus Sean's voice, with no mouth overlay", () => {
+test("coach is the seated picture plus playback, with no mouth overlay", () => {
   assert.doesNotMatch(intro, /scotch-coach-mouth|subscribeScotchCoachMouth/);
   assert.doesNotMatch(css, /\.scotch-coach-mouth/);
   assert.doesNotMatch(audio, /createAnalyser|scotchCoachMouthOpen|AudioContext/);
