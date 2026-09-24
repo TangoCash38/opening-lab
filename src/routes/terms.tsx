@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage, LegalSection } from "@/components/opening-lab/legal-page";
-import { BUY_ALL_FOR_SALE } from "@/lib/catalog";
 
 export const Route = createFileRoute("/terms")({
   component: Terms,
@@ -45,56 +44,32 @@ function Terms() {
         </p>
       </LegalSection>
 
-      {BUY_ALL_FOR_SALE ? (
-        <LegalSection title="Buy all packs">
-          <p>
-            Buy all packs for £19.99 is a one-time purchase (Google Play
-            Billing in the Play app, or Stripe on the website). It is not a
-            lifetime licence and we do not sell lifetime access.
-          </p>
-          <p>
-            What you get: full access on your account to every opening pack on
-            the website at the time of purchase, and to packs we later add to
-            that Buy all offer, for as long as we keep Opening Lab available to
-            you.
-          </p>
-          <p>
-            We guarantee that access for at least 12 months from the purchase
-            date. We will try to keep the service running after that. If we stop
-            the service or end that access more than 12 months after your Buy
-            all purchase, no further refund is due for that purchase because of
-            the stop or change, except where UK law says otherwise.
-          </p>
-          <p>
-            Buy all does not change the 14-day cooling-off rules below. Nothing
-            in these terms takes away your rights as a UK consumer.
-          </p>
-        </LegalSection>
-      ) : (
-        <LegalSection title="Packs you already bought together">
-          <p>
-            If you already bought access to every opening pack in one purchase,
-            that access stays on your account. It is not a lifetime licence and
-            we do not sell lifetime access.
-          </p>
-          <p>
-            What you get: full access on your account to every opening pack on
-            the website at the time of that purchase, and to packs we later add
-            to that offer, for as long as we keep Opening Lab available to you.
-          </p>
-          <p>
-            We guarantee that access for at least 12 months from the purchase
-            date. We will try to keep the service running after that. If we stop
-            the service or end that access more than 12 months after your
-            purchase, no further refund is due for that purchase because of the
-            stop or change, except where UK law says otherwise.
-          </p>
-          <p>
-            That purchase does not change the 14-day cooling-off rules below.
-            Nothing in these terms takes away your rights as a UK consumer.
-          </p>
-        </LegalSection>
-      )}
+      <LegalSection title="Buy all packs">
+        <p>
+          Buy all packs for £19.99 is not on sale while other opening packs
+          are coming soon. Purchases already made stay on your account. When
+          it is on sale, it is a one-time purchase (Google Play Billing in the
+          Play app, or Stripe on the website). It is not a lifetime licence
+          and we do not sell lifetime access.
+        </p>
+        <p>
+          What you get: full access on your account to every opening pack on
+          the website at the time of purchase, and to packs we later add to
+          that Buy all offer, for as long as we keep Opening Lab available to
+          you.
+        </p>
+        <p>
+          We guarantee that access for at least 12 months from the purchase
+          date. We will try to keep the service running after that. If we stop
+          the service or end that access more than 12 months after your Buy
+          all purchase, no further refund is due for that purchase because of
+          the stop or change, except where UK law says otherwise.
+        </p>
+        <p>
+          Buy all does not change the 14-day cooling-off rules below. Nothing
+          in these terms takes away your rights as a UK consumer.
+        </p>
+      </LegalSection>
 
       <LegalSection title="Who makes Opening Lab">
         <p>

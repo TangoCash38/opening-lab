@@ -2,7 +2,7 @@
  * Professor Potato Pie narration. Playback only — one element, started from
  * the Practice tap (same gate as the cream card) and stopped by Skip,
  * Practice, or leaving. Line 1 (sg1) uses the same element with
- * professor-potato-pie-canal.mp3. The cuppa intro keeps sean-coach-narration.
+ * professor-potato-pie-canal.mp3. The cuppa intro keeps coach-narration.
  * The seated picture stays still. No mouth overlay and no microphone.
  */
 import {

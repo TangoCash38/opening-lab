@@ -162,8 +162,11 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
     /packs that are on sale are one-time\s+in-app purchases via Google Play Billing\.\s+Buy all packs is not on\s+sale at the moment\. There is no Lab\+ subscription\./,
   );
   assert.doesNotMatch(terms, /thirty-three|thirty-four opening packs|33 packs|30 packs/);
-  assert.match(terms, /BUY_ALL_FOR_SALE \?/);
-  assert.match(terms, /Buy all packs for £19\.99/);
+  assert.doesNotMatch(terms, /Packs you already bought together/);
+  assert.match(
+    terms,
+    /Buy all packs for £19\.99 is not on sale while other opening packs\s+are coming soon\. Purchases already made stay on your account\./,
+  );
   assert.match(terms, /25 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);

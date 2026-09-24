@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalPage, LegalSection } from "@/components/opening-lab/legal-page";
-import { BUY_ALL_FOR_SALE } from "@/lib/catalog";
 
 export const Route = createFileRoute("/privacy")({
   component: Privacy,
@@ -44,12 +43,9 @@ function Privacy() {
             Your account email, stored on our servers if you sign in.
           </li>
           <li>
-            Pack unlocks on your account if you buy a pack on the website
-            (Stripe) or in the Google Play app (Google Play Billing), so they
-            follow you when you sign in.
-            {BUY_ALL_FOR_SALE
-              ? " Buy all packs are stored the same way."
-              : " If you already bought every pack together, that unlock stays on the account too."}
+            Pack unlocks on your account if you buy packs or Buy all packs on
+            the website (Stripe) or in the Google Play app (Google Play
+            Billing), so they follow you when you sign in.
           </li>
           <li>
             Training progress (which lines are green) stays on your device. We
@@ -74,13 +70,9 @@ function Privacy() {
         </ul>
         <p>
           Card or Play payment details go to Stripe or Google, not to us. We
-          never see your full card number. We store that you bought a pack
-          {BUY_ALL_FOR_SALE ? " or Buy all" : ""} so we can unlock the trainer
-          on your account.
-          {BUY_ALL_FOR_SALE
-            ? ""
-            : " If you already bought every pack together, we store that too."}{" "}
-          There is no Lab+ subscription.
+          never see your full card number. We store that you bought a pack or
+          Buy all so we can unlock the trainer on your account. There is no
+          Lab+ subscription.
         </p>
       </LegalSection>
 

@@ -4,14 +4,7 @@
 import Stripe from "stripe";
 import { PACKS } from "@/data/packs";
 import { canPurchaseBuyAll, canPurchasePack } from "@/lib/catalog";
-import {
-  LAB_PLUS_LABEL,
-  PRICE_BUY_ALL,
-  PRICE_MONTHLY,
-  PRICE_YEARLY,
-  packPrice,
-  priceToPence,
-} from "@/data/pricing";
+import { PRICE_BUY_ALL, packPrice, priceToPence } from "@/data/pricing";
 import { applyPurchase, signedInUserId } from "@/lib/purchases.server";
 import { MONTH_MS, YEAR_MS, type SubPlan } from "@/lib/unlocks";
 
@@ -181,18 +174,8 @@ export async function createCheckoutSession(request: Request): Promise<Response>
   let packId = "";
 
   if (kind === "monthly" || kind === "yearly") {
-    const pence = priceToPence(kind === "monthly" ? PRICE_MONTHLY : PRICE_YEARLY);
-    if (!pence) return json({ error: "Invalid price" }, 400);
-    mode = "subscription";
-    lineItem = {
-      quantity: 1,
-      price_data: {
-        currency: "gbp",
-        unit_amount: pence,
-        recurring: { interval: kind === "monthly" ? "month" : "year" },
-        product_data: { name: LAB_PLUS_LABEL },
-      },
-    };
+    // Lab+ is not on sale in this build. Existing plan entitlements stay.
+    return json({ error: "Not on sale" }, 400);
   } else if (kind === "buy_all") {
     if (!canPurchaseBuyAll()) {
       return json({ error: "Coming soon" }, 400);
