@@ -425,6 +425,7 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   const pay = async (kind: CheckoutKind, packId?: string) => {
     if (kind === "buy_all" && !canPurchaseBuyAll()) return;
     if (kind === "pack" && (!packId || !canPurchasePack(packId))) return;
+    if (kind === "monthly" || kind === "yearly") return;
     if (playApp || isPlayWrap()) {
       if (kind === "monthly" || kind === "yearly") {
         setShowSub(false);
@@ -498,7 +499,6 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
       }
       if (kind === "pack" && packId) buyPack(packId);
       else if (kind === "buy_all") buyAll();
-      else if (kind === "monthly" || kind === "yearly") subscribe(kind);
       setModal(null);
       setShowSub(false);
     } catch (err) {
@@ -612,7 +612,7 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
         <UnlockModal
           packName={modal.pack.name}
           price={modal.price}
-          playSku={hasPaidPlaySkuPath(modal.pack)}
+          playSku={hasPaidPlaySkuPath(modal.pack) && canPurchasePack(modal.pack.id)}
           onClose={() => {
             if (!payBusy) setModal(null);
           }}

@@ -15,7 +15,7 @@ test("Caro rest is £1.99 and other packs are £2.99", () => {
   assert.match(pricing, /PRICE_CARO_REST = "£1\.99"/);
   assert.match(pricing, /PRICE_PACK = "£2\.99"/);
   assert.match(pricing, /caro-kann-black"\) return PRICE_CARO_REST/);
-  assert.match(pricing, /PRICE_OPENING_TRAPS = "£0\.99"/);
+  assert.match(pricing, /PRICE_OPENING_TRAPS = "£1\.99"/);
   assert.match(pricing, /opening-traps"\) return PRICE_OPENING_TRAPS/);
   assert.doesNotMatch(pricing, /opening-traps"\) return PRICE_CARO_REST/);
 });
@@ -79,9 +79,9 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   assert.equal(isLineUnlocked(nimzo, "nl1", []), false);
   assert.equal(isLineUnlocked(nimzo, "nl7", []), false);
   assert.equal(isLineUnlocked(nimzo, "nl1", ["nimzo-larsen-white"]), true);
-  assert.equal(isLineUnlocked(caro, "ckb1", []), false);
-  assert.equal(isLineUnlocked(caro, "ckb3", []), false);
-  assert.equal(isLineUnlocked(caro, "ckb5", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb1", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb18", []), false);
   assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
@@ -108,19 +108,20 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   );
 });
 
-test("opening-traps free samples are ot1 through ot6 at 99p", () => {
+test("opening-traps free samples are ot1 through ot6 at £1.99", () => {
   assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
   assert.doesNotMatch(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7"/);
-  assert.match(pricing, /PRICE_OPENING_TRAPS = "£0\.99"/);
+  assert.match(pricing, /PRICE_OPENING_TRAPS = "£1\.99"/);
   assert.match(pricing, /isPayAsYouGoPack[\s\S]*opening-traps/);
   const modal = readFileSync(
     join(root, "src/components/opening-lab/unlock-modal.tsx"),
     "utf8",
   );
-  assert.match(modal, /Unlock all 11 traps for 99p/);
+  assert.match(modal, /Unlock all 11 traps for £1\.99/);
+  assert.doesNotMatch(modal, /99p/);
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const ot = packs.slice(packs.indexOf('id: "opening-traps"'));
-  assert.match(ot, /price: "£0\.99"/);
+  assert.match(ot, /price: "£1\.99"/);
 });
 
 test("Buy all packs is £19.99 one-time checkout kind", () => {
@@ -141,13 +142,32 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
     "utf8",
   );
   assert.match(modal, /or buy all for just £19\.99/);
+  assert.match(modal, /canPurchaseBuyAll\(\)/);
+  assert.match(modal, /offerBuyAll/);
   const migration = readFileSync(join(root, "migrations/0005_buy_all.sql"), "utf8");
   assert.match(migration, /'buy_all'/);
   const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
-  assert.match(terms, /Scotch Gambit is available now/);
-  assert.doesNotMatch(terms, /thirty-four opening packs/);
-  assert.match(terms, /Buy all packs for\s+£19\.99/);
-  assert.match(terms, /24 September 2026/);
+  const catalogSrc = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
+  assert.match(catalogSrc, /BUY_ALL_FOR_SALE = false/);
+  assert.match(
+    terms,
+    /Three opening packs are on sale now: Scotch Gambit, Opening Traps,\s+and Caro-Kann Defence for Black\./,
+  );
+  assert.match(
+    terms,
+    /Some packs include Professor Potato Pie, a narrated coach\. Professor Potato Pie is a character, not a real professor or titled player\. The narration voice is AI-generated\./,
+  );
+  assert.match(
+    terms,
+    /packs that are on sale are one-time\s+in-app purchases via Google Play Billing\.\s+Buy all packs is not on\s+sale at the moment\. There is no Lab\+ subscription\./,
+  );
+  assert.doesNotMatch(terms, /thirty-three|thirty-four opening packs|33 packs|30 packs/);
+  assert.doesNotMatch(terms, /Packs you already bought together/);
+  assert.match(
+    terms,
+    /Buy all packs for £19\.99 is not on sale while other opening packs\s+are coming soon\. Purchases already made stay on your account\./,
+  );
+  assert.match(terms, /25 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
 });

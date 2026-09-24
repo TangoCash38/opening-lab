@@ -30,8 +30,9 @@ const REQUIRED = [
   "Guided practice · memory tests",
   "Menu",
   "Report incorrect line",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.",
-  "Unlock all 11 traps for 99p",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.",
+  "Unlock all 11 traps for £1.99",
+  "Some packs are available now. More are coming with Professor Potato Pie.",
   "How the gym works",
   "Continue",
   "Don't show again",
@@ -83,8 +84,9 @@ test("languages are EN, ES, Simplified Chinese, FR, DE, PT, RU, IT, HI, JA, AR, 
   for (const key of REQUIRED) {
     assert.match(i18n, new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), key);
   }
-  assert.equal(i18n.split("£1.99").length - 1, 24);
-  assert.equal(i18n.split("£2.99").length - 1, 24);
+  assert.equal(i18n.split("£1.99").length - 1, 72);
+  assert.equal(i18n.split("£2.99").length - 1, 0);
+  assert.doesNotMatch(i18n, /99p/);
   assert.match(i18n, /short: "DE"/);
   assert.match(i18n, /short: "PT"/);
   assert.match(i18n, /short: "RU"/);

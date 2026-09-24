@@ -36,7 +36,10 @@ export function GuideView({ onBack, onShowIntro }: Props) {
       </Block>
 
       <Block title={t("White & Black / Special packs")}>
-        {t("Each pack trains one opening. You play the book side.")}
+        <p className="m-0">{t("Each pack trains one opening. You play the book side.")}</p>
+        <p className="m-0 mt-2">
+          {t("Some packs are available now. More are coming with Professor Potato Pie.")}
+        </p>
       </Block>
 
       <Block title={t("Practice mode")}>

@@ -9,8 +9,11 @@ export const PRICE_YEARLY_NOTE = "a year · best value";
 
 /** Rest of Caro-Kann for Black (3 sample lines stay free). */
 export const PRICE_CARO_REST = "£1.99";
-/** Full Opening Traps unlock. The first six lines stay free. */
-export const PRICE_OPENING_TRAPS = "£0.99";
+/**
+ * Full Opening Traps unlock. The first six lines stay free.
+ * Restored to the pre-#285 price (£1.99, previously PRICE_CARO_REST).
+ */
+export const PRICE_OPENING_TRAPS = "£1.99";
 /** Any other visible pack. */
 export const PRICE_PACK = "£2.99";
 /** One-time: unlock every opening pack (current + future on the website). */

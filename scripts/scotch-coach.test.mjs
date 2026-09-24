@@ -64,19 +64,19 @@ test("coach narrates the scotch gambit then starts book practice", () => {
   assert.match(css, /#fbf6ea/);
   assert.doesNotMatch(intro, /vs-computer|playComputer|Play on/i);
   assert.match(train, /Test/);
-  assert.doesNotMatch(train, /startScotchCoachNarration|sean-coach-narration/);
+  assert.doesNotMatch(train, /startScotchCoachNarration|coach-narration/);
 });
 
-test("Sean narration plays on the coach card and skip stops it", () => {
+test("narration plays on the coach card and skip stops it", () => {
   for (const file of [
-    "public/scotch-coach/sean-coach-narration.mp3",
-    "public/scotch-coach/sean-coach-narration.ogg",
+    "public/scotch-coach/coach-narration.mp3",
+    "public/scotch-coach/coach-narration.ogg",
   ]) {
     assert.equal(existsSync(join(root, file)), true, file);
     assert.ok(statSync(join(root, file)).size > 10_000, file);
   }
-  assert.match(lib, /SCOTCH_COACH_NARRATION_MP3 = "\/scotch-coach\/sean-coach-narration\.mp3"/);
-  assert.match(lib, /SCOTCH_COACH_NARRATION_OGG = "\/scotch-coach\/sean-coach-narration\.ogg"/);
+  assert.match(lib, /SCOTCH_COACH_NARRATION_MP3 = "\/scotch-coach\/coach-narration\.mp3"/);
+  assert.match(lib, /SCOTCH_COACH_NARRATION_OGG = "\/scotch-coach\/coach-narration\.ogg"/);
   assert.match(lib, /SCOTCH_COACH_NARRATION_FALLBACK_SEC = 44/);
   assert.match(audio, /SCOTCH_COACH_NARRATION_MP3/);
   assert.match(audio, /SCOTCH_COACH_NARRATION_OGG/);
@@ -110,7 +110,7 @@ test("Sean narration plays on the coach card and skip stops it", () => {
   assert.match(skip, /onDone\(\)/);
 });
 
-test("coach is the seated picture plus Sean's voice, with no mouth overlay", () => {
+test("coach is the seated picture plus playback, with no mouth overlay", () => {
   assert.doesNotMatch(intro, /scotch-coach-mouth|subscribeScotchCoachMouth/);
   assert.doesNotMatch(css, /\.scotch-coach-mouth/);
   assert.doesNotMatch(audio, /createAnalyser|scotchCoachMouthOpen|AudioContext/);
@@ -192,7 +192,7 @@ test("book practice can open the coach transcript without covering the board", (
   assert.match(reading, /position:\s*static/);
   assert.doesNotMatch(reading, /position:\s*fixed|position:\s*absolute/);
   assert.match(reading, /#fbf6ea/);
-  assert.doesNotMatch(train, /startScotchCoachNarration|sean-coach-narration/);
+  assert.doesNotMatch(train, /startScotchCoachNarration|coach-narration/);
 });
 
 test("phone and Play seat the coach on a cream plate above the wood", () => {
@@ -362,7 +362,7 @@ test("Line 1 (sg1) opens the pack-recipe talk once per session, not other lines"
   assert.match(lib, /SCOTCH_CANAL_NARRATION_MP3 = "\/scotch-coach\/professor-potato-pie-canal\.mp3"/);
   assert.match(lib, /SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95/);
   assert.match(lib, /function scotchCanalBeatIndex/);
-  assert.doesNotMatch(lib, /sean-coach-narration\.mp3".*professor-potato-pie-canal/);
+  assert.doesNotMatch(lib, /coach-narration\.mp3".*professor-potato-pie-canal/);
   assert.match(lib, /SCOTCH_CANAL_SESSION_KEY = "opening-lab:scotch-canal-coach-session"/);
   assert.match(lib, /sessionStorage\.getItem\(SCOTCH_CANAL_SESSION_KEY\) === "1"/);
   assert.match(lib, /sessionStorage\.setItem\(SCOTCH_CANAL_SESSION_KEY, "1"\)/);

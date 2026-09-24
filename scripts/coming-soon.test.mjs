@@ -45,7 +45,7 @@ async function loadCatalog(t) {
   return import(pathToFileURL(tmp).href);
 }
 
-test("every visible pack except scotch and opening traps is coming soon", async (t) => {
+test("every visible pack except scotch, opening traps, and caro-kann is coming soon", async (t) => {
   const mod = await loadCatalog(t);
   if (!mod) return;
   const {
@@ -57,14 +57,16 @@ test("every visible pack except scotch and opening traps is coming soon", async 
     canPurchaseBuyAll,
   } = mod;
 
-  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps"]);
+  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black"]);
   assert.equal(isPackComingSoon("scotch"), false);
   assert.equal(isPackComingSoon("opening-traps"), false);
+  assert.equal(isPackComingSoon("caro-kann-black"), false);
   assert.equal(canPurchasePack("scotch"), true);
   assert.equal(canPurchasePack("opening-traps"), true);
+  assert.equal(canPurchasePack("caro-kann-black"), true);
   assert.equal(canPurchaseBuyAll(), false);
 
-  const live = new Set(["scotch", "opening-traps"]);
+  const live = new Set(["scotch", "opening-traps", "caro-kann-black"]);
   const gated = [];
   for (const id of VISIBLE_PACK_IDS) {
     if (live.has(id)) {
@@ -81,7 +83,8 @@ test("every visible pack except scotch and opening traps is coming soon", async 
   assert.equal(gated.length, VISIBLE_PACK_IDS.length - live.size);
   assert.equal(COMING_SOON_PACK_IDS.length, gated.length);
   assert.equal(gated.includes("opening-traps"), false);
-  assert.equal(gated.includes("caro-kann-black"), true);
+  assert.equal(gated.includes("caro-kann-black"), false);
+  assert.equal(gated.includes("qgd-black"), true);
 });
 
 test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays purchasable", async (t) => {
@@ -98,7 +101,11 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
 
   const caro = {
     id: "caro-kann-black",
-    lines: ["ckb1", "ckb2", "ckb3", "ckb5", "ckb18"].map((id) => ({ id })),
+    lines: ["ckb1", "ckb2", "ckb3", "ckb5", "ckb10"].map((id) => ({ id })),
+  };
+  const qgd = {
+    id: "qgd-black",
+    lines: ["qgdb1", "qgdb2"].map((id) => ({ id })),
   };
   const traps = {
     id: "opening-traps",
@@ -109,32 +116,48 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     lines: ["sg1", "sg2"].map((id) => ({ id })),
   };
 
-  assert.equal(isComingSoonClosed(caro.id, []), true);
-  assert.equal(isComingSoonClosed(caro.id, [], true), false);
+  assert.equal(isComingSoonClosed(qgd.id, []), true);
+  assert.equal(isComingSoonClosed(qgd.id, [], true), false);
+  assert.equal(isComingSoonClosed(caro.id, []), false);
   assert.equal(isComingSoonClosed(scotch.id, []), false);
   assert.equal(isComingSoonClosed(traps.id, []), false);
-  assert.equal(canPurchasePack(caro.id), false);
+  assert.equal(canPurchasePack(qgd.id), false);
+  assert.equal(canPurchasePack(caro.id), true);
   assert.equal(canPurchasePack(traps.id), true);
   assert.equal(canPurchaseBuyAll(), false);
 
-  for (const line of caro.lines) {
-    assert.equal(isLineUnlocked(caro, line.id, []), false, line.id);
+  for (const line of qgd.lines) {
+    assert.equal(isLineUnlocked(qgd, line.id, []), false, line.id);
   }
+  assert.equal(isLineUnlocked(caro, "ckb1", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb2", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb10", []), false);
   assert.equal(isLineUnlocked(traps, "ot1", []), true);
   assert.equal(isLineUnlocked(traps, "ot6", []), true);
   assert.equal(isLineUnlocked(traps, "ot7", []), false);
-  assert.deepEqual(playableLines(caro), []);
+  assert.deepEqual(playableLines(qgd), []);
+  assert.deepEqual(
+    playableLines(caro).map((line) => line.id),
+    ["ckb1", "ckb3", "ckb5"],
+  );
   assert.deepEqual(
     playableLines(traps).map((line) => line.id),
     ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
   );
-  assert.equal(nextUnlockedLine(caro, "ckb1", []), undefined);
+  assert.equal(nextUnlockedLine(qgd, "qgdb1", []), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
 
+  for (const line of qgd.lines) {
+    assert.equal(isLineUnlocked(qgd, line.id, ["qgd-black"]), true, line.id);
+  }
   for (const line of caro.lines) {
     assert.equal(isLineUnlocked(caro, line.id, ["caro-kann-black"]), true, line.id);
   }
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot7", ["opening-traps"]), true);
+  assert.equal(isComingSoonClosed(qgd.id, ["qgd-black"]), false);
   assert.equal(isComingSoonClosed(caro.id, ["caro-kann-black"]), false);
   assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
 
@@ -166,6 +189,10 @@ test("home grid labels coming-soon packs and does not sell them", () => {
   assert.match(billing, /if \(!canPurchaseBuyAll\(\)\)/);
   assert.match(stripe, /if \(!canPurchaseBuyAll\(\)\)/);
   assert.match(stripe, /!canPurchasePack\(pack\.id\)/);
+  assert.match(
+    stripe,
+    /if \(kind === "monthly" \|\| kind === "yearly"\) \{\s*\/\/ Lab\+ is not on sale in this build\.[\s\S]*return json\(\{ error: "Not on sale" \}, 400\);/,
+  );
   assert.match(css, /\.pack-coming-soon-label/);
   assert.match(css, /\.pack-coming-soon-note/);
   assert.match(css, /#f3e5c8/);

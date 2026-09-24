@@ -21,7 +21,7 @@ export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
  * Every other pack id is coming soon.
  * Relaunch a pack by adding its id here — one line.
  */
-export const LIVE_PACK_IDS = ["scotch", "opening-traps"] as const;
+export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black"] as const;
 
 export type LivePackId = (typeof LIVE_PACK_IDS)[number];
 
@@ -41,11 +41,16 @@ export function canPurchasePack(packId: string): boolean {
 }
 
 /**
- * Buy-all covers every catalog pack, including coming-soon ones.
- * It stays off sale until every visible pack is live.
+ * Single switch for offering Buy all (website and Play wrap).
+ * false hides every buy button, banner, upsell, and sales mention.
+ * Existing plan === "buy_all" entitlements are not affected.
+ * Set true to offer it again.
  */
+export const BUY_ALL_FOR_SALE = false;
+
+/** New Buy all checkouts only. Owners keep access either way. */
 export function canPurchaseBuyAll(): boolean {
-  return !VISIBLE_PACK_IDS.some((id) => isPackComingSoon(id));
+  return BUY_ALL_FOR_SALE;
 }
 
 /**

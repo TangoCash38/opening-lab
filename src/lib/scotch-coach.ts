@@ -48,9 +48,9 @@ export const SCOTCH_COACH_BEATS = [
   "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
 ] as const;
 
-/** Sean's recorded reading of SCOTCH_COACH_BEATS. Not synthetic speech. */
-export const SCOTCH_COACH_NARRATION_MP3 = "/scotch-coach/sean-coach-narration.mp3";
-export const SCOTCH_COACH_NARRATION_OGG = "/scotch-coach/sean-coach-narration.ogg";
+/** AI-generated narration of SCOTCH_COACH_BEATS. Playback only. */
+export const SCOTCH_COACH_NARRATION_MP3 = "/scotch-coach/coach-narration.mp3";
+export const SCOTCH_COACH_NARRATION_OGG = "/scotch-coach/coach-narration.ogg";
 /** Equal quarters until the element reports a duration. The file is ~44s. */
 export const SCOTCH_COACH_NARRATION_FALLBACK_SEC = 44;
 
@@ -62,9 +62,8 @@ export const SCOTCH_CANAL_LINE_ID = "sg1";
 export const SCOTCH_CANAL_TITLE = "Line 1 · ten lines from the gambit";
 
 /**
- * Sean's Canal pack-recipe reading. Same mp3 family as the cuppa narration
- * (24 kHz mono). The wav from the take is not shipped. This file does not
- * replace sean-coach-narration.
+ * AI-generated Canal pack-recipe narration. Same mp3 family as the cuppa
+ * narration (24 kHz mono). This file does not replace coach-narration.
  */
 export const SCOTCH_CANAL_NARRATION_MP3 = "/scotch-coach/professor-potato-pie-canal.mp3";
 /** The file is ~95s. Used when the element has not reported a duration yet. */
@@ -100,14 +99,14 @@ export const SCOTCH_CANAL_BEAT_AT_SEC = [
 export const SCOTCH_CANAL_SESSION_KEY = "opening-lab:scotch-canal-coach-session";
 
 /**
- * Scotch Gambit stem Sean names while he speaks:
+ * Scotch Gambit stem the narration names:
  * e4, e5, knights out, d4, pawn takes, bishop to c4.
  */
 export const SCOTCH_COACH_STEM = ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"] as const;
 
 /**
  * Seconds into the 44s recording when each stem ply is spoken.
- * Pauses in sean-coach-narration: "e4", "e5", "knights out" (both knights),
+ * Pauses in coach-narration: "e4", "e5", "knights out" (both knights),
  * "with d4", "takes on d4", "bishop on c4".
  */
 export const SCOTCH_COACH_STEM_AT_SEC = [5.28, 6.28, 7.42, 7.92, 10.25, 12.95, 16.25] as const;

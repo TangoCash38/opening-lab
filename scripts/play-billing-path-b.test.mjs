@@ -37,6 +37,12 @@ test("Android wrap is Billing 8 + versionCode 9 / 1.0.8 INAPP Path B", () => {
   assert.match(billing, /alekhine-black/);
   assert.match(billing, /old-indian-black/);
   assert.match(billing, /"opening-traps"/);
+  assert.match(billing, /LIVE_SALE_PACK_IDS/);
+  assert.match(billing, /"scotch"/);
+  assert.match(billing, /"caro-kann-black"/);
+  assert.match(billing, /Set its Play Console price to £1\.99/);
+  assert.doesNotMatch(billing, /£0\.99/);
+  assert.match(billing, /!BUY_ALL_SKU\.equals\(productId\) && !isLiveSaleSku\(productId\)/);
   assert.doesNotMatch(billing, /ProductType\.SUBS/);
   assert.doesNotMatch(billing, /buyLabPlusYearly/);
   assert.doesNotMatch(billing, /lab_plus_yearly/);

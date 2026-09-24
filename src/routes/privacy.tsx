@@ -7,7 +7,7 @@ export const Route = createFileRoute("/privacy")({
 
 function Privacy() {
   return (
-    <LegalPage title="Privacy Policy" updated="20 September 2026">
+    <LegalPage title="Privacy Policy" updated="25 September 2026">
       <p>
         Opening Lab is a chess opening trainer run by Sean Paul in the United
         Kingdom. This page explains what we collect and why, in plain English.
@@ -60,7 +60,7 @@ function Privacy() {
       </LegalSection>
 
       <LegalSection title="Payments">
-        <p>Paid packs and Buy all packs (£19.99 UK for Buy all) may be sold:</p>
+        <p>Paid packs (and Buy all packs, when it is on sale) may be sold:</p>
         <ul className="list-disc space-y-1 pl-5">
           <li>on this website via Stripe, or</li>
           <li>

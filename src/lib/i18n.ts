@@ -108,8 +108,8 @@ const en: Dict = {
     "Most people dive into opening theory before they know the basics. That is algebra before you can count.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.",
   "More packs": "More packs",
   "More opening packs": "More opening packs",
   "Daily tasks": "Daily tasks",
@@ -188,8 +188,8 @@ const en: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Three lines stay free. This unlocks the rest of the pack.",
   "One-time purchase. This pack only.": "One-time purchase. This pack only.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Packs are not for sale in this Play test. The three free Caro lines still train here.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.",
   "Rest of this pack": "Rest of this pack",
   "This pack": "This pack",
   "Pay as you go. Not for sale in this Play test.":
@@ -208,7 +208,7 @@ const en: Dict = {
     "Billed by Google Play. One-time purchase.",
   "Unlock the rest of this pack": "Unlock the rest of this pack",
   "Unlock this pack": "Unlock this pack",
-  "Unlock all 11 traps for 99p": "Unlock all 11 traps for 99p",
+  "Unlock all 11 traps for £1.99": "Unlock all 11 traps for £1.99",
   "Card via Stripe.": "Card via Stripe.",
   "Opening checkout…": "Opening checkout…",
   "Sign in so this stays on your account.": "Sign in so this stays on your account.",
@@ -291,6 +291,7 @@ const en: Dict = {
   "White & Black / Special packs": "White & Black / Special packs",
   "Each pack trains one opening. You play the book side.":
     "Each pack trains one opening. You play the book side.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Some packs are available now. More are coming with Professor Potato Pie.",
   "Practice mode": "Practice mode",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.",
@@ -340,8 +341,8 @@ const es: Dict = {
     "La mayoría se lanza a la teoría de aperturas antes de dominar lo básico. Es álgebra antes de saber contar.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Pagan cursos profundos y aún no pueden jugar la línea. Aquí vamos al grano. Líneas estrictas. Las aprendes, las juegas y reconoces la apertura cuando aparece.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Seis Opening Traps son gratis. Desbloquea las 11 trampas por 99p. Tres líneas Caro son gratis. Desbloquea el resto por £1.99. Los demás packs cuestan £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Seis Opening Traps son gratis. Desbloquea las 11 trampas por £1.99. Tres líneas Caro son gratis. Desbloquea el resto por £1.99. Hay más packs en camino con Professor Potato Pie.",
   "More packs": "Más packs",
   "More opening packs": "Más packs de aperturas",
   "Daily tasks": "Tareas diarias",
@@ -420,14 +421,15 @@ const es: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Tres líneas siguen gratis. Esto desbloquea el resto del pack.",
   "One-time purchase. This pack only.": "Pago único. Solo este pack.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Los packs no están a la venta en esta prueba de Play. Las tres líneas Caro gratis se siguen entrenando aquí.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Algunos packs ya están disponibles. Hay más en camino con Professor Potato Pie. Las líneas de muestra gratis se siguen entrenando aquí.",
   "Rest of this pack": "Resto de este pack",
   "This pack": "Este pack",
   "Pay as you go. Not for sale in this Play test.":
     "Paga al usar. No está a la venta en esta prueba de Play.",
   "Unlock the rest of this pack": "Desbloquear el resto de este pack",
   "Unlock this pack": "Desbloquear este pack",
+  "Unlock all 11 traps for £1.99": "Desbloquea las 11 trampas por £1.99",
   "Card via Stripe.": "Tarjeta con Stripe.",
   "Opening checkout…": "Abriendo el pago…",
   "Sign in so this stays on your account.": "Inicia sesión para guardarlo en tu cuenta.",
@@ -511,6 +513,7 @@ const es: Dict = {
   "White & Black / Special packs": "White y Black / packs especiales",
   "Each pack trains one opening. You play the book side.":
     "Cada pack entrena una apertura. Juegas el bando de libro.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Algunos packs ya están disponibles. Hay más en camino con Professor Potato Pie.",
   "Practice mode": "Modo Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Las pistas verdes muestran la siguiente jugada. El rival responde solo. Sigue la línea exacta. Practice no completa la línea.",
@@ -559,8 +562,8 @@ const zh: Dict = {
     "很多人还没掌握基础就扎进开局理论。那等于还不会数数就学代数。",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "他们买了深度课程，还是下不出这条线路。这里直来直去。严格线路。学会了就能下，局面出现时也能认出来。",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "六个 Opening Traps 免费。99p 解锁全部 11 个陷阱。三条 Caro 线路免费。其余内容 £1.99 解锁。其他棋包 £2.99。",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "六个 Opening Traps 免费。£1.99 解锁全部 11 个陷阱。三条 Caro 线路免费。其余内容 £1.99 解锁。更多棋包将随 Professor Potato Pie 推出。",
   "More packs": "更多棋包",
   "More opening packs": "更多开局棋包",
   "Daily tasks": "每日任务",
@@ -639,14 +642,15 @@ const zh: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "三条线路保持免费。此项解锁该棋包其余线路。",
   "One-time purchase. This pack only.": "一次性购买。仅此棋包。",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "此 Play 测试中棋包暂不出售。三条免费 Caro 线路仍可在此训练。",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "部分棋包现已可用。更多棋包将随 Professor Potato Pie 推出。免费试学线路仍可在此训练。",
   "Rest of this pack": "该棋包其余线路",
   "This pack": "此棋包",
   "Pay as you go. Not for sale in this Play test.":
     "按包购买。此 Play 测试中暂不出售。",
   "Unlock the rest of this pack": "解锁该棋包其余线路",
   "Unlock this pack": "解锁此棋包",
+  "Unlock all 11 traps for £1.99": "£1.99 解锁全部 11 个陷阱",
   "Card via Stripe.": "通过 Stripe 刷卡。",
   "Opening checkout…": "正在打开结账…",
   "Sign in so this stays on your account.": "登录后会保存在你的账户。",
@@ -730,6 +734,7 @@ const zh: Dict = {
   "White & Black / Special packs": "White 与 Black / 专题棋包",
   "Each pack trains one opening. You play the book side.":
     "每个棋包训练一个开局。你下书谱一方。",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "部分棋包现已可用。更多棋包将随 Professor Potato Pie 推出。",
   "Practice mode": "Practice 模式",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "绿色提示显示下一着。对手自动应对。跟上准确线路。Practice 不会完成该线路。",
@@ -778,8 +783,8 @@ const fr: Dict = {
     "La plupart plongent dans la théorie des ouvertures avant les bases. C'est l'algèbre avant de savoir compter.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Ils paient des cours poussés et ne savent toujours pas jouer la ligne. Ici, on va droit au but. Lignes strictes. Tu les apprends, tu les joues, et tu reconnais l'ouverture quand elle apparaît.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Six Opening Traps sont gratuites. Débloque les 11 pièges pour 99p. Trois lignes Caro sont gratuites. Débloque le reste pour £1.99. Les autres packs sont à £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Six Opening Traps sont gratuites. Débloque les 11 pièges pour £1.99. Trois lignes Caro sont gratuites. Débloque le reste pour £1.99. D'autres packs arrivent avec Professor Potato Pie.",
   "More packs": "Plus de packs",
   "More opening packs": "Plus de packs d'ouvertures",
   "Daily tasks": "Tâches du jour",
@@ -858,14 +863,15 @@ const fr: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Trois lignes restent gratuites. Ceci débloque le reste du pack.",
   "One-time purchase. This pack only.": "Achat unique. Ce pack seulement.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Les packs ne sont pas en vente dans ce test Play. Les trois lignes Caro gratuites s'entraînent toujours ici.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Certains packs sont disponibles. D'autres arrivent avec Professor Potato Pie. Les lignes d'essai gratuites s'entraînent toujours ici.",
   "Rest of this pack": "Reste de ce pack",
   "This pack": "Ce pack",
   "Pay as you go. Not for sale in this Play test.":
     "À l'unité. Pas en vente dans ce test Play.",
   "Unlock the rest of this pack": "Débloquer le reste de ce pack",
   "Unlock this pack": "Débloquer ce pack",
+  "Unlock all 11 traps for £1.99": "Débloque les 11 pièges pour £1.99",
   "Card via Stripe.": "Carte via Stripe.",
   "Opening checkout…": "Ouverture du paiement…",
   "Sign in so this stays on your account.": "Connecte-toi pour le garder sur ton compte.",
@@ -949,6 +955,7 @@ const fr: Dict = {
   "White & Black / Special packs": "White et Black / packs spéciaux",
   "Each pack trains one opening. You play the book side.":
     "Chaque pack entraîne une ouverture. Tu joues le camp du livre.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Certains packs sont disponibles. D'autres arrivent avec Professor Potato Pie.",
   "Practice mode": "Mode Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Les indices verts montrent le coup suivant. L'adversaire répond tout seul. Suis la ligne exacte. Practice ne termine pas la ligne.",
@@ -997,8 +1004,8 @@ const de: Dict = {
     "Die meisten stürzen sich in die Eröffnungstheorie, bevor die Grundlagen sitzen. Das ist Algebra, bevor man zählen kann.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Sie zahlen für tiefe Kurse und können die Linie trotzdem nicht spielen. Hier bleibt's klar. Strikte Linien. Du lernst sie, du spielst sie, und du erkennst die Eröffnung, wenn sie kommt.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Sechs Opening Traps sind kostenlos. Schalte alle 11 Fallen für 99p frei. Drei Caro-Linien sind kostenlos. Schalte den Rest für £1.99 frei. Andere Packs kosten £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Sechs Opening Traps sind kostenlos. Schalte alle 11 Fallen für £1.99 frei. Drei Caro-Linien sind kostenlos. Schalte den Rest für £1.99 frei. Weitere Packs kommen mit Professor Potato Pie.",
   "More packs": "Mehr Packs",
   "More opening packs": "Mehr Eröffnungspacks",
   "Daily tasks": "Tägliche Aufgaben",
@@ -1077,14 +1084,15 @@ const de: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Drei Linien bleiben kostenlos. Damit schaltest du den Rest des Packs frei.",
   "One-time purchase. This pack only.": "Einmalkauf. Nur dieses Pack.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Packs sind in diesem Play-Test nicht zu kaufen. Die drei kostenlosen Caro-Linien trainierst du hier trotzdem.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Einige Packs sind jetzt da. Weitere kommen mit Professor Potato Pie. Kostenlose Probelinien trainierst du hier weiter.",
   "Rest of this pack": "Rest dieses Packs",
   "This pack": "Dieses Pack",
   "Pay as you go. Not for sale in this Play test.":
     "Einzeln. In diesem Play-Test nicht zu kaufen.",
   "Unlock the rest of this pack": "Rest dieses Packs freischalten",
   "Unlock this pack": "Dieses Pack freischalten",
+  "Unlock all 11 traps for £1.99": "Alle 11 Fallen für £1.99 freischalten",
   "Card via Stripe.": "Karte über Stripe.",
   "Opening checkout…": "Zahlung wird geöffnet…",
   "Sign in so this stays on your account.": "Melde dich an, damit es auf deinem Konto bleibt.",
@@ -1168,6 +1176,7 @@ const de: Dict = {
   "White & Black / Special packs": "White und Black / Spezial-Packs",
   "Each pack trains one opening. You play the book side.":
     "Jedes Pack trainiert eine Eröffnung. Du spielst die Buchseite.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Einige Packs sind jetzt da. Weitere kommen mit Professor Potato Pie.",
   "Practice mode": "Modus Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Grüne Hinweise zeigen den nächsten Zug. Der Gegner antwortet automatisch. Folge der exakten Linie. Practice schließt die Linie nicht ab.",
@@ -1216,8 +1225,8 @@ const pt: Dict = {
     "A maioria mergulha na teoria de aberturas antes do básico. É álgebra antes de saber contar.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Pagam cursos profundos e ainda não jogam a linha. Aqui é direto. Linhas estritas. Você aprende, joga e reconhece a abertura quando ela aparece.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Seis Opening Traps são grátis. Desbloqueie as 11 armadilhas por 99p. Três linhas Caro são grátis. Desbloqueie o resto por £1.99. Os outros packs custam £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Seis Opening Traps são grátis. Desbloqueie as 11 armadilhas por £1.99. Três linhas Caro são grátis. Desbloqueie o resto por £1.99. Mais packs chegam com Professor Potato Pie.",
   "More packs": "Mais packs",
   "More opening packs": "Mais packs de aberturas",
   "Daily tasks": "Tarefas diárias",
@@ -1296,14 +1305,15 @@ const pt: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Três linhas continuam grátis. Isso desbloqueia o resto do pack.",
   "One-time purchase. This pack only.": "Compra única. Só este pack.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Packs não estão à venda neste teste Play. As três linhas Caro grátis ainda treinam aqui.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Alguns packs já estão disponíveis. Mais chegam com Professor Potato Pie. As linhas de amostra grátis ainda treinam aqui.",
   "Rest of this pack": "Resto deste pack",
   "This pack": "Este pack",
   "Pay as you go. Not for sale in this Play test.":
     "Pague ao usar. Não está à venda neste teste Play.",
   "Unlock the rest of this pack": "Desbloquear o resto deste pack",
   "Unlock this pack": "Desbloquear este pack",
+  "Unlock all 11 traps for £1.99": "Desbloqueie as 11 armadilhas por £1.99",
   "Card via Stripe.": "Cartão via Stripe.",
   "Opening checkout…": "Abrindo o pagamento…",
   "Sign in so this stays on your account.": "Entre para guardar na sua conta.",
@@ -1387,6 +1397,7 @@ const pt: Dict = {
   "White & Black / Special packs": "White e Black / packs especiais",
   "Each pack trains one opening. You play the book side.":
     "Cada pack treina uma abertura. Você joga o lado de livro.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Alguns packs já estão disponíveis. Mais chegam com Professor Potato Pie.",
   "Practice mode": "Modo Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "As dicas verdes mostram o próximo lance. O adversário responde sozinho. Siga a linha exata. Practice não completa a linha.",
@@ -1435,8 +1446,8 @@ const ru: Dict = {
     "Большинство лезут в дебютную теорию без базы. Это алгебра до того, как научился считать.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Платят за глубокие курсы и всё равно не играют линию. Здесь по делу. Строгие линии. Выучишь — сыграешь, и узнаешь дебют, когда он появится.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Шесть Opening Traps бесплатны. Открой все 11 ловушек за 99p. Три линии Caro бесплатны. Открой остаток за £1.99. Остальные паки — £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Шесть Opening Traps бесплатны. Открой все 11 ловушек за £1.99. Три линии Caro бесплатны. Открой остаток за £1.99. Ещё паки будут с Professor Potato Pie.",
   "More packs": "Ещё паки",
   "More opening packs": "Ещё паки дебютов",
   "Daily tasks": "Задачи дня",
@@ -1515,13 +1526,14 @@ const ru: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Три линии остаются бесплатными. Это открывает остаток пака.",
   "One-time purchase. This pack only.": "Разовая покупка. Только этот пак.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Паки не продаются в этом тесте Play. Три бесплатные линии Caro здесь всё равно тренируются.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Некоторые паки уже доступны. Ещё будут с Professor Potato Pie. Бесплатные пробные линии здесь всё равно тренируются.",
   "Rest of this pack": "Остаток этого пака",
   "This pack": "Этот пак",
   "Pay as you go. Not for sale in this Play test.": "По одному. Не продаётся в этом тесте Play.",
   "Unlock the rest of this pack": "Открыть остаток этого пака",
   "Unlock this pack": "Открыть этот пак",
+  "Unlock all 11 traps for £1.99": "Открой все 11 ловушек за £1.99",
   "Card via Stripe.": "Карта через Stripe.",
   "Opening checkout…": "Открываем оплату…",
   "Sign in so this stays on your account.": "Войди, чтобы сохранить на аккаунте.",
@@ -1605,6 +1617,7 @@ const ru: Dict = {
   "White & Black / Special packs": "White и Black / спецпаки",
   "Each pack trains one opening. You play the book side.":
     "Каждый пак тренирует один дебют. Ты играешь книжную сторону.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Некоторые паки уже доступны. Ещё будут с Professor Potato Pie.",
   "Practice mode": "Режим Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Зелёные подсказки показывают следующий ход. Соперник отвечает сам. Следуй точной линии. Practice не завершает линию.",
@@ -1653,8 +1666,8 @@ const it: Dict = {
     "La maggior parte si butta sulla teoria delle aperture prima delle basi. È algebra prima di saper contare.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Pagano corsi approfonditi e ancora non sanno giocare la linea. Qui andiamo dritti. Linee rigorose. Le impari, le giochi e riconosci l'apertura quando compare.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Sei Opening Traps sono gratis. Sblocca tutte le 11 trappole per 99p. Tre linee Caro sono gratis. Sblocca il resto per £1.99. Gli altri pack costano £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Sei Opening Traps sono gratis. Sblocca tutte le 11 trappole per £1.99. Tre linee Caro sono gratis. Sblocca il resto per £1.99. Altri pack arrivano con Professor Potato Pie.",
   "More packs": "Altri pack",
   "More opening packs": "Altri pack di aperture",
   "Daily tasks": "Compiti del giorno",
@@ -1733,14 +1746,15 @@ const it: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Tre linee restano gratis. Questo sblocca il resto del pack.",
   "One-time purchase. This pack only.": "Acquisto unico. Solo questo pack.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "I pack non sono in vendita in questo test Play. Le tre linee Caro gratis si allenano comunque qui.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Alcuni pack sono disponibili ora. Altri arrivano con Professor Potato Pie. Le linee di prova gratis si allenano ancora qui.",
   "Rest of this pack": "Resto di questo pack",
   "This pack": "Questo pack",
   "Pay as you go. Not for sale in this Play test.":
     "Paga all'uso. Non in vendita in questo test Play.",
   "Unlock the rest of this pack": "Sblocca il resto di questo pack",
   "Unlock this pack": "Sblocca questo pack",
+  "Unlock all 11 traps for £1.99": "Sblocca tutte le 11 trappole per £1.99",
   "Card via Stripe.": "Carta tramite Stripe.",
   "Opening checkout…": "Apertura del pagamento…",
   "Sign in so this stays on your account.": "Accedi per tenerlo sul tuo account.",
@@ -1824,6 +1838,7 @@ const it: Dict = {
   "White & Black / Special packs": "White e Black / pack speciali",
   "Each pack trains one opening. You play the book side.":
     "Ogni pack allena un'apertura. Giochi il lato di libro.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Alcuni pack sono disponibili ora. Altri arrivano con Professor Potato Pie.",
   "Practice mode": "Modalità Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "I suggerimenti verdi mostrano la mossa successiva. L'avversario risponde da solo. Segui la linea esatta. Practice non completa la linea.",
@@ -1872,8 +1887,8 @@ const hi: Dict = {
     "ज़्यादातर लोग बुनियाद से पहले ओपनिंग थ्योरी में कूद पड़ते हैं। गिनती आए बिना बीजगणित जैसा।",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "गहरे कोर्स खरीदते हैं, फिर भी लाइन नहीं चल पाते। यहाँ बात साफ़ है। सख्त लाइनें। सीखो, चलो, और ओपनिंग आए तो पहचानो।",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "छह Opening Traps मुफ़्त हैं। सभी 11 ट्रैप 99p में खोलें। तीन Caro लाइनें मुफ़्त हैं। बाकी £1.99 में खोलें। बाकी पैक £2.99।",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "छह Opening Traps मुफ़्त हैं। सभी 11 ट्रैप £1.99 में खोलें। तीन Caro लाइनें मुफ़्त हैं। बाकी £1.99 में खोलें। और पैक Professor Potato Pie के साथ आ रहे हैं।",
   "More packs": "और पैक",
   "More opening packs": "और ओपनिंग पैक",
   "Daily tasks": "दैनिक कार्य",
@@ -1952,14 +1967,15 @@ const hi: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "तीन लाइनें मुफ़्त रहती हैं। इससे पैक की बाकी लाइनें खुलती हैं।",
   "One-time purchase. This pack only.": "एक बार की खरीद। केवल यही पैक।",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "इस Play टेस्ट में पैक बिक्री पर नहीं हैं। तीन मुफ़्त Caro लाइनें यहाँ ट्रेन होती रहेंगी।",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "कुछ पैक अभी उपलब्ध हैं। और Professor Potato Pie के साथ आ रहे हैं। मुफ़्त सैंपल लाइनें यहाँ ट्रेन होती रहेंगी।",
   "Rest of this pack": "इस पैक की बाकी लाइनें",
   "This pack": "यह पैक",
   "Pay as you go. Not for sale in this Play test.":
     "ज़रूरत पर खरीदें। इस Play टेस्ट में बिक्री पर नहीं।",
   "Unlock the rest of this pack": "इस पैक की बाकी लाइनें खोलें",
   "Unlock this pack": "यह पैक खोलें",
+  "Unlock all 11 traps for £1.99": "सभी 11 ट्रैप £1.99 में खोलें",
   "Card via Stripe.": "कार्ड Stripe से।",
   "Opening checkout…": "भुगतान खुल रहा है…",
   "Sign in so this stays on your account.": "खाते में रखने के लिए साइन इन करें।",
@@ -2043,6 +2059,7 @@ const hi: Dict = {
   "White & Black / Special packs": "White और Black / खास पैक",
   "Each pack trains one opening. You play the book side.":
     "हर पैक एक ओपनिंग ट्रेन करता है। आप बुक पक्ष चलते हैं।",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "कुछ पैक अभी उपलब्ध हैं। और Professor Potato Pie के साथ आ रहे हैं।",
   "Practice mode": "Practice मोड",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "हरे संकेत अगली चाल दिखाते हैं। विरोधी अपने आप जवाब देता है। सटीक लाइन चलें। Practice लाइन पूरी नहीं करता।",
@@ -2091,8 +2108,8 @@ const ja: Dict = {
     "多くの人は基礎の前にオープニング理論へ飛び込む。数を数えられずに代数をやるようなものだ。",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "深い講座を買ってもラインを指せない。ここでは単刀直入。厳密なライン。覚えれば指せるし、そのオープニングが出たら分かる。",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Opening Traps の6つは無料。11個すべてを 99p で解除。Caro の3ラインは無料。残りは £1.99 で解除。他のパックは £2.99。",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Opening Traps の6つは無料。11個すべてを £1.99 で解除。Caro の3ラインは無料。残りは £1.99 で解除。他のパックは Professor Potato Pie と一緒に順次公開。",
   "More packs": "他のパック",
   "More opening packs": "他のオープニングパック",
   "Daily tasks": "今日の課題",
@@ -2170,13 +2187,14 @@ const ja: Dict = {
   "Unlock {packName}": "{packName} を解除",
   "Three lines stay free. This unlocks the rest of the pack.": "3ラインは無料のまま。これでパックの残りを解除します。",
   "One-time purchase. This pack only.": "買い切り。このパックのみ。",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "この Play テストではパックは販売していません。無料の Caro 3ラインはここでトレーニングできます。",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "一部のパックは今使えます。さらに Professor Potato Pie と一緒に公開します。無料の見本ラインはここでトレーニングできます。",
   "Rest of this pack": "このパックの残り",
   "This pack": "このパック",
   "Pay as you go. Not for sale in this Play test.": "都度購入。この Play テストでは販売していません。",
   "Unlock the rest of this pack": "このパックの残りを解除",
   "Unlock this pack": "このパックを解除",
+  "Unlock all 11 traps for £1.99": "11個すべてを £1.99 で解除",
   "Card via Stripe.": "カードは Stripe。",
   "Opening checkout…": "決済を開いています…",
   "Sign in so this stays on your account.": "アカウントに残すにはサインインしてください。",
@@ -2259,6 +2277,7 @@ const ja: Dict = {
     "厳密ラインの記憶トレーニング。選んだオープニングの手だけを指します。違う手は拒否され、ラインが定着します。",
   "White & Black / Special packs": "White と Black / 特別パック",
   "Each pack trains one opening. You play the book side.": "各パックは1つのオープニングを鍛えます。定跡側を指します。",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "一部のパックは今使えます。さらに Professor Potato Pie と一緒に公開します。",
   "Practice mode": "Practice モード",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "緑のヒントが次の手を示します。相手は自動で応じます。正確なラインに従ってください。Practice ではラインは完了しません。",
@@ -2306,8 +2325,8 @@ const ar: Dict = {
     "معظم الناس يغوصون في نظرية الافتتاحيات قبل أساسياتهم. هذا جبر قبل أن تتقن العدّ.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "يدفعون مقابل دورات عميقة وما زالوا لا يلعبون الخط. هنا نذهب مباشرة. خطوط صارمة. تتعلّمها، تلعبها، وتتعرّف على الافتتاحية عندما تظهر.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "ست Opening Traps مجانية. افتح المصائد الـ11 كلها بـ 99p. ثلاثة خطوط Caro مجانية. افتح الباقي بـ £1.99. الحزم الأخرى بـ £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "ست Opening Traps مجانية. افتح المصائد الـ11 كلها بـ £1.99. ثلاثة خطوط Caro مجانية. افتح الباقي بـ £1.99. حزم أخرى قادمة مع Professor Potato Pie.",
   "More packs": "المزيد من الحزم",
   "More opening packs": "المزيد من حزم الافتتاح",
   "Daily tasks": "مهام اليوم",
@@ -2386,14 +2405,15 @@ const ar: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "ثلاثة خطوط تبقى مجانية. هذا يفتح بقية الحزمة.",
   "One-time purchase. This pack only.": "شراء لمرة واحدة. هذه الحزمة فقط.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "الحزم غير معروضة للبيع في اختبار Play هذا. خطوط Caro الثلاثة المجانية ما زالت تُدرَّب هنا.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "بعض الحزم متاحة الآن. المزيد قادم مع Professor Potato Pie. خطوط العينة المجانية ما زالت تُدرَّب هنا.",
   "Rest of this pack": "بقية هذه الحزمة",
   "This pack": "هذه الحزمة",
   "Pay as you go. Not for sale in this Play test.":
     "ادفع حسب الاستخدام. غير معروض للبيع في اختبار Play هذا.",
   "Unlock the rest of this pack": "افتح بقية هذه الحزمة",
   "Unlock this pack": "افتح هذه الحزمة",
+  "Unlock all 11 traps for £1.99": "افتح المصائد الـ11 كلها بـ £1.99",
   "Card via Stripe.": "البطاقة عبر Stripe.",
   "Opening checkout…": "جارٍ فتح الدفع…",
   "Sign in so this stays on your account.": "سجّل الدخول ليبقى هذا على حسابك.",
@@ -2477,6 +2497,7 @@ const ar: Dict = {
   "White & Black / Special packs": "White و Black / حزم خاصة",
   "Each pack trains one opening. You play the book side.":
     "كل حزمة تدرّب افتتاحية واحدة. تلعب جانب الكتاب.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "بعض الحزم متاحة الآن. المزيد قادم مع Professor Potato Pie.",
   "Practice mode": "وضع Practice",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "التلميحات الخضراء تُظهر الحركة التالية. الخصم يرد تلقائيًا. اتبع الخط بدقة. Practice لا يُكمل الخط.",
@@ -2525,8 +2546,8 @@ const tr: Dict = {
     "Çoğu kişi temelleri bilmeden açılış teorisine dalar. Bu, saymayı bilmeden cebir yapmak gibidir.",
   "They pay for deep courses and still cannot play the line. Here we keep it straight. Strict lines. You learn them, you can play them, and you can spot the opening when it appears.":
     "Derin kurslara para verirler ama hâlâ hattı oynayamazlar. Burada netiz. Katı hatlar. Öğrenirsin, oynarsın ve açılış çıktığında tanırsın.",
-  "Six Opening Traps are free. Unlock all 11 traps for 99p. Three Caro lines are free. Unlock the rest for £1.99. Other packs are £2.99.":
-    "Altı Opening Trap ücretsiz. 11 tuzağın tümünü 99p ile aç. Üç Caro hattı ücretsiz. Geri kalanı £1.99 ile aç. Diğer paketler £2.99.",
+  "Six Opening Traps are free. Unlock all 11 traps for £1.99. Three Caro lines are free. Unlock the rest for £1.99. More packs are coming with Professor Potato Pie.":
+    "Altı Opening Trap ücretsiz. 11 tuzağın tümünü £1.99 ile aç. Üç Caro hattı ücretsiz. Geri kalanı £1.99 ile aç. Diğer paketler Professor Potato Pie ile geliyor.",
   "More packs": "Diğer paketler",
   "More opening packs": "Diğer açılış paketleri",
   "Daily tasks": "Günlük görevler",
@@ -2605,14 +2626,15 @@ const tr: Dict = {
   "Three lines stay free. This unlocks the rest of the pack.":
     "Üç hat ücretsiz kalır. Bu, paketin geri kalanını açar.",
   "One-time purchase. This pack only.": "Tek seferlik satın alma. Yalnızca bu paket.",
-  "Packs are not for sale in this Play test. The three free Caro lines still train here.":
-    "Bu Play testinde paketler satılmıyor. Ücretsiz üç Caro hattı burada çalışmaya devam eder.",
+  "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
+    "Bazı paketler şimdi hazır. Daha fazlası Professor Potato Pie ile geliyor. Ücretsiz örnek hatlar burada çalışmaya devam eder.",
   "Rest of this pack": "Bu paketin geri kalanı",
   "This pack": "Bu paket",
   "Pay as you go. Not for sale in this Play test.":
     "Kullandıkça öde. Bu Play testinde satışta değil.",
   "Unlock the rest of this pack": "Bu paketin geri kalanını aç",
   "Unlock this pack": "Bu paketi aç",
+  "Unlock all 11 traps for £1.99": "11 tuzağın tümünü £1.99 ile aç",
   "Card via Stripe.": "Kart Stripe ile.",
   "Opening checkout…": "Ödeme açılıyor…",
   "Sign in so this stays on your account.": "Hesabında kalsın diye oturum aç.",
@@ -2696,6 +2718,7 @@ const tr: Dict = {
   "White & Black / Special packs": "White ve Black / özel paketler",
   "Each pack trains one opening. You play the book side.":
     "Her paket bir açılışı çalıştırır. Kitap tarafını oynarsın.",
+  "Some packs are available now. More are coming with Professor Potato Pie.": "Bazı paketler şimdi hazır. Daha fazlası Professor Potato Pie ile geliyor.",
   "Practice mode": "Practice modu",
   "Green hints show the next move. The opponent replies automatically. Follow the exact line. Practice does not complete the line.":
     "Yeşil ipuçları sonraki hamleyi gösterir. Rakip otomatik cevaplar. Tam hattı izle. Practice hattı tamamlamaz.",

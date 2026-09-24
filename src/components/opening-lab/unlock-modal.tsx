@@ -1,4 +1,5 @@
 import { Lock, X } from "lucide-react";
+import { canPurchaseBuyAll } from "@/lib/catalog";
 import { isPlayWrap } from "@/lib/play-app";
 import { useT } from "@/lib/i18n";
 
@@ -38,8 +39,9 @@ export function UnlockModal({
   const wrap = playApp || isPlayWrap();
   const caroRest = packName.toLowerCase().includes("caro");
   const trapsRest = packName === "Opening Traps";
+  const offerBuyAll = Boolean(onBuyAll) && canPurchaseBuyAll();
   const unlockLabel = trapsRest
-    ? t("Unlock all 11 traps for 99p")
+    ? t("Unlock all 11 traps for £1.99")
     : caroRest
       ? t("Unlock the rest of this pack")
       : t("Unlock this pack");
@@ -70,7 +72,7 @@ export function UnlockModal({
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
                 {trapsRest
-                  ? t("Unlock all 11 traps for 99p")
+                  ? t("Unlock all 11 traps for £1.99")
                   : caroRest
                     ? t("Three lines stay free. This unlocks the rest of the pack.")
                     : t("One-time purchase. This pack only.")}
@@ -126,10 +128,10 @@ export function UnlockModal({
                   <span className="text-base font-bold">{price}</span>
                 </div>
               )}
-              {onBuyAll ? (
+              {offerBuyAll ? (
                 <button
                   type="button"
-                  onClick={onBuyAll}
+                  onClick={() => onBuyAll?.()}
                   disabled={busy}
                   className="flex w-full items-center justify-center rounded-xl border border-border bg-bg-subtle px-4 py-3 text-center active:scale-[0.99] disabled:opacity-60"
                 >
@@ -167,10 +169,10 @@ export function UnlockModal({
                 </span>
                 <span className="text-base font-bold text-accent">{price}</span>
               </button>
-              {onBuyAll ? (
+              {offerBuyAll ? (
                 <button
                   type="button"
-                  onClick={onBuyAll}
+                  onClick={() => onBuyAll?.()}
                   disabled={busy}
                   className="flex w-full items-center justify-center rounded-xl border border-border bg-bg-subtle px-4 py-3 text-center active:scale-[0.99] disabled:opacity-60"
                 >

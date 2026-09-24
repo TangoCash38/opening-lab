@@ -21,7 +21,7 @@ export const PLAY_UA_TOKEN = "OpeningLabPlay";
 export const PLAY_SKU_YEARLY = "lab_plus_yearly";
 
 export const PLAY_STORE_NOTICE =
-  "Scotch Gambit is available. Other packs are coming soon with Professor Potato Pie. Paid packs are billed by Google Play.";
+  "Some packs are available now. More are coming with Professor Potato Pie. Paid packs are billed by Google Play.";
 
 export const PLAY_SKU_NOT_ON_SALE = "This pack isn’t on sale in the store yet";
 

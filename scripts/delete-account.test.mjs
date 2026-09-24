@@ -19,8 +19,8 @@ const routeTree = src("src/routeTree.gen.ts");
 const legal = src("src/components/opening-lab/legal-page.tsx");
 const i18n = src("src/lib/i18n.ts");
 
-test("Privacy is the 20 September 2026 signed copy", () => {
-  assert.match(privacy, /updated="20 September 2026"/);
+test("Privacy names what we store and does not offer Buy all", () => {
+  assert.match(privacy, /updated="25 September 2026"/);
   assert.match(privacy, /title="Who we are"/);
   assert.match(privacy, /title="Who may use Opening Lab"/);
   assert.match(
@@ -34,13 +34,20 @@ test("Privacy is the 20 September 2026 signed copy", () => {
   assert.match(privacy, /We do not use advertising\s+cookies or an Advertising ID/);
   assert.match(
     privacy,
-    /Paid packs and Buy all packs \(£19\.99 UK\) are sold on this website via/,
+    /Paid packs \(and Buy all packs, when it is on sale\) may be sold:/,
   );
   assert.match(
     privacy,
-    /In the Google Play app, paid packs and Buy all are one-time Google/,
+    /in the Google Play app as one-time in-app purchases via Google Play/,
   );
-  assert.match(privacy, /There is no Lab\+ subscription on sale/);
+  assert.match(privacy, /There is no\s+Lab\+ subscription/);
+  assert.doesNotMatch(privacy, /BUY_ALL_FOR_SALE/);
+  assert.match(
+    privacy,
+    /We store that you bought a pack or\s+Buy all so we can unlock the trainer on your account/,
+  );
+  assert.doesNotMatch(privacy, /If you already bought every pack together/);
+  assert.match(privacy, /Paid packs \(and Buy all packs, when it is on sale\) may be sold:/);
   assert.match(privacy, /uk\.co\.openinglab/);
   assert.match(privacy, /https:\/\/www\.openinglab\.co\.uk\/delete-account/);
   assert.match(privacy, /Account → Delete account/);
