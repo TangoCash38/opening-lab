@@ -12,6 +12,7 @@ const lib = src("src/lib/scotch-coach.ts");
 const audio = src("src/lib/scotch-coach-audio.ts");
 const hero = src("src/components/opening-lab/home-hero.tsx");
 const intro = src("src/components/opening-lab/scotch-coach-intro.tsx");
+const board = src("src/components/opening-lab/scotch-coach-board.tsx");
 const css = src("src/styles.css");
 const train = src("src/components/opening-lab/train-view.tsx");
 
@@ -86,7 +87,7 @@ test("Sean narration plays on the coach card and skip stops it", () => {
     intro.indexOf('audio.addEventListener("ended"'),
   );
   assert.match(ended, /setBeat\(SCOTCH_COACH_BEATS\.length - 1\)/);
-  assert.doesNotMatch(ended, /onDone/);
+  assert.match(ended, /onDoneRef\.current\(\)/);
   const leaveAt = intro.indexOf("const leave");
   const skip = intro.slice(leaveAt, intro.indexOf("return (", leaveAt));
   assert.match(skip, /stopScotchCoachNarration\(\)/);
@@ -101,6 +102,83 @@ test("coach is the seated picture plus Sean's voice, with no mouth overlay", () 
   assert.match(intro, /coach-seated-v2\.png/);
   assert.match(audio, /SCOTCH_COACH_NARRATION_MP3/);
   assert.doesNotMatch(intro, /deepfake|speechSynthesis/i);
+});
+
+test("coach speaks once per browser until the seen flag is cleared", () => {
+  assert.match(lib, /SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-seen"/);
+  assert.match(lib, /localStorage\.getItem\(SCOTCH_COACH_SEEN_KEY\) === "1"/);
+  assert.match(lib, /localStorage\.setItem\(SCOTCH_COACH_SEEN_KEY, "1"\)/);
+  const gateAt = hero.indexOf("scotchCoachApplies({");
+  const branch = hero.slice(gateAt, hero.indexOf("preferInFrame()", gateAt));
+  assert.match(branch, /!scotchCoachAlreadySeen\(\)/);
+  assert.match(branch, /markScotchCoachSeen\(\)/);
+  assert.match(branch, /mode: "learn"/);
+  assert.doesNotMatch(train, /scotchCoachAlreadySeen|markScotchCoachSeen|ScotchCoachBoard/);
+  assert.doesNotMatch(hero, /isPlayWrap\(\)/);
+});
+
+test("practice board auto-plays the scotch gambit stem during the intro", () => {
+  assert.match(lib, /SCOTCH_COACH_STEM = \["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"\]/);
+  assert.match(lib, /SCOTCH_COACH_STEM_AT_SEC = \[5\.28, 6\.28, 7\.42, 7\.92, 10\.25, 12\.95, 16\.25\]/);
+  assert.match(lib, /function scotchCoachStemPlyCount/);
+  assert.match(board, /data-scotch-coach-stem/);
+  assert.match(board, /scotchCoachStemPlyCount/);
+  assert.match(board, /scotchCoachNarration\(\)/);
+  assert.match(board, /onSlideComplete/);
+  assert.match(hero, /ScotchCoachBoard/);
+  assert.match(intro, /onDoneRef\.current\(\)/);
+  assert.match(css, /width: min\(6\.75rem, 26%\)/);
+  assert.doesNotMatch(board, /vs-computer|playComputer|Play on/i);
+  assert.doesNotMatch(train, /SCOTCH_COACH_STEM|scotchCoachStemPlyCount/);
+
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+      import { Chess } from "chess.js";
+      import {
+        SCOTCH_COACH_STEM,
+        SCOTCH_COACH_STEM_AT_SEC,
+        SCOTCH_COACH_NARRATION_FALLBACK_SEC,
+        scotchCoachStemPlyCount,
+      } from "./src/lib/scotch-coach.ts";
+      const game = new Chess();
+      for (const san of SCOTCH_COACH_STEM) {
+        if (!game.move(san)) throw new Error("illegal " + san);
+      }
+      if (SCOTCH_COACH_STEM.length !== 7) throw new Error("stem length");
+      if (SCOTCH_COACH_STEM_AT_SEC.length !== SCOTCH_COACH_STEM.length) throw new Error("cues");
+      const duration = 44;
+      const cases = [
+        [0, 0],
+        [5.27, 0],
+        [5.28, 1],
+        [6.28, 2],
+        [7.42, 3],
+        [7.92, 4],
+        [10.25, 5],
+        [12.95, 6],
+        [16.25, 7],
+        [duration, 7],
+      ];
+      for (const [time, expected] of cases) {
+        const got = scotchCoachStemPlyCount(time, duration);
+        if (got !== expected) throw new Error(time + " -> " + got + " expected " + expected);
+      }
+      if (scotchCoachStemPlyCount(5.28, 0) !== 1) throw new Error("fallback scale");
+      if (scotchCoachStemPlyCount(5.28, Number.NaN) !== 1) throw new Error("nan duration");
+      const doubled = SCOTCH_COACH_NARRATION_FALLBACK_SEC * 2;
+      if (scotchCoachStemPlyCount(5.28, doubled) !== 0) throw new Error("scaled early");
+      if (scotchCoachStemPlyCount(10.56, doubled) !== 1) throw new Error("scaled e4");
+      if (scotchCoachStemPlyCount(-1, duration) !== 0) throw new Error("negative");
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
 test("narration quarters land on the four cream beats", () => {

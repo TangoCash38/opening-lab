@@ -3041,10 +3041,12 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 .scotch-coach-stage {
   position: absolute;
   z-index: 4;
-  left: 0.5rem;
-  right: 0.5rem;
-  top: 0;
-  bottom: 0;
+  top: 0.2rem;
+  right: 0.35rem;
+  left: auto;
+  bottom: auto;
+  width: min(6.75rem, 26%);
+  height: min(11rem, 42%);
   overflow: hidden;
   pointer-events: none;
 }
@@ -3053,7 +3055,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   position: absolute;
   left: 50%;
   bottom: 0;
-  height: 98%;
+  height: 100%;
   width: auto;
   max-width: none;
   transform: translateX(-50%) translateY(0) scale(1);
