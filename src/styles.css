@@ -3373,6 +3373,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
     border-radius: 0;
     background: transparent;
     box-shadow: none;
+    /* Fade only. The dock card's rise would slide Skip and Next out of the plate. */
+    animation-name: scotch-coach-plate-in;
   }
 
   .home-coach-practice .scotch-coach-name {
@@ -3489,6 +3491,23 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  animation-name: scotch-coach-plate-in;
+}
+
+@keyframes scotch-coach-plate-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-coach-practice .scotch-coach-card,
+  [data-surface="play"] .home-coach-practice .scotch-coach-card {
+    animation: none;
+  }
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-name {

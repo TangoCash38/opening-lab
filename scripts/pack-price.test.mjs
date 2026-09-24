@@ -15,7 +15,9 @@ test("Caro rest is £1.99 and other packs are £2.99", () => {
   assert.match(pricing, /PRICE_CARO_REST = "£1\.99"/);
   assert.match(pricing, /PRICE_PACK = "£2\.99"/);
   assert.match(pricing, /caro-kann-black"\) return PRICE_CARO_REST/);
-  assert.match(pricing, /opening-traps"\) return PRICE_CARO_REST/);
+  assert.match(pricing, /PRICE_OPENING_TRAPS = "£0\.99"/);
+  assert.match(pricing, /opening-traps"\) return PRICE_OPENING_TRAPS/);
+  assert.doesNotMatch(pricing, /opening-traps"\) return PRICE_CARO_REST/);
 });
 
 test("website is not all-free; extra Caro lines need a purchase", () => {
@@ -89,24 +91,36 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
 
   const traps = {
     id: "opening-traps",
-    lines: ["ot1", "ot2", "ot3", "ot4", "ot10"].map((id) => ({ id })),
+    lines: ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7", "ot10", "ot11"].map((id) => ({ id })),
   };
-  assert.equal(isLineUnlocked(traps, "ot1", []), false);
-  assert.equal(isLineUnlocked(traps, "ot2", []), false);
-  assert.equal(isLineUnlocked(traps, "ot3", []), false);
-  assert.equal(isLineUnlocked(traps, "ot4", []), false);
+  for (const id of ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"]) {
+    assert.equal(isLineUnlocked(traps, id, []), true, id);
+  }
+  assert.equal(isLineUnlocked(traps, "ot7", []), false);
   assert.equal(isLineUnlocked(traps, "ot10", []), false);
+  assert.equal(isLineUnlocked(traps, "ot11", []), false);
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
-  assert.equal(isLineUnlocked(traps, "ot3", ["opening-traps"]), true);
-  assert.equal(isLineUnlocked(traps, "ot10", ["opening-traps"]), true);
-  assert.deepEqual(playableLines(traps).map((l) => l.id), []);
+  assert.equal(isLineUnlocked(traps, "ot7", ["opening-traps"]), true);
+  assert.equal(isLineUnlocked(traps, "ot11", ["opening-traps"]), true);
+  assert.deepEqual(
+    playableLines(traps).map((l) => l.id),
+    ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
+  );
 });
 
-test("opening-traps free samples are ot1 and ot2 only", () => {
-  assert.match(catalog, /"opening-traps": \["ot1", "ot2"\]/);
-  assert.doesNotMatch(catalog, /"opening-traps": \["ot1", "ot2", "ot3"/);
-  assert.match(pricing, /opening-traps/);
+test("opening-traps free samples are ot1 through ot6 at 99p", () => {
+  assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
+  assert.doesNotMatch(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7"/);
+  assert.match(pricing, /PRICE_OPENING_TRAPS = "£0\.99"/);
   assert.match(pricing, /isPayAsYouGoPack[\s\S]*opening-traps/);
+  const modal = readFileSync(
+    join(root, "src/components/opening-lab/unlock-modal.tsx"),
+    "utf8",
+  );
+  assert.match(modal, /Unlock all 11 traps for 99p/);
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const ot = packs.slice(packs.indexOf('id: "opening-traps"'));
+  assert.match(ot, /price: "£0\.99"/);
 });
 
 test("Buy all packs is £19.99 one-time checkout kind", () => {

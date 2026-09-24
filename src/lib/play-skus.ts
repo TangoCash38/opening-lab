@@ -11,15 +11,16 @@
  *   buy_all_packs  →  applyPurchase({ kind: "buy_all" })
  *
  * No Lab+ / no lab_plus_yearly / no subscriptions.
- * Do not invent pack titles — ids match VISIBLE_PACK_IDS (except opening-traps).
+ * Do not invent pack titles — ids match VISIBLE_PACK_IDS.
  */
 
 export const PLAY_SKU_BUY_ALL = "buy_all_packs";
 export const PLAY_SKU_PACK_PREFIX = "pack_";
 
 /**
- * 32 paid visible packs + caro-kann-black (Caro rest is on sale as
- * pack_caro_kann_black). opening-traps is not a Path B IAP.
+ * 32 paid visible packs + caro-kann-black (Caro rest is
+ * pack_caro_kann_black) + opening-traps (pack_opening_traps, £0.99 in
+ * Play Console). The product id is the usual pack_ prefix.
  */
 export const PLAY_PATH_B_PACK_IDS = [
   "caro-kann-black",
@@ -43,6 +44,7 @@ export const PLAY_PATH_B_PACK_IDS = [
   "budapest-white",
   "bdg-black",
   "queens-gambit-white",
+  "opening-traps",
   "scotch",
   "english-white",
   "catalan-white",

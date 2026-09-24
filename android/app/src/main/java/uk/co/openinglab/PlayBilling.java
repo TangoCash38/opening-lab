@@ -44,7 +44,8 @@ public class PlayBilling implements PurchasesUpdatedListener {
 
     /**
      * Mirror of PLAY_PATH_B_PACK_IDS in src/lib/play-skus.ts.
-     * 33 packs (includes caro-kann-black extras). Opening Traps is not an IAP.
+     * 34 packs (includes caro-kann-black extras and opening-traps).
+     * Opening Traps product id is pack_opening_traps. Set its Play Console price to £0.99.
      */
     static final String[] PATH_B_PACK_IDS = {
             "caro-kann-black",
@@ -68,6 +69,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "budapest-white",
             "bdg-black",
             "queens-gambit-white",
+            "opening-traps",
             "scotch",
             "english-white",
             "catalan-white",

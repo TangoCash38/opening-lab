@@ -63,6 +63,18 @@ export function startScotchCanalNarration(): HTMLAudioElement | null {
   return mountNarration(SCOTCH_CANAL_NARRATION_MP3, null, "canal");
 }
 
+/**
+ * A later pack recording. Same element as the Scotch clips.
+ * Text-only talks never call this — they advance captions on a timer.
+ */
+export function startCoachPackNarration(
+  mp3Url: string,
+  oggUrl: string | null,
+  kind: string,
+): HTMLAudioElement | null {
+  return mountNarration(mp3Url, oggUrl, kind);
+}
+
 export function stopScotchCoachNarration() {
   const audio = narration;
   narration = null;

@@ -9,6 +9,8 @@ export const PRICE_YEARLY_NOTE = "a year · best value";
 
 /** Rest of Caro-Kann for Black (3 sample lines stay free). */
 export const PRICE_CARO_REST = "£1.99";
+/** Full Opening Traps unlock. The first six lines stay free. */
+export const PRICE_OPENING_TRAPS = "£0.99";
 /** Any other visible pack. */
 export const PRICE_PACK = "£2.99";
 /** One-time: unlock every opening pack (current + future on the website). */
@@ -18,7 +20,7 @@ export const FREE_PACK_IDS = new Set(["caro-kann-black", "opening-traps"]);
 
 export function packPrice(pack: Pack): string | null {
   if (pack.id === "caro-kann-black") return PRICE_CARO_REST;
-  if (pack.id === "opening-traps") return PRICE_CARO_REST; // £1.99
+  if (pack.id === "opening-traps") return PRICE_OPENING_TRAPS;
   if (FREE_PACK_IDS.has(pack.id) || pack.isFree) return null;
   if (pack.price) return pack.price;
   return PRICE_PACK;
