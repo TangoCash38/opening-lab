@@ -105,7 +105,7 @@ test("coach is the seated picture plus Sean's voice, with no mouth overlay", () 
 });
 
 test("coach speaks once per browser until the seen flag is cleared", () => {
-  assert.match(lib, /SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-seen"/);
+  assert.match(lib, /SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-dock-seen"/);
   assert.match(lib, /localStorage\.getItem\(SCOTCH_COACH_SEEN_KEY\) === "1"/);
   assert.match(lib, /localStorage\.setItem\(SCOTCH_COACH_SEEN_KEY, "1"\)/);
   const gateAt = hero.indexOf("scotchCoachApplies({");

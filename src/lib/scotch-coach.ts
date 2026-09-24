@@ -4,7 +4,7 @@
  * Flag + pack id. Play wrap and the phone train route never mount it.
  * Test is not intercepted; other packs never match.
  *
- * One appearance per browser. `opening-lab:scotch-coach-seen` is set the
+ * One appearance per browser. `opening-lab:scotch-coach-dock-seen` is set the
  * first time Practice opens the coach. Clearing that localStorage key
  * (full reset) is what lets him speak again.
  */
@@ -14,7 +14,7 @@ export const SCOTCH_PACK_ID = "scotch";
 export const SCOTCH_COACH_ENABLED = true;
 
 /** One-shot flag. Remove this key to hear the coach again. */
-export const SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-seen";
+export const SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-dock-seen";
 
 export const SCOTCH_COACH_TITLE = "Scotch Gambit · a cuppa and the open board";
 
