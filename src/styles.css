@@ -3052,7 +3052,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   border-color: var(--color-danger);
 }
 
-/* Scotch coach — docked in the cream panel, left of the wood. Play and phone never mount it. */
+/* Scotch coach — cream dock left of the wood on website desktop.
+   Phone and Play use the plate below so the figure never sits on the squares. */
 .home-coach-practice {
   display: flex;
   flex-direction: row;
@@ -3210,4 +3211,105 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   .scotch-coach-beat {
     animation: none;
   }
+}
+
+/*
+ * Phone column and the Play wrap (always the 520px chrome): a cream plate
+ * above the wood. Bust and mug stay in the plate; the board keeps full width
+ * so squares and coords are not covered. Website desktop (min-width 960px,
+ * data-surface=website) keeps the side dock above. Matches scotchCoachPlateLayout.
+ */
+@media (max-width: 959px) {
+  .home-coach-practice {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
+    padding: 0.4rem 0.45rem 0.08rem;
+  }
+
+  .home-coach-practice .scotch-coach-stage {
+    position: relative;
+    width: 100%;
+    height: 12.25rem;
+    aspect-ratio: auto;
+    overflow: hidden;
+    align-self: stretch;
+    border-radius: 0.95rem;
+    border: 1.5px solid #e4d2b0;
+    background: linear-gradient(180deg, #fbf6ea 0%, #f3e6cf 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .home-coach-practice .scotch-coach-figure {
+    width: 8.6rem;
+    height: auto;
+    margin: 0.1rem 0 0 0.55rem;
+    transform-origin: left top;
+  }
+
+  .home-coach-practice .home-board {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0 0.1rem;
+  }
+
+  .home-coach-practice .home-board .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .home-hero--coach .scotch-coach-card {
+    margin: 0.15rem 0.45rem 0.55rem;
+  }
+
+  .home-hero--coach .scotch-coach-beat {
+    min-height: 5.6em;
+  }
+}
+
+/* A wide Play wrap is still the phone column, so the same plate applies. */
+[data-surface="play"] .home-coach-practice {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.45rem;
+  padding: 0.4rem 0.45rem 0.08rem;
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-stage {
+  position: relative;
+  width: 100%;
+  height: 12.25rem;
+  aspect-ratio: auto;
+  overflow: hidden;
+  align-self: stretch;
+  border-radius: 0.95rem;
+  border: 1.5px solid #e4d2b0;
+  background: linear-gradient(180deg, #fbf6ea 0%, #f3e6cf 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-figure {
+  width: 8.6rem;
+  height: auto;
+  margin: 0.1rem 0 0 0.55rem;
+  transform-origin: left top;
+}
+
+[data-surface="play"] .home-coach-practice .home-board {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0 0.1rem;
+}
+
+[data-surface="play"] .home-coach-practice .home-board .mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[data-surface="play"] .home-hero--coach .scotch-coach-card {
+  margin: 0.15rem 0.45rem 0.55rem;
+}
+
+[data-surface="play"] .home-hero--coach .scotch-coach-beat {
+  min-height: 5.6em;
 }

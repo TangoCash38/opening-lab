@@ -1,11 +1,12 @@
 /**
- * Scotch Gambit coach intro — website desktop Practice only.
+ * Scotch Gambit coach intro — Scotch pack Practice only.
  *
- * Flag + pack id. Play wrap and the phone train route never mount it.
- * Test is not intercepted; other packs never match.
- * The hero mounts it only from the pack Practice button, not a line tap.
+ * Flag + pack id + the pack's main Practice control (`Tap to practice`).
+ * Phone and the Play wrap mount the same one-shot dock; a narrow cream
+ * plate keeps him off the squares. Line taps, Test, line switches, and
+ * other packs never match.
  *
- * One appearance per browser. `opening-lab:scotch-coach-dock-seen` is set the
+ * One appearance per browser. `opening-lab:scotch-coach-seen` is set the
  * first time Practice opens the coach. Clearing that localStorage key
  * (full reset) is what lets him speak again.
  */
@@ -15,7 +16,7 @@ export const SCOTCH_PACK_ID = "scotch";
 export const SCOTCH_COACH_ENABLED = true;
 
 /** One-shot flag. Remove this key to hear the coach again. */
-export const SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-dock-seen";
+export const SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-seen";
 
 export const SCOTCH_COACH_TITLE = "Scotch Gambit · a cuppa and the open board";
 
@@ -96,14 +97,31 @@ export function markScotchCoachSeen(): void {
   }
 }
 
+/**
+ * Website side-dock starts here. Narrower viewports, and every Play wrap,
+ * use the cream plate above the wood (see styles.css).
+ */
+export const SCOTCH_COACH_DOCK_MIN_PX = 960;
+
+/**
+ * True when the seated coach should sit in the phone/Play plate instead of
+ * the desktop cream dock beside the wood.
+ */
+export function scotchCoachPlateLayout(input: {
+  playApp: boolean;
+  viewportWidthPx: number;
+}): boolean {
+  if (input.playApp) return true;
+  return input.viewportWidthPx < SCOTCH_COACH_DOCK_MIN_PX;
+}
+
 export function scotchCoachApplies(input: {
   packId: string;
-  playApp: boolean;
-  websiteDesktop: boolean;
+  /** True only for the pack's main Practice control, not a line tap. */
+  practiceEntry: boolean;
 }): boolean {
   if (!SCOTCH_COACH_ENABLED) return false;
   if (input.packId !== SCOTCH_PACK_ID) return false;
-  if (input.playApp) return false;
-  if (!input.websiteDesktop) return false;
+  if (!input.practiceEntry) return false;
   return true;
 }
