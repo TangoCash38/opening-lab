@@ -351,26 +351,30 @@ test("Professor Potato Pie names the scotch coach on the plate and in alt text",
 test("Canal Variation opens the pack-recipe talk once per session, not other lines", () => {
   assert.match(lib, /SCOTCH_CANAL_LINE_ID = "sg1"/);
   assert.match(lib, /SCOTCH_CANAL_TITLE = "Canal Variation · ten lines from the gambit"/);
-  assert.match(lib, /We have ten lines from the gambit\./);
-  assert.match(lib, /solid book moves people would play if they knew the opening/);
+  assert.match(lib, /ten carefully selected lines/);
+  assert.match(lib, /principled book moves you'd expect from somebody who knows the opening/);
   assert.match(lib, /stay firmly in the game/);
-  assert.match(lib, /punish the not-so-good moves people could make/);
-  assert.match(lib, /firm advantage and sometimes a checkmate/);
+  assert.match(lib, /less accurate replies an opponent may try/);
+  assert.match(lib, /clear advantage and, on occasion, a rather exquisite checkmate/);
+  assert.match(lib, /SCOTCH_CANAL_NARRATION_MP3 = "\/scotch-coach\/professor-potato-pie-canal\.mp3"/);
+  assert.match(lib, /SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95/);
+  assert.match(lib, /function scotchCanalBeatIndex/);
+  assert.doesNotMatch(lib, /sean-coach-narration\.mp3".*professor-potato-pie-canal/);
   assert.match(lib, /SCOTCH_CANAL_SESSION_KEY = "opening-lab:scotch-canal-coach-session"/);
   assert.match(lib, /sessionStorage\.getItem\(SCOTCH_CANAL_SESSION_KEY\) === "1"/);
   assert.match(lib, /sessionStorage\.setItem\(SCOTCH_CANAL_SESSION_KEY, "1"\)/);
   assert.match(lib, /if \(input\.practiceEntry\) return false/);
   assert.match(lib, /if \(input\.lineIndex !== 0\) return false/);
   assert.match(lib, /if \(input\.lineId !== SCOTCH_CANAL_LINE_ID\) return false/);
-  assert.match(lib, /SCOTCH_CANAL_NARRATION_MP3 = "\/scotch-coach\/sean-canal-narration\.mp3"/);
-  assert.match(lib, /SCOTCH_CANAL_NARRATION_OGG = "\/scotch-coach\/sean-canal-narration\.ogg"/);
-  assert.match(lib, /SCOTCH_CANAL_NARRATION_READY = false/);
-  assert.equal(existsSync(join(root, "public/scotch-coach/sean-canal-narration.mp3")), false);
-  assert.equal(existsSync(join(root, "public/scotch-coach/sean-canal-narration.ogg")), false);
+  assert.equal(existsSync(join(root, "public/scotch-coach/professor-potato-pie-canal.mp3")), true);
+  assert.ok(
+    statSync(join(root, "public/scotch-coach/professor-potato-pie-canal.mp3")).size > 10_000,
+  );
+  assert.equal(existsSync(join(root, "public/scotch-coach/professor-potato-pie-canal.wav")), false);
   assert.match(audio, /startScotchCanalNarration/);
-  assert.match(audio, /if \(!SCOTCH_CANAL_NARRATION_READY\) return null/);
-  assert.match(audio, /SCOTCH_CANAL_NARRATION_MP3/);
-  assert.match(audio, /SCOTCH_CANAL_NARRATION_OGG/);
+  assert.match(audio, /mountNarration\(SCOTCH_CANAL_NARRATION_MP3, null, "canal"\)/);
+  assert.match(audio, /SCOTCH_COACH_NARRATION_MP3, SCOTCH_COACH_NARRATION_OGG, "intro"/);
+  assert.doesNotMatch(audio, /SCOTCH_CANAL_NARRATION_READY/);
   assert.doesNotMatch(`${lib}\n${audio}\n${intro}`, /speechSynthesis|SpeechSynthesisUtterance|text-to-speech|\btts\b/i);
 
   assert.match(hero, /scotchCanalCoachApplies\(\{/);
@@ -421,6 +425,9 @@ test("Canal Variation opens the pack-recipe talk once per session, not other lin
         SCOTCH_COACH_SESSION_KEY,
         SCOTCH_CANAL_SESSION_KEY,
         SCOTCH_CANAL_BEATS,
+        SCOTCH_CANAL_BEAT_AT_SEC,
+        SCOTCH_CANAL_NARRATION_FALLBACK_SEC,
+        scotchCanalBeatIndex,
       } = await import("./src/lib/scotch-coach.ts");
       const { PACKS } = await import("./src/data/packs.ts");
       const scotch = PACKS.find((pack) => pack.id === "scotch");
@@ -428,7 +435,32 @@ test("Canal Variation opens the pack-recipe talk once per session, not other lin
       if (scotch.lines[0]?.id !== "sg1" || scotch.lines[0]?.name !== "Canal Variation") {
         throw new Error("first variation is not Canal");
       }
-      if (SCOTCH_CANAL_BEATS.length !== 3) throw new Error("canal beats");
+      if (SCOTCH_CANAL_BEATS.length !== 9) throw new Error("canal beats");
+      if (SCOTCH_CANAL_BEAT_AT_SEC.length !== SCOTCH_CANAL_BEATS.length) throw new Error("canal cues");
+      if (SCOTCH_CANAL_NARRATION_FALLBACK_SEC !== 95) throw new Error("canal duration");
+      const canalDuration = 95;
+      const canalCases = [
+        [0, 0],
+        [7.91, 0],
+        [7.92, 1],
+        [13.86, 2],
+        [20.32, 3],
+        [31.52, 4],
+        [40.62, 5],
+        [56.98, 6],
+        [77.56, 7],
+        [89.94, 8],
+        [canalDuration, 8],
+        [-1, 0],
+      ];
+      for (const [time, expected] of canalCases) {
+        const got = scotchCanalBeatIndex(time, canalDuration);
+        if (got !== expected) throw new Error(time + " canal -> " + got + " expected " + expected);
+      }
+      if (scotchCanalBeatIndex(7.92, 0) !== 1) throw new Error("canal fallback");
+      if (scotchCanalBeatIndex(15.84, SCOTCH_CANAL_NARRATION_FALLBACK_SEC * 2) !== 1) {
+        throw new Error("canal scaled");
+      }
       const canal = { packId: "scotch", lineId: "sg1", lineIndex: 0, practiceEntry: false };
       if (!scotchCanalCoachApplies(canal)) throw new Error("canal should apply");
       if (scotchCanalCoachApplies({ ...canal, practiceEntry: true })) throw new Error("practice entry is the cuppa intro");

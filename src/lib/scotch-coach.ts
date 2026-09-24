@@ -57,24 +57,36 @@ export const SCOTCH_CANAL_LINE_ID = "sg1";
 
 export const SCOTCH_CANAL_TITLE = "Canal Variation · ten lines from the gambit";
 
-/** Sean's pack-recipe substance, in on-screen beats until his recording arrives. */
+/**
+ * Sean's Canal pack-recipe reading. Same mp3 family as the cuppa narration
+ * (24 kHz mono). The wav from the take is not shipped. This file does not
+ * replace sean-coach-narration.
+ */
+export const SCOTCH_CANAL_NARRATION_MP3 = "/scotch-coach/professor-potato-pie-canal.mp3";
+/** The file is ~95s. Used when the element has not reported a duration yet. */
+export const SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95;
+
+/** On-screen beats for professor-potato-pie-canal.mp3. Same substance as the take. */
 export const SCOTCH_CANAL_BEATS = [
-  "We have ten lines from the gambit.",
-  "The first five are solid book moves people would play if they knew the opening. That lets you play the book moves back and stay firmly in the game.",
-  "The last five lines let you punish the not-so-good moves people could make, so you play the right moves to gain a firm advantage and sometimes a checkmate.",
+  "Right then — welcome to the Canal Variation. Professor Potato Pie, at your service.",
+  "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
+  "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.",
+  "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.",
+  "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.",
+  "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.",
+  "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.",
+  "Complete the pack and the Scotch Gambit will look familiar whenever it appears. You'll recognise the landmarks, understand the plans, and have a proper footing from which to take your study further.",
+  "Enjoy it. Take your time, walk through every line, and I'll see you at the board.",
 ] as const;
 
 /**
- * Sean's Canal reading, same pair as the cuppa narration.
- * Drop these beside sean-coach-narration when the take arrives:
- *   public/scotch-coach/sean-canal-narration.mp3
- *   public/scotch-coach/sean-canal-narration.ogg
- * Then set SCOTCH_CANAL_NARRATION_READY. Until then the beats stay on screen.
- * No synthetic speech and no stand-in file.
+ * Seconds into the ~95s Canal recording when each beat begins.
+ * Welcome, ten lines, first five book moves, stay in the game,
+ * remaining five, punish to advantage / mate, primer, complete the pack, goodbye.
  */
-export const SCOTCH_CANAL_NARRATION_MP3 = "/scotch-coach/sean-canal-narration.mp3";
-export const SCOTCH_CANAL_NARRATION_OGG = "/scotch-coach/sean-canal-narration.ogg";
-export const SCOTCH_CANAL_NARRATION_READY = false;
+export const SCOTCH_CANAL_BEAT_AT_SEC = [
+  0, 7.92, 13.86, 20.32, 31.52, 40.62, 56.98, 77.56, 89.94,
+] as const;
 
 /**
  * Canal session flag. Set when Canal Variation opens this talk.
@@ -110,6 +122,22 @@ export function scotchCoachBeatIndex(
   if (!Number.isFinite(currentTimeSec) || currentTimeSec <= 0) return 0;
   const index = Math.floor(currentTimeSec / (duration / count));
   return Math.min(count - 1, Math.max(0, index));
+}
+
+/** Map Canal playback time onto the pack-recipe beats. Never past the last beat. */
+export function scotchCanalBeatIndex(currentTimeSec: number, durationSec: number): number {
+  const duration =
+    Number.isFinite(durationSec) && durationSec > 0
+      ? durationSec
+      : SCOTCH_CANAL_NARRATION_FALLBACK_SEC;
+  const scale = duration / SCOTCH_CANAL_NARRATION_FALLBACK_SEC;
+  if (!Number.isFinite(currentTimeSec) || currentTimeSec <= 0) return 0;
+  let index = 0;
+  for (let i = 0; i < SCOTCH_CANAL_BEAT_AT_SEC.length; i += 1) {
+    if (currentTimeSec + 1e-9 >= SCOTCH_CANAL_BEAT_AT_SEC[i] * scale) index = i;
+    else break;
+  }
+  return index;
 }
 
 /** How many stem plies should already be on the board at this narration time. */

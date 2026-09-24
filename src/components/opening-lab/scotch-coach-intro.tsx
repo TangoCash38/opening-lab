@@ -6,6 +6,7 @@ import {
   SCOTCH_COACH_NAME,
   SCOTCH_COACH_NARRATION_FALLBACK_SEC,
   SCOTCH_COACH_TITLE,
+  scotchCanalBeatIndex,
   scotchCanalCoachAlreadySeen,
   scotchCoachAlreadySeen,
   scotchCoachBeatIndex,
@@ -170,8 +171,8 @@ function ScotchCoachIntroCard({ onDone }: { onDone: () => void }) {
 }
 
 /**
- * Canal pack-recipe beats. Next and Skip work with or without Sean's file.
- * When the recording is ready, playback advances the beats and then starts Practice.
+ * Canal pack-recipe beats. professor-potato-pie-canal.mp3 advances them.
+ * Mute, Skip, and Next still work. The last beat starts Practice.
  */
 function ScotchCoachCanalCard({ onDone }: { onDone: () => void }) {
   const [beat, setBeat] = useState(0);
@@ -199,11 +200,7 @@ function ScotchCoachCanalCard({ onDone }: { onDone: () => void }) {
     };
     const sync = () => {
       if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
-      const index = scotchCoachBeatIndex(
-        audio.currentTime,
-        audio.duration,
-        SCOTCH_CANAL_BEATS.length,
-      );
+      const index = scotchCanalBeatIndex(audio.currentTime, audio.duration);
       setBeat((current) => (index > current ? index : current));
     };
     const onCanalEnded = () => finishTalk();
