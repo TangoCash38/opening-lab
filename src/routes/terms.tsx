@@ -8,7 +8,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="24 September 2026">
+    <LegalPage title="Terms of Use" updated="25 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -22,14 +22,21 @@ function Terms() {
           It is not rated play, not an online chess game against other
           people, and not a puzzle or social site.
         </p>
+        <p>
+          Some packs include Professor Potato Pie, a narrated coach. Professor
+          Potato Pie is a character, not a real professor or titled player.
+        </p>
       </LegalSection>
 
       <LegalSection title="The catalog">
         <p>
-          Some opening packs are available now. The rest are coming soon with
-          Professor Potato Pie and are not for sale until they relaunch. If
-          you already own a pack, it stays unlocked. Prices include VAT where
-          it applies.
+          Three opening packs are on sale now: Scotch Gambit, Opening Traps,
+          and Caro-Kann Defence for Black. Some lines are free to try,
+          including the first six traps in Opening Traps. The other opening
+          packs show Coming soon and are not for sale until they relaunch. If
+          you already own a pack, it stays unlocked. Buy all packs is not on
+          sale at the moment. Prices are shown before you buy and include VAT
+          where it applies.
         </p>
         <p>
           When a pack is on sale in the Opening Lab app from Google Play, it
@@ -170,10 +177,10 @@ function Terms() {
       <LegalSection title="Google Play">
         <p>
           The Opening Lab app from Google Play is the same trainer as the
-          website. In the Play app, packs
-          {BUY_ALL_FOR_SALE ? " and Buy all are" : " are"} sold as one-time
-          in-app purchases via Google Play Billing. There is no Lab+
-          subscription. Website purchases use Stripe.
+          website. In the Play app, packs that are on sale are one-time
+          in-app purchases via Google Play Billing. Buy all packs is not on
+          sale at the moment. There is no Lab+ subscription. Website
+          purchases use Stripe.
         </p>
       </LegalSection>
 

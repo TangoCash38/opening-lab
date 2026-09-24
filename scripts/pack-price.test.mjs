@@ -149,12 +149,22 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
   const catalogSrc = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
   assert.match(catalogSrc, /BUY_ALL_FOR_SALE = false/);
-  assert.match(terms, /Some opening packs are available now/);
-  assert.match(terms, /More are coming with Professor Potato Pie|coming soon with\s+Professor Potato Pie/);
+  assert.match(
+    terms,
+    /Three opening packs are on sale now: Scotch Gambit, Opening Traps,\s+and Caro-Kann Defence for Black\./,
+  );
+  assert.match(
+    terms,
+    /Professor\s+Potato Pie is a character, not a real professor or titled player\./,
+  );
+  assert.match(
+    terms,
+    /packs that are on sale are one-time\s+in-app purchases via Google Play Billing\.\s+Buy all packs is not on\s+sale at the moment\. There is no Lab\+ subscription\./,
+  );
   assert.doesNotMatch(terms, /thirty-three|thirty-four opening packs|33 packs|30 packs/);
   assert.match(terms, /BUY_ALL_FOR_SALE \?/);
   assert.match(terms, /Buy all packs for £19\.99/);
-  assert.match(terms, /24 September 2026/);
+  assert.match(terms, /25 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
 });

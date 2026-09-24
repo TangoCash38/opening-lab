@@ -20,7 +20,7 @@ const legal = src("src/components/opening-lab/legal-page.tsx");
 const i18n = src("src/lib/i18n.ts");
 
 test("Privacy names what we store and does not offer Buy all", () => {
-  assert.match(privacy, /updated="24 September 2026"/);
+  assert.match(privacy, /updated="25 September 2026"/);
   assert.match(privacy, /title="Who we are"/);
   assert.match(privacy, /title="Who may use Opening Lab"/);
   assert.match(
@@ -34,7 +34,7 @@ test("Privacy names what we store and does not offer Buy all", () => {
   assert.match(privacy, /We do not use advertising\s+cookies or an Advertising ID/);
   assert.match(
     privacy,
-    /Paid packs may be sold:/,
+    /Paid packs \(and Buy all packs, when it is on sale\) may be sold:/,
   );
   assert.match(
     privacy,
@@ -42,7 +42,7 @@ test("Privacy names what we store and does not offer Buy all", () => {
   );
   assert.match(privacy, /There is no Lab\+ subscription/);
   assert.match(privacy, /BUY_ALL_FOR_SALE/);
-  assert.match(privacy, /Paid packs may be sold:/);
+  assert.match(privacy, /Paid packs \(and Buy all packs, when it is on sale\) may be sold:/);
   assert.match(privacy, /uk\.co\.openinglab/);
   assert.match(privacy, /https:\/\/www\.openinglab\.co\.uk\/delete-account/);
   assert.match(privacy, /Account → Delete account/);
