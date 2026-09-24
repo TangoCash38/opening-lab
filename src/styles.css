@@ -2900,7 +2900,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   /* The 9:16 poster keeps a dark margin above the circle (~9%).
      Drop the frame by the Start pill, then give that margin back,
      so the pill sits in a clear band and the arc starts just under it. */
-  top: calc(max(6.5%, env(safe-area-inset-top, 0px) + 0.75rem) + 5.1rem - 9.2%);
+  top: calc(max(6.5%, env(safe-area-inset-top, 0px) + 0.75rem) + 6.4rem - 9.2%);
   margin: 0;
   overflow: hidden;
   background: #0f1013;
