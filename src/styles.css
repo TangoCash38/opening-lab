@@ -3395,22 +3395,31 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   }
 
   .home-coach-practice .scotch-coach-actions {
+    flex-wrap: wrap;
     gap: 0.15rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin-top: auto;
     padding-top: 0.28rem;
   }
 
   .home-coach-practice .scotch-coach-mute,
   .home-coach-practice .scotch-coach-skip {
+    flex: 0 0 auto;
     min-height: 2.35rem;
     padding: 0.2rem 0.4rem;
     font-size: 0.78rem;
   }
 
   .home-coach-practice .scotch-coach-next {
+    flex: 1 1 auto;
+    min-width: min(100%, 5.6rem);
+    max-width: 100%;
     min-height: 2.35rem;
     padding: 0 0.55rem;
     font-size: 0.8rem;
+    white-space: nowrap;
   }
 }
 
@@ -3502,22 +3511,31 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-actions {
+  flex-wrap: wrap;
   gap: 0.15rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin-top: auto;
   padding-top: 0.28rem;
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-mute,
 [data-surface="play"] .home-coach-practice .scotch-coach-skip {
+  flex: 0 0 auto;
   min-height: 2.35rem;
   padding: 0.2rem 0.4rem;
   font-size: 0.78rem;
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-next {
+  flex: 1 1 auto;
+  min-width: min(100%, 5.6rem);
+  max-width: 100%;
   min-height: 2.35rem;
   padding: 0 0.55rem;
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 /* Optional transcript under the line blurb. In flow, never over the squares. */
