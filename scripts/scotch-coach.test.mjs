@@ -209,8 +209,18 @@ test("phone and Play seat the coach on a cream plate above the wood", () => {
   assert.match(plate, /#e4d2b0/);
   assert.match(plate, /margin-left:\s*auto/);
   assert.match(plate, /margin-right:\s*auto/);
+  assert.match(plate, /\.scotch-coach-plate[\s\S]*flex-direction:\s*row/);
+  assert.match(plate, /background:\s*transparent/);
   assert.doesNotMatch(plate, /position:\s*absolute/);
   assert.doesNotMatch(plate, /vs-computer|playComputer|Play on/i);
+  assert.equal(hero.split("<ScotchCoachCard").length - 1, 1);
+  const dockAt = hero.indexOf("data-scotch-coach-dock");
+  const dock = hero.slice(dockAt, hero.indexOf(") : (", dockAt));
+  assert.match(dock, /data-scotch-coach-plate/);
+  const beside = dock.slice(dock.indexOf("scotch-coach-plate"), dock.indexOf("home-board"));
+  assert.match(beside, /ScotchCoachFigure/);
+  assert.match(beside, /ScotchCoachCard/);
+  assert.match(css, /\.scotch-coach-plate\s*\{[^}]*display:\s*contents/);
   const stage = css.slice(css.indexOf(".scotch-coach-stage {"), css.indexOf(".scotch-coach-figure"));
   assert.match(stage, /position:\s*relative/);
   assert.match(stage, /width:\s*10\.75rem/);

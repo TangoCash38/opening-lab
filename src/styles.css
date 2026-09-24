@@ -3053,7 +3053,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 }
 
 /* Scotch coach — cream dock left of the wood on website desktop.
-   Phone and Play use the plate below so the figure never sits on the squares. */
+   Phone and Play keep a cream plate above the wood. The intro copy sits in
+   that plate beside Sean; it is not a second card under the board. */
 .home-coach-practice {
   display: flex;
   flex-direction: row;
@@ -3061,6 +3062,12 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   gap: 0.7rem;
   min-width: 0;
   padding: 0.15rem 0.55rem 0.1rem 0.65rem;
+}
+
+/* Desktop dock: the plate box disappears so Sean stays left of the wood
+   and the single intro card sits under that row. */
+.scotch-coach-plate {
+  display: contents;
 }
 
 .home-coach-practice .home-board {
@@ -3213,11 +3220,42 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   }
 }
 
+/* Website desktop: one dock row (Sean | wood) and one intro card beneath it. */
+@media (min-width: 960px) {
+  [data-surface="website"] .home-coach-practice {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "coach wood"
+      "copy copy";
+    align-items: center;
+    column-gap: 0.7rem;
+    row-gap: 0.15rem;
+  }
+
+  [data-surface="website"] .scotch-coach-plate {
+    display: contents;
+  }
+
+  [data-surface="website"] .home-coach-practice .scotch-coach-stage {
+    grid-area: coach;
+  }
+
+  [data-surface="website"] .home-coach-practice .home-board {
+    grid-area: wood;
+  }
+
+  [data-surface="website"] .home-coach-practice .scotch-coach-card {
+    grid-area: copy;
+  }
+}
+
 /*
  * Phone column and the Play wrap (always the 520px chrome): a cream plate
- * above the wood. Bust and mug stay in the plate; the board keeps full width
- * so squares and coords are not covered. Website desktop (min-width 960px,
- * data-surface=website) keeps the side dock above. Matches scotchCoachPlateLayout.
+ * above the wood. Bust, mug, and the written intro share that plate; the
+ * board keeps full width so squares and coords are not covered. Website
+ * desktop (min-width 960px, data-surface=website) keeps the side dock above.
+ * Matches scotchCoachPlateLayout.
  */
 @media (max-width: 959px) {
   .home-coach-practice {
@@ -3227,23 +3265,38 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
     padding: 0.4rem 0.45rem 0.08rem;
   }
 
-  .home-coach-practice .scotch-coach-stage {
-    position: relative;
+  .home-coach-practice .scotch-coach-plate {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0.1rem;
     width: 100%;
-    height: 12.25rem;
-    aspect-ratio: auto;
-    overflow: hidden;
-    align-self: stretch;
+    min-width: 0;
+    padding: 0.28rem 0.4rem 0.28rem 0.35rem;
     border-radius: 0.95rem;
     border: 1.5px solid #e4d2b0;
     background: linear-gradient(180deg, #fbf6ea 0%, #f3e6cf 100%);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
 
+  .home-coach-practice .scotch-coach-stage {
+    position: relative;
+    flex: 0 0 auto;
+    width: 8.15rem;
+    height: 12.25rem;
+    aspect-ratio: auto;
+    align-self: start;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0.35rem 0 0 0.35rem;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .home-coach-practice .scotch-coach-figure {
-    width: 8.6rem;
+    width: 8.15rem;
     height: auto;
-    margin: 0.1rem 0 0 0.55rem;
+    margin: 0;
     transform-origin: left top;
   }
 
@@ -3258,12 +3311,50 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
     margin-right: auto;
   }
 
-  .home-hero--coach .scotch-coach-card {
-    margin: 0.15rem 0.45rem 0.55rem;
+  .home-coach-practice .scotch-coach-card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    order: 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0.15rem 0.15rem 0.05rem 0.2rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
-  .home-hero--coach .scotch-coach-beat {
-    min-height: 5.6em;
+  .home-coach-practice .scotch-coach-kicker {
+    margin: 0 0 0.22rem;
+    font-size: 0.84rem;
+    line-height: 1.2;
+  }
+
+  .home-coach-practice .scotch-coach-beat {
+    min-height: 0;
+    font-size: 0.74rem;
+    line-height: 1.32;
+    overflow-wrap: break-word;
+  }
+
+  .home-coach-practice .scotch-coach-actions {
+    gap: 0.15rem;
+    margin-top: auto;
+    padding-top: 0.28rem;
+  }
+
+  .home-coach-practice .scotch-coach-mute,
+  .home-coach-practice .scotch-coach-skip {
+    min-height: 2.35rem;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.78rem;
+  }
+
+  .home-coach-practice .scotch-coach-next {
+    min-height: 2.35rem;
+    padding: 0 0.55rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -3275,23 +3366,38 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   padding: 0.4rem 0.45rem 0.08rem;
 }
 
-[data-surface="play"] .home-coach-practice .scotch-coach-stage {
-  position: relative;
+[data-surface="play"] .home-coach-practice .scotch-coach-plate {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.1rem;
   width: 100%;
-  height: 12.25rem;
-  aspect-ratio: auto;
-  overflow: hidden;
-  align-self: stretch;
+  min-width: 0;
+  padding: 0.28rem 0.4rem 0.28rem 0.35rem;
   border-radius: 0.95rem;
   border: 1.5px solid #e4d2b0;
   background: linear-gradient(180deg, #fbf6ea 0%, #f3e6cf 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+[data-surface="play"] .home-coach-practice .scotch-coach-stage {
+  position: relative;
+  flex: 0 0 auto;
+  width: 8.15rem;
+  height: 12.25rem;
+  aspect-ratio: auto;
+  align-self: start;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0.35rem 0 0 0.35rem;
+  background: transparent;
+  box-shadow: none;
+}
+
 [data-surface="play"] .home-coach-practice .scotch-coach-figure {
-  width: 8.6rem;
+  width: 8.15rem;
   height: auto;
-  margin: 0.1rem 0 0 0.55rem;
+  margin: 0;
   transform-origin: left top;
 }
 
@@ -3306,12 +3412,50 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin-right: auto;
 }
 
-[data-surface="play"] .home-hero--coach .scotch-coach-card {
-  margin: 0.15rem 0.45rem 0.55rem;
+[data-surface="play"] .home-coach-practice .scotch-coach-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  order: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0.15rem 0.15rem 0.05rem 0.2rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-[data-surface="play"] .home-hero--coach .scotch-coach-beat {
-  min-height: 5.6em;
+[data-surface="play"] .home-coach-practice .scotch-coach-kicker {
+  margin: 0 0 0.22rem;
+  font-size: 0.84rem;
+  line-height: 1.2;
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-beat {
+  min-height: 0;
+  font-size: 0.74rem;
+  line-height: 1.32;
+  overflow-wrap: break-word;
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-actions {
+  gap: 0.15rem;
+  margin-top: auto;
+  padding-top: 0.28rem;
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-mute,
+[data-surface="play"] .home-coach-practice .scotch-coach-skip {
+  min-height: 2.35rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.78rem;
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-next {
+  min-height: 2.35rem;
+  padding: 0 0.55rem;
+  font-size: 0.8rem;
 }
 
 /* Optional transcript under the line blurb. In flow, never over the squares. */
