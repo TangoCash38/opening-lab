@@ -1,9 +1,12 @@
 /**
  * Sean's Scotch coach narration. One element, started from the Practice tap
  * (same gate as the cream card) and stopped by Skip, Practice, or leaving.
- * The seated picture stays still. No mouth overlay and no second recording.
+ * Line 1 (sg1) uses the same element with professor-potato-pie-canal.mp3.
+ * The cuppa intro keeps sean-coach-narration. The seated picture stays still.
+ * No mouth overlay and no second recording.
  */
 import {
+  SCOTCH_CANAL_NARRATION_MP3,
   SCOTCH_COACH_NARRATION_MP3,
   SCOTCH_COACH_NARRATION_OGG,
 } from "@/lib/scotch-coach";
@@ -14,9 +17,14 @@ export function scotchCoachNarration(): HTMLAudioElement | null {
   return narration;
 }
 
-export function startScotchCoachNarration(): HTMLAudioElement | null {
+function mountNarration(mp3Url: string, oggUrl: string | null, kind: string): HTMLAudioElement | null {
   if (typeof document === "undefined") return null;
-  if (narration && !narration.ended && !narration.error) {
+  if (
+    narration &&
+    narration.getAttribute("data-scotch-coach-audio") === kind &&
+    !narration.ended &&
+    !narration.error
+  ) {
     if (narration.paused) {
       const pending = narration.play();
       if (pending) pending.catch(() => {});
@@ -28,19 +36,31 @@ export function startScotchCoachNarration(): HTMLAudioElement | null {
   audio.preload = "auto";
   audio.setAttribute("playsinline", "");
   audio.loop = false;
-  audio.setAttribute("data-scotch-coach-audio", "");
+  audio.setAttribute("data-scotch-coach-audio", kind);
   const mp3 = document.createElement("source");
-  mp3.src = SCOTCH_COACH_NARRATION_MP3;
+  mp3.src = mp3Url;
   mp3.type = "audio/mpeg";
-  const ogg = document.createElement("source");
-  ogg.src = SCOTCH_COACH_NARRATION_OGG;
-  ogg.type = "audio/ogg";
-  audio.append(mp3, ogg);
+  audio.append(mp3);
+  if (oggUrl) {
+    const ogg = document.createElement("source");
+    ogg.src = oggUrl;
+    ogg.type = "audio/ogg";
+    audio.append(ogg);
+  }
   document.body.appendChild(audio);
   narration = audio;
   const pending = audio.play();
   if (pending) pending.catch(() => {});
   return audio;
+}
+
+export function startScotchCoachNarration(): HTMLAudioElement | null {
+  return mountNarration(SCOTCH_COACH_NARRATION_MP3, SCOTCH_COACH_NARRATION_OGG, "intro");
+}
+
+/** Canal pack-recipe reading. Mp3 only — the cuppa ogg stays on the intro. */
+export function startScotchCanalNarration(): HTMLAudioElement | null {
+  return mountNarration(SCOTCH_CANAL_NARRATION_MP3, null, "canal");
 }
 
 export function stopScotchCoachNarration() {

@@ -10,11 +10,15 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import {
+  markScotchCanalCoachSeen,
   markScotchCoachSeen,
+  scotchCanalCoachAlreadySeen,
+  scotchCanalCoachApplies,
   scotchCoachAlreadySeen,
   scotchCoachApplies,
 } from "@/lib/scotch-coach";
 import {
+  startScotchCanalNarration,
   startScotchCoachNarration,
   stopScotchCoachNarration,
 } from "@/lib/scotch-coach-audio";
@@ -29,12 +33,17 @@ import { ScotchCoachCard, ScotchCoachFigure } from "./scotch-coach-intro";
 import { TrainView } from "./train-view";
 
 type TrainMode = "learn" | "practice";
+type CoachTalk = "intro" | "canal";
 
 type FrameSession = {
   line: OpeningLine;
   mode: TrainMode;
   plyLimit?: number;
   startPly?: number;
+};
+
+type CoachSession = FrameSession & {
+  talk: CoachTalk;
 };
 
 /** Website desktop split card. Play wrap and narrow website keep the train route. */
@@ -85,8 +94,8 @@ export function HomeHero({
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
   const [frame, setFrame] = useState<FrameSession | null>(null);
-  const [coach, setCoach] = useState<FrameSession | null>(null);
-  const coachRef = useRef<FrameSession | null>(null);
+  const [coach, setCoach] = useState<CoachSession | null>(null);
+  const coachRef = useRef<CoachSession | null>(null);
 
   const websiteSplit = !playApp;
   const hasFreeSample = (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0;
@@ -135,6 +144,7 @@ export function HomeHero({
   ) => {
     coachRef.current = null;
     setCoach(null);
+    stopScotchCoachNarration();
     setFrame((prev) => ({
       line,
       mode: mode ?? prev?.mode ?? "learn",
@@ -159,17 +169,45 @@ export function HomeHero({
     ) {
       markScotchCoachSeen();
       startScotchCoachNarration();
-      const session: FrameSession = {
+      const session: CoachSession = {
         line,
         mode: "learn",
         plyLimit: options?.plyLimit,
         startPly: options?.startPly,
+        talk: "intro",
       };
       coachRef.current = session;
       setCoach(session);
       soundSelect();
       return;
     }
+    // Line 1 (sg1) only. Later Scotch lines, Test, and other packs fall through.
+    if (
+      !practiceEntry &&
+      scotchCanalCoachApplies({
+        packId: pack.id,
+        lineId: line.id,
+        lineIndex: pack.lines.findIndex((item) => item.id === line.id),
+        practiceEntry,
+      }) &&
+      !scotchCanalCoachAlreadySeen()
+    ) {
+      stopScotchCoachNarration();
+      markScotchCanalCoachSeen();
+      startScotchCanalNarration();
+      const session: CoachSession = {
+        line,
+        mode: "learn",
+        plyLimit: options?.plyLimit,
+        startPly: options?.startPly,
+        talk: "canal",
+      };
+      coachRef.current = session;
+      setCoach(session);
+      soundSelect();
+      return;
+    }
+    stopScotchCoachNarration();
     if (preferInFrame()) {
       openInFrame(line, options);
       soundSelect();
@@ -307,17 +345,41 @@ export function HomeHero({
                 </div>
               </div>
             ) : coach ? (
-              <div className="home-coach-practice" data-scotch-coach-dock>
+              <div
+                className="home-coach-practice"
+                data-scotch-coach-dock
+                data-scotch-coach-talk={coach.talk}
+              >
                 <div className="scotch-coach-plate" data-scotch-coach-plate>
-                  <ScotchCoachFigure key={coach.line.id} />
-                  <ScotchCoachCard key={coach.line.id} onDone={finishCoach} />
+                  <ScotchCoachFigure key={`${coach.talk}-${coach.line.id}`} />
+                  <ScotchCoachCard
+                    key={`${coach.talk}-${coach.line.id}`}
+                    talk={coach.talk}
+                    onDone={finishCoach}
+                  />
                 </div>
                 <div className="home-board pointer-events-none">
-                  <ScotchCoachBoard
-                    key={coach.line.id}
-                    flip={pack.side === "Black"}
-                    frameCoords={!playApp}
-                  />
+                  {coach.talk === "intro" ? (
+                    <ScotchCoachBoard
+                      key={coach.line.id}
+                      flip={pack.side === "Black"}
+                      frameCoords={!playApp}
+                    />
+                  ) : (
+                    <ChessBoard
+                      game={game}
+                      flip={pack.side === "Black"}
+                      selected={null}
+                      wrongUntil={null}
+                      expected={null}
+                      showHints={false}
+                      lastMove={null}
+                      slide={null}
+                      onSquare={() => {}}
+                      interactive={false}
+                      frameCoords={!playApp}
+                    />
+                  )}
                 </div>
               </div>
             ) : (

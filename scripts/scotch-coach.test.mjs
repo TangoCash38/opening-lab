@@ -336,6 +336,159 @@ test("practice board auto-plays the scotch gambit stem during the intro", () => 
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
+test("Professor Potato Pie names the scotch coach on the plate and in alt text", () => {
+  assert.match(lib, /SCOTCH_COACH_NAME = "Professor Potato Pie"/);
+  assert.match(intro, /SCOTCH_COACH_NAME/);
+  assert.match(intro, /data-scotch-coach-name/);
+  assert.match(intro, /aria-label=\{t\(SCOTCH_COACH_NAME\)\}/);
+  assert.match(intro, /alt=\{t\(SCOTCH_COACH_NAME\)\}/);
+  assert.match(intro, /coach-seated-v2\.png/);
+  assert.match(css, /\.scotch-coach-name/);
+  assert.doesNotMatch(intro, /aria-label=\{t\("Scotch coach"\)\}/);
+  assert.doesNotMatch(`${intro}\n${hero}\n${lib}`, /Play on|vs-computer|playComputer/i);
+});
+
+test("Line 1 (sg1) opens the pack-recipe talk once per session, not other lines", () => {
+  assert.match(lib, /SCOTCH_CANAL_LINE_ID = "sg1"/);
+  assert.match(lib, /SCOTCH_CANAL_TITLE = "Line 1 · ten lines from the gambit"/);
+  assert.match(lib, /welcome to Line 1/);
+  assert.doesNotMatch(lib, /Canal Variation|Dubois/);
+  assert.doesNotMatch(lib, /line\.name|input\.lineName/);
+  assert.match(lib, /ten carefully selected lines/);
+  assert.match(lib, /principled book moves you'd expect from somebody who knows the opening/);
+  assert.match(lib, /stay firmly in the game/);
+  assert.match(lib, /less accurate replies an opponent may try/);
+  assert.match(lib, /clear advantage and, on occasion, a rather exquisite checkmate/);
+  assert.match(lib, /SCOTCH_CANAL_NARRATION_MP3 = "\/scotch-coach\/professor-potato-pie-canal\.mp3"/);
+  assert.match(lib, /SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95/);
+  assert.match(lib, /function scotchCanalBeatIndex/);
+  assert.doesNotMatch(lib, /sean-coach-narration\.mp3".*professor-potato-pie-canal/);
+  assert.match(lib, /SCOTCH_CANAL_SESSION_KEY = "opening-lab:scotch-canal-coach-session"/);
+  assert.match(lib, /sessionStorage\.getItem\(SCOTCH_CANAL_SESSION_KEY\) === "1"/);
+  assert.match(lib, /sessionStorage\.setItem\(SCOTCH_CANAL_SESSION_KEY, "1"\)/);
+  assert.match(lib, /if \(input\.practiceEntry\) return false/);
+  assert.match(lib, /if \(input\.lineIndex !== 0\) return false/);
+  assert.match(lib, /if \(input\.lineId !== SCOTCH_CANAL_LINE_ID\) return false/);
+  assert.equal(existsSync(join(root, "public/scotch-coach/professor-potato-pie-canal.mp3")), true);
+  assert.ok(
+    statSync(join(root, "public/scotch-coach/professor-potato-pie-canal.mp3")).size > 10_000,
+  );
+  assert.equal(existsSync(join(root, "public/scotch-coach/professor-potato-pie-canal.wav")), false);
+  assert.match(audio, /startScotchCanalNarration/);
+  assert.match(audio, /mountNarration\(SCOTCH_CANAL_NARRATION_MP3, null, "canal"\)/);
+  assert.match(audio, /SCOTCH_COACH_NARRATION_MP3, SCOTCH_COACH_NARRATION_OGG, "intro"/);
+  assert.doesNotMatch(audio, /SCOTCH_CANAL_NARRATION_READY/);
+  assert.doesNotMatch(`${lib}\n${audio}\n${intro}`, /speechSynthesis|SpeechSynthesisUtterance|text-to-speech|\btts\b/i);
+
+  assert.match(hero, /scotchCanalCoachApplies\(\{/);
+  assert.match(hero, /!scotchCanalCoachAlreadySeen\(\)/);
+  assert.match(hero, /markScotchCanalCoachSeen\(\)/);
+  assert.match(hero, /startScotchCanalNarration\(\)/);
+  assert.match(hero, /talk: "canal"/);
+  assert.match(hero, /talk=\{coach\.talk\}/);
+  assert.match(intro, /talk === "canal"/);
+  assert.match(intro, /SCOTCH_CANAL_BEATS/);
+  assert.match(intro, /data-scotch-coach-talk=\{talk\}/);
+  assert.match(intro, /data-scotch-coach-mute/);
+  assert.match(intro, /data-scotch-coach-skip/);
+  assert.match(intro, /data-scotch-coach-next/);
+  assert.equal(hero.split("launchLine(line, undefined, true)").length - 1, 1);
+  assert.match(hero, /else launchLine\(item\)/);
+  const nextAt = hero.indexOf("onPracticeNext=");
+  const next = hero.slice(nextAt, nextAt + 140);
+  assert.doesNotMatch(next, /launchLine|setCoach|scotchCanal|startScotch/);
+  assert.doesNotMatch(train, /startScotchCanalNarration|sean-canal-narration|ScotchCoachCard/);
+  assert.match(intro, /scotchCanalCoachAlreadySeen\(\)/);
+  assert.match(intro, /SCOTCH_CANAL_BEATS\.map/);
+
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+      function memory() {
+        const data = new Map();
+        return {
+          getItem: (key) => (data.has(key) ? data.get(key) : null),
+          setItem: (key, value) => data.set(key, String(value)),
+          removeItem: (key) => data.delete(key),
+        };
+      }
+      globalThis.localStorage = memory();
+      globalThis.sessionStorage = memory();
+      const {
+        scotchCoachApplies,
+        scotchCanalCoachApplies,
+        scotchCoachAlreadySeen,
+        scotchCanalCoachAlreadySeen,
+        markScotchCoachSeen,
+        markScotchCanalCoachSeen,
+        SCOTCH_COACH_SESSION_KEY,
+        SCOTCH_CANAL_SESSION_KEY,
+        SCOTCH_CANAL_BEATS,
+        SCOTCH_CANAL_BEAT_AT_SEC,
+        SCOTCH_CANAL_NARRATION_FALLBACK_SEC,
+        scotchCanalBeatIndex,
+      } = await import("./src/lib/scotch-coach.ts");
+      const { PACKS } = await import("./src/data/packs.ts");
+      const scotch = PACKS.find((pack) => pack.id === "scotch");
+      if (!scotch) throw new Error("missing scotch pack");
+      if (scotch.lines[0]?.id !== "sg1" || scotch.lines[0]?.name !== "Line 1") {
+        throw new Error("first variation is not sg1 Line 1");
+      }
+      if (SCOTCH_CANAL_BEATS.length !== 9) throw new Error("canal beats");
+      if (SCOTCH_CANAL_BEAT_AT_SEC.length !== SCOTCH_CANAL_BEATS.length) throw new Error("canal cues");
+      if (SCOTCH_CANAL_NARRATION_FALLBACK_SEC !== 95) throw new Error("canal duration");
+      const canalDuration = 95;
+      const canalCases = [
+        [0, 0],
+        [7.91, 0],
+        [7.92, 1],
+        [13.86, 2],
+        [20.32, 3],
+        [31.52, 4],
+        [40.62, 5],
+        [56.98, 6],
+        [77.56, 7],
+        [89.94, 8],
+        [canalDuration, 8],
+        [-1, 0],
+      ];
+      for (const [time, expected] of canalCases) {
+        const got = scotchCanalBeatIndex(time, canalDuration);
+        if (got !== expected) throw new Error(time + " canal -> " + got + " expected " + expected);
+      }
+      if (scotchCanalBeatIndex(7.92, 0) !== 1) throw new Error("canal fallback");
+      if (scotchCanalBeatIndex(15.84, SCOTCH_CANAL_NARRATION_FALLBACK_SEC * 2) !== 1) {
+        throw new Error("canal scaled");
+      }
+      const canal = { packId: "scotch", lineId: "sg1", lineIndex: 0, practiceEntry: false };
+      if (!scotchCanalCoachApplies(canal)) throw new Error("canal should apply");
+      if (scotchCanalCoachApplies({ ...canal, practiceEntry: true })) throw new Error("practice entry is the cuppa intro");
+      if (scotchCanalCoachApplies({ ...canal, lineId: "sg2", lineIndex: 1 })) throw new Error("later line");
+      if (scotchCanalCoachApplies({ ...canal, lineIndex: 1 })) throw new Error("canal moved off first");
+      if (scotchCanalCoachApplies({ ...canal, packId: "italian" })) throw new Error("other pack");
+      if (!scotchCoachApplies({ packId: "scotch", practiceEntry: true })) throw new Error("cuppa intro");
+      if (scotchCoachApplies({ packId: "scotch", practiceEntry: false })) throw new Error("line tap is not the cuppa intro");
+      markScotchCoachSeen();
+      if (!scotchCoachAlreadySeen()) throw new Error("intro not marked");
+      if (scotchCanalCoachAlreadySeen()) throw new Error("intro marked canal");
+      if (sessionStorage.getItem(SCOTCH_CANAL_SESSION_KEY) !== null) throw new Error("canal key set early");
+      markScotchCanalCoachSeen();
+      if (!scotchCanalCoachAlreadySeen()) throw new Error("canal not marked");
+      if (sessionStorage.getItem(SCOTCH_COACH_SESSION_KEY) !== "1") throw new Error("intro key cleared");
+      sessionStorage.removeItem(SCOTCH_CANAL_SESSION_KEY);
+      if (scotchCanalCoachAlreadySeen()) throw new Error("new visit still seen");
+      if (!scotchCoachAlreadySeen()) throw new Error("intro should survive canal reset");
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
 test("narration quarters land on the four cream beats", () => {
   const run = spawnSync(
     process.execPath,

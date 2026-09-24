@@ -46,7 +46,7 @@ const en: Dict = {
   "App coming soon": "App coming soon",
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
-  "Scotch coach": "Scotch coach",
+  "Professor Potato Pie": "Professor Potato Pie",
   "Read the intro": "Read the intro",
   "Hide the intro": "Hide the intro",
   Mute: "Mute",
@@ -62,6 +62,26 @@ const en: Dict = {
     "The Scotch family got its name from those Edinburgh–London correspondence matches in the eighteen-twenties. Hobbyists still love this line because the board opens up and the plans are concrete — not a long quiet squeeze.",
   "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.":
     "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
+  "Line 1 · ten lines from the gambit":
+    "Line 1 · ten lines from the gambit",
+  "Right then — welcome to Line 1. Professor Potato Pie, at your service.":
+    "Right then — welcome to Line 1. Professor Potato Pie, at your service.",
+  "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
+    "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
+  "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
+    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.",
+  "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
+    "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.",
+  "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
+    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.",
+  "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
+    "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.",
+  "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
+    "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.",
+  "Complete the pack and the Scotch Gambit will look familiar whenever it appears. You'll recognise the landmarks, understand the plans, and have a proper footing from which to take your study further.":
+    "Complete the pack and the Scotch Gambit will look familiar whenever it appears. You'll recognise the landmarks, understand the plans, and have a proper footing from which to take your study further.",
+  "Enjoy it. Take your time, walk through every line, and I'll see you at the board.":
+    "Enjoy it. Take your time, walk through every line, and I'll see you at the board.",
   "See 18 lines": "See 18 lines",
   "See {n} lines": "See {n} lines",
   "See {n} {pack} lines": "See {n} {pack} lines",
