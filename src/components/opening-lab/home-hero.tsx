@@ -10,6 +10,7 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import {
+  SCOTCH_CANAL_PRACTICE_START_PLY,
   markScotchCanalCoachSeen,
   markScotchCoachSeen,
   scotchCanalCoachAlreadySeen,
@@ -226,9 +227,12 @@ export function HomeHero({
     stopScotchCoachNarration();
     setCoach(null);
     if (!current) return;
+    // Canal demo playback stops here. Line 1 Practice starts on ply 0
+    // with hints, the same as a line tap after the talk has already played.
     const options = {
       plyLimit: current.plyLimit,
-      startPly: current.startPly,
+      startPly:
+        current.talk === "canal" ? SCOTCH_CANAL_PRACTICE_START_PLY : current.startPly,
     };
     // Desktop stays in the pack card. Phone and Play continue on the train route.
     if (preferInFrame()) {
@@ -366,17 +370,10 @@ export function HomeHero({
                       frameCoords={!playApp}
                     />
                   ) : (
-                    <ChessBoard
-                      game={game}
+                    <ScotchCoachBoard
+                      key={`canal-${coach.line.id}`}
+                      talk="canal"
                       flip={pack.side === "Black"}
-                      selected={null}
-                      wrongUntil={null}
-                      expected={null}
-                      showHints={false}
-                      lastMove={null}
-                      slide={null}
-                      onSquare={() => {}}
-                      interactive={false}
                       frameCoords={!playApp}
                     />
                   )}
