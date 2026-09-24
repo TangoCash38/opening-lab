@@ -59,8 +59,8 @@ export const PACKS: Pack[] = [
       {
         id: "sg1",
         name: "Canal Variation",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5", "Be3"],
-        idea: "Canal / Two Knights: 5.e5 d5 Bb5 Ne4 Nxd4; White trades on c6 and develops Be3 vs …Bc5.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Nc3", "Be6", "Bxd5", "dxc3", "Bxe4", "Qxd1", "Rxd1", "cxb2", "Bxb2", "f6"],
+        idea: "Canal: 5.O-O Nxe4 6.Re1 d5 7.Nc3 Be6; Bxd5 dxc3 Bxe4 Qxd1 and Black returns the piece into a pawn-up ending.",
         side: "w",
       },
       {
