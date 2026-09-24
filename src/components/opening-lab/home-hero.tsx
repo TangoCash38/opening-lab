@@ -228,7 +228,7 @@ export function HomeHero({
     <section
       className={`home-hero${embedded ? " home-hero-embedded" : " mb-5"}${
         websiteSplit ? " home-hero-split" : ""
-      }${frame || coach ? " home-hero--live" : ""}`}
+      }${frame || coach ? " home-hero--live" : ""}${coach ? " home-hero--coach" : ""}`}
     >
       <div className="home-sample-card overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] border-accent/30 bg-bg-elevated shadow-[var(--shadow-card)]">
         <div className="home-hero-split-inner">
@@ -295,51 +295,49 @@ export function HomeHero({
                   <BoardThemePicker compact className="w-full" />
                 </div>
               </div>
+            ) : coach ? (
+              <>
+                <div className="home-coach-practice" data-scotch-coach-dock>
+                  <ScotchCoachFigure key={coach.line.id} />
+                  <div className="home-board pointer-events-none">
+                    <ScotchCoachBoard
+                      key={coach.line.id}
+                      flip={pack.side === "Black"}
+                      frameCoords={!playApp}
+                    />
+                  </div>
+                </div>
+                <ScotchCoachCard key={coach.line.id} onDone={finishCoach} />
+              </>
             ) : (
               <>
-            <div className={`home-board pointer-events-none px-2${coach ? " home-board--coach" : ""}`}>
-              {coach ? (
-                <ScotchCoachBoard
-                  key={coach.line.id}
-                  flip={pack.side === "Black"}
-                  frameCoords={!playApp}
-                />
-              ) : (
-                <ChessBoard
-                  game={game}
-                  flip={pack.side === "Black"}
-                  selected={null}
-                  wrongUntil={null}
-                  expected={null}
-                  showHints={false}
-                  lastMove={null}
-                  slide={null}
-                  onSquare={() => {}}
-                  interactive={false}
-                  frameCoords={!playApp}
-                />
-              )}
-              {coach ? <ScotchCoachFigure key={coach.line.id} /> : null}
-              {!coach ? (
-                <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
-                  <BoardThemePicker compact className="w-full" />
+                <div className="home-board pointer-events-none px-2">
+                  <ChessBoard
+                    game={game}
+                    flip={pack.side === "Black"}
+                    selected={null}
+                    wrongUntil={null}
+                    expected={null}
+                    showHints={false}
+                    lastMove={null}
+                    slide={null}
+                    onSquare={() => {}}
+                    interactive={false}
+                    frameCoords={!playApp}
+                  />
+                  <div className="pointer-events-auto px-1 pb-0.5 pt-1.5">
+                    <BoardThemePicker compact className="w-full" />
+                  </div>
                 </div>
-              ) : null}
-            </div>
-
-            {coach ? (
-              <ScotchCoachCard key={coach.line.id} onDone={finishCoach} />
-            ) : (
-            <div className="space-y-2.5 px-4 pb-3 pt-1">
-              <button
-                type="button"
-                onClick={openIntroThenPractice}
-                className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-              >
-                {t("Tap to practice")}
-              </button>
-            </div>
-            )}
+                <div className="space-y-2.5 px-4 pb-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={openIntroThenPractice}
+                    className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
+                  >
+                    {t("Tap to practice")}
+                  </button>
+                </div>
               </>
             )}
           </div>

@@ -12,7 +12,7 @@ import {
 } from "@/lib/scotch-coach-audio";
 import { useT } from "@/lib/i18n";
 
-/** Rises out of the board, then sits with the Opening Lab mug. Decorative. */
+/** Seated in the practice dock, left of the wood, with the Opening Lab mug. Decorative. */
 export function ScotchCoachFigure() {
   return (
     <div className="scotch-coach-stage" aria-hidden="true">
