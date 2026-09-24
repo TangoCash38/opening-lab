@@ -125,6 +125,11 @@ test("every open runs brand + hobbyist, then full-bleed poster Start", () => {
   assert.match(css, /\.home-intro-start/);
   assert.match(css, /\.home-intro-start\s*\{[^}]*top:\s*max\(/);
   assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*bottom:/);
+  assert.match(
+    css,
+    /\.home-intro-splash-art\s*\{[^}]*top:\s*calc\(\s*max\(6\.5%,\s*env\(safe-area-inset-top/,
+    "splash art drops below the pinned Start pill",
+  );
   assert.match(css, /\.home-intro-start\s*\{[^}]*rgba\(232,\s*214,\s*176/);
   assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*var\(--color-accent\)/);
   assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*var\(--color-success\)/);
