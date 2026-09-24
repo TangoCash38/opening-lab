@@ -1,7 +1,7 @@
 /**
  * Sean's Scotch coach narration. One element, started from the Practice tap
  * (same gate as the cream card) and stopped by Skip, Practice, or leaving.
- * Dubois–Réti (sg1) uses the same element with professor-potato-pie-canal.mp3.
+ * Line 1 (sg1) uses the same element with professor-potato-pie-canal.mp3.
  * The cuppa intro keeps sean-coach-narration. The seated picture stays still.
  * No mouth overlay and no second recording.
  */

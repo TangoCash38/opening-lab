@@ -62,10 +62,10 @@ const en: Dict = {
     "The Scotch family got its name from those Edinburgh–London correspondence matches in the eighteen-twenties. Hobbyists still love this line because the board opens up and the plans are concrete — not a long quiet squeeze.",
   "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.":
     "Grab your tea. Practice the book moves with me — I'll keep you on the real Scotch Gambit path.",
-  "Dubois–Réti · ten lines from the gambit":
-    "Dubois–Réti · ten lines from the gambit",
-  "Right then — welcome to Dubois–Réti. Professor Potato Pie, at your service.":
-    "Right then — welcome to Dubois–Réti. Professor Potato Pie, at your service.",
+  "Line 1 · ten lines from the gambit":
+    "Line 1 · ten lines from the gambit",
+  "Right then — welcome to Line 1. Professor Potato Pie, at your service.":
+    "Right then — welcome to Line 1. Professor Potato Pie, at your service.",
   "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
   "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":

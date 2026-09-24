@@ -181,7 +181,7 @@ export function HomeHero({
       soundSelect();
       return;
     }
-    // sg1 only. Later Scotch lines, Test, and other packs fall through.
+    // Line 1 (sg1) only. Later Scotch lines, Test, and other packs fall through.
     if (
       !practiceEntry &&
       scotchCanalCoachApplies({

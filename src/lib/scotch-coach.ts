@@ -3,7 +3,7 @@
  *
  * Two talks, same seated portrait and cream plate / desktop dock:
  * - Main `Tap to practice`: cuppa and history (`scotchCoachApplies`).
- * - First variation, Dubois–Réti (`sg1`): what the ten lines teach
+ * - First book line, Line 1 (`sg1`): what the ten lines teach
  *   (`scotchCanalCoachApplies`). Later variations do not open him.
  *
  * Phone and the Play wrap mount the same dock; a narrow cream plate keeps
@@ -55,7 +55,7 @@ export const SCOTCH_COACH_NARRATION_FALLBACK_SEC = 44;
  */
 export const SCOTCH_CANAL_LINE_ID = "sg1";
 
-export const SCOTCH_CANAL_TITLE = "Dubois–Réti · ten lines from the gambit";
+export const SCOTCH_CANAL_TITLE = "Line 1 · ten lines from the gambit";
 
 /**
  * Sean's Canal pack-recipe reading. Same mp3 family as the cuppa narration
@@ -68,7 +68,7 @@ export const SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95;
 
 /** On-screen beats for professor-potato-pie-canal.mp3. Same substance as the take. */
 export const SCOTCH_CANAL_BEATS = [
-  "Right then — welcome to Dubois–Réti. Professor Potato Pie, at your service.",
+  "Right then — welcome to Line 1. Professor Potato Pie, at your service.",
   "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
   "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.",
   "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.",
