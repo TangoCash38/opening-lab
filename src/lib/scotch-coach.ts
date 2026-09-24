@@ -3,6 +3,7 @@
  *
  * Flag + pack id. Play wrap and the phone train route never mount it.
  * Test is not intercepted; other packs never match.
+ * The hero mounts it only from the pack Practice button, not a line tap.
  *
  * One appearance per browser. `opening-lab:scotch-coach-dock-seen` is set the
  * first time Practice opens the coach. Clearing that localStorage key

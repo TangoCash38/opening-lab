@@ -28,6 +28,21 @@ test("scotch coach is flag- and pack-gated to website desktop practice", () => {
   assert.match(hero, /websiteDesktop: websiteDesktopFrame\(\)/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.doesNotMatch(hero, /isPlayWrap\(\)/);
+  assert.match(hero, /practiceEntry = false/);
+  assert.match(hero, /practiceEntry &&/);
+  const advanceAt = hero.indexOf("const startAdvance");
+  const advance = hero.slice(advanceAt, hero.indexOf("const openIntroThenPractice"));
+  assert.match(advance, /launchLine\(line, undefined, true\)/);
+  assert.match(hero, /else launchLine\(item\)/);
+  assert.match(hero, /if \(line\) launchLine\(line\)/);
+  assert.equal(hero.split("launchLine(line, undefined, true)").length - 1, 1);
+  const nextAt = hero.indexOf("onPracticeNext=");
+  const next = hero.slice(nextAt, nextAt + 140);
+  assert.match(next, /setFrame\(\{ line: nextLine, mode: "learn" \}\)/);
+  assert.doesNotMatch(next, /launchLine|setCoach|scotchCoach/);
+  const modeAt = hero.indexOf("onModeChange=");
+  const mode = hero.slice(modeAt, modeAt + 160);
+  assert.doesNotMatch(mode, /launchLine|setCoach|scotchCoach/);
 });
 
 test("coach narrates the scotch gambit then starts book practice", () => {

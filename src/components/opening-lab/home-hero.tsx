@@ -143,8 +143,14 @@ export function HomeHero({
     }));
   };
 
-  const launchLine = (line: OpeningLine, options?: TrainStartOptions) => {
+  const launchLine = (
+    line: OpeningLine,
+    options?: TrainStartOptions,
+    practiceEntry = false,
+  ) => {
+    // Pack Practice button only. Line taps, line switches, and Test pass false.
     if (
+      practiceEntry &&
       scotchCoachApplies({
         packId: pack.id,
         playApp: Boolean(playApp),
@@ -215,7 +221,7 @@ export function HomeHero({
 
   const startAdvance = () => {
     const line = pickPracticeLine();
-    if (line) launchLine(line);
+    if (line) launchLine(line, undefined, true);
     else onRequestUnlock?.(pack);
   };
 
