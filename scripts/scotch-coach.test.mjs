@@ -16,16 +16,17 @@ const board = src("src/components/opening-lab/scotch-coach-board.tsx");
 const css = src("src/styles.css");
 const train = src("src/components/opening-lab/train-view.tsx");
 
-test("scotch coach is flag- and pack-gated to website desktop practice", () => {
+test("scotch coach is flag- and pack-gated to Practice entry on phone and Play", () => {
   assert.match(lib, /SCOTCH_PACK_ID = "scotch"/);
   assert.match(lib, /SCOTCH_COACH_ENABLED = true/);
   assert.match(lib, /if \(!SCOTCH_COACH_ENABLED\) return false/);
   assert.match(lib, /input\.packId !== SCOTCH_PACK_ID/);
-  assert.match(lib, /if \(input\.playApp\) return false/);
-  assert.match(lib, /if \(!input\.websiteDesktop\) return false/);
+  assert.match(lib, /if \(!input\.practiceEntry\) return false/);
+  assert.doesNotMatch(lib, /if \(input\.playApp\) return false/);
+  assert.doesNotMatch(lib, /if \(!input\.websiteDesktop\) return false/);
   assert.match(hero, /scotchCoachApplies\(\{/);
-  assert.match(hero, /playApp: Boolean\(playApp\)/);
-  assert.match(hero, /websiteDesktop: websiteDesktopFrame\(\)/);
+  assert.match(hero, /practiceEntry,/);
+  assert.match(hero, /launchLine\(line, undefined, true\)/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
   assert.doesNotMatch(hero, /isPlayWrap\(\)/);
   assert.match(hero, /practiceEntry = false/);
@@ -119,10 +120,15 @@ test("coach is the seated picture plus Sean's voice, with no mouth overlay", () 
   assert.doesNotMatch(intro, /deepfake|speechSynthesis/i);
 });
 
-test("coach speaks once per browser until the seen flag is cleared", () => {
-  assert.match(lib, /SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-dock-seen"/);
-  assert.match(lib, /localStorage\.getItem\(SCOTCH_COACH_SEEN_KEY\) === "1"/);
-  assert.match(lib, /localStorage\.setItem\(SCOTCH_COACH_SEEN_KEY, "1"\)/);
+test("coach speaks once per session, not from a forever localStorage flag", () => {
+  assert.match(lib, /SCOTCH_COACH_SESSION_KEY = "opening-lab:scotch-coach-session"/);
+  assert.match(lib, /sessionStorage\.getItem\(SCOTCH_COACH_SESSION_KEY\) === "1"/);
+  assert.match(lib, /sessionStorage\.setItem\(SCOTCH_COACH_SESSION_KEY, "1"\)/);
+  assert.match(lib, /"opening-lab:scotch-coach-seen"/);
+  assert.match(lib, /"opening-lab:scotch-coach-dock-seen"/);
+  assert.match(lib, /localStorage\.removeItem\(key\)/);
+  assert.doesNotMatch(lib, /localStorage\.setItem/);
+  assert.doesNotMatch(lib, /localStorage\.getItem/);
   const gateAt = hero.indexOf("scotchCoachApplies({");
   const branch = hero.slice(gateAt, hero.indexOf("preferInFrame()", gateAt));
   assert.match(branch, /!scotchCoachAlreadySeen\(\)/);
@@ -130,6 +136,123 @@ test("coach speaks once per browser until the seen flag is cleared", () => {
   assert.match(branch, /mode: "learn"/);
   assert.doesNotMatch(train, /scotchCoachAlreadySeen|markScotchCoachSeen|ScotchCoachBoard/);
   assert.doesNotMatch(hero, /isPlayWrap\(\)/);
+
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+      function memory() {
+        const data = new Map();
+        return {
+          getItem: (key) => (data.has(key) ? data.get(key) : null),
+          setItem: (key, value) => data.set(key, String(value)),
+          removeItem: (key) => data.delete(key),
+        };
+      }
+      globalThis.localStorage = memory();
+      globalThis.sessionStorage = memory();
+      localStorage.setItem("opening-lab:scotch-coach-seen", "1");
+      localStorage.setItem("opening-lab:scotch-coach-dock-seen", "1");
+      const { scotchCoachAlreadySeen, markScotchCoachSeen, SCOTCH_COACH_SESSION_KEY } = await import("./src/lib/scotch-coach.ts");
+      if (scotchCoachAlreadySeen()) throw new Error("forever flag still gates");
+      if (localStorage.getItem("opening-lab:scotch-coach-seen") !== null) throw new Error("seen key remains");
+      if (localStorage.getItem("opening-lab:scotch-coach-dock-seen") !== null) throw new Error("dock key remains");
+      markScotchCoachSeen();
+      if (!scotchCoachAlreadySeen()) throw new Error("session not marked");
+      if (sessionStorage.getItem(SCOTCH_COACH_SESSION_KEY) !== "1") throw new Error("session value");
+      if (localStorage.getItem("opening-lab:scotch-coach-seen") !== null) throw new Error("seen rewritten");
+      sessionStorage.removeItem(SCOTCH_COACH_SESSION_KEY);
+      if (scotchCoachAlreadySeen()) throw new Error("new visit still seen");
+      markScotchCoachSeen();
+      if (sessionStorage.getItem(SCOTCH_COACH_SESSION_KEY) !== "1") throw new Error("remark");
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
+test("book practice can open the coach transcript without covering the board", () => {
+  assert.match(train, /ScotchCoachReading/);
+  assert.match(train, /pack\.id === SCOTCH_PACK_ID/);
+  assert.match(intro, /function ScotchCoachReading/);
+  assert.match(intro, /data-scotch-coach-read/);
+  assert.match(intro, /data-scotch-coach-transcript/);
+  assert.match(intro, /aria-expanded=\{open\}/);
+  assert.match(intro, /useState\(false\)/);
+  assert.match(intro, /Read the intro/);
+  assert.match(intro, /Hide the intro/);
+  assert.match(intro, /SCOTCH_COACH_BEATS\.map/);
+  assert.match(intro, /scotchCoachAlreadySeen\(\)/);
+  assert.doesNotMatch(intro, /role="dialog"|fixed inset-0/);
+  const reading = css.slice(css.indexOf(".scotch-coach-reading {"));
+  assert.match(reading, /position:\s*static/);
+  assert.doesNotMatch(reading, /position:\s*fixed|position:\s*absolute/);
+  assert.match(reading, /#fbf6ea/);
+  assert.doesNotMatch(train, /startScotchCoachNarration|sean-coach-narration/);
+});
+
+test("phone and Play seat the coach on a cream plate above the wood", () => {
+  assert.match(lib, /SCOTCH_COACH_DOCK_MIN_PX = 960/);
+  assert.match(lib, /function scotchCoachPlateLayout/);
+  assert.match(lib, /if \(input\.playApp\) return true/);
+  assert.match(lib, /input\.viewportWidthPx < SCOTCH_COACH_DOCK_MIN_PX/);
+  const plate = css.slice(css.indexOf("Phone column and the Play wrap"));
+  assert.match(plate, /@media \(max-width: 959px\)/);
+  assert.match(plate, /\[data-surface="play"\] \.home-coach-practice/);
+  assert.match(plate, /flex-direction:\s*column/);
+  assert.match(plate, /height:\s*12\.25rem/);
+  assert.match(plate, /#fbf6ea/);
+  assert.match(plate, /#e4d2b0/);
+  assert.match(plate, /margin-left:\s*auto/);
+  assert.match(plate, /margin-right:\s*auto/);
+  assert.doesNotMatch(plate, /position:\s*absolute/);
+  assert.doesNotMatch(plate, /vs-computer|playComputer|Play on/i);
+  const stage = css.slice(css.indexOf(".scotch-coach-stage {"), css.indexOf(".scotch-coach-figure"));
+  assert.match(stage, /position:\s*relative/);
+  assert.match(stage, /width:\s*10\.75rem/);
+  assert.match(css, /flex-direction:\s*row/);
+  assert.match(css, /home-hero--coach/);
+
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+      import { scotchCoachApplies, scotchCoachPlateLayout } from "./src/lib/scotch-coach.ts";
+      const cases = [
+        [{ packId: "scotch", practiceEntry: true }, true],
+        [{ packId: "scotch", practiceEntry: false }, false],
+        [{ packId: "caro-kann-black", practiceEntry: true }, false],
+        [{ packId: "london", practiceEntry: true }, false],
+        [{ packId: "italian-white", practiceEntry: false }, false],
+      ];
+      for (const [input, expected] of cases) {
+        const got = scotchCoachApplies(input);
+        if (got !== expected) throw new Error(JSON.stringify(input) + " -> " + got);
+      }
+      const plates = [
+        [{ playApp: true, viewportWidthPx: 1280 }, true],
+        [{ playApp: true, viewportWidthPx: 390 }, true],
+        [{ playApp: false, viewportWidthPx: 390 }, true],
+        [{ playApp: false, viewportWidthPx: 959 }, true],
+        [{ playApp: false, viewportWidthPx: 960 }, false],
+        [{ playApp: false, viewportWidthPx: 1440 }, false],
+      ];
+      for (const [input, expected] of plates) {
+        const got = scotchCoachPlateLayout(input);
+        if (got !== expected) throw new Error(JSON.stringify(input) + " plate " + got);
+      }
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
 test("practice board auto-plays the scotch gambit stem during the intro", () => {

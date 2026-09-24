@@ -1,21 +1,32 @@
 /**
- * Scotch Gambit coach intro — website desktop Practice only.
+ * Scotch Gambit coach intro — Scotch pack Practice only.
  *
- * Flag + pack id. Play wrap and the phone train route never mount it.
- * Test is not intercepted; other packs never match.
- * The hero mounts it only from the pack Practice button, not a line tap.
+ * Flag + pack id + the pack's main Practice control (`Tap to practice`).
+ * Phone and the Play wrap mount the same dock; a narrow cream plate keeps
+ * him off the squares. Line taps, Test, line switches, and other packs
+ * never match.
  *
- * One appearance per browser. `opening-lab:scotch-coach-dock-seen` is set the
- * first time Practice opens the coach. Clearing that localStorage key
- * (full reset) is what lets him speak again.
+ * Once per browser session. `opening-lab:scotch-coach-session` is set in
+ * sessionStorage the first time Practice opens the coach. Closing the tab
+ * or window clears it, so the next visit's main Practice brings him back.
+ * Skip is the escape for the rest of that visit — there is no forever hide.
  */
 export const SCOTCH_PACK_ID = "scotch";
 
 /** Flip off to hide the intro without changing Practice, Test, or other packs. */
 export const SCOTCH_COACH_ENABLED = true;
 
-/** One-shot flag. Remove this key to hear the coach again. */
-export const SCOTCH_COACH_SEEN_KEY = "opening-lab:scotch-coach-dock-seen";
+/**
+ * Session flag. Set when main Practice opens the coach. Gone when the
+ * tab closes. Not localStorage — a forever key must not keep him away.
+ */
+export const SCOTCH_COACH_SESSION_KEY = "opening-lab:scotch-coach-session";
+
+/** Leftover forever flags from earlier builds. Dropped, never read as the gate. */
+const SCOTCH_COACH_FOREVER_KEYS = [
+  "opening-lab:scotch-coach-seen",
+  "opening-lab:scotch-coach-dock-seen",
+] as const;
 
 export const SCOTCH_COACH_TITLE = "Scotch Gambit · a cuppa and the open board";
 
@@ -77,33 +88,62 @@ export function scotchCoachStemPlyCount(currentTimeSec: number, durationSec: num
   return count;
 }
 
-export function scotchCoachAlreadySeen(): boolean {
-  if (typeof localStorage === "undefined") return false;
+function dropScotchCoachForeverFlag(): void {
+  if (typeof localStorage === "undefined") return;
   try {
-    return localStorage.getItem(SCOTCH_COACH_SEEN_KEY) === "1";
+    for (const key of SCOTCH_COACH_FOREVER_KEYS) localStorage.removeItem(key);
+  } catch {
+    /* private mode */
+  }
+}
+
+/** True after main Practice has opened the coach in this tab. */
+export function scotchCoachAlreadySeen(): boolean {
+  dropScotchCoachForeverFlag();
+  if (typeof sessionStorage === "undefined") return false;
+  try {
+    return sessionStorage.getItem(SCOTCH_COACH_SESSION_KEY) === "1";
   } catch {
     return false;
   }
 }
 
-/** Persist the one-shot. Only a full clear of this key brings the coach back. */
+/** Remember the coach for this visit only. Closing the tab brings him back. */
 export function markScotchCoachSeen(): void {
-  if (typeof localStorage === "undefined") return;
+  dropScotchCoachForeverFlag();
+  if (typeof sessionStorage === "undefined") return;
   try {
-    localStorage.setItem(SCOTCH_COACH_SEEN_KEY, "1");
+    sessionStorage.setItem(SCOTCH_COACH_SESSION_KEY, "1");
   } catch {
     /* private mode / quota */
   }
 }
 
+/**
+ * Website side-dock starts here. Narrower viewports, and every Play wrap,
+ * use the cream plate above the wood (see styles.css).
+ */
+export const SCOTCH_COACH_DOCK_MIN_PX = 960;
+
+/**
+ * True when the seated coach should sit in the phone/Play plate instead of
+ * the desktop cream dock beside the wood.
+ */
+export function scotchCoachPlateLayout(input: {
+  playApp: boolean;
+  viewportWidthPx: number;
+}): boolean {
+  if (input.playApp) return true;
+  return input.viewportWidthPx < SCOTCH_COACH_DOCK_MIN_PX;
+}
+
 export function scotchCoachApplies(input: {
   packId: string;
-  playApp: boolean;
-  websiteDesktop: boolean;
+  /** True only for the pack's main Practice control, not a line tap. */
+  practiceEntry: boolean;
 }): boolean {
   if (!SCOTCH_COACH_ENABLED) return false;
   if (input.packId !== SCOTCH_PACK_ID) return false;
-  if (input.playApp) return false;
-  if (!input.websiteDesktop) return false;
+  if (!input.practiceEntry) return false;
   return true;
 }

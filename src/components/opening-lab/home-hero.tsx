@@ -153,8 +153,7 @@ export function HomeHero({
       practiceEntry &&
       scotchCoachApplies({
         packId: pack.id,
-        playApp: Boolean(playApp),
-        websiteDesktop: websiteDesktopFrame(),
+        practiceEntry,
       }) &&
       !scotchCoachAlreadySeen()
     ) {
@@ -189,14 +188,20 @@ export function HomeHero({
     stopScotchCoachNarration();
     setCoach(null);
     if (!current) return;
-    openInFrame(
-      current.line,
-      {
-        plyLimit: current.plyLimit,
-        startPly: current.startPly,
-      },
-      "learn",
-    );
+    const options = {
+      plyLimit: current.plyLimit,
+      startPly: current.startPly,
+    };
+    // Desktop stays in the pack card. Phone and Play continue on the train route.
+    if (preferInFrame()) {
+      openInFrame(current.line, options, "learn");
+      return;
+    }
+    if (options.plyLimit != null || options.startPly != null) {
+      onStartLine(pack, current.line, "learn", options);
+      return;
+    }
+    onStartLine(pack, current.line, "learn");
   };
 
   const activeLineId = frame?.line.id ?? coach?.line.id ?? null;

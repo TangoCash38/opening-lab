@@ -3,6 +3,7 @@ import {
   SCOTCH_COACH_BEATS,
   SCOTCH_COACH_NARRATION_FALLBACK_SEC,
   SCOTCH_COACH_TITLE,
+  scotchCoachAlreadySeen,
   scotchCoachBeatIndex,
 } from "@/lib/scotch-coach";
 import {
@@ -119,6 +120,46 @@ export function ScotchCoachCard({ onDone }: CardProps) {
           {last ? t("Practice") : t("Next")}
         </button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Optional transcript after the coach has spoken this visit.
+ * In the page flow — not a modal over the board.
+ */
+export function ScotchCoachReading() {
+  const t = useT();
+  const [open, setOpen] = useState(false);
+  const [available, setAvailable] = useState(false);
+
+  useEffect(() => {
+    setAvailable(scotchCoachAlreadySeen());
+  }, []);
+
+  if (!available) return null;
+
+  return (
+    <div className="scotch-coach-reading" data-scotch-coach-reading>
+      <button
+        type="button"
+        className="scotch-coach-reading-toggle"
+        data-scotch-coach-read
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {open ? t("Hide the intro") : t("Read the intro")}
+      </button>
+      {open ? (
+        <div className="scotch-coach-reading-body" data-scotch-coach-transcript>
+          <p className="scotch-coach-reading-title">{t(SCOTCH_COACH_TITLE)}</p>
+          {SCOTCH_COACH_BEATS.map((beat) => (
+            <p key={beat} className="scotch-coach-reading-beat">
+              {t(beat)}
+            </p>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
