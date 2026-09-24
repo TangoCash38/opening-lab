@@ -4,8 +4,8 @@
  * Practice opens `introBeats`. The first book line (`firstLineId`, never the
  * line title) opens `firstLineBeats`. Optional `introAudio` / `firstLineAudio`
  * are mp3 paths. With no audio, captions advance on Next and a short timer,
- * and each first-line beat plays its `ply` on the board. Adding a recording
- * later is the mp3 path plus `atSec` on each beat.
+ * and each first-line beat plays its `ply` on the board. A recording uses
+ * `atSec` for captions and `plyAtSec` for the moment each move is spoken.
  *
  * Scotch keeps the cuppa clip and the sg1 Canal clip, including the session
  * keys those talks already use. Other packs get their own session keys.
@@ -40,10 +40,16 @@ export const COACH_TEXT_BEAT_SEC = 5;
 
 export type CoachLineBeat = {
   caption: string;
-  /** SAN played on the board while this caption shows. Omitted = no new move. */
+  /** SAN played on the board for this beat. Omitted = no new move. */
   ply?: string;
-  /** Seconds into `firstLineAudio` when this beat begins. */
+  /** Seconds into `firstLineAudio` when this caption begins. */
   atSec?: number;
+  /**
+   * Seconds into `firstLineAudio` when `ply` is spoken.
+   * Absent: a text talk plays the ply as the caption shows, and an audio
+   * talk without this cue does the same.
+   */
+  plyAtSec?: number;
 };
 
 export type CoachPackConfig = {
@@ -75,51 +81,88 @@ export type CoachPackConfig = {
 
 const OPENING_TRAPS_PACK_ID = "opening-traps";
 
+export const OPENING_TRAPS_INTRO_MP3 = "/coach/opening-traps/professor-potato-pie-traps-intro.mp3";
+export const OPENING_TRAPS_LINE_MP3 = "/coach/opening-traps/professor-potato-pie-traps-legals-mate.mp3";
+/** Sean's intro take. Beat times below were read off this clip. */
+export const OPENING_TRAPS_INTRO_SEC = 46.4;
+/** Sean's Legal's Mate take. Beat and spoken-move times were read off this clip. */
+export const OPENING_TRAPS_LINE_SEC = 92.7;
+
 const OPENING_TRAPS_INTRO = [
-  "Ah, hello there. Professor Potato Pie, with a fresh cup of tea and eleven rather devious opening traps.",
-  "An opening trap is a position where one side leaves something that looks free, and taking it turns out to be a dreadful mistake.",
-  "Learning them pays three ways. You'll spot them coming, you'll stop falling into them yourself, and you'll know exactly how to punish an opponent who does.",
-  "Here's how it works. In Practice, you play the trapper's moves and I'll give you hints whenever you need them.",
-  "In Test, the hints are gone and it's just you and the board.",
-  "Each line stops where the book stops, once the trap has been sprung. There's no playing on against a computer afterwards.",
-  "So learn the moves, understand the idea, and drill them until they're second nature. Shall we begin?",
+  "Right then, now for the opening traps. These lines are great fun, and on occasion they can catch an unsuspecting opponent completely off guard. That alone makes them worth knowing.",
+  "But there is a more serious point. Studying traps teaches you to recognise the warning signs, so you're far less likely to wander into one yourself.",
+  "Work through each line, grasp the idea behind it, and enjoy the elegant little tactical mechanisms at play.",
+  "Use them with judgement, understand them properly, and when the opportunity presents itself, let precision do the work.",
+  "Have a go, have some fun, and now I think it's time for a potato pie. Enjoy.",
 ] as const;
+
+const OPENING_TRAPS_INTRO_AT_SEC = [0, 13.6, 22.5, 29.5, 38.2] as const;
 
 const OPENING_TRAPS_LINE: readonly CoachLineBeat[] = [
   {
     caption:
       "Right then, welcome to Line 1. This is Legal's Mate, named after Monsieur de Légal, a French player of the eighteenth century.",
+    atSec: 0,
   },
-  { caption: "White opens with the king's pawn, e4.", ply: "e4" },
-  { caption: "Black answers symmetrically with e5.", ply: "e5" },
-  { caption: "Knight to f3 attacks that pawn.", ply: "Nf3" },
-  { caption: "Black defends it with d6, which is the Philidor Defence.", ply: "d6" },
-  { caption: "White's bishop comes to c4 and eyes the weak little f7 square.", ply: "Bc4" },
-  { caption: "Black's bishop goes to g4 and pins the knight against the queen.", ply: "Bg4" },
-  { caption: "White calmly develops, knight to c3.", ply: "Nc3" },
-  { caption: "Black plays g6. It's a slow move, and now the trap is ready.", ply: "g6" },
+  { caption: "White opens with the king's pawn, e4.", ply: "e4", atSec: 10.4, plyAtSec: 12.7 },
+  { caption: "Black answers symmetrically with e5.", ply: "e5", atSec: 14.0, plyAtSec: 15.7 },
+  { caption: "Knight to f3 attacks that pawn.", ply: "Nf3", atSec: 17.3, plyAtSec: 18.0 },
+  {
+    caption: "Black defends it with d6, which is the Philidor Defence.",
+    ply: "d6",
+    atSec: 20.5,
+    plyAtSec: 21.7,
+  },
+  {
+    caption: "White's bishop comes to c4 and eyes the weak little f7 square.",
+    ply: "Bc4",
+    atSec: 25.4,
+    plyAtSec: 26.9,
+  },
+  {
+    caption: "Black's bishop goes to g4 and pins the knight against the queen.",
+    ply: "Bg4",
+    atSec: 31.0,
+    plyAtSec: 32.2,
+  },
+  { caption: "White calmly develops, knight to c3.", ply: "Nc3", atSec: 35.6, plyAtSec: 38.1 },
+  {
+    caption: "Black plays g6. It's a slow move, and now the trap is ready.",
+    ply: "g6",
+    atSec: 39.6,
+    plyAtSec: 40.3,
+  },
   {
     caption:
       "Knight takes e5! That knight was only pinned to the queen, not to the king, so it's perfectly free to move.",
     ply: "Nxe5",
+    atSec: 45.3,
+    plyAtSec: 46.2,
   },
   {
     caption:
       "Black can't resist and takes the queen on d1. That's the greedy capture, and it's fatal.",
     ply: "Bxd1",
+    atSec: 53.4,
+    plyAtSec: 56.1,
   },
-  { caption: "Bishop takes f7, check!", ply: "Bxf7+" },
-  { caption: "The king has only one square to go to, e7.", ply: "Ke7" },
-  { caption: "Knight to d5, and that's checkmate.", ply: "Nd5#" },
+  { caption: "Bishop takes f7, check!", ply: "Bxf7+", atSec: 60.4, plyAtSec: 61.2 },
+  { caption: "The king has only one square to go to, e7.", ply: "Ke7", atSec: 63.5, plyAtSec: 65.7 },
+  { caption: "Knight to d5, and that's checkmate.", ply: "Nd5#", atSec: 67.2, plyAtSec: 67.8 },
   {
     caption:
       "Two knights and one bishop have beaten the entire black army. Black's queen, rooks and the bishop on d1 are all still on the board, and none of them can help.",
+    atSec: 70.6,
   },
   {
     caption:
       "So remember: when a queen is offered for free this early in the game, have a good look around before you take it.",
+    atSec: 81.1,
   },
-  { caption: "Now over to you. Practise it until your knights know the way." },
+  {
+    caption: "Now over to you. Practise it until your knights know the way.",
+    atSec: 88.6,
+  },
 ];
 
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
@@ -142,11 +185,16 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLinePlaysPackLine: true,
   },
   [OPENING_TRAPS_PACK_ID]: {
-    introTitle: "Opening Traps · a cup of tea",
+    introTitle: "Opening Traps",
     introBeats: OPENING_TRAPS_INTRO,
+    introAudio: OPENING_TRAPS_INTRO_MP3,
+    introAudioFallbackSec: OPENING_TRAPS_INTRO_SEC,
+    introBeatAtSec: OPENING_TRAPS_INTRO_AT_SEC,
     firstLineId: "ot1",
     firstLineTitle: "Line 1 · Legal's Mate",
     firstLineBeats: OPENING_TRAPS_LINE,
+    firstLineAudio: OPENING_TRAPS_LINE_MP3,
+    firstLineAudioFallbackSec: OPENING_TRAPS_LINE_SEC,
   },
 };
 
@@ -197,7 +245,9 @@ export function coachTalkPlies(
   const pack = COACH_PACKS[packId];
   if (!pack) return null;
   if (talk === "canal") return null;
-  if (talk === "intro" && (pack.introAudio || pack.introStem)) return null;
+  // Scotch stem follows the cuppa clip. Any other intro, audio or not, holds
+  // the start position: its captions have no plies.
+  if (talk === "intro" && pack.introStem) return null;
   if (talk === "line" && pack.firstLinePlaysPackLine) return null;
   const key = `${packId}:${talk}`;
   const cached = plyCache.get(key);
@@ -237,6 +287,43 @@ export function coachTextPlayedSans(
     if (ply) played.push(ply);
   }
   return played;
+}
+
+/**
+ * Spoken-move cues for an audio first-line talk, in ply order.
+ * Null when the talk is text-only, or when a move has no `plyAtSec`
+ * (that talk plays the ply as the caption shows).
+ */
+export function coachLinePlyCues(packId: string): readonly number[] | null {
+  const pack = COACH_PACKS[packId];
+  if (!pack?.firstLineAudio) return null;
+  const moves = pack.firstLineBeats.filter((beat) => beat.ply);
+  if (moves.length === 0 || moves.some((beat) => beat.plyAtSec == null)) return null;
+  return moves.map((beat) => beat.plyAtSec ?? 0);
+}
+
+/**
+ * How many spoken plies belong on the board at this clip time.
+ * Cues are seconds into `fallbackSec`. A different reported duration scales them,
+ * the same way the Scotch stem clock does.
+ */
+export function coachAudioPlyCount(
+  cues: readonly number[],
+  currentTimeSec: number,
+  durationSec: number,
+  fallbackSec: number,
+): number {
+  const duration =
+    Number.isFinite(durationSec) && durationSec > 0 ? durationSec : Math.max(1, fallbackSec);
+  const basis = fallbackSec > 0 ? fallbackSec : duration;
+  const scale = duration / basis;
+  if (!Number.isFinite(currentTimeSec) || currentTimeSec <= 0) return 0;
+  let count = 0;
+  for (const at of cues) {
+    if (currentTimeSec + 1e-9 >= at * scale) count += 1;
+    else break;
+  }
+  return Math.min(cues.length, count);
 }
 
 /**

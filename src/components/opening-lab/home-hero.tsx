@@ -13,6 +13,8 @@ import {
   coachLineAlreadySeen,
   coachPackIntroApplies,
   coachPackLineApplies,
+  coachLinePlyCues,
+  coachPack,
   coachTalkPlies,
   markCoachIntroSeen,
   markCoachLineSeen,
@@ -28,6 +30,7 @@ import {
   scotchCoachApplies,
 } from "@/lib/scotch-coach";
 import {
+  startCoachPackNarration,
   startScotchCanalNarration,
   startScotchCoachNarration,
   stopScotchCoachNarration,
@@ -114,6 +117,10 @@ export function HomeHero({
   }, []);
   const textScript = useMemo(
     () => (coach ? coachTalkPlies(pack.id, coach.talk) : null),
+    [coach, pack.id],
+  );
+  const linePlyCues = useMemo(
+    () => (coach?.talk === "line" ? coachLinePlyCues(pack.id) : null),
     [coach, pack.id],
   );
 
@@ -243,6 +250,14 @@ export function HomeHero({
     ) {
       markCoachIntroSeen(pack.id);
       stopScotchCoachNarration();
+      const introConfig = coachPack(pack.id);
+      if (introConfig?.introAudio) {
+        startCoachPackNarration(
+          introConfig.introAudio,
+          introConfig.introAudioOgg ?? null,
+          `${pack.id}:intro`,
+        );
+      }
       setTextBeat(0);
       const session: CoachSession = {
         line,
@@ -264,6 +279,10 @@ export function HomeHero({
     ) {
       stopScotchCoachNarration();
       markCoachLineSeen(pack.id, line.id);
+      const lineConfig = coachPack(pack.id);
+      if (lineConfig?.firstLineAudio) {
+        startCoachPackNarration(lineConfig.firstLineAudio, null, `${pack.id}:line`);
+      }
       setTextBeat(0);
       const session: CoachSession = {
         line,
@@ -463,6 +482,8 @@ export function HomeHero({
                       talk={coach.talk === "line" ? "line" : "intro"}
                       beatIndex={textBeat}
                       beatPlies={textScript}
+                      plyAtSec={linePlyCues}
+                      plyFallbackSec={coachPack(pack.id)?.firstLineAudioFallbackSec}
                       flip={pack.side === "Black"}
                       frameCoords={!playApp}
                     />

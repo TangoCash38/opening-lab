@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { PACKS } from "@/data/packs";
-import { coachTextPlyCount } from "@/lib/coach-packs";
+import { coachAudioPlyCount, coachTextPlyCount } from "@/lib/coach-packs";
 import {
   SCOTCH_CANAL_LINE_ID,
   SCOTCH_CANAL_NARRATION_FALLBACK_SEC,
@@ -26,9 +26,16 @@ type Props = {
    * plays each beat's ply as that beat shows. Practice itself is a different mount.
    */
   talk?: Talk;
-  /** Script plies aligned to captions. Set for text-only (and future beat-timed audio). */
+  /** Script plies aligned to captions. A text talk plays each ply as that beat shows. */
   beatPlies?: readonly (string | undefined)[] | null;
   beatIndex?: number;
+  /**
+   * Seconds into the line clip when each played ply is spoken.
+   * Set only for an audio talk. The board follows the clip, not the caption index.
+   */
+  plyAtSec?: readonly number[] | null;
+  /** Clip length used when the element has not reported a duration yet. */
+  plyFallbackSec?: number;
 };
 
 /** SAN for the talk. Canal reads pack id sg1. The cuppa stem stays the named moves. */
@@ -79,6 +86,8 @@ export function ScotchCoachBoard({
   talk = "intro",
   beatPlies = null,
   beatIndex = 0,
+  plyAtSec = null,
+  plyFallbackSec = 0,
 }: Props) {
   const sans = useMemo(() => talkSans(talk, beatPlies), [talk, beatPlies]);
   const [game, setGame] = useState(() => new Chess());
@@ -94,10 +103,14 @@ export function ScotchCoachBoard({
   const talkRef = useRef(talk);
   const beatPliesRef = useRef(beatPlies);
   const beatIndexRef = useRef(beatIndex);
+  const plyAtSecRef = useRef(plyAtSec);
+  const plyFallbackRef = useRef(plyFallbackSec);
   sansRef.current = sans;
   talkRef.current = talk;
   beatPliesRef.current = beatPlies;
   beatIndexRef.current = beatIndex;
+  plyAtSecRef.current = plyAtSec;
+  plyFallbackRef.current = plyFallbackSec;
 
   const pump = useCallback(() => {
     if (!aliveRef.current || slidingRef.current) return;
@@ -166,6 +179,14 @@ export function ScotchCoachBoard({
     aliveRef.current = true;
     const started = performance.now();
     const tick = () => {
+      const cues = plyAtSecRef.current;
+      if (cues && cues.length > 0) {
+        const fallback = plyFallbackRef.current > 0 ? plyFallbackRef.current : 1;
+        const clock = narrationClock(started, fallback, true);
+        targetRef.current = coachAudioPlyCount(cues, clock.time, clock.duration, fallback);
+        pump();
+        return;
+      }
       const script = beatPliesRef.current;
       if (script) {
         targetRef.current = coachTextPlyCount(script, beatIndexRef.current);

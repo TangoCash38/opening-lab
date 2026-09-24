@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -60,13 +60,26 @@ test("coach config is keyed by pack id and keeps the Scotch recordings", () => {
   assert.doesNotMatch(packs, /Play on|vs-computer|playComputer/i);
 });
 
-test("opening traps mounts on ot1 by line id, text only, with per-pack session keys", (t) => {
+test("opening traps mounts on ot1 by line id, with Sean's clips and per-pack session keys", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   assert.match(packs, /firstLineId: "ot1"/);
   assert.match(packs, /Legal's Mate/);
   assert.match(packs, /Monsieur de Légal/);
   assert.match(packs, /ply: "Nd5#"/);
+  assert.match(packs, /professor-potato-pie-traps-intro\.mp3/);
+  assert.match(packs, /professor-potato-pie-traps-legals-mate\.mp3/);
+  assert.match(hero, /startCoachPackNarration/);
+  assert.match(board, /coachAudioPlyCount/);
+  assert.match(board, /plyAtSec/);
+  assert.equal(
+    existsSync(join(root, "public/coach/opening-traps/professor-potato-pie-traps-intro.mp3")),
+    true,
+  );
+  assert.equal(
+    existsSync(join(root, "public/coach/opening-traps/professor-potato-pie-traps-legals-mate.mp3")),
+    true,
+  );
   assert.match(packs, /COACH_TEXT_BEAT_SEC = 5/);
   assert.match(packs, /opening-lab:coach-intro:\$\{packId\}/);
   assert.match(packs, /opening-lab:coach-line:\$\{packId\}:\$\{lineId\}/);
@@ -130,6 +143,8 @@ test("opening traps mounts on ot1 by line id, text only, with per-pack session k
         coachLineSessionKey,
         coachPackIntroApplies,
         coachPackLineApplies,
+        coachAudioPlyCount,
+        coachLinePlyCues,
         coachTalkPlies,
         coachTextPlayedSans,
         coachTextPlyCount,
@@ -158,14 +173,44 @@ test("opening traps mounts on ot1 by line id, text only, with per-pack session k
       if (isCoachTextOnly("scotch", "intro") || isCoachTextOnly("scotch", "line")) {
         throw new Error("scotch is not text-only");
       }
-      if (traps.introAudio || traps.firstLineAudio) throw new Error("traps must be text-only");
-      if (!isCoachTextOnly("opening-traps", "intro")) throw new Error("traps intro audio");
-      if (!isCoachTextOnly("opening-traps", "line")) throw new Error("traps line audio");
+      if (isCoachTextOnly("opening-traps", "intro") || isCoachTextOnly("opening-traps", "line")) {
+        throw new Error("traps clips are recorded");
+      }
+      if (traps.introAudio !== "/coach/opening-traps/professor-potato-pie-traps-intro.mp3") {
+        throw new Error("traps intro audio " + traps.introAudio);
+      }
+      if (traps.firstLineAudio !== "/coach/opening-traps/professor-potato-pie-traps-legals-mate.mp3") {
+        throw new Error("traps line audio " + traps.firstLineAudio);
+      }
+      if (traps.introAudioFallbackSec !== 46.4) throw new Error("intro length");
+      if (traps.firstLineAudioFallbackSec !== 92.7) throw new Error("line length");
       if (traps.firstLineId !== "ot1") throw new Error("traps line id");
-      if (traps.introBeats.length !== 7) throw new Error("intro beats " + traps.introBeats.length);
+      if (traps.introBeats.length !== 5) throw new Error("intro beats " + traps.introBeats.length);
+      if (traps.introBeats[0] !== "Right then, now for the opening traps. These lines are great fun, and on occasion they can catch an unsuspecting opponent completely off guard. That alone makes them worth knowing.") {
+        throw new Error("intro 1");
+      }
+      if (traps.introBeats[4] !== "Have a go, have some fun, and now I think it's time for a potato pie. Enjoy.") {
+        throw new Error("intro 5");
+      }
+      const introAt = traps.introBeatAtSec;
+      if (!introAt || introAt.join(",") !== "0,13.6,22.5,29.5,38.2") throw new Error("intro times " + introAt);
       if (traps.firstLineBeats.length !== 17) throw new Error("line beats " + traps.firstLineBeats.length);
       if (traps.introBeats[0].includes("[")) throw new Error("bracket leaked into intro");
-      if (lineBeatAtSec(traps.firstLineBeats) != null) throw new Error("traps has beat timings");
+      const lineAt = lineBeatAtSec(traps.firstLineBeats);
+      if (!lineAt || lineAt.join(",") !== "0,10.4,14,17.3,20.5,25.4,31,35.6,39.6,45.3,53.4,60.4,63.5,67.2,70.6,81.1,88.6") {
+        throw new Error("line beat times " + lineAt);
+      }
+      const cues = coachLinePlyCues("opening-traps");
+      if (!cues || cues.join(",") !== "12.7,15.7,18,21.7,26.9,32.2,38.1,40.3,46.2,56.1,61.2,65.7,67.8") {
+        throw new Error("spoken moves " + cues);
+      }
+      if (coachLinePlyCues("scotch") != null) throw new Error("scotch line uses the pack clock");
+      if (coachAudioPlyCount(cues, 12.69, 92.7, 92.7) !== 0) throw new Error("e4 not yet");
+      if (coachAudioPlyCount(cues, 12.7, 92.7, 92.7) !== 1) throw new Error("e4 spoken");
+      if (coachAudioPlyCount(cues, 15.7, 92.7, 92.7) !== 2) throw new Error("e5 spoken");
+      if (coachAudioPlyCount(cues, 67.79, 92.7, 92.7) !== 12) throw new Error("mate not yet");
+      if (coachAudioPlyCount(cues, 67.8, 92.7, 92.7) !== 13) throw new Error("mate spoken");
+      if (coachAudioPlyCount(cues, 0, 0, 92.7) !== 0) throw new Error("clip start");
       if (lineBeatAtSec(scotch.firstLineBeats)?.length !== scotch.firstLineBeats.length) {
         throw new Error("scotch beat timings");
       }
