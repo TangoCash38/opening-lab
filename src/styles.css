@@ -3068,8 +3068,8 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   padding: 0;
 }
 
-/* Snug to the dock. The board's own max-width must not center it away from him. */
-.home-coach-practice .home-board > * {
+/* Snug to the dock. ChessBoard centers itself with mx-auto; keep the wood against the coach. */
+.home-coach-practice .home-board .mx-auto {
   margin-left: 0;
   margin-right: auto;
 }
