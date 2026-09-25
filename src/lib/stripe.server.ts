@@ -215,7 +215,10 @@ export async function createCheckoutSession(request: Request): Promise<Response>
         price_data: {
           currency: "gbp",
           unit_amount: pence,
-          product_data: { name: pack.name },
+          product_data: {
+            name: pack.name,
+            description: `${price} unlocks the whole pack — all ${pack.lines.length} lines`,
+          },
         },
       };
     }

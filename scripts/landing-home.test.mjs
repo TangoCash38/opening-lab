@@ -111,6 +111,10 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Chess opening drills available now":').length - 1, 12);
   assert.equal(copy.split("\n    Site:").length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
+  assert.equal(copy.split('"{price} unlocks the whole pack":').length - 1, 12);
+  assert.equal(copy.split('"Whole pack · {price} — all {n} lines":').length - 1, 12);
+  assert.match(landing, /Whole pack · \{price\} — all \{n\} lines/);
+  assert.match(landing, /\{n\} free · \{price\} unlocks the whole pack/);
   assert.equal(copy.split('"Study first. Then test yourself from memory":').length - 1, 12);
   assert.equal(
     copy.split('"Please leave feedback for openings you’d like to see":').length - 1,

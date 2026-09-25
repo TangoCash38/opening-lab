@@ -99,8 +99,14 @@ export function LandingHome({
   const priceLabel = (pack: Pack): string => {
     const freeCount = FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0;
     const price = packPrice(pack);
-    if (freeCount > 0 && price) return t("{n} free · {price}", { n: freeCount, price });
-    return price ?? t("Free");
+    if (!price) return t("Free");
+    if (freeCount > 0) {
+      return t("{n} free · {price} unlocks the whole pack", { n: freeCount, price });
+    }
+    return t("Whole pack · {price} — all {n} lines", {
+      price,
+      n: pack.lines.length,
+    });
   };
 
   return (

@@ -227,17 +227,15 @@ function PackCard({
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
                   {t("Unlocked")}
                 </span>
-              ) : (
-                <>
-                  <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
-                    {t("Pay as you go")}
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated">
-                    <Lock className="size-3" strokeWidth={2.5} aria-hidden />
-                    {price}
-                  </span>
-                </>
-              )}
+              ) : price ? (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated"
+                  data-whole-pack-price
+                >
+                  <Lock className="size-3 shrink-0" strokeWidth={2.5} aria-hidden />
+                  {t("{price} unlocks the whole pack", { price })}
+                </span>
+              ) : null}
               <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
                 {pack.eco}
               </span>
@@ -296,11 +294,15 @@ function PackCard({
               comingSoonClosed
                 ? t("Coming soon")
                 : price
-                  ? t("{price} · See {n} {pack} lines", {
-                      price,
-                      n: pack.lines.length,
-                      pack: shortPack,
-                    })
+                  ? (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0
+                    ? t("{n} free · {price} unlocks the whole pack", {
+                        n: FREE_SAMPLE_LINE_IDS[pack.id].length,
+                        price,
+                      })
+                    : t("Whole pack · {price} — all {n} lines", {
+                        price,
+                        n: pack.lines.length,
+                      })
                   : t("Tap to see {n} {pack} lines", {
                       n: pack.lines.length,
                       pack: shortPack,
@@ -665,6 +667,7 @@ export function PackList({
         <UnlockModal
           packName={modal.pack.name}
           price={modal.price}
+          lineCount={modal.pack.lines.length}
           playSku={hasPaidPlaySkuPath(modal.pack) && canPurchasePack(modal.pack.id)}
           onClose={() => {
             if (!payBusy) setModal(null);

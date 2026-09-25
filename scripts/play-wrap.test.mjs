@@ -231,7 +231,7 @@ test("website does not show the app coming soon / continue on the web overlay", 
 test("pack unlock sheet Stripe line has no Yours to keep", () => {
   const modal = src("src/components/opening-lab/unlock-modal.tsx");
   const i18n = src("src/lib/i18n.ts");
-  assert.match(modal, /t\("Unlock this pack"\)/);
+  assert.match(modal, /t\("\{price\} unlocks the whole pack"/);
   assert.match(modal, /t\("Card via Stripe\."\)/);
   assert.doesNotMatch(modal, /Yours to keep/);
   assert.equal(i18n.split('"Card via Stripe.":').length - 1, 12);

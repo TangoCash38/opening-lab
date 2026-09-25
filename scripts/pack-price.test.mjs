@@ -197,3 +197,26 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
 });
+
+test("£1.99 is the whole pack, not one line", () => {
+  const landing = readFileSync(join(root, "src/components/opening-lab/home-intro.tsx"), "utf8");
+  const list = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
+  const hero = readFileSync(join(root, "src/components/opening-lab/home-hero.tsx"), "utf8");
+  const modal = readFileSync(join(root, "src/components/opening-lab/unlock-modal.tsx"), "utf8");
+  const stripe = readFileSync(join(root, "src/lib/stripe.server.ts"), "utf8");
+  const copy = readFileSync(join(root, "src/lib/landing-copy.ts"), "utf8");
+  for (const file of [landing, list, hero, modal]) {
+    assert.match(file, /\{price\} unlocks the whole pack/);
+  }
+  assert.match(landing, /Whole pack · \{price\} — all \{n\} lines/);
+  assert.match(list, /Whole pack · \{price\} — all \{n\} lines/);
+  assert.match(modal, /lineCount/);
+  assert.match(modal, /Whole pack · \{price\} — all \{n\} lines/);
+  assert.match(
+    stripe,
+    /description: `\$\{price\} unlocks the whole pack — all \$\{pack\.lines\.length\} lines`/,
+  );
+  assert.equal(copy.split('"{price} unlocks the whole pack":').length - 1, 12);
+  assert.doesNotMatch(list, /Pay as you go/);
+  assert.doesNotMatch(hero, />\s*\{price\}\s*</);
+});
