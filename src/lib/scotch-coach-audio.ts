@@ -53,6 +53,8 @@ function mountNarration(mp3Url: string, oggUrl: string | null, kind: string): HT
   const mp3 = document.createElement("source");
   mp3.src = mp3Url;
   mp3.type = "audio/mpeg";
+  const path = mp3Url.split("?")[0]?.toLowerCase() ?? "";
+  if (path.endsWith(".wav")) mp3.type = "audio/wav";
   audio.append(mp3);
   if (oggUrl) {
     const ogg = document.createElement("source");

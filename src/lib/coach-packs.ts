@@ -41,6 +41,7 @@ import {
   markScotchCoachSeen,
 } from "@/lib/scotch-coach";
 import { CARO_INTRO_STEM, CARO_INTRO_STEM_AT_SEC } from "@/lib/caro-intro-stem";
+import { LONDON_INTRO_STEM, LONDON_INTRO_STEM_AT_SEC } from "@/lib/london-intro-stem";
 
 /** Gentle caption dwell when a talk has no recording. About 4 to 6 seconds. */
 export const COACH_TEXT_BEAT_SEC = 5;
@@ -74,9 +75,19 @@ export type CoachPackConfig = {
   introAudioFallbackSec?: number;
   /** Timings for `introAudio`. Absent = equal slices of the clip. */
   introBeatAtSec?: readonly number[];
-  /** Narration-clock stem for an audio intro (Scotch gambit). */
+  /** Narration-clock stem for an audio intro (Scotch gambit, Caro e4 c6, London). */
   introStem?: readonly string[];
   introStemAtSec?: readonly number[];
+  /**
+   * Play `introStem` as White moves only. Black pieces stay on their
+   * home squares. The London formation uses this.
+   */
+  introStemWhiteOnly?: boolean;
+  /**
+   * Absent or true: finishing the intro can open the first-line talk.
+   * London is intro-only — Practice then starts on the initial position.
+   */
+  lineTalk?: boolean;
   /** Book line that opens the first-line talk. Not the display title. */
   firstLineId: string;
   firstLineTitle: string;
@@ -336,6 +347,24 @@ const CARO_KANN_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+const LONDON_PACK_ID = "london";
+
+export const LONDON_INTRO_WAV = "/coach/london/professor-potato-pie-london-intro.wav";
+/** Sean's London intro. Beat times below were read off this clip. */
+export const LONDON_INTRO_SEC = 57.4;
+
+const LONDON_INTRO = [
+  "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.",
+  "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.",
+  "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.",
+  "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.",
+  "The precise order can change, but that familiar formation is the heart of the London system.",
+  "It is a solid, sensible opening that has been played by club players and grandmasters alike.",
+  "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.",
+] as const;
+
+const LONDON_INTRO_AT_SEC = [0, 9.9, 21.2, 27.4, 36.9, 44.1, 51.4] as const;
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -381,6 +410,20 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineAudio: CARO_KANN_LINE_MP3,
     firstLineAudioFallbackSec: CARO_KANN_LINE_SEC,
   },
+  [LONDON_PACK_ID]: {
+    introTitle: "London System",
+    introBeats: LONDON_INTRO,
+    introAudio: LONDON_INTRO_WAV,
+    introAudioFallbackSec: LONDON_INTRO_SEC,
+    introBeatAtSec: LONDON_INTRO_AT_SEC,
+    introStem: LONDON_INTRO_STEM,
+    introStemAtSec: LONDON_INTRO_STEM_AT_SEC,
+    introStemWhiteOnly: true,
+    lineTalk: false,
+    firstLineId: "lon1",
+    firstLineTitle: "Line 1",
+    firstLineBeats: [],
+  },
 };
 
 export function coachPack(packId: string): CoachPackConfig | undefined {
@@ -400,7 +443,7 @@ export function coachPackIntroApplies(packId: string): boolean {
 export function coachPackLineApplies(input: { packId: string; lineId: string }): boolean {
   if (input.packId === SCOTCH_PACK_ID) return false;
   const pack = COACH_PACKS[input.packId];
-  if (!pack) return false;
+  if (!pack || pack.lineTalk === false) return false;
   return input.lineId === pack.firstLineId;
 }
 
@@ -473,7 +516,7 @@ export function coachTalkPlies(
   const pack = COACH_PACKS[packId];
   if (!pack) return null;
   if (talk === "canal") return null;
-  // An intro stem (Scotch gambit, Caro e4 c6) follows the clip clock.
+  // An intro stem (Scotch gambit, Caro e4 c6, London formation) follows the clip clock.
   // Intros without a stem hold the start position: their captions have no plies.
   if (talk === "intro" && pack.introStem) return null;
   if (talk === "line" && pack.firstLinePlaysPackLine) return null;

@@ -30,10 +30,13 @@ function compileCoachPacks(t) {
   writeFileSync(join(dir, "scotch-coach.mjs"), scotchJs);
   const stemJs = ts.transpileModule(src("src/lib/caro-intro-stem.ts"), options).outputText;
   writeFileSync(join(dir, "caro-intro-stem.mjs"), stemJs);
+  const londonJs = ts.transpileModule(src("src/lib/london-intro-stem.ts"), options).outputText;
+  writeFileSync(join(dir, "london-intro-stem.mjs"), londonJs);
   const js = ts
     .transpileModule(src("src/lib/coach-packs.ts"), options)
     .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs")
-    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs");
+    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs")
+    .replaceAll("@/lib/london-intro-stem", "./london-intro-stem.mjs");
   writeFileSync(join(dir, "coach-packs.mjs"), js);
   t.after(() => {
     rmSync(dir, { recursive: true, force: true });
@@ -352,6 +355,8 @@ test("finishing the pack intro opens the first-line talk; Skip and the gym pages
         [{ packId: "opening-traps", lineId: "ot2", lineIndex: 1, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
         [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
+        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
       ];
       for (const [input, expected] of cases) {
         const got = coachTalkAfterPackIntro(input);

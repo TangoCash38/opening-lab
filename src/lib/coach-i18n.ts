@@ -17,6 +17,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · un té y el tablero abierto",
     "Line 1 · ten lines from the gambit": "Línea 1 · diez líneas del gambito",
     "Opening Traps": "Trampas de apertura",
+    "London System": "Sistema de Londres",
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
   },
@@ -30,6 +31,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · 一杯茶与开阔的棋盘",
     "Line 1 · ten lines from the gambit": "第 1 线 · 弃兵的十条线路",
     "Opening Traps": "开局陷阱",
+    "London System": "伦敦体系",
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
   },
@@ -43,6 +45,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · un thé et l'échiquier ouvert",
     "Line 1 · ten lines from the gambit": "Ligne 1 · dix lignes du gambit",
     "Opening Traps": "Pièges d'ouverture",
+    "London System": "Système de Londres",
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
   },
@@ -56,6 +59,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · Tee und das offene Brett",
     "Line 1 · ten lines from the gambit": "Linie 1 · zehn Linien aus dem Gambit",
     "Opening Traps": "Eröffnungsfallen",
+    "London System": "Londoner System",
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
   },
@@ -69,6 +73,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · um chá e o tabuleiro aberto",
     "Line 1 · ten lines from the gambit": "Linha 1 · dez linhas do gambito",
     "Opening Traps": "Armadilhas de abertura",
+    "London System": "Sistema de Londres",
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
   },
@@ -82,6 +87,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · чай и открытая доска",
     "Line 1 · ten lines from the gambit": "Линия 1 · десять линий гамбита",
     "Opening Traps": "Дебютные ловушки",
+    "London System": "Лондонская система",
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
   },
@@ -95,6 +101,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · un tè e la scacchiera aperta",
     "Line 1 · ten lines from the gambit": "Linea 1 · dieci linee del gambetto",
     "Opening Traps": "Trappole di apertura",
+    "London System": "Sistema di Londra",
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
   },
@@ -108,6 +115,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · एक चाय और खुला बोर्ड",
     "Line 1 · ten lines from the gambit": "लाइन 1 · गैंबिट की दस लाइनें",
     "Opening Traps": "ओपनिंग के जाल",
+    "London System": "लंदन प्रणाली",
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
   },
@@ -121,6 +129,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · お茶と開いた盤",
     "Line 1 · ten lines from the gambit": "ライン 1 · ギャンビットの十ライン",
     "Opening Traps": "オープニングの罠",
+    "London System": "ロンドン・システム",
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
   },
@@ -134,6 +143,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · شاي ورقعة مفتوحة",
     "Line 1 · ten lines from the gambit": "الخط 1 · عشرة خطوط من الغامبت",
     "Opening Traps": "فخاخ الافتتاح",
+    "London System": "نظام لندن",
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
   },
@@ -147,6 +157,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Scotch Gambit · a cuppa and the open board": "Scotch Gambit · bir çay ve açık tahta",
     "Line 1 · ten lines from the gambit": "Hat 1 · gambitten on hat",
     "Opening Traps": "Açılış tuzakları",
+    "London System": "Londra sistemi",
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
   },
@@ -275,6 +286,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "No hacen falta fuegos artificiales: solo estructura sana, presión paciente y cada pieza bien empleada.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "Te toca a ti. Repite la línea hasta que las jugadas se sientan menos como memoria y más como buen criterio.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Muy bien, aquí Professor Potato Pie, té en la mano, y hoy echamos un vistazo breve al sistema de Londres.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "La apertura quedó muy ligada al gran Torneo de Londres de 1922, donde esta disposición fiable atrajo más atención.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Bien, normalmente empieza con peón a d4, caballo a f3 y alfil a f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Luego viene peón a e3, peón a c3, caballo a d2, alfil a d3 y el enroque corto.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "El orden exacto puede cambiar, pero esa formación familiar es el corazón del sistema de Londres.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "Es una apertura sólida y sensata, jugada tanto por jugadores de club como por grandes maestros.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Bien, disfruta al familiarizarte más con el sistema de Londres y veamos cómo encajan las piezas.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -394,6 +419,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "不需要烟火，只要健康的结构、耐心的压力，以及每只棋子都在干正事。",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "交给你了。把这条线路练到这些着法更像常识，而不像记忆。",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "好，我是 Professor Potato Pie，手里端着茶，今天我们简要看一看伦敦体系。",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "这种开局与1922年的伦敦大赛密切相关，当时这套可靠的布置引起了更广泛的注意。",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "对，通常从兵到 d4、马到 f3、象到 f4 开始。",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "接着是兵到 e3、兵到 c3、马到 d2、象到 d3，以及王翼易位。",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "精确的次序可以改变，但那种熟悉的阵型就是伦敦体系的核心。",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "这是一种扎实、明智的开局，俱乐部棋手和特级大师都下过。",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "好，享受进一步熟悉伦敦体系的过程，我们来看看这些棋子如何配合。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -518,6 +557,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Pas besoin de feu d'artifice : juste une structure saine, une pression patiente, et chaque pièce utilement employée.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "À toi. Répète la ligne jusqu'à ce que les coups ressemblent moins à de la mémoire et plus à du bon sens.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Bien, Professor Potato Pie ici, thé en main, et aujourd'hui nous jetons un bref regard sur le système de Londres.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "Cette ouverture est devenue étroitement associée au grand Tournoi de Londres de 1922, où ce dispositif fiable a attiré une attention plus large.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Bien, elle commence d'ordinaire par le pion en d4, le cavalier en f3 et le fou en f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Viennent ensuite le pion en e3, le pion en c3, le cavalier en d2, le fou en d3 et le petit roque.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "L'ordre précis peut changer, mais cette formation familière est le cœur du système de Londres.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "C'est une ouverture solide et sensée, jouée aussi bien par les joueurs de club que par les grands maîtres.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Bien, prenez plaisir à mieux connaître le système de Londres, et voyons comment les pièces s'assemblent.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -641,6 +694,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Kein Feuerwerk nötig, nur gesunde Struktur, geduldiger Druck und jede Figur sinnvoll beschäftigt.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "Nun du. Übe die Linie, bis die Züge sich weniger nach Gedächtnis und mehr nach gesundem Urteil anfühlen.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Also dann, hier ist Professor Potato Pie, Tee in der Hand, und heute werfen wir einen kurzen Blick auf das Londoner System.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "Die Eröffnung wurde eng mit dem großen Londoner Turnier von 1922 verbunden, wo dieser verlässliche Aufbau weitere Aufmerksamkeit fand.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Richtig, sie beginnt gewöhnlich mit Bauer nach d4, Springer nach f3 und Läufer nach f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Dann folgen Bauer nach e3, Bauer nach c3, Springer nach d2, Läufer nach d3 und die kurze Rochade.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "Die genaue Reihenfolge kann sich ändern, aber diese vertraute Formation ist das Herz des Londoner Systems.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "Es ist eine solide, vernünftige Eröffnung, die sowohl Vereinsspieler als auch Großmeister gespielt haben.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Also, genieße es, das Londoner System besser kennenzulernen, und schauen wir, wie die Figuren zusammenpassen.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -764,6 +831,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Não é preciso fogo de artifício: só estrutura sã, pressão paciente e cada peça bem empregue.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "Agora és tu. Repete a linha até os lances parecerem menos memória e mais bom senso.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Muito bem, aqui é o Professor Potato Pie, chá na mão, e hoje damos uma breve olhada no Sistema de Londres.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "A abertura ficou intimamente ligada ao Grande Torneio de Londres de 1922, onde esta estrutura fiável chamou mais atenção.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Certo, normalmente começa com peão a d4, cavalo a f3 e bispo a f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Depois vem peão a e3, peão a c3, cavalo a d2, bispo a d3 e o roque pequeno.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "A ordem exacta pode mudar, mas essa formação familiar é o coração do Sistema de Londres.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "É uma abertura sólida e sensata, jogada tanto por jogadores de clube como por grandes mestres.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Certo, aproveita para te familiarizares mais com o Sistema de Londres e vamos ver como as peças encaixam.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -886,6 +967,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Фейерверк не нужен: только здоровая структура, терпеливое давление и каждая фигура при деле.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "Теперь ты. Повторяй линию, пока ходы не станут меньше похожи на память и больше — на здравый смысл.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Итак, Professor Potato Pie на связи, чай в руке, и сегодня мы коротко смотрим на лондонскую систему.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "Этот дебют тесно связали с большим Лондонским турниром 1922 года, где эта надёжная расстановка привлекла более широкое внимание.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Итак, обычно начинают пешкой на d4, конём на f3 и слоном на f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Затем пешка на e3, пешка на c3, конь на d2, слон на d3 и короткая рокировка.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "Точный порядок может меняться, но эта знакомая расстановка — сердце лондонской системы.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "Это крепкий, разумный дебют, который играли и клубные игроки, и гроссмейстеры.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Итак, приятного знакомства с лондонской системой, и посмотрим, как фигуры складываются вместе.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1009,6 +1104,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Niente fuochi d'artificio: solo struttura sana, pressione paziente e ogni pezzo utilmente occupato.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "Ora tocca a te. Ripeti la linea finché le mosse non sembrano meno memoria e più buon senso.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Bene, qui è Professor Potato Pie, tè in mano, e oggi diamo un breve sguardo al sistema di Londra.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "L'apertura è diventata strettamente associata al grande Torneo di Londra del 1922, dove questo impianto affidabile attirò più attenzione.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Bene, di solito inizia con pedone in d4, cavallo in f3 e alfiere in f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Poi vengono pedone in e3, pedone in c3, cavallo in d2, alfiere in d3 e l'arrocco corto.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "L'ordine preciso può cambiare, ma quella formazione familiare è il cuore del sistema di Londra.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "È un'apertura solida e sensata, giocata sia dai giocatori di club sia dai grandi maestri.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Bene, goditi il prendere confidenza con il sistema di Londra e vediamo come i pezzi si combinano.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1132,6 +1241,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "आतिशबाज़ी की ज़रूरत नहीं, केवल स्वस्थ संरचना, धैर्यवान दबाव, और हर टुकड़ा सार्थक काम में।",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "अब तुम्हारी बारी। लाइन को तब तक दोहराओ जब तक चालें याद से कम और समझ से ज़्यादा न लगें।",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "अच्छा, यहाँ Professor Potato Pie है, हाथ में चाय, और आज हम लंदन प्रणाली पर एक संक्षिप्त नज़र डालते हैं।",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "यह ओपनिंग 1922 के महान लंदन टूर्नामेंट से घनिष्ठ रूप से जुड़ी, जहाँ इस भरोसेमंद व्यवस्था ने व्यापक ध्यान खींचा।",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "ठीक, आमतौर पर यह d4 पर प्यादा, f3 पर घोड़ा और f4 पर हाथी से शुरू होती है।",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "फिर आता है e3 पर प्यादा, c3 पर प्यादा, d2 पर घोड़ा, d3 पर हाथी और किंग-साइड कैसलिंग।",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "सटीक क्रम बदल सकता है, लेकिन वह परिचित रचना लंदन प्रणाली का हृदय है।",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "यह एक ठोस, समझदार ओपनिंग है, जिसे क्लब खिलाड़ी और ग्रैंडमास्टर दोनों ने खेला है।",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "ठीक, लंदन प्रणाली से और परिचित होने का आनंद लो, और देखें कि मोहरे कैसे साथ बैठते हैं।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1254,6 +1377,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "花火は要らない。健全な構造、辛抱強い圧力、そしてすべての駒が役に立っていればよい。",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "あとは君だ。手が記憶というより良識に感じるまで、ラインを繰り返そう。",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "よし、Professor Potato Pie だ。茶を持って、今日はロンドン・システムを少し見ていこう。",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "このオープニングは1922年のロンドン大会と密接に結びつき、この頼れる布陣が広く注目された。",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "そう、ふつうはポーンを d4、ナイトを f3、ビショップを f4 から始まる。",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "続いてポーンを e3、ポーンを c3、ナイトを d2、ビショップを d3、そしてキングサイドのキャスリングだ。",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "正確な手順は変わり得るが、その見慣れた陣形がロンドン・システムの核心だ。",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "堅実で分別のあるオープニングで、クラブプレイヤーもグランドマスターも指してきた。",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "よし、ロンドン・システムにもっと親しむのを楽しんで、駒がどう噛み合うか見ていこう。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1374,6 +1511,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "لا حاجة إلى ألعاب نارية، فقط بنية سليمة وضغط صبور وكل قطعة موظّفة بما ينفع.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "الآن دورك. كرّر الخط حتى تشعر الحركات بأنها حسن تقدير أكثر منها ذاكرة.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "حسنًا، هنا Professor Potato Pie، والشاي في اليد، واليوم نلقي نظرة موجزة على نظام لندن.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "ارتبط هذا الافتتاح ارتباطًا وثيقًا ببطولة لندن الكبرى عام 1922، حيث جذب هذا الترتيب الموثوق انتباهًا أوسع.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "حسنًا، يبدأ عادة ببيدق إلى d4، وحصان إلى f3، وفيل إلى f4.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "ثم بيدق إلى e3، وبيدق إلى c3، وحصان إلى d2، وفيل إلى d3، والتبييت القصير.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "قد يتغير الترتيب الدقيق، لكن ذلك التشكيل المألوف هو قلب نظام لندن.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "إنه افتتاح متين وعاقل، لعبه لاعبو الأندية وأساتذة الكبار على السواء.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "حسنًا، استمتع بالتعرّف أكثر على نظام لندن، ولنرَ كيف تتآلف القطع.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1496,5 +1647,19 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Havai fişek gerekmez; yalnızca sağlam yapı, sabırlı baskı ve her taşın işe yaraması.",
     "Over to you. Drill the line until the moves feel less like memory and more like good sense.":
       "Sıra sende. Hamleler bellekten çok sağduyu gibi hissedilene kadar hattı tekrarla.",
+    "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.":
+      "Peki, burada Professor Potato Pie, çay elde, ve bugün Londra sistemine kısa bir bakış atıyoruz.",
+    "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.":
+      "Bu açılış, 1922'deki Büyük Londra Turnuvası ile yakından ilişkilendi; bu güvenilir düzen daha geniş dikkat çekti.",
+    "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.":
+      "Evet, normalde d4'e piyon, f3'e at ve f4'e fil ile başlar.",
+    "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.":
+      "Sonra e3'e piyon, c3'e piyon, d2'ye at, d3'e fil ve kısa rok gelir.",
+    "The precise order can change, but that familiar formation is the heart of the London system.":
+      "Kesin sıra değişebilir, ama o tanıdık düzen Londra sisteminin kalbidir.",
+    "It is a solid, sensible opening that has been played by club players and grandmasters alike.":
+      "Kulüp oyuncularının da büyükustaların da oynadığı sağlam, akıllıca bir açılıştır.",
+    "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
+      "Peki, Londra sistemine daha yakından alışmanın keyfini çıkar, ve taşların nasıl oturduğuna bakalım.",
   },
 };

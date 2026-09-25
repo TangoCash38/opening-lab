@@ -30,10 +30,13 @@ function compileCoachPacks(t) {
   writeFileSync(join(dir, "scotch-coach.mjs"), scotchJs);
   const stemJs = ts.transpileModule(src("src/lib/caro-intro-stem.ts"), options).outputText;
   writeFileSync(join(dir, "caro-intro-stem.mjs"), stemJs);
+  const londonJs = ts.transpileModule(src("src/lib/london-intro-stem.ts"), options).outputText;
+  writeFileSync(join(dir, "london-intro-stem.mjs"), londonJs);
   const js = ts
     .transpileModule(src("src/lib/coach-packs.ts"), options)
     .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs")
-    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs");
+    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs")
+    .replaceAll("@/lib/london-intro-stem", "./london-intro-stem.mjs");
   writeFileSync(join(dir, "coach-packs.mjs"), js);
   t.after(() => {
     rmSync(dir, { recursive: true, force: true });
