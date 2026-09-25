@@ -340,6 +340,9 @@ export function HomeHero({
       } else if (pack.id === "italian-white") {
         // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
         line = pack.lines.find((l) => l.id === "it1");
+      } else if (pack.id === "qg-white") {
+        // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
+        line = pack.lines.find((l) => l.id === "qg1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {

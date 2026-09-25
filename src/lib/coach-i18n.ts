@@ -19,6 +19,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Trampas de apertura",
     "London System": "Sistema de Londres",
     "Italian Game": "Apertura Italiana",
+    "Queen’s Gambit": "Gambito de dama",
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
   },
@@ -34,6 +35,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "开局陷阱",
     "London System": "伦敦体系",
     "Italian Game": "意大利开局",
+    "Queen’s Gambit": "后翼弃兵",
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
   },
@@ -49,6 +51,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Pièges d'ouverture",
     "London System": "Système de Londres",
     "Italian Game": "Partie italienne",
+    "Queen’s Gambit": "Gambit dame",
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
   },
@@ -64,6 +67,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Eröffnungsfallen",
     "London System": "Londoner System",
     "Italian Game": "Italienische Partie",
+    "Queen’s Gambit": "Damengambit",
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
   },
@@ -79,6 +83,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Armadilhas de abertura",
     "London System": "Sistema de Londres",
     "Italian Game": "Abertura Italiana",
+    "Queen’s Gambit": "Gambito da Dama",
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
   },
@@ -94,6 +99,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Дебютные ловушки",
     "London System": "Лондонская система",
     "Italian Game": "Итальянская партия",
+    "Queen’s Gambit": "Ферзевый гамбит",
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
   },
@@ -109,6 +115,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Trappole di apertura",
     "London System": "Sistema di Londra",
     "Italian Game": "Partita Italiana",
+    "Queen’s Gambit": "Gambetto di donna",
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
   },
@@ -124,6 +131,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "ओपनिंग के जाल",
     "London System": "लंदन प्रणाली",
     "Italian Game": "इतालवी ओपनिंग",
+    "Queen’s Gambit": "क्वीन गैम्बिट",
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
   },
@@ -139,6 +147,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "オープニングの罠",
     "London System": "ロンドン・システム",
     "Italian Game": "イタリア・ゲーム",
+    "Queen’s Gambit": "クイーンズ・ギャンビット",
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
   },
@@ -154,6 +163,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "فخاخ الافتتاح",
     "London System": "نظام لندن",
     "Italian Game": "الافتتاح الإيطالي",
+    "Queen’s Gambit": "غامبيت الملكة",
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
   },
@@ -169,6 +179,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Açılış tuzakları",
     "London System": "Londra sistemi",
     "Italian Game": "İtalyan Açılışı",
+    "Queen’s Gambit": "Vezir gambiti",
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
   },
@@ -383,6 +394,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Sigue desarrollando, vigila el centro y estate listo para la ruptura d4 cuando llegue el momento.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Repite la línea hasta que las jugadas se sientan tan naturales como poner la tetera.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Muy bien, aquí Professor Potato Pie, con el té bien hecho, y hoy presentamos una de las grandes aperturas clásicas, el gambito de dama.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "La apertura aparece en escritos de ajedrez desde finales del siglo XV, y generaciones de jugadores distinguidos la han usado para disputar el centro.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Las blancas empiezan con peón a d4, y las negras responden peón a d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Luego las blancas juegan peón a c4, desafiando el peón central negro y ofreciendo el peón de c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Se llama gambito, aunque las blancas suelen recuperar el peón si las negras lo aceptan,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Así que esto es menos una donación temeraria y más una invitación estratégica, servida con cortesía pero con segundas intenciones.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "A partir de aquí, las negras pueden aceptar el peón o rechazarlo y mantener un centro sólido.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bien, disfruta al familiarizarte más con el gambito de dama y veamos qué puede persuadir a hacer a las negras ese pequeño peón de c tan aventurero.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Muy bien, bienvenido a la Línea 1 de nuestro pack de aprendizaje del gambito de dama.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "Esto es ajedrez clásico de verdad: cimientos firmes, desarrollo paciente y ningún mueble volando por la habitación.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Empezamos con peón a d4 y las negras responden peón a d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Peón a c4 desafía el centro y las negras contestan peón a e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "Eso es el gambito de dama rechazado. Las negras sostienen el peón de d5 en lugar de aceptar nuestra oferta.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "Caballo a c3, caballo a f6, alfil a g5 crea la clavada y las negras desarrollan con calma el alfil a e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "Jugamos peón a e3 y las negras enrocan en el flanco de rey.",
+    "Knight to f3, knight to d7.": "Caballo a f3, caballo a d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Torre a c1 coloca la torre en la columna c mientras las negras juegan peón a c6 y refuerzan la estructura central.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Alfil a d3 y las negras resuelven ahora la tensión con peón de d5 toma c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "Nuestro alfil toma c4, recuperando el peón con desarrollo.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "El caballo negro va a d5 y ocupa una casilla central fuerte.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Cambiamos con alfil toma e7 y la dama negra recaptura en e7.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "Ahí está, una posición equilibrada del gambito de dama, con desarrollo sensato y todavía mucho juego en el centro.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Aprende la estructura, entiende los cambios y deja que la posición te diga cuándo es hora de presionar.",
+    "Very civilised and quietly ambitious.": "Muy civilizado y discretamente ambicioso.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -586,6 +643,48 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "继续出子，盯住中心，时机合适时准备好 d4 突破。",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "把这条变例练到像烧开水壶一样自然。",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "好，我是 Professor Potato Pie，茶已泡好，今天我们介绍一种伟大的古典开局，后翼弃兵。",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "这种开局自十五世纪末就出现在国际象棋文献中，一代代杰出棋手用它争夺中心。",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "白方以兵到 d4 开始，黑方应兵到 d5。",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "然后白方走兵到 c4，挑战黑方的中心兵，并献出 c 兵。",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "它被称为弃兵，不过如果黑方接受，白方通常能把兵夺回，",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "所以这与其说是鲁莽的赠送，不如说是一次策略上的邀请，礼貌奉上，却另有用意。",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "从这里起，黑方可以接受这枚兵，也可以拒绝并保持坚实的中心。",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "好，享受进一步熟悉后翼弃兵的过程，我们来看看那枚爱冒险的小 c 兵能说服黑方做什么。",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "好，欢迎来到后翼弃兵学习棋包的第 1 线。",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "这是真正的古典国际象棋：基础扎实，发展耐心，没有家具飞过房间。",
+    "We begin with pawn to d4 and black answers pawn to d5.": "我们从兵到 d4 开始，黑方应兵到 d5。",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "兵到 c4 挑战中心，黑方应以兵到 e6。",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "这就是后翼弃兵拒绝。黑方支撑 d5 兵，而不是接受我们的献兵。",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "马到 c3，马到 f6，象到 g5 形成牵制，黑方从容地把象出到 e7。",
+    "We play pawn to e3 and black castles kingside.": "我们走兵到 e3，黑方王翼易位。",
+    "Knight to f3, knight to d7.": "马到 f3，马到 d7。",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "车到 c1，把车放在 c 线，同时黑方走兵到 c6，加固中心结构。",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "象到 d3，黑方现在用 d5 兵吃 c4 来解除张力。",
+    "Our bishop takes c4 recovering the pawn with development.": "我们的象吃 c4，在出子的同时把兵夺回。",
+    "Black's knight moves to d5 and occupies a strong central square.": "黑方的马走到 d5，占据有力的中心格。",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "我们用象吃 e7 进行兑换，黑方的后在 e7 吃回。",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "就是这样，一个均衡的后翼弃兵局面，出子合理，中心仍有不少内容。",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "学会这种结构，理解这些兑换，让局面告诉你何时向前推进。",
+    "Very civilised and quietly ambitious.": "非常文明，又安静地抱有雄心。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -796,6 +895,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Continue à développer, surveille le centre et sois prêt pour la rupture d4 quand le moment sera venu.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Répète la ligne jusqu'à ce que les coups semblent aussi naturels que de mettre la bouilloire.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Bien, ici Professor Potato Pie, thé correctement infusé, et aujourd'hui nous présentons l'une des grandes ouvertures classiques, le gambit dame.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "L'ouverture apparaît dans les écrits échiquéens depuis la fin du XVe siècle, et des générations de joueurs distingués l'ont utilisée pour disputer le centre.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Les Blancs commencent par pion en d4, et les Noirs répondent pion en d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Puis les Blancs jouent pion en c4, défiant le pion central noir et offrant le pion c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "On l'appelle un gambit, bien que les Blancs puissent d'habitude récupérer le pion si les Noirs l'acceptent,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Donc ceci est moins un don irréfléchi qu'une invitation stratégique, servie poliment mais avec des arrière-pensées.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "À partir d'ici, les Noirs peuvent accepter le pion ou le refuser et garder un centre solide.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bien, prends plaisir à te familiariser davantage avec le gambit dame et voyons ce que ce petit pion c aventureux peut persuader les Noirs de faire.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Bien, bienvenue à la Ligne 1 de notre pack d'apprentissage du gambit dame.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "C'est du vrai jeu classique : des fondations fermes, un développement patient, et aucun meuble lancé à travers la pièce.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Nous commençons par pion en d4 et les Noirs répondent pion en d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Pion en c4 défie le centre et les Noirs répondent pion en e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "C'est le gambit dame refusé. Les Noirs soutiennent le pion d5 au lieu d'accepter notre offre.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "Cavalier en c3, cavalier en f6, fou en g5 crée le clouage et les Noirs développent calmement le fou en e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "Nous jouons pion en e3 et les Noirs roquent du côté roi.",
+    "Knight to f3, knight to d7.": "Cavalier en f3, cavalier en d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Tour en c1 place la tour sur la colonne c pendant que les Noirs jouent pion en c6 et renforcent la structure centrale.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Fou en d3 et les Noirs résolvent maintenant la tension avec pion de d5 prend c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "Notre fou prend c4, récupérant le pion tout en développant.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "Le cavalier noir va en d5 et occupe une forte case centrale.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Nous échangeons avec fou prend e7 et la dame noire reprend en e7.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "Voilà, une position équilibrée du gambit dame, avec un développement sensé et encore beaucoup de jeu au centre.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Apprends la structure, comprends les échanges et laisse la position te dire quand il est temps d'avancer.",
+    "Very civilised and quietly ambitious.": "Très civilisé, et discrètement ambitieux.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1005,6 +1150,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Entwickle weiter, beobachte das Zentrum und sei bereit für den d4-Durchbruch, wenn der Moment stimmt.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Übe die Linie, bis sich die Züge so natürlich anfühlen wie das Aufsetzen des Kessels.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Also dann, hier ist Professor Potato Pie, Tee richtig gebrüht, und heute stellen wir eine der großen klassischen Eröffnungen vor, das Damengambit.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "Die Eröffnung erscheint in Schachschriften seit dem späten fünfzehnten Jahrhundert, und Generationen ausgezeichneter Spieler haben sie genutzt, um das Zentrum zu bestreiten.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Weiß beginnt mit Bauer nach d4, und Schwarz antwortet mit Bauer nach d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Dann spielt Weiß Bauer nach c4, fordert den zentralen Bauern von Schwarz heraus und bietet den c-Bauern an.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Man nennt es ein Gambit, obwohl Weiß den Bauern meist zurückholen kann, wenn Schwarz annimmt,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Dies ist also weniger eine leichtsinnige Spende als eine strategische Einladung, höflich serviert, aber mit Hintergedanken.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Von hier aus kann Schwarz den Bauern annehmen oder ablehnen und ein solides Zentrum behalten.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Gut, hab Freude daran, das Damengambit näher kennenzulernen, und sehen wir, wozu dieser abenteuerlustige kleine c-Bauer Schwarz überreden kann.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Also dann, willkommen zu Linie 1 unseres Damengambit-Lernpacks.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "Das ist richtiges klassisches Schach: feste Grundlagen, geduldige Entwicklung und keine Möbel, die durch den Raum fliegen.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Wir beginnen mit Bauer nach d4 und Schwarz antwortet mit Bauer nach d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Bauer nach c4 fordert das Zentrum heraus und Schwarz antwortet mit Bauer nach e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "Das ist das abgelehnte Damengambit. Schwarz stützt den Bauern auf d5, statt unser Angebot anzunehmen.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "Springer nach c3, Springer nach f6, Läufer nach g5 erzeugt die Fesselung und Schwarz entwickelt ruhig den Läufer nach e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "Wir spielen Bauer nach e3 und Schwarz rochiert kurz.",
+    "Knight to f3, knight to d7.": "Springer nach f3, Springer nach d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Turm nach c1 stellt den Turm auf die c-Linie, während Schwarz Bauer nach c6 spielt und die Zentrumsstruktur stärkt.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Läufer nach d3 und Schwarz löst nun die Spannung mit Bauer von d5 schlägt c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "Unser Läufer schlägt c4 und holt den Bauern mit Entwicklung zurück.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "Schwarz' Springer zieht nach d5 und besetzt ein starkes Zentrumsfeld.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Wir tauschen mit Läufer schlägt e7 und Schwarz' Dame schlägt auf e7 zurück.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "Da ist sie, eine ausgeglichene Damengambit-Stellung mit vernünftiger Entwicklung und noch viel Spiel im Zentrum.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Lerne die Struktur, verstehe die Abtäusche und lass die Stellung dir sagen, wann es Zeit ist vorzugehen.",
+    "Very civilised and quietly ambitious.": "Sehr gesittet und still ehrgeizig.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1214,6 +1405,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Continua a desenvolver, vigia o centro e fica pronto para a ruptura d4 quando chegar o momento.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Repete a linha até as jogadas parecerem tão naturais como pôr a chaleira ao lume.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Muito bem, aqui está Professor Potato Pie, chá bem feito, e hoje apresentamos uma das grandes aberturas clássicas, o gambito da dama.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "A abertura aparece em escritos de xadrez desde o final do século XV, e gerações de jogadores distintos usaram-na para disputar o centro.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "As brancas começam com peão a d4, e as negras respondem peão a d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Depois as brancas jogam peão a c4, desafiando o peão central negro e oferecendo o peão de c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Chama-se gambito, embora as brancas possam normalmente recuperar o peão se as negras o aceitarem,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Portanto isto é menos uma doação imprudente e mais um convite estratégico, servido com educação mas com segundas intenções.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "A partir daqui, as negras podem aceitar o peão ou recusá-lo e manter um centro sólido.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bem, desfruta de te familiarizares mais com o gambito da dama e vejamos o que esse pequeno peão de c aventureiro pode persuadir as negras a fazer.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Muito bem, bem-vindo à Linha 1 do nosso pack de aprendizagem do gambito da dama.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "Isto é xadrez clássico a sério: bases firmes, desenvolvimento paciente e nenhuma mobília a voar pela sala.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Começamos com peão a d4 e as negras respondem peão a d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Peão a c4 desafia o centro e as negras respondem peão a e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "Isto é o gambito da dama recusado. As negras sustentam o peão de d5 em vez de aceitar a nossa oferta.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "Cavalo a c3, cavalo a f6, bispo a g5 cria o cravamento e as negras desenvolvem com calma o bispo a e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "Jogamos peão a e3 e as negras rocam no flanco do rei.",
+    "Knight to f3, knight to d7.": "Cavalo a f3, cavalo a d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Torre a c1 coloca a torre na coluna c enquanto as negras jogam peão a c6 e reforçam a estrutura central.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Bispo a d3 e as negras resolvem agora a tensão com peão de d5 toma c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "O nosso bispo toma c4, recuperando o peão com desenvolvimento.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "O cavalo negro vai a d5 e ocupa uma casa central forte.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Trocamos com bispo toma e7 e a dama negra recaptura em e7.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "Aí está, uma posição equilibrada do gambito da dama, com desenvolvimento sensato e ainda muito jogo no centro.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Aprende a estrutura, entende as trocas e deixa a posição dizer-te quando é hora de avançar.",
+    "Very civilised and quietly ambitious.": "Muito civilizado e discretamente ambicioso.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1422,6 +1659,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Продолжай развиваться, следи за центром и будь готов к прорыву d4, когда настанет момент.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Повторяй линию, пока ходы не станут такими же естественными, как поставить чайник.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Итак, это Professor Potato Pie, чай как следует заварен, и сегодня мы представляем один из великих классических дебютов, ферзевый гамбит.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "Этот дебют встречается в шахматных текстах с конца пятнадцатого века, и поколения выдающихся игроков использовали его, чтобы бороться за центр.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Белые начинают пешкой на d4, и чёрные отвечают пешкой на d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Затем белые играют пешкой на c4, оспаривая центральную пешку чёрных и предлагая пешку c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Это называют гамбитом, хотя белые обычно могут вернуть пешку, если чёрные её принимают,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Так что это меньше безрассудный дар и больше стратегическое приглашение, поданное вежливо, но с дальним умыслом.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Отсюда чёрные могут принять пешку или отказаться и сохранить прочный центр.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Хорошо, получай удовольствие, знакомясь ближе с ферзевым гамбитом, и посмотрим, на что этот предприимчивый маленький пешечный c может уговорить чёрных.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Итак, добро пожаловать на линию 1 нашего учебного пакета ферзевого гамбита.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "Это настоящие классические шахматы: прочный фундамент, терпеливое развитие и никакой мебели, летящей через комнату.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Мы начинаем пешкой на d4, и чёрные отвечают пешкой на d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Пешка на c4 оспаривает центр, и чёрные отвечают пешкой на e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "Это отказанный ферзевый гамбит. Чёрные поддерживают пешку d5, вместо того чтобы принять наше предложение.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "Конь на c3, конь на f6, слон на g5 создаёт связку, и чёрные спокойно развивают слона на e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "Мы играем пешкой на e3, и чёрные рокируют в короткую сторону.",
+    "Knight to f3, knight to d7.": "Конь на f3, конь на d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Ладья на c1 ставит ладью на линию c, пока чёрные играют пешкой на c6 и укрепляют центральную структуру.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Слон на d3, и чёрные снимают напряжение пешкой с d5 бьёт c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "Наш слон бьёт c4, возвращая пешку развитием.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "Конь чёрных идёт на d5 и занимает сильное центральное поле.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Мы размениваемся слоном, бьющим e7, и ферзь чёрных бьёт в ответ на e7.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "Вот она, уравновешенная позиция ферзевого гамбита, с разумным развитием и ещё большой игрой в центре.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Изучи структуру, пойми размены и дай позиции подсказать, когда пора наступать.",
+    "Very civilised and quietly ambitious.": "Очень цивилизованно и тихо амбициозно.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1630,6 +1913,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Continua a sviluppare, sorveglia il centro e sii pronto per la rottura d4 quando arriva il momento.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Ripeti la linea finché le mosse non sembrano naturali come mettere il bollitore.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Bene, qui è Professor Potato Pie, tè preparato come si deve, e oggi presentiamo una delle grandi aperture classiche, il gambetto di donna.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "L'apertura compare negli scritti scacchistici dalla fine del quindicesimo secolo, e generazioni di giocatori illustri l'hanno usata per contendere il centro.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Il Bianco inizia con pedone in d4, e il Nero risponde con pedone in d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Poi il Bianco gioca pedone in c4, sfidando il pedone centrale nero e offrendo il pedone c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Si chiama gambetto, anche se il Bianco di solito può recuperare il pedone se il Nero accetta,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Quindi questo è meno una donazione avventata e più un invito strategico, servito con cortesia ma con secondi fini.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Da qui il Nero può accettare il pedone o rifiutarlo e mantenere un centro solido.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bene, goditi il prendere confidenza con il gambetto di donna e vediamo cosa quel piccolo pedone c avventuroso può persuadere il Nero a fare.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Bene, benvenuto alla Linea 1 del nostro pacchetto di studio del gambetto di donna.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "Questi sono veri scacchi classici: fondamenta solide, sviluppo paziente e nessun mobile lanciato attraverso la stanza.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Cominciamo con pedone in d4 e il Nero risponde con pedone in d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Pedone in c4 sfida il centro e il Nero risponde con pedone in e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "Questo è il gambetto di donna rifiutato. Il Nero sostiene il pedone d5 invece di accettare la nostra offerta.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "Cavallo in c3, cavallo in f6, alfiere in g5 crea l'inchiodatura e il Nero sviluppa con calma l'alfiere in e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "Giochiamo pedone in e3 e il Nero arrocca sul lato di re.",
+    "Knight to f3, knight to d7.": "Cavallo in f3, cavallo in d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Torre in c1 mette la torre sulla colonna c mentre il Nero gioca pedone in c6 e rafforza la struttura centrale.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Alfiere in d3 e il Nero risolve ora la tensione con pedone da d5 prende c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "Il nostro alfiere prende c4, recuperando il pedone con lo sviluppo.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "Il cavallo nero va in d5 e occupa una forte casa centrale.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Cambiamo con alfiere prende e7 e la donna nera ricattura in e7.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "Eccola, una posizione equilibrata del gambetto di donna, con uno sviluppo sensato e ancora molto gioco al centro.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Impara la struttura, comprendi i cambi e lascia che la posizione ti dica quando è ora di spingere.",
+    "Very civilised and quietly ambitious.": "Molto civile e quietamente ambizioso.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1839,6 +2168,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "विकास जारी रखो, केंद्र पर नज़र रखो, और सही पल पर d4 तोड़ के लिए तैयार रहो।",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "लाइन को तब तक दोहराओ जब तक चालें केतली चढ़ाने जितनी स्वाभाविक न लगें।",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "ठीक है, यहाँ Professor Potato Pie हैं, चाय ठीक से बनी हुई, और आज हम एक महान शास्त्रीय ओपनिंग पेश करते हैं, क्वीन गैम्बिट।",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "यह ओपनिंग पंद्रहवीं सदी के अंत से शतरंज लेखन में दिखती है, और प्रतिष्ठित खिलाड़ियों की पीढ़ियों ने इससे केंद्र के लिए संघर्ष किया है।",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "सफेद d4 पर प्यादा से शुरू करते हैं, और काले d5 पर प्यादे से जवाब देते हैं।",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "फिर सफेद c4 पर प्यादा खेलते हैं, काले के केंद्रीय प्यादे को चुनौती देते हुए और c प्यादा अर्पित करते हुए।",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "इसे गैम्बिट कहते हैं, हालाँकि अगर काले स्वीकार करें तो सफेद आमतौर पर प्यादा वापस पा सकते हैं,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "तो यह लापरवाह दान कम और रणनीतिक निमंत्रण अधिक है, शिष्टता से परोसा गया लेकिन दूसरे इरादे के साथ।",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "यहाँ से काले प्यादा स्वीकार कर सकते हैं या उसे ठुकराकर ठोस केंद्र बनाए रख सकते हैं।",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "अच्छा, क्वीन गैम्बिट से और परिचित होने का आनंद लो और देखें कि वह साहसिक छोटा c प्यादा काले को क्या करने के लिए मना सकता है।",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "ठीक है, हमारे क्वीन गैम्बिट सीखने के पैक की लाइन 1 में स्वागत है।",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "यह असली शास्त्रीय शतरंज है: मजबूत नींव, धैर्यपूर्ण विकास, और कमरे के आर-पार उड़ता कोई फ़र्नीचर नहीं।",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "हम प्यादे से d4 पर शुरू करते हैं और काले प्यादे से d5 पर जवाब देते हैं।",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "प्यादा c4 पर केंद्र को चुनौती देता है और काले प्यादे से e6 पर उत्तर देते हैं।",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "यह अस्वीकृत क्वीन गैम्बिट है। काले d5 प्यादे को सहारा देते हैं, हमारी भेंट स्वीकार करने के बजाय।",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "घोड़ा c3 पर, घोड़ा f6 पर, हाथी g5 पर पिन बनाता है और काले शांति से हाथी e7 पर निकालते हैं।",
+    "We play pawn to e3 and black castles kingside.":
+      "हम प्यादा e3 पर खेलते हैं और काले राजा-पक्ष में कैसल करते हैं।",
+    "Knight to f3, knight to d7.": "घोड़ा f3 पर, घोड़ा d7 पर।",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "हाथी c1 पर हाथी को c-फ़ाइल पर रखता है, जबकि काले प्यादा c6 पर खेलते हैं और केंद्रीय ढाँचे को मज़बूत करते हैं।",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "हाथी d3 पर, और काले अब तनाव d5 से प्यादे के c4 लेने से हल करते हैं।",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "हमारा हाथी c4 लेता है और विकास के साथ प्यादा वापस पाता है।",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "काले का घोड़ा d5 पर जाता है और एक मज़बूत केंद्रीय घर घेरता है।",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "हम हाथी से e7 लेकर विनिमय करते हैं और काले की रानी e7 पर वापस लेती है।",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "यह रहा, क्वीन गैम्बिट की संतुलित स्थिति, समझदार विकास के साथ और केंद्र में अभी बहुत खेल।",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "ढाँचा सीखो, विनिमय समझो, और स्थिति को बताने दो कि आगे बढ़ने का समय कब है।",
+    "Very civilised and quietly ambitious.": "बहुत सभ्य और चुपचाप महत्त्वाकांक्षी।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2047,6 +2422,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "展開を続け、センターを見て、時機が来たら d4 の突破に備えよう。",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "手がやかんを火にかけるように自然になるまで、このラインを繰り返そう。",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "では、Professor Potato Pie です。お茶はきちんと淹れてあります。今日は偉大な古典的オープニングの一つ、クイーンズ・ギャンビットを紹介します。",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "このオープニングは十五世紀後半からチェスの文献に現れ、優れた棋士たちが何世代にもわたってセンターを争うために用いてきました。",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "白はポーンを d4 へ進め、黒はポーンを d5 で応じます。",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "それから白はポーンを c4 へ進め、黒の中央ポーンに挑み、c ポーンを差し出します。",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "ギャンビットと呼ばれますが、黒が受け取っても白はたいていポーンを取り戻せます、",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "ですからこれは無謀な寄贈というより戦略的な招待で、丁寧に出されながら裏の狙いがあります。",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "ここから黒はポーンを受け取るか、拒んで堅いセンターを保つかを選べます。",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "では、クイーンズ・ギャンビットにもっと親しむのを楽しみ、その冒険好きな小さな c ポーンが黒に何をさせるか見てみましょう。",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "では、クイーンズ・ギャンビット学習パックのライン 1 へようこそ。",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "これは本物の古典的チェスです。しっかりした土台、忍耐強い展開、そして部屋の向こうへ家具を投げ飛ばすことはありません。",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "ポーンを d4 から始め、黒はポーンを d5 で応じます。",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "ポーンを c4 へ進めてセンターに挑み、黒はポーンを e6 で応じます。",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "これがクイーンズ・ギャンビット・ディクラインドです。黒はこちらの申し出を受けるのではなく d5 のポーンを支えます。",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "ナイトを c3、ナイトを f6、ビショップを g5 へ進めてピンを作り、黒は落ち着いてビショップを e7 に展開します。",
+    "We play pawn to e3 and black castles kingside.":
+      "ポーンを e3 と指し、黒はキングサイドにキャスリングします。",
+    "Knight to f3, knight to d7.": "ナイトを f3、ナイトを d7。",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "ルークを c1 に置き、c ファイルへ据え、そのあいだに黒はポーンを c6 と指して中央構造を強めます。",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "ビショップを d3 へ、そして黒はここで d5 からのポーンが c4 を取ることで緊張を解消します。",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "こちらのビショップが c4 を取り、展開しながらポーンを取り戻します。",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "黒のナイトが d5 へ動き、強い中央のマスを占めます。",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "ビショップが e7 を取って交換し、黒のクイーンが e7 で取り返しします。",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "これがその姿です。バランスの取れたクイーンズ・ギャンビットの局面で、理にかなった展開と、センターにまだ多くの遊びがあります。",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "構造を学び、交換を理解し、前進する時は局面に教えてもらいましょう。",
+    "Very civilised and quietly ambitious.": "とても上品で、静かに野心的です。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2252,6 +2673,52 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "واصل التطوير، راقب المركز، وكن مستعدًا لاختراق d4 حين يحين الوقت.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "كرّر الخط حتى تشعر بالنقلات طبيعية كوضع الغلاية.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "حسنًا، هنا Professor Potato Pie، والشاي مُعد كما ينبغي، واليوم نقدم إحدى الافتتاحيات الكلاسيكية العظيمة، غامبيت الملكة.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "ظهرت هذه الافتتاحية في كتابات الشطرنج منذ أواخر القرن الخامس عشر، واستخدمتها أجيال من اللاعبين المميزين لمنازعة المركز.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "يبدأ الأبيض ببيدق إلى d4، ويرد الأسود ببيدق إلى d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "ثم يلعب الأبيض بيدقًا إلى c4، متحديًا بيدق الأسود المركزي وعارضًا بيدق c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "يُسمى غامبيتًا، مع أن الأبيض يستطيع عادة استعادة البيدق إذا قبله الأسود،",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "فهذا أقل ما يكون هبة طائشة وأكثر ما يكون دعوة استراتيجية، تُقدَّم بأدب لكن بدوافع خفية.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "من هنا قد يقبل الأسود البيدق أو يرفضه ويحافظ على مركز متين.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "حسنًا، استمتع بالتعرّف أكثر على غامبيت الملكة ولنرَ ماذا يستطيع ذلك البيدق c الصغير المغامر أن يقنع الأسود بفعله.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "حسنًا، أهلًا بك في الخط 1 من حزمة تعلّم غامبيت الملكة.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "هذا شطرنج كلاسيكي كما ينبغي: أسس راسخة، وتطوير صبور، ولا أثاث يُقذف عبر الغرفة.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "نبدأ ببيدق إلى d4 ويجيب الأسود ببيدق إلى d5.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "بيدق إلى c4 يتحدى المركز ويرد الأسود ببيدق إلى e6.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "هذا غامبيت الملكة المرفوض. يدعم الأسود بيدق d5 بدلًا من قبول عرضنا.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "حصان إلى c3، حصان إلى f6، فيل إلى g5 يصنع التثبيت، ويطوّر الأسود بهدوء الفيل إلى e7.",
+    "We play pawn to e3 and black castles kingside.":
+      "نلعب بيدقًا إلى e3 ويبيت الأسود على جانب الملك.",
+    "Knight to f3, knight to d7.": "حصان إلى f3، حصان إلى d7.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "قلعة إلى c1 تضع القلعة على عمود c بينما يلعب الأسود بيدقًا إلى c6 ويقوّي البنية المركزية.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "فيل إلى d3 والآن يحل الأسود التوتر ببيدق من d5 يأخذ c4.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "فيلنا يأخذ c4 مستعيدًا البيدق مع التطوير.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "ينتقل حصان الأسود إلى d5 ويحتل مربعًا مركزيًا قويًا.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "نبادل بفيل يأخذ e7 وتستعيد ملكة الأسود على e7.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "ها هي، وضعية متوازنة لغامبيت الملكة بتطوير معقول وما زال كثير من اللعب في المركز.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "تعلّم البنية، وافهم التبادلات، ودع الوضعية تخبرك متى يحين وقت التقدم.",
+    "Very civilised and quietly ambitious.": "متحضّر جدًا وطموح بهدوء.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2459,5 +2926,51 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Geliştirmeye devam et, merkezi izle ve anı geldiğinde d4 kırılmasına hazır ol.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Hamleler çaydanlığı ocağa koymak kadar doğal hissedilene kadar hattı tekrarla.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Peki, burada Professor Potato Pie, çay usulünce demlenmiş, ve bugün büyük klasik açılışlardan birini tanıtıyoruz, vezir gambiti.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "Bu açılış on beşinci yüzyılın sonundan beri satranç yazılarında görünür ve seçkin oyuncu kuşakları merkezi çekişmek için onu kullanmıştır.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Beyaz piyonla d4 ile başlar ve siyah piyonla d5 diye yanıtlar.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Sonra beyaz piyonla c4 oynar, siyahın merkez piyonuna meydan okur ve c piyonunu sunar.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Buna gambit denir, gerçi siyah kabul ederse beyaz piyonu genellikle geri alabilir,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Yani bu pervasız bir bağıştan çok, nazikçe sunulmuş ama art niyetli stratejik bir davettir.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Buradan siyah piyonu kabul edebilir ya da reddedip sağlam bir merkez tutabilir.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Peki, vezir gambitiyle daha yakınlaşmanın tadını çıkar ve o maceracı küçük c piyonunun siyahı neye ikna edebileceğini görelim.",
+    "Right then, welcome to Line 1 of our Queen's Gambit learning pack.":
+      "Peki, vezir gambiti öğrenme paketimizin Hat 1'ine hoş geldin.",
+    "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.":
+      "Bu gerçek klasik satrançtır: sağlam temeller, sabırlı gelişim ve odanın öbür ucuna fırlatılan mobilya yok.",
+    "We begin with pawn to d4 and black answers pawn to d5.":
+      "Piyonla d4 ile başlarız ve siyah piyonla d5 diye yanıt verir.",
+    "Pawn to c4 challenges the centre and black replies pawn to e6.":
+      "Piyon c4 merkeze meydan okur ve siyah piyonla e6 diye karşılık verir.",
+    "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.":
+      "Bu vezir gambiti reddedilmiştir. Siyah teklifimizi kabul etmek yerine d5 piyonunu destekler.",
+    "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.":
+      "At c3'e, at f6'ya, fil g5'e pini kurar ve siyah fili sakin sakin e7'ye geliştirir.",
+    "We play pawn to e3 and black castles kingside.":
+      "Piyonu e3'e oynarız ve siyah kısa rok yapar.",
+    "Knight to f3, knight to d7.": "At f3'e, at d7'ye.",
+    "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.":
+      "Kale c1'e kaleyi c hattına koyar, siyah da piyonu c6'ya oynayıp merkez yapısını güçlendirir.",
+    "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.":
+      "Fil d3'e, ve siyah şimdi gerilimi d5 piyonunun c4 almasıyla çözer.",
+    "Our bishop takes c4 recovering the pawn with development.":
+      "Filimiz c4 alır ve piyonu gelişimle geri kazanır.",
+    "Black's knight moves to d5 and occupies a strong central square.":
+      "Siyahın atı d5'e gider ve güçlü bir merkez kareyi işgal eder.",
+    "We exchange with bishop takes e7 and black's queen recaptures on e7.":
+      "Fille e7 alarak değiştiririz ve siyahın veziri e7'de geri alır.",
+    "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.":
+      "İşte orada: dengeli bir vezir gambiti konumu, akıllıca gelişim ve merkezde hâlâ bol oyun.",
+    "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
+      "Yapıyı öğren, değişimleri anla ve ne zaman ileri basmanın zamanı olduğunu konuma bırak.",
+    "Very civilised and quietly ambitious.": "Çok medeni ve sessizce hırslı.",
   },
 };
