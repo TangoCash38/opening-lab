@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { CircleHelp, Moon, Sun, UserRound } from "lucide-react";
+import { CircleHelp, House, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isComingSoonClosed, isPackVisible, readRequestedPackId } from "@/lib/catalog";
 import {
@@ -30,7 +30,7 @@ import {
 import { isPlayWrap } from "@/lib/play-app";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { GuideView } from "./guide-view";
-import { HomeIntro } from "./home-intro";
+import { LandingHome } from "./home-intro";
 import { PackList } from "./pack-list";
 import { ReportLineView } from "./report-line";
 import { TrainView } from "./train-view";
@@ -39,16 +39,8 @@ import { Onboarding } from "./onboarding";
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "home" | "train" | "guide" | "create" | "intro" | "report";
+type View = "landing" | "home" | "train" | "guide" | "create" | "report";
 type TrainMode = "learn" | "practice";
-
-/**
- * Website and Play. True after Start in this JS session so Home stays on the
- * pack list. A full page load or app reopen resets it, so the intro runs again.
- * Not localStorage or sessionStorage — a stored seen flag must not skip it.
- */
-let introFinished = false;
-
 
 function scrollAppTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -72,8 +64,9 @@ export function OpeningLabApp() {
 
 function OpeningLabInner() {
   const t = useT();
-  const [view, setView] = useState<View>(() => (introFinished ? "home" : "intro"));
-  const [introPhase, setIntroPhase] = useState<"brand" | "splash">("brand");
+  const [view, setView] = useState<View>("landing");
+  const [returnView, setReturnView] = useState<View>("landing");
+  const [focusPackId, setFocusPackId] = useState<string | null>(null);
   const [active, setActive] = useState<{
     pack: Pack;
     line: OpeningLine;
@@ -103,26 +96,47 @@ function OpeningLabInner() {
     [state.packs, subscribed],
   );
 
+  /** Branded landing. Pack list is the gym (`home`), not this. */
   const goHome = () => {
     setQueue([]);
     setActive(null);
-    setIntroPhase("brand");
-    setView(introFinished ? "home" : "intro");
+    setFocusPackId(null);
+    setView("landing");
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
 
-  const finishIntro = () => {
-    introFinished = true;
-    setIntroPhase("brand");
+  const goPacks = (packId?: string | null) => {
+    setQueue([]);
+    setActive(null);
+    setFocusPackId(packId ?? null);
     setView("home");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
+  const openGuide = () => {
+    setReturnView(view);
+    setView("guide");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
+  const openReport = () => {
+    setReturnView(view);
+    setView("report");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
+  const leaveOverlay = () => {
+    setView(returnView === "guide" || returnView === "report" ? "landing" : returnView);
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
 
   useLayoutEffect(() => {
     setPlaySurface(isPlayWrap());
-    if (introFinished) setView("home");
   }, []);
 
   useEffect(() => {
@@ -209,7 +223,7 @@ function OpeningLabInner() {
       startLine(next!.pack, next!.line, next!.mode);
       return;
     }
-    goHome();
+    goPacks(active?.pack.id);
   };
 
   const scotchLine1 = useMemo(() => {
@@ -225,47 +239,45 @@ function OpeningLabInner() {
   };
 
   const surface = playSurface ? "play" : "website";
-  const posterIntro = view === "intro" && introPhase === "splash";
+  const showAppHeader = view !== "landing";
 
   return (
-    <div className="app-shell bg-bg text-fg" data-surface={surface}>
-      <header
-        className="app-header z-30 border-b border-border/80"
-        hidden={posterIntro}
-      >
+    <div
+      className={`app-shell bg-bg text-fg${view === "landing" ? " app-shell--landing" : ""}`}
+      data-surface={surface}
+      data-app-view={view}
+    >
+      {showAppHeader ? (
+      <header className="app-header z-30 border-b border-border/80">
         <div
           className="app-header-inner mx-auto flex w-full items-center gap-2 px-3 pb-2.5"
           style={{ paddingTop: "0.65rem" }}
         >
           <button
             type="button"
-            className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
+            className="header-home-btn"
+            data-header-home
             onClick={goHome}
-            aria-label={t("Opening Lab home")}
+            aria-label={t("Home")}
           >
-            <div className="grid size-9 shrink-0 place-items-center rounded-[11px] bg-accent text-[0.95rem] font-bold text-accent-fg shadow-sm">
-              ♔
-            </div>
-            <div className="min-w-0">
-              <strong className="block truncate text-[0.95rem] font-semibold tracking-tight">
-                Opening Lab
-              </strong>
-              <span className="app-header-sub">
-                {t("Guided practice · memory tests")}
-              </span>
-            </div>
+            <House className="header-home-icon" strokeWidth={1.75} aria-hidden />
+            <span className="header-home-label">{t("Home")}</span>
           </button>
+          <div className="min-w-0 flex-1">
+            <strong className="block truncate text-[0.95rem] font-semibold tracking-tight">
+              Opening Lab
+            </strong>
+            <span className="app-header-sub">
+              {t("Guided practice · memory tests")}
+            </span>
+          </div>
 
           <div className="flex shrink-0 items-center gap-1">
             <LangToggle />
             <ColorSchemeToggle />
             <button
               type="button"
-              onClick={() => {
-              setView("guide");
-              scrollAppTop();
-              requestAnimationFrame(() => scrollAppTop());
-            }}
+              onClick={openGuide}
               className="header-icon-btn"
               aria-label={t("Help and guide")}
               title={t("Help")}
@@ -276,51 +288,49 @@ function OpeningLabInner() {
           </div>
         </div>
       </header>
+      ) : null}
 
       <main
-        className="app-main mx-auto w-full"
-        style={{
-          paddingTop: "0.55rem",
-          paddingBottom: "max(2.75rem, env(safe-area-inset-bottom, 0px))",
-          paddingLeft: "max(0.9rem, env(safe-area-inset-left, 0px))",
-          paddingRight: "max(0.9rem, env(safe-area-inset-right, 0px))",
-        }}
+        className={`app-main mx-auto w-full${view === "landing" ? " app-main--landing" : ""}`}
+        style={
+          view === "landing"
+            ? undefined
+            : {
+                paddingTop: "0.55rem",
+                paddingBottom: "max(2.75rem, env(safe-area-inset-bottom, 0px))",
+                paddingLeft: "max(0.9rem, env(safe-area-inset-left, 0px))",
+                paddingRight: "max(0.9rem, env(safe-area-inset-right, 0px))",
+              }
+        }
       >
-        {view === "intro" && (
-          <HomeIntro onContinue={finishIntro} onPhaseChange={setIntroPhase} />
+        {view === "landing" && (
+          <LandingHome
+            onEnterGym={() => goPacks()}
+            onOpenPack={(packId) => goPacks(packId)}
+            onSupport={openGuide}
+            onReport={openReport}
+          />
         )}
         {view === "home" && (
           <PackList
+            focusPackId={focusPackId}
             onStartLine={startLine}
-            onHowToPlay={() => {
-              setView("guide");
-              scrollAppTop();
-              requestAnimationFrame(() => scrollAppTop());
-            }}
+            onHowToPlay={openGuide}
             onCreateOwn={() => {
               setView("create");
               scrollAppTop();
               requestAnimationFrame(() => scrollAppTop());
             }}
-            onReportLine={() => {
-              setView("report");
-              scrollAppTop();
-              requestAnimationFrame(() => scrollAppTop());
-            }}
+            onReportLine={openReport}
           />
         )}
         {view === "guide" && (
           <GuideView
-            onBack={goHome}
-            onShowIntro={() => {
-              setIntroPhase("brand");
-              setView("intro");
-              scrollAppTop();
-              requestAnimationFrame(() => scrollAppTop());
-            }}
+            onBack={leaveOverlay}
+            onShowIntro={goHome}
           />
         )}
-        {view === "report" && <ReportLineView onBack={goHome} />}
+        {view === "report" && <ReportLineView onBack={leaveOverlay} />}
         {view === "create" && (
           <CreateOwnView
             initial={readGymLine()}
@@ -355,7 +365,7 @@ function OpeningLabInner() {
                     setView("create");
                     scrollAppTop();
                   }
-                : goHome
+                : () => goPacks(active.pack.id)
             }
             onLineComplete={() => complete(active.line.id)}
             onLearnDone={() => markLearned(active.line.id)}

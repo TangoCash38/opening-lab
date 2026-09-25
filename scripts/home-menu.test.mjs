@@ -55,54 +55,32 @@ test("Menu includes Feedback mail to support", () => {
   assert.equal(i18n.split("\n  Feedback:").length - 1, 12, "Feedback");
 });
 
-test("every open runs brand + hobbyist, then full-bleed poster Start", () => {
+test("cold open is the branded landing, not a second splash", () => {
   assert.doesNotMatch(shell, /opening-lab:home-intro/);
   assert.doesNotMatch(shell, /hasSeenHomeIntro/);
   assert.doesNotMatch(shell, /markHomeIntroSeen/);
   assert.doesNotMatch(shell, /from "@\/lib\/home-intro"/);
   assert.doesNotMatch(intro, /opening-lab:home-intro/);
-  assert.match(intro, /data-home-intro/);
-  assert.match(intro, /data-home-intro-page/);
-  assert.match(intro, /data-home-intro-phase/);
-  assert.match(intro, /scrollTo\(\{ top: 0/);
-  assert.match(intro, /Opening Lab/);
-  assert.match(intro, /Guided practice · memory tests/);
-  assert.match(intro, /data-intro="brand"/);
-  assert.match(intro, /data-intro="splash"/);
   assert.doesNotMatch(intro, /data-intro="welcome"/);
+  assert.doesNotMatch(intro, /data-intro="splash"/);
   assert.doesNotMatch(intro, /WelcomeBanner/);
-  assert.doesNotMatch(intro, /WELCOME_MS/);
+  assert.doesNotMatch(intro, /learn-drill-splash\.webp/);
+  assert.doesNotMatch(intro, /home-intro-start/);
   assert.doesNotMatch(intro, /home-intro-horse/);
-  assert.match(intro, /learn-drill-splash\.webp/);
-  assert.match(intro, /home-intro-start/);
-  assert.ok(
-    intro.indexOf('className="home-intro-start"') <
-      intro.indexOf('className="home-intro-splash-art"'),
-    "Start sits above the splash art",
-  );
-  assert.match(intro, /t\("Start"\)/);
-  assert.match(intro, /t\("Continue"\)/);
-  assert.match(intro, /SplashPage onStart=\{onContinue\}/);
-  assert.match(
-    intro,
-    /developed by a hobbyist with a strong technical curiosity\. Please report any inaccuracy to support@openinglab\.co\.uk/,
-  );
-  assert.doesNotMatch(intro, /learn-with-help\.webp/);
-  assert.doesNotMatch(intro, /opening-drill\.webp/);
-  assert.doesNotMatch(intro, /learn-drill\.webp/);
-  assert.doesNotMatch(intro, /OPENING DRILL/);
-  assert.doesNotMatch(intro, /Practise\. Remember\. Recognise\./);
-  assert.doesNotMatch(intro, /First, learn the line/);
-  assert.doesNotMatch(intro, /Choose a pack/);
-  assert.doesNotMatch(intro, /home-intro-dots/);
-  assert.doesNotMatch(intro, /Learn openings through practice and recall/);
-  assert.doesNotMatch(intro, /Start training/);
+  assert.match(intro, /data-landing/);
+  assert.match(intro, /Learn the book\. Keep the book\./);
+  assert.match(intro, /Practice with hints\. Test with none\./);
+  assert.match(intro, /Enter the gym/);
+  assert.match(intro, /Strict book-move trainer/);
+  assert.match(intro, /coach-seated-v2\.png/);
+  assert.match(shell, /LandingHome/);
+  assert.match(shell, /useState<View>\("landing"\)/);
+  assert.match(shell, /setView\("landing"\)/);
+  assert.match(shell, /data-header-home/);
+  assert.match(shell, /view !== "landing"/);
   assert.match(shell, /Guided practice · memory tests/);
-  assert.match(shell, /let introFinished = false/);
-  assert.match(shell, /introFinished = true/);
-  assert.match(shell, /setView\(introFinished \? "home" : "intro"\)/);
-  assert.match(shell, /if \(introFinished\) setView\("home"\)/);
-  assert.match(shell, /view === "intro"/);
+  assert.doesNotMatch(shell, /introFinished/);
+  assert.doesNotMatch(shell, /view === "intro"/);
   assert.match(shell, /useLayoutEffect/);
   assert.match(shell, /onShowIntro/);
   assert.doesNotMatch(shell, /sessionStorage\.(get|set)Item/);
@@ -115,27 +93,21 @@ test("every open runs brand + hobbyist, then full-bleed poster Start", () => {
   assert.match(guide, /onShowIntro/);
   assert.match(guide, /guide-intro-copy/);
   assert.match(guide, /guide-intro-reopen/);
+  assert.match(
+    guide,
+    /developed by a hobbyist with a strong technical curiosity\. Please report any inaccuracy to support@openinglab\.co\.uk/,
+  );
   assert.doesNotMatch(intro, /Play on/);
   assert.doesNotMatch(intro, /versus the computer/);
+  assert.doesNotMatch(intro, /human voice|recorded voice|voice actor/i);
   assert.doesNotMatch(guide, /Play on/);
   assert.doesNotMatch(list, /There is no Play on/);
   assert.equal(i18n.split('"Welcome to Opening Lab":').length - 1, 12);
   assert.equal(i18n.split("\n  Skip:").length - 1, 12, "Skip");
-  assert.match(css, /\.home-intro-splash/);
-  assert.match(css, /\.home-intro-start/);
-  assert.match(css, /\.home-intro-start\s*\{[^}]*top:\s*max\(/);
-  assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*bottom:/);
-  assert.match(
-    css,
-    /\.home-intro-splash-art\s*\{[^}]*top:\s*calc\(\s*max\(6\.5%,\s*env\(safe-area-inset-top/,
-    "splash art drops below the pinned Start pill",
-  );
-  assert.match(css, /\.home-intro-start\s*\{[^}]*rgba\(232,\s*214,\s*176/);
-  assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*var\(--color-accent\)/);
-  assert.doesNotMatch(css, /\.home-intro-start\s*\{[^}]*var\(--color-success\)/);
-  assert.match(css, /\.home-intro-hobbyist/);
-  assert.match(css, /\.home-intro-splash-art img[\s\S]*object-fit:\s*cover/);
+  assert.match(css, /\.landing-page/);
+  assert.match(css, /\.header-home-btn[\s\S]*min-width:\s*44px/);
   assert.match(css, /\.guide-intro-reopen[\s\S]*display:\s*flex/);
+  assert.doesNotMatch(css, /\.home-intro-splash/);
   assert.doesNotMatch(css, /\.home-intro-welcome-banner/);
   assert.doesNotMatch(css, /home-intro-horse-trot/);
   assert.doesNotMatch(intro, /t\("Play"\)/);

@@ -140,6 +140,39 @@ html[data-color-scheme="dark"] {
     background: var(--color-border);
   }
 
+  .header-home-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-fg);
+    gap: 0;
+  }
+
+  .header-home-btn:active {
+    transform: scale(0.96);
+  }
+
+  .header-home-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .header-home-label {
+    margin-top: 1px;
+    font-size: 0.62rem;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+
   .lang-toggle-wrap {
     display: grid;
     place-items: center;
@@ -2896,155 +2929,338 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   color: var(--color-fg-muted);
 }
 
-/* First-run intro: cream brand page, then Start pinned over the poster top. */
-.app-header[hidden] {
-  display: none !important;
+/* Branded landing. Cream paper; the gym (pack list) keeps the app header. */
+.app-shell--landing {
+  background-color: #f3eadc;
+  background-image: radial-gradient(rgba(92, 64, 32, 0.055) 0.65px, transparent 0.8px);
+  background-size: 5px 5px;
 }
 
-.home-intro[data-home-intro-phase="splash"] {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  margin: 0;
+html[data-color-scheme="dark"] .app-shell--landing {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 0.65px, transparent 0.8px);
+}
+
+.app-main--landing {
+  max-width: min(1100px, 100%);
   padding: 0;
-  width: 100%;
-  max-width: none;
-  height: 100%;
+}
+
+.landing-page {
   min-height: 100dvh;
-  background: #0f1013;
-}
-
-.home-intro-splash {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 100dvh;
-  margin: 0;
-  background: #0f1013;
-  overflow: hidden;
-}
-
-.home-intro-start {
-  position: absolute;
-  left: 50%;
-  top: max(6.5%, calc(env(safe-area-inset-top, 0px) + 0.75rem));
-  z-index: 2;
-  transform: translateX(-50%);
-  min-height: 2.75rem;
-  min-width: 8.75rem;
-  padding: 0.7rem 1.65rem;
-  border: 1.5px solid rgba(232, 214, 176, 0.92);
-  border-radius: 999px;
-  background: rgba(15, 16, 19, 0.46);
-  color: #f7f1e6;
-  font-size: 0.98rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-}
-
-.home-intro-start:active {
-  transform: translateX(-50%) scale(0.98);
-}
-
-.home-intro-splash-art {
-  position: absolute;
-  inset: 0;
-  /* The 9:16 poster keeps a dark margin above the circle (~9%).
-     Drop the frame by the Start pill, then give that margin back,
-     so the pill sits in a clear band and the arc starts just under it. */
-  top: calc(max(6.5%, env(safe-area-inset-top, 0px) + 0.75rem) + 6.4rem - 9.2%);
-  margin: 0;
-  overflow: hidden;
-  background: #0f1013;
-}
-
-.home-intro-splash-art img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  background: #0f1013;
-}
-
-/* Wider than the 9:16 poster: show the whole art on a matching ground
-   so side space stays the poster colour instead of a letterbox frame. */
-@media (min-aspect-ratio: 9/16) {
-  .home-intro-splash-art img {
-    object-fit: contain;
-    object-position: center center;
-  }
-}
-
-.home-intro-brand {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 1.15rem;
-  padding-bottom: 1.5rem;
-}
-
-.home-intro-hobbyist {
-  margin: 1.15rem 0 0;
-  padding: 0.95rem 1rem;
-  border-radius: var(--radius-card);
-  border: 1px solid color-mix(in srgb, var(--color-dark-sq) 42%, var(--color-border));
-  background: var(--color-bg-elevated);
   color: var(--color-fg);
-  font-size: 0.95rem;
-  line-height: 1.55;
 }
 
-.home-intro-brand-lockup {
+.landing-bar {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: max(0.55rem, env(safe-area-inset-top, 0px)) max(1rem, env(safe-area-inset-right, 0px)) 0.15rem
+    max(1rem, env(safe-area-inset-left, 0px));
 }
 
-.home-intro-brand-mark {
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.brand-mark {
   display: grid;
-  width: 3.4rem;
-  height: 3.4rem;
+  width: 2.55rem;
+  height: 2.9rem;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 14px;
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
-  font-size: 1.7rem;
-  font-weight: 700;
-  box-shadow: var(--shadow-card);
+  background: #2f5d50;
+  clip-path: polygon(50% 0, 100% 16%, 90% 64%, 50% 100%, 10% 64%, 0 16%);
 }
 
-.home-intro-brand-name {
-  margin: 0;
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+.brand-mark img {
+  width: 58%;
+  height: auto;
+  margin-top: -6%;
 }
 
-.home-intro-brand-sub {
-  margin: 0.2rem 0 0;
-  font-size: 0.82rem;
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--color-fg-subtle);
+.landing-wordmark {
+  font-size: 1.22rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
-.home-intro-go {
-  margin-top: 1.25rem;
-  min-height: 3rem;
+.landing-menu-btn {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: var(--color-fg);
+}
+
+.landing-menu-btn:active {
+  background: color-mix(in srgb, var(--color-fg) 8%, transparent);
+}
+
+.landing-menu-row,
+.landing-menu-split {
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.landing-menu-row {
+  display: flex;
+  align-items: center;
   width: 100%;
-  border: 1.5px solid var(--color-dark-sq);
-  border-radius: 999px;
-  background: var(--color-bg-elevated);
-  padding: 0.85rem 1rem;
+  min-height: 3rem;
+  border-radius: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-elevated));
   color: var(--color-fg);
   font-size: 0.95rem;
   font-weight: 700;
+}
+
+.landing-menu-aside {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--color-fg-muted);
+}
+
+.landing-inner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 0.35rem max(1.1rem, env(safe-area-inset-right, 0px)) max(2.4rem, env(safe-area-inset-bottom, 0px))
+    max(1.1rem, env(safe-area-inset-left, 0px));
+}
+
+.landing-hero-art {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 15.5rem;
+  margin: 0.15rem 0 0.35rem;
+}
+
+.landing-coach {
+  display: block;
+  height: 15.25rem;
+  width: auto;
+  max-width: 46%;
+  object-fit: contain;
+  object-position: center bottom;
+  margin-right: -1.35rem;
+  margin-bottom: -0.15rem;
+  filter: drop-shadow(0 12px 14px rgba(60, 36, 18, 0.18));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.landing-board {
+  width: min(46vw, 11.25rem);
+  padding: 0.45rem;
+  border-radius: 0.45rem;
+  background: linear-gradient(160deg, #8a5a38 0%, #5c3a22 100%);
+  box-shadow: 0 14px 28px rgba(60, 36, 18, 0.22);
+}
+
+.landing-board-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 0.15rem;
+}
+
+.landing-sq {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+.landing-sq-light {
+  background: #f4e6c8;
+}
+
+.landing-sq-dark {
+  background: #a56b3c;
+}
+
+.landing-sq .chess-piece-img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+}
+
+.landing-copy {
+  text-align: center;
+}
+
+.landing-title {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 7.2vw, 2.55rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.landing-sub {
+  margin: 0.55rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 1.02rem;
+}
+
+.landing-cta {
+  width: 100%;
+  min-height: 3.25rem;
+  margin-top: 1.05rem;
+  border: 0;
+  border-radius: 0.9rem;
+  background: #23483c;
+  color: #f7f3ea;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.landing-cta:active {
+  transform: scale(0.99);
+}
+
+.landing-section-title {
+  margin: 1.7rem 0 0.7rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.landing-open-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.landing-pack-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.95rem 1.05rem;
+  border: 1px solid color-mix(in srgb, #a97850 28%, var(--color-border));
+  border-radius: 1.05rem;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-card);
+  text-align: start;
+  color: inherit;
+}
+
+.landing-pack-card:active {
+  transform: scale(0.99);
+}
+
+.landing-pack-name {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.landing-pack-price {
+  color: #2f5d50;
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+html[data-color-scheme="dark"] .landing-pack-price,
+html[data-color-scheme="dark"] .landing-cta {
+  color: #e7f3ec;
+}
+
+html[data-color-scheme="dark"] .landing-cta {
+  background: #2f6a58;
+}
+
+.landing-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid color-mix(in srgb, #a97850 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, #f4e6c8 72%, var(--color-bg-elevated));
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.landing-footer {
+  margin: 1.8rem 0 0.4rem;
+  text-align: center;
+  color: var(--color-fg-subtle);
+  font-size: 0.84rem;
+}
+
+@media (min-width: 960px) {
+  .landing-hero {
+    display: grid;
+    grid-template-columns: minmax(18rem, 1.05fr) minmax(16rem, 0.95fr);
+    align-items: center;
+    column-gap: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .landing-hero-art {
+    min-height: 22rem;
+    margin: 0;
+  }
+
+  .landing-coach {
+    height: 21.5rem;
+    max-width: none;
+    margin-right: -2rem;
+  }
+
+  .landing-board {
+    width: 15.5rem;
+  }
+
+  .landing-copy {
+    text-align: start;
+  }
+
+  .landing-title {
+    font-size: 2.7rem;
+  }
+
+  .landing-cta {
+    width: auto;
+    min-width: 14.5rem;
+    padding: 0 1.6rem;
+  }
+
+  .landing-open-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
 }
 
 .guide-intro-copy {
@@ -3068,10 +3284,6 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   color: var(--color-fg);
   font-size: 0.85rem;
   font-weight: 650;
-}
-
-.home-intro-go:active {
-  transform: scale(0.99);
 }
 
 .pack-card[data-pack-access="open"],

@@ -59,6 +59,8 @@ type Props = {
   onHowToPlay: () => void;
   onCreateOwn?: () => void;
   onReportLine: () => void;
+  /** Open this pack when the gym mounts (landing card). */
+  focusPackId?: string | null;
 };
 
 const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
@@ -290,7 +292,13 @@ function PackCard({
   );
 }
 
-export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }: Props) {
+export function PackList({
+  onStartLine,
+  onHowToPlay,
+  onCreateOwn,
+  onReportLine,
+  focusPackId = null,
+}: Props) {
   const t = useT();
   const { buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } = useUnlocks();
   const { user, isPending } = useCurrentUserState();
@@ -301,7 +309,7 @@ export function PackList({ onStartLine, onHowToPlay, onCreateOwn, onReportLine }
   const [payError, setPayError] = useState<string | null>(null);
   const [unlockNotice, setUnlockNotice] = useState<string | null>(null);
   const [playApp, setPlayApp] = useState(() => isPlayWrap());
-  const [openPackId, setOpenPackId] = useState<string | null>(null);
+  const [openPackId, setOpenPackId] = useState<string | null>(focusPackId);
   const [soonNoteId, setSoonNoteId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
   const wrap = playApp || isPlayWrap();
