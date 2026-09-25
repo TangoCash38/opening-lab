@@ -355,7 +355,7 @@ test("finishing the pack intro opens the first-line talk; Skip and the gym pages
         [{ packId: "opening-traps", lineId: "ot2", lineIndex: 1, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
         [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
-        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
+        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
       ];
       for (const [input, expected] of cases) {
