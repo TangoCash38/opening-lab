@@ -4,11 +4,14 @@
  * Two talks, same seated portrait and cream plate / desktop dock:
  * - Main `Tap to practice`: cuppa and history (`scotchCoachApplies`).
  *   The board auto-plays the gambit stem while he speaks.
+ *   Finishing that intro (Practice or the clip, not Skip) opens the
+ *   Line 1 pack-recipe talk before book Practice.
  * - First book line, Line 1 (`sg1`): what the ten lines teach
  *   (`scotchCanalCoachApplies`). The board auto-plays that line's SAN
  *   from the pack (not a hardcoded copy) and holds the final position
  *   until the talk ends. Practice then starts again at ply 0.
- *   Later variations do not open him.
+ *   Later variations do not open him. A line-card tap still opens only
+ *   this talk, not the cuppa intro.
  *
  * Phone and the Play wrap mount the same dock; a narrow cream plate keeps
  * him off the squares. Test, line switches, and other packs never match.

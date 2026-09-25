@@ -103,11 +103,12 @@ test("narration plays on the coach card and skip stops it", () => {
     intro.indexOf('audio.addEventListener("ended"'),
   );
   assert.match(ended, /setBeat\(SCOTCH_COACH_BEATS\.length - 1\)/);
-  assert.match(ended, /onDoneRef\.current\(\)/);
-  const leaveAt = intro.indexOf("const leave");
-  const skip = intro.slice(leaveAt, intro.indexOf("return (", leaveAt));
-  assert.match(skip, /stopScotchCoachNarration\(\)/);
-  assert.match(skip, /onDone\(\)/);
+  assert.match(ended, /leaveRef\.current\(\)/);
+  const once = intro.slice(intro.indexOf("function useOnceCoachLeave"), intro.indexOf("type CardProps"));
+  assert.match(once, /if \(left\) return/);
+  assert.match(once, /stopScotchCoachNarration\(\)/);
+  assert.match(once, /onDoneRef\.current\(reason\)/);
+  assert.match(intro, /onSkip=\{\(\) => leave\("skip"\)\}/);
 });
 
 test("coach is the seated picture plus playback, with no mouth overlay", () => {
@@ -276,7 +277,7 @@ test("practice board auto-plays the scotch gambit stem during the intro", () => 
   assert.match(hero, /ScotchCoachBoard/);
   assert.match(hero, /data-scotch-coach-dock/);
   assert.match(hero, /home-coach-practice/);
-  assert.match(intro, /onDoneRef\.current\(\)/);
+  assert.match(intro, /onDoneRef\.current\(reason\)/);
   assert.match(css, /\.home-coach-practice\s*\{[^}]*display:\s*flex/);
   const stage = css.slice(css.indexOf(".scotch-coach-stage {"), css.indexOf(".scotch-coach-figure"));
   assert.match(stage, /position:\s*relative/);
@@ -516,6 +517,9 @@ test("canal board plays sg1 in order, finishes before the clip, then Practice st
   assert.match(dock, /ScotchCoachBoard/);
   assert.doesNotMatch(dock, /<ChessBoard/);
   const finish = hero.slice(hero.indexOf("const finishCoach"), hero.indexOf("const activeLineId"));
+  assert.match(finish, /coachTalkAfterPackIntro/);
+  assert.match(finish, /skipped: reason === "skip"/);
+  assert.match(finish, /launchLine\(\s*current\.line,/);
   assert.match(finish, /current\.talk === "canal" \? SCOTCH_CANAL_PRACTICE_START_PLY/);
   assert.match(finish, /mode: "learn"|openInFrame\(current\.line, options, "learn"\)/);
   assert.doesNotMatch(finish, /data-scotch-canal-ply|canalPly|playedRef/);
