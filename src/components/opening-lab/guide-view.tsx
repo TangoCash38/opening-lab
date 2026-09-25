@@ -24,6 +24,11 @@ export function GuideView({ onBack, onShowIntro }: Props) {
         <p className="guide-intro-copy">
           {t("Strict-line memory training. You play only the moves in the chosen opening; wrong moves are rejected so the line sticks.")}
         </p>
+        <p className="guide-intro-copy mt-2">
+          {t(
+            "Welcome to Opening Lab. This app was developed by a hobbyist with a strong technical curiosity. Please report any inaccuracy to support@openinglab.co.uk. Thank you for your support — enjoy.",
+          )}
+        </p>
         {onShowIntro ? (
           <button
             type="button"

@@ -3450,7 +3450,7 @@ test("wrong-move reports go to support; confirmed book move earns a free pack", 
   assert.doesNotMatch(guide, /Lab\+/);
 });
 
-test("app open skips AppSplash and starts on the two-page home intro", () => {
+test("app open skips AppSplash and starts on the branded landing", () => {
   const shell = readFileSync(join(root, "src/components/opening-lab/app-shell.tsx"), "utf8");
   const intro = readFileSync(join(root, "src/components/opening-lab/home-intro.tsx"), "utf8");
   assert.doesNotMatch(shell, /AppSplash/);
@@ -3458,13 +3458,14 @@ test("app open skips AppSplash and starts on the two-page home intro", () => {
   assert.doesNotMatch(shell, /opening-lab:splash:v4/);
   assert.doesNotMatch(shell, /showSplash/);
   assert.doesNotMatch(shell, /from "\.\/app-splash"/);
-  assert.match(shell, /HomeIntro/);
+  assert.match(shell, /LandingHome/);
   assert.doesNotMatch(shell, /hasSeenHomeIntro/);
   assert.doesNotMatch(shell, /opening-lab:home-intro/);
-  assert.match(shell, /introFinished \? "home" : "intro"/);
-  assert.match(intro, /data-intro="brand"/);
-  assert.match(intro, /data-intro="splash"/);
+  assert.match(shell, /useState<View>\("landing"\)/);
+  assert.match(shell, /setView\("landing"\)/);
   assert.doesNotMatch(intro, /data-intro="welcome"/);
+  assert.doesNotMatch(intro, /data-intro="splash"/);
+  assert.match(intro, /data-landing/);
   assert.doesNotMatch(intro, /t\("Play"\)/);
   assert.doesNotMatch(intro, /setTimeout/);
 });

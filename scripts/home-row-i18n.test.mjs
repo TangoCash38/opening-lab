@@ -106,7 +106,7 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.doesNotMatch(i18n, /"Classical":/);
   assert.doesNotMatch(i18n, /"Exchange":/);
   assert.doesNotMatch(i18n, /"Caro-Kann for Black":/);
-  assert.match(intro, /developed by a hobbyist with a strong technical curiosity/);
+  assert.match(guide, /developed by a hobbyist with a strong technical curiosity/);
   assert.doesNotMatch(shell, /AppSplash/);
   assert.doesNotMatch(list, /Learn Drill Know/);
   assert.match(list, /WebsiteAppPrompt/);
