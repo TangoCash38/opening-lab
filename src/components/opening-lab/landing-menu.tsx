@@ -13,12 +13,12 @@ import { useT } from "@/lib/i18n";
 import { LangToggle } from "./lang-picker";
 
 type Props = {
-  onSupport: () => void;
+  onCreateOwn: () => void;
   onReport: () => void;
 };
 
-/** Landing hamburger. Reuses the guide, account, language, theme, and legal routes. */
-export function LandingMenu({ onSupport, onReport }: Props) {
+/** Overflow chrome. Learning packs and Support stay as header text links. */
+export function LandingMenu({ onCreateOwn, onReport }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const titleId = useId();
@@ -61,7 +61,8 @@ export function LandingMenu({ onSupport, onReport }: Props) {
         aria-label={t("Menu")}
         data-landing-menu
       >
-        <Menu className="size-6" strokeWidth={2} aria-hidden />
+        <Menu className="size-5" strokeWidth={2} aria-hidden />
+        <span>{t("Menu")}</span>
       </button>
       {open ? (
         <div
@@ -84,20 +85,19 @@ export function LandingMenu({ onSupport, onReport }: Props) {
               <button
                 type="button"
                 className="home-menu-item"
-                data-menu-support
-                onClick={() => pick(onSupport)}
+                data-menu-create
+                onClick={() => pick(onCreateOwn)}
               >
-                {t("Support")}
+                {t("Create your own")}
               </button>
-              <Link
-                to="/login"
-                search={{ forgot: undefined }}
-                className="home-menu-item no-underline"
-                data-menu-account
-                onClick={() => setOpen(false)}
+              <button
+                type="button"
+                className="home-menu-item"
+                data-menu-report
+                onClick={() => pick(onReport)}
               >
-                {accountLabel}
-              </Link>
+                {t("Report incorrect line")}
+              </button>
               <div className="landing-menu-row" data-menu-language>
                 <span>{t("Language")}</span>
                 <LangToggle />
@@ -114,6 +114,15 @@ export function LandingMenu({ onSupport, onReport }: Props) {
                 </span>
               </button>
               <Link
+                to="/login"
+                search={{ forgot: undefined }}
+                className="home-menu-item no-underline"
+                data-menu-account
+                onClick={() => setOpen(false)}
+              >
+                {accountLabel}
+              </Link>
+              <Link
                 to="/terms"
                 className="home-menu-item no-underline"
                 data-menu-terms
@@ -129,14 +138,6 @@ export function LandingMenu({ onSupport, onReport }: Props) {
               >
                 {t("Privacy Policy")}
               </Link>
-              <button
-                type="button"
-                className="home-menu-item"
-                data-menu-report
-                onClick={() => pick(onReport)}
-              >
-                {t("Report incorrect line")}
-              </button>
               <button
                 type="button"
                 className="home-menu-close"

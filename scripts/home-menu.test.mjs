@@ -43,7 +43,7 @@ test("Menu replaces Find the mate on the phone home heading", () => {
   assert.doesNotMatch(shell, /onOpenMate/);
   assert.match(css, /\.home-menu-panel/);
   assert.match(css, /text-align:\s*start/);
-  assert.match(shell, /onCreateOwn=\{\(\) =>/);
+  assert.match(shell, /const openCreate = \(\) =>/);
   assert.match(shell, /setView\("create"\)/);
 });
 

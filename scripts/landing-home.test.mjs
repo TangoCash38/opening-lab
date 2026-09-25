@@ -37,18 +37,27 @@ test("landing matches the signed-off home: gym CTA, live packs, real prices", ()
   assert.doesNotMatch(landing, /data-header-home/);
 });
 
-test("Home in the app header returns to the landing; the landing keeps the hamburger", () => {
+test("Home in the app header returns to the landing; landing links stay visible", () => {
   assert.match(shell, /data-header-home/);
   assert.match(shell, /onClick=\{goHome\}/);
   assert.match(shell, /setView\("landing"\)/);
   assert.match(shell, /showAppHeader = view !== "landing"/);
   assert.match(shell, /onEnterGym=\{\(\) => goPacks\(\)\}/);
   assert.match(shell, /onOpenPack=\{\(packId\) => goPacks\(packId\)\}/);
+  assert.match(shell, /onCreateOwn=\{openCreate\}/);
   assert.match(shell, /setView\("home"\)/);
   assert.match(css, /\.header-home-btn[\s\S]*width:\s*44px/);
   assert.match(css, /\.header-home-btn[\s\S]*min-height:\s*44px/);
+  assert.match(landing, /data-landing-packs/);
+  assert.match(landing, /data-landing-support/);
+  assert.match(landing, /t\("Learning packs"\)/);
+  assert.match(landing, /onClick=\{onEnterGym\}/);
+  assert.match(landing, /onClick=\{onSupport\}/);
+  assert.doesNotMatch(css, /\.landing-nav\s*\{[^}]*display:\s*none/);
   assert.match(menu, /data-landing-menu/);
-  assert.match(menu, /data-menu-support/);
+  assert.match(menu, /t\("Menu"\)/);
+  assert.match(menu, /data-menu-create/);
+  assert.match(menu, /t\("Create your own"\)/);
   assert.match(menu, /data-menu-account/);
   assert.match(menu, /data-menu-language/);
   assert.match(menu, /data-menu-theme/);
@@ -57,6 +66,7 @@ test("Home in the app header returns to the landing; the landing keeps the hambu
   assert.match(menu, /to="\/privacy"/);
   assert.match(menu, /data-menu-report/);
   assert.match(menu, /LangToggle/);
+  assert.doesNotMatch(menu, /data-menu-support/);
   assert.doesNotMatch(menu, /Play on/);
 });
 
@@ -65,6 +75,7 @@ test("landing copy is in every language and does not invent prices", () => {
     assert.match(copy, new RegExp(`${lang}:`));
   }
   assert.equal(copy.split('"Enter the gym":').length - 1, 12);
+  assert.equal(copy.split('"Learning packs":').length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
   assert.doesNotMatch(copy, /£/);
 });

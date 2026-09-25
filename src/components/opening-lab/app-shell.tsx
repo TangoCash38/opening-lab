@@ -122,6 +122,12 @@ function OpeningLabInner() {
     requestAnimationFrame(() => scrollAppTop());
   };
 
+  const openCreate = () => {
+    setView("create");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
   const openReport = () => {
     setReturnView(view);
     setView("report");
@@ -308,6 +314,7 @@ function OpeningLabInner() {
             onEnterGym={() => goPacks()}
             onOpenPack={(packId) => goPacks(packId)}
             onSupport={openGuide}
+            onCreateOwn={openCreate}
             onReport={openReport}
           />
         )}
@@ -316,11 +323,7 @@ function OpeningLabInner() {
             focusPackId={focusPackId}
             onStartLine={startLine}
             onHowToPlay={openGuide}
-            onCreateOwn={() => {
-              setView("create");
-              scrollAppTop();
-              requestAnimationFrame(() => scrollAppTop());
-            }}
+            onCreateOwn={openCreate}
             onReportLine={openReport}
           />
         )}
