@@ -4,6 +4,8 @@ import {
   COACH_TEXT_BEAT_SEC,
   type CoachPackConfig,
   coachAudioBeatIndex,
+  coachIntroAlreadySeen,
+  coachLineAlreadySeen,
   lineBeatAtSec,
 } from "@/lib/coach-packs";
 import {
@@ -26,7 +28,7 @@ import {
   startScotchCoachNarration,
   stopScotchCoachNarration,
 } from "@/lib/scotch-coach-audio";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
 
 /** Seated in the practice dock, left of the wood, with the Opening Lab mug. */
 export function ScotchCoachFigure() {
@@ -105,7 +107,7 @@ function CoachCardFrame({
   onSkip,
   onNext,
 }: FrameProps) {
-  const t = useT();
+  const { t, lang } = useI18n();
   return (
     <div
       className="scotch-coach-card"
@@ -119,6 +121,11 @@ function CoachCardFrame({
       <p className="scotch-coach-name" id="scotch-coach-name" data-scotch-coach-name>
         {t(SCOTCH_COACH_NAME)}
       </p>
+      {textOnly || lang === "en" ? null : (
+        <p className="scotch-coach-voice" data-coach-voice-note>
+          {t("Voice in English")}
+        </p>
+      )}
       <p className="scotch-coach-kicker">{t(title)}</p>
       <p key={beat} className="scotch-coach-beat" data-scotch-coach-line aria-live="polite">
         {t(text)}
@@ -511,7 +518,7 @@ export function ScotchCoachCard({ onDone, talk = "intro", packId, onBeat }: Card
  * In the page flow — not a modal over the board.
  */
 export function ScotchCoachReading() {
-  const t = useT();
+  const { t, lang } = useI18n();
   const [open, setOpen] = useState(false);
   const [introSeen, setIntroSeen] = useState(false);
   const [canalSeen, setCanalSeen] = useState(false);
@@ -537,6 +544,11 @@ export function ScotchCoachReading() {
       {open ? (
         <div className="scotch-coach-reading-body" data-scotch-coach-transcript>
           <p className="scotch-coach-reading-name">{t(SCOTCH_COACH_NAME)}</p>
+          {lang === "en" ? null : (
+            <p className="scotch-coach-voice" data-coach-voice-note>
+              {t("Voice in English")}
+            </p>
+          )}
           {introSeen ? (
             <>
               <p className="scotch-coach-reading-title">{t(SCOTCH_COACH_TITLE)}</p>
@@ -553,6 +565,68 @@ export function ScotchCoachReading() {
               {SCOTCH_CANAL_BEATS.map((beat) => (
                 <p key={beat} className="scotch-coach-reading-beat">
                   {t(beat)}
+                </p>
+              ))}
+            </>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+/** Optional transcript for Opening Traps and Caro-Kann after those talks this visit. */
+export function CoachPackReading({ packId }: { packId: string }) {
+  const { t, lang } = useI18n();
+  const config = COACH_PACKS[packId];
+  const [open, setOpen] = useState(false);
+  const [introSeen, setIntroSeen] = useState(false);
+  const [lineSeen, setLineSeen] = useState(false);
+
+  useEffect(() => {
+    if (!config || packId === SCOTCH_PACK_ID) return;
+    setIntroSeen(coachIntroAlreadySeen(packId));
+    setLineSeen(coachLineAlreadySeen(packId, config.firstLineId));
+  }, [config, packId]);
+
+  if (!config || packId === SCOTCH_PACK_ID) return null;
+  if (!introSeen && !lineSeen) return null;
+
+  return (
+    <div className="scotch-coach-reading" data-scotch-coach-reading data-coach-pack-reading={packId}>
+      <button
+        type="button"
+        className="scotch-coach-reading-toggle"
+        data-scotch-coach-read
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {open ? t("Hide the intro") : t("Read the intro")}
+      </button>
+      {open ? (
+        <div className="scotch-coach-reading-body" data-scotch-coach-transcript>
+          <p className="scotch-coach-reading-name">{t(SCOTCH_COACH_NAME)}</p>
+          {lang === "en" ? null : (
+            <p className="scotch-coach-voice" data-coach-voice-note>
+              {t("Voice in English")}
+            </p>
+          )}
+          {introSeen ? (
+            <>
+              <p className="scotch-coach-reading-title">{t(config.introTitle)}</p>
+              {config.introBeats.map((beat) => (
+                <p key={beat} className="scotch-coach-reading-beat">
+                  {t(beat)}
+                </p>
+              ))}
+            </>
+          ) : null}
+          {lineSeen ? (
+            <>
+              <p className="scotch-coach-reading-title">{t(config.firstLineTitle)}</p>
+              {config.firstLineBeats.map((beat) => (
+                <p key={beat.caption} className="scotch-coach-reading-beat">
+                  {t(beat.caption)}
                 </p>
               ))}
             </>

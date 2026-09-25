@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { COACH_CAPTIONS, COACH_UI } from "./coach-i18n";
 
 export const LANGS = ["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja", "ar", "tr"] as const;
 export type Lang = (typeof LANGS)[number];
@@ -2736,7 +2737,28 @@ const tr: Dict = {
   "Delete account": "Hesabı sil",
 };
 
-export const DICTS: Record<Lang, Dict> = { en, es, zh, fr, de, pt, ru, it, hi, ja, ar, tr };
+function withCoachCopy(lang: Lang, base: Dict): Dict {
+  return {
+    ...base,
+    ...(COACH_UI[lang] ?? {}),
+    ...(COACH_CAPTIONS[lang] ?? {}),
+  };
+}
+
+export const DICTS: Record<Lang, Dict> = {
+  en: withCoachCopy("en", en),
+  es: withCoachCopy("es", es),
+  zh: withCoachCopy("zh", zh),
+  fr: withCoachCopy("fr", fr),
+  de: withCoachCopy("de", de),
+  pt: withCoachCopy("pt", pt),
+  ru: withCoachCopy("ru", ru),
+  it: withCoachCopy("it", it),
+  hi: withCoachCopy("hi", hi),
+  ja: withCoachCopy("ja", ja),
+  ar: withCoachCopy("ar", ar),
+  tr: withCoachCopy("tr", tr),
+};
 
 export function isLang(value: string | null | undefined): value is Lang {
   return (

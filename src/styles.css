@@ -3177,6 +3177,16 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   color: #5c3b22;
 }
 
+.scotch-coach-voice {
+  margin: 0 0 0.18rem;
+  font-size: 0.68rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #8a7058;
+  overflow-wrap: anywhere;
+}
+
 .scotch-coach-kicker {
   margin: 0 0 0.4rem;
   font-family: var(--font-display), Georgia, serif;
@@ -3381,19 +3391,27 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
     margin: 0 0 0.08rem;
     font-size: 0.92rem;
     line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .home-coach-practice .scotch-coach-voice {
+    margin: 0 0 0.08rem;
+    font-size: 0.62rem;
+    line-height: 1.15;
   }
 
   .home-coach-practice .scotch-coach-kicker {
     margin: 0 0 0.18rem;
     font-size: 0.72rem;
     line-height: 1.2;
+    overflow-wrap: anywhere;
   }
 
   .home-coach-practice .scotch-coach-beat {
     min-height: 0;
     font-size: 0.74rem;
     line-height: 1.32;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   .home-coach-practice .scotch-coach-actions {
@@ -3408,10 +3426,15 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
   .home-coach-practice .scotch-coach-mute,
   .home-coach-practice .scotch-coach-skip {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     min-height: 2.35rem;
+    max-width: 100%;
     padding: 0.2rem 0.4rem;
     font-size: 0.78rem;
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
   }
 
   .home-coach-practice .scotch-coach-next {
@@ -3421,7 +3444,10 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
     min-height: 2.35rem;
     padding: 0 0.55rem;
     font-size: 0.8rem;
-    white-space: nowrap;
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
   }
 }
 
@@ -3514,19 +3540,27 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin: 0 0 0.08rem;
   font-size: 0.92rem;
   line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+[data-surface="play"] .home-coach-practice .scotch-coach-voice {
+  margin: 0 0 0.08rem;
+  font-size: 0.62rem;
+  line-height: 1.15;
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-kicker {
   margin: 0 0 0.18rem;
   font-size: 0.72rem;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-beat {
   min-height: 0;
   font-size: 0.74rem;
   line-height: 1.32;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-actions {
@@ -3541,10 +3575,15 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
 
 [data-surface="play"] .home-coach-practice .scotch-coach-mute,
 [data-surface="play"] .home-coach-practice .scotch-coach-skip {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   min-height: 2.35rem;
+  max-width: 100%;
   padding: 0.2rem 0.4rem;
   font-size: 0.78rem;
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 [data-surface="play"] .home-coach-practice .scotch-coach-next {
@@ -3554,7 +3593,10 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   min-height: 2.35rem;
   padding: 0 0.55rem;
   font-size: 0.8rem;
-  white-space: nowrap;
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 /* Optional transcript under the line blurb. In flow, never over the squares. */
@@ -3610,6 +3652,7 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin: 0 0 0.55rem;
   font-size: 0.88rem;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .scotch-coach-reading-beat:last-child {

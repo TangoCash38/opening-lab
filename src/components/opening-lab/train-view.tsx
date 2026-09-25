@@ -29,7 +29,7 @@ import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
-import { ScotchCoachReading } from "./scotch-coach-intro";
+import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
 
 type Mode = "learn" | "practice";
 
@@ -1076,7 +1076,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}
       </div>
       ) : null}
-      {pack.id === SCOTCH_PACK_ID ? <ScotchCoachReading /> : null}
+      {pack.id === SCOTCH_PACK_ID ? <ScotchCoachReading /> : <CoachPackReading packId={pack.id} />}
 
       {line.players ? (
         <div className="mt-2.5">
