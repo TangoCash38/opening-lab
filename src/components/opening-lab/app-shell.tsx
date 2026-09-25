@@ -29,6 +29,7 @@ import {
 } from "@/lib/color-scheme";
 import { isPlayWrap } from "@/lib/play-app";
 import type { TrainStartOptions } from "@/lib/london-warmup";
+import { FeedbackView } from "./feedback-view";
 import { GuideView } from "./guide-view";
 import { LandingHome } from "./home-intro";
 import { PackList } from "./pack-list";
@@ -39,7 +40,7 @@ import { Onboarding } from "./onboarding";
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "landing" | "home" | "train" | "guide" | "create" | "report";
+type View = "landing" | "home" | "train" | "guide" | "create" | "report" | "feedback";
 type TrainMode = "learn" | "practice";
 
 function scrollAppTop() {
@@ -135,8 +136,19 @@ function OpeningLabInner() {
     requestAnimationFrame(() => scrollAppTop());
   };
 
+  const openFeedback = () => {
+    setReturnView(view);
+    setView("feedback");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
   const leaveOverlay = () => {
-    setView(returnView === "guide" || returnView === "report" ? "landing" : returnView);
+    setView(
+      returnView === "guide" || returnView === "report" || returnView === "feedback"
+        ? "landing"
+        : returnView,
+    );
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
@@ -324,6 +336,7 @@ function OpeningLabInner() {
             onEnterGym={() => goPacks()}
             onOpenPack={(packId) => goPacks(packId)}
             onSupport={openGuide}
+            onFeedback={openFeedback}
             onCreateOwn={openCreate}
             onReport={openReport}
           />
@@ -334,6 +347,7 @@ function OpeningLabInner() {
             onStartLine={startLine}
             onHowToPlay={openGuide}
             onCreateOwn={openCreate}
+            onFeedback={openFeedback}
             onReportLine={openReport}
           />
         )}
@@ -344,6 +358,7 @@ function OpeningLabInner() {
           />
         )}
         {view === "report" && <ReportLineView onBack={leaveOverlay} />}
+        {view === "feedback" && <FeedbackView onBack={leaveOverlay} />}
         {view === "create" && (
           <CreateOwnView
             initial={readGymLine()}

@@ -18,6 +18,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
+import { Route as ApiInboxRouteImport } from './routes/api/inbox'
 import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
@@ -74,6 +75,11 @@ const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
 const ApiFeedbackRoute = ApiFeedbackRouteImport.update({
   id: '/api/feedback',
   path: '/api/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInboxRoute = ApiInboxRouteImport.update({
+  id: '/api/inbox',
+  path: '/api/inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPaymentsRoute = ApiPaymentsRouteImport.update({
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
+  '/api/inbox': typeof ApiInboxRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
+  '/api/inbox': typeof ApiInboxRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
@@ -193,6 +201,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
+  '/api/inbox': typeof ApiInboxRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/checkout'
     | '/api/feedback'
+    | '/api/inbox'
     | '/api/payments'
     | '/api/practice-review-eval'
     | '/api/unlocks'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/checkout'
     | '/api/feedback'
+    | '/api/inbox'
     | '/api/payments'
     | '/api/practice-review-eval'
     | '/api/unlocks'
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/checkout'
     | '/api/feedback'
+    | '/api/inbox'
     | '/api/payments'
     | '/api/practice-review-eval'
     | '/api/unlocks'
@@ -287,6 +299,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiFeedbackRoute: typeof ApiFeedbackRoute
+  ApiInboxRoute: typeof ApiInboxRoute
   ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
@@ -360,6 +373,13 @@ declare module '@tanstack/react-router' {
       path: '/api/feedback'
       fullPath: '/api/feedback'
       preLoaderRoute: typeof ApiFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/inbox': {
+      id: '/api/inbox'
+      path: '/api/inbox'
+      fullPath: '/api/inbox'
+      preLoaderRoute: typeof ApiInboxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/payments': {
@@ -497,6 +517,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiFeedbackRoute: ApiFeedbackRoute,
+  ApiInboxRoute: ApiInboxRoute,
   ApiPaymentsRoute: ApiPaymentsRoute,
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,

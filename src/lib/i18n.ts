@@ -10,6 +10,7 @@ import {
 } from "react";
 import { COACH_CAPTIONS, COACH_UI } from "./coach-i18n";
 import { LANDING_COPY } from "./landing-copy";
+import { VOICE_COPY } from "./voice-copy";
 
 export const LANGS = ["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja", "ar", "tr"] as const;
 export type Lang = (typeof LANGS)[number];
@@ -2740,6 +2741,7 @@ function withCoachCopy(lang: Lang, base: Dict): Dict {
   return {
     ...base,
     ...(LANDING_COPY[lang] ?? {}),
+    ...(VOICE_COPY[lang] ?? {}),
     ...(COACH_UI[lang] ?? {}),
     ...(COACH_CAPTIONS[lang] ?? {}),
   };

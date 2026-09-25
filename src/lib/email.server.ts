@@ -7,6 +7,7 @@ import { connect as tlsConnect, type TLSSocket } from "node:tls";
 import { PACKS } from "@/data/packs";
 import { isPackFree } from "@/data/pricing";
 import { getSql } from "@/lib/db";
+import { INBOX_SUBJECT, SUPPORT_INBOX, inboxReplyTo, type InboxKind } from "@/lib/inbox";
 
 export const SITE_URL = "https://www.openinglab.co.uk";
 const DEFAULT_FROM = "Opening Lab <support@openinglab.co.uk>";
@@ -17,6 +18,8 @@ type Mail = {
   subject: string;
   text: string;
   html: string;
+  /** Overrides the default support reply-to when the sender left an address. */
+  replyTo?: string;
 };
 
 function env(key: string): string | undefined {
@@ -81,9 +84,9 @@ function hasSmtp(): boolean {
   return Boolean(env("SMTP_HOST") && env("SMTP_USER") && env("SMTP_PASS"));
 }
 
-async function sendResend(mail: Mail): Promise<void> {
+async function sendResend(mail: Mail): Promise<boolean> {
   const key = env("RESEND_API_KEY");
-  if (!key) return;
+  if (!key) return false;
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -93,7 +96,7 @@ async function sendResend(mail: Mail): Promise<void> {
     body: JSON.stringify({
       from: fromAddress(),
       to: [mail.to],
-      reply_to: REPLY_TO,
+      reply_to: mail.replyTo ?? REPLY_TO,
       subject: mail.subject,
       html: mail.html,
       text: mail.text,
@@ -101,7 +104,9 @@ async function sendResend(mail: Mail): Promise<void> {
   });
   if (!res.ok) {
     console.error("[email] resend failed", res.status);
+    return false;
   }
+  return true;
 }
 
 class SmtpSession {
@@ -198,7 +203,7 @@ async function sendSmtp(mail: Mail): Promise<void> {
   const payload = [
     `From: ${from}`,
     `To: ${mail.to}`,
-    `Reply-To: ${REPLY_TO}`,
+    `Reply-To: ${mail.replyTo ?? REPLY_TO}`,
     `Subject: ${encodedSubject}`,
     "MIME-Version: 1.0",
     `Content-Type: multipart/alternative; boundary="${boundary}"`,
@@ -240,21 +245,24 @@ async function sendSmtp(mail: Mail): Promise<void> {
   }
 }
 
-async function sendMail(mail: Mail): Promise<void> {
+async function deliverMail(mail: Mail): Promise<boolean> {
   try {
-    if (!mail.to.includes("@")) return;
-    if (hasResend()) {
-      await sendResend(mail);
-      return;
-    }
+    if (!mail.to.includes("@")) return false;
+    if (hasResend()) return await sendResend(mail);
     if (hasSmtp()) {
       await sendSmtp(mail);
-      return;
+      return true;
     }
     warnNoProviderOnce();
+    return false;
   } catch {
     console.error("[email] send failed");
+    return false;
   }
+}
+
+async function sendMail(mail: Mail): Promise<void> {
+  await deliverMail(mail);
 }
 
 export function welcomeMail(to: string): Mail {
@@ -395,6 +403,36 @@ export async function sendLineFeedbackEmail(input: {
     text: layoutText(body),
     html: layoutHtml(escapeHtml(body).replace(/\n/g, "<br>")),
   });
+}
+
+/**
+ * Public inbox note. Resend (or SMTP) delivers to support@openinglab.co.uk.
+ * Returns sent:false when no provider is configured or the provider rejects it,
+ * so the client can open a mailto fallback.
+ */
+export async function sendSupportInboxEmail(input: {
+  kind: InboxKind;
+  message: string;
+  replyTo?: string | null;
+  accountEmail?: string | null;
+}): Promise<{ sent: boolean }> {
+  const at = new Date().toISOString();
+  const reply = inboxReplyTo(input.replyTo);
+  const account = inboxReplyTo(input.accountEmail);
+  const label = input.kind === "drill" ? "Opening" : "Message";
+  const body =
+    `Time: ${at}\n` +
+    `Reply-to: ${reply ?? "(none)"}\n` +
+    `Account: ${account ?? "(signed out)"}\n\n` +
+    `${label}:\n${input.message}`;
+  const sent = await deliverMail({
+    to: SUPPORT_INBOX,
+    subject: INBOX_SUBJECT[input.kind],
+    text: layoutText(body),
+    html: layoutHtml(escapeHtml(body).replace(/\n/g, "<br>")),
+    replyTo: reply ?? undefined,
+  });
+  return { sent };
 }
 
 export async function notifyPaidUnlock(input: {

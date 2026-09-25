@@ -56,6 +56,7 @@ type Props = {
   ) => void;
   onHowToPlay: () => void;
   onCreateOwn?: () => void;
+  onFeedback: () => void;
   onReportLine: () => void;
   /** Open this pack when the gym mounts (landing card). */
   focusPackId?: string | null;
@@ -294,6 +295,7 @@ export function PackList({
   onStartLine,
   onHowToPlay,
   onCreateOwn,
+  onFeedback,
   onReportLine,
   focusPackId = null,
 }: Props) {
@@ -559,7 +561,12 @@ export function PackList({
     <div className="pack-list">
       <div className="home-heading-row">
         <div className="home-heading-actions">
-          <HomeMenu onCreateOwn={onCreateOwn} onHelp={onHowToPlay} onReport={onReportLine} />
+          <HomeMenu
+            onCreateOwn={onCreateOwn}
+            onHelp={onHowToPlay}
+            onFeedback={onFeedback}
+            onReport={onReportLine}
+          />
         </div>
       </div>
       {unlockNotice ? (
