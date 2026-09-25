@@ -28,9 +28,12 @@ function compileCoachPacks(t) {
   };
   const scotchJs = ts.transpileModule(src("src/lib/scotch-coach.ts"), options).outputText;
   writeFileSync(join(dir, "scotch-coach.mjs"), scotchJs);
+  const stemJs = ts.transpileModule(src("src/lib/caro-intro-stem.ts"), options).outputText;
+  writeFileSync(join(dir, "caro-intro-stem.mjs"), stemJs);
   const js = ts
     .transpileModule(src("src/lib/coach-packs.ts"), options)
-    .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs");
+    .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs")
+    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs");
   writeFileSync(join(dir, "coach-packs.mjs"), js);
   t.after(() => {
     rmSync(dir, { recursive: true, force: true });
@@ -56,6 +59,16 @@ test("caro-kann-black has 10 legal lines titled Line 1 to Line 10 and a Potato P
   assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
   assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black"\]/);
   assert.match(hero, /if \(current\.talk === "line"\) options\.startPly = SCOTCH_CANAL_PRACTICE_START_PLY/);
+  assert.match(hero, /if \(current\.talk === "intro"\) options\.startPly = SCOTCH_CANAL_PRACTICE_START_PLY/);
+  const introBoard = hero.slice(
+    hero.indexOf('coach.talk === "intro" && !textScript'),
+    hero.indexOf('coach.talk === "canal"'),
+  );
+  assert.match(introBoard, /flip=\{pack\.side === "Black"\}/);
+  assert.match(introBoard, /stemSans=\{coachPack\(pack\.id\)\?\.introStem\}/);
+  assert.match(introBoard, /stemAtSec=\{coachPack\(pack\.id\)\?\.introStemAtSec\}/);
+  assert.match(introBoard, /plyFallbackSec=\{coachPack\(pack\.id\)\?\.introAudioFallbackSec\}/);
+  assert.match(hero, /plyAtSec=\{linePlyCues\}/);
   assert.doesNotMatch(train, /startCoachPackNarration/);
   assert.doesNotMatch(packs, /id: "ckb1[1-9]"/);
   assert.doesNotMatch(packs, /Play on/);
@@ -164,7 +177,48 @@ test("caro-kann-black has 10 legal lines titled Line 1 to Line 10 and a Potato P
         throw new Error("script plies\\n" + played.join(" ") + "\\npack\\n" + pack.lines[0].plies.join(" "));
       }
       const introPlies = coachTalkPlies("caro-kann-black", "intro");
-      if (!introPlies || introPlies.some(Boolean)) throw new Error("intro should hold the start position");
+      if (introPlies !== null) throw new Error("caro intro uses the stem clock");
+      if (!coach.introStem || coach.introStem.join(" ") !== "e4 c6") {
+        throw new Error("intro stem " + coach.introStem);
+      }
+      if (!coach.introStemAtSec || coach.introStemAtSec.join(",") !== "18.5,19.7") {
+        throw new Error("intro stem times " + coach.introStemAtSec);
+      }
+      if (coachAudioPlyCount(coach.introStemAtSec, 18.49, 112.8, 112.8) !== 0) {
+        throw new Error("e4 not yet");
+      }
+      if (coachAudioPlyCount(coach.introStemAtSec, 18.5, 112.8, 112.8) !== 1) {
+        throw new Error("e4");
+      }
+      if (coachAudioPlyCount(coach.introStemAtSec, 19.69, 112.8, 112.8) !== 1) {
+        throw new Error("c6 not yet");
+      }
+      if (coachAudioPlyCount(coach.introStemAtSec, 19.7, 112.8, 112.8) !== 2) {
+        throw new Error("c6");
+      }
+      if (Chess) {
+        const stemGame = new Chess();
+        for (const san of coach.introStem) {
+          if (!stemGame.move(san)) throw new Error("illegal stem " + san);
+        }
+      }
+      const {
+        SCOTCH_COACH_STEM_AT_SEC,
+        SCOTCH_COACH_NARRATION_FALLBACK_SEC,
+        scotchCoachStemPlyCount,
+      } = await import("./src/lib/scotch-coach.ts");
+      for (const time of [0, 5.28, 6.28, 7.42, 7.92, 10.25, 12.95, 16.25, 20, 44]) {
+        const scotchCount = scotchCoachStemPlyCount(time, 44.016);
+        const shared = coachAudioPlyCount(
+          SCOTCH_COACH_STEM_AT_SEC,
+          time,
+          44.016,
+          SCOTCH_COACH_NARRATION_FALLBACK_SEC,
+        );
+        if (scotchCount !== shared) {
+          throw new Error("scotch stem drift " + time + " " + scotchCount + " " + shared);
+        }
+      }
       if (!coachPackIntroApplies("caro-kann-black")) throw new Error("intro gate");
       if (!coachPackLineApplies({ packId: "caro-kann-black", lineId: "ckb1" })) throw new Error("ckb1");
       if (coachPackLineApplies({ packId: "caro-kann-black", lineId: "ckb2" })) throw new Error("ckb2");

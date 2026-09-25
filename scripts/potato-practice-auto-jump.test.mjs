@@ -19,7 +19,7 @@ test("Practice open auto-starts Potato Pie pack intro once per session", () => {
   assert.match(hero, /!coachIntroAlreadySeen\(pack\.id\)/);
   assert.match(hero, /const asPracticeEntry = true/);
   assert.match(hero, /launchLine\(line, undefined, asPracticeEntry\)/);
-  assert.match(hero, /\}, \[pack\.id\]\);/);
+  assert.match(hero, /\}, \[pack\.id, purchased, subscribed\]\);/);
 });
 
 test("Line taps during pack intro queue and do not skip Potato Pie", () => {
@@ -32,7 +32,10 @@ test("Line taps during pack intro queue and do not skip Potato Pie", () => {
 test("Caro pack intro names e4 c6 on the board stem clock", () => {
   const stem = readFileSync(join(root, "src/lib/caro-intro-stem.ts"), "utf8");
   assert.match(stem, /CARO_INTRO_STEM = \["e4", "c6"\]/);
-  assert.match(stem, /CARO_INTRO_STEM_AT_SEC = \[19\.2, 21\.0\]/);
-  assert.match(hero, /stemSans=\{pack\.id === "caro-kann-black" \? CARO_INTRO_STEM/);
-  assert.match(hero, /stemAtSec=\{pack\.id === "caro-kann-black" \? CARO_INTRO_STEM_AT_SEC/);
+  assert.match(stem, /CARO_INTRO_STEM_AT_SEC = \[18\.5, 19\.7\]/);
+  assert.match(packs, /introStem: CARO_INTRO_STEM/);
+  assert.match(packs, /introStemAtSec: CARO_INTRO_STEM_AT_SEC/);
+  assert.match(hero, /stemSans=\{coachPack\(pack\.id\)\?\.introStem\}/);
+  assert.match(hero, /stemAtSec=\{coachPack\(pack\.id\)\?\.introStemAtSec\}/);
+  assert.match(hero, /flip=\{pack\.side === "Black"\}/);
 });

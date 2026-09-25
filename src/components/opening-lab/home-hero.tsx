@@ -113,6 +113,8 @@ export function HomeHero({
   const [coach, setCoach] = useState<CoachSession | null>(null);
   const [textBeat, setTextBeat] = useState(0);
   const coachRef = useRef<CoachSession | null>(null);
+  /** Line tap while the pack intro is up — run after intro (and Line 1 talk). */
+  const queuedLineRef = useRef<OpeningLine | null>(null);
   const onCoachBeat = useCallback((beat: number) => {
     setTextBeat(beat);
   }, []);
@@ -159,6 +161,7 @@ export function HomeHero({
     coachRef.current = null;
     setCoach(null);
     setTextBeat(0);
+    queuedLineRef.current = null;
     stopScotchCoachNarration();
   }, [pack.id, linesInitiallyOpen]);
 
@@ -311,6 +314,46 @@ export function HomeHero({
     onStartLine(pack, line, "learn");
   };
 
+  /**
+   * Potato Pie jumps out as soon as this pack's Practice screen opens —
+   * no Tap to practice required. Once per session; never in Test.
+   */
+  useEffect(() => {
+    // Defer past Strict Mode's setup/cleanup/setup so the session flag is
+    // written once, on the mount that stays. An immediate mark is wiped
+    // with the first mount and the intro never appears in dev.
+    const id = window.setTimeout(() => {
+      if (isComingSoonClosed(pack.id, purchased, subscribed)) return;
+      const wantsScotch =
+        scotchCoachApplies({ packId: pack.id, practiceEntry: true }) &&
+        !scotchCoachAlreadySeen();
+      const wantsPack =
+        coachPackIntroApplies(pack.id) && !coachIntroAlreadySeen(pack.id);
+      if (!wantsScotch && !wantsPack) return;
+      let line: OpeningLine | undefined;
+      if (pack.id === "caro-kann-black") {
+        line = pack.lines.find((l) => l.id === "ckb1");
+      } else {
+        const samples = FREE_SAMPLE_LINE_IDS[pack.id];
+        if (samples?.length) {
+          line = pack.lines.find((l) => l.id === samples[0]);
+        }
+        if (!line) {
+          line = pack.lines.find(
+            (l) => subscribed || isLineUnlocked(pack, l.id, purchased),
+          );
+        }
+      }
+      if (!line) return;
+      const asPracticeEntry = true;
+      launchLine(line, undefined, asPracticeEntry);
+    }, 0);
+    return () => window.clearTimeout(id);
+    // Unlocks load after the first paint. Re-run when they arrive so a paid
+    // pack such as Scotch still opens Potato Pie. launchLine is stable enough.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Practice open only
+  }, [pack.id, purchased, subscribed]);
+
   const finishCoach = (reason?: "skip" | "done") => {
     const current = coachRef.current;
     if (!current) {
@@ -338,16 +381,22 @@ export function HomeHero({
         return;
       }
     }
+    const queued = queuedLineRef.current;
+    queuedLineRef.current = null;
+    // A line tap during pack intro is applied here (do not skip Potato Pie).
+    if (queued) current.line = queued;
     coachRef.current = null;
     stopScotchCoachNarration();
     setCoach(null);
     // Canal demo playback stops here. Line 1 Practice starts on ply 0
     // with hints, the same as a line tap after the talk has already played.
+    // Pack intro stems (Caro e4 c6) must not carry into that board.
     const options = {
       plyLimit: current.plyLimit,
       startPly:
         current.talk === "canal" ? SCOTCH_CANAL_PRACTICE_START_PLY : current.startPly,
     };
+    if (current.talk === "intro") options.startPly = SCOTCH_CANAL_PRACTICE_START_PLY;
     if (current.talk === "line") options.startPly = SCOTCH_CANAL_PRACTICE_START_PLY;
     // Desktop stays in the pack card. Phone and Play continue on the train route.
     if (preferInFrame()) {
@@ -493,6 +542,9 @@ export function HomeHero({
                       key={coach.line.id}
                       flip={pack.side === "Black"}
                       frameCoords={!playApp}
+                      stemSans={coachPack(pack.id)?.introStem}
+                      stemAtSec={coachPack(pack.id)?.introStemAtSec}
+                      plyFallbackSec={coachPack(pack.id)?.introAudioFallbackSec}
                     />
                   ) : coach.talk === "canal" ? (
                     <ScotchCoachBoard
@@ -601,6 +653,11 @@ export function HomeHero({
                             return;
                           }
                           if (unlocked) {
+                            // Pack intro is up — do not skip Potato Pie.
+                            if (coachRef.current?.talk === "intro") {
+                              queuedLineRef.current = item;
+                              return;
+                            }
                             if (pack.about) {
                               setPendingLine(item);
                               setAboutOpen(true);
