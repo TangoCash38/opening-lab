@@ -3201,6 +3201,18 @@ html[data-color-scheme="dark"] .app-shell--landing {
   font-size: 1.02rem;
 }
 
+.landing-cta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+  margin-top: 1.05rem;
+}
+
+.landing-cta-stack .landing-cta {
+  margin-top: 0;
+}
+
 .landing-cta {
   width: 100%;
   min-height: 3.25rem;
@@ -3211,6 +3223,22 @@ html[data-color-scheme="dark"] .app-shell--landing {
   color: #f7f3ea;
   font-size: 1.05rem;
   font-weight: 750;
+}
+
+.landing-cta-secondary {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.4rem 1rem;
+  border: 1.5px solid #23483c;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: #23483c;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.landing-cta-secondary:active {
+  transform: scale(0.99);
 }
 
 .landing-cta:active {
@@ -3291,8 +3319,13 @@ html[data-color-scheme="dark"] .app-shell--landing {
 }
 
 html[data-color-scheme="dark"] .landing-pack-price,
-html[data-color-scheme="dark"] .landing-cta {
+html[data-color-scheme="dark"] .landing-cta,
+html[data-color-scheme="dark"] .landing-cta-secondary {
   color: #e7f3ec;
+}
+
+html[data-color-scheme="dark"] .landing-cta-secondary {
+  border-color: #e7f3ec;
 }
 
 html[data-color-scheme="dark"] .landing-cta {
@@ -3366,10 +3399,19 @@ html[data-color-scheme="dark"] .landing-chip {
     text-align: start;
   }
 
+  .landing-cta-stack {
+    align-items: flex-start;
+  }
+
   .landing-cta {
     width: auto;
     min-width: 14.5rem;
     padding: 0 1.6rem;
+  }
+
+  .landing-cta-secondary {
+    width: auto;
+    min-width: 14.5rem;
   }
 
   .landing-open-grid {
@@ -3985,4 +4027,148 @@ html[data-color-scheme="dark"] .landing-chip {
 
 .scotch-coach-reading-beat:last-child {
   margin-bottom: 0;
+}
+
+.lessons-shell {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+.lessons-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.lessons-home,
+.lessons-back {
+  color: #2f5d50;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.lessons-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.lessons-main {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 2.75rem;
+}
+
+.lessons-title {
+  margin: 0.35rem 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.lessons-catalogue .lessons-course-card,
+.lessons-list {
+  margin-top: 0.85rem;
+}
+
+.lessons-count,
+.lessons-price,
+.lessons-owned {
+  margin: 0.15rem 0 0;
+  color: #2f5d50;
+  font-weight: 750;
+}
+
+.lessons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid color-mix(in srgb, #a97850 28%, var(--color-border));
+  border-radius: 1rem;
+  background: var(--color-bg-elevated);
+  color: inherit;
+  text-align: start;
+  text-decoration: none;
+}
+
+.lesson-row[data-lesson-access="locked"] {
+  border-color: var(--color-danger);
+}
+
+.lesson-row[data-lesson-access="free"],
+.lesson-row[data-lesson-access="open"] {
+  border-color: var(--color-success);
+}
+
+.lesson-row-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.lesson-row-blurb,
+.lesson-stub p {
+  margin: 0;
+  color: var(--color-fg-muted);
+  line-height: 1.45;
+}
+
+.lesson-row-state {
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.lessons-unlock {
+  margin-top: 0.85rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 1rem;
+  border: 0;
+  border-radius: 0.85rem;
+  background: #23483c;
+  color: #f7f3ea;
+  font-weight: 750;
+}
+
+.lessons-unlock:disabled {
+  opacity: 0.7;
+}
+
+.lessons-error {
+  margin: 0.6rem 0 0;
+  color: var(--color-danger);
+  font-weight: 650;
+}
+
+.lesson-stub {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.lesson-player .scotch-coach-beat {
+  min-height: 4.4rem;
+}
+
+.lesson-teaching-note {
+  grid-column: 1 / -1;
+  margin: 0.35rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
 }

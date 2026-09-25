@@ -2,18 +2,14 @@
  * Server-only purchase / unlock persistence. Do not import from client code.
  */
 import { PACKS } from "@/data/packs";
+import { LESSON_PRODUCT_IDS } from "@/lib/lesson-products";
 import { getSql } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/verify.server";
 import { notifyPaidUnlock } from "@/lib/email.server";
 import { isPlayUserAgent, playWrapAccountUnlocks } from "@/lib/play-app";
-import {
-  MONTH_MS,
-  YEAR_MS,
-  type SubPlan,
-  type UnlockState,
-} from "@/lib/unlocks";
+import { MONTH_MS, YEAR_MS, type SubPlan, type UnlockState } from "@/lib/unlocks";
 
-const KNOWN_PACK_IDS = new Set(PACKS.map((p) => p.id));
+const KNOWN_PACK_IDS = new Set<string>([...PACKS.map((p) => p.id), ...LESSON_PRODUCT_IDS]);
 
 const EMPTY: UnlockState = { packs: [], plan: null, expiresAt: null };
 
@@ -50,9 +46,7 @@ function asExpiryMs(value: Date | string | null | undefined): number | null {
 }
 
 function asPlan(value: unknown): SubPlan | null {
-  return value === "monthly" || value === "yearly" || value === "buy_all"
-    ? value
-    : null;
+  return value === "monthly" || value === "yearly" || value === "buy_all" ? value : null;
 }
 
 function normalizePacks(value: unknown): string[] {
@@ -85,9 +79,7 @@ function unlocksForRequest(request: Request, unlocks: UnlockState): UnlockState 
 export type SignedInUser = { id: string; email: string | null };
 
 /** Resolve signed-in user id + email (email needed for review full-access grant). */
-export async function signedInUser(
-  request?: Request,
-): Promise<SignedInUser | null> {
+export async function signedInUser(request?: Request): Promise<SignedInUser | null> {
   try {
     const user = await getSessionUser();
     if (user?.id) return { id: user.id, email: user.email ?? null };
@@ -135,11 +127,7 @@ function reviewFullAccessUnlocks(): UnlockState {
   };
 }
 
-function unlocksForSignedIn(
-  request: Request,
-  user: SignedInUser,
-  base: UnlockState,
-): UnlockState {
+function unlocksForSignedIn(request: Request, user: SignedInUser, base: UnlockState): UnlockState {
   if (emailMatchesReviewFullAccess(user.email)) {
     return unlocksForRequest(request, reviewFullAccessUnlocks());
   }
@@ -219,10 +207,7 @@ async function upsertMerged(
   return getUnlocksForUser(userId);
 }
 
-export async function applyPurchase(
-  userId: string,
-  input: PurchaseApply,
-): Promise<UnlockState> {
+export async function applyPurchase(userId: string, input: PurchaseApply): Promise<UnlockState> {
   let packs: string[] = [];
   if (input.kind === "pack" && input.packId && KNOWN_PACK_IDS.has(input.packId)) {
     packs = [input.packId];
@@ -302,7 +287,6 @@ export async function claimUnlocksForUser(
   return upsertMerged(userId, packs, plan, plan ? expiresAt : null);
 }
 
-
 export async function userIdForPlayToken(token: string): Promise<string | null> {
   const sql = await getSql();
   const rows = await sql.query<{ user_id: string }>(
@@ -369,9 +353,7 @@ export async function unlocksClaimResponse(request: Request): Promise<Response> 
   // never write client-asserted packs/plans. Stripe applyPurchase is the grant path.
   if (stripePaymentsConfigured()) {
     try {
-      return json(
-        unlocksForSignedIn(request, user, await getUnlocksForUser(user.id)),
-      );
+      return json(unlocksForSignedIn(request, user, await getUnlocksForUser(user.id)));
     } catch (err) {
       console.error("[purchases] claim read-only load failed", err);
       return json({ error: "Could not load unlocks" }, 500);

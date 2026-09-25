@@ -15,6 +15,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Log in",
     Theme: "Theme",
     "{n} free · {price}": "{n} free · {price}",
+    "Chess opening lessons": "Chess opening lessons",
+    "{n} lessons": "{n} lessons",
   },
   es: {
     "Practice with hints. Test with none.": "Practica con pistas. El test, sin ninguna.",
@@ -29,6 +31,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Entrar",
     Theme: "Tema",
     "{n} free · {price}": "{n} gratis · {price}",
+    "Chess opening lessons": "Lecciones de aperturas",
+    "{n} lessons": "{n} lecciones",
   },
   zh: {
     "Practice with hints. Test with none.": "练习有提示。测验没有。",
@@ -43,6 +47,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "登录",
     Theme: "主题",
     "{n} free · {price}": "{n} 免费 · {price}",
+    "Chess opening lessons": "国际象棋开局课",
+    "{n} lessons": "{n} 节课",
   },
   fr: {
     "Practice with hints. Test with none.": "Entraîne-toi avec des indices. Le test, sans aucun.",
@@ -57,6 +63,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Connexion",
     Theme: "Thème",
     "{n} free · {price}": "{n} gratuit · {price}",
+    "Chess opening lessons": "Leçons d'ouvertures",
+    "{n} lessons": "{n} leçons",
   },
   de: {
     "Practice with hints. Test with none.": "Üben mit Hinweisen. Testen ohne.",
@@ -71,6 +79,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Anmelden",
     Theme: "Design",
     "{n} free · {price}": "{n} gratis · {price}",
+    "Chess opening lessons": "Schacheröffnungslektionen",
+    "{n} lessons": "{n} Lektionen",
   },
   pt: {
     "Practice with hints. Test with none.": "Pratica com dicas. O teste, sem nenhuma.",
@@ -85,6 +95,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Entrar",
     Theme: "Tema",
     "{n} free · {price}": "{n} grátis · {price}",
+    "Chess opening lessons": "Lições de aberturas",
+    "{n} lessons": "{n} lições",
   },
   ru: {
     "Practice with hints. Test with none.": "Тренировка с подсказками. Тест без них.",
@@ -99,6 +111,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Войти",
     Theme: "Тема",
     "{n} free · {price}": "{n} бесплатно · {price}",
+    "Chess opening lessons": "Уроки дебютов",
+    "{n} lessons": "{n} урока",
   },
   it: {
     "Practice with hints. Test with none.": "Allenati con i suggerimenti. Il test, senza.",
@@ -113,6 +127,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Accedi",
     Theme: "Tema",
     "{n} free · {price}": "{n} gratis · {price}",
+    "Chess opening lessons": "Lezioni di aperture",
+    "{n} lessons": "{n} lezioni",
   },
   hi: {
     "Practice with hints. Test with none.": "अभ्यास संकेतों के साथ। परीक्षा बिना।",
@@ -127,6 +143,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "लॉग इन",
     Theme: "थीम",
     "{n} free · {price}": "{n} मुफ़्त · {price}",
+    "Chess opening lessons": "शतरंज ओपनिंग पाठ",
+    "{n} lessons": "{n} पाठ",
   },
   ja: {
     "Practice with hints. Test with none.": "ヒントありで練習。テストはヒントなし。",
@@ -141,6 +159,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "ログイン",
     Theme: "テーマ",
     "{n} free · {price}": "{n} 無料 · {price}",
+    "Chess opening lessons": "チェスオープニング講座",
+    "{n} lessons": "{n} レッスン",
   },
   ar: {
     "Practice with hints. Test with none.": "تدرّب مع تلميحات. الاختبار بلا تلميح.",
@@ -155,6 +175,8 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "تسجيل الدخول",
     Theme: "المظهر",
     "{n} free · {price}": "{n} مجانًا · {price}",
+    "Chess opening lessons": "دروس افتتاحيات الشطرنج",
+    "{n} lessons": "{n} دروس",
   },
   tr: {
     "Practice with hints. Test with none.": "İpuçlarıyla çalış. Testte hiçbiri yok.",
@@ -169,5 +191,7 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Log in": "Giriş yap",
     Theme: "Tema",
     "{n} free · {price}": "{n} ücretsiz · {price}",
+    "Chess opening lessons": "Satranç açılış dersleri",
+    "{n} lessons": "{n} ders",
   },
 };

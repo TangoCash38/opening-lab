@@ -16,7 +16,11 @@ export async function fetchPaymentsEnabled(): Promise<boolean> {
   return data.enabled === true;
 }
 
-export async function startCheckout(kind: CheckoutKind, packId?: string): Promise<string> {
+export async function startCheckout(
+  kind: CheckoutKind,
+  packId?: string,
+  returnPath?: string,
+): Promise<string> {
   if (isPlayApp() || isPlayWrap()) {
     throw new Error("Pack billing is not on sale in this build");
   }
@@ -24,7 +28,7 @@ export async function startCheckout(kind: CheckoutKind, packId?: string): Promis
     method: "POST",
     credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind, packId }),
+    body: JSON.stringify({ kind, packId, returnPath }),
   });
   const data = (await res.json().catch(() => ({}))) as {
     url?: string;

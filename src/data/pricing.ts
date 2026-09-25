@@ -16,6 +16,8 @@ export const PRICE_CARO_REST = "£1.99";
 export const PRICE_OPENING_TRAPS = "£1.99";
 /** Any other visible pack. */
 export const PRICE_PACK = "£2.99";
+/** Scotch Gambit lessons (`lesson-scotch`). Separate from the Scotch drill pack. */
+export const PRICE_LESSON_SCOTCH = "£2.99";
 /** One-time: unlock every opening pack (current + future on the website). */
 export const PRICE_BUY_ALL = "£19.99";
 

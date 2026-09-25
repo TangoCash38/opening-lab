@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import { PACKS } from "@/data/packs";
 import { canPurchaseBuyAll, canPurchasePack } from "@/lib/catalog";
 import { PRICE_BUY_ALL, packPrice, priceToPence } from "@/data/pricing";
+import { isLessonProductId, lessonCheckout, lessonCheckoutReturnPath } from "@/lib/lesson-products";
 import { applyPurchase, signedInUserId } from "@/lib/purchases.server";
 import { MONTH_MS, YEAR_MS, type SubPlan } from "@/lib/unlocks";
 
@@ -33,15 +34,10 @@ function stripeClient(): Stripe {
 
 function requestOrigin(request: Request): string {
   const url = new URL(request.url);
-  const proto = (
-    request.headers.get("x-forwarded-proto") ??
-    url.protocol.replace(":", "")
-  ).split(",")[0]!.trim();
-  const host = (
-    request.headers.get("x-forwarded-host") ??
-    request.headers.get("host") ??
-    url.host
-  )
+  const proto = (request.headers.get("x-forwarded-proto") ?? url.protocol.replace(":", ""))
+    .split(",")[0]!
+    .trim();
+  const host = (request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? url.host)
     .split(",")[0]!
     .trim();
   return `${proto}://${host}`;
@@ -58,27 +54,20 @@ export function paymentsStatusResponse(): Response {
 function subscriptionPeriodEndMs(sub: Stripe.Subscription): number | null {
   const fromSub = (sub as { current_period_end?: number }).current_period_end;
   if (typeof fromSub === "number" && fromSub > 0) return fromSub * 1000;
-  const item = sub.items?.data?.[0] as
-    | { current_period_end?: number }
-    | undefined;
+  const item = sub.items?.data?.[0] as { current_period_end?: number } | undefined;
   if (typeof item?.current_period_end === "number" && item.current_period_end > 0) {
     return item.current_period_end * 1000;
   }
   return null;
 }
 
-function stripeId(
-  value: string | { id?: string } | null | undefined,
-): string | null {
+function stripeId(value: string | { id?: string } | null | undefined): string | null {
   if (!value) return null;
   if (typeof value === "string") return value;
   return value.id ?? null;
 }
 
-async function expiresAtForPlan(
-  session: Stripe.Checkout.Session,
-  plan: SubPlan,
-): Promise<number> {
+async function expiresAtForPlan(session: Stripe.Checkout.Session, plan: SubPlan): Promise<number> {
   let sub = session.subscription;
   if (typeof sub === "string") {
     try {
@@ -107,8 +96,7 @@ async function persistPaidSession(
 
   const kind = session.metadata?.kind;
   const packId = session.metadata?.packId || undefined;
-  const plan: SubPlan | null =
-    kind === "monthly" || kind === "yearly" ? kind : null;
+  const plan: SubPlan | null = kind === "monthly" || kind === "yearly" ? kind : null;
 
   try {
     if (kind === "pack" && packId) {
@@ -154,9 +142,13 @@ export async function createCheckoutSession(request: Request): Promise<Response>
     return json({ error: "Sign in required" }, 401);
   }
 
-  let body: { kind?: unknown; packId?: unknown };
+  let body: { kind?: unknown; packId?: unknown; returnPath?: unknown };
   try {
-    body = (await request.json()) as { kind?: unknown; packId?: unknown };
+    body = (await request.json()) as {
+      kind?: unknown;
+      packId?: unknown;
+      returnPath?: unknown;
+    };
   } catch {
     return json({ error: "Invalid request" }, 400);
   }
@@ -195,31 +187,50 @@ export async function createCheckoutSession(request: Request): Promise<Response>
     if (typeof body.packId !== "string" || !body.packId) {
       return json({ error: "Missing pack" }, 400);
     }
-    const pack = PACKS.find((p) => p.id === body.packId);
-    if (!pack || !canPurchasePack(pack.id)) {
-      return json({ error: "Unknown or free pack" }, 400);
+    const lesson = isLessonProductId(body.packId) ? lessonCheckout(body.packId) : null;
+    if (lesson) {
+      packId = lesson.id;
+      mode = "payment";
+      lineItem = {
+        quantity: 1,
+        price_data: {
+          currency: "gbp",
+          unit_amount: lesson.pence,
+          product_data: { name: lesson.name },
+        },
+      };
+    } else {
+      const pack = PACKS.find((p) => p.id === body.packId);
+      if (!pack || !canPurchasePack(pack.id)) {
+        return json({ error: "Unknown or free pack" }, 400);
+      }
+      // Caro is the free sample; checkout still sells the rest of that pack.
+      const price = packPrice(pack);
+      const pence = price ? priceToPence(price) : null;
+      if (!pence) return json({ error: "Unknown or free pack" }, 400);
+      packId = pack.id;
+      mode = "payment";
+      lineItem = {
+        quantity: 1,
+        price_data: {
+          currency: "gbp",
+          unit_amount: pence,
+          product_data: { name: pack.name },
+        },
+      };
     }
-    // Caro is the free sample; checkout still sells the rest of that pack.
-    const price = packPrice(pack);
-    const pence = price ? priceToPence(price) : null;
-    if (!pence) return json({ error: "Unknown or free pack" }, 400);
-    packId = pack.id;
-    mode = "payment";
-    lineItem = {
-      quantity: 1,
-      price_data: {
-        currency: "gbp",
-        unit_amount: pence,
-        product_data: { name: pack.name },
-      },
-    };
   }
+
+  const returnPath =
+    kind === "pack" && typeof body.packId === "string" && isLessonProductId(body.packId)
+      ? lessonCheckoutReturnPath(body.returnPath)
+      : "/";
 
   const session = await stripe.checkout.sessions.create({
     mode,
     line_items: [lineItem],
-    success_url: `${origin}/?paid=1&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/`,
+    success_url: `${origin}${returnPath}?paid=1&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}${returnPath}`,
     client_reference_id: userId,
     metadata: { kind, packId, userId },
   });
@@ -243,8 +254,7 @@ export async function getCheckoutSession(request: Request): Promise<Response> {
   const session = await stripeClient().checkout.sessions.retrieve(sessionId, {
     expand: ["subscription"],
   });
-  const paid =
-    session.payment_status === "paid" || session.status === "complete";
+  const paid = session.payment_status === "paid" || session.status === "complete";
   if (!paid) {
     return json({ ok: false });
   }
@@ -280,8 +290,7 @@ export async function handleStripeWebhook(request: Request): Promise<Response> {
   let event: Stripe.Event | null = null;
 
   const isProduction =
-    process.env.VERCEL_ENV === "production" ||
-    process.env.NODE_ENV === "production";
+    process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
 
   if (!webhookSecret) {
     // Never accept unsigned raw JSON in production.
