@@ -15,6 +15,9 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as LessonsRouteImport } from './routes/lessons'
+import { Route as LessonsCourseRouteImport } from './routes/lessons_.$courseId'
+import { Route as LessonsLessonRouteImport } from './routes/lessons_.$courseId.$lessonId'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
 import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
@@ -55,6 +58,21 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsRoute = LessonsRouteImport.update({
+  id: '/lessons',
+  path: '/lessons',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsCourseRoute = LessonsCourseRouteImport.update({
+  id: '/lessons/$courseId',
+  path: '/lessons/$courseId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsLessonRoute = LessonsLessonRouteImport.update({
+  id: '/lessons/$courseId/$lessonId',
+  path: '/lessons/$courseId/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
@@ -120,6 +138,9 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/lessons': typeof LessonsRoute
+  '/lessons/$courseId': typeof LessonsCourseRoute
+  '/lessons/$courseId/$lessonId': typeof LessonsLessonRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/payments': typeof ApiPaymentsRoute
@@ -139,6 +160,9 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/lessons': typeof LessonsRoute
+  '/lessons/$courseId': typeof LessonsCourseRoute
+  '/lessons/$courseId/$lessonId': typeof LessonsLessonRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/payments': typeof ApiPaymentsRoute
@@ -159,6 +183,9 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/lessons': typeof LessonsRoute
+  '/lessons/$courseId': typeof LessonsCourseRoute
+  '/lessons/$courseId/$lessonId': typeof LessonsLessonRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/payments': typeof ApiPaymentsRoute
@@ -180,6 +207,9 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/terms'
+    | '/lessons'
+    | '/lessons/$courseId'
+    | '/lessons/$courseId/$lessonId'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/payments'
@@ -199,6 +229,9 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/terms'
+    | '/lessons'
+    | '/lessons/$courseId'
+    | '/lessons/$courseId/$lessonId'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/payments'
@@ -218,6 +251,9 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/terms'
+    | '/lessons'
+    | '/lessons/$courseId'
+    | '/lessons/$courseId/$lessonId'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/payments'
@@ -238,6 +274,9 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
+  LessonsRoute: typeof LessonsRoute
+  LessonsCourseRoute: typeof LessonsCourseRoute
+  LessonsLessonRoute: typeof LessonsLessonRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiFeedbackRoute: typeof ApiFeedbackRoute
   ApiPaymentsRoute: typeof ApiPaymentsRoute
@@ -291,6 +330,27 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons': {
+      id: '/lessons'
+      path: '/lessons'
+      fullPath: '/lessons'
+      preLoaderRoute: typeof LessonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons/$courseId': {
+      id: '/lessons/$courseId'
+      path: '/lessons/$courseId'
+      fullPath: '/lessons/$courseId'
+      preLoaderRoute: typeof LessonsCourseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons/$courseId/$lessonId': {
+      id: '/lessons/$courseId/$lessonId'
+      path: '/lessons/$courseId/$lessonId'
+      fullPath: '/lessons/$courseId/$lessonId'
+      preLoaderRoute: typeof LessonsLessonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/checkout': {
@@ -404,6 +464,9 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
+  LessonsRoute: LessonsRoute,
+  LessonsCourseRoute: LessonsCourseRoute,
+  LessonsLessonRoute: LessonsLessonRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiFeedbackRoute: ApiFeedbackRoute,
   ApiPaymentsRoute: ApiPaymentsRoute,

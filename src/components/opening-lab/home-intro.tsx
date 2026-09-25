@@ -1,8 +1,16 @@
+import { useLayoutEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { PACKS, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
-import { FREE_SAMPLE_LINE_IDS, LIVE_PACK_IDS, isPackComingSoon, isPackVisible } from "@/lib/catalog";
+import {
+  FREE_SAMPLE_LINE_IDS,
+  LIVE_PACK_IDS,
+  isPackComingSoon,
+  isPackVisible,
+} from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
+import { isPlayApp } from "@/lib/play-app";
 import { ChessPiece } from "./chess-pieces";
 import { LandingMenu } from "./landing-menu";
 
@@ -64,14 +72,13 @@ function openNowTitle(pack: Pack): string {
  * Branded landing. One screen after a cold open — the old brand page and
  * splash poster are folded into this, so Home does not run two intros.
  */
-export function LandingHome({
-  onEnterGym,
-  onOpenPack,
-  onSupport,
-  onCreateOwn,
-  onReport,
-}: Props) {
+export function LandingHome({ onEnterGym, onOpenPack, onSupport, onCreateOwn, onReport }: Props) {
   const t = useT();
+  const navigate = useNavigate();
+  const [showLessons, setShowLessons] = useState(true);
+  useLayoutEffect(() => {
+    setShowLessons(!isPlayApp());
+  }, []);
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),
   );
@@ -143,9 +150,29 @@ export function LandingHome({
             <p id="landing-title" className="landing-sub">
               {t("Practice with hints. Test with none.")}
             </p>
-            <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
-              {t("Enter the gym")}
-            </button>
+            <div className="landing-cta-stack">
+              <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
+                {t("Enter the gym")}
+              </button>
+              <button
+                type="button"
+                className="landing-cta-secondary"
+                data-landing-drills
+                onClick={onEnterGym}
+              >
+                {t("Opening drill packs")}
+              </button>
+              {showLessons ? (
+                <button
+                  type="button"
+                  className="landing-cta-secondary"
+                  data-landing-lessons
+                  onClick={() => navigate({ to: "/lessons" })}
+                >
+                  {t("Chess opening lessons")}
+                </button>
+              ) : null}
+            </div>
           </div>
         </div>
 

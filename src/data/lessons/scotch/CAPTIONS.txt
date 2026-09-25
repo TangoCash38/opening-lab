@@ -1,0 +1,32 @@
+Welcome to the Scotch Gambit with Professor Potato Pie, a civilised opening with a slightly mischievous undercurrent.
+We shall keep two things in view throughout the course: what the moves threaten, and what the position actually dissolves.
+The latter is a useful habit in chess and in choosing an umbrella for a Manchester afternoon.
+Start with white pawn to e4, black pawn to e5, white knight to f3, black knight to c6, and white pawn to d4.
+Black replies pawn from e5 takes d4 — here comes the fork in the road.
+In the regular Scotch Game, white plays knight takes d4, recovers the pawn immediately, and develops in a perfectly respectable manner.
+The Scotch Gambit makes a different choice.
+White plays bishop to c4 and leaves the d4 pawn alone for a moment.
+White buys activity rather than insisting on immediate bookkeeping.
+The bishop looks at f7; development can be brisk and Black's king may be asked awkward questions before it castles.
+The Scotch Game received serious top-level attention after Kasparov used it in the 1990 World Championship match.
+The Gambit is the less common, more practical cousin — not a factory for forced wins.
+After bishop to c4, Black has no obligation to panic.
+Bishop to c5 develops actively and meets White's bishop; knight to f6 attacks e4 and leads us to part 2.
+Black can also choose bishop to b4 check, pawn to d6, or bishop to e7.
+A gambit is an invitation to calculate, not a eviction notice.
+Back to the position after White's bishop reaches c4.
+For an illustrative branch, Black plays bishop to c5 and White tries pawn to c3, offering another pawn while preparing to challenge the centre.
+If Black accepts with pawn from d4 takes c3, White has a tidy tactical pattern.
+Bishop takes f7 check draws the king forward.
+Black answers king takes f7, then White plays queen to d5 check.
+The queen checks the exposed king and attacks Black's bishop on c5.
+After king to f8, White continues queen takes c5 check, recovering the bishop.
+It is a handsome fork, the sort one may place on the mantelpiece — providing one labels it correctly.
+The label is this: the sequence does not refute Black's bishop to c5.
+At the final display position, Black is objectively fine and White remains a pawn down.
+White has gained checks and displaced the king, but Black has material, playable development, and time to consolidate.
+Treat c3 as a tactical idea and a reminder to inspect f7 — not as a promised advantage.
+Our foundation is therefore simple.
+The regular Scotch says recapture now.
+The Scotch Gambit says develop first and make the position uncomfortable.
+In the next lesson, we take Black's knight to f6 road and see how quickly central tension asks close attention.
