@@ -46,7 +46,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   ],
   "italian-white": [
     "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White eyes f7 and meets …Bc5, the Two Knights, the Hungarian, …d6, and the kingside fianchetto with their own book replies.",
-    "Lines 1–5 are book. Lines 6–10 punish one Black error: Rousseau …f5, Greco …Bxc3, an early …Nxe4, …Bxf2+ in the Evans, and a premature …Ng4. Practice with the green hint, then Test with none. Each line ends where the book ends.",
+    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
   "ruy-white": [
     "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5. White pressures e5 by pinning the knight, then builds a Spanish centre with c3 and d4. The pack is distinct systems: Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, and Noah’s Ark.",

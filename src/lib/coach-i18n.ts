@@ -18,6 +18,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Línea 1 · diez líneas del gambito",
     "Opening Traps": "Trampas de apertura",
     "London System": "Sistema de Londres",
+    "Italian Game": "Apertura Italiana",
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
   },
@@ -32,6 +33,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "第 1 线 · 弃兵的十条线路",
     "Opening Traps": "开局陷阱",
     "London System": "伦敦体系",
+    "Italian Game": "意大利开局",
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
   },
@@ -46,6 +48,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Ligne 1 · dix lignes du gambit",
     "Opening Traps": "Pièges d'ouverture",
     "London System": "Système de Londres",
+    "Italian Game": "Partie italienne",
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
   },
@@ -60,6 +63,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Linie 1 · zehn Linien aus dem Gambit",
     "Opening Traps": "Eröffnungsfallen",
     "London System": "Londoner System",
+    "Italian Game": "Italienische Partie",
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
   },
@@ -74,6 +78,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Linha 1 · dez linhas do gambito",
     "Opening Traps": "Armadilhas de abertura",
     "London System": "Sistema de Londres",
+    "Italian Game": "Abertura Italiana",
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
   },
@@ -88,6 +93,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Линия 1 · десять линий гамбита",
     "Opening Traps": "Дебютные ловушки",
     "London System": "Лондонская система",
+    "Italian Game": "Итальянская партия",
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
   },
@@ -102,6 +108,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Linea 1 · dieci linee del gambetto",
     "Opening Traps": "Trappole di apertura",
     "London System": "Sistema di Londra",
+    "Italian Game": "Partita Italiana",
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
   },
@@ -116,6 +123,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "लाइन 1 · गैंबिट की दस लाइनें",
     "Opening Traps": "ओपनिंग के जाल",
     "London System": "लंदन प्रणाली",
+    "Italian Game": "इतालवी ओपनिंग",
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
   },
@@ -130,6 +138,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "ライン 1 · ギャンビットの十ライン",
     "Opening Traps": "オープニングの罠",
     "London System": "ロンドン・システム",
+    "Italian Game": "イタリア・ゲーム",
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
   },
@@ -144,6 +153,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "الخط 1 · عشرة خطوط من الغامبت",
     "Opening Traps": "فخاخ الافتتاح",
     "London System": "نظام لندن",
+    "Italian Game": "الافتتاح الإيطالي",
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
   },
@@ -158,6 +168,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · ten lines from the gambit": "Hat 1 · gambitten on hat",
     "Opening Traps": "Açılış tuzakları",
     "London System": "Londra sistemi",
+    "Italian Game": "İtalyan Açılışı",
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
   },
@@ -323,6 +334,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Ahí está, una posición compacta de Londres con el centro firmemente vigilado y nuestras piezas empezando a mirar hacia el flanco de rey.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Repítela hasta que tu mano conozca la ruta y tu rival se pregunte cuándo la apertura tranquila se convirtió en un ataque.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Muy bien, aquí Professor Potato Pie, té en la mano, y hoy nos encontramos con una de las aperturas más antiguas y elegantes del ajedrez, la partida italiana.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "Sus ideas las estudiaron los maestros italianos hace más de cuatro siglos, y la apertura sigue apareciendo hoy en todos los niveles del ajedrez.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "Las blancas empiezan con peón a e4, y las negras responden peón a e5, caballo a f3, caballo a c6, y luego alfil a c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "Ese alfil apunta hacia f7, la delicada casilla junto al rey negro.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "Desde aquí, las negras suelen responder con alfil a c5, entrando en el Giuoco Piano, o caballo a f6, y llegan a la defensa de los dos caballos.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "La partida italiana es clásica, viva, y se apoya en el desarrollo natural, el control del centro y las posibilidades de ataque.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Bien, disfruta al familiarizarte más con la partida italiana y veamos adónde nos lleva ese alfil en c4.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -478,6 +503,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "就是这样，一个紧凑的伦敦局面，中心牢牢在看管之下，我们的棋子开始朝王翼瞥去。",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "把它练到手上认得这条路，让对手纳闷安静的开局何时变成了进攻。",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "好，这里是 Professor Potato Pie，茶在手中，今天我们来认识国际象棋最古老、最优雅的开局之一，意大利开局。",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "它的思想由意大利大师在四个多世纪前研究过，而这开局今天仍出现在各级国际象棋中。",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "白方以兵到 e4 开始，黑方应以兵到 e5，马到 f3，马到 c6，然后象到 c4。",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "那只象指向 f7，黑方王旁边那块脆弱的小格子。",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "从这里起，黑方通常应以象到 c5，进入 Giuoco Piano，或者马到 f6，到达双马防御。",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "意大利开局古典、生动，建立在自然出子、中心控制与进攻可能之上。",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "好，享受进一步熟悉意大利开局的过程，我们来看看 c4 上的那只象会把我们带到哪里。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -640,6 +679,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La voilà, une position de Londres compacte, le centre fermement sous surveillance et nos pièces qui commencent à regarder vers le flanc roi.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Répète-la jusqu'à ce que ta main connaisse la route et que ton adversaire se demande quand l'ouverture calme est devenue une attaque.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Bien, ici Professor Potato Pie, thé en main, et aujourd'hui nous rencontrons l'une des ouvertures les plus anciennes et les plus élégantes des échecs, la partie italienne.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "Ses idées ont été étudiées par les maîtres italiens il y a plus de quatre siècles, et l'ouverture apparaît encore aujourd'hui à tous les niveaux des échecs.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "Les Blancs commencent par le pion en e4, et les Noirs répondent pion en e5, cavalier en f3, cavalier en c6, puis fou en c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "Ce fou vise f7, la petite case délicate à côté du roi noir.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "D'ici, les Noirs répondent souvent par le fou en c5, entrant dans le Giuoco Piano, ou par le cavalier en f6, pour atteindre la défense des deux cavaliers.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "La partie italienne est classique, vive, et bâtie sur le développement naturel, le contrôle du centre et les possibilités d'attaque.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Bien, prenez plaisir à mieux connaître la partie italienne, et voyons où ce fou en c4 nous mène.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -801,6 +854,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Da ist sie, eine kompakte Londoner Stellung, das Zentrum fest unter Aufsicht und unsere Figuren beginnen zum Königsflügel zu blicken.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Übe sie, bis deine Hand den Weg kennt und dein Gegner sich fragt, wann die ruhige Eröffnung zum Angriff wurde.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Also dann, hier ist Professor Potato Pie, Tee in der Hand, und heute begegnen wir einer der ältesten und elegantesten Eröffnungen des Schachs, der italienischen Partie.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "Ihre Ideen wurden von den italienischen Meistern vor mehr als vier Jahrhunderten studiert, und die Eröffnung erscheint noch heute auf jeder Ebene des Schachs.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "Weiß beginnt mit Bauer nach e4, und Schwarz antwortet mit Bauer nach e5, Springer nach f3, Springer nach c6 und dann Läufer nach c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "Dieser Läufer zeigt auf f7, das zarte kleine Feld neben dem schwarzen König.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "Von hier antwortet Schwarz gewöhnlich mit Läufer nach c5 und betritt das Giuoco Piano, oder mit Springer nach f6 und erreicht die Zweispringer-Verteidigung.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "Die italienische Partie ist klassisch, lebendig und auf natürliche Entwicklung, Zentrumskontrolle und Angriffsmöglichkeiten gebaut.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Also, genieße es, die italienische Partie besser kennenzulernen, und schauen wir, wohin uns dieser Läufer auf c4 führt.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -961,6 +1028,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Aí está, uma posição compacta de Londres, com o centro firmemente vigiado e as nossas peças a começar a olhar para o flanco do rei.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Repete-a até a tua mão conhecer o caminho e o teu adversário se perguntar quando a abertura calma se tornou um ataque.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Muito bem, aqui está Professor Potato Pie, chá na mão, e hoje encontramos uma das aberturas mais antigas e elegantes do xadrez, a abertura italiana.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "As suas ideias foram estudadas pelos mestres italianos há mais de quatro séculos, e a abertura ainda aparece hoje em todos os níveis do xadrez.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "As Brancas começam com peão para e4, e as Pretas respondem peão para e5, cavalo para f3, cavalo para c6, e depois bispo para c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "Esse bispo aponta para f7, a casinha delicada ao lado do rei preto.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "Daqui, as Pretas respondem habitualmente com bispo para c5, entrando no Giuoco Piano, ou cavalo para f6, chegando à Defesa dos Dois Cavalos.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "A abertura italiana é clássica, viva, e assenta no desenvolvimento natural, no controlo do centro e nas possibilidades de ataque.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Certo, aproveita para te familiarizares mais com a abertura italiana, e vamos ver para onde nos leva aquele bispo em c4.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1120,6 +1201,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Вот она, компактная лондонская позиция: центр под твёрдым надзором, а наши фигуры начинают поглядывать в сторону королевского фланга.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Тренируй её, пока рука не узнает маршрут, а соперник не задумается, когда тихий дебют стал атакой.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Итак, здесь Professor Potato Pie, чай в руке, и сегодня мы встречаем один из самых старых и изящных дебютов шахмат, итальянскую партию.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "Её идеи изучали итальянские мастера более четырёх веков назад, и этот дебют по-прежнему встречается на любом уровне шахмат.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "Белые начинают пешкой на e4, и чёрные отвечают пешкой на e5, конём на f3, конём на c6, а затем слоном на c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "Этот слон смотрит на f7, хрупкую маленькую клетку рядом с чёрным королём.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "Отсюда чёрные обычно отвечают слоном на c5, входя в Giuoco Piano, или конём на f6, достигая защиты двух коней.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "Итальянская партия классическая, живая и построена на естественном развитии, контроле центра и атакующих возможностях.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Итак, приятного знакомства с итальянской партией, и посмотрим, куда нас ведёт этот слон на c4.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1280,6 +1375,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Eccola, una posizione di Londra compatta, con il centro saldamente sotto controllo e i nostri pezzi che cominciano a guardare verso il lato di re.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Ripetila finché la tua mano non conosce la strada e il tuo avversario non si chiede quando l'apertura quieta è diventata un attacco.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Bene, qui Professor Potato Pie, tè in mano, e oggi incontriamo una delle aperture più antiche ed eleganti degli scacchi, la partita italiana.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "Le sue idee furono studiate dai maestri italiani più di quattro secoli fa, e l'apertura compare ancora oggi a ogni livello degli scacchi.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "Il Bianco inizia con pedone in e4, e il Nero risponde con pedone in e5, cavallo in f3, cavallo in c6, e poi alfiere in c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "Quell'alfiere punta verso f7, la delicata casella accanto al re nero.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "Da qui il Nero risponde di solito con alfiere in c5, entrando nel Giuoco Piano, oppure con cavallo in f6, raggiungendo la difesa dei due cavalli.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "La partita italiana è classica, vivace, e si fonda sullo sviluppo naturale, sul controllo del centro e sulle possibilità d'attacco.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Bene, goditi il prendere confidenza con la partita italiana e vediamo dove ci porta quell'alfiere in c4.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1440,6 +1549,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "यह रही, एक सघन लंदन स्थिति, केंद्र दृढ़ निगरानी में और हमारे मोहरे किंग साइड की ओर झाँकने लगते हैं।",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "इसे तब तक दोहराओ जब तक तुम्हारा हाथ रास्ता जान न ले और तुम्हारा प्रतिद्वंद्वी यह न सोचे कि शांत ओपनिंग हमला कब बन गई।",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "ठीक है, यहाँ Professor Potato Pie, हाथ में चाय, और आज हम शतरंज की सबसे पुरानी और सबसे सुंदर ओपनिंग में से एक से मिलते हैं, इतालवी ओपनिंग।",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "इसके विचार चार शताब्दियों से भी पहले इतालवी मास्टरों ने पढ़े थे, और यह ओपनिंग आज भी शतरंज के हर स्तर पर दिखती है।",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "सफेद e4 पर प्यादे से शुरू करता है, और काला e5 पर प्यादे से जवाब देता है, f3 पर घोड़ा, c6 पर घोड़ा, और फिर c4 पर ऊंट।",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "वह ऊंट f7 की ओर इशारा करता है, काले राजा के बगल का नाज़ुक छोटा घर।",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "यहाँ से काला आमतौर पर c5 पर ऊंट से जवाब देता है, Giuoco Piano में प्रवेश करता है, या f6 पर घोड़े से, दो घोड़ों की रक्षा तक पहुँचता है।",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "इतालवी ओपनिंग शास्त्रीय और जीवंत है, और स्वाभाविक विकास, केंद्र नियंत्रण और हमले की संभावनाओं पर बनी है।",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "ठीक, इतालवी ओपनिंग से और परिचित होने का आनंद लो, और देखें कि c4 पर वह ऊंट हमें कहाँ ले जाता है।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1599,6 +1722,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "これがその姿だ。引き締まったロンドンの局面で、中央はしっかり監視され、駒はキングサイドへ目を向け始める。",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "手が道順を覚えるまで繰り返し、静かなオープニングがいつの間に攻撃になったのか相手が不思議がるまで鍛えよう。",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "よし、こちらは Professor Potato Pie、紅茶を手に、今日はチェスで最も古く最も優雅なオープニングの一つ、イタリア・ゲームに会いに来た。",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "その考えは四世紀以上前にイタリアの棋士たちが研究し、このオープニングは今もあらゆるレベルのチェスに現れる。",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "白はポーンを e4 へ進め、黒はポーンを e5 へ、ナイトを f3 へ、ナイトを c6 へ、そしてビショップを c4 へ。",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "そのビショップは f7 を指す。黒のキングのそばにある繊細な小さなマスだ。",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "ここから黒はたいていビショップを c5 へ応じて Giuoco Piano に入り、あるいはナイトを f6 へ進めてツーナイツ・ディフェンスに至る。",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "イタリア・ゲームは古典的で生き生きとしており、自然な展開、中心の支配、そして攻撃の可能性の上に築かれている。",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "よし、イタリア・ゲームにもっと親しむのを楽しんで、c4 のビショップが私たちをどこへ連れていくか見ていこう。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1756,6 +1893,20 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "ها هي، وضعية لندن متماسكة، والمركز تحت رقابة ثابتة، وقطعنا تبدأ في النظر نحو جانب الملك.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "كرّرها حتى تعرف يدك الطريق ويتساءل خصمك متى صار الافتتاح الهادئ هجومًا.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "حسنًا، هنا Professor Potato Pie، الشاي في اليد، واليوم نلتقي بإحدى أقدم افتتاحيات الشطرنج وأكثرها أناقة، الافتتاح الإيطالي.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "درس أفكارها الأساتذة الإيطاليون قبل أكثر من أربعة قرون، وما زالت هذه الافتتاحية تظهر في كل مستويات الشطرنج اليوم.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "يبدأ الأبيض ببيدق إلى e4، ويرد الأسود ببيدق إلى e5، وحصان إلى f3، وحصان إلى c6، ثم فيل إلى c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "ذلك الفيل يشير نحو f7، المربع الصغير الحساس بجانب ملك الأسود.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "من هنا يرد الأسود عادة بفيل إلى c5، داخلًا Giuoco Piano، أو بحصان إلى f6، وصولًا إلى دفاع الحصانين.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "الافتتاح الإيطالي كلاسيكي وحيوي، ومبني على التطوير الطبيعي والسيطرة على المركز وإمكانات الهجوم.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "حسنًا، استمتع بالتعرّف أكثر على الافتتاح الإيطالي، ولنرَ إلى أين يأخذنا ذلك الفيل على c4.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1915,5 +2066,19 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "İşte orada: merkezin sıkı gözetim altında olduğu derli toplu bir Londra konumu, taşlarımız şah kanadına bakmaya başlıyor.",
     "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
       "Elin yolu öğrenene ve rakibin sessiz açılışın ne zaman saldırıya döndüğünü merak edene kadar tekrarla.",
+    "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.":
+      "Peki, burada Professor Potato Pie, çay elde, ve bugün satrancın en eski ve en zarif açılışlarından biriyle, İtalyan Açılışı ile buluşuyoruz.",
+    "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.":
+      "Fikirlerini dört yüzyıldan fazla önce İtalyan ustalar incelemişti, ve bu açılış bugün de satrancın her düzeyinde görülür.",
+    "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.":
+      "Beyaz piyonla e4 ile başlar, siyah piyonla e5 diye yanıt verir, at f3, at c6, ve sonra fil c4.",
+    "That bishop points towards f7, the delicate little square beside black's king.":
+      "O fil f7'ye bakar, siyah şahın yanındaki nazik küçük kareye.",
+    "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.":
+      "Buradan siyah genellikle fil ile c5 diye yanıt verir, Giuoco Piano'ya girer, ya da at ile f6, İki At Savunmasına ulaşır.",
+    "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.":
+      "İtalyan Açılışı klasik ve canlıdır, doğal gelişim, merkez kontrolü ve saldırı olanakları üzerine kuruludur.",
+    "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
+      "Peki, İtalyan Açılışına daha yakından alışmanın keyfini çıkar, ve c4'teki filin bizi nereye götürdüğüne bakalım.",
   },
 };

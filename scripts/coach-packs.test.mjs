@@ -357,6 +357,8 @@ test("finishing the pack intro opens the first-line talk; Skip and the gym pages
         [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
         [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
+        [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
       ];
       for (const [input, expected] of cases) {
         const got = coachTalkAfterPackIntro(input);

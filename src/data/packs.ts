@@ -1597,8 +1597,9 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "5 book lines + 5 punish",
-    about: "Play the Italian as White: five book replies after 3.Bc4, then five lines that punish one Black error.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
+    blurb: "10 lines from Opening Lab",
+    about:
+      "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. 10 lines from Opening Lab.\n\nPractice the book moves with the green hint. Then Test with none to prove you remember them.",
     lines: [
       {
         id: "it1",

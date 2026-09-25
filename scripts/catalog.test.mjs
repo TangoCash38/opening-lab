@@ -595,10 +595,14 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it10 
   assert.match(it, /isFree: false/);
   assert.match(it, /isPremium: true/);
   assert.match(it, /price: "£1\.99"/);
-  assert.match(it, /blurb: "5 book lines \+ 5 punish"/);
+  assert.match(it, /blurb: "10 lines from Opening Lab"/);
+  assert.doesNotMatch(it, /5 book lines \+ 5 punish/);
+  assert.doesNotMatch(it, /five book replies/);
+  assert.doesNotMatch(it, /Lines 1–5 are book/);
   assert.doesNotMatch(it, /closedLabel: "Free · 18 lines"/);
-  assert.match(it, /Play the Italian as White/);
-  assert.match(it, /Practice the main book moves with the green hint/);
+  assert.match(it, /The Italian Game is 1\.e4 e5 2\.Nf3 Nc6 3\.Bc4/);
+  assert.match(it, /10 lines from Opening Lab/);
+  assert.match(it, /Practice the book moves with the green hint/);
   assert.match(it, /Then Test with none to prove you remember them/);
   assert.doesNotMatch(it, /Play on/);
   assert.doesNotMatch(it, /vs computer|versus the computer/i);

@@ -76,12 +76,12 @@ export type CoachPackConfig = {
   introAudioFallbackSec?: number;
   /** Timings for `introAudio`. Absent = equal slices of the clip. */
   introBeatAtSec?: readonly number[];
-  /** Narration-clock stem for an audio intro (Scotch gambit, Caro e4 c6, London). */
+  /** Narration-clock stem for an audio intro (Scotch gambit, Caro e4 c6, London, Italian). */
   introStem?: readonly string[];
   introStemAtSec?: readonly number[];
   /**
    * Play `introStem` as White moves only. Black pieces stay on their
-   * home squares. The London formation uses this.
+   * home squares. The London formation and the Italian shell use this.
    */
   introStemWhiteOnly?: boolean;
   /** Book line that opens the first-line talk. Not the display title. */
@@ -350,6 +350,7 @@ const CARO_KANN_LINE: readonly CoachLineBeat[] = [
 ];
 
 const LONDON_PACK_ID = "london";
+const ITALIAN_WHITE_PACK_ID = "italian-white";
 
 export const LONDON_INTRO_WAV = "/coach/london/professor-potato-pie-london-intro.wav";
 /** Sean's London intro. Beat times below were read off this clip. */
@@ -461,6 +462,30 @@ const LONDON_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+export const ITALIAN_INTRO_WAV = "/coach/italian-white/professor-potato-pie-italian-intro.wav";
+/** AI-generated Italian Game intro. Beat times below were read off this clip. */
+export const ITALIAN_INTRO_SEC = 69.12;
+
+const ITALIAN_INTRO = [
+  "Right then, Professor Potato Pie here, tea in hand, and today we're meeting one of chess's oldest and most elegant openings, the Italian Game.",
+  "Its ideas were studied by the Italian masters more than four centuries ago, and the opening still appears at every level of chess today.",
+  "White begins with pawn to e4, and black answers pawn to e5, knight to f3, knight to c6, and then bishop to c4.",
+  "That bishop points towards f7, the delicate little square beside black's king.",
+  "From here, black commonly replies bishop to c5, entering the Giuoco Piano, or knight to f6, reaching the Two Knights Defence.",
+  "The Italian Game is classical, lively, and built upon natural development, central control and attacking possibilities.",
+  "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.",
+] as const;
+
+const ITALIAN_INTRO_AT_SEC = [0, 12.9, 23.2, 34.9, 41.3, 52.4, 62.3] as const;
+
+/**
+ * White moves named in the Italian intro. Black's replies are spoken
+ * (…e5, …Nc6) but stay on their home squares, the same White-only shell
+ * as the London formation. Times are the start of each named White move.
+ */
+export const ITALIAN_INTRO_STEM = ["e4", "Nf3", "Bc4"] as const;
+export const ITALIAN_INTRO_STEM_AT_SEC = [24.9, 29.5, 33.2] as const;
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -522,6 +547,20 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineAudioFallbackSec: LONDON_LINE_SEC,
     introEndsOnLineList: true,
   },
+  [ITALIAN_WHITE_PACK_ID]: {
+    introTitle: "Italian Game",
+    introBeats: ITALIAN_INTRO,
+    introAudio: ITALIAN_INTRO_WAV,
+    introAudioFallbackSec: ITALIAN_INTRO_SEC,
+    introBeatAtSec: ITALIAN_INTRO_AT_SEC,
+    introStem: ITALIAN_INTRO_STEM,
+    introStemAtSec: ITALIAN_INTRO_STEM_AT_SEC,
+    introStemWhiteOnly: true,
+    firstLineId: "it1",
+    firstLineTitle: "Line 1",
+    firstLineBeats: [],
+    introEndsOnLineList: true,
+  },
 };
 
 export function coachPack(packId: string): CoachPackConfig | undefined {
@@ -537,11 +576,14 @@ export function coachPackIntroApplies(packId: string): boolean {
 /**
  * First-line talk. Matches `firstLineId` only — not the line's display name,
  * and not "the first row" if that id ever moves. Scotch sg1 stays on its own gate.
+ * An intro-only pack may name `firstLineId` before its Line 1 talk exists.
+ * With no line audio and no line beats, a tap does not open a missing talk.
  */
 export function coachPackLineApplies(input: { packId: string; lineId: string }): boolean {
   if (input.packId === SCOTCH_PACK_ID) return false;
   const pack = COACH_PACKS[input.packId];
   if (!pack) return false;
+  if (!pack.firstLineAudio && pack.firstLineBeats.length === 0) return false;
   return input.lineId === pack.firstLineId;
 }
 
@@ -554,7 +596,7 @@ export function coachIntroEndsOnLineList(packId: string): boolean {
  * Talk to open when the pack intro finishes.
  * `null` for Skip, a line that is not the coached first line, a talk
  * already played this visit, or a pack whose intro ends on the line list
- * (London). Scotch sg1 is the canal talk; other packs use `firstLineId`.
+ * (London, Italian). Scotch sg1 is the canal talk; other packs use `firstLineId`.
  */
 export function coachTalkAfterPackIntro(input: {
   packId: string;
@@ -620,7 +662,7 @@ export function coachTalkPlies(
   const pack = COACH_PACKS[packId];
   if (!pack) return null;
   if (talk === "canal") return null;
-  // An intro stem (Scotch gambit, Caro e4 c6, London formation) follows the clip clock.
+  // An intro stem (Scotch gambit, Caro e4 c6, London, Italian) follows the clip clock.
   // Intros without a stem hold the start position: their captions have no plies.
   if (talk === "intro" && pack.introStem) return null;
   if (talk === "line" && pack.firstLinePlaysPackLine) return null;
