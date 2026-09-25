@@ -99,6 +99,14 @@ test("lesson 1 player uses Potato Pie, captions, and the narration clock", () =>
   assert.match(board, /audio\.currentTime/);
   assert.match(src("src/data/lessons/scotch-course.ts"), /\/lessons\/scotch\/intro\.mp3/);
   assert.ok(readFileSync(join(root, "public/lessons/scotch/intro.mp3")).byteLength > 100_000);
+  const captionModule = src("src/data/lessons/scotch-captions.ts");
+  const exported = captionModule.match(/export const SCOTCH_CAPTION_SCRIPT = (".*");/);
+  assert.ok(exported);
+  assert.equal(JSON.parse(exported[1]), captions);
+  const boardModule = src("src/data/lessons/scotch-board-cues.ts");
+  const boardExported = boardModule.match(/export const SCOTCH_BOARD_FILE = (\{.*\});/);
+  assert.ok(boardExported);
+  assert.deepEqual(JSON.parse(boardExported[1]), cues);
   assert.match(captions, /Professor Potato Pie/);
   assert.doesNotMatch(player + board + captions, /human voice|recorded voice|voice actor/i);
   assert.doesNotMatch(player + board, /Play on|versus the computer|vs computer/i);

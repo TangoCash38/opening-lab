@@ -11,24 +11,25 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DeleteAccountRouteImport } from './routes/delete-account'
+import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as LessonsRouteImport } from './routes/lessons'
-import { Route as LessonsCourseRouteImport } from './routes/lessons_.$courseId'
-import { Route as LessonsLessonRouteImport } from './routes/lessons_.$courseId.$lessonId'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
 import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
+import { Route as LessonsCourseIdRouteImport } from './routes/lessons_.$courseId'
 import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.session'
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
+import { Route as LessonsCourseIdIndexRouteImport } from './routes/lessons_.$courseId.index'
+import { Route as LessonsCourseIdLessonIdRouteImport } from './routes/lessons_.$courseId.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -38,6 +39,11 @@ const IndexRoute = IndexRouteImport.update({
 const DeleteAccountRoute = DeleteAccountRouteImport.update({
   id: '/delete-account',
   path: '/delete-account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsRoute = LessonsRouteImport.update({
+  id: '/lessons',
+  path: '/lessons',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -58,21 +64,6 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LessonsRoute = LessonsRouteImport.update({
-  id: '/lessons',
-  path: '/lessons',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LessonsCourseRoute = LessonsCourseRouteImport.update({
-  id: '/lessons/$courseId',
-  path: '/lessons/$courseId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LessonsLessonRoute = LessonsLessonRouteImport.update({
-  id: '/lessons/$courseId/$lessonId',
-  path: '/lessons/$courseId/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
@@ -98,6 +89,11 @@ const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
 const ApiUnlocksRoute = ApiUnlocksRouteImport.update({
   id: '/api/unlocks',
   path: '/api/unlocks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsCourseIdRoute = LessonsCourseIdRouteImport.update({
+  id: '/lessons_/$courseId',
+  path: '/lessons/$courseId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAccountDeleteRoute = ApiAccountDeleteRouteImport.update({
@@ -130,39 +126,48 @@ const ApiUnlocksClaimRoute = ApiUnlocksClaimRouteImport.update({
   path: '/claim',
   getParentRoute: () => ApiUnlocksRoute,
 } as any)
+const LessonsCourseIdIndexRoute = LessonsCourseIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LessonsCourseIdRoute,
+} as any)
+const LessonsCourseIdLessonIdRoute = LessonsCourseIdLessonIdRouteImport.update({
+  id: '/$lessonId',
+  path: '/$lessonId',
+  getParentRoute: () => LessonsCourseIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/lessons': typeof LessonsRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
-  '/lessons': typeof LessonsRoute
-  '/lessons/$courseId': typeof LessonsCourseRoute
-  '/lessons/$courseId/$lessonId': typeof LessonsLessonRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/lessons/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/lessons/$courseId/$lessonId': typeof LessonsCourseIdLessonIdRoute
+  '/lessons/$courseId/': typeof LessonsCourseIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/lessons': typeof LessonsRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
-  '/lessons': typeof LessonsRoute
-  '/lessons/$courseId': typeof LessonsCourseRoute
-  '/lessons/$courseId/$lessonId': typeof LessonsLessonRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/payments': typeof ApiPaymentsRoute
@@ -174,64 +179,66 @@ export interface FileRoutesByTo {
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/lessons/$courseId/$lessonId': typeof LessonsCourseIdLessonIdRoute
+  '/lessons/$courseId': typeof LessonsCourseIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/lessons': typeof LessonsRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
-  '/lessons': typeof LessonsRoute
-  '/lessons/$courseId': typeof LessonsCourseRoute
-  '/lessons/$courseId/$lessonId': typeof LessonsLessonRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/lessons_/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/lessons_/$courseId/$lessonId': typeof LessonsCourseIdLessonIdRoute
+  '/lessons_/$courseId/': typeof LessonsCourseIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/delete-account'
+    | '/lessons'
     | '/login'
     | '/privacy'
     | '/reset-password'
     | '/terms'
-    | '/lessons'
-    | '/lessons/$courseId'
-    | '/lessons/$courseId/$lessonId'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/payments'
     | '/api/practice-review-eval'
     | '/api/unlocks'
+    | '/lessons/$courseId'
     | '/api/account/delete'
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
     | '/api/unlocks/claim'
+    | '/lessons/$courseId/$lessonId'
+    | '/lessons/$courseId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/delete-account'
+    | '/lessons'
     | '/login'
     | '/privacy'
     | '/reset-password'
     | '/terms'
-    | '/lessons'
-    | '/lessons/$courseId'
-    | '/lessons/$courseId/$lessonId'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/payments'
@@ -243,45 +250,47 @@ export interface FileRouteTypes {
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
     | '/api/unlocks/claim'
+    | '/lessons/$courseId/$lessonId'
+    | '/lessons/$courseId'
   id:
     | '__root__'
     | '/'
     | '/delete-account'
+    | '/lessons'
     | '/login'
     | '/privacy'
     | '/reset-password'
     | '/terms'
-    | '/lessons'
-    | '/lessons/$courseId'
-    | '/lessons/$courseId/$lessonId'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/payments'
     | '/api/practice-review-eval'
     | '/api/unlocks'
+    | '/lessons_/$courseId'
     | '/api/account/delete'
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
     | '/api/unlocks/claim'
+    | '/lessons_/$courseId/$lessonId'
+    | '/lessons_/$courseId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DeleteAccountRoute: typeof DeleteAccountRoute
+  LessonsRoute: typeof LessonsRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
-  LessonsRoute: typeof LessonsRoute
-  LessonsCourseRoute: typeof LessonsCourseRoute
-  LessonsLessonRoute: typeof LessonsLessonRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiFeedbackRoute: typeof ApiFeedbackRoute
   ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
+  LessonsCourseIdRoute: typeof LessonsCourseIdRouteWithChildren
   ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
@@ -302,6 +311,13 @@ declare module '@tanstack/react-router' {
       path: '/delete-account'
       fullPath: '/delete-account'
       preLoaderRoute: typeof DeleteAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons': {
+      id: '/lessons'
+      path: '/lessons'
+      fullPath: '/lessons'
+      preLoaderRoute: typeof LessonsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -330,27 +346,6 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lessons': {
-      id: '/lessons'
-      path: '/lessons'
-      fullPath: '/lessons'
-      preLoaderRoute: typeof LessonsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lessons/$courseId': {
-      id: '/lessons/$courseId'
-      path: '/lessons/$courseId'
-      fullPath: '/lessons/$courseId'
-      preLoaderRoute: typeof LessonsCourseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lessons/$courseId/$lessonId': {
-      id: '/lessons/$courseId/$lessonId'
-      path: '/lessons/$courseId/$lessonId'
-      fullPath: '/lessons/$courseId/$lessonId'
-      preLoaderRoute: typeof LessonsLessonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/checkout': {
@@ -386,6 +381,13 @@ declare module '@tanstack/react-router' {
       path: '/api/unlocks'
       fullPath: '/api/unlocks'
       preLoaderRoute: typeof ApiUnlocksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/$courseId': {
+      id: '/lessons_/$courseId'
+      path: '/lessons/$courseId'
+      fullPath: '/lessons/$courseId'
+      preLoaderRoute: typeof LessonsCourseIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/account/delete': {
@@ -430,6 +432,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUnlocksClaimRouteImport
       parentRoute: typeof ApiUnlocksRoute
     }
+    '/lessons_/$courseId/': {
+      id: '/lessons_/$courseId/'
+      path: '/'
+      fullPath: '/lessons/$courseId/'
+      preLoaderRoute: typeof LessonsCourseIdIndexRouteImport
+      parentRoute: typeof LessonsCourseIdRoute
+    }
+    '/lessons_/$courseId/$lessonId': {
+      id: '/lessons_/$courseId/$lessonId'
+      path: '/$lessonId'
+      fullPath: '/lessons/$courseId/$lessonId'
+      preLoaderRoute: typeof LessonsCourseIdLessonIdRouteImport
+      parentRoute: typeof LessonsCourseIdRoute
+    }
   }
 }
 
@@ -457,21 +473,34 @@ const ApiUnlocksRouteWithChildren = ApiUnlocksRoute._addFileChildren(
   ApiUnlocksRouteChildren,
 )
 
+interface LessonsCourseIdRouteChildren {
+  LessonsCourseIdLessonIdRoute: typeof LessonsCourseIdLessonIdRoute
+  LessonsCourseIdIndexRoute: typeof LessonsCourseIdIndexRoute
+}
+
+const LessonsCourseIdRouteChildren: LessonsCourseIdRouteChildren = {
+  LessonsCourseIdLessonIdRoute: LessonsCourseIdLessonIdRoute,
+  LessonsCourseIdIndexRoute: LessonsCourseIdIndexRoute,
+}
+
+const LessonsCourseIdRouteWithChildren = LessonsCourseIdRoute._addFileChildren(
+  LessonsCourseIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DeleteAccountRoute: DeleteAccountRoute,
+  LessonsRoute: LessonsRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
-  LessonsRoute: LessonsRoute,
-  LessonsCourseRoute: LessonsCourseRoute,
-  LessonsLessonRoute: LessonsLessonRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiFeedbackRoute: ApiFeedbackRoute,
   ApiPaymentsRoute: ApiPaymentsRoute,
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
+  LessonsCourseIdRoute: LessonsCourseIdRouteWithChildren,
   ApiAccountDeleteRoute: ApiAccountDeleteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,

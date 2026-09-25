@@ -1,15 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { LessonCourse, LessonsFrame } from "@/components/opening-lab/lessons-view";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { LessonsFrame } from "@/components/opening-lab/lessons-view";
 
-export const Route = createFileRoute("/lessons/$courseId")({
-  component: LessonCourseRoute,
+export const Route = createFileRoute("/lessons_/$courseId")({
+  component: LessonCourseLayout,
 });
 
-function LessonCourseRoute() {
-  const { courseId } = Route.useParams();
+function LessonCourseLayout() {
   return (
     <LessonsFrame>
-      <LessonCourse courseId={courseId} />
+      <Outlet />
     </LessonsFrame>
   );
 }
