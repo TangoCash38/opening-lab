@@ -46,8 +46,10 @@ public class PlayBilling implements PurchasesUpdatedListener {
      * Mirror of PLAY_PATH_B_PACK_IDS in src/lib/play-skus.ts.
      * 35 packs (includes caro-kann-black extras, opening-traps, and london).
      * In-app labels are £1.99 for every paid pack. Console prices are not in this file.
-     * Live SKUs to price at £1.99: pack_scotch, pack_london, pack_opening_traps, pack_caro_kann_black.
+     * Live SKUs to price at £1.99: pack_scotch, pack_london, pack_opening_traps, pack_caro_kann_black, pack_italian_white.
      * Opening Traps product id is pack_opening_traps. Set its Play Console price to £1.99.
+     * Italian Game for White product id is pack_italian_white. Set its Play Console price to £1.99.
+     * Do not create pack_italian_white from this repo.
      */
     static final String[] PATH_B_PACK_IDS = {
             "caro-kann-black",
@@ -98,6 +100,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "opening-traps",
             "caro-kann-black",
             "london",
+            "italian-white",
     };
 
     private static final Set<String> PATH_B_SKUS;

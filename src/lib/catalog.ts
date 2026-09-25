@@ -21,7 +21,7 @@ export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
  * Every other pack id is coming soon.
  * Relaunch a pack by adding its id here — one line.
  */
-export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "london"] as const;
+export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white"] as const;
 
 export type LivePackId = (typeof LIVE_PACK_IDS)[number];
 
