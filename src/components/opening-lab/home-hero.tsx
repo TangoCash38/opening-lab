@@ -482,9 +482,10 @@ export function HomeHero({
                 <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
                   {t("Free sample")}
                 </p>
-              ) : price ? (
-                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
-                  {price}
+              ) : null}
+              {price && !subscribed && !purchased.includes(pack.id) && !comingSoonClosed ? (
+                <p className="text-[0.82rem] font-semibold text-fg" data-whole-pack-price>
+                  {t("{price} unlocks the whole pack", { price })}
                 </p>
               ) : null}
               <h2 className="mt-1 font-display text-[1.25rem] font-bold tracking-tight">

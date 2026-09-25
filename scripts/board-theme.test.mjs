@@ -268,7 +268,7 @@ test("normalizeBoardTheme maps paper and newspaper to book", async (t) => {
 
 test("unlock sheet copy still has Card via Stripe without Yours to keep", () => {
   const modal = src("src/components/opening-lab/unlock-modal.tsx");
-  assert.match(modal, /t\("Unlock this pack"\)/);
+  assert.match(modal, /t\("\{price\} unlocks the whole pack"/);
   assert.match(modal, /t\("Card via Stripe\."\)/);
   assert.doesNotMatch(modal, /Yours to keep/);
 });

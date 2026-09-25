@@ -99,8 +99,14 @@ export function LandingHome({
   const priceLabel = (pack: Pack): string => {
     const freeCount = FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0;
     const price = packPrice(pack);
-    if (freeCount > 0 && price) return t("{n} free · {price}", { n: freeCount, price });
-    return price ?? t("Free");
+    if (!price) return t("Free");
+    if (freeCount > 0) {
+      return t("{n} free · {price} unlocks the whole pack", { n: freeCount, price });
+    }
+    return t("Whole pack · {price} — all {n} lines", {
+      price,
+      n: pack.lines.length,
+    });
   };
 
   return (
@@ -128,7 +134,11 @@ export function LandingHome({
             {t("Feedback")}
           </button>
         </nav>
-        <LandingMenu onCreateOwn={onCreateOwn} onReport={onReport} />
+        <LandingMenu
+          onCreateOwn={onCreateOwn}
+          onReport={onReport}
+          onSupport={onSupport}
+        />
       </header>
 
       <div className="landing-inner">
@@ -208,6 +218,14 @@ export function LandingHome({
           <h2 id="landing-soon" className="landing-section-title">
             {t("Coming soon")}
           </h2>
+          <p className="landing-soon-ask">
+            <a
+              href="mailto:support@openinglab.co.uk?subject=Opening%20Lab%20feedback"
+              data-coming-soon-feedback
+            >
+              {t("Please leave feedback for openings you’d like to see")}
+            </a>
+          </p>
           <ul className="landing-chips">
             {chips.map((pack) => (
               <li key={pack.id} className="landing-chip" data-coming-soon-chip={pack.id}>
@@ -217,7 +235,7 @@ export function LandingHome({
           </ul>
         </section>
 
-        <p className="landing-footer">{t("Strict book-move trainer")}</p>
+        <p className="landing-footer">{t("Study first. Then test yourself from memory")}</p>
       </div>
     </section>
   );

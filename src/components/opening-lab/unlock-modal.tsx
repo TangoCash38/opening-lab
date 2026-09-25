@@ -6,6 +6,8 @@ import { useT } from "@/lib/i18n";
 type Props = {
   packName: string;
   price: string;
+  /** Lines in this pack. £1.99 buys all of them, not one line. */
+  lineCount: number;
   onClose: () => void;
   onUnlockPack: () => void;
   onBuyAll?: () => void;
@@ -24,6 +26,7 @@ type Props = {
 export function UnlockModal({
   packName,
   price,
+  lineCount,
   onClose,
   onUnlockPack,
   onBuyAll,
@@ -40,11 +43,12 @@ export function UnlockModal({
   const caroRest = packName.toLowerCase().includes("caro");
   const trapsRest = packName === "Opening Traps";
   const offerBuyAll = Boolean(onBuyAll) && canPurchaseBuyAll();
-  const unlockLabel = trapsRest
-    ? t("Unlock all 11 traps for £1.99")
-    : caroRest
-      ? t("Unlock the rest of this pack")
-      : t("Unlock this pack");
+  const wholePack = t("{price} unlocks the whole pack", { price });
+  const wholePackLines = t("Whole pack · {price} — all {n} lines", {
+    price,
+    n: lineCount,
+  });
+  const unlockLabel = trapsRest ? t("Unlock all 11 traps for £1.99") : wholePack;
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center"
@@ -70,12 +74,10 @@ export function UnlockModal({
               <h2 id="unlock-title" className="m-0 font-display text-lg font-bold leading-snug">
                 {t("Unlock {packName}", { packName })}
               </h2>
-              <p className="m-0 mt-1 text-[0.85rem] text-fg-muted">
-                {trapsRest
-                  ? t("Unlock all 11 traps for £1.99")
-                  : caroRest
-                    ? t("Three lines stay free. This unlocks the rest of the pack.")
-                    : t("One-time purchase. This pack only.")}
+              <p className="m-0 mt-1 text-[0.85rem] text-fg-muted" data-whole-pack-price>
+                {caroRest
+                  ? t("Three lines stay free. This unlocks the rest of the pack.")
+                  : wholePackLines}
               </p>
             </div>
           </div>

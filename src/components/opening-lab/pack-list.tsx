@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
@@ -46,6 +46,23 @@ import { HomeMenu } from "./home-menu";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 type TrainMode = "learn" | "practice";
+
+const FEEDBACK_MAILTO =
+  "mailto:support@openinglab.co.uk?subject=Opening%20Lab%20feedback";
+
+/** Centre the opened pack after layout, and after any scroll-to-top on entry. */
+function centerPackCard(node: HTMLElement | null) {
+  if (!node) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const height = node.getBoundingClientRect().height;
+  // A pack taller than the screen cannot sit in the middle without hiding its name.
+  const block = height > window.innerHeight * 0.92 ? "start" : "center";
+  node.scrollIntoView({
+    behavior: reduce ? "auto" : "smooth",
+    block,
+    inline: "nearest",
+  });
+}
 
 type Props = {
   onStartLine: (
@@ -112,7 +129,22 @@ function PackCard({
   onComingSoon: (pack: Pack) => void;
 }) {
   const t = useT();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const pinned = open || soonNote;
   const { line: lineProgress } = useProgress();
+
+  useLayoutEffect(() => {
+    if (!pinned) return;
+    const node = cardRef.current;
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => centerPackCard(node));
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      if (second) cancelAnimationFrame(second);
+    };
+  }, [pinned]);
   const free = packLooksFree(pack);
   const price = packPrice(pack);
   const comingSoon = isPackComingSoon(pack.id);
@@ -139,6 +171,7 @@ function PackCard({
 
   return (
     <div
+      ref={cardRef}
       className={`pack-card mb-2.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
         open ? "pack-list-full " : ""
       }`}
@@ -194,17 +227,15 @@ function PackCard({
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
                   {t("Unlocked")}
                 </span>
-              ) : (
-                <>
-                  <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
-                    {t("Pay as you go")}
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated">
-                    <Lock className="size-3" strokeWidth={2.5} aria-hidden />
-                    {price}
-                  </span>
-                </>
-              )}
+              ) : price ? (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full bg-fg px-2 py-0.5 text-[0.65rem] font-semibold text-bg-elevated"
+                  data-whole-pack-price
+                >
+                  <Lock className="size-3 shrink-0" strokeWidth={2.5} aria-hidden />
+                  {t("{price} unlocks the whole pack", { price })}
+                </span>
+              ) : null}
               <span className="rounded-full bg-bg-subtle px-2 py-0.5 text-[0.65rem] font-semibold text-fg-muted">
                 {pack.eco}
               </span>
@@ -263,11 +294,15 @@ function PackCard({
               comingSoonClosed
                 ? t("Coming soon")
                 : price
-                  ? t("{price} · See {n} {pack} lines", {
-                      price,
-                      n: pack.lines.length,
-                      pack: shortPack,
-                    })
+                  ? (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0
+                    ? t("{n} free · {price} unlocks the whole pack", {
+                        n: FREE_SAMPLE_LINE_IDS[pack.id].length,
+                        price,
+                      })
+                    : t("Whole pack · {price} — all {n} lines", {
+                        price,
+                        n: pack.lines.length,
+                      })
                   : t("Tap to see {n} {pack} lines", {
                       n: pack.lines.length,
                       pack: shortPack,
@@ -278,6 +313,14 @@ function PackCard({
         {soonNote ? (
           <p className="pack-coming-soon-note" data-coming-soon-note role="status">
             {t("Coming soon with Professor Potato Pie.")}
+            <a
+              className="pack-coming-soon-ask"
+              href={FEEDBACK_MAILTO}
+              data-coming-soon-feedback
+              onClick={(event) => event.stopPropagation()}
+            >
+              {t("Please leave feedback for openings you’d like to see")}
+            </a>
           </p>
         ) : null}
       </div>
@@ -624,6 +667,7 @@ export function PackList({
         <UnlockModal
           packName={modal.pack.name}
           price={modal.price}
+          lineCount={modal.pack.lines.length}
           playSku={hasPaidPlaySkuPath(modal.pack) && canPurchasePack(modal.pack.id)}
           onClose={() => {
             if (!payBusy) setModal(null);

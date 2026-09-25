@@ -527,6 +527,15 @@ html[data-color-scheme="dark"] {
     line-height: 1.45;
   }
 
+  .pack-coming-soon-ask {
+    display: block;
+    margin-top: 0.35rem;
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
   .pack-fold-locked {
     border-color: color-mix(in srgb, var(--color-danger) 55%, var(--color-border));
     background: var(--color-danger-soft);
@@ -679,6 +688,11 @@ html[data-color-scheme="dark"] {
   .pack-list {
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .pack-card {
+    scroll-margin-top: 4.75rem;
+    scroll-margin-bottom: 1.25rem;
   }
 
   .pack-list button,
@@ -3346,6 +3360,20 @@ html[data-color-scheme="dark"] .landing-cta {
 
 html[data-color-scheme="dark"] .landing-cta-note {
   color: #d5e8de;
+}
+
+.landing-soon-ask {
+  margin: 0 0 0.85rem;
+  color: var(--color-fg-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.landing-soon-ask a {
+  color: inherit;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .landing-chips {
