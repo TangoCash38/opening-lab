@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { PACKS } from "@/data/packs";
-import { coachAudioPlyCount, coachTextPlyCount } from "@/lib/coach-packs";
+import {
+  coachAudioPlyCount,
+  coachIntroArrowsAt,
+  coachTextPlyCount,
+  type CoachIntroArrowCue,
+} from "@/lib/coach-packs";
 import { playWhiteOnlySan, replayWhiteOnly } from "@/lib/london-intro-stem";
 import {
   SCOTCH_CANAL_LINE_ID,
@@ -14,7 +19,7 @@ import {
 } from "@/lib/scotch-coach";
 import { scotchCoachNarration } from "@/lib/scotch-coach-audio";
 import { soundCapture, soundMove } from "@/lib/sounds";
-import { ChessBoard, type SlideAnim } from "./chess-board";
+import { ChessBoard, type BoardArrow, type SlideAnim } from "./chess-board";
 
 type Talk = "intro" | "canal" | "line";
 
@@ -49,6 +54,12 @@ type Props = {
    * is handed back to White between moves.
    */
   whiteOnly?: boolean;
+  /**
+   * Named options that stay unplayed (Italian …Bc5 / …Nf6). Empty for
+   * every other intro. The arrow follows the clip and leaves when the
+   * next option, or the end of the sentence, arrives.
+   */
+  introArrows?: readonly CoachIntroArrowCue[] | null;
 };
 
 /** SAN for the talk. Canal reads pack id sg1. The cuppa stem stays the named moves. */
@@ -91,9 +102,14 @@ function narrationClock(
 
 /**
  * Auto-plays book moves on the non-interactive practice board while the
- * coach speaks. Slide plus the soft yellow last-move wash. No hint squares
- * and no arrows. The final position holds until the card unmounts this board.
+ * coach speaks. Slide plus the soft yellow last-move wash. No hint squares.
+ * Optional intro arrows mark a named reply that is not played. The final
+ * position holds until the card unmounts this board.
  */
+function arrowKey(arrows: readonly BoardArrow[]): string {
+  return arrows.map((arrow) => `${arrow.from}${arrow.to}`).join(" ");
+}
+
 export function ScotchCoachBoard({
   flip,
   frameCoords,
@@ -105,12 +121,14 @@ export function ScotchCoachBoard({
   stemSans = null,
   stemAtSec = null,
   whiteOnly = false,
+  introArrows = null,
 }: Props) {
   const sans = useMemo(() => talkSans(talk, beatPlies, stemSans), [talk, beatPlies, stemSans]);
   const [game, setGame] = useState(() => new Chess());
   const [slide, setSlide] = useState<SlideAnim | null>(null);
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [ply, setPly] = useState(0);
+  const [boardArrows, setBoardArrows] = useState<BoardArrow[]>([]);
   const gameRef = useRef(game);
   const playedRef = useRef(0);
   const targetRef = useRef(0);
@@ -124,6 +142,7 @@ export function ScotchCoachBoard({
   const plyFallbackRef = useRef(plyFallbackSec);
   const stemAtSecRef = useRef(stemAtSec);
   const whiteOnlyRef = useRef(whiteOnly);
+  const introArrowsRef = useRef(introArrows);
   sansRef.current = sans;
   talkRef.current = talk;
   beatPliesRef.current = beatPlies;
@@ -132,6 +151,7 @@ export function ScotchCoachBoard({
   plyFallbackRef.current = plyFallbackSec;
   stemAtSecRef.current = stemAtSec;
   whiteOnlyRef.current = whiteOnly;
+  introArrowsRef.current = introArrows;
 
   const pump = useCallback(() => {
     if (!aliveRef.current || slidingRef.current) return;
@@ -208,6 +228,21 @@ export function ScotchCoachBoard({
     aliveRef.current = true;
     const started = performance.now();
     const tick = () => {
+      const arrowCues = introArrowsRef.current;
+      if (arrowCues && arrowCues.length > 0 && talkRef.current === "intro" && !beatPliesRef.current) {
+        const fallback =
+          plyFallbackRef.current > 0 ? plyFallbackRef.current : SCOTCH_COACH_NARRATION_FALLBACK_SEC;
+        const clock = narrationClock(started, fallback, true);
+        const active = coachIntroArrowsAt(arrowCues, clock.time, clock.duration, fallback);
+        const next: BoardArrow[] = active.map((cue) => ({
+          from: cue.from as Square,
+          to: cue.to as Square,
+          kind: "pv1",
+        }));
+        setBoardArrows((prev) => (arrowKey(prev) === arrowKey(next) ? prev : next));
+      } else {
+        setBoardArrows((prev) => (prev.length === 0 ? prev : []));
+      }
       const cues = plyAtSecRef.current;
       if (cues && cues.length > 0) {
         const fallback = plyFallbackRef.current > 0 ? plyFallbackRef.current : 1;
@@ -253,6 +288,7 @@ export function ScotchCoachBoard({
     <div
       className="w-full"
       data-coach-white-only={whiteOnly ? "true" : undefined}
+      data-coach-intro-arrows={boardArrows.length > 0 ? arrowKey(boardArrows) : undefined}
       data-scotch-coach-stem={talk === "intro" && !beatPlies ? ply : undefined}
       data-scotch-canal-ply={talk === "canal" ? ply : undefined}
       data-coach-line-ply={beatPlies ? ply : undefined}
@@ -270,6 +306,7 @@ export function ScotchCoachBoard({
         onSquare={() => {}}
         interactive={false}
         frameCoords={frameCoords}
+        arrows={boardArrows}
       />
     </div>
   );
