@@ -93,14 +93,14 @@ export function LandingHome({
           <BrandMark />
           <span className="landing-wordmark">Opening Lab</span>
         </div>
-        <nav className="landing-nav" aria-label={t("Learning packs")}>
+        <nav className="landing-nav" aria-label={t("Drill packs")}>
           <button
             type="button"
             className="landing-nav-link"
             data-landing-packs
             onClick={onEnterGym}
           >
-            {t("Learning packs")}
+            {t("Drill packs")}
           </button>
           <button
             type="button"
