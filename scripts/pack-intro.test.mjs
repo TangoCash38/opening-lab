@@ -18,10 +18,6 @@ const list = readFileSync(
   join(root, "src/components/opening-lab/pack-list.tsx"),
   "utf8",
 );
-const train = readFileSync(
-  join(root, "src/components/opening-lab/train-view.tsx"),
-  "utf8",
-);
 
 test("practice intros skip for the rest of the session, not forever", () => {
   assert.match(intro, /opening-lab:intro:skip-v1/);
@@ -32,65 +28,18 @@ test("practice intros skip for the rest of the session, not forever", () => {
   assert.match(intro, /typeof sessionStorage === "undefined"\) return false/);
 });
 
-test("Don't show again only on gym step (step 1), not on opening/Start step", () => {
-  assert.match(modal, /Don't show again/);
-  const continueIdx = modal.indexOf("Continue");
-  const skipIdx = modal.indexOf("Don't show again");
-  const startLabelIdx = modal.indexOf("{startLabel}");
-  assert.ok(continueIdx > 0 && skipIdx > continueIdx, "Don't show again follows Continue on step 1");
-  assert.ok(startLabelIdx > skipIdx, "Start is on the later opening step");
-  const openingBranch = modal.slice(startLabelIdx);
-  assert.doesNotMatch(openingBranch, /Don't show again/);
-  const gymBranch = modal.slice(modal.indexOf("step === 1"), startLabelIdx);
-  assert.match(gymBranch, /Don't show again/);
-  assert.match(gymBranch, /Continue/);
+test("PackAboutModal auto-starts — no gym or opening-explain UI", () => {
+  assert.match(modal, /Potato Pie is the only intro/);
+  assert.match(modal, /return null/);
+  assert.match(modal, /if \(onStart\) onStart\(\)/);
+  assert.doesNotMatch(modal, /fixed inset-0/);
+  assert.doesNotMatch(modal, /className="fixed/);
 });
 
-test("Don't show again calls skipPackIntroThisSession then advances to step 2", () => {
-  const skipBtn = modal.slice(
-    modal.lastIndexOf("onClick", modal.indexOf("Don't show again")),
-    modal.indexOf("Don't show again"),
-  );
-  assert.match(skipBtn, /skipPackIntroThisSession\(\)/);
-  assert.match(skipBtn, /setStep\(2\)/);
-  assert.doesNotMatch(skipBtn, /onStart\(/);
-  assert.doesNotMatch(skipBtn, /\bstart\(\)/);
-});
-
-test("Start on opening does not require Don't show again", () => {
-  const startFn = modal.slice(modal.indexOf("const start"), modal.indexOf("return ("));
-  assert.match(startFn, /onStart/);
-  assert.doesNotMatch(startFn, /skipPackIntroThisSession/);
-  assert.match(modal, /\{startLabel\}/);
-});
-
-test("Modal initial step uses shouldSkipPackIntro to land on opening when skipped", () => {
-  assert.match(modal, /shouldSkipPackIntro/);
-  assert.match(modal, /useState<1 \| 2>/);
-  assert.match(modal, /shouldSkipPackIntro\(\)\s*\?\s*2\s*:\s*1/);
-});
-
-test("Hero always opens about for Tap to practice when about exists", () => {
+test("Hero still opens PackAboutModal which now auto-starts Potato Pie", () => {
   assert.match(hero, /openIntroThenPractice/);
-  assert.doesNotMatch(hero, /shouldSkipPackIntro/);
-  assert.doesNotMatch(hero, /if \(shouldSkipPackIntro\(\)\) startAdvance/);
-  assert.match(hero, /if \(pack\?\.about\) setAboutOpen\(true\)/);
-  assert.match(hero, /else startAdvance\(\)/);
-  // See 18 lines only toggles the line list; line taps open the intro separately
-  assert.match(hero, /onClick=\{\(\) => setLinesOpen\(\(v\) => !v\)\}/);
-  // TrainView must not auto-open intro on mount
-  assert.match(train, /const \[aboutOpen, setAboutOpen\] = useState\(false\)/);
-  assert.doesNotMatch(train, /hasSeenPackIntro/);
-});
-
-test("hero and pack-list line taps show opening info then Start that line", () => {
-  assert.match(hero, /pendingLine/);
-  assert.match(hero, /setPendingLine\(item\)/);
-  assert.match(hero, /setAboutOpen\(true\)/);
   assert.match(hero, /PackAboutModal/);
+  assert.match(hero, /if \(pack\?\.about\) setAboutOpen\(true\)/);
   assert.match(list, /<HomeHero/);
   assert.match(list, /linesInitiallyOpen/);
-  assert.match(list, /onToggle=\{togglePack\}/);
-  assert.doesNotMatch(list, /!shouldSkipPackIntro\(\)/);
-  assert.doesNotMatch(hero, /!shouldSkipPackIntro\(\)/);
 });
