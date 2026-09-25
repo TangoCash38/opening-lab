@@ -507,7 +507,9 @@ test("canal board plays sg1 in order, finishes before the clip, then Practice st
   assert.match(board, /interactive=\{false\}/);
   assert.match(board, /lastMove=\{lastMove\}/);
   assert.match(board, /slide=\{slide\}/);
-  assert.doesNotMatch(board, /arrows=|hintMoves/);
+  assert.doesNotMatch(board, /hintMoves/);
+  assert.match(board, /arrows=\{boardArrows\}/);
+  assert.match(board, /introArrows/);
   assert.doesNotMatch(board, /Bxd5|cxb2|Qxd1|Nxe4/);
   assert.doesNotMatch(lib, /Bxd5|cxb2|Qxd1/);
   const dockStart = hero.indexOf("data-scotch-coach-dock");

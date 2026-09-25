@@ -47,7 +47,7 @@ function compileCoachPacks(t) {
   return "./scripts/.generated-italian-coach/coach-packs.mjs";
 }
 
-test("Italian Potato Pie intro plays three White moves and returns to the line list", (t) => {
+test("Italian Potato Pie intro plays the stem with speech and arrows the replies", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/italian-white/professor-potato-pie-italian-intro.wav";
@@ -73,6 +73,7 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
   assert.match(hero, /Unpaid visitors still hear Potato Pie/);
   assert.match(hero, /if \(!practiceOpen\) return/);
   assert.match(hero, /whiteOnly=\{coachPack\(pack\.id\)\?\.introStemWhiteOnly === true\}/);
+  assert.match(hero, /introArrows=\{coachPack\(pack\.id\)\?\.introArrows\}/);
   assert.match(hero, /coachIntroEndsOnLineList\(pack\.id\)/);
   assert.match(board, /playWhiteOnlySan/);
   assert.match(board, /data-coach-white-only/);
@@ -87,12 +88,13 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
       `
       const { Chess } = await import("chess.js");
       const { PACKS } = await import("./src/data/packs.ts");
-      const { replayWhiteOnly } = await import("./src/lib/london-intro-stem.ts");
       const {
         COACH_PACKS,
+        ITALIAN_INTRO_ARROWS,
         ITALIAN_INTRO_STEM,
         ITALIAN_INTRO_STEM_AT_SEC,
         coachAudioPlyCount,
+        coachIntroArrowsAt,
         coachIntroEndsOnLineList,
         coachIntroSessionKey,
         coachLinePlyCues,
@@ -121,7 +123,7 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
       }
       if (coach.firstLineAudioFallbackSec !== 89.84) throw new Error("line length");
       if (!coachTalkHasAudio("italian-white", "line")) throw new Error("line talk missing audio");
-      if (coach.introStemWhiteOnly !== true) throw new Error("white only flag");
+      if (coach.introStemWhiteOnly === true) throw new Error("italian stem plays black replies");
       if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
       if (coachIntroEndsOnLineList("italian-white") !== true) throw new Error("italian list gate");
       if (!coach.introStem || coach.introStem.join(" ") !== ITALIAN_INTRO_STEM.join(" ")) {
@@ -130,7 +132,15 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
       if (!coach.introStemAtSec || coach.introStemAtSec.join(",") !== ITALIAN_INTRO_STEM_AT_SEC.join(",")) {
         throw new Error("stem times " + coach.introStemAtSec);
       }
-      if (coach.introStem.join(" ") !== "e4 Nf3 Bc4") throw new Error("three white moves");
+      if (coach.introStem.join(" ") !== "e4 e5 Nf3 Nc6 Bc4") throw new Error("italian stem");
+      if (!coach.introArrows || JSON.stringify(coach.introArrows) !== JSON.stringify(ITALIAN_INTRO_ARROWS)) {
+        throw new Error("arrows " + JSON.stringify(coach.introArrows));
+      }
+      for (const id of ["scotch", "opening-traps", "caro-kann-black", "london", "qg-white"]) {
+        if (COACH_PACKS[id]?.introArrows) throw new Error(id + " should not arrow the intro");
+      }
+      if (COACH_PACKS.london?.introStemWhiteOnly !== true) throw new Error("london stays white-only");
+      if (COACH_PACKS["qg-white"]?.introStemWhiteOnly === true) throw new Error("qg plays d5");
       if (coach.introBeats.length !== 7) throw new Error("beats " + coach.introBeats.length);
       if (!coach.introBeats[0].startsWith("Right then, Professor Potato Pie here")) throw new Error("open");
       if (!coach.introBeats[2].includes("pawn to e4") || !coach.introBeats[2].includes("bishop to c4")) {
@@ -146,23 +156,41 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
       const cues = coach.introStemAtSec;
       if (coachAudioPlyCount(cues, 24.89, 69.12, 69.12) !== 0) throw new Error("e4 not yet");
       if (coachAudioPlyCount(cues, 24.9, 69.12, 69.12) !== 1) throw new Error("e4");
-      if (coachAudioPlyCount(cues, 29.49, 69.12, 69.12) !== 1) throw new Error("knight to f3 not yet");
-      if (coachAudioPlyCount(cues, 29.5, 69.12, 69.12) !== 2) throw new Error("knight to f3");
-      if (coachAudioPlyCount(cues, 33.19, 69.12, 69.12) !== 2) throw new Error("bishop not yet");
-      if (coachAudioPlyCount(cues, 33.2, 69.12, 69.12) !== 3) throw new Error("bishop");
-      const game = replayWhiteOnly(coach.introStem, coach.introStem.length);
-      if (game.history().length !== 1) throw new Error("history should be the last white move only");
-      const fen = game.fen();
-      if (!fen.startsWith("rnbqkbnr/pppppppp/")) throw new Error("black moved " + fen);
-      if (game.get("e4")?.type !== "p" || game.get("e4")?.color !== "w") throw new Error("e4");
-      if (game.get("f3")?.type !== "n" || game.get("f3")?.color !== "w") throw new Error("f3");
-      if (game.get("c4")?.type !== "b" || game.get("c4")?.color !== "w") throw new Error("c4");
-      if (game.get("e5")) throw new Error("black e5 should stay home");
-      if (game.get("c6")) throw new Error("black c6 should stay home");
-      const plain = new Chess();
-      for (const san of ["e4", "e5", "Nf3", "Nc6", "Bc4"]) {
-        if (!plain.move(san)) throw new Error("spoken order illegal " + san);
+      if (coachAudioPlyCount(cues, 27.59, 69.12, 69.12) !== 1) throw new Error("e5 not yet");
+      if (coachAudioPlyCount(cues, 27.6, 69.12, 69.12) !== 2) throw new Error("e5");
+      if (coachAudioPlyCount(cues, 29.49, 69.12, 69.12) !== 2) throw new Error("knight to f3 not yet");
+      if (coachAudioPlyCount(cues, 29.5, 69.12, 69.12) !== 3) throw new Error("knight to f3");
+      if (coachAudioPlyCount(cues, 31.09, 69.12, 69.12) !== 3) throw new Error("c6 not yet");
+      if (coachAudioPlyCount(cues, 31.1, 69.12, 69.12) !== 4) throw new Error("c6");
+      if (coachAudioPlyCount(cues, 33.19, 69.12, 69.12) !== 4) throw new Error("bishop not yet");
+      if (coachAudioPlyCount(cues, 33.2, 69.12, 69.12) !== 5) throw new Error("bishop");
+      if (coachAudioPlyCount(cues, 44.2, 69.12, 69.12) !== 5) throw new Error("arrows must not add plies");
+      const game = new Chess();
+      for (const san of coach.introStem) {
+        if (!game.move(san)) throw new Error("stem illegal " + san);
       }
+      if (game.history().join(" ") !== "e4 e5 Nf3 Nc6 Bc4") throw new Error("history " + game.history().join(" "));
+      if (game.get("e4")?.type !== "p" || game.get("e4")?.color !== "w") throw new Error("e4");
+      if (game.get("e5")?.type !== "p" || game.get("e5")?.color !== "b") throw new Error("e5");
+      if (game.get("f3")?.type !== "n" || game.get("f3")?.color !== "w") throw new Error("f3");
+      if (game.get("c6")?.type !== "n" || game.get("c6")?.color !== "b") throw new Error("c6");
+      if (game.get("c4")?.type !== "b" || game.get("c4")?.color !== "w") throw new Error("c4");
+      if (game.get("f8")?.type !== "b" || game.get("f8")?.color !== "b") throw new Error("bishop stays");
+      if (game.get("g8")?.type !== "n" || game.get("g8")?.color !== "b") throw new Error("knight stays");
+      const arrowAt = (t) => coachIntroArrowsAt(coach.introArrows, t, 69.12, 69.12);
+      if (arrowAt(43.49).length !== 0) throw new Error("arrow early");
+      const bc5 = arrowAt(43.5);
+      if (bc5.length !== 1 || bc5[0].from !== "f8" || bc5[0].to !== "c5") throw new Error("bc5 " + JSON.stringify(bc5));
+      if (arrowAt(47.89)[0]?.to !== "c5") throw new Error("bc5 should hold");
+      const nf6 = arrowAt(47.9);
+      if (nf6.length !== 1 || nf6[0].from !== "g8" || nf6[0].to !== "f6") throw new Error("nf6 " + JSON.stringify(nf6));
+      if (arrowAt(51.09)[0]?.to !== "f6") throw new Error("nf6 should hold");
+      if (arrowAt(51.1).length !== 0) throw new Error("arrow should clear");
+      if (game.move("Bc5")?.to !== "c5") throw new Error("bc5 legal from the stem");
+      game.undo();
+      if (game.move("Nf6")?.to !== "f6") throw new Error("nf6 legal from the stem");
+      game.undo();
+      if (game.get("f8")?.type !== "b" || game.get("g8")?.type !== "n") throw new Error("options unplayed");
       if (coachTalkPlies("italian-white", "intro") !== null) throw new Error("intro uses the stem clock");
       if (!coachPackIntroApplies("italian-white")) throw new Error("intro gate");
       if (!coachPackLineApplies({ packId: "italian-white", lineId: "it1" })) {

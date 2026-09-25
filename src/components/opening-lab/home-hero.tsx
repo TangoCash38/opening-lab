@@ -571,6 +571,7 @@ export function HomeHero({
                       stemSans={coachPack(pack.id)?.introStem}
                       stemAtSec={coachPack(pack.id)?.introStemAtSec}
                       whiteOnly={coachPack(pack.id)?.introStemWhiteOnly === true}
+                      introArrows={coachPack(pack.id)?.introArrows}
                       plyFallbackSec={coachPack(pack.id)?.introAudioFallbackSec}
                     />
                   ) : coach.talk === "canal" ? (

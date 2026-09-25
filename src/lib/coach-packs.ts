@@ -48,6 +48,14 @@ import { QG_INTRO_STEM, QG_INTRO_STEM_AT_SEC } from "@/lib/qg-intro-stem";
 /** Gentle caption dwell when a talk has no recording. About 4 to 6 seconds. */
 export const COACH_TEXT_BEAT_SEC = 5;
 
+/** Arrow for a named move that stays unplayed. Times are seconds into the intro clip. */
+export type CoachIntroArrowCue = {
+  atSec: number;
+  untilSec: number;
+  from: string;
+  to: string;
+};
+
 export type CoachLineBeat = {
   caption: string;
   /** SAN played on the board for this beat. Omitted = no new move. */
@@ -82,9 +90,15 @@ export type CoachPackConfig = {
   introStemAtSec?: readonly number[];
   /**
    * Play `introStem` as White moves only. Black pieces stay on their
-   * home squares. The London formation and the Italian shell use this.
+   * home squares. The London formation uses this.
    */
   introStemWhiteOnly?: boolean;
+  /**
+   * Moves the intro names but does not play. One window at a time, while
+   * that option is being spoken. Italian …Bc5 / …Nf6. Other packs leave
+   * this unset.
+   */
+  introArrows?: readonly CoachIntroArrowCue[];
   /** Book line that opens the first-line talk. Not the display title. */
   firstLineId: string;
   firstLineTitle: string;
@@ -608,12 +622,23 @@ const ITALIAN_INTRO = [
 const ITALIAN_INTRO_AT_SEC = [0, 12.9, 23.2, 34.9, 41.3, 52.4, 62.3] as const;
 
 /**
- * White moves named in the Italian intro. Black's replies are spoken
- * (…e5, …Nc6) but stay on their home squares, the same White-only shell
- * as the London formation. Times are the start of each named White move.
+ * Opening stem spoken in the Italian intro: e4 e5 Nf3 Nc6 Bc4.
+ * Times are the start of each named move, read off the clip.
+ * Later alternatives (…Bc5, …Nf6) are arrows in ITALIAN_INTRO_ARROWS.
  */
-export const ITALIAN_INTRO_STEM = ["e4", "Nf3", "Bc4"] as const;
-export const ITALIAN_INTRO_STEM_AT_SEC = [24.9, 29.5, 33.2] as const;
+export const ITALIAN_INTRO_STEM = ["e4", "e5", "Nf3", "Nc6", "Bc4"] as const;
+export const ITALIAN_INTRO_STEM_AT_SEC = [24.9, 27.6, 29.5, 31.1, 33.2] as const;
+
+/**
+ * Black's alternative replies, named after the stem and not played.
+ * "bishop to c5" starts ~43.5s (f8→c5). "knight to f6" starts ~47.9s
+ * (g8→f6) and the sentence ends ~51.1s. Only the option being spoken
+ * is indicated. The bishop and knight stay on f8 and g8.
+ */
+export const ITALIAN_INTRO_ARROWS: readonly CoachIntroArrowCue[] = [
+  { atSec: 43.5, untilSec: 47.9, from: "f8", to: "c5" },
+  { atSec: 47.9, untilSec: 51.1, from: "g8", to: "f6" },
+];
 
 export const ITALIAN_LINE_WAV = "/coach/italian-white/professor-potato-pie-italian-line1.wav";
 /** AI-generated Italian Line 1. Beat and spoken-move times were read off this clip. */
@@ -791,7 +816,7 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introBeatAtSec: ITALIAN_INTRO_AT_SEC,
     introStem: ITALIAN_INTRO_STEM,
     introStemAtSec: ITALIAN_INTRO_STEM_AT_SEC,
-    introStemWhiteOnly: true,
+    introArrows: ITALIAN_INTRO_ARROWS,
     firstLineId: "it1",
     firstLineTitle: "Line 1",
     firstLineBeats: ITALIAN_LINE,
@@ -1000,6 +1025,29 @@ export function coachAudioPlyCount(
     else break;
   }
   return Math.min(cues.length, count);
+}
+
+/**
+ * Intro arrows whose spoken window contains this clip time.
+ * Same duration scaling as `coachAudioPlyCount`. A cue ends at `untilSec`,
+ * so the next option replaces the previous one instead of stacking.
+ */
+export function coachIntroArrowsAt(
+  cues: readonly CoachIntroArrowCue[],
+  currentTimeSec: number,
+  durationSec: number,
+  fallbackSec: number,
+): CoachIntroArrowCue[] {
+  const duration =
+    Number.isFinite(durationSec) && durationSec > 0 ? durationSec : Math.max(1, fallbackSec);
+  const basis = fallbackSec > 0 ? fallbackSec : duration;
+  const scale = duration / basis;
+  if (!Number.isFinite(currentTimeSec) || currentTimeSec <= 0) return [];
+  return cues.filter((cue) => {
+    const start = cue.atSec * scale;
+    const end = cue.untilSec * scale;
+    return currentTimeSec + 1e-9 >= start && currentTimeSec < end;
+  });
 }
 
 /**
