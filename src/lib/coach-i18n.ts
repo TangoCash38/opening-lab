@@ -300,6 +300,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Es una apertura sólida y sensata, jugada tanto por jugadores de club como por grandes maestros.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Bien, disfruta al familiarizarte más con el sistema de Londres y veamos cómo encajan las piezas.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Muy bien, echemos un vistazo a la primera línea de nuestro pack de aprendizaje del Londres.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Esta es la pinza de Londres, tranquila al principio, pero hay método en cada jugada.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Jugamos peón a d4 y las negras responden peón a d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Alfil a f4, caballo a f6, peón a e3 y las negras golpean con peón a c5.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Construimos la pirámide familiar con peón a c3, las negras desarrollan el caballo a c6.",
+    "Knight to d2 and black plays pawn to e6.": "Caballo a d2 y las negras juegan peón a e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "Nuestro otro caballo llega a f3, mientras el alfil negro llega a d6.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Retiramos nuestro alfil a g3, manteniéndolo útil y seguro.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "Las negras enrocan en el flanco de rey, colocamos nuestro otro alfil en d3, las negras juegan peón a b6 y ahora plantamos el caballo en e5, un espléndido puesto central.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Alfil a b7, enrocamos en el flanco de rey, las negras colocan la dama en c7 y completamos la pinza con peón a f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "Ahí está, una posición compacta de Londres con el centro firmemente vigilado y nuestras piezas empezando a mirar hacia el flanco de rey.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Repítela hasta que tu mano conozca la ruta y tu rival se pregunte cuándo la apertura tranquila se convirtió en un ataque.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -433,6 +456,28 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "这是一种扎实、明智的开局，俱乐部棋手和特级大师都下过。",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "好，享受进一步熟悉伦敦体系的过程，我们来看看这些棋子如何配合。",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "好，我们来看看伦敦学习棋包里的第一条线路。",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "这就是伦敦钳制，开头很安静，但每一步都有章法。",
+    "We play pawn to d4 and black answers pawn to d5.": "我们走兵到 d4，黑方应兵到 d5。",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "象到 f4，马到 f6，兵到 e3，黑方以兵到 c5 反击。",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "我们用兵到 c3 搭起熟悉的金字塔，黑方把马发展到 c6。",
+    "Knight to d2 and black plays pawn to e6.": "马到 d2，黑方走兵到 e6。",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "我们另一匹马来到 f3，同时黑方的象来到 d6。",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "我们把象退回 g3，让它既有用又安全。",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "黑方王翼易位，我们把另一只象放在 d3，黑方走兵到 b6，现在我们把马扎在 e5，一个出色的中心前哨。",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "象到 b7，我们王翼易位，黑方把后放到 c7，我们用兵到 f4 完成钳制。",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "就是这样，一个紧凑的伦敦局面，中心牢牢在看管之下，我们的棋子开始朝王翼瞥去。",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "把它练到手上认得这条路，让对手纳闷安静的开局何时变成了进攻。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -571,6 +616,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "C'est une ouverture solide et sensée, jouée aussi bien par les joueurs de club que par les grands maîtres.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Bien, prenez plaisir à mieux connaître le système de Londres, et voyons comment les pièces s'assemblent.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Bien, regardons la première ligne de notre pack d'apprentissage du Londres.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Voici la pince de Londres, calme au départ, mais il y a de la méthode dans chaque coup.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Nous jouons le pion en d4 et les Noirs répondent par le pion en d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Fou en f4, cavalier en f6, pion en e3, et les Noirs frappent avec le pion en c5.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Nous bâtissons la pyramide familière avec le pion en c3, les Noirs développent le cavalier en c6.",
+    "Knight to d2 and black plays pawn to e6.":
+      "Cavalier en d2 et les Noirs jouent le pion en e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "Notre autre cavalier vient en f3, tandis que le fou noir vient en d6.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Nous ramenons notre fou en g3, pour le garder utile et sûr.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "Les Noirs roquent côté roi, nous plaçons notre autre fou en d3, les Noirs jouent le pion en b6 et maintenant nous plantons le cavalier en e5, un splendide avant-poste central.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Fou en b7, nous roquons côté roi, les Noirs placent la dame en c7 et nous achevons la pince avec le pion en f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "La voilà, une position de Londres compacte, le centre fermement sous surveillance et nos pièces qui commencent à regarder vers le flanc roi.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Répète-la jusqu'à ce que ta main connaisse la route et que ton adversaire se demande quand l'ouverture calme est devenue une attaque.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -708,6 +777,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Es ist eine solide, vernünftige Eröffnung, die sowohl Vereinsspieler als auch Großmeister gespielt haben.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Also, genieße es, das Londoner System besser kennenzulernen, und schauen wir, wie die Figuren zusammenpassen.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Also dann, sehen wir uns die erste Linie in unserem London-Lernpaket an.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Das ist die Londoner Klammer, anfangs ruhig, aber in jedem Zug steckt Methode.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Wir spielen Bauer nach d4 und Schwarz antwortet mit Bauer nach d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Läufer nach f4, Springer nach f6, Bauer nach e3, und Schwarz schlägt mit Bauer nach c5 zu.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Wir bauen die vertraute Pyramide mit Bauer nach c3, Schwarz entwickelt den Springer nach c6.",
+    "Knight to d2 and black plays pawn to e6.":
+      "Springer nach d2 und Schwarz spielt Bauer nach e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "Unser anderer Springer kommt nach f3, während der schwarze Läufer nach d6 kommt.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Wir ziehen unseren Läufer zurück nach g3 und halten ihn nützlich und sicher.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "Schwarz rochiert kurz, wir stellen unseren anderen Läufer auf d3, Schwarz spielt Bauer nach b6, und nun pflanzen wir den Springer auf e5, ein prächtiger Zentralvorposten.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Läufer nach b7, wir rochieren kurz, Schwarz stellt die Dame auf c7, und wir vollenden die Klammer mit Bauer nach f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "Da ist sie, eine kompakte Londoner Stellung, das Zentrum fest unter Aufsicht und unsere Figuren beginnen zum Königsflügel zu blicken.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Übe sie, bis deine Hand den Weg kennt und dein Gegner sich fragt, wann die ruhige Eröffnung zum Angriff wurde.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -845,6 +938,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "É uma abertura sólida e sensata, jogada tanto por jogadores de clube como por grandes mestres.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Certo, aproveita para te familiarizares mais com o Sistema de Londres e vamos ver como as peças encaixam.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Muito bem, vamos ver a primeira linha do nosso pack de aprendizagem do Londres.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Esta é a pinça de Londres, calma no início, mas há método em cada lance.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Jogamos peão a d4 e as pretas respondem com peão a d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Bispo a f4, cavalo a f6, peão a e3, e as pretas golpeiam com peão a c5.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Construímos a pirâmide familiar com peão a c3, as pretas desenvolvem o cavalo a c6.",
+    "Knight to d2 and black plays pawn to e6.": "Cavalo a d2 e as pretas jogam peão a e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "O nosso outro cavalo chega a f3, enquanto o bispo das pretas chega a d6.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Recolhemos o nosso bispo a g3, mantendo-o útil e seguro.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "As pretas rocam no flanco do rei, colocamos o outro bispo em d3, as pretas jogam peão a b6 e agora plantamos o cavalo em e5, um esplêndido posto avançado central.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Bispo a b7, rocamos no flanco do rei, as pretas colocam a dama em c7 e completamos a pinça com peão a f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "Aí está, uma posição compacta de Londres, com o centro firmemente vigiado e as nossas peças a começar a olhar para o flanco do rei.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Repete-a até a tua mão conhecer o caminho e o teu adversário se perguntar quando a abertura calma se tornou um ataque.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -981,6 +1097,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Это крепкий, разумный дебют, который играли и клубные игроки, и гроссмейстеры.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Итак, приятного знакомства с лондонской системой, и посмотрим, как фигуры складываются вместе.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Итак, посмотрим первую линию в нашем учебном паке по лондонской системе.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Это лондонские тиски, поначалу тихие, но в каждом ходе есть метод.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Мы играем пешку на d4, и чёрные отвечают пешкой на d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Слон на f4, конь на f6, пешка на e3, и чёрные бьют пешкой на c5.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Мы строим знакомую пирамиду пешкой на c3, чёрные развивают коня на c6.",
+    "Knight to d2 and black plays pawn to e6.": "Конь на d2, и чёрные играют пешку на e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "Другой наш конь приходит на f3, а слон чёрных приходит на d6.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Мы отводим слона назад на g3, оставляя его полезным и в безопасности.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "Чёрные рокируются в короткую сторону, мы ставим другого слона на d3, чёрные играют пешку на b6, и теперь мы ставим коня на e5, великолепный центральный форпост.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Слон на b7, мы рокируемся в короткую сторону, чёрные ставят ферзя на c7, и мы завершаем тиски пешкой на f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "Вот она, компактная лондонская позиция: центр под твёрдым надзором, а наши фигуры начинают поглядывать в сторону королевского фланга.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Тренируй её, пока рука не узнает маршрут, а соперник не задумается, когда тихий дебют стал атакой.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1118,6 +1257,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "È un'apertura solida e sensata, giocata sia dai giocatori di club sia dai grandi maestri.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Bene, goditi il prendere confidenza con il sistema di Londra e vediamo come i pezzi si combinano.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Bene, diamo un'occhiata alla prima linea del nostro pacchetto di studio del Londra.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Questa è la morsa di Londra, quieta all'inizio, ma c'è metodo in ogni mossa.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Giochiamo pedone in d4 e il Nero risponde con pedone in d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Alfiere in f4, cavallo in f6, pedone in e3, e il Nero colpisce con pedone in c5.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Costruiamo la piramide familiare con pedone in c3, il Nero sviluppa il cavallo in c6.",
+    "Knight to d2 and black plays pawn to e6.": "Cavallo in d2 e il Nero gioca pedone in e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "L'altro nostro cavallo arriva in f3, mentre l'alfiere del Nero arriva in d6.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Ritiriamo il nostro alfiere in g3, tenendolo utile e al sicuro.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "Il Nero arrocca sul lato di re, piazziamo l'altro alfiere in d3, il Nero gioca pedone in b6 e ora piantiamo il cavallo in e5, uno splendido avamposto centrale.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Alfiere in b7, arrochiamo sul lato di re, il Nero piazza la donna in c7 e completiamo la morsa con pedone in f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "Eccola, una posizione di Londra compatta, con il centro saldamente sotto controllo e i nostri pezzi che cominciano a guardare verso il lato di re.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Ripetila finché la tua mano non conosce la strada e il tuo avversario non si chiede quando l'apertura quieta è diventata un attacco.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1255,6 +1417,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "यह एक ठोस, समझदार ओपनिंग है, जिसे क्लब खिलाड़ी और ग्रैंडमास्टर दोनों ने खेला है।",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "ठीक, लंदन प्रणाली से और परिचित होने का आनंद लो, और देखें कि मोहरे कैसे साथ बैठते हैं।",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "अच्छा, हमारे लंदन सीखने के पैक की पहली लाइन पर नज़र डालते हैं।",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "यह लंदन क्लैंप है, शुरुआत में शांत, लेकिन हर चाल में विधि है।",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "हम प्यादा d4 पर खेलते हैं और काला प्यादा d5 से जवाब देता है।",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "हाथी f4 पर, घोड़ा f6 पर, प्यादा e3 पर, और काला प्यादा c5 से वार करता है।",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "हम परिचित पिरामिड प्यादा c3 से बनाते हैं, काला घोड़े को c6 पर विकसित करता है।",
+    "Knight to d2 and black plays pawn to e6.": "घोड़ा d2 पर और काला प्यादा e6 खेलता है।",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "हमारा दूसरा घोड़ा f3 पर आता है, जबकि काले का हाथी d6 पर आता है।",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "हम अपने हाथी को g3 पर वापस समेटते हैं, उसे उपयोगी और सुरक्षित रखते हुए।",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "काला किंग साइड कैसल करता है, हम अपना दूसरा हाथी d3 पर रखते हैं, काला प्यादा b6 खेलता है और अब हम घोड़े को e5 पर गाड़ते हैं, एक शानदार केंद्रीय चौकी।",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "हाथी b7 पर, हम किंग साइड कैसल करते हैं, काला रानी को c7 पर रखता है और हम प्यादा f4 से क्लैंप पूरा करते हैं।",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "यह रही, एक सघन लंदन स्थिति, केंद्र दृढ़ निगरानी में और हमारे मोहरे किंग साइड की ओर झाँकने लगते हैं।",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "इसे तब तक दोहराओ जब तक तुम्हारा हाथ रास्ता जान न ले और तुम्हारा प्रतिद्वंद्वी यह न सोचे कि शांत ओपनिंग हमला कब बन गई।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1391,6 +1576,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "堅実で分別のあるオープニングで、クラブプレイヤーもグランドマスターも指してきた。",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "よし、ロンドン・システムにもっと親しむのを楽しんで、駒がどう噛み合うか見ていこう。",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "よし、ロンドン学習パックの最初のラインを見ていこう。",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "これがロンドンのクランプだ。最初は静かだが、どの手にも狙いがある。",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "私たちはポーンを d4 に進め、黒はポーンを d5 で応じる。",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "ビショップを f4、ナイトを f6、ポーンを e3、そして黒はポーンを c5 で突いてくる。",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "ポーンを c3 にして見慣れたピラミッドを組み、黒はナイトを c6 に展開する。",
+    "Knight to d2 and black plays pawn to e6.": "ナイトを d2 へ、黒はポーンを e6 と指す。",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "もう一方のナイトが f3 に来て、そのあいだに黒のビショップは d6 に来る。",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "ビショップを g3 に戻し、有用で安全なまま保つ。",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "黒はキングサイドにキャスリングし、私たちはもう一方のビショップを d3 に置き、黒はポーンを b6 と指し、ここでナイトを e5 に植え付ける。見事な中央の前哨だ。",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "ビショップを b7、私たちはキングサイドにキャスリングし、黒はクイーンを c7 に置き、ポーンを f4 にしてクランプを完成させる。",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "これがその姿だ。引き締まったロンドンの局面で、中央はしっかり監視され、駒はキングサイドへ目を向け始める。",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "手が道順を覚えるまで繰り返し、静かなオープニングがいつの間に攻撃になったのか相手が不思議がるまで鍛えよう。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1525,6 +1733,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "إنه افتتاح متين وعاقل، لعبه لاعبو الأندية وأساتذة الكبار على السواء.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "حسنًا، استمتع بالتعرّف أكثر على نظام لندن، ولنرَ كيف تتآلف القطع.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "حسنًا، لنلقِ نظرة على الخط الأول في حزمة تعلّم لندن.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "هذه كماشة لندن، هادئة في البداية، لكن في كل نقلة منهج.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "نلعب بيدقًا إلى d4 ويجيب الأسود ببيدق إلى d5.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "فيل إلى f4، حصان إلى f6، بيدق إلى e3، ويضرب الأسود ببيدق إلى c5.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "نبني الهرم المألوف ببيدق إلى c3، ويطوّر الأسود الحصان إلى c6.",
+    "Knight to d2 and black plays pawn to e6.": "حصان إلى d2 ويلعب الأسود بيدقًا إلى e6.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "يأتي حصاننا الآخر إلى f3، بينما يأتي فيل الأسود إلى d6.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "نُرجع فيلنا إلى g3، نبقيه مفيدًا وآمنًا.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "يبيت الأسود على جانب الملك، ونضع فيلنا الآخر على d3، ويلعب الأسود بيدقًا إلى b6، والآن نغرس الحصان في e5، موقعًا مركزيًا رائعًا.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "فيل إلى b7، نبيت على جانب الملك، يضع الأسود الملكة على c7 ونُكمل الكماشة ببيدق إلى f4.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "ها هي، وضعية لندن متماسكة، والمركز تحت رقابة ثابتة، وقطعنا تبدأ في النظر نحو جانب الملك.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "كرّرها حتى تعرف يدك الطريق ويتساءل خصمك متى صار الافتتاح الهادئ هجومًا.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1661,5 +1892,28 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Kulüp oyuncularının da büyükustaların da oynadığı sağlam, akıllıca bir açılıştır.",
     "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.":
       "Peki, Londra sistemine daha yakından alışmanın keyfini çıkar, ve taşların nasıl oturduğuna bakalım.",
+    "Right then, let's have a look at the first line in our London learning pack.":
+      "Peki, Londra öğrenme paketimizdeki ilk hatta bir bakalım.",
+    "This is the London clamp, quiet to begin with, but there is method in every move.":
+      "Bu Londra kıskacıdır; başlangıçta sakindir, ama her hamlede bir yöntem vardır.",
+    "We play pawn to d4 and black answers pawn to d5.":
+      "Piyonu d4'e oynarız ve siyah piyonla d5 diye yanıt verir.",
+    "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.":
+      "Fil f4'e, at f6'ya, piyon e3'e, ve siyah piyonla c5'e vurur.",
+    "We build the familiar pyramid with pawn to c3, black develops knight to c6.":
+      "Tanıdık piramidi piyonla c3'te kurarız, siyah atı c6'ya geliştirir.",
+    "Knight to d2 and black plays pawn to e6.": "At d2'ye, siyah da piyonu e6'ya oynar.",
+    "Our other knight comes to f3, while black's bishop comes to d6.":
+      "Öteki atımız f3'e gelirken siyahın fili d6'ya gelir.",
+    "We tuck our bishop back to g3, keeping it useful and secure.":
+      "Filimizi g3'e geri çekeriz; yararlı ve güvende kalsın.",
+    "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.":
+      "Siyah kısa rok yapar, öteki filimizi d3'e koyarız, siyah piyonu b6'ya oynar ve şimdi atı e5'e dikeriz, görkemli bir merkez karakolu.",
+    "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.":
+      "Fil b7'ye, biz kısa rok yaparız, siyah veziri c7'ye koyar ve kıskacı piyonla f4'te tamamlarız.",
+    "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.":
+      "İşte orada: merkezin sıkı gözetim altında olduğu derli toplu bir Londra konumu, taşlarımız şah kanadına bakmaya başlıyor.",
+    "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.":
+      "Elin yolu öğrenene ve rakibin sessiz açılışın ne zaman saldırıya döndüğünü merak edene kadar tekrarla.",
   },
 };

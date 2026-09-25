@@ -83,11 +83,6 @@ export type CoachPackConfig = {
    * home squares. The London formation uses this.
    */
   introStemWhiteOnly?: boolean;
-  /**
-   * Absent or true: finishing the intro can open the first-line talk.
-   * London is intro-only — Practice then starts on the initial position.
-   */
-  lineTalk?: boolean;
   /** Book line that opens the first-line talk. Not the display title. */
   firstLineId: string;
   firstLineTitle: string;
@@ -365,6 +360,100 @@ const LONDON_INTRO = [
 
 const LONDON_INTRO_AT_SEC = [0, 9.9, 21.2, 27.4, 36.9, 44.1, 51.4] as const;
 
+export const LONDON_LINE_WAV = "/coach/london/professor-potato-pie-london-line1.wav";
+/** Sean's London Line 1 talk. Beat and spoken-move times were read off this clip. */
+export const LONDON_LINE_SEC = 79.9;
+
+const LONDON_LINE: readonly CoachLineBeat[] = [
+  {
+    caption: "Right then, let's have a look at the first line in our London learning pack.",
+    atSec: 0,
+  },
+  {
+    caption: "This is the London clamp, quiet to begin with, but there is method in every move.",
+    atSec: 4.9,
+  },
+  {
+    caption: "We play pawn to d4 and black answers pawn to d5.",
+    ply: "d4",
+    atSec: 11.2,
+    plyAtSec: 12.2,
+    extraPlies: [{ ply: "d5", plyAtSec: 14.8 }],
+  },
+  {
+    caption: "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.",
+    ply: "Bf4",
+    atSec: 16.2,
+    plyAtSec: 16.7,
+    extraPlies: [
+      { ply: "Nf6", plyAtSec: 18.1 },
+      { ply: "e3", plyAtSec: 19.7 },
+      { ply: "c5", plyAtSec: 22.2 },
+    ],
+  },
+  {
+    caption: "We build the familiar pyramid with pawn to c3, black develops knight to c6.",
+    ply: "c3",
+    atSec: 23.6,
+    plyAtSec: 26,
+    extraPlies: [{ ply: "Nc6", plyAtSec: 28.6 }],
+  },
+  {
+    caption: "Knight to d2 and black plays pawn to e6.",
+    ply: "Nd2",
+    atSec: 30.2,
+    plyAtSec: 30.5,
+    extraPlies: [{ ply: "e6", plyAtSec: 32.8 }],
+  },
+  {
+    caption: "Our other knight comes to f3, while black's bishop comes to d6.",
+    ply: "Ngf3",
+    atSec: 34.1,
+    plyAtSec: 35.3,
+    extraPlies: [{ ply: "Bd6", plyAtSec: 37.6 }],
+  },
+  {
+    caption: "We tuck our bishop back to g3, keeping it useful and secure.",
+    ply: "Bg3",
+    atSec: 38.8,
+    plyAtSec: 40.2,
+  },
+  {
+    caption:
+      "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.",
+    ply: "O-O",
+    atSec: 43.9,
+    plyAtSec: 44,
+    extraPlies: [
+      { ply: "Bd3", plyAtSec: 47.2 },
+      { ply: "b6", plyAtSec: 49.5 },
+      { ply: "Ne5", plyAtSec: 52.1 },
+    ],
+  },
+  {
+    caption:
+      "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.",
+    ply: "Bb7",
+    atSec: 55,
+    plyAtSec: 56.2,
+    extraPlies: [
+      { ply: "O-O", plyAtSec: 57.2 },
+      { ply: "Qc7", plyAtSec: 59.8 },
+      { ply: "f4", plyAtSec: 62.9 },
+    ],
+  },
+  {
+    caption:
+      "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.",
+    atSec: 64.3,
+  },
+  {
+    caption:
+      "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.",
+    atSec: 73.7,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -419,10 +508,11 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introStem: LONDON_INTRO_STEM,
     introStemAtSec: LONDON_INTRO_STEM_AT_SEC,
     introStemWhiteOnly: true,
-    lineTalk: false,
     firstLineId: "lon1",
     firstLineTitle: "Line 1",
-    firstLineBeats: [],
+    firstLineBeats: LONDON_LINE,
+    firstLineAudio: LONDON_LINE_WAV,
+    firstLineAudioFallbackSec: LONDON_LINE_SEC,
   },
 };
 
@@ -443,7 +533,7 @@ export function coachPackIntroApplies(packId: string): boolean {
 export function coachPackLineApplies(input: { packId: string; lineId: string }): boolean {
   if (input.packId === SCOTCH_PACK_ID) return false;
   const pack = COACH_PACKS[input.packId];
-  if (!pack || pack.lineTalk === false) return false;
+  if (!pack) return false;
   return input.lineId === pack.firstLineId;
 }
 

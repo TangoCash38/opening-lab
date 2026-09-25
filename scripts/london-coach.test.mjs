@@ -48,7 +48,9 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/london/professor-potato-pie-london-intro.wav";
+  const lineWav = "public/coach/london/professor-potato-pie-london-line1.wav";
   assert.equal(existsSync(join(root, wav)), true);
+  assert.equal(existsSync(join(root, lineWav)), true);
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const board = src("src/components/opening-lab/scotch-coach-board.tsx");
   const audio = src("src/lib/scotch-coach-audio.ts");
@@ -85,10 +87,13 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
         COACH_PACKS,
         coachAudioPlyCount,
         coachIntroSessionKey,
+        coachLinePlyCues,
+        coachLineSessionKey,
         coachPackIntroApplies,
         coachPackLineApplies,
         coachTalkAfterPackIntro,
         coachTalkPlies,
+        coachTextPlayedSans,
       } = await import(${JSON.stringify(compiled)});
       const pack = PACKS.find((item) => item.id === "london");
       if (!pack) throw new Error("london pack missing");
@@ -99,8 +104,11 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
         throw new Error("audio " + coach.introAudio);
       }
       if (coach.introAudioFallbackSec !== 57.4) throw new Error("length");
-      if (coach.lineTalk !== false) throw new Error("london should not open a line talk");
-      if (coach.firstLineAudio) throw new Error("no line clip");
+      if (coach.firstLineId !== "lon1") throw new Error("first line " + coach.firstLineId);
+      if (coach.firstLineAudio !== "/coach/london/professor-potato-pie-london-line1.wav") {
+        throw new Error("line audio " + coach.firstLineAudio);
+      }
+      if (coach.firstLineAudioFallbackSec !== 79.9) throw new Error("line length");
       if (coach.introStemWhiteOnly !== true) throw new Error("white only flag");
       if (!coach.introStem || coach.introStem.join(" ") !== LONDON_INTRO_STEM.join(" ")) {
         throw new Error("stem " + coach.introStem);
@@ -160,10 +168,47 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
       if (!ambiguous) throw new Error("Nd2 should be ambiguous once Nf3 is played");
       if (coachTalkPlies("london", "intro") !== null) throw new Error("intro uses the stem clock");
       if (!coachPackIntroApplies("london")) throw new Error("intro gate");
-      if (coachPackLineApplies({ packId: "london", lineId: "lon1" })) throw new Error("no line talk");
-      if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== null) {
-        throw new Error("intro should reset to practice");
+      if (!coachPackLineApplies({ packId: "london", lineId: "lon1" })) throw new Error("lon1 talk");
+      if (coachPackLineApplies({ packId: "london", lineId: "lon2" })) throw new Error("only lon1");
+      if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== "line") {
+        throw new Error("finishing the intro opens Line 1");
       }
+      if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== null) {
+        throw new Error("skip stays on the intro");
+      }
+      const lon1 = pack.lines.find((item) => item.id === "lon1");
+      if (!lon1) throw new Error("lon1 missing");
+      const script = coachTalkPlies("london", "line");
+      if (!script) throw new Error("line script");
+      const played = coachTextPlayedSans(script, script.length);
+      if (played.join(" ") !== lon1.plies.join(" ")) throw new Error("script " + played.join(" "));
+      if (played.join(" ") !== "d4 d5 Bf4 Nf6 e3 c5 c3 Nc6 Nd2 e6 Ngf3 Bd6 Bg3 O-O Bd3 b6 Ne5 Bb7 O-O Qc7 f4") {
+        throw new Error("live lon1 " + played.join(" "));
+      }
+      const lineCues = coachLinePlyCues("london");
+      if (!lineCues || lineCues.length !== lon1.plies.length) throw new Error("cues " + (lineCues && lineCues.length));
+      if (coachAudioPlyCount(lineCues, 12.19, 79.9, 79.9) !== 0) throw new Error("d4 not yet");
+      if (coachAudioPlyCount(lineCues, 12.2, 79.9, 79.9) !== 1) throw new Error("d4");
+      if (coachAudioPlyCount(lineCues, 30.49, 79.9, 79.9) !== 8) throw new Error("Nd2 not yet");
+      if (coachAudioPlyCount(lineCues, 30.5, 79.9, 79.9) !== 9) throw new Error("Nd2");
+      if (coachAudioPlyCount(lineCues, 52.09, 79.9, 79.9) !== 16) throw new Error("Ne5 not yet");
+      if (coachAudioPlyCount(lineCues, 52.1, 79.9, 79.9) !== 17) throw new Error("Ne5");
+      if (coachAudioPlyCount(lineCues, 62.89, 79.9, 79.9) !== 20) throw new Error("f4 not yet");
+      if (coachAudioPlyCount(lineCues, 62.9, 79.9, 79.9) !== 21) throw new Error("f4");
+      const line = new Chess();
+      for (const san of played) {
+        const move = line.move(san);
+        if (!move) throw new Error("illegal " + san);
+      }
+      if (line.history().join(" ") !== played.join(" ")) throw new Error("history");
+      if (line.get("e5")?.type !== "n" || line.get("e5")?.color !== "w") throw new Error("outpost");
+      if (line.get("g1")?.type !== "k" || line.get("g8")?.type !== "k") throw new Error("castles");
+      if (line.get("f4")?.type !== "p") throw new Error("clamp");
+      if (coach.firstLineBeats.length !== 12) throw new Error("line beats " + coach.firstLineBeats.length);
+      if (!coach.firstLineBeats[1].caption.startsWith("This is the London clamp")) throw new Error("clamp caption");
+      if (!coach.firstLineBeats[7].caption.includes("tuck our bishop back to g3")) throw new Error("tuck");
+      const lineKey = coachLineSessionKey("london", "lon1");
+      if (lineKey !== "opening-lab:coach-line:london:lon1") throw new Error(lineKey);
       const key = coachIntroSessionKey("london");
       if (key !== "opening-lab:coach-intro:london") throw new Error(key);
       if (COACH_PACKS["italian-white"]) throw new Error("italian gained a coach");
