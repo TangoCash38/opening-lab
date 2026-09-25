@@ -93,15 +93,7 @@ export function LandingHome({
           <BrandMark />
           <span className="landing-wordmark">Opening Lab</span>
         </div>
-        <nav className="landing-nav" aria-label={t("Drill packs")}>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-packs
-            onClick={onEnterGym}
-          >
-            {t("Drill packs")}
-          </button>
+        <nav className="landing-nav" aria-label={t("Site")}>
           <button
             type="button"
             className="landing-nav-link"
@@ -146,13 +138,17 @@ export function LandingHome({
             <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
               {t("Enter the gym")}
             </button>
+            <p className="landing-cta-note">{t("Opening drill packs")}</p>
           </div>
         </div>
 
         <section className="landing-section" aria-labelledby="landing-open-now">
-          <h2 id="landing-open-now" className="landing-section-title">
-            {t("Open now")}
-          </h2>
+          <div className="landing-section-head">
+            <h2 id="landing-open-now" className="landing-section-title">
+              {t("Open now")}
+            </h2>
+            <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
+          </div>
           <div className="landing-open-grid" data-open-now>
             {openPacks.map((pack) => (
               <button

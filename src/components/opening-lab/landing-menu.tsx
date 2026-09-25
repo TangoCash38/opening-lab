@@ -17,7 +17,7 @@ type Props = {
   onReport: () => void;
 };
 
-/** Overflow chrome. Drill packs and Support stay as header text links. */
+/** Overflow chrome. Support stays as a header text link. */
 export function LandingMenu({ onCreateOwn, onReport }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);

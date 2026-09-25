@@ -61,11 +61,22 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(shell, /setView\("home"\)/);
   assert.match(css, /\.header-home-btn[\s\S]*width:\s*44px/);
   assert.match(css, /\.header-home-btn[\s\S]*min-height:\s*44px/);
-  assert.match(landing, /data-landing-packs/);
+  assert.doesNotMatch(landing, /data-landing-packs/);
+  assert.doesNotMatch(landing, /Drill packs/);
+  assert.match(landing, /aria-label=\{t\("Site"\)\}/);
   assert.match(landing, /data-landing-support/);
-  assert.match(landing, /t\("Drill packs"\)/);
+  assert.match(
+    landing,
+    /data-landing-cta[\s\S]{0,160}t\("Enter the gym"\)[\s\S]{0,200}t\("Opening drill packs"\)/,
+  );
+  assert.match(landing, /className="landing-cta-note"/);
+  assert.match(
+    landing,
+    /t\("Open now"\)[\s\S]{0,220}t\("Chess opening drills available now"\)/,
+  );
   assert.match(landing, /onClick=\{onEnterGym\}/);
   assert.match(landing, /onClick=\{onSupport\}/);
+  assert.match(landing, /onOpenPack\(pack\.id\)/);
   assert.doesNotMatch(css, /\.landing-nav\s*\{[^}]*display:\s*none/);
   assert.match(menu, /data-landing-menu/);
   assert.match(menu, /t\("Menu"\)/);
@@ -89,6 +100,9 @@ test("landing copy is in every language and does not invent prices", () => {
   }
   assert.equal(copy.split('"Enter the gym":').length - 1, 12);
   assert.equal(copy.split('"Drill packs":').length - 1, 12);
+  assert.equal(copy.split('"Opening drill packs":').length - 1, 12);
+  assert.equal(copy.split('"Chess opening drills available now":').length - 1, 12);
+  assert.equal(copy.split('"Site":').length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
   assert.doesNotMatch(copy, /£/);
   assert.doesNotMatch(copy, /Learn the book/);
