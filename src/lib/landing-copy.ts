@@ -3,7 +3,6 @@ import type { Lang } from "./i18n";
 /** Landing chrome. Prices stay in the catalog — never hard-code them here. */
 export const LANDING_COPY: Record<Lang, Record<string, string>> = {
   en: {
-    "Learn the book. Keep the book.": "Learn the book. Keep the book.",
     "Practice with hints. Test with none.": "Practice with hints. Test with none.",
     "Enter the gym": "Enter the gym",
     "Open now": "Open now",
@@ -15,7 +14,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} free · {price}",
   },
   es: {
-    "Learn the book. Keep the book.": "Aprende el libro. Quédate con el libro.",
     "Practice with hints. Test with none.": "Practica con pistas. El test, sin ninguna.",
     "Enter the gym": "Entra al gimnasio",
     "Open now": "Abierto ahora",
@@ -27,7 +25,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} gratis · {price}",
   },
   zh: {
-    "Learn the book. Keep the book.": "学会书谱。记住书谱。",
     "Practice with hints. Test with none.": "练习有提示。测验没有。",
     "Enter the gym": "进入训练馆",
     "Open now": "现已开放",
@@ -39,7 +36,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} 免费 · {price}",
   },
   fr: {
-    "Learn the book. Keep the book.": "Apprends le livre. Garde le livre.",
     "Practice with hints. Test with none.": "Entraîne-toi avec des indices. Le test, sans aucun.",
     "Enter the gym": "Entre dans la salle",
     "Open now": "Ouvert maintenant",
@@ -51,7 +47,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} gratuit · {price}",
   },
   de: {
-    "Learn the book. Keep the book.": "Lern das Buch. Behalt das Buch.",
     "Practice with hints. Test with none.": "Üben mit Hinweisen. Testen ohne.",
     "Enter the gym": "In die Halle",
     "Open now": "Jetzt offen",
@@ -63,7 +58,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} gratis · {price}",
   },
   pt: {
-    "Learn the book. Keep the book.": "Aprende o livro. Fica com o livro.",
     "Practice with hints. Test with none.": "Pratica com dicas. O teste, sem nenhuma.",
     "Enter the gym": "Entra no ginásio",
     "Open now": "Aberto agora",
@@ -75,7 +69,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} grátis · {price}",
   },
   ru: {
-    "Learn the book. Keep the book.": "Выучи книгу. Оставь книгу.",
     "Practice with hints. Test with none.": "Тренировка с подсказками. Тест без них.",
     "Enter the gym": "Войти в зал",
     "Open now": "Уже открыто",
@@ -87,7 +80,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} бесплатно · {price}",
   },
   it: {
-    "Learn the book. Keep the book.": "Impara il libro. Tieni il libro.",
     "Practice with hints. Test with none.": "Allenati con i suggerimenti. Il test, senza.",
     "Enter the gym": "Entra in palestra",
     "Open now": "Aperto ora",
@@ -99,7 +91,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} gratis · {price}",
   },
   hi: {
-    "Learn the book. Keep the book.": "किताब सीखो। किताब याद रखो।",
     "Practice with hints. Test with none.": "अभ्यास संकेतों के साथ। परीक्षा बिना।",
     "Enter the gym": "जिम में प्रवेश",
     "Open now": "अभी खुला",
@@ -111,7 +102,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} मुफ़्त · {price}",
   },
   ja: {
-    "Learn the book. Keep the book.": "定跡を覚える。定跡を残す。",
     "Practice with hints. Test with none.": "ヒントありで練習。テストはヒントなし。",
     "Enter the gym": "ジムに入る",
     "Open now": "公開中",
@@ -123,7 +113,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} 無料 · {price}",
   },
   ar: {
-    "Learn the book. Keep the book.": "تعلّم الكتاب. واحفظ الكتاب.",
     "Practice with hints. Test with none.": "تدرّب مع تلميحات. الاختبار بلا تلميح.",
     "Enter the gym": "ادخل الصالة",
     "Open now": "مفتوح الآن",
@@ -135,7 +124,6 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price}": "{n} مجانًا · {price}",
   },
   tr: {
-    "Learn the book. Keep the book.": "Kitabı öğren. Kitabı sakla.",
     "Practice with hints. Test with none.": "İpuçlarıyla çalış. Testte hiçbiri yok.",
     "Enter the gym": "Salona gir",
     "Open now": "Şimdi açık",

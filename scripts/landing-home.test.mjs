@@ -34,6 +34,8 @@ test("landing matches the signed-off home: gym CTA, live packs, real prices", ()
   assert.match(landing, /landing-mug-logo/);
   assert.match(landing, /className="brand-mark"/);
   assert.doesNotMatch(landing, /\/pieces\/wR\.svg/);
+  assert.doesNotMatch(landing, /Learn the book\. Keep the book\./);
+  assert.match(landing, /Practice with hints\. Test with none\./);
   assert.doesNotMatch(landing, /App coming soon/);
   assert.doesNotMatch(landing, /Continue on the web/);
   assert.doesNotMatch(landing, /£4\.99|£9\.99|£0\.99/);
@@ -83,6 +85,7 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Learning packs":').length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
   assert.doesNotMatch(copy, /£/);
+  assert.doesNotMatch(copy, /Learn the book/);
 });
 
 test("landing board is an even orthographic diagram and the app prompt is gone", () => {

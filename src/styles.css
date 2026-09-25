@@ -3185,17 +3185,8 @@ html[data-color-scheme="dark"] .app-shell--landing {
   text-align: center;
 }
 
-.landing-title {
-  margin: 0.35rem 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.85rem, 7.2vw, 2.55rem);
-  font-weight: 650;
-  letter-spacing: -0.03em;
-  line-height: 1.12;
-}
-
 .landing-sub {
-  margin: 0.55rem 0 0;
+  margin: 0.45rem 0 0;
   color: var(--color-fg-muted);
   font-size: 1.02rem;
 }
@@ -3329,10 +3320,6 @@ html[data-color-scheme="dark"] .landing-cta {
 
   .landing-copy {
     text-align: start;
-  }
-
-  .landing-title {
-    font-size: 2.7rem;
   }
 
   .landing-cta {

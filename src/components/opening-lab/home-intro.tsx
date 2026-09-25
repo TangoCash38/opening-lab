@@ -140,10 +140,9 @@ export function LandingHome({
             <LandingBoard />
           </div>
           <div className="landing-copy">
-            <h1 id="landing-title" className="landing-title">
-              {t("Learn the book. Keep the book.")}
-            </h1>
-            <p className="landing-sub">{t("Practice with hints. Test with none.")}</p>
+            <p id="landing-title" className="landing-sub">
+              {t("Practice with hints. Test with none.")}
+            </p>
             <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
               {t("Enter the gym")}
             </button>
