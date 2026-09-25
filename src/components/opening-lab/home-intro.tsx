@@ -66,6 +66,7 @@ const COMING_SOON_CHIP_IDS = [
 
 function openNowTitle(pack: Pack): string {
   if (pack.id === "scotch") return "Scotch Gambit";
+  if (pack.id === "london") return "London System";
   return pack.name;
 }
 

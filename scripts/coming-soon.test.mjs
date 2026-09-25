@@ -57,16 +57,18 @@ test("every visible pack except scotch, opening traps, and caro-kann is coming s
     canPurchaseBuyAll,
   } = mod;
 
-  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black"]);
+  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london"]);
   assert.equal(isPackComingSoon("scotch"), false);
   assert.equal(isPackComingSoon("opening-traps"), false);
   assert.equal(isPackComingSoon("caro-kann-black"), false);
+  assert.equal(isPackComingSoon("london"), false);
   assert.equal(canPurchasePack("scotch"), true);
   assert.equal(canPurchasePack("opening-traps"), true);
   assert.equal(canPurchasePack("caro-kann-black"), true);
+  assert.equal(canPurchasePack("london"), true);
   assert.equal(canPurchaseBuyAll(), false);
 
-  const live = new Set(["scotch", "opening-traps", "caro-kann-black"]);
+  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london"]);
   const gated = [];
   for (const id of VISIBLE_PACK_IDS) {
     if (live.has(id)) {

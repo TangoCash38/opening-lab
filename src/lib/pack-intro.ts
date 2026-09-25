@@ -20,6 +20,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Queen's Gambit is 1.d4 d5 2.c4. White offers a wing pawn to trade for the centre. Declining with 2…e6 keeps a solid pawn chain instead of taking on c4. White can Exchange on d5, pin with Bg5, develop Bf4, or fianchetto in the Catalan.",
     "As Black you hold the centre, develop, then challenge it with the book breaks (…c5, …c6, …Ne4). The Queen's Gambit Declined is famous because that patience works.",
   ],
+  london: [
+    "The London System is White’s classical 1.d4 with an early Bf4. The centre stays solid behind e3 and c3, the dark-squared bishop is out, and the same pyramid meets …d5, …c5, …Bf5, a King’s Indian, or an Indian move-order.",
+    "Five book lines are the main replies. Five more punish one Black error and stop when White is clearly better. Practice with the green hint, then Test with none.",
+  ],
   "london-black": [
     "The London System is White's quiet 1.d4 setup: Nf3, Bf4, e3, and often c3. The dark-squared bishop comes out early, the centre stays solid, and the same moves work against almost anything. The Jobava London adds Nc3 and looks for Nb5 or e4.",
     "Against it as Black you do not sit still. Break the Bf4 pyramid with Sedlak’s Caro-Kann, Classical …c5, Dubov …Nh5, Carlsen …Bd6, Symmetry and Grünfeld shells, plus Jobava and early …c5.",

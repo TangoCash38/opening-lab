@@ -96,7 +96,7 @@ keytool -list -v -keystore upload-keystore.jks -alias upload
 
 ## Play products (Console)
 
-Path B (no Lab+): create **managed, non-consumable** one-time products. Play product IDs cannot contain hyphens, so catalog pack ids (`qgd-black`) become `pack_` + underscores (`pack_qgd_black`). Official list: 32 paid visible packs + `pack_caro_kann_black` + `buy_all_packs` (`src/lib/play-skus.ts`).
+Path B (no Lab+): create **managed, non-consumable** one-time products. Play product IDs cannot contain hyphens, so catalog pack ids (`qgd-black`) become `pack_` + underscores (`pack_qgd_black`). Official list: 33 paid visible packs + `pack_caro_kann_black` + `pack_london` + `buy_all_packs` (`src/lib/play-skus.ts`).
 
 | Product ID | Type | Grants |
 |---|---|---|

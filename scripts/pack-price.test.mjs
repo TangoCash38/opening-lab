@@ -155,7 +155,7 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   assert.match(catalogSrc, /BUY_ALL_FOR_SALE = false/);
   assert.match(
     terms,
-    /Three opening packs are on sale now: Scotch Gambit, Opening Traps,\s+and Caro-Kann Defence for Black\./,
+    /Four opening packs are on sale now: Scotch Gambit, Opening Traps,\s+Caro-Kann Defence for Black, and the London System\./,
   );
   assert.match(
     terms,

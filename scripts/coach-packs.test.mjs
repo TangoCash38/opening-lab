@@ -59,7 +59,7 @@ test("coach config is keyed by pack id and keeps the Scotch recordings", () => {
   assert.match(packs, /SCOTCH_CANAL_NARRATION_MP3/);
   assert.match(packs, /firstLineId: SCOTCH_CANAL_LINE_ID/);
   assert.match(packs, /firstLinePlaysPackLine: true/);
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london"\]/);
   assert.doesNotMatch(packs, /Play on|vs-computer|playComputer/i);
 });
 

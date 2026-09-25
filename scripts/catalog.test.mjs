@@ -11,7 +11,7 @@ test("catalog shows Caro-Kann for Black, QGD for Black, London for Black, 1.d4 s
   const match = src.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/);
   assert.ok(match, "VISIBLE_PACK_IDS missing");
   const ids = [...match[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white", "opening-traps", "scotch", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "old-indian-black", "stafford-black", "ponziani-white", "alekhine-black"]);
+  assert.deepEqual(ids, ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white", "opening-traps", "scotch", "london", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "old-indian-black", "stafford-black", "ponziani-white", "alekhine-black"]);
   assert.match(src, /export function isPackVisible/);
   assert.match(src, /export function visiblePacks/);
 
@@ -24,7 +24,6 @@ test("catalog shows Caro-Kann for Black, QGD for Black, London for Black, 1.d4 s
     "open-sicilian",
     "french-as-white",
     "vs-london",
-    "london",
   ]) {
     assert.match(packs, new RegExp(`id: "${hidden}"`), `${hidden} should stay in packs.ts`);
     assert.equal(ids.includes(hidden), false, `${hidden} must not be visible`);
@@ -2776,6 +2775,82 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   }
 });
 
+
+test("London System for White is the signed 10 lines: lon1–lon5 book, lon6 trap, lon7–lon10 punish", () => {
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const start = packs.indexOf('id: "london"');
+  assert.ok(start >= 0, "london pack missing");
+  const next = packs.indexOf("\n  {\n    id: \"", start + 1);
+  const lon = next >= 0 ? packs.slice(start, next) : packs.slice(start);
+
+  assert.match(lon, /name: "London System \(White\)"/);
+  assert.match(lon, /side: "White"/);
+  assert.match(lon, /section: "white"/);
+  assert.match(lon, /price: "£1"/);
+  assert.match(lon, /blurb: "5 book lines \+ 5 punish"/);
+  assert.doesNotMatch(lon, /Jobava/);
+  assert.doesNotMatch(lon, /Dutch/);
+  assert.doesNotMatch(lon, /Play on/);
+
+  const lineIds = [...lon.matchAll(/id: "(lon\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, ["lon1", "lon2", "lon3", "lon4", "lon5", "lon6", "lon7", "lon8", "lon9", "lon10"]);
+
+  const sides = [...lon.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
+  assert.equal(sides.length, 10);
+  assert.ok(sides.every((s) => s === "w"), "every line side must be w");
+
+  function lineBlock(id) {
+    const from = lon.indexOf(`id: "${id}"`);
+    assert.ok(from >= 0, `${id} missing`);
+    const to = lon.indexOf('id: "', from + 10);
+    return lon.slice(from, to >= 0 ? to : undefined);
+  }
+
+  function linePlies(id) {
+    const line = lineBlock(id);
+    const m = line.match(/plies: \[([^\]]+)\]/);
+    assert.ok(m, `${id} plies missing`);
+    return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
+  }
+
+  const names = Object.fromEntries(
+    [...lon.matchAll(/id: "(lon\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
+  );
+  for (const id of lineIds) {
+    assert.equal(names[id], `Line ${Number(id.slice(3))}`);
+    assert.doesNotMatch(names[id], /Trap ·|Punish|Pyramid|Jobava/);
+  }
+  assert.match(lineBlock("lon6"), /Trap · …Bf5/);
+
+  const expected = {
+    lon1: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "O-O", "Qc7", "f4"],
+    lon2: ["d4", "d5", "Bf4", "Nf6", "e3", "Bf5", "Nf3", "e6", "Bd3", "Bxd3", "Qxd3", "c6", "Nbd2", "Nbd7", "O-O", "Be7", "c4", "O-O", "Rac1", "Rc8"],
+    lon3: ["d4", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "d5", "c3", "Nc6", "Nd2", "Bf5", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Qc7"],
+    lon4: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Qe7", "Nbd2", "Re8"],
+    lon5: ["d4", "Nf6", "Bf4", "e6", "e3", "c5", "c3", "Nc6", "Nd2", "d5", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "O-O", "Bb7", "Qe2", "Qc7"],
+    lon6: ["d4", "d5", "Bf4", "c5", "e3", "Nc6", "c3", "Qb6", "Qb3", "c4", "Qc2", "Bf5", "Qxf5", "Qxb2", "Qxd5", "Qxa1", "Qb5"],
+    lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "O-O", "Bb7", "Ne5", "Nxe5", "dxe5", "c4", "Be2", "Be7", "exf6"],
+    lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "e6", "Nf3", "Bd6", "Bg3", "g5", "Nxg5", "Nc6", "Nc3", "a6", "Bh4"],
+    lon9: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "Qxb2", "Qxb2", "e5", "Bxe5", "Nxe5", "dxe5"],
+    lon10: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Ng4", "hxg4", "f5", "gxf5", "e4", "Ng5"],
+  };
+  for (const id of lineIds) {
+    assert.deepEqual(linePlies(id), expected[id], id);
+    assert.equal(lineBlock(id).match(/side: "w"/)?.[0], 'side: "w"');
+  }
+
+  const allPlies = lineIds.map((id) => ({ id, plies: linePlies(id) }));
+  for (let i = 0; i < allPlies.length; i++) {
+    for (let j = 0; j < allPlies.length; j++) {
+      if (i === j) continue;
+      const a = allPlies[i].plies;
+      const b = allPlies[j].plies;
+      if (a.length < b.length && a.every((p, k) => p === b[k])) {
+        assert.fail(`${allPlies[i].id} is a ply-prefix of ${allPlies[j].id}`);
+      }
+    }
+  }
+});
 
 test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for Caro", () => {
   assert.match(src, /export const FREE_SAMPLE_LINE_IDS/);

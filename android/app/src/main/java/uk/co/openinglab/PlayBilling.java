@@ -44,7 +44,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
 
     /**
      * Mirror of PLAY_PATH_B_PACK_IDS in src/lib/play-skus.ts.
-     * 34 packs (includes caro-kann-black extras and opening-traps).
+     * 35 packs (includes caro-kann-black extras, opening-traps, and london).
      * Opening Traps product id is pack_opening_traps. Set its Play Console price to £1.99.
      */
     static final String[] PATH_B_PACK_IDS = {
@@ -71,6 +71,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "queens-gambit-white",
             "opening-traps",
             "scotch",
+            "london",
             "english-white",
             "catalan-white",
             "nimzo-indian-black",
@@ -94,6 +95,7 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "scotch",
             "opening-traps",
             "caro-kann-black",
+            "london",
     };
 
     private static final Set<String> PATH_B_SKUS;
