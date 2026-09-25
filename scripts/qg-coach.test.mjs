@@ -47,14 +47,14 @@ function compileCoachPacks(t) {
   return "./scripts/.generated-qg-coach/coach-packs.mjs";
 }
 
-test("Queen's Gambit Potato Pie intro plays two White moves and returns to the line list", (t) => {
+test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits for a tap", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/qg-white/professor-potato-pie-qg-intro.wav";
   assert.equal(existsSync(join(root, wav)), true);
   assert.equal(
     existsSync(join(root, "public/coach/qg-white/professor-potato-pie-qg-line1.wav")),
-    false,
+    true,
   );
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const board = src("src/components/opening-lab/scotch-coach-board.tsx");
@@ -85,7 +85,8 @@ test("Queen's Gambit Potato Pie intro plays two White moves and returns to the l
   assert.match(intro, /"qg-white": \[[\s\S]*10 lines from Opening Lab/);
   assert.doesNotMatch(intro, /5 book|5 punish/);
   assert.doesNotMatch(copy, /human voice|voice actor|recorded by/i);
-  assert.doesNotMatch(copy, /firstLineAudio: QG_WHITE|QG_WHITE_LINE/);
+  assert.match(copy, /firstLineAudio: QG_WHITE_LINE_WAV/);
+  assert.match(copy, /firstLineBeats: QG_WHITE_LINE/);
   assert.match(copy, /introEndsOnLineList: true/);
   assert.doesNotMatch(hero, /Play on|vs-computer|playComputer/i);
 
@@ -96,6 +97,7 @@ test("Queen's Gambit Potato Pie intro plays two White moves and returns to the l
       "--input-type=module",
       "-e",
       `
+      const { Chess } = await import("chess.js");
       const { PACKS } = await import("./src/data/packs.ts");
       const { QG_INTRO_STEM, QG_INTRO_STEM_AT_SEC } = await import("./src/lib/qg-intro-stem.ts");
       const { replayWhiteOnly } = await import("./src/lib/london-intro-stem.ts");
@@ -104,12 +106,14 @@ test("Queen's Gambit Potato Pie intro plays two White moves and returns to the l
         coachAudioPlyCount,
         coachIntroSessionKey,
         coachLinePlyCues,
+        coachLineSessionKey,
         coachPackIntroApplies,
         coachPackLineApplies,
         coachIntroEndsOnLineList,
         coachTalkAfterPackIntro,
         coachTalkHasAudio,
         coachTalkPlies,
+        coachTextPlayedSans,
       } = await import(${JSON.stringify(compiled)});
       const pack = PACKS.find((item) => item.id === "qg-white");
       if (!pack) throw new Error("qg-white pack missing");
@@ -123,8 +127,13 @@ test("Queen's Gambit Potato Pie intro plays two White moves and returns to the l
         throw new Error("audio " + coach.introAudio);
       }
       if (coach.introAudioFallbackSec !== 61.52) throw new Error("length " + coach.introAudioFallbackSec);
-      if (coach.firstLineAudio) throw new Error("line audio should be absent");
-      if (coach.firstLineBeats.length !== 0) throw new Error("line beats " + coach.firstLineBeats.length);
+      if (coach.firstLineAudio !== "/coach/qg-white/professor-potato-pie-qg-line1.wav") {
+        throw new Error("line audio " + coach.firstLineAudio);
+      }
+      if (coach.firstLineAudioFallbackSec !== 101.48) throw new Error("line length " + coach.firstLineAudioFallbackSec);
+      if (coach.firstLineBeats.length !== 16) throw new Error("line beats " + coach.firstLineBeats.length);
+      if (!coach.firstLineBeats[0].caption.startsWith("Right then, welcome to Line 1")) throw new Error("line open");
+      if (coach.firstLineBeats[15].caption !== "Very civilised and quietly ambitious.") throw new Error("line close");
       if (coach.firstLineId !== "qg1") throw new Error("first line id " + coach.firstLineId);
       if (coach.introStemWhiteOnly !== true) throw new Error("white only flag");
       if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
@@ -171,11 +180,41 @@ test("Queen's Gambit Potato Pie intro plays two White moves and returns to the l
       if (game.get("c2")) throw new Error("c2 still occupied");
       if (coachTalkPlies("qg-white", "intro") !== null) throw new Error("intro uses the stem clock");
       if (!coachPackIntroApplies("qg-white")) throw new Error("intro gate");
-      if (coachPackLineApplies({ packId: "qg-white", lineId: "qg1" })) throw new Error("qg1 must not open a missing talk");
+      if (!coachPackLineApplies({ packId: "qg-white", lineId: "qg1" })) throw new Error("qg1 tap opens the talk");
       if (coachPackLineApplies({ packId: "qg-white", lineId: "qg2" })) throw new Error("qg2");
       if (coachTalkHasAudio("qg-white", "intro") !== true) throw new Error("intro audio");
-      if (coachTalkHasAudio("qg-white", "line")) throw new Error("no line audio");
-      if (coachLinePlyCues("qg-white") != null) throw new Error("no line cues");
+      if (coachTalkHasAudio("qg-white", "line") !== true) throw new Error("line audio");
+      const qg1 = pack.lines.find((item) => item.id === "qg1");
+      if (!qg1) throw new Error("qg1 missing");
+      const script = coachTalkPlies("qg-white", "line");
+      if (!script) throw new Error("line script");
+      const played = coachTextPlayedSans(script, script.length);
+      if (played.join(" ") !== qg1.plies.join(" ")) throw new Error("script " + played.join(" "));
+      if (played.join(" ") !== "d4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3 Nbd7 Rc1 c6 Bd3 dxc4 Bxc4 Nd5 Bxe7 Qxe7") {
+        throw new Error("live qg1 " + played.join(" "));
+      }
+      const lineCues = coachLinePlyCues("qg-white");
+      if (!lineCues || lineCues.length !== qg1.plies.length) throw new Error("cues " + (lineCues && lineCues.length));
+      if (lineCues.join(",") !== "15.9,18.7,20.7,24.8,34.3,35.8,37.7,42.2,44.6,46,48.8,50.3,52.1,56.7,61.1,66.1,68.5,73.6,79.2,82.1") {
+        throw new Error("cue times " + lineCues.join(","));
+      }
+      if (coachAudioPlyCount(lineCues, 15.89, 101.48, 101.48) !== 0) throw new Error("d4 not yet");
+      if (coachAudioPlyCount(lineCues, 15.9, 101.48, 101.48) !== 1) throw new Error("d4");
+      if (coachAudioPlyCount(lineCues, 66.09, 101.48, 101.48) !== 15) throw new Error("dxc4 not yet");
+      if (coachAudioPlyCount(lineCues, 66.1, 101.48, 101.48) !== 16) throw new Error("dxc4");
+      if (coachAudioPlyCount(lineCues, 82.09, 101.48, 101.48) !== 19) throw new Error("Qxe7 not yet");
+      if (coachAudioPlyCount(lineCues, 82.1, 101.48, 101.48) !== 20) throw new Error("Qxe7");
+      const line = new Chess();
+      for (const san of played) {
+        const move = line.move(san);
+        if (!move) throw new Error("illegal " + san);
+      }
+      if (line.history().join(" ") !== played.join(" ")) throw new Error("history");
+      if (line.get("e7")?.type !== "q" || line.get("e7")?.color !== "b") throw new Error("queen e7");
+      if (line.get("d5")?.type !== "n" || line.get("d5")?.color !== "b") throw new Error("knight d5");
+      if (line.get("g8")?.type !== "k" || line.get("g8")?.color !== "b") throw new Error("black king");
+      if (line.get("e1")?.type !== "k" || line.get("e1")?.color !== "w") throw new Error("white king");
+      if (line.get("c4")?.type !== "b" || line.get("c4")?.color !== "w") throw new Error("bishop c4");
       if (coachTalkAfterPackIntro({ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== null) {
         throw new Error("finishing the intro must stay on the line list");
       }
@@ -184,6 +223,8 @@ test("Queen's Gambit Potato Pie intro plays two White moves and returns to the l
       }
       const key = coachIntroSessionKey("qg-white");
       if (key !== "opening-lab:coach-intro:qg-white") throw new Error(key);
+      const lineKey = coachLineSessionKey("qg-white", "qg1");
+      if (lineKey !== "opening-lab:coach-line:qg-white:qg1") throw new Error(lineKey);
       if (COACH_PACKS.london?.introEndsOnLineList !== true) throw new Error("london lock");
       `,
     ],

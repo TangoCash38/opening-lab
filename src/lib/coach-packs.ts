@@ -369,6 +369,115 @@ const QG_WHITE_INTRO = [
 
 const QG_WHITE_INTRO_AT_SEC = [0, 11.8, 21.2, 26.2, 33, 38.2, 47.3, 53.3] as const;
 
+export const QG_WHITE_LINE_WAV = "/coach/qg-white/professor-potato-pie-qg-line1.wav";
+/** AI-generated Queen's Gambit Line 1 talk. Beat and spoken-move times were read off this clip. */
+export const QG_WHITE_LINE_SEC = 101.48;
+
+const QG_WHITE_LINE: readonly CoachLineBeat[] = [
+  {
+    caption: "Right then, welcome to Line 1 of our Queen's Gambit learning pack.",
+    atSec: 0,
+  },
+  {
+    caption:
+      "This is proper classical chess, firm foundations, patient development and no furniture being thrown across the room.",
+    atSec: 5.7,
+  },
+  {
+    caption: "We begin with pawn to d4 and black answers pawn to d5.",
+    ply: "d4",
+    atSec: 14.6,
+    plyAtSec: 15.9,
+    extraPlies: [{ ply: "d5", plyAtSec: 18.7 }],
+  },
+  {
+    caption: "Pawn to c4 challenges the centre and black replies pawn to e6.",
+    ply: "c4",
+    atSec: 20.1,
+    plyAtSec: 20.7,
+    extraPlies: [{ ply: "e6", plyAtSec: 24.8 }],
+  },
+  {
+    caption:
+      "That is the Queen's Gambit Declined. Black supports the d5 pawn rather than accepting our offer.",
+    atSec: 26.4,
+  },
+  {
+    caption:
+      "Knight to c3, knight to f6, bishop to g5 creates the pin and black calmly develops bishop to e7.",
+    ply: "Nc3",
+    atSec: 33.8,
+    plyAtSec: 34.3,
+    extraPlies: [
+      { ply: "Nf6", plyAtSec: 35.8 },
+      { ply: "Bg5", plyAtSec: 37.7 },
+      { ply: "Be7", plyAtSec: 42.2 },
+    ],
+  },
+  {
+    caption: "We play pawn to e3 and black castles kingside.",
+    ply: "e3",
+    atSec: 43.6,
+    plyAtSec: 44.6,
+    extraPlies: [{ ply: "O-O", plyAtSec: 46 }],
+  },
+  {
+    caption: "Knight to f3, knight to d7.",
+    ply: "Nf3",
+    atSec: 48.2,
+    plyAtSec: 48.8,
+    extraPlies: [{ ply: "Nbd7", plyAtSec: 50.3 }],
+  },
+  {
+    caption:
+      "Rook to c1 places the rook on the c-file while black plays pawn to c6 and strengthens the central structure.",
+    ply: "Rc1",
+    atSec: 51.8,
+    plyAtSec: 52.1,
+    extraPlies: [{ ply: "c6", plyAtSec: 56.7 }],
+  },
+  {
+    caption: "Bishop to d3 and black now resolves the tension with pawn from d5 takes c4.",
+    ply: "Bd3",
+    atSec: 60.6,
+    plyAtSec: 61.1,
+    extraPlies: [{ ply: "dxc4", plyAtSec: 66.1 }],
+  },
+  {
+    caption: "Our bishop takes c4 recovering the pawn with development.",
+    ply: "Bxc4",
+    atSec: 67.6,
+    plyAtSec: 68.5,
+  },
+  {
+    caption: "Black's knight moves to d5 and occupies a strong central square.",
+    ply: "Nd5",
+    atSec: 72.4,
+    plyAtSec: 73.6,
+  },
+  {
+    caption: "We exchange with bishop takes e7 and black's queen recaptures on e7.",
+    ply: "Bxe7",
+    atSec: 77.5,
+    plyAtSec: 79.2,
+    extraPlies: [{ ply: "Qxe7", plyAtSec: 82.1 }],
+  },
+  {
+    caption:
+      "There it is, a balanced Queen's Gambit position with sensible development and plenty of play still in the centre.",
+    atSec: 83.7,
+  },
+  {
+    caption:
+      "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.",
+    atSec: 91.5,
+  },
+  {
+    caption: "Very civilised and quietly ambitious.",
+    atSec: 98.5,
+  },
+];
+
 const LONDON_PACK_ID = "london";
 const ITALIAN_WHITE_PACK_ID = "italian-white";
 
@@ -701,7 +810,9 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introStemWhiteOnly: true,
     firstLineId: "qg1",
     firstLineTitle: "Line 1",
-    firstLineBeats: [],
+    firstLineBeats: QG_WHITE_LINE,
+    firstLineAudio: QG_WHITE_LINE_WAV,
+    firstLineAudioFallbackSec: QG_WHITE_LINE_SEC,
     introEndsOnLineList: true,
   },
 };
