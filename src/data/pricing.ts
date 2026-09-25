@@ -14,8 +14,8 @@ export const PRICE_CARO_REST = "£1.99";
  * Restored to the pre-#285 price (£1.99, previously PRICE_CARO_REST).
  */
 export const PRICE_OPENING_TRAPS = "£1.99";
-/** Any other visible pack. */
-export const PRICE_PACK = "£2.99";
+/** Paid drill packs that do not set their own price. Lessons stay PRICE_LESSON_SCOTCH. */
+export const PRICE_PACK = "£1.99";
 /** Scotch Gambit lessons (`lesson-scotch`). Separate from the Scotch drill pack. */
 export const PRICE_LESSON_SCOTCH = "£2.99";
 /** One-time: unlock every opening pack (current + future on the website). */

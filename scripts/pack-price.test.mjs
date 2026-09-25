@@ -11,13 +11,35 @@ const catalog = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
 const review = readFileSync(join(root, "src/lib/review-free.ts"), "utf8");
 const require = createRequire(join(root, "package.json"));
 
-test("Caro rest is £1.99 and other packs are £2.99", () => {
+test("every paid drill pack lists at £1.99", () => {
   assert.match(pricing, /PRICE_CARO_REST = "£1\.99"/);
-  assert.match(pricing, /PRICE_PACK = "£2\.99"/);
+  assert.match(pricing, /PRICE_PACK = "£1\.99"/);
+  assert.match(pricing, /PRICE_LESSON_SCOTCH = "£2\.99"/);
   assert.match(pricing, /caro-kann-black"\) return PRICE_CARO_REST/);
   assert.match(pricing, /PRICE_OPENING_TRAPS = "£1\.99"/);
   assert.match(pricing, /opening-traps"\) return PRICE_OPENING_TRAPS/);
   assert.doesNotMatch(pricing, /opening-traps"\) return PRICE_CARO_REST/);
+
+  const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const fields = [...packs.matchAll(/^\s*price: (null|"[^"]+"),/gm)].map((m) => m[1]);
+  assert.ok(fields.length > 20, `expected pack price fields, got ${fields.length}`);
+  for (const field of fields) {
+    assert.ok(field === "null" || field === '"£1.99"', `unexpected pack price ${field}`);
+  }
+  assert.match(packs, /id: "scotch"[\s\S]{0,180}price: "£1\.99"/);
+  assert.match(packs, /id: "london"[\s\S]{0,240}price: "£1\.99"/);
+  assert.match(packs, /id: "old-indian-black"[\s\S]{0,500}price: "£1\.99"/);
+  assert.match(packs, /id: "classic-games"[\s\S]{0,280}price: "£1\.99"/);
+  assert.match(packs, /closedLabel: "£1\.99 · 9 lines"/);
+  assert.match(packs, /closedLabel: "6 free · £1\.99"/);
+  assert.doesNotMatch(packs, /price: "£2\.99"|price: "£1\.50"|price: "£3\.99"|price: "£1",/);
+
+  const lessons = readFileSync(join(root, "src/lib/lesson-products.ts"), "utf8");
+  assert.match(lessons, /LESSONS_ENABLED: boolean = false/);
+  const stripe = readFileSync(join(root, "src/lib/stripe.server.ts"), "utf8");
+  assert.match(stripe, /const price = packPrice\(pack\)/);
+  assert.match(stripe, /unit_amount: pence/);
+  assert.match(stripe, /unit_amount: lesson\.pence/);
 });
 
 test("website is not all-free; extra Caro lines need a purchase", () => {

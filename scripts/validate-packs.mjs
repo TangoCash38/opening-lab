@@ -2,6 +2,35 @@ import { readFileSync } from "fs";
 import { Chess } from "chess.js";
 
 const src = readFileSync(new URL("../src/data/packs.ts", import.meta.url), "utf8");
+const pricing = readFileSync(new URL("../src/data/pricing.ts", import.meta.url), "utf8");
+
+const priceFields = [...src.matchAll(/^\s*price: (null|"[^"]+"),/gm)].map((m) => m[1]);
+const badPrices = priceFields.filter((field) => field !== "null" && field !== '"£1.99"');
+if (!/PRICE_PACK = "£1\.99"/.test(pricing)) {
+  console.log("FAIL PRICE_PACK is not £1.99");
+  process.exitCode = 1;
+}
+if (!/PRICE_LESSON_SCOTCH = "£2\.99"/.test(pricing)) {
+  console.log("FAIL PRICE_LESSON_SCOTCH must stay £2.99");
+  process.exitCode = 1;
+}
+if (!/PRICE_CARO_REST = "£1\.99"/.test(pricing) || !/PRICE_OPENING_TRAPS = "£1\.99"/.test(pricing)) {
+  console.log("FAIL Caro rest or Opening Traps is not £1.99");
+  process.exitCode = 1;
+}
+if (badPrices.length) {
+  console.log(`FAIL pack price fields must be null or £1.99: ${badPrices.join(", ")}`);
+  process.exitCode = 1;
+}
+const poundLabels = [...src.matchAll(/closedLabel: "([^"]*£[^"]*)"/g)].map((m) => m[1]);
+const badLabels = poundLabels.filter((label) => !label.includes("£1.99"));
+if (badLabels.length) {
+  console.log(`FAIL closedLabel prices must be £1.99: ${badLabels.join(" | ")}`);
+  process.exitCode = 1;
+}
+console.log(
+  `prices fields=${priceFields.length} non-null=${priceFields.filter((f) => f !== "null").length} bad=${badPrices.length}`,
+);
 
 const lineRe =
   /\{\s*id:\s*"([^"]+)",\s*name:\s*"([^"]+)",\s*plies:\s*\[((?:[^[\]]|\n)+)\]/g;

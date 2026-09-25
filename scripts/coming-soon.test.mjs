@@ -207,7 +207,7 @@ test("coming soon does not rewrite pack lines, prices, or titles", () => {
   assert.match(packs, /id: "scotch"/);
   assert.match(packs, /name: "Line 1"/);
   assert.match(packs, /name: "Line 10"/);
-  assert.match(pricing, /PRICE_PACK = "£2\.99"/);
+  assert.match(pricing, /PRICE_PACK = "£1\.99"/);
   assert.match(pricing, /PRICE_BUY_ALL = "£19\.99"/);
   assert.doesNotMatch(packs, /comingSoon:\s*true/);
 });
