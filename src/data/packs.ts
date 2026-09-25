@@ -833,9 +833,9 @@ export const PACKS: Pack[] = [
       {
         id: "ckb7",
         name: "Line 7",
-        idea: "Classical. White pushes d5 before castling to open the centre. After …cxd5 White cannot win the pawn back: c4 is met by …Be7, and after cxd5 Nxd5 Black has an extra pawn and castles safely.",
-        next: "Black is a pawn up and both kings are safe. Centralise with …Qb6 and …Rfd8, use the queenside pawns, and trade pieces. Watch for Ne4 and Qg3 ideas against g7 and h6.",
-        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6", "Bd2", "Ngf6", "d5", "cxd5", "c4", "Be7", "cxd5", "Nxd5", "O-O", "O-O"],
+        idea: "Fantasy 3.f3. After …dxe4 fxe4 e5 Nf3 Bg4, White grabs the e5 pawn with Nxe5 while the knight is pinned to the queen. …Bxd1 wins the queen; …Qxd4+ and …Nf6/…Nbd7/…Nc5 consolidate a decisive material plus.",
+        next: "Queen up. Finish development, castle long or keep the king safe on the queenside, and trade pieces. Do not get cute — every trade brings the extra queen closer to a win.",
+        plies: ["e4", "c6", "d4", "d5", "f3", "dxe4", "fxe4", "e5", "Nf3", "Bg4", "Nxe5", "Bxd1", "Kxd1", "Qxd4+", "Nd3", "Nf6", "Nd2", "Qd8", "c3", "Nbd7", "Kc2", "Nc5", "a4", "Qd7"],
         side: "b",
       },
       {
