@@ -103,4 +103,15 @@ test("landing board is an even orthographic diagram and the app prompt is gone",
   assert.doesNotMatch(shell, /App coming soon/);
   assert.match(shell, /app-header-logo/);
   assert.match(shell, /\/brand\/opening-lab-logo\.png/);
+  assert.match(css, /\.landing-chip \{[\s\S]*background:\s*#111110/);
+  assert.match(css, /\.landing-chip \{[\s\S]*color:\s*#ffffff/);
+  assert.match(
+    css,
+    /html\[data-color-scheme="dark"\] \.landing-chip \{[\s\S]*background:\s*#000000/,
+  );
+  assert.match(
+    css,
+    /html\[data-color-scheme="dark"\] \.landing-chip \{[\s\S]*color:\s*#ffffff/,
+  );
+  assert.doesNotMatch(css, /\.landing-chip \{[\s\S]*#f4e6c8/);
 });

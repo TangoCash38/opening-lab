@@ -3276,12 +3276,18 @@ html[data-color-scheme="dark"] .landing-cta {
   align-items: center;
   min-height: 2.15rem;
   padding: 0.35rem 0.85rem;
-  border: 1px solid color-mix(in srgb, #a97850 22%, transparent);
+  border: 1px solid #111110;
   border-radius: 999px;
-  background: color-mix(in srgb, #f4e6c8 72%, var(--color-bg-elevated));
-  color: var(--color-fg-muted);
+  background: #111110;
+  color: #ffffff;
   font-size: 0.84rem;
-  font-weight: 650;
+  font-weight: 700;
+}
+
+html[data-color-scheme="dark"] .landing-chip {
+  background: #000000;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.72);
 }
 
 .landing-footer {
