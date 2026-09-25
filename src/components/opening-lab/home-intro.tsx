@@ -10,6 +10,7 @@ import {
 } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
+import { LESSONS_ENABLED } from "@/lib/lesson-products";
 import { isPlayApp } from "@/lib/play-app";
 import { ChessPiece } from "./chess-pieces";
 import { LandingMenu } from "./landing-menu";
@@ -75,9 +76,9 @@ function openNowTitle(pack: Pack): string {
 export function LandingHome({ onEnterGym, onOpenPack, onSupport, onCreateOwn, onReport }: Props) {
   const t = useT();
   const navigate = useNavigate();
-  const [showLessons, setShowLessons] = useState(true);
+  const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
   useLayoutEffect(() => {
-    setShowLessons(!isPlayApp());
+    setShowLessons(LESSONS_ENABLED && !isPlayApp());
   }, []);
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),

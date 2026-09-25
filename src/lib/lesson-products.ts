@@ -1,5 +1,13 @@
 import { PRICE_LESSON_SCOTCH, priceToPence } from "@/data/pricing";
 
+/**
+ * Home landing CTA for chess opening lessons.
+ * false hides "Chess opening lessons" until lessons are unparked.
+ * /lessons routes stay in the codebase either way. Set true to show the button again.
+ * The Play wrap still hides the CTA when this is true.
+ */
+export const LESSONS_ENABLED: boolean = false;
+
 /** Website lesson unlock. Not a drill-pack id and not a Play SKU. */
 export const LESSON_SCOTCH_PRODUCT_ID = "lesson-scotch";
 
