@@ -4188,3 +4188,111 @@ html[data-color-scheme="dark"] .landing-chip {
   font-size: 0.82rem;
   line-height: 1.4;
 }
+
+[data-voice] {
+  max-width: 36rem;
+}
+
+.voice-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0 0 0.9rem;
+  padding: 0.28rem;
+  border-radius: 1rem;
+  background: var(--color-bg-subtle);
+}
+
+.voice-tab {
+  flex: 1 1 0;
+  min-height: 44px;
+  padding: 0.45rem 0.7rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: var(--color-fg-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.voice-tab[aria-selected="true"] {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+
+.voice-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1rem 1.05rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-bg-elevated);
+}
+
+.voice-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--color-fg);
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.voice-field input,
+.voice-field textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.voice-field textarea {
+  resize: vertical;
+  min-height: 7.5rem;
+}
+
+.voice-field input:focus,
+.voice-field textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.voice-send {
+  min-height: 48px;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+.voice-send:disabled {
+  opacity: 0.5;
+}
+
+.voice-thanks {
+  margin: 0;
+  padding: 1.15rem 1rem;
+  border-radius: var(--radius-card);
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  font-size: 1.05rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+.voice-mail-link {
+  font-weight: 700;
+  color: var(--color-accent);
+}

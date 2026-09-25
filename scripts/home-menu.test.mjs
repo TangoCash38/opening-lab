@@ -47,11 +47,11 @@ test("Menu replaces Find the mate on the phone home heading", () => {
   assert.match(shell, /setView\("create"\)/);
 });
 
-test("Menu includes Feedback mail to support", () => {
+test("Menu opens the in-app Feedback form", () => {
   assert.match(menu, /data-menu-feedback/);
   assert.match(menu, /t\("Feedback"\)/);
-  assert.match(menu, /mailto:support@openinglab\.co\.uk/);
-  assert.match(menu, /Opening%20Lab%20feedback/);
+  assert.match(menu, /onClick=\{\(\) => pick\(onFeedback\)\}/);
+  assert.doesNotMatch(menu, /mailto:support@openinglab\.co\.uk/);
   assert.equal(i18n.split("\n  Feedback:").length - 1, 12, "Feedback");
 });
 

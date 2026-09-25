@@ -6,11 +6,12 @@ import { useT } from "@/lib/i18n";
 type Props = {
   onCreateOwn?: () => void;
   onHelp: () => void;
+  onFeedback: () => void;
   onReport: () => void;
 };
 
 /** Phone-home sheet: Create your own, Help, and a line report. */
-export function HomeMenu({ onCreateOwn, onHelp, onReport }: Props) {
+export function HomeMenu({ onCreateOwn, onHelp, onFeedback, onReport }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const titleId = useId();
@@ -81,14 +82,14 @@ export function HomeMenu({ onCreateOwn, onHelp, onReport }: Props) {
               >
                 {t("Help")}
               </button>
-              <a
-                href="mailto:support@openinglab.co.uk?subject=Opening%20Lab%20feedback"
-                className="home-menu-item no-underline"
+              <button
+                type="button"
+                className="home-menu-item"
                 data-menu-feedback
-                onClick={() => setOpen(false)}
+                onClick={() => pick(onFeedback)}
               >
                 {t("Feedback")}
-              </a>
+              </button>
               <button
                 type="button"
                 className="home-menu-item"

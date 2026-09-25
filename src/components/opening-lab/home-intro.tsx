@@ -19,6 +19,7 @@ type Props = {
   onEnterGym: () => void;
   onOpenPack: (packId: string) => void;
   onSupport: () => void;
+  onFeedback: () => void;
   onCreateOwn: () => void;
   onReport: () => void;
 };
@@ -74,7 +75,14 @@ function openNowTitle(pack: Pack): string {
  * Branded landing. One screen after a cold open — the old brand page and
  * splash poster are folded into this, so Home does not run two intros.
  */
-export function LandingHome({ onEnterGym, onOpenPack, onSupport, onCreateOwn, onReport }: Props) {
+export function LandingHome({
+  onEnterGym,
+  onOpenPack,
+  onSupport,
+  onFeedback,
+  onCreateOwn,
+  onReport,
+}: Props) {
   const t = useT();
   const navigate = useNavigate();
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
@@ -110,6 +118,14 @@ export function LandingHome({ onEnterGym, onOpenPack, onSupport, onCreateOwn, on
             onClick={onSupport}
           >
             {t("Support")}
+          </button>
+          <button
+            type="button"
+            className="landing-nav-link"
+            data-landing-feedback
+            onClick={onFeedback}
+          >
+            {t("Feedback")}
           </button>
         </nav>
         <LandingMenu onCreateOwn={onCreateOwn} onReport={onReport} />
