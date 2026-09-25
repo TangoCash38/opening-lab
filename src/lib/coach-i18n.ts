@@ -19,6 +19,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Trampas de apertura",
     "London System": "Sistema de Londres",
     "Italian Game": "Apertura Italiana",
+    "Queen’s Gambit": "Gambito de dama",
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
   },
@@ -34,6 +35,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "开局陷阱",
     "London System": "伦敦体系",
     "Italian Game": "意大利开局",
+    "Queen’s Gambit": "后翼弃兵",
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
   },
@@ -49,6 +51,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Pièges d'ouverture",
     "London System": "Système de Londres",
     "Italian Game": "Partie italienne",
+    "Queen’s Gambit": "Gambit dame",
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
   },
@@ -64,6 +67,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Eröffnungsfallen",
     "London System": "Londoner System",
     "Italian Game": "Italienische Partie",
+    "Queen’s Gambit": "Damengambit",
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
   },
@@ -79,6 +83,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Armadilhas de abertura",
     "London System": "Sistema de Londres",
     "Italian Game": "Abertura Italiana",
+    "Queen’s Gambit": "Gambito da Dama",
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
   },
@@ -94,6 +99,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Дебютные ловушки",
     "London System": "Лондонская система",
     "Italian Game": "Итальянская партия",
+    "Queen’s Gambit": "Ферзевый гамбит",
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
   },
@@ -109,6 +115,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Trappole di apertura",
     "London System": "Sistema di Londra",
     "Italian Game": "Partita Italiana",
+    "Queen’s Gambit": "Gambetto di donna",
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
   },
@@ -124,6 +131,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "ओपनिंग के जाल",
     "London System": "लंदन प्रणाली",
     "Italian Game": "इतालवी ओपनिंग",
+    "Queen’s Gambit": "क्वीन गैम्बिट",
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
   },
@@ -139,6 +147,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "オープニングの罠",
     "London System": "ロンドン・システム",
     "Italian Game": "イタリア・ゲーム",
+    "Queen’s Gambit": "クイーンズ・ギャンビット",
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
   },
@@ -154,6 +163,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "فخاخ الافتتاح",
     "London System": "نظام لندن",
     "Italian Game": "الافتتاح الإيطالي",
+    "Queen’s Gambit": "غامبيت الملكة",
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
   },
@@ -169,6 +179,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Opening Traps": "Açılış tuzakları",
     "London System": "Londra sistemi",
     "Italian Game": "İtalyan Açılışı",
+    "Queen’s Gambit": "Vezir gambiti",
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
   },
@@ -383,6 +394,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Sigue desarrollando, vigila el centro y estate listo para la ruptura d4 cuando llegue el momento.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Repite la línea hasta que las jugadas se sientan tan naturales como poner la tetera.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Muy bien, aquí Professor Potato Pie, con el té bien hecho, y hoy presentamos una de las grandes aperturas clásicas, el gambito de dama.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "La apertura aparece en escritos de ajedrez desde finales del siglo XV, y generaciones de jugadores distinguidos la han usado para disputar el centro.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Las blancas empiezan con peón a d4, y las negras responden peón a d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Luego las blancas juegan peón a c4, desafiando el peón central negro y ofreciendo el peón de c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Se llama gambito, aunque las blancas suelen recuperar el peón si las negras lo aceptan,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Así que esto es menos una donación temeraria y más una invitación estratégica, servida con cortesía pero con segundas intenciones.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "A partir de aquí, las negras pueden aceptar el peón o rechazarlo y mantener un centro sólido.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bien, disfruta al familiarizarte más con el gambito de dama y veamos qué puede persuadir a hacer a las negras ese pequeño peón de c tan aventurero.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -586,6 +613,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "继续出子，盯住中心，时机合适时准备好 d4 突破。",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "把这条变例练到像烧开水壶一样自然。",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "好，我是 Professor Potato Pie，茶已泡好，今天我们介绍一种伟大的古典开局，后翼弃兵。",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "这种开局自十五世纪末就出现在国际象棋文献中，一代代杰出棋手用它争夺中心。",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "白方以兵到 d4 开始，黑方应兵到 d5。",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "然后白方走兵到 c4，挑战黑方的中心兵，并献出 c 兵。",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "它被称为弃兵，不过如果黑方接受，白方通常能把兵夺回，",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "所以这与其说是鲁莽的赠送，不如说是一次策略上的邀请，礼貌奉上，却另有用意。",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "从这里起，黑方可以接受这枚兵，也可以拒绝并保持坚实的中心。",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "好，享受进一步熟悉后翼弃兵的过程，我们来看看那枚爱冒险的小 c 兵能说服黑方做什么。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -796,6 +839,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Continue à développer, surveille le centre et sois prêt pour la rupture d4 quand le moment sera venu.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Répète la ligne jusqu'à ce que les coups semblent aussi naturels que de mettre la bouilloire.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Bien, ici Professor Potato Pie, thé correctement infusé, et aujourd'hui nous présentons l'une des grandes ouvertures classiques, le gambit dame.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "L'ouverture apparaît dans les écrits échiquéens depuis la fin du XVe siècle, et des générations de joueurs distingués l'ont utilisée pour disputer le centre.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Les Blancs commencent par pion en d4, et les Noirs répondent pion en d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Puis les Blancs jouent pion en c4, défiant le pion central noir et offrant le pion c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "On l'appelle un gambit, bien que les Blancs puissent d'habitude récupérer le pion si les Noirs l'acceptent,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Donc ceci est moins un don irréfléchi qu'une invitation stratégique, servie poliment mais avec des arrière-pensées.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "À partir d'ici, les Noirs peuvent accepter le pion ou le refuser et garder un centre solide.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bien, prends plaisir à te familiariser davantage avec le gambit dame et voyons ce que ce petit pion c aventureux peut persuader les Noirs de faire.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1005,6 +1064,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Entwickle weiter, beobachte das Zentrum und sei bereit für den d4-Durchbruch, wenn der Moment stimmt.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Übe die Linie, bis sich die Züge so natürlich anfühlen wie das Aufsetzen des Kessels.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Also dann, hier ist Professor Potato Pie, Tee richtig gebrüht, und heute stellen wir eine der großen klassischen Eröffnungen vor, das Damengambit.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "Die Eröffnung erscheint in Schachschriften seit dem späten fünfzehnten Jahrhundert, und Generationen ausgezeichneter Spieler haben sie genutzt, um das Zentrum zu bestreiten.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Weiß beginnt mit Bauer nach d4, und Schwarz antwortet mit Bauer nach d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Dann spielt Weiß Bauer nach c4, fordert den zentralen Bauern von Schwarz heraus und bietet den c-Bauern an.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Man nennt es ein Gambit, obwohl Weiß den Bauern meist zurückholen kann, wenn Schwarz annimmt,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Dies ist also weniger eine leichtsinnige Spende als eine strategische Einladung, höflich serviert, aber mit Hintergedanken.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Von hier aus kann Schwarz den Bauern annehmen oder ablehnen und ein solides Zentrum behalten.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Gut, hab Freude daran, das Damengambit näher kennenzulernen, und sehen wir, wozu dieser abenteuerlustige kleine c-Bauer Schwarz überreden kann.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1214,6 +1289,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Continua a desenvolver, vigia o centro e fica pronto para a ruptura d4 quando chegar o momento.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Repete a linha até as jogadas parecerem tão naturais como pôr a chaleira ao lume.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Muito bem, aqui está Professor Potato Pie, chá bem feito, e hoje apresentamos uma das grandes aberturas clássicas, o gambito da dama.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "A abertura aparece em escritos de xadrez desde o final do século XV, e gerações de jogadores distintos usaram-na para disputar o centro.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "As brancas começam com peão a d4, e as negras respondem peão a d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Depois as brancas jogam peão a c4, desafiando o peão central negro e oferecendo o peão de c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Chama-se gambito, embora as brancas possam normalmente recuperar o peão se as negras o aceitarem,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Portanto isto é menos uma doação imprudente e mais um convite estratégico, servido com educação mas com segundas intenções.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "A partir daqui, as negras podem aceitar o peão ou recusá-lo e manter um centro sólido.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bem, desfruta de te familiarizares mais com o gambito da dama e vejamos o que esse pequeno peão de c aventureiro pode persuadir as negras a fazer.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1422,6 +1513,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Продолжай развиваться, следи за центром и будь готов к прорыву d4, когда настанет момент.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Повторяй линию, пока ходы не станут такими же естественными, как поставить чайник.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Итак, это Professor Potato Pie, чай как следует заварен, и сегодня мы представляем один из великих классических дебютов, ферзевый гамбит.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "Этот дебют встречается в шахматных текстах с конца пятнадцатого века, и поколения выдающихся игроков использовали его, чтобы бороться за центр.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Белые начинают пешкой на d4, и чёрные отвечают пешкой на d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Затем белые играют пешкой на c4, оспаривая центральную пешку чёрных и предлагая пешку c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Это называют гамбитом, хотя белые обычно могут вернуть пешку, если чёрные её принимают,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Так что это меньше безрассудный дар и больше стратегическое приглашение, поданное вежливо, но с дальним умыслом.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Отсюда чёрные могут принять пешку или отказаться и сохранить прочный центр.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Хорошо, получай удовольствие, знакомясь ближе с ферзевым гамбитом, и посмотрим, на что этот предприимчивый маленький пешечный c может уговорить чёрных.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1630,6 +1737,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Continua a sviluppare, sorveglia il centro e sii pronto per la rottura d4 quando arriva il momento.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Ripeti la linea finché le mosse non sembrano naturali come mettere il bollitore.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Bene, qui è Professor Potato Pie, tè preparato come si deve, e oggi presentiamo una delle grandi aperture classiche, il gambetto di donna.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "L'apertura compare negli scritti scacchistici dalla fine del quindicesimo secolo, e generazioni di giocatori illustri l'hanno usata per contendere il centro.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Il Bianco inizia con pedone in d4, e il Nero risponde con pedone in d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Poi il Bianco gioca pedone in c4, sfidando il pedone centrale nero e offrendo il pedone c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Si chiama gambetto, anche se il Bianco di solito può recuperare il pedone se il Nero accetta,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Quindi questo è meno una donazione avventata e più un invito strategico, servito con cortesia ma con secondi fini.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Da qui il Nero può accettare il pedone o rifiutarlo e mantenere un centro solido.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Bene, goditi il prendere confidenza con il gambetto di donna e vediamo cosa quel piccolo pedone c avventuroso può persuadere il Nero a fare.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1839,6 +1962,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "विकास जारी रखो, केंद्र पर नज़र रखो, और सही पल पर d4 तोड़ के लिए तैयार रहो।",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "लाइन को तब तक दोहराओ जब तक चालें केतली चढ़ाने जितनी स्वाभाविक न लगें।",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "ठीक है, यहाँ Professor Potato Pie हैं, चाय ठीक से बनी हुई, और आज हम एक महान शास्त्रीय ओपनिंग पेश करते हैं, क्वीन गैम्बिट।",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "यह ओपनिंग पंद्रहवीं सदी के अंत से शतरंज लेखन में दिखती है, और प्रतिष्ठित खिलाड़ियों की पीढ़ियों ने इससे केंद्र के लिए संघर्ष किया है।",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "सफेद d4 पर प्यादा से शुरू करते हैं, और काले d5 पर प्यादे से जवाब देते हैं।",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "फिर सफेद c4 पर प्यादा खेलते हैं, काले के केंद्रीय प्यादे को चुनौती देते हुए और c प्यादा अर्पित करते हुए।",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "इसे गैम्बिट कहते हैं, हालाँकि अगर काले स्वीकार करें तो सफेद आमतौर पर प्यादा वापस पा सकते हैं,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "तो यह लापरवाह दान कम और रणनीतिक निमंत्रण अधिक है, शिष्टता से परोसा गया लेकिन दूसरे इरादे के साथ।",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "यहाँ से काले प्यादा स्वीकार कर सकते हैं या उसे ठुकराकर ठोस केंद्र बनाए रख सकते हैं।",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "अच्छा, क्वीन गैम्बिट से और परिचित होने का आनंद लो और देखें कि वह साहसिक छोटा c प्यादा काले को क्या करने के लिए मना सकता है।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2047,6 +2186,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "展開を続け、センターを見て、時機が来たら d4 の突破に備えよう。",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "手がやかんを火にかけるように自然になるまで、このラインを繰り返そう。",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "では、Professor Potato Pie です。お茶はきちんと淹れてあります。今日は偉大な古典的オープニングの一つ、クイーンズ・ギャンビットを紹介します。",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "このオープニングは十五世紀後半からチェスの文献に現れ、優れた棋士たちが何世代にもわたってセンターを争うために用いてきました。",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "白はポーンを d4 へ進め、黒はポーンを d5 で応じます。",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "それから白はポーンを c4 へ進め、黒の中央ポーンに挑み、c ポーンを差し出します。",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "ギャンビットと呼ばれますが、黒が受け取っても白はたいていポーンを取り戻せます、",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "ですからこれは無謀な寄贈というより戦略的な招待で、丁寧に出されながら裏の狙いがあります。",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "ここから黒はポーンを受け取るか、拒んで堅いセンターを保つかを選べます。",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "では、クイーンズ・ギャンビットにもっと親しむのを楽しみ、その冒険好きな小さな c ポーンが黒に何をさせるか見てみましょう。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2252,6 +2407,22 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "واصل التطوير، راقب المركز، وكن مستعدًا لاختراق d4 حين يحين الوقت.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "كرّر الخط حتى تشعر بالنقلات طبيعية كوضع الغلاية.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "حسنًا، هنا Professor Potato Pie، والشاي مُعد كما ينبغي، واليوم نقدم إحدى الافتتاحيات الكلاسيكية العظيمة، غامبيت الملكة.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "ظهرت هذه الافتتاحية في كتابات الشطرنج منذ أواخر القرن الخامس عشر، واستخدمتها أجيال من اللاعبين المميزين لمنازعة المركز.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "يبدأ الأبيض ببيدق إلى d4، ويرد الأسود ببيدق إلى d5.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "ثم يلعب الأبيض بيدقًا إلى c4، متحديًا بيدق الأسود المركزي وعارضًا بيدق c.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "يُسمى غامبيتًا، مع أن الأبيض يستطيع عادة استعادة البيدق إذا قبله الأسود،",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "فهذا أقل ما يكون هبة طائشة وأكثر ما يكون دعوة استراتيجية، تُقدَّم بأدب لكن بدوافع خفية.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "من هنا قد يقبل الأسود البيدق أو يرفضه ويحافظ على مركز متين.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "حسنًا، استمتع بالتعرّف أكثر على غامبيت الملكة ولنرَ ماذا يستطيع ذلك البيدق c الصغير المغامر أن يقنع الأسود بفعله.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2459,5 +2630,21 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Geliştirmeye devam et, merkezi izle ve anı geldiğinde d4 kırılmasına hazır ol.",
     "Drill the line until the moves feel as natural as putting the kettle on.":
       "Hamleler çaydanlığı ocağa koymak kadar doğal hissedilene kadar hattı tekrarla.",
+    "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.":
+      "Peki, burada Professor Potato Pie, çay usulünce demlenmiş, ve bugün büyük klasik açılışlardan birini tanıtıyoruz, vezir gambiti.",
+    "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.":
+      "Bu açılış on beşinci yüzyılın sonundan beri satranç yazılarında görünür ve seçkin oyuncu kuşakları merkezi çekişmek için onu kullanmıştır.",
+    "White begins with pawn to d4, and black answers pawn to d5.":
+      "Beyaz piyonla d4 ile başlar ve siyah piyonla d5 diye yanıtlar.",
+    "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.":
+      "Sonra beyaz piyonla c4 oynar, siyahın merkez piyonuna meydan okur ve c piyonunu sunar.",
+    "It is called a gambit, although white can usually recover the pawn if black accepts,":
+      "Buna gambit denir, gerçi siyah kabul ederse beyaz piyonu genellikle geri alabilir,",
+    "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.":
+      "Yani bu pervasız bir bağıştan çok, nazikçe sunulmuş ama art niyetli stratejik bir davettir.",
+    "From here, black may accept the pawn or decline it and maintain a solid centre.":
+      "Buradan siyah piyonu kabul edebilir ya da reddedip sağlam bir merkez tutabilir.",
+    "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.":
+      "Peki, vezir gambitiyle daha yakınlaşmanın tadını çıkar ve o maceracı küçük c piyonunun siyahı neye ikna edebileceğini görelim.",
   },
 };

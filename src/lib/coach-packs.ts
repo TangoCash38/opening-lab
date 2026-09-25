@@ -43,6 +43,7 @@ import {
 } from "@/lib/scotch-coach";
 import { CARO_INTRO_STEM, CARO_INTRO_STEM_AT_SEC } from "@/lib/caro-intro-stem";
 import { LONDON_INTRO_STEM, LONDON_INTRO_STEM_AT_SEC } from "@/lib/london-intro-stem";
+import { QG_INTRO_STEM, QG_INTRO_STEM_AT_SEC } from "@/lib/qg-intro-stem";
 
 /** Gentle caption dwell when a talk has no recording. About 4 to 6 seconds. */
 export const COACH_TEXT_BEAT_SEC = 5;
@@ -348,6 +349,25 @@ const CARO_KANN_LINE: readonly CoachLineBeat[] = [
     atSec: 128.7,
   },
 ];
+
+const QG_WHITE_PACK_ID = "qg-white";
+
+export const QG_WHITE_INTRO_WAV = "/coach/qg-white/professor-potato-pie-qg-intro.wav";
+/** AI-generated Queen's Gambit intro. Beat times below were read off this clip. */
+export const QG_WHITE_INTRO_SEC = 61.52;
+
+const QG_WHITE_INTRO = [
+  "Right then, Professor Potato Pie here, tea properly brewed, and today we're introducing one of the great classical openings, the Queen's Gambit.",
+  "The opening has appeared in chess writing since the late fifteenth century and generations of distinguished players have used it to contest the centre.",
+  "White begins with pawn to d4, and black answers pawn to d5.",
+  "Then white plays pawn to c4, challenging black's central pawn and offering the c-pawn.",
+  "It is called a gambit, although white can usually recover the pawn if black accepts,",
+  "So this is less a reckless donation and more a strategic invitation, served politely but with ulterior motives.",
+  "From here, black may accept the pawn or decline it and maintain a solid centre.",
+  "Right, enjoy getting more familiar with the Queen's Gambit and let's see what that adventurous little c-pawn can persuade black to do.",
+] as const;
+
+const QG_WHITE_INTRO_AT_SEC = [0, 11.8, 21.2, 26.2, 33, 38.2, 47.3, 53.3] as const;
 
 const LONDON_PACK_ID = "london";
 const ITALIAN_WHITE_PACK_ID = "italian-white";
@@ -670,6 +690,20 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineAudioFallbackSec: ITALIAN_LINE_SEC,
     introEndsOnLineList: true,
   },
+  [QG_WHITE_PACK_ID]: {
+    introTitle: "Queen’s Gambit",
+    introBeats: QG_WHITE_INTRO,
+    introAudio: QG_WHITE_INTRO_WAV,
+    introAudioFallbackSec: QG_WHITE_INTRO_SEC,
+    introBeatAtSec: QG_WHITE_INTRO_AT_SEC,
+    introStem: QG_INTRO_STEM,
+    introStemAtSec: QG_INTRO_STEM_AT_SEC,
+    introStemWhiteOnly: true,
+    firstLineId: "qg1",
+    firstLineTitle: "Line 1",
+    firstLineBeats: [],
+    introEndsOnLineList: true,
+  },
 };
 
 export function coachPack(packId: string): CoachPackConfig | undefined {
@@ -685,8 +719,7 @@ export function coachPackIntroApplies(packId: string): boolean {
 /**
  * First-line talk. Matches `firstLineId` only — not the line's display name,
  * and not "the first row" if that id ever moves. Scotch sg1 stays on its own gate.
- * An intro-only pack may name `firstLineId` before its Line 1 talk exists.
- * With no line audio and no line beats, a tap does not open a missing talk.
+ * An intro-only pack (no line audio and no line beats) never opens a line talk.
  */
 export function coachPackLineApplies(input: { packId: string; lineId: string }): boolean {
   if (input.packId === SCOTCH_PACK_ID) return false;
