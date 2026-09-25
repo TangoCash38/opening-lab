@@ -100,9 +100,9 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
       const { Chess } = await import("chess.js");
       const { PACKS } = await import("./src/data/packs.ts");
       const { QG_INTRO_STEM, QG_INTRO_STEM_AT_SEC } = await import("./src/lib/qg-intro-stem.ts");
-      const { replayWhiteOnly } = await import("./src/lib/london-intro-stem.ts");
       const {
         COACH_PACKS,
+        coachAudioBeatIndex,
         coachAudioPlyCount,
         coachIntroSessionKey,
         coachLinePlyCues,
@@ -135,7 +135,7 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
       if (!coach.firstLineBeats[0].caption.startsWith("Right then, welcome to Line 1")) throw new Error("line open");
       if (coach.firstLineBeats[15].caption !== "Very civilised and quietly ambitious.") throw new Error("line close");
       if (coach.firstLineId !== "qg1") throw new Error("first line id " + coach.firstLineId);
-      if (coach.introStemWhiteOnly !== true) throw new Error("white only flag");
+      if (coach.introStemWhiteOnly === true) throw new Error("qg stem plays black d5");
       if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
       if (coachIntroEndsOnLineList("qg-white") !== true) throw new Error("qg list gate");
       if (coachIntroEndsOnLineList("caro-kann-black") || coachIntroEndsOnLineList("opening-traps") || coachIntroEndsOnLineList("scotch")) {
@@ -147,7 +147,7 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
       if (!coach.introStemAtSec || coach.introStemAtSec.join(",") !== QG_INTRO_STEM_AT_SEC.join(",")) {
         throw new Error("stem times " + coach.introStemAtSec);
       }
-      if (coach.introStem.join(" ") !== "d4 c4") throw new Error("two white moves");
+      if (coach.introStem.join(" ") !== "d4 d5 c4") throw new Error("queen's gambit stem");
       if (coach.introBeats.length !== 8) throw new Error("beats " + coach.introBeats.length);
       if (!coach.introBeats[0].startsWith("Right then, Professor Potato Pie here")) throw new Error("open");
       if (!coach.introBeats[0].includes("tea properly brewed")) throw new Error("tea");
@@ -166,16 +166,28 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
       const cues = coach.introStemAtSec;
       if (coachAudioPlyCount(cues, 22.59, 61.52, 61.52) !== 0) throw new Error("d4 not yet");
       if (coachAudioPlyCount(cues, 22.6, 61.52, 61.52) !== 1) throw new Error("d4");
-      if (coachAudioPlyCount(cues, 27.69, 61.52, 61.52) !== 1) throw new Error("c4 not yet");
-      if (coachAudioPlyCount(cues, 27.7, 61.52, 61.52) !== 2) throw new Error("c4");
-      const game = replayWhiteOnly(coach.introStem, coach.introStem.length);
-      if (game.history().length !== 1) throw new Error("history should be the last white move only");
+      if (coachAudioPlyCount(cues, 25.29, 61.52, 61.52) !== 1) throw new Error("d5 not yet");
+      if (coachAudioPlyCount(cues, 25.3, 61.52, 61.52) !== 2) throw new Error("d5");
+      const d5Beat = coachAudioBeatIndex(coach.introBeatAtSec, 25.3, 61.52, coach.introBeats.length, 61.52);
+      if (!coach.introBeats[d5Beat].includes("black answers pawn to d5")) {
+        throw new Error("d5 caption " + coach.introBeats[d5Beat]);
+      }
+      if (coachAudioPlyCount(cues, 27.69, 61.52, 61.52) !== 2) throw new Error("c4 not yet");
+      if (coachAudioPlyCount(cues, 27.7, 61.52, 61.52) !== 3) throw new Error("c4");
+      const game = new Chess();
+      for (const san of coach.introStem) {
+        const move = game.move(san);
+        if (!move) throw new Error("illegal stem " + san);
+      }
+      if (game.history().join(" ") !== "d4 d5 c4") throw new Error("history " + game.history().join(" "));
       const fen = game.fen();
-      if (!fen.startsWith("rnbqkbnr/pppppppp/8/8/2PP")) throw new Error("shell " + fen);
+      if (!fen.startsWith("rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR")) {
+        throw new Error("shell " + fen);
+      }
       if (game.get("d4")?.type !== "p" || game.get("d4")?.color !== "w") throw new Error("d4");
       if (game.get("c4")?.type !== "p" || game.get("c4")?.color !== "w") throw new Error("c4");
-      if (game.get("d5")) throw new Error("black d5 moved");
-      if (game.get("d7")?.type !== "p" || game.get("d7")?.color !== "b") throw new Error("d7 home");
+      if (game.get("d5")?.type !== "p" || game.get("d5")?.color !== "b") throw new Error("black d5");
+      if (game.get("d7")) throw new Error("d7 should be empty");
       if (game.get("d2")) throw new Error("d2 still occupied");
       if (game.get("c2")) throw new Error("c2 still occupied");
       if (coachTalkPlies("qg-white", "intro") !== null) throw new Error("intro uses the stem clock");

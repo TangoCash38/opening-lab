@@ -807,7 +807,6 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introBeatAtSec: QG_WHITE_INTRO_AT_SEC,
     introStem: QG_INTRO_STEM,
     introStemAtSec: QG_INTRO_STEM_AT_SEC,
-    introStemWhiteOnly: true,
     firstLineId: "qg1",
     firstLineTitle: "Line 1",
     firstLineBeats: QG_WHITE_LINE,
