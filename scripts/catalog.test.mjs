@@ -2826,7 +2826,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
 });
 
 
-test("London System for White is the signed 10 lines: lon1–lon5 book, lon6 trap, lon7–lon10 punish", () => {
+test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon7/lon9 punish, lon8/lon10 book", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "london"');
   assert.ok(start >= 0, "london pack missing");
@@ -2871,7 +2871,14 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6 tra
     assert.equal(names[id], `Line ${Number(id.slice(3))}`);
     assert.doesNotMatch(names[id], /Trap ·|Punish|Pyramid|Jobava/);
   }
-  assert.match(lineBlock("lon6"), /Trap · …Bf5/);
+  assert.match(lineBlock("lon6"), /Punish the error · \.\.\.e5\?/);
+  assert.match(lineBlock("lon7"), /Punish the error · …Ne4\?/);
+  assert.match(lineBlock("lon8"), /BOOK · \.\.\.Bg4/);
+  assert.match(lineBlock("lon9"), /Punish the error · …e5\?/);
+  assert.match(lineBlock("lon10"), /BOOK · Chigorin-ish/);
+  assert.doesNotMatch(lineBlock("lon6"), /Trap · …Bf5/);
+  assert.doesNotMatch(lineBlock("lon8"), /…g5\?/);
+  assert.doesNotMatch(lineBlock("lon10"), /…Ng4\?/);
 
   const expected = {
     lon1: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "O-O", "Qc7", "f4"],
@@ -2879,11 +2886,11 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6 tra
     lon3: ["d4", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "d5", "c3", "Nc6", "Nd2", "Bf5", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Qc7"],
     lon4: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Qe7", "Nbd2", "Re8"],
     lon5: ["d4", "Nf6", "Bf4", "e6", "e3", "c5", "c3", "Nc6", "Nd2", "d5", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "O-O", "Bb7", "Qe2", "Qc7"],
-    lon6: ["d4", "d5", "Bf4", "c5", "e3", "Nc6", "c3", "Qb6", "Qb3", "c4", "Qc2", "Bf5", "Qxf5", "Qxb2", "Qxd5", "Qxa1", "Qb5"],
-    lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "O-O", "Bb7", "Ne5", "Nxe5", "dxe5", "c4", "Be2", "Be7", "exf6"],
-    lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "e6", "Nf3", "Bd6", "Bg3", "g5", "Nxg5", "Nc6", "Nc3", "a6", "Bh4"],
-    lon9: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "Qxb2", "Qxb2", "e5", "Bxe5", "Nxe5", "dxe5"],
-    lon10: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Ng4", "hxg4", "f5", "gxf5", "e4", "Ng5"],
+    lon6: ["d4", "d5", "Bf4", "Nf6", "e3", "e6", "Nd2", "c5", "c3", "Nc6", "Ngf3", "Bd6", "Bg3", "e5", "dxe5", "Nxe5", "Bxe5", "Bxe5", "Nxe5", "O-O", "Be2", "Re8", "Nd3"],
+    lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Ne4", "Nxe4", "dxe4", "d5", "Na5", "Qa4+", "Bd7", "Qxe4", "f6", "O-O-O", "Qb6", "Bd3", "e5", "dxe6", "Qxe6"],
+    lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Bg4", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Bh5", "dxc5", "Bxc5"],
+    lon9: ["d4", "d5", "Bf4", "c5", "e3", "Nc6", "c3", "Nf6", "Nd2", "e5", "dxe5", "Nd7", "Ngf3", "Be7", "e4", "d4", "Bb5", "O-O", "O-O", "dxc3", "bxc3", "Nb6", "Bxc6", "bxc6"],
+    lon10: ["d4", "d5", "Bf4", "Nf6", "e3", "Nc6", "Nd2", "Bf5", "c3", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Be2", "Ne7", "O-O", "c6", "Nh4", "Bg6"],
   };
   for (const id of lineIds) {
     assert.deepEqual(linePlies(id), expected[id], id);
