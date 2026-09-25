@@ -337,6 +337,9 @@ export function HomeHero({
       } else if (pack.id === "london") {
         // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
         line = pack.lines.find((l) => l.id === "lon1");
+      } else if (pack.id === "italian-white") {
+        // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
+        line = pack.lines.find((l) => l.id === "it1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -364,9 +367,10 @@ export function HomeHero({
       stopScotchCoachNarration();
       return;
     }
-    // London stops on the line list. Skip and the clip both dismiss this
-    // talk only — they do not open Line 1. A tap during the intro still
-    // opens that line, so Line 1 can play its own speech.
+    // London and Italian stop on the line list. Skip and the clip both
+    // dismiss this talk only — they do not open Line 1. A tap during the
+    // intro still opens that line. Line 1 speech plays only when that
+    // pack has a first-line talk.
     if (current.talk === "intro" && coachIntroEndsOnLineList(pack.id)) {
       const queued = queuedLineRef.current;
       queuedLineRef.current = null;

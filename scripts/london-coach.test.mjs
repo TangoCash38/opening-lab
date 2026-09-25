@@ -78,7 +78,6 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
   assert.match(board, /replayWhiteOnly/);
   assert.match(board, /data-coach-white-only/);
   assert.match(audio, /audio\/wav/);
-  assert.doesNotMatch(hero, /italian-white/);
 
   const run = spawnSync(
     process.execPath,
@@ -224,7 +223,6 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
       if (lineKey !== "opening-lab:coach-line:london:lon1") throw new Error(lineKey);
       const key = coachIntroSessionKey("london");
       if (key !== "opening-lab:coach-intro:london") throw new Error(key);
-      if (COACH_PACKS["italian-white"]) throw new Error("italian gained a coach");
       `,
     ],
     { cwd: root, encoding: "utf8" },
