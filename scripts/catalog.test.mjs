@@ -2749,7 +2749,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   assert.match(sc, /name: "Scotch Gambit \(White\)"/);
   assert.match(sc, /side: "White"/);
   assert.match(sc, /section: "white"/);
-  assert.match(sc, /blurb: "5 book lines \+ 5 punish"/);
+  assert.match(sc, /blurb: "10 lines from Opening Lab"/);
   assert.doesNotMatch(sc, /Scotch Game/);
   assert.doesNotMatch(sc, /Nxd4", "Bc5"/);
 
@@ -2838,7 +2838,7 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6 tra
   assert.match(lon, /section: "white"/);
   assert.match(lon, /price: "£1\.99"/);
   assert.doesNotMatch(lon, /price: "£1",/);
-  assert.match(lon, /blurb: "5 book lines \+ 5 punish"/);
+  assert.match(lon, /blurb: "10 lines from Opening Lab"/);
   assert.doesNotMatch(lon, /Jobava/);
   assert.doesNotMatch(lon, /Dutch/);
   assert.doesNotMatch(lon, /Play on/);

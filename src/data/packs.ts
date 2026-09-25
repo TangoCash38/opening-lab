@@ -54,7 +54,7 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "5 book lines + 5 punish",
+    blurb: "10 lines from Opening Lab",
     lines: [
       {
         id: "sg1",
@@ -391,9 +391,9 @@ export const PACKS: Pack[] = [
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "5 book lines + 5 punish",
+    blurb: "10 lines from Opening Lab",
     about:
-      "The London System is White’s classical 1.d4 with Bf4. Five book lines meet the main Black replies. Five more punish one Black error.\n\nPractice the book moves with the green hint. Then Test with none to prove you remember them.",
+      "The London System is White’s classical 1.d4 with Bf4. 10 lines from Opening Lab.\n\nPractice the book moves with the green hint. Then Test with none to prove you remember them.",
     lines: [
       {
         id: "lon1",

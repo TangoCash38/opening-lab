@@ -72,13 +72,16 @@ export const SCOTCH_CANAL_NARRATION_MP3 = "/scotch-coach/professor-potato-pie-ca
 /** The file is ~95s. Used when the element has not reported a duration yet. */
 export const SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95;
 
-/** On-screen beats for professor-potato-pie-canal.mp3. Same substance as the take. */
+/**
+ * On-screen beats for professor-potato-pie-canal.mp3.
+ * The 5+5 recipe beats now say 10 lines from Opening Lab. The recording still speaks the older split.
+ */
 export const SCOTCH_CANAL_BEATS = [
   "Right then — welcome to Line 1. Professor Potato Pie, at your service.",
   "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
-  "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.",
+  "10 lines from Opening Lab.",
   "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.",
-  "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.",
+  "You get 10 lines from Opening Lab.",
   "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.",
   "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.",
   "Complete the pack and the Scotch Gambit will look familiar whenever it appears. You'll recognise the landmarks, understand the plans, and have a proper footing from which to take your study further.",
@@ -87,8 +90,8 @@ export const SCOTCH_CANAL_BEATS = [
 
 /**
  * Seconds into the ~95s Canal recording when each beat begins.
- * Welcome, ten lines, first five book moves, stay in the game,
- * remaining five, punish to advantage / mate, primer, complete the pack, goodbye.
+ * Welcome, ten lines, 10 lines from Opening Lab, stay in the game,
+ * you get 10 lines from Opening Lab, advantage / mate, primer, complete the pack, goodbye.
  */
 export const SCOTCH_CANAL_BEAT_AT_SEC = [
   0, 7.92, 13.86, 20.32, 31.52, 40.62, 56.98, 77.56, 89.94,
