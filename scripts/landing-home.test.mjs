@@ -63,7 +63,7 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(css, /\.header-home-btn[\s\S]*min-height:\s*44px/);
   assert.match(landing, /data-landing-packs/);
   assert.match(landing, /data-landing-support/);
-  assert.match(landing, /t\("Learning packs"\)/);
+  assert.match(landing, /t\("Drill packs"\)/);
   assert.match(landing, /onClick=\{onEnterGym\}/);
   assert.match(landing, /onClick=\{onSupport\}/);
   assert.doesNotMatch(css, /\.landing-nav\s*\{[^}]*display:\s*none/);
@@ -88,7 +88,7 @@ test("landing copy is in every language and does not invent prices", () => {
     assert.match(copy, new RegExp(`${lang}:`));
   }
   assert.equal(copy.split('"Enter the gym":').length - 1, 12);
-  assert.equal(copy.split('"Learning packs":').length - 1, 12);
+  assert.equal(copy.split('"Drill packs":').length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
   assert.doesNotMatch(copy, /£/);
   assert.doesNotMatch(copy, /Learn the book/);
