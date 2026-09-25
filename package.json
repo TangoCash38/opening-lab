@@ -6,8 +6,8 @@
     "nf3": "0.3.17"
   },
   "scripts": {
-    "dev": "vite dev --host 0.0.0.0 --port 8080",
-    "build": "vite build && (npm run db:migrate || echo '[build] db:migrate failed (non-fatal); continuing')",
+    "dev": "node scripts/apply-potato-practice-patch.mjs && vite dev --host 0.0.0.0 --port 8080",
+    "build": "node scripts/apply-potato-practice-patch.mjs && vite build && (npm run db:migrate || echo '[build] db:migrate failed (non-fatal); continuing')",
     "db:migrate": "node scripts/migrate.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview --host 0.0.0.0 --port 8080",
@@ -15,9 +15,10 @@
     "validate:packs": "node scripts/validate-packs.mjs",
     "ply:report": "node scripts/ply-report.mjs",
     "shots": "node scripts/phase-screenshots.mjs",
-    "test": "node --test 'scripts/**/*.test.mjs'",
+    "test": "node scripts/apply-potato-practice-patch.mjs && node --test 'scripts/**/*.test.mjs'",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "apply:potato-patch": "node scripts/apply-potato-practice-patch.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
