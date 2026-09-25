@@ -32,9 +32,10 @@ test("landing matches the signed-off home: gym CTA, live packs, real prices", ()
   assert.match(landing, /coach-seated-v2\.png/);
   assert.match(landing, /\/brand\/opening-lab-logo\.png/);
   assert.match(landing, /landing-mug-logo/);
-  assert.match(css, /\.landing-mug-logo \{[\s\S]*left:\s*81\.56%/);
-  assert.match(css, /\.landing-mug-logo \{[\s\S]*top:\s*62\.84%/);
-  assert.match(css, /\.landing-mug-logo \{[\s\S]*width:\s*11\.25%/);
+  assert.match(css, /\.landing-mug-logo\s*\{[^}]*left:\s*48\.125%/);
+  assert.match(css, /\.landing-mug-logo\s*\{[^}]*top:\s*74\.837%/);
+  assert.match(css, /\.landing-mug-logo\s*\{[^}]*width:\s*15\.5%/);
+  assert.match(css, /\.landing-mug-logo\s*\{[^}]*translate\(-50%,\s*-50%\)/);
   assert.match(css, /\.landing-hero-art \{[\s\S]*gap:\s*0\.55rem/);
   assert.doesNotMatch(css, /\.landing-coach-wrap \{[\s\S]*margin-right:\s*-/);
   assert.match(landing, /className="brand-mark"/);

@@ -3123,21 +3123,21 @@ html[data-color-scheme="dark"] .app-shell--landing {
   -webkit-user-drag: none;
 }
 
-/*
- * Cup circle on coach-seated-v2.png (640×1071).
- * The oval is centred near (558, 709) with a diameter of about 76px.
- * Percentages are of that image so the squircle sits inside the circle,
- * fully visible, with the board kept clear of its right edge.
- */
+/* Cream oval on the mug face of coach-seated-v2.png (640×1071).
+   Measured centre of that oval is (308px, 801.5px) — 48.125% / 74.837%.
+   translate(-50%, -50%) puts the squircle's centre on that point.
+   15.5% width (~99px) sits inside the oval (≈243×149px) with cream around it.
+   Percentages are of the coach image box, so phone and desktop share them. */
 .landing-mug-logo {
   position: absolute;
   z-index: 2;
-  left: 81.56%;
-  top: 62.84%;
-  width: 11.25%;
+  left: 48.125%;
+  top: 74.837%;
+  width: 15.5%;
   height: auto;
   aspect-ratio: 1;
   max-width: none;
+  transform: translate(-50%, -50%);
   object-fit: contain;
   pointer-events: none;
   user-select: none;
