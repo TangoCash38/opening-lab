@@ -21,7 +21,7 @@ const board = src("src/components/opening-lab/lesson-board.tsx");
 const cues = JSON.parse(src("src/data/lessons/scotch/BOARD_CUES.json"));
 const captions = src("src/data/lessons/scotch/CAPTIONS.txt");
 
-test("landing keeps the gym and drill packs, and adds Chess opening lessons", () => {
+test("landing keeps the gym and drill packs, and parks Chess opening lessons", () => {
   const cta = landing.indexOf("data-landing-cta");
   const drills = landing.indexOf("landing-cta-note");
   const lessons = landing.indexOf("data-landing-lessons");
@@ -32,8 +32,10 @@ test("landing keeps the gym and drill packs, and adds Chess opening lessons", ()
   assert.match(landing, /t\("Chess opening lessons"\)/);
   assert.doesNotMatch(landing, /data-landing-drills/);
   assert.match(landing, /navigate\(\{ to: "\/lessons" \}\)/);
-  assert.match(landing, /setShowLessons\(!isPlayApp\(\)\)/);
+  assert.match(landing, /useState\(LESSONS_ENABLED\)/);
+  assert.match(landing, /setShowLessons\(LESSONS_ENABLED && !isPlayApp\(\)\)/);
   assert.match(landing, /showLessons \?/);
+  assert.match(src("src/lib/lesson-products.ts"), /export const LESSONS_ENABLED: boolean = false/);
   assert.doesNotMatch(landing, /Play on|versus the computer|vs computer/i);
   assert.doesNotMatch(landing, /human voice|recorded voice|voice actor|real person/i);
   assert.equal(copy.split('"Opening drill packs":').length - 1, 12);
