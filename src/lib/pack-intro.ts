@@ -22,7 +22,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   ],
   london: [
     "The London System is White’s classical 1.d4 with an early Bf4. The centre stays solid behind e3 and c3, the dark-squared bishop is out, and the same pyramid meets …d5, …c5, …Bf5, a King’s Indian, or an Indian move-order.",
-    "Five book lines are the main replies. Five more punish one Black error and stop when White is clearly better. Practice with the green hint, then Test with none.",
+    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
   "london-black": [
     "The London System is White's quiet 1.d4 setup: Nf3, Bf4, e3, and often c3. The dark-squared bishop comes out early, the centre stays solid, and the same moves work against almost anything. The Jobava London adds Nc3 and looks for Nb5 or e4.",

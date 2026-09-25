@@ -72,12 +72,10 @@ const en: Dict = {
     "Right then — welcome to Line 1. Professor Potato Pie, at your service.",
   "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.",
-  "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.",
+  "10 lines from Opening Lab.": "10 lines from Opening Lab.",
   "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.",
-  "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.",
+  "You get 10 lines from Opening Lab.": "You get 10 lines from Opening Lab.",
   "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.",
   "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":

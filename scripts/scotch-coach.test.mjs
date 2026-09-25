@@ -356,9 +356,9 @@ test("Line 1 (sg1) opens the pack-recipe talk once per session, not other lines"
   assert.doesNotMatch(lib, /Canal Variation|Dubois/);
   assert.doesNotMatch(lib, /line\.name|input\.lineName/);
   assert.match(lib, /ten carefully selected lines/);
-  assert.match(lib, /principled book moves you'd expect from somebody who knows the opening/);
+  assert.match(lib, /10 lines from Opening Lab\./);
   assert.match(lib, /stay firmly in the game/);
-  assert.match(lib, /less accurate replies an opponent may try/);
+  assert.match(lib, /You get 10 lines from Opening Lab\./);
   assert.match(lib, /clear advantage and, on occasion, a rather exquisite checkmate/);
   assert.match(lib, /SCOTCH_CANAL_NARRATION_MP3 = "\/scotch-coach\/professor-potato-pie-canal\.mp3"/);
   assert.match(lib, /SCOTCH_CANAL_NARRATION_FALLBACK_SEC = 95/);

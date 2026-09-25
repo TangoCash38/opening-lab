@@ -166,12 +166,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Muy bien — bienvenido a la Línea 1. Professor Potato Pie, a tu servicio.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "En este pack hemos destilado el gambito en diez líneas elegidas con cuidado.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "Las cinco primeras cubren las jugadas de libro sólidas y de principio que esperarías de quien conoce la apertura.",
+    "10 lines from Opening Lab.":
+      "10 líneas de Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Apréndelas y no solo sobrevivirás a la teoría. Devolverás las jugadas correctas con confianza, mantendrás el equilibrio y seguirás bien metido en la partida.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "Las otras cinco líneas son donde la cosa se pone de verdad interesante. Examinan las respuestas menos precisas que un rival puede intentar.",
+    "You get 10 lines from Opening Lab.":
+      "Tienes 10 líneas de Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Cuando las Negras fallan, aprenderás a ver por qué la jugada es mala, elegir la continuación precisa, convertir el error en una ventaja clara y, a veces, en un jaque mate exquisito.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -225,10 +225,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La premisa estratégica es admirablemente económica. Las Negras preparan d5, desafiando el centro de las Blancas de inmediato, y dejan libre el alfil de casillas claras en lugar de encerrarlo tras la cadena de peones.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "La Caro-Kann es sólida, paciente y sana de estructura, pero no confundas la calma con pasividad. Bajo ese exterior respetable hay una buena colección de contragolpes, sobre todo si las Blancas se pasan de ambiciosas.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Estudiarás diez líneas elegidas con cuidado. Las cinco primeras cubren el juego de libro principal contra los planteamientos más importantes de las Blancas, y te dan un repertorio fiable y una posición sana.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "Las cinco últimas examinan imprecisiones verosímiles de las Blancas, y muestran cómo las Negras identifican el defecto, responden con intención y logran una ventaja clara.",
+    "You'll study 10 lines from Opening Lab.":
+      "Estudiarás 10 líneas de Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "Estas son 10 líneas de Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "En Practice daré pistas donde las necesites. En Test la ayuda desaparece: solo estás tú, la posición y tu criterio.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -289,12 +289,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "好——欢迎来到第 1 线。Professor Potato Pie，为你效劳。",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "在这个学习棋包里，我们把弃兵提炼成十条精心挑选的线路。",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "前五条是扎实、有原则的书谱着法，正是懂这盘开局的人会下的棋。",
+    "10 lines from Opening Lab.":
+      "来自 Opening Lab 的 10 条线路。",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "学会它们，你就不只是在理论里求生。你会自信地回出正确着法，保持均势，稳稳留在局中。",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "剩下五条才真正有意思。它们考察对手可能尝试的不那么准确的应着。",
+    "You get 10 lines from Opening Lab.":
+      "你得到来自 Opening Lab 的 10 条线路。",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "当黑方走错时，你会学会看出这一着为什么有毛病，选出精确的续着，把错误变成明显优势，有时还变成相当精妙的将死。",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -348,10 +348,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "战略前提十分节省。黑方准备 d5，立刻挑战白方中心，同时让白格象自由，而不是把它关在兵链后面。",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Caro-Kann 扎实、耐心、结构健康，但不要把从容误当成被动。体面的外表下有一套漂亮的反击，尤其是当白方过于雄心勃勃的时候。",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "你将学习十条精心挑选的线路。前五条覆盖针对白方最重要方案的主要书谱着法，给你可靠的体系和健康的局面。",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "后五条考察白方看似合理的不精确，并准确说明黑方如何发现缺陷、有目的地应答并取得明显优势。",
+    "You'll study 10 lines from Opening Lab.":
+      "你将学习来自 Opening Lab 的 10 条线路。",
+    "These are 10 lines from Opening Lab.":
+      "这些是来自 Opening Lab 的 10 条线路。",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "在 Practice 里，你需要提示时我会给。在 Test 里，帮助消失，只剩下你、局面和你的判断。",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -408,12 +408,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Bien — bienvenue à la Ligne 1. Professor Potato Pie, à ton service.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "Dans ce pack, nous avons distillé le gambit en dix lignes choisies avec soin.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "Les cinq premières couvrent les coups du livre sains et de principe qu'on attend de quelqu'un qui connaît l'ouverture.",
+    "10 lines from Opening Lab.":
+      "10 lignes d'Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Apprends-les et tu ne feras pas que survivre à la théorie. Tu rendras les bons coups avec assurance, tu garderas l'équilibre et tu resteras fermement dans la partie.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "Les cinq lignes suivantes sont là où cela devient vraiment intéressant. Elles examinent les réponses moins précises qu'un adversaire peut essayer.",
+    "You get 10 lines from Opening Lab.":
+      "Tu as 10 lignes d'Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Quand les Noirs se trompent, tu apprendras à voir pourquoi le coup est fautif, à choisir la suite précise, à transformer l'erreur en avantage clair et, parfois, en un échec et mat fort élégant.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -467,10 +467,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Le principe stratégique est admirablement économique. Les Noirs préparent d5, contestant tout de suite le centre des Blancs, tout en laissant libre le fou des cases claires au lieu de l'enfermer derrière la chaîne de pions.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "La Caro-Kann est solide, patiente et saine de structure, mais ne prends pas le calme pour de la passivité. Sous cet extérieur respectable se cache une belle collection de contre-coups, surtout si les Blancs deviennent trop ambitieux.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Tu étudieras dix lignes choisies avec soin. Les cinq premières couvrent le jeu du livre principal contre les approches les plus importantes des Blancs, et te donnent un répertoire fiable et une position saine.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "Les cinq dernières examinent des imprécisions plausibles des Blancs, et montrent comment les Noirs identifient le défaut, répondent avec intention et obtiennent un avantage clair.",
+    "You'll study 10 lines from Opening Lab.":
+      "Tu étudieras 10 lignes d'Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "Ce sont 10 lignes d'Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "En Practice, je donnerai des indices partout où tu en as besoin. En Test, l'aide disparaît : il n'y a plus que toi, la position et ton jugement.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -532,12 +532,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Also dann — willkommen bei Linie 1. Professor Potato Pie, zu Diensten.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "In diesem Lernpack haben wir das Gambit in zehn sorgfältig gewählte Linien gefasst.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "Die ersten fünf decken die soliden, prinzipientreuen Buchzüge ab, die man von jemandem erwartet, der die Eröffnung kennt.",
+    "10 lines from Opening Lab.":
+      "10 Linien von Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Lerne sie, und du überstehst die Theorie nicht nur. Du gibst die richtigen Züge mit Ruhe zurück, hältst das Gleichgewicht und bleibst fest in der Partie.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "Die übrigen fünf Linien werden richtig interessant. Sie untersuchen die ungenaueren Antworten, die ein Gegner versuchen kann.",
+    "You get 10 lines from Opening Lab.":
+      "Du bekommst 10 Linien von Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Wenn Schwarz danebengreift, lernst du zu erkennen, warum der Zug fehlerhaft ist, die genaue Fortsetzung zu wählen, den Fehler in klaren Vorteil zu verwandeln und gelegentlich in ein recht erlesenes Matt.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -591,10 +591,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Der strategische Gedanke ist bewundernswert sparsam. Schwarz bereitet d5 vor, fordert das Zentrum von Weiß sofort heraus und hält den weißfeldrigen Läufer frei, statt ihn hinter der Bauernkette einzusperren.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Die Caro-Kann ist solide, geduldig und strukturell gesund, aber verwechsle Gelassenheit nicht mit Passivität. Unter der anständigen Oberfläche liegt eine feine Sammlung von Kontern, besonders wenn Weiß zu ehrgeizig wird.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Du studierst zehn sorgfältig gewählte Linien. Die ersten fünf decken das prinzipielle Buchspiel gegen die wichtigsten Ansätze von Weiß ab und geben dir ein verlässliches Repertoire und eine gesunde Stellung.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "Die letzten fünf untersuchen plausible Ungenauigkeiten von Weiß und zeigen, wie Schwarz den Mangel erkennt, zielgerichtet antwortet und klaren Vorteil sichert.",
+    "You'll study 10 lines from Opening Lab.":
+      "Du studierst 10 Linien von Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "Das sind 10 Linien von Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "In Practice gebe ich Hinweise, wo du sie brauchst. In Test verschwindet die Hilfe, und es bleiben nur du, die Stellung und dein Urteil.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -655,12 +655,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Muito bem — bem-vindo à Linha 1. Professor Potato Pie, ao teu serviço.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "Neste pack destilámos o gambito em dez linhas escolhidas com cuidado.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "As primeiras cinco cobrem os lances de livro sólidos e de princípio que se espera de quem conhece a abertura.",
+    "10 lines from Opening Lab.":
+      "10 linhas do Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Aprende-os e não vais apenas sobreviver à teoria. Vais devolver os lances certos com confiança, manter o equilíbrio e ficar firme na partida.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "As outras cinco linhas é onde a coisa fica mesmo interessante. Examinam as respostas menos precisas que um adversário pode tentar.",
+    "You get 10 lines from Opening Lab.":
+      "Recebes 10 linhas do Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Quando as Pretas falham, vais aprender a ver porque o lance é defeituoso, escolher a continuação precisa, converter o erro numa vantagem clara e, por vezes, num xeque-mate requintado.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -714,10 +714,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "A premissa estratégica é admiravelmente económica. As Pretas preparam d5, desafiando de imediato o centro das Brancas, e deixam livre o bispo de casas claras em vez de o prender atrás da cadeia de peões.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "A Caro-Kann é sólida, paciente e sã de estrutura, mas não confundas compostura com passividade. Por baixo desse exterior respeitável há uma bela coleção de contragolpes, sobretudo quando as Brancas ficam ambiciosas demais.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Vais estudar dez linhas escolhidas com cuidado. As primeiras cinco cobrem o jogo de livro principal contra as abordagens mais importantes das Brancas, e dão-te um repertório fiável e uma posição sã.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "As últimas cinco examinam imprecisões plausíveis das Brancas, e mostram como as Pretas identificam o defeito, respondem com propósito e garantem uma vantagem clara.",
+    "You'll study 10 lines from Opening Lab.":
+      "Vais estudar 10 linhas do Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "Estas são 10 linhas do Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "Em Practice dou dicas onde precisares. Em Test a ajuda desaparece: ficas só tu, a posição e o teu critério.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -778,12 +778,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Итак — добро пожаловать на линию 1. Professor Potato Pie к твоим услугам.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "В этом учебном паке мы свели гамбит к десяти тщательно выбранным линиям.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "Первые пять — это здравые, принципиальные книжные ходы, каких ждут от человека, который знает дебют.",
+    "10 lines from Opening Lab.":
+      "10 линий от Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Выучи их, и ты не просто переживёшь теорию. Ты будешь уверенно возвращать верные ходы, держать равновесие и твёрдо оставаться в партии.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "Остальные пять линий — там, где становится по-настоящему интересно. Они разбирают менее точные ответы, которые может попробовать соперник.",
+    "You get 10 lines from Opening Lab.":
+      "Ты получаешь 10 линий от Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Когда чёрные ошибаются, ты научишься видеть, почему ход плох, выбирать точное продолжение, обращать ошибку в ясный перевес и порой в довольно изысканный мат.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -837,10 +837,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Стратегическая идея восхитительно экономна. Чёрные готовят d5, сразу оспаривая центр белых, и оставляют белопольного слона свободным, а не запирают его за пешечной цепью.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Caro-Kann солидна, терпелива и структурно здорова, но не принимай спокойствие за пассивность. Под благопристойной оболочкой — отличный набор контратак, особенно если белые становятся слишком амбициозными.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Ты изучишь десять тщательно выбранных линий. Первые пять покрывают основную книжную игру против важнейших планов белых и дают надёжный репертуар и здоровую позицию.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "Последние пять разбирают правдоподобные неточности белых и показывают, как чёрные находят изъян, отвечают с целью и получают ясный перевес.",
+    "You'll study 10 lines from Opening Lab.":
+      "Ты изучишь 10 линий от Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "Это 10 линий от Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "В Practice я дам подсказки там, где они нужны. В Test помощь исчезает: остаёшься ты, позиция и твоё суждение.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -900,12 +900,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Bene — benvenuto alla Linea 1. Professor Potato Pie, al tuo servizio.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "In questo pack abbiamo distillato il gambetto in dieci linee scelte con cura.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "Le prime cinque coprono le mosse di libro solide e di principio che ti aspetti da chi conosce l'apertura.",
+    "10 lines from Opening Lab.":
+      "10 linee da Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Imparale e non ti limiterai a sopravvivere alla teoria. Restituirai le mosse giuste con sicurezza, manterrai l'equilibrio e resterai saldo nella partita.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "Le altre cinque linee sono dove la cosa diventa davvero interessante. Esaminano le risposte meno precise che un avversario può tentare.",
+    "You get 10 lines from Opening Lab.":
+      "Hai 10 linee da Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Quando il Nero sbaglia, imparerai a vedere perché la mossa è difettosa, a scegliere la continuazione precisa, a trasformare l'errore in un chiaro vantaggio e, a volte, in uno scacco matto piuttosto squisito.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -959,10 +959,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La premessa strategica è mirabilmente economica. Il Nero prepara d5, sfidando subito il centro del Bianco, e tiene libero l'alfiere dei campi chiari invece di rinchiuderlo dietro la catena di pedoni.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "La Caro-Kann è solida, paziente e sana di struttura, ma non scambiare la compostezza per passività. Sotto quell'esterno rispettabile c'è una bella raccolta di contrattacchi, specie quando il Bianco diventa troppo ambizioso.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Studierai dieci linee scelte con cura. Le prime cinque coprono il gioco di libro principale contro gli impianti più importanti del Bianco, e ti danno un repertorio affidabile e una posizione sana.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "Le ultime cinque esaminano imprecisioni plausibili del Bianco, e mostrano come il Nero individua il difetto, risponde con intenzione e si assicura un chiaro vantaggio.",
+    "You'll study 10 lines from Opening Lab.":
+      "Studierai 10 linee da Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "Queste sono 10 linee da Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "In Practice darò suggerimenti dove ti servono. In Test l'aiuto sparisce: resti tu, la posizione e il tuo giudizio.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -1023,12 +1023,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "अच्छा — लाइन 1 में स्वागत है। Professor Potato Pie, तुम्हारी सेवा में।",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "इस सीखने के पैक में हमने गैंबिट को दस सावधानी से चुनी लाइनों में समेटा है।",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "पहली पाँच वे ठोस, सिद्धांत वाली बुक चालें हैं, जिनकी उम्मीद उस व्यक्ति से होती है जो ओपनिंग जानता है।",
+    "10 lines from Opening Lab.":
+      "Opening Lab की 10 लाइनें।",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "उन्हें सीखो और तुम केवल थ्योरी में बचोगे नहीं। तुम सही चालें भरोसे के साथ लौटाओगे, संतुलन रखोगे, और खेल में मजबूती से बने रहोगे।",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "बाकी पाँच लाइनें वहीं हैं जहाँ बात सच में दिलचस्प होती है। वे कम सटीक जवाब देखती हैं, जो प्रतिद्वंद्वी आज़मा सकता है।",
+    "You get 10 lines from Opening Lab.":
+      "तुम्हें Opening Lab की 10 लाइनें मिलती हैं।",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "जब काले फिसलें, तुम सीखोगे कि चाल क्यों खराब है, सटीक सिलसिला चुनना, गलती को साफ बढ़त में बदलना और कभी-कभी एक बहुत सुंदर मात।",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -1082,10 +1082,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "रणनीतिक आधार सराहनीय रूप से किफायती है। काले d5 तैयार करते हैं, तुरंत सफ़ेद के केंद्र को चुनौती देते हैं, और हल्के घरों के ऊँट को आज़ाद रखते हैं, प्यादों की कतार के पीछे बंद करने के बजाय।",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Caro-Kann ठोस, धैर्यवान और संरचना में स्वस्थ है, पर शांति को निष्क्रियता मत समझो। सम्मानजनक बाहरी रूप के नीचे अच्छे पलटवार हैं, खासकर जब सफ़ेद ज़्यादा महत्वाकांक्षी हो जाएँ।",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "तुम दस सावधानी से चुनी लाइनें पढ़ोगे। पहली पाँच सफ़ेद के सबसे महत्वपूर्ण तरीकों के विरुद्ध मुख्य बुक चालें हैं, और तुम्हें भरोसेमंद रेपरटोयर और स्वस्थ स्थिति देती हैं।",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "अंतिम पाँच सफ़ेद की संभावित गलतियाँ देखती हैं, और दिखाती हैं कि काले दोष कैसे पहचानें, उद्देश्य से जवाब दें और साफ बढ़त पाएँ।",
+    "You'll study 10 lines from Opening Lab.":
+      "तुम Opening Lab की 10 लाइनें पढ़ोगे।",
+    "These are 10 lines from Opening Lab.":
+      "ये Opening Lab की 10 लाइनें हैं।",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "Practice में मैं संकेत दूँगा जहाँ ज़रूरत हो। Test में सहायता गायब हो जाती है, और रह जाते हो तुम, स्थिति और तुम्हारा निर्णय।",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -1146,12 +1146,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "では——ライン 1 へようこそ。Professor Potato Pie、お役に立ちます。",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "この学習パックでは、ギャンビットを注意深く選んだ十のラインにまとめた。",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "最初の五つは、オープニングを知る人が指す、健全で筋の通った定跡の手だ。",
+    "10 lines from Opening Lab.":
+      "Opening Lab の 10 ライン。",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "それらを学べば、理論を生き延びるだけではない。正しい手を自信をもって返し、均衡を保ち、対局にしっかり残れる。",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "残りの五ラインが、本当におもしろくなり始めるところだ。相手が試す、精度の落ちる応手を調べる。",
+    "You get 10 lines from Opening Lab.":
+      "Opening Lab の 10 ラインだ。",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "黒が踏み外したとき、なぜその手が悪いのかを見分け、正確な続きを選び、誤りを明確な優位に、ときにはかなり見事なチェックメイトに変えることを学ぶ。",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -1205,10 +1205,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "戦略の前提は見事に節約的だ。黒は d5 を用意し、すぐに白のセンターに挑み、ポーンチェーンの後ろに閉じ込めるのではなく、白マスのビショップを自由にしておく。",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Caro-Kann は堅く、辛抱強く、構造も健全だ。だが落ち着きを受動と取り違えてはいけない。立派な外見の下には見事なカウンターがあり、白が欲を出しすぎたときに特にそうだ。",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "注意深く選んだ十のラインを学ぶ。最初の五つは、白の最も重要なやり方に対する主要な定跡で、頼れるレパートリーと健全な局面を与える。",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "最後の五つは、白のもっともらしい不正確さを調べ、黒が欠点を見つけ、意図をもって応え、明確な優位を確保する道を示す。",
+    "You'll study 10 lines from Opening Lab.":
+      "Opening Lab の 10 ラインを学ぶ。",
+    "These are 10 lines from Opening Lab.":
+      "これらは Opening Lab の 10 ラインだ。",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "Practice では、必要なところにヒントを出す。Test では助けが消え、残るのは君と局面と君の判断だけだ。",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -1268,12 +1268,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "حسنًا — أهلًا بك في الخط 1. Professor Potato Pie في خدمتك.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "في حزمة التعلّم هذه قطرنا الغامبت إلى عشرة خطوط مختارة بعناية.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "الخمسة الأولى تغطي حركات الكتاب السليمة المبدئية التي تتوقعها ممن يعرف الافتتاح.",
+    "10 lines from Opening Lab.":
+      "10 خطوط من Opening Lab.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "تعلّمها ولن تكتفي بالنجاة من النظرية. ستعيد الحركات الصحيحة بثقة، وتحفظ التوازن، وتبقى راسخًا في اللعبة.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "الخطوط الخمسة الباقية هي حيث تصبح الأمور مثيرة بحق. تدرس الردود الأقل دقة التي قد يجرّبها الخصم.",
+    "You get 10 lines from Opening Lab.":
+      "تحصل على 10 خطوط من Opening Lab.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "عندما يزلّ الأسود، ستتعلم أن تتعرّف لماذا الحركة معيبة، وتختار المتابعة الدقيقة، وتحوّل الخطأ إلى أفضلية واضحة، وأحيانًا إلى كش مات رائع.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -1327,10 +1327,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "المقدمة الاستراتيجية مقتصدة على نحو يثير الإعجاب. يجهّز الأسود d5، متحديًا مركز الأبيض فورًا، ويبقي فيل المربعات الفاتحة حرًا بدل حبسه خلف سلسلة البيادق.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Caro-Kann صلبة وصبورة وسليمة البنية، لكن لا تخلط بين الاتزان والسلبية. تحت المظهر المحترم مجموعة جميلة من الضربات المضادة، خصوصًا إذا طمع الأبيض.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "ستدرس عشرة خطوط مختارة بعناية. الخمسة الأولى تغطي لعب الكتاب الرئيس ضد أهم مقاربات الأبيض، وتعطيك ذخيرة يعتمد عليها ووضعًا سليمًا.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "الخمسة الأخيرة تفحص عدم الدقة المعقول من الأبيض، وتبيّن كيف يحدّد الأسود العيب، ويرد بقصد، ويؤمّن أفضلية واضحة.",
+    "You'll study 10 lines from Opening Lab.":
+      "ستدرس 10 خطوط من Opening Lab.",
+    "These are 10 lines from Opening Lab.":
+      "هذه 10 خطوط من Opening Lab.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "في Practice سأقدّم تلميحات حيث تحتاجها. في Test تختفي المساعدة، ويبقى أنت والوضع وحكمك.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
@@ -1388,12 +1388,12 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Peki — Hat 1'e hoş geldin. Professor Potato Pie, hizmetinde.",
     "In this learning pack, we've distilled the gambit into ten carefully selected lines.":
       "Bu öğrenme paketinde gambiti özenle seçilmiş on hatta damıttık.",
-    "The first five cover the sound, principled book moves you'd expect from somebody who knows the opening.":
-      "İlk beş, açılışı bilen birinden bekleyeceğin sağlam, ilkeli kitap hamlelerini kapsar.",
+    "10 lines from Opening Lab.":
+      "Opening Lab'den 10 hat.",
     "Learn those and you won't merely survive the theory. You'll return the correct moves with confidence, keep the balance, and stay firmly in the game.":
       "Onları öğren, teoriye yalnızca dayanmakla kalmazsın. Doğru hamleleri güvenle geri verir, dengeyi korur ve oyunda sağlam durursun.",
-    "The remaining five lines are where matters become properly interesting. They examine the less accurate replies an opponent may try.":
-      "Kalan beş hat, işin gerçekten ilginçleştiği yerdir. Rakibin deneyebileceği daha az doğru cevapları inceler.",
+    "You get 10 lines from Opening Lab.":
+      "Opening Lab'den 10 hat alırsın.",
     "When Black slips, you'll learn to recognise why the move is faulty, choose the precise continuation, convert the error into a clear advantage and, on occasion, a rather exquisite checkmate.":
       "Siyah kayınca, hamlenin neden kusurlu olduğunu görmeyi, kesin devamı seçmeyi, hatayı açık üstünlüğe ve ara sıra oldukça zarif bir mata çevirmeyi öğrenirsin.",
     "Naturally, Black has more than ten ways to play. Think of this as a compact, bite-sized primer rather than an exhaustive encyclopedia — the logic behind the moves, not simply a sequence to memorise.":
@@ -1447,10 +1447,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Stratejik öncül hayranlık verecek kadar tutumludur. Siyah d5'i hazırlar, Beyazın merkezine hemen meydan okur ve açık renk fili piyon zincirinin arkasına kapatmak yerine özgür bırakır.",
     "The Caro-Kann is solid, patient and structurally sound, but do not mistake composure for passivity. Beneath its respectable exterior lies a fine collection of counterpunches, particularly when White becomes overambitious.":
       "Caro-Kann sağlam, sabırlı ve yapıca sağlıklıdır, ama sükûneti edilgenlik sanma. Saygın dışının altında güzel bir karşı darbe koleksiyonu vardır, özellikle Beyaz aşırı hırslanırsa.",
-    "You'll study ten carefully chosen lines. The first five cover principal book play against White's most important approaches, giving you a dependable repertoire and a sound position.":
-      "Özenle seçilmiş on hat çalışacaksın. İlk beş, Beyazın en önemli yaklaşımlarına karşı başlıca kitap oyununu kapsar ve sana güvenilir bir repertuvar ile sağlam bir konum verir.",
-    "The final five examine plausible inaccuracies from White, showing precisely how Black can identify the defect, respond with purpose and secure a clear advantage.":
-      "Son beş, Beyazdan gelebilecek akla yakın yanlışlıkları inceler ve Siyahın kusuru nasıl gördüğünü, amaçla nasıl karşılık verdiğini ve açık üstünlüğü nasıl aldığını gösterir.",
+    "You'll study 10 lines from Opening Lab.":
+      "Opening Lab'den 10 hat çalışacaksın.",
+    "These are 10 lines from Opening Lab.":
+      "Bunlar Opening Lab'den 10 hat.",
     "In Practice, I'll provide hints wherever you need them. In Test, the assistance disappears, and it is simply you, the position and your judgement.":
       "Practice içinde ihtiyaç duyduğun yerde ipucu veririm. Test içinde yardım kaybolur; kalan sensin, konum ve muhakemen.",
     "Each line concludes where the prepared book line ends. There is no continuation against the computer afterwards.":
