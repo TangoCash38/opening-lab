@@ -28,7 +28,8 @@ test("landing matches the signed-off home: gym CTA, live packs, real prices", ()
   assert.match(landing, /ruy-white/);
   assert.match(landing, /french-white/);
   assert.match(landing, /qg-white/);
-  assert.match(landing, /Strict book-move trainer/);
+  assert.match(landing, /Study first\. Then test yourself from memory/);
+  assert.doesNotMatch(landing, /Strict book-move trainer/);
   assert.match(landing, /coach-seated-v2\.png/);
   assert.match(landing, /\/brand\/opening-lab-logo\.png/);
   assert.match(landing, /landing-mug-logo/);
@@ -77,6 +78,9 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(landing, /onClick=\{onEnterGym\}/);
   assert.match(landing, /onClick=\{onSupport\}/);
   assert.match(landing, /onOpenPack\(pack\.id\)/);
+  assert.match(landing, /data-coming-soon-feedback/);
+  assert.match(landing, /Please leave feedback for openings you’d like to see/);
+  assert.match(landing, /mailto:support@openinglab\.co\.uk\?subject=Opening%20Lab%20feedback/);
   assert.doesNotMatch(css, /\.landing-nav\s*\{[^}]*display:\s*none/);
   assert.match(menu, /data-landing-menu/);
   assert.match(menu, /t\("Menu"\)/);
@@ -89,8 +93,11 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(menu, /to="\/terms"/);
   assert.match(menu, /to="\/privacy"/);
   assert.match(menu, /data-menu-report/);
+  assert.match(menu, /data-menu-support/);
+  assert.match(menu, /t\("Support"\)/);
+  assert.match(menu, /onSupport/);
+  assert.match(landing, /onSupport=\{onSupport\}/);
   assert.match(menu, /LangToggle/);
-  assert.doesNotMatch(menu, /data-menu-support/);
   assert.doesNotMatch(menu, /Play on/);
 });
 
@@ -104,6 +111,12 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Chess opening drills available now":').length - 1, 12);
   assert.equal(copy.split("\n    Site:").length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
+  assert.equal(copy.split('"Study first. Then test yourself from memory":').length - 1, 12);
+  assert.equal(
+    copy.split('"Please leave feedback for openings you’d like to see":').length - 1,
+    12,
+  );
+  assert.doesNotMatch(copy, /Strict book-move trainer/);
   assert.doesNotMatch(copy, /£/);
   assert.doesNotMatch(copy, /Learn the book/);
 });

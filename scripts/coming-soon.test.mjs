@@ -186,6 +186,14 @@ test("home grid labels coming-soon packs and does not sell them", () => {
   assert.match(list, /data-coming-soon-label/);
   assert.match(list, /data-coming-soon-note/);
   assert.match(list, /Coming soon with Professor Potato Pie\./);
+  assert.match(list, /Please leave feedback for openings you’d like to see/);
+  assert.match(list, /data-coming-soon-feedback/);
+  assert.match(list, /mailto:support@openinglab\.co\.uk\?subject=Opening%20Lab%20feedback/);
+  assert.match(list, /scrollIntoView\(\{/);
+  assert.match(list, /"center"/);
+  assert.match(list, /height > window\.innerHeight \* 0\.92 \? "start" : "center"/);
+  const landing = src("src/components/opening-lab/home-intro.tsx");
+  assert.match(landing, /Please leave feedback for openings you’d like to see/);
   assert.match(list, /isComingSoonClosed/);
   assert.match(list, /canPurchasePack/);
   assert.match(list, /canPurchaseBuyAll\(\)/);

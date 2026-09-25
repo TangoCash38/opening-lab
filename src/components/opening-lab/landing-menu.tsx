@@ -15,10 +15,11 @@ import { LangToggle } from "./lang-picker";
 type Props = {
   onCreateOwn: () => void;
   onReport: () => void;
+  onSupport: () => void;
 };
 
-/** Overflow chrome. Support stays as a header text link. */
-export function LandingMenu({ onCreateOwn, onReport }: Props) {
+/** Site menu. Support uses the same destination as the home-bar link. */
+export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const titleId = useId();
@@ -89,6 +90,14 @@ export function LandingMenu({ onCreateOwn, onReport }: Props) {
                 onClick={() => pick(onCreateOwn)}
               >
                 {t("Create your own")}
+              </button>
+              <button
+                type="button"
+                className="home-menu-item"
+                data-menu-support
+                onClick={() => pick(onSupport)}
+              >
+                {t("Support")}
               </button>
               <button
                 type="button"

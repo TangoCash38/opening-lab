@@ -6,7 +6,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Practice with hints. Test with none.",
     "Enter the gym": "Enter the gym",
     "Open now": "Open now",
-    "Strict book-move trainer": "Strict book-move trainer",
+    "Study first. Then test yourself from memory":
+      "Study first. Then test yourself from memory",
+    "Please leave feedback for openings you’d like to see":
+      "Please leave feedback for openings you’d like to see",
     "Drill packs": "Drill packs",
     "Opening drill packs": "Opening drill packs",
     "Chess opening drills available now": "Chess opening drills available now",
@@ -22,7 +25,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Practica con pistas. El test, sin ninguna.",
     "Enter the gym": "Entra al gimnasio",
     "Open now": "Abierto ahora",
-    "Strict book-move trainer": "Entrenador estricto de jugadas de libro",
+    "Study first. Then test yourself from memory":
+      "Estudia primero. Luego ponte a prueba de memoria",
+    "Please leave feedback for openings you’d like to see":
+      "Deja un comentario sobre las aperturas que te gustaría ver",
     "Drill packs": "Paquetes de ejercicios",
     "Opening drill packs": "Paquetes de ejercicios de apertura",
     "Chess opening drills available now": "Ejercicios de aperturas de ajedrez disponibles ahora",
@@ -38,7 +44,9 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "练习有提示。测验没有。",
     "Enter the gym": "进入训练馆",
     "Open now": "现已开放",
-    "Strict book-move trainer": "严格的书谱走法训练",
+    "Study first. Then test yourself from memory": "先学。再凭记忆自测",
+    "Please leave feedback for openings you’d like to see":
+      "请留下反馈，告诉我们你想看到的开局",
     "Drill packs": "训练包",
     "Opening drill packs": "开局训练包",
     "Chess opening drills available now": "国际象棋开局训练现已提供",
@@ -54,7 +62,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Entraîne-toi avec des indices. Le test, sans aucun.",
     "Enter the gym": "Entre dans la salle",
     "Open now": "Ouvert maintenant",
-    "Strict book-move trainer": "Entraîneur strict aux coups du livre",
+    "Study first. Then test yourself from memory":
+      "Étudie d’abord. Puis teste-toi de mémoire",
+    "Please leave feedback for openings you’d like to see":
+      "Laisse un retour sur les ouvertures que tu aimerais voir",
     "Drill packs": "Packs d'exercices",
     "Opening drill packs": "Packs d'exercices d'ouverture",
     "Chess opening drills available now": "Exercices d'ouvertures d'échecs disponibles maintenant",
@@ -70,7 +81,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Üben mit Hinweisen. Testen ohne.",
     "Enter the gym": "In die Halle",
     "Open now": "Jetzt offen",
-    "Strict book-move trainer": "Strenger Buchzug-Trainer",
+    "Study first. Then test yourself from memory":
+      "Erst lernen. Dann aus dem Gedächtnis prüfen",
+    "Please leave feedback for openings you’d like to see":
+      "Hinterlasse Feedback zu Eröffnungen, die du sehen möchtest",
     "Drill packs": "Übungspakete",
     "Opening drill packs": "Eröffnungs-Übungspakete",
     "Chess opening drills available now": "Schacheröffnungsübungen jetzt verfügbar",
@@ -86,7 +100,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Pratica com dicas. O teste, sem nenhuma.",
     "Enter the gym": "Entra no ginásio",
     "Open now": "Aberto agora",
-    "Strict book-move trainer": "Treinador estrito de lances de livro",
+    "Study first. Then test yourself from memory":
+      "Estuda primeiro. Depois testa-te de memória",
+    "Please leave feedback for openings you’d like to see":
+      "Deixa feedback sobre as aberturas que gostarias de ver",
     "Drill packs": "Pacotes de exercícios",
     "Opening drill packs": "Pacotes de exercícios de abertura",
     "Chess opening drills available now": "Exercícios de aberturas de xadrez disponíveis agora",
@@ -102,7 +119,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Тренировка с подсказками. Тест без них.",
     "Enter the gym": "Войти в зал",
     "Open now": "Уже открыто",
-    "Strict book-move trainer": "Строгий тренажёр книжных ходов",
+    "Study first. Then test yourself from memory":
+      "Сначала учи. Потом проверь себя по памяти",
+    "Please leave feedback for openings you’d like to see":
+      "Оставьте отзыв о дебютах, которые хотите увидеть",
     "Drill packs": "Тренировочные пакеты",
     "Opening drill packs": "Пакеты дебютных тренировок",
     "Chess opening drills available now": "Тренировки шахматных дебютов уже доступны",
@@ -118,7 +138,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "Allenati con i suggerimenti. Il test, senza.",
     "Enter the gym": "Entra in palestra",
     "Open now": "Aperto ora",
-    "Strict book-move trainer": "Allenatore rigoroso delle mosse di libro",
+    "Study first. Then test yourself from memory":
+      "Prima studia. Poi mettiti alla prova a memoria",
+    "Please leave feedback for openings you’d like to see":
+      "Lascia un feedback sulle aperture che vorresti vedere",
     "Drill packs": "Pacchetti di esercizi",
     "Opening drill packs": "Pacchetti di esercizi sulle aperture",
     "Chess opening drills available now": "Esercizi sulle aperture degli scacchi disponibili ora",
@@ -134,7 +157,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "अभ्यास संकेतों के साथ। परीक्षा बिना।",
     "Enter the gym": "जिम में प्रवेश",
     "Open now": "अभी खुला",
-    "Strict book-move trainer": "सख्त बुक-मूव ट्रेनर",
+    "Study first. Then test yourself from memory":
+      "पहले पढ़ो। फिर याद से खुद को परखो",
+    "Please leave feedback for openings you’d like to see":
+      "जो ओपनिंग आप देखना चाहते हैं, उनके लिए प्रतिक्रिया छोड़ें",
     "Drill packs": "ड्रिल पैक",
     "Opening drill packs": "ओपनिंग ड्रिल पैक",
     "Chess opening drills available now": "शतरंज ओपनिंग ड्रिल अभी उपलब्ध",
@@ -150,7 +176,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "ヒントありで練習。テストはヒントなし。",
     "Enter the gym": "ジムに入る",
     "Open now": "公開中",
-    "Strict book-move trainer": "厳密な定跡トレーナー",
+    "Study first. Then test yourself from memory":
+      "まず学ぶ。それから記憶で自分を試す",
+    "Please leave feedback for openings you’d like to see":
+      "見てほしいオープニングがあれば、フィードバックを残してください",
     "Drill packs": "ドリルパック",
     "Opening drill packs": "オープニングのドリルパック",
     "Chess opening drills available now": "チェスのオープニングドリルが公開中",
@@ -166,7 +195,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "تدرّب مع تلميحات. الاختبار بلا تلميح.",
     "Enter the gym": "ادخل الصالة",
     "Open now": "مفتوح الآن",
-    "Strict book-move trainer": "مدرّب صارم لنقلات الكتاب",
+    "Study first. Then test yourself from memory":
+      "ادرس أولاً. ثم اختبر نفسك من الذاكرة",
+    "Please leave feedback for openings you’d like to see":
+      "اترك ملاحظات عن الافتتاحيات التي تودّ رؤيتها",
     "Drill packs": "حزم التمارين",
     "Opening drill packs": "حزم تمارين الافتتاح",
     "Chess opening drills available now": "تمارين افتتاحيات الشطرنج متاحة الآن",
@@ -182,7 +214,10 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "Practice with hints. Test with none.": "İpuçlarıyla çalış. Testte hiçbiri yok.",
     "Enter the gym": "Salona gir",
     "Open now": "Şimdi açık",
-    "Strict book-move trainer": "Katı kitap-hamlesi antrenörü",
+    "Study first. Then test yourself from memory":
+      "Önce çalış. Sonra hafızandan kendini sına",
+    "Please leave feedback for openings you’d like to see":
+      "Görmek istediğin açılışlar için geri bildirim bırak",
     "Drill packs": "Alıştırma paketleri",
     "Opening drill packs": "Açılış alıştırma paketleri",
     "Chess opening drills available now": "Satranç açılış alıştırmaları şimdi hazır",

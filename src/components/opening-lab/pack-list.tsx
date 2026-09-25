@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
@@ -46,6 +46,23 @@ import { HomeMenu } from "./home-menu";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 type TrainMode = "learn" | "practice";
+
+const FEEDBACK_MAILTO =
+  "mailto:support@openinglab.co.uk?subject=Opening%20Lab%20feedback";
+
+/** Centre the opened pack after layout, and after any scroll-to-top on entry. */
+function centerPackCard(node: HTMLElement | null) {
+  if (!node) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const height = node.getBoundingClientRect().height;
+  // A pack taller than the screen cannot sit in the middle without hiding its name.
+  const block = height > window.innerHeight * 0.92 ? "start" : "center";
+  node.scrollIntoView({
+    behavior: reduce ? "auto" : "smooth",
+    block,
+    inline: "nearest",
+  });
+}
 
 type Props = {
   onStartLine: (
@@ -112,7 +129,22 @@ function PackCard({
   onComingSoon: (pack: Pack) => void;
 }) {
   const t = useT();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const pinned = open || soonNote;
   const { line: lineProgress } = useProgress();
+
+  useLayoutEffect(() => {
+    if (!pinned) return;
+    const node = cardRef.current;
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => centerPackCard(node));
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      if (second) cancelAnimationFrame(second);
+    };
+  }, [pinned]);
   const free = packLooksFree(pack);
   const price = packPrice(pack);
   const comingSoon = isPackComingSoon(pack.id);
@@ -139,6 +171,7 @@ function PackCard({
 
   return (
     <div
+      ref={cardRef}
       className={`pack-card mb-2.5 overflow-hidden rounded-[calc(var(--radius-card)+2px)] border-[1.5px] bg-bg-elevated shadow-[var(--shadow-card)] ${
         open ? "pack-list-full " : ""
       }`}
@@ -278,6 +311,14 @@ function PackCard({
         {soonNote ? (
           <p className="pack-coming-soon-note" data-coming-soon-note role="status">
             {t("Coming soon with Professor Potato Pie.")}
+            <a
+              className="pack-coming-soon-ask"
+              href={FEEDBACK_MAILTO}
+              data-coming-soon-feedback
+              onClick={(event) => event.stopPropagation()}
+            >
+              {t("Please leave feedback for openings you’d like to see")}
+            </a>
           </p>
         ) : null}
       </div>
