@@ -3245,12 +3245,39 @@ html[data-color-scheme="dark"] .app-shell--landing {
   transform: scale(0.99);
 }
 
+.landing-cta-note {
+  margin: 0.4rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.landing-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  row-gap: 0.15rem;
+  margin: 1.7rem 0 0.7rem;
+}
+
 .landing-section-title {
   margin: 1.7rem 0 0.7rem;
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 650;
   letter-spacing: -0.02em;
+}
+
+.landing-section-head .landing-section-title {
+  margin: 0;
+}
+
+.landing-section-aside {
+  margin: 0;
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 650;
 }
 
 .landing-open-grid {

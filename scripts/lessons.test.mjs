@@ -23,13 +23,13 @@ const captions = src("src/data/lessons/scotch/CAPTIONS.txt");
 
 test("landing keeps the gym and drill packs, and adds Chess opening lessons", () => {
   const cta = landing.indexOf("data-landing-cta");
-  const drills = landing.indexOf("data-landing-drills");
+  const drills = landing.indexOf("landing-cta-note");
   const lessons = landing.indexOf("data-landing-lessons");
   assert.ok(cta >= 0 && drills > cta && lessons > drills);
   assert.match(landing, /t\("Enter the gym"\)/);
-  assert.match(landing, /t\("Opening drill packs"\)/);
+  assert.match(landing, /className="landing-cta-note"[\s\S]*t\("Opening drill packs"\)/);
   assert.match(landing, /t\("Chess opening lessons"\)/);
-  assert.match(landing, /data-landing-drills[\s\S]*onClick=\{onEnterGym\}/);
+  assert.doesNotMatch(landing, /data-landing-drills/);
   assert.match(landing, /navigate\(\{ to: "\/lessons" \}\)/);
   assert.match(landing, /setShowLessons\(!isPlayApp\(\)\)/);
   assert.match(landing, /showLessons \?/);
