@@ -23,6 +23,7 @@ const LESSON_AUDIO_KIND = "lesson-sgl1";
 
 type Props = {
   title: string;
+  note: string;
 };
 
 function startLessonAudio() {
@@ -33,7 +34,7 @@ function startLessonAudio() {
  * Potato Pie seated on the cream plate. Captions and the board follow
  * intro.mp3 currentTime. Skip and Done stop the clip and the animation.
  */
-export function LessonPlayer({ title }: Props) {
+export function LessonPlayer({ title, note }: Props) {
   const t = useT();
   const { lang } = useI18n();
   const navigate = useNavigate();
@@ -142,6 +143,9 @@ export function LessonPlayer({ title }: Props) {
       <div className="home-board">
         <LessonBoard cues={scotchLessonCues} />
       </div>
+      <p className="lesson-teaching-note" data-lesson-note>
+        {t(note)}
+      </p>
     </div>
   );
 }

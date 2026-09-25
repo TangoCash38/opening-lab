@@ -75,11 +75,24 @@ test("catalogue source wires free sgl1 and locked sgl2/sgl3", () => {
   assert.doesNotMatch(view, /human voice|recorded voice|voice actor|real person/i);
   const byId = Object.fromEntries(cues.lessons.map((lesson) => [lesson.id, lesson]));
   assert.equal(byId.sgl1.free, true);
-  assert.equal(byId.sgl1.title, "Lesson 1 · Intro");
+  assert.equal(byId.sgl1.title, "Lesson 1 · Intro · Scotch Game vs Scotch Gambit");
+  assert.equal(
+    byId.sgl1.blurb,
+    "The Bxf7+/Qd5+/Qxc5+ demo does not refute 4…Bc5; Black is fine, White still a pawn down.",
+  );
   assert.equal(byId.sgl2.free, false);
+  assert.equal(byId.sgl2.title, "Lesson 2 · Meeting …Nf6");
+  assert.equal(
+    byId.sgl2.blurb,
+    "After 4…Nf6, White’s main answers (Canal 5.O-O and the 5.e5 push) and how Black should meet each.",
+  );
   assert.equal(byId.sgl3.free, false);
-  assert.match(byId.sgl2.title, /Lesson 2/);
-  assert.match(byId.sgl3.title, /Lesson 3/);
+  assert.equal(byId.sgl3.title, "Lesson 3 · Meeting …Bc5");
+  assert.equal(
+    byId.sgl3.blurb,
+    "After 4…Bc5, sound White plans with c3 / O-O — beyond the intro’s Bxf7+ fork demo — and what Black should avoid.",
+  );
+  assert.match(view, /note=\{lesson\.blurb\}/);
 });
 
 test("lesson 1 player uses Potato Pie, captions, and the narration clock", () => {
@@ -95,6 +108,7 @@ test("lesson 1 player uses Potato Pie, captions, and the narration clock", () =>
   assert.match(player, /data-lesson-skip/);
   assert.match(player, /data-lesson-done/);
   assert.match(player, /LessonBoard/);
+  assert.match(player, /data-lesson-note/);
   assert.match(board, /lessonSansAt/);
   assert.match(board, /audio\.currentTime/);
   assert.match(src("src/data/lessons/scotch-course.ts"), /\/lessons\/scotch\/intro\.mp3/);
@@ -108,6 +122,12 @@ test("lesson 1 player uses Potato Pie, captions, and the narration clock", () =>
   assert.ok(boardExported);
   assert.deepEqual(JSON.parse(boardExported[1]), cues);
   assert.match(captions, /Professor Potato Pie/);
+  assert.match(
+    captions,
+    /The Scotch Game received serious top-level attention after Kasparov used it in the 1990 World Championship match/,
+  );
+  assert.doesNotMatch(captions, /Kasparov (?:used|played) the (?:Scotch )?Gambit/i);
+  assert.doesNotMatch(player + board + view, /Kasparov/);
   assert.doesNotMatch(player + board + captions, /human voice|recorded voice|voice actor/i);
   assert.doesNotMatch(player + board, /Play on|versus the computer|vs computer/i);
 });
@@ -184,6 +204,12 @@ test("sgl1 is free, sgl2 and sgl3 stay locked until lesson-scotch", async (t) =>
   );
 
   const stem = ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"];
+  const played = cues.cues.flatMap((cue) => (cue.san ? [cue.san] : []));
+  assert.deepEqual(played, [...stem, "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Kf8", "Qxc5+"]);
+  assert.equal(cues.cues.find((cue) => cue.fromPly === 7)?.san, "Bc5");
+  assert.ok(!played.includes("Nxd4"));
+  assert.ok(!played.includes("Qxd5"));
+  assert.equal(played.at(-1), "Qxc5+");
   assert.deepEqual(sync.lessonSansAt(cues.cues, 56.04), stem);
   assert.deepEqual(sync.lessonSansAt(cues.cues, 112.9), stem);
   assert.deepEqual(sync.lessonSansAt(cues.cues, 113.5).slice(0, 8), [...stem, "Bc5"]);

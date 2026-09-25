@@ -165,7 +165,7 @@ export function LessonGate({ courseId, lessonId }: { courseId: string; lessonId:
   const unlocked = isLessonUnlocked(lesson, checkout.packs, LESSON_SCOTCH_PRODUCT_ID);
   const screen = lessonScreen(lesson.id, unlocked);
   if (screen === "player") {
-    return <LessonPlayer title={lesson.title} />;
+    return <LessonPlayer title={lesson.title} note={lesson.blurb} />;
   }
   return (
     <article className="lesson-stub" data-lesson-stub={lesson.id} data-lesson-access={screen}>

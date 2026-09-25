@@ -4137,3 +4137,11 @@ html[data-color-scheme="dark"] .landing-chip {
 .lesson-player .scotch-coach-beat {
   min-height: 4.4rem;
 }
+
+.lesson-teaching-note {
+  grid-column: 1 / -1;
+  margin: 0.35rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
