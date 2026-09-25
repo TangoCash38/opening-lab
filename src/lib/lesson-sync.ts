@@ -1,11 +1,26 @@
 import { Chess } from "chess.js";
 
+/** From-square, to-square. Potential moves only — never a played ply. */
+export type LessonArrow = readonly [string, string];
+
 export type LessonCue = {
   t: number;
   san?: string;
   fromPly?: number;
   note?: string;
+  /**
+   * Temporary arrows for a move that is spoken but not played.
+   * Pieces stay on the current position. Cleared by the next real ply,
+   * the next arrow cue, Skip/Done (narration stops), or LESSON_ARROW_HOLD_SEC.
+   */
+  arrows?: readonly LessonArrow[];
 };
+
+/**
+ * How long a potential-move arrow stays when no later ply or arrow cue
+ * replaces it. About two to three seconds of the narration clock.
+ */
+export const LESSON_ARROW_HOLD_SEC = 2.5;
 
 export type LessonMeta = {
   id: string;
@@ -60,6 +75,40 @@ export function lessonSansAt(cues: readonly LessonCue[], timeSec: number): strin
     if (cue.san) line = [...line, cue.san];
   }
   return line;
+}
+
+/**
+ * Potential-move arrows visible at `timeSec`.
+ * The latest arrow cue at or before the clock wins. A later real ply
+ * (`san` or `fromPly`) clears it, and so does the hold, if nothing else
+ * has replaced the set. Arrow cues do not change the position.
+ */
+export function lessonArrowsAt(
+  cues: readonly LessonCue[],
+  timeSec: number,
+  holdSec: number = LESSON_ARROW_HOLD_SEC,
+): LessonArrow[] {
+  if (!Number.isFinite(timeSec) || timeSec < 0) return [];
+  const hold = Number.isFinite(holdSec) && holdSec > 0 ? holdSec : LESSON_ARROW_HOLD_SEC;
+  let active: { t: number; arrows: LessonArrow[] } | null = null;
+  for (const cue of cues) {
+    if (cue.t > timeSec + 1e-9) break;
+    const shapes = (cue.arrows ?? []).filter(
+      (pair): pair is LessonArrow =>
+        Array.isArray(pair) && pair.length >= 2 && Boolean(pair[0]) && Boolean(pair[1]),
+    );
+    if (shapes.length > 0) {
+      active = {
+        t: cue.t,
+        arrows: shapes.map((pair) => [String(pair[0]), String(pair[1])] as const),
+      };
+      continue;
+    }
+    if (active && (cue.san || typeof cue.fromPly === "number")) active = null;
+  }
+  if (!active) return [];
+  if (timeSec > active.t + hold + 1e-9) return [];
+  return active.arrows;
 }
 
 /** Legal position for the cues at `timeSec`, or null if a SAN is illegal. */

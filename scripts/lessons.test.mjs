@@ -111,7 +111,11 @@ test("lesson 1 player uses Potato Pie, captions, and the narration clock", () =>
   assert.match(player, /LessonBoard/);
   assert.match(player, /data-lesson-note/);
   assert.match(board, /lessonSansAt/);
+  assert.match(board, /lessonArrowsAt/);
+  assert.match(board, /kind: "option"/);
   assert.match(board, /audio\.currentTime/);
+  assert.match(src("src/components/opening-lab/chess-board.tsx"), /board-arrow--option/);
+  assert.match(src("src/components/opening-lab/chess-board.tsx"), /OPTION_ARROW = "#1b6b3a"/);
   assert.match(src("src/data/lessons/scotch-course.ts"), /\/lessons\/scotch\/intro\.mp3/);
   assert.ok(readFileSync(join(root, "public/lessons/scotch/intro.mp3")).byteLength > 100_000);
   const captionModule = src("src/data/lessons/scotch-captions.ts");
@@ -213,12 +217,93 @@ test("sgl1 is free, sgl2 and sgl3 stay locked until lesson-scotch", async (t) =>
   assert.equal(played.at(-1), "Qxc5+");
   assert.deepEqual(sync.lessonSansAt(cues.cues, 56.04), stem);
   assert.deepEqual(sync.lessonSansAt(cues.cues, 112.9), stem);
+  assert.deepEqual(sync.lessonSansAt(cues.cues, 46), [...stem.slice(0, 6)]);
+  assert.deepEqual(sync.lessonSansAt(cues.cues, 103), stem);
+  const arrowCues = cues.cues.filter((cue) => cue.arrows);
+  assert.equal(arrowCues.length, 7);
+  assert.ok(arrowCues.every((cue) => cue.san == null && cue.fromPly == null));
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 45.55), [["f3", "d4"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 45.55 + sync.LESSON_ARROW_HOLD_SEC), [
+    ["f3", "d4"],
+  ]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 45.55 + sync.LESSON_ARROW_HOLD_SEC + 0.05), []);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 56.04), []);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 66.2), [["c4", "f7"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 90.45), [["f8", "c5"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 94.15), [["g8", "f6"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 99.5), [["f8", "b4"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 101.5), [["d7", "d6"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 102.95), [["f8", "e7"]]);
+  assert.deepEqual(sync.lessonArrowsAt(cues.cues, 113.5), []);
+  const { Chess } = await import("chess.js");
+  const squaresFor = (sans, san) => {
+    const chess = new Chess();
+    for (const move of sans) chess.move(move);
+    const playedMove = chess.move(san);
+    assert.ok(playedMove);
+    return [playedMove.from, playedMove.to];
+  };
+  const afterExd4 = stem.slice(0, 6);
+  assert.deepEqual(squaresFor(afterExd4, "Nxd4"), ["f3", "d4"]);
+  assert.deepEqual(squaresFor(stem, "Bc5"), ["f8", "c5"]);
+  assert.deepEqual(squaresFor(stem, "Nf6"), ["g8", "f6"]);
+  assert.deepEqual(squaresFor(stem, "Bb4+"), ["f8", "b4"]);
+  assert.deepEqual(squaresFor(stem, "d6"), ["d7", "d6"]);
+  assert.deepEqual(squaresFor(stem, "Be7"), ["f8", "e7"]);
+  const glanced = new Chess();
+  for (const move of stem) glanced.move(move);
+  assert.equal(glanced.get("c4")?.type, "b");
+  assert.equal(glanced.get("c4")?.color, "w");
+  assert.equal(glanced.isAttacked("f7", "w"), true);
+  assert.equal(
+    glanced.moves({ square: "c4", verbose: true }).some((move) => move.to === "f7"),
+    false,
+  );
+  assert.deepEqual(
+    sync.lessonArrowsAt(
+      [
+        { t: 1, arrows: [["f3", "d4"]] },
+        { t: 2, san: "e4" },
+      ],
+      2,
+    ),
+    [],
+  );
+  assert.deepEqual(
+    sync.lessonArrowsAt(
+      [
+        { t: 1, arrows: [["f8", "c5"]] },
+        { t: 2, arrows: [["g8", "f6"]] },
+      ],
+      2.2,
+    ),
+    [["g8", "f6"]],
+  );
+  assert.deepEqual(
+    sync.lessonArrowsAt(
+      [
+        { t: 1, arrows: [["c4", "f7"]] },
+        { t: 2, note: "caption only" },
+      ],
+      2.2,
+    ),
+    [["c4", "f7"]],
+  );
+  assert.deepEqual(
+    sync.lessonArrowsAt(
+      [
+        { t: 1, arrows: [["f3", "d4"]] },
+        { t: 2, fromPly: 0 },
+      ],
+      2,
+    ),
+    [],
+  );
   assert.deepEqual(sync.lessonSansAt(cues.cues, 113.5).slice(0, 8), [...stem, "Bc5"]);
   const branch = sync.lessonSansAt(cues.cues, 150);
   assert.deepEqual(branch, [...stem, "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Kf8", "Qxc5+"]);
   const fen = sync.lessonFenAt(cues.cues, 160);
   assert.ok(fen);
-  const { Chess } = await import("chess.js");
   const chess = new Chess(fen);
   assert.equal(chess.turn(), "b");
   assert.equal(chess.inCheck(), true);

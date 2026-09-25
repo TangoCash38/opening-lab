@@ -42,8 +42,13 @@ export type PromotionPrompt = {
 export type BoardArrow = {
   from: Square;
   to: Square;
-  kind: "pv1" | "pv2";
+  /** pv1 blue, pv2 grey, option = spoken potential move (green with a cream edge). */
+  kind: "pv1" | "pv2" | "option";
 };
+
+/** Deep green body plus a cream edge, readable on cream and on green or brown squares. */
+const OPTION_ARROW = "#1b6b3a";
+const OPTION_ARROW_HALO = "#f7f3ea";
 
 type Props = {
   game: Chess;
@@ -66,7 +71,7 @@ type Props = {
   /** Arcade mate: king on this square blasts off before the finish sheet. */
   mateBlast?: { code: string; sq: Square } | null;
   onMateBlastDone?: () => void;
-  /** Practice-review MultiPV arrows (PV1 blue, PV2 grey). */
+  /** Practice-review MultiPV arrows, or lesson potential-move arrows. */
   arrows?: BoardArrow[];
   /** Extra soft-green hint moves (authoring MultiPV first plies). */
   hintMoves?: { from: Square; to: Square }[];
@@ -102,6 +107,32 @@ function squareToRC(sq: Square, flip: boolean) {
   const col = flip ? 7 - file : file;
   const row = flip ? rank : 7 - rank;
   return { row, col };
+}
+
+function arrowShaft(from: Square, to: Square, flip: boolean) {
+  const a = squareToRC(from, flip);
+  const b = squareToRC(to, flip);
+  const x1 = a.col + 0.5;
+  const y1 = a.row + 0.5;
+  const x2 = b.col + 0.5;
+  const y2 = b.row + 0.5;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  const start = Math.min(0.42, len * 0.36);
+  const end = Math.min(0.18, len * 0.14);
+  const sx = x1 + ux * start;
+  const sy = y1 + uy * start;
+  const ex = x2 - ux * end;
+  const ey = y2 - uy * end;
+  const head = Math.min(0.34, Math.max(0.22, len * 0.28));
+  const hx = ex - ux * head;
+  const hy = ey - uy * head;
+  const px = -uy * head * 0.42;
+  const py = ux * head * 0.42;
+  return { sx, sy, hx, hy, ex, ey, px, py };
 }
 
 function parsePieces(fenBoard: string): { sq: Square; code: string }[] {
@@ -161,7 +192,6 @@ const PROMO_PIECES: { key: PromotionPiece; label: string }[] = [
 
 const DRAG_PX = 8;
 
-
 function ArcadeCaptureBlast({
   code,
   from,
@@ -208,7 +238,6 @@ function ArcadeCaptureBlast({
     </div>
   );
 }
-
 
 function mateShardClip(index: number, count: number) {
   const step = (Math.PI * 2) / count;
@@ -396,11 +425,8 @@ export function ChessBoard({
   useLayoutEffect(() => {
     const next = parsePieces(fenBoard);
     const jumped =
-      !slide &&
-      !lastSlideRef.current &&
-      placementKey(piecesRef.current) !== placementKey(next);
+      !slide && !lastSlideRef.current && placementKey(piecesRef.current) !== placementKey(next);
     setPieces((prev) => {
-
       if (slide) {
         lastSlideRef.current = slide;
         const base = next.filter((p) => p.sq !== slide.to);
@@ -408,23 +434,18 @@ export function ChessBoard({
           base.push({ sq: slide.from, code: slide.piece });
         }
 
-        const prevMover = prev.find(
-          (x) => x.sq === slide.from && x.code === slide.piece,
-        );
+        const prevMover = prev.find((x) => x.sq === slide.from && x.code === slide.piece);
         if (prevMover) moverIdRef.current = prevMover.id;
 
         const used = new Set<string>();
         return base.map((p) => {
           if (p.sq === slide.from && p.code === slide.piece) {
-            const id =
-              moverIdRef.current ?? prevMover?.id ?? newId(p.code, p.sq);
+            const id = moverIdRef.current ?? prevMover?.id ?? newId(p.code, p.sq);
             moverIdRef.current = id;
             used.add(id);
             return { id, code: p.code, sq: p.sq };
           }
-          const old = prev.find(
-            (x) => !used.has(x.id) && x.sq === p.sq && x.code === p.code,
-          );
+          const old = prev.find((x) => !used.has(x.id) && x.sq === p.sq && x.code === p.code);
           const id = old?.id ?? newId(p.code, p.sq);
           used.add(id);
           return { id, code: p.code, sq: p.sq };
@@ -454,10 +475,7 @@ export function ChessBoard({
 
         const stationary = prev.find(
           (x) =>
-            !used.has(x.id) &&
-            x.sq === p.sq &&
-            x.code === p.code &&
-            x.id !== moverIdRef.current,
+            !used.has(x.id) && x.sq === p.sq && x.code === p.code && x.id !== moverIdRef.current,
         );
         if (stationary) {
           used.add(stationary.id);
@@ -531,8 +549,7 @@ export function ChessBoard({
     if (dragRef.current) return;
     resumeAudio();
 
-    const sq =
-      squareFromElement(e.target) ?? squareFromPoint(e.clientX, e.clientY);
+    const sq = squareFromElement(e.target) ?? squareFromPoint(e.clientX, e.clientY);
     if (!sq) return;
 
     const piece = game.get(sq);
@@ -621,9 +638,7 @@ export function ChessBoard({
       const isSelected = selected === sq || dragOrigin === sq;
       const isWrong = wrongUntil === sq;
       const isFrom =
-        showHints &&
-        (expected?.from === sq ||
-          Boolean(hintMoves?.some((h) => h.from === sq)));
+        showHints && (expected?.from === sq || Boolean(hintMoves?.some((h) => h.from === sq)));
       const isTo =
         showHints &&
         !isFrom &&
@@ -659,12 +674,8 @@ export function ChessBoard({
             isWrong ? "sq-wrong" : "",
             isFrom ? "sq-hint-from" : "",
             isTo ? "sq-hint-to" : "",
-            !isFrom && !isTo && !isWrong && !isSelected && isLastFrom
-              ? "sq-last-from"
-              : "",
-            !isFrom && !isTo && !isWrong && !isSelected && isLastTo
-              ? "sq-last-to"
-              : "",
+            !isFrom && !isTo && !isWrong && !isSelected && isLastFrom ? "sq-last-from" : "",
+            !isFrom && !isTo && !isWrong && !isSelected && isLastTo ? "sq-last-to" : "",
           ]
             .filter(Boolean)
             .join(" ")}
@@ -709,11 +720,7 @@ export function ChessBoard({
       if (mateBlast && p.sq === mateBlast.sq) return null;
       if (slide && p.sq === slide.to) return null;
 
-      const isMover = !!(
-        slide &&
-        p.sq === slide.from &&
-        p.code === slide.piece
-      );
+      const isMover = !!(slide && p.sq === slide.from && p.code === slide.piece);
       const isDragging = !!(drag?.moved && p.sq === drag.from);
 
       const visualSq = isMover && glideOn && slide ? slide.to : p.sq;
@@ -754,11 +761,10 @@ export function ChessBoard({
     : ["8", "7", "6", "5", "4", "3", "2", "1"];
 
   return (
-    <div className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : frameCoords ? "mb-1 max-w-[420px]" : "mb-4 max-w-[420px]"}`}>
-      <div
-        className={`board-frame${frameCoords ? " board-frame--margin-coords" : ""}`}
-        dir="ltr"
-      >
+    <div
+      className={`relative mx-auto w-full ${expanded ? "mb-0 max-w-none" : frameCoords ? "mb-1 max-w-[420px]" : "mb-4 max-w-[420px]"}`}
+    >
+      <div className={`board-frame${frameCoords ? " board-frame--margin-coords" : ""}`} dir="ltr">
         {frameCoords ? (
           <div className="board-margin-ranks" aria-hidden>
             {marginRanks.map((label) => (
@@ -797,60 +803,63 @@ export function ChessBoard({
                 aria-hidden
                 data-board-arrows
               >
-                {(arrows.some((a) => a.kind === "pv2")
-                  ? arrows.filter((a) => a.kind === "pv2")
-                  : []
-                )
-                  .concat(arrows.filter((a) => a.kind === "pv1"))
-                  .map((arrow) => {
-                    const a = squareToRC(arrow.from, flip);
-                    const b = squareToRC(arrow.to, flip);
-                    const x1 = a.col + 0.5;
-                    const y1 = a.row + 0.5;
-                    const x2 = b.col + 0.5;
-                    const y2 = b.row + 0.5;
-                    const dx = x2 - x1;
-                    const dy = y2 - y1;
-                    const len = Math.hypot(dx, dy) || 1;
-                    const ux = dx / len;
-                    const uy = dy / len;
-                    const start = Math.min(0.42, len * 0.36);
-                    const end = Math.min(0.18, len * 0.14);
-                    const sx = x1 + ux * start;
-                    const sy = y1 + uy * start;
-                    const ex = x2 - ux * end;
-                    const ey = y2 - uy * end;
-                    const head = Math.min(0.34, Math.max(0.22, len * 0.28));
-                    const hx = ex - ux * head;
-                    const hy = ey - uy * head;
-                    const nx = -uy * head * 0.42;
-                    const ny = ux * head * 0.42;
-                    const color = arrow.kind === "pv1" ? "#3b6ea5" : "#8a8278";
-                    return (
-                      <g
-                        key={`${arrow.kind}-${arrow.from}-${arrow.to}`}
-                        className={
-                          arrow.kind === "pv1"
+                {[
+                  ...arrows.filter((a) => a.kind === "pv2"),
+                  ...arrows.filter((a) => a.kind === "option"),
+                  ...arrows.filter((a) => a.kind === "pv1"),
+                ].map((arrow) => {
+                  const { sx, sy, hx, hy, ex, ey, px, py } = arrowShaft(arrow.from, arrow.to, flip);
+                  const option = arrow.kind === "option";
+                  const color = option
+                    ? OPTION_ARROW
+                    : arrow.kind === "pv1"
+                      ? "#3b6ea5"
+                      : "#8a8278";
+                  const width = arrow.kind === "pv2" ? 0.12 : 0.14;
+                  const head = `M ${ex} ${ey} L ${hx + px} ${hy + py} L ${hx - px} ${hy - py} Z`;
+                  const tipX = ex + (ex - hx) * 0.22;
+                  const tipY = ey + (ey - hy) * 0.22;
+                  const haloHead = `M ${tipX} ${tipY} L ${hx + px * 1.85} ${hy + py * 1.85} L ${hx - px * 1.85} ${hy - py * 1.85} Z`;
+                  return (
+                    <g
+                      key={`${arrow.kind}-${arrow.from}-${arrow.to}`}
+                      className={
+                        option
+                          ? "board-arrow board-arrow--option"
+                          : arrow.kind === "pv1"
                             ? "board-arrow board-arrow--pv1"
                             : "board-arrow board-arrow--pv2"
-                        }
-                      >
-                        <line
-                          x1={sx}
-                          y1={sy}
-                          x2={hx}
-                          y2={hy}
-                          stroke={color}
-                          strokeWidth={arrow.kind === "pv1" ? 0.14 : 0.12}
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d={`M ${ex} ${ey} L ${hx + nx} ${hy + ny} L ${hx - nx} ${hy - ny} Z`}
-                          fill={color}
-                        />
-                      </g>
-                    );
-                  })}
+                      }
+                      data-board-arrow={`${arrow.from}${arrow.to}`}
+                      data-board-arrow-kind={arrow.kind}
+                    >
+                      {option ? (
+                        <g className="board-arrow-halo">
+                          <line
+                            x1={sx}
+                            y1={sy}
+                            x2={hx}
+                            y2={hy}
+                            stroke={OPTION_ARROW_HALO}
+                            strokeWidth={0.28}
+                            strokeLinecap="round"
+                          />
+                          <path d={haloHead} fill={OPTION_ARROW_HALO} />
+                        </g>
+                      ) : null}
+                      <line
+                        x1={sx}
+                        y1={sy}
+                        x2={hx}
+                        y2={hy}
+                        stroke={color}
+                        strokeWidth={width}
+                        strokeLinecap="round"
+                      />
+                      <path d={head} fill={color} />
+                    </g>
+                  );
+                })}
               </svg>
             ) : null}
 
@@ -899,8 +908,7 @@ export function ChessBoard({
                   onClick={(e) => e.stopPropagation()}
                 >
                   {PROMO_PIECES.map((p) => {
-                    const code =
-                      promotion.color === "w" ? p.key.toUpperCase() : p.key;
+                    const code = promotion.color === "w" ? p.key.toUpperCase() : p.key;
                     return (
                       <button
                         key={p.key}

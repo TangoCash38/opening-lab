@@ -8,7 +8,42 @@
     { "t": 31.0, "san": "Nc6" },
     { "t": 34.0, "san": "d4" },
     { "t": 36.52, "san": "exd4" },
+    {
+      "t": 45.55,
+      "arrows": [["f3", "d4"]],
+      "note": "Scotch Game contrast Nxd4 — spoken at ~45.5s (knight takes d4), not played"
+    },
     { "t": 56.04, "san": "Bc4" },
+    {
+      "t": 66.2,
+      "arrows": [["c4", "f7"]],
+      "note": "bishop looks at f7 — glance only, Bxf7+ is not played here"
+    },
+    {
+      "t": 90.45,
+      "arrows": [["f8", "c5"]],
+      "note": "option Bc5, spoken before the illustrative branch"
+    },
+    {
+      "t": 94.15,
+      "arrows": [["g8", "f6"]],
+      "note": "option Nf6"
+    },
+    {
+      "t": 99.5,
+      "arrows": [["f8", "b4"]],
+      "note": "option Bb4+"
+    },
+    {
+      "t": 101.5,
+      "arrows": [["d7", "d6"]],
+      "note": "option d6"
+    },
+    {
+      "t": 102.95,
+      "arrows": [["f8", "e7"]],
+      "note": "option Be7"
+    },
     { "t": 113.0, "note": "reset to after Bc4 (ply 7) before illustrative branch" },
     { "t": 113.5, "san": "Bc5", "fromPly": 7 },
     { "t": 119.0, "san": "c3" },
