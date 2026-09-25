@@ -117,22 +117,32 @@ export function LandingHome({
       <div className="landing-inner">
         <div className="landing-hero">
           <div className="landing-hero-art">
-            <img
-              className="landing-coach"
-              src="/scotch-coach/coach-seated-v2.png"
-              width={640}
-              height={1071}
-              alt={t("Professor Potato Pie")}
-              decoding="async"
-              draggable={false}
-            />
+            <div className="landing-coach-wrap">
+              <img
+                className="landing-coach"
+                src="/scotch-coach/coach-seated-v2.png"
+                width={640}
+                height={1071}
+                alt={t("Professor Potato Pie")}
+                decoding="async"
+                draggable={false}
+              />
+              <img
+                className="landing-mug-logo"
+                src="/brand/opening-lab-logo.png"
+                width={72}
+                height={72}
+                alt=""
+                decoding="async"
+                draggable={false}
+              />
+            </div>
             <LandingBoard />
           </div>
           <div className="landing-copy">
-            <h1 id="landing-title" className="landing-title">
-              {t("Learn the book. Keep the book.")}
-            </h1>
-            <p className="landing-sub">{t("Practice with hints. Test with none.")}</p>
+            <p id="landing-title" className="landing-sub">
+              {t("Practice with hints. Test with none.")}
+            </p>
             <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
               {t("Enter the gym")}
             </button>
@@ -182,9 +192,14 @@ export function LandingHome({
 
 function BrandMark() {
   return (
-    <span className="brand-mark" aria-hidden="true">
-      <img src="/pieces/wR.svg" alt="" width={45} height={45} draggable={false} />
-    </span>
+    <img
+      className="brand-mark"
+      src="/brand/opening-lab-logo.png"
+      alt=""
+      width={48}
+      height={48}
+      draggable={false}
+    />
   );
 }
 

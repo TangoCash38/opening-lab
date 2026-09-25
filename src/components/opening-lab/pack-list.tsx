@@ -45,8 +45,6 @@ import { HomeHero } from "./home-hero";
 import { HomeMenu } from "./home-menu";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
-import { WebsiteAppPrompt } from "./website-app-prompt";
-
 type TrainMode = "learn" | "practice";
 
 type Props = {
@@ -559,7 +557,6 @@ export function PackList({
 
   return (
     <div className="pack-list">
-      <WebsiteAppPrompt />
       <div className="home-heading-row">
         <div className="home-heading-actions">
           <HomeMenu onCreateOwn={onCreateOwn} onHelp={onHowToPlay} onReport={onReportLine} />
