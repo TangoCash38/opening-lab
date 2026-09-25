@@ -12,7 +12,7 @@ export {
 } from "@/lib/play-skus";
 
 /** Only these packs appear in the catalog while we check the rest. */
-export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "queens-gambit-white", "opening-traps", "scotch", "london", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "old-indian-black", "stafford-black", "ponziani-white", "alekhine-black"] as const;
+export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "ruy-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "qg-white", "opening-traps", "scotch", "london", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "old-indian-black", "stafford-black", "ponziani-white", "alekhine-black"] as const;
 
 export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
 
@@ -21,7 +21,7 @@ export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
  * Every other pack id is coming soon.
  * Relaunch a pack by adding its id here — one line.
  */
-export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white"] as const;
+export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white"] as const;
 
 export type LivePackId = (typeof LIVE_PACK_IDS)[number];
 
