@@ -36,16 +36,24 @@ type Props = {
   plyAtSec?: readonly number[] | null;
   /** Clip length used when the element has not reported a duration yet. */
   plyFallbackSec?: number;
+  /**
+   * Pack intro stem (e.g. Caro e4 c6). Defaults to the Scotch gambit stem
+   * when the cuppa intro plays with no beatPlies.
+   */
+  stemSans?: readonly string[] | null;
+  /** Seconds into the intro clip when each stem ply is spoken. */
+  stemAtSec?: readonly number[] | null;
 };
 
 /** SAN for the talk. Canal reads pack id sg1. The cuppa stem stays the named moves. */
 function talkSans(
   talk: Talk,
   beatPlies?: readonly (string | undefined)[] | null,
+  stemSans?: readonly string[] | null,
 ): readonly string[] {
   if (beatPlies) return beatPlies.filter((ply): ply is string => Boolean(ply));
   if (talk === "line") return [];
-  if (talk !== "canal") return SCOTCH_COACH_STEM;
+  if (talk !== "canal") return stemSans && stemSans.length > 0 ? stemSans : SCOTCH_COACH_STEM;
   const pack = PACKS.find((item) => item.id === SCOTCH_PACK_ID);
   const line = pack?.lines.find((item) => item.id === SCOTCH_CANAL_LINE_ID);
   return line?.plies ?? [];
@@ -88,8 +96,10 @@ export function ScotchCoachBoard({
   beatIndex = 0,
   plyAtSec = null,
   plyFallbackSec = 0,
+  stemSans = null,
+  stemAtSec = null,
 }: Props) {
-  const sans = useMemo(() => talkSans(talk, beatPlies), [talk, beatPlies]);
+  const sans = useMemo(() => talkSans(talk, beatPlies, stemSans), [talk, beatPlies, stemSans]);
   const [game, setGame] = useState(() => new Chess());
   const [slide, setSlide] = useState<SlideAnim | null>(null);
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
@@ -105,12 +115,14 @@ export function ScotchCoachBoard({
   const beatIndexRef = useRef(beatIndex);
   const plyAtSecRef = useRef(plyAtSec);
   const plyFallbackRef = useRef(plyFallbackSec);
+  const stemAtSecRef = useRef(stemAtSec);
   sansRef.current = sans;
   talkRef.current = talk;
   beatPliesRef.current = beatPlies;
   beatIndexRef.current = beatIndex;
   plyAtSecRef.current = plyAtSec;
   plyFallbackRef.current = plyFallbackSec;
+  stemAtSecRef.current = stemAtSec;
 
   const pump = useCallback(() => {
     if (!aliveRef.current || slidingRef.current) return;
@@ -184,6 +196,14 @@ export function ScotchCoachBoard({
         const fallback = plyFallbackRef.current > 0 ? plyFallbackRef.current : 1;
         const clock = narrationClock(started, fallback, true);
         targetRef.current = coachAudioPlyCount(cues, clock.time, clock.duration, fallback);
+        pump();
+        return;
+      }
+      const stemCues = stemAtSecRef.current;
+      if (stemCues && stemCues.length > 0 && talkRef.current === "intro" && !beatPliesRef.current) {
+        const fallback = plyFallbackRef.current > 0 ? plyFallbackRef.current : SCOTCH_COACH_NARRATION_FALLBACK_SEC;
+        const clock = narrationClock(started, fallback, true);
+        targetRef.current = coachAudioPlyCount(stemCues, clock.time, clock.duration, fallback);
         pump();
         return;
       }

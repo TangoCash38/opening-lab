@@ -17,6 +17,19 @@ export function scotchCoachNarration(): HTMLAudioElement | null {
   return narration;
 }
 
+function hardTeardown(audio: HTMLAudioElement) {
+  audio.pause();
+  try {
+    audio.currentTime = 0;
+  } catch {
+    /* metadata may not be ready */
+  }
+  audio.removeAttribute("src");
+  audio.replaceChildren();
+  audio.load();
+  audio.remove();
+}
+
 function mountNarration(mp3Url: string, oggUrl: string | null, kind: string): HTMLAudioElement | null {
   if (typeof document === "undefined") return null;
   if (
@@ -75,6 +88,11 @@ export function startCoachPackNarration(
   return mountNarration(mp3Url, oggUrl, kind);
 }
 
+/**
+ * Pause and clear the active clip. Hard DOM teardown is deferred by a
+ * microtask so finishCoach → launchLine → startCanal in the same Practice
+ * tap can call play() while the user gesture is still live.
+ */
 export function stopScotchCoachNarration() {
   const audio = narration;
   narration = null;
@@ -85,10 +103,7 @@ export function stopScotchCoachNarration() {
   } catch {
     /* metadata may not be ready */
   }
-  audio.removeAttribute("src");
-  audio.replaceChildren();
-  audio.load();
-  audio.remove();
+  queueMicrotask(() => hardTeardown(audio));
 }
 
 export function setScotchCoachNarrationMuted(muted: boolean) {
