@@ -14,8 +14,9 @@
  *
  * Finishing the pack intro (the last Practice button, or the clip) opens the
  * first-line talk before book Practice, on the line that Practice started.
- * Skip dismisses only the talk on screen. The gym intro pages do not set
- * these session keys.
+ * London is the exception: the intro stops on the line list, and Line 1
+ * waits for a tap. Skip dismisses only the talk on screen. The gym intro
+ * pages do not set these session keys.
  */
 import {
   SCOTCH_CANAL_BEATS,
@@ -95,6 +96,12 @@ export type CoachPackConfig = {
    * Every other pack plays `firstLineBeats[].ply` as each beat shows.
    */
   firstLinePlaysPackLine?: boolean;
+  /**
+   * Finishing or skipping the intro returns to the line list.
+   * The first-line talk waits for a tap on `firstLineId`.
+   * Other packs leave this unset and open that talk when the intro ends.
+   */
+  introEndsOnLineList?: boolean;
 };
 
 const OPENING_TRAPS_PACK_ID = "opening-traps";
@@ -513,6 +520,7 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: LONDON_LINE,
     firstLineAudio: LONDON_LINE_WAV,
     firstLineAudioFallbackSec: LONDON_LINE_SEC,
+    introEndsOnLineList: true,
   },
 };
 
@@ -537,11 +545,16 @@ export function coachPackLineApplies(input: { packId: string; lineId: string }):
   return input.lineId === pack.firstLineId;
 }
 
+/** Intro end and Skip return to the line list. Line 1 waits for a tap. */
+export function coachIntroEndsOnLineList(packId: string): boolean {
+  return COACH_PACKS[packId]?.introEndsOnLineList === true;
+}
+
 /**
  * Talk to open when the pack intro finishes.
- * `null` for Skip, a line that is not the coached first line, or a talk
- * already played this visit. Scotch sg1 is the canal talk; other packs use
- * `firstLineId`.
+ * `null` for Skip, a line that is not the coached first line, a talk
+ * already played this visit, or a pack whose intro ends on the line list
+ * (London). Scotch sg1 is the canal talk; other packs use `firstLineId`.
  */
 export function coachTalkAfterPackIntro(input: {
   packId: string;
@@ -551,6 +564,7 @@ export function coachTalkAfterPackIntro(input: {
   lineAlreadySeen: boolean;
 }): "canal" | "line" | null {
   if (input.skipped || input.lineAlreadySeen) return null;
+  if (coachIntroEndsOnLineList(input.packId)) return null;
   if (
     scotchCanalCoachApplies({
       packId: input.packId,

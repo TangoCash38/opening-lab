@@ -10,6 +10,7 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import {
   coachIntroAlreadySeen,
+  coachIntroEndsOnLineList,
   coachLineAlreadySeen,
   coachPackIntroApplies,
   coachPackLineApplies,
@@ -363,9 +364,19 @@ export function HomeHero({
       stopScotchCoachNarration();
       return;
     }
-    // The intro used to drop straight into Line 1. The first-line talk only
-    // mounted from a line-card tap, so Next…Practice never reached it.
-    // Completing the intro is the main Practice entry: open that talk first.
+    // London stops on the line list. Skip and the clip both dismiss this
+    // talk only — they do not open Line 1. A tap during the intro still
+    // opens that line, so Line 1 can play its own speech.
+    if (current.talk === "intro" && coachIntroEndsOnLineList(pack.id)) {
+      const queued = queuedLineRef.current;
+      queuedLineRef.current = null;
+      coachRef.current = null;
+      stopScotchCoachNarration();
+      setCoach(null);
+      if (queued) launchLine(queued);
+      return;
+    }
+    // Completing the intro opens the first-line talk before book Practice.
     // Skip dismisses this talk only and does not mark the other one seen.
     if (current.talk === "intro") {
       const nextTalk = coachTalkAfterPackIntro({

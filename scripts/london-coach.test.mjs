@@ -67,6 +67,13 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
   assert.match(hero, /if \(!practiceOpen\) return/);
   assert.match(hero, /whiteOnly=\{coachPack\(pack\.id\)\?\.introStemWhiteOnly === true\}/);
   assert.match(hero, /if \(current\.talk === "intro"\) options\.startPly = SCOTCH_CANAL_PRACTICE_START_PLY/);
+  assert.match(hero, /coachIntroEndsOnLineList\(pack\.id\)/);
+  const londonStop = hero.slice(
+    hero.indexOf("coachIntroEndsOnLineList(pack.id)"),
+    hero.indexOf("const nextTalk"),
+  );
+  assert.match(londonStop, /if \(queued\) launchLine\(queued\)/);
+  assert.match(londonStop, /return;/);
   assert.match(board, /playWhiteOnlySan/);
   assert.match(board, /replayWhiteOnly/);
   assert.match(board, /data-coach-white-only/);
@@ -91,6 +98,7 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
         coachLineSessionKey,
         coachPackIntroApplies,
         coachPackLineApplies,
+        coachIntroEndsOnLineList,
         coachTalkAfterPackIntro,
         coachTalkPlies,
         coachTextPlayedSans,
@@ -110,6 +118,11 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
       }
       if (coach.firstLineAudioFallbackSec !== 79.9) throw new Error("line length");
       if (coach.introStemWhiteOnly !== true) throw new Error("white only flag");
+      if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
+      if (coachIntroEndsOnLineList("london") !== true) throw new Error("london list gate");
+      if (coachIntroEndsOnLineList("caro-kann-black") || coachIntroEndsOnLineList("opening-traps") || coachIntroEndsOnLineList("scotch")) {
+        throw new Error("other packs must still chain");
+      }
       if (!coach.introStem || coach.introStem.join(" ") !== LONDON_INTRO_STEM.join(" ")) {
         throw new Error("stem " + coach.introStem);
       }
@@ -170,8 +183,8 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
       if (!coachPackIntroApplies("london")) throw new Error("intro gate");
       if (!coachPackLineApplies({ packId: "london", lineId: "lon1" })) throw new Error("lon1 talk");
       if (coachPackLineApplies({ packId: "london", lineId: "lon2" })) throw new Error("only lon1");
-      if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== "line") {
-        throw new Error("finishing the intro opens Line 1");
+      if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== null) {
+        throw new Error("finishing the intro must not open Line 1");
       }
       if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== null) {
         throw new Error("skip stays on the intro");
