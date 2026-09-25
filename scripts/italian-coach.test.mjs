@@ -48,7 +48,9 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/italian-white/professor-potato-pie-italian-intro.wav";
+  const lineWav = "public/coach/italian-white/professor-potato-pie-italian-line1.wav";
   assert.equal(existsSync(join(root, wav)), true);
+  assert.equal(existsSync(join(root, lineWav)), true);
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const board = src("src/components/opening-lab/scotch-coach-board.tsx");
   const catalog = src("src/lib/catalog.ts");
@@ -71,7 +73,7 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
   assert.match(hero, /coachIntroEndsOnLineList\(pack\.id\)/);
   assert.match(board, /playWhiteOnlySan/);
   assert.match(board, /data-coach-white-only/);
-  assert.doesNotMatch(src("src/lib/coach-packs.ts"), /italian-white[\s\S]{0,900}firstLineAudio:/);
+  assert.match(src("src/lib/coach-packs.ts"), /firstLineAudio: ITALIAN_LINE_WAV/);
 
   const run = spawnSync(
     process.execPath,
@@ -91,11 +93,13 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
         coachIntroEndsOnLineList,
         coachIntroSessionKey,
         coachLinePlyCues,
+        coachLineSessionKey,
         coachPackIntroApplies,
         coachPackLineApplies,
         coachTalkAfterPackIntro,
         coachTalkHasAudio,
         coachTalkPlies,
+        coachTextPlayedSans,
       } = await import(${JSON.stringify(compiled)});
       const pack = PACKS.find((item) => item.id === "italian-white");
       if (!pack) throw new Error("italian pack missing");
@@ -109,9 +113,11 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
       }
       if (coach.introAudioFallbackSec !== 69.12) throw new Error("length " + coach.introAudioFallbackSec);
       if (coach.firstLineId !== "it1") throw new Error("first line " + coach.firstLineId);
-      if (coach.firstLineAudio) throw new Error("line audio should be absent");
-      if (coach.firstLineBeats.length !== 0) throw new Error("line beats " + coach.firstLineBeats.length);
-      if (coachTalkHasAudio("italian-white", "line")) throw new Error("line talk has audio");
+      if (coach.firstLineAudio !== "/coach/italian-white/professor-potato-pie-italian-line1.wav") {
+        throw new Error("line audio " + coach.firstLineAudio);
+      }
+      if (coach.firstLineAudioFallbackSec !== 89.84) throw new Error("line length");
+      if (!coachTalkHasAudio("italian-white", "line")) throw new Error("line talk missing audio");
       if (coach.introStemWhiteOnly !== true) throw new Error("white only flag");
       if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
       if (coachIntroEndsOnLineList("italian-white") !== true) throw new Error("italian list gate");
@@ -156,17 +162,52 @@ test("Italian Potato Pie intro plays three White moves and returns to the line l
       }
       if (coachTalkPlies("italian-white", "intro") !== null) throw new Error("intro uses the stem clock");
       if (!coachPackIntroApplies("italian-white")) throw new Error("intro gate");
-      if (coachPackLineApplies({ packId: "italian-white", lineId: "it1" })) {
-        throw new Error("Line 1 tap must not open a missing talk");
+      if (!coachPackLineApplies({ packId: "italian-white", lineId: "it1" })) {
+        throw new Error("Line 1 tap should open the talk");
       }
-      if (coachPackLineApplies({ packId: "italian-white", lineId: "it2" })) throw new Error("only a future it1");
-      if (coachLinePlyCues("italian-white")) throw new Error("no line cues");
+      if (coachPackLineApplies({ packId: "italian-white", lineId: "it2" })) throw new Error("only it1");
       if (coachTalkAfterPackIntro({ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== null) {
         throw new Error("finishing the intro must not open Line 1");
       }
       if (coachTalkAfterPackIntro({ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== null) {
         throw new Error("skip stays off Line 1");
       }
+      const it1 = pack.lines.find((item) => item.id === "it1");
+      if (!it1) throw new Error("it1 missing");
+      const script = coachTalkPlies("italian-white", "line");
+      if (!script) throw new Error("line script");
+      const played = coachTextPlayedSans(script, script.length);
+      const expected = "e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 d6 O-O a6 a4 Ba7 Nbd2 O-O h3 Ne7 Re1 Ng6";
+      if (played.join(" ") !== expected) throw new Error("script " + played.join(" "));
+      if (played.join(" ") !== it1.plies.join(" ")) throw new Error("live it1 " + played.join(" "));
+      const lineCues = coachLinePlyCues("italian-white");
+      if (!lineCues || lineCues.length !== it1.plies.length) throw new Error("cues " + (lineCues && lineCues.length));
+      if (coachAudioPlyCount(lineCues, 14.09, 89.84, 89.84) !== 0) throw new Error("e4 not yet");
+      if (coachAudioPlyCount(lineCues, 14.1, 89.84, 89.84) !== 1) throw new Error("e4");
+      if (coachAudioPlyCount(lineCues, 31.39, 89.84, 89.84) !== 6) throw new Error("c3 not yet");
+      if (coachAudioPlyCount(lineCues, 31.4, 89.84, 89.84) !== 7) throw new Error("c3");
+      if (coachAudioPlyCount(lineCues, 57.19, 89.84, 89.84) !== 14) throw new Error("Nbd2 not yet");
+      if (coachAudioPlyCount(lineCues, 57.2, 89.84, 89.84) !== 15) throw new Error("Nbd2");
+      if (coachAudioPlyCount(lineCues, 73.69, 89.84, 89.84) !== 19) throw new Error("Ng6 not yet");
+      if (coachAudioPlyCount(lineCues, 73.7, 89.84, 89.84) !== 20) throw new Error("Ng6");
+      const line = new Chess();
+      for (const san of played) {
+        const move = line.move(san);
+        if (!move) throw new Error("illegal " + san);
+      }
+      if (line.history().join(" ") !== played.join(" ")) throw new Error("history");
+      if (line.get("c4")?.type !== "b" || line.get("c4")?.color !== "w") throw new Error("bishop");
+      if (line.get("g1")?.type !== "k" || line.get("g8")?.type !== "k") throw new Error("castles");
+      if (line.get("e1")?.type !== "r" || line.get("e1")?.color !== "w") throw new Error("rook");
+      if (line.get("g6")?.type !== "n" || line.get("g6")?.color !== "b") throw new Error("knight");
+      if (coach.firstLineBeats.length !== 20) throw new Error("line beats " + coach.firstLineBeats.length);
+      if (!coach.firstLineBeats[0].caption.startsWith("Right then, welcome to Line 1")) throw new Error("line open");
+      if (!coach.firstLineBeats[1].caption.startsWith("This is the quieter Italian")) throw new Error("quieter");
+      if (coach.firstLineBeats[19].caption !== "Drill the line until the moves feel as natural as putting the kettle on.") {
+        throw new Error("line close");
+      }
+      const lineKey = coachLineSessionKey("italian-white", "it1");
+      if (lineKey !== "opening-lab:coach-line:italian-white:it1") throw new Error(lineKey);
       const key = coachIntroSessionKey("italian-white");
       if (key !== "opening-lab:coach-intro:italian-white") throw new Error(key);
       `,

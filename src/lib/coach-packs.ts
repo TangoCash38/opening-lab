@@ -486,6 +486,113 @@ const ITALIAN_INTRO_AT_SEC = [0, 12.9, 23.2, 34.9, 41.3, 52.4, 62.3] as const;
 export const ITALIAN_INTRO_STEM = ["e4", "Nf3", "Bc4"] as const;
 export const ITALIAN_INTRO_STEM_AT_SEC = [24.9, 29.5, 33.2] as const;
 
+export const ITALIAN_LINE_WAV = "/coach/italian-white/professor-potato-pie-italian-line1.wav";
+/** AI-generated Italian Line 1. Beat and spoken-move times were read off this clip. */
+export const ITALIAN_LINE_SEC = 89.84;
+
+const ITALIAN_LINE: readonly CoachLineBeat[] = [
+  {
+    caption: "Right then, welcome to Line 1 of our Italian Game Learning Pack.",
+    atSec: 0,
+  },
+  { caption: "This is the quieter Italian.", atSec: 5.7 },
+  {
+    caption: "No need to set fire to the curtains when careful preparation will do nicely.",
+    atSec: 7.8,
+  },
+  {
+    caption: "We begin with pawn to e4, and black answers pawn to e5.",
+    ply: "e4",
+    atSec: 12.9,
+    plyAtSec: 14.1,
+    extraPlies: [{ ply: "e5", plyAtSec: 16.4 }],
+  },
+  {
+    caption: "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.",
+    ply: "Nf3",
+    atSec: 17.6,
+    plyAtSec: 18.1,
+    extraPlies: [
+      { ply: "Nc6", plyAtSec: 19.4 },
+      { ply: "Bc4", plyAtSec: 21.1 },
+      { ply: "Bc5", plyAtSec: 23.5 },
+    ],
+  },
+  {
+    caption: "Both bishops take up their classical posts and keep a watchful eye on the centre.",
+    atSec: 24.8,
+  },
+  {
+    caption: "We play pawn to c3, preparing a future pawn to d4.",
+    ply: "c3",
+    atSec: 30,
+    plyAtSec: 31.4,
+  },
+  {
+    caption: "Black develops knight to f6 and places pressure on e4.",
+    ply: "Nf6",
+    atSec: 35.1,
+    plyAtSec: 36.2,
+  },
+  {
+    caption: "Pawn to d3, pawn to d6.",
+    ply: "d3",
+    atSec: 39.2,
+    plyAtSec: 39.6,
+    extraPlies: [{ ply: "d6", plyAtSec: 40.9 }],
+  },
+  {
+    caption: "Both sides secure the centre before making any grand declarations.",
+    atSec: 42,
+  },
+  { caption: "We castle king side.", ply: "O-O", atSec: 46.6, plyAtSec: 46.7 },
+  { caption: "Black plays pawn to a6.", ply: "a6", atSec: 48.4, plyAtSec: 49.4 },
+  {
+    caption:
+      "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.",
+    ply: "a4",
+    atSec: 50.4,
+    plyAtSec: 51.3,
+    extraPlies: [{ ply: "Ba7", plyAtSec: 55.4 }],
+  },
+  {
+    caption: "Knight to d2 and black castles king side.",
+    ply: "Nbd2",
+    atSec: 56.9,
+    plyAtSec: 57.2,
+    extraPlies: [{ ply: "O-O", plyAtSec: 58.4 }],
+  },
+  {
+    caption:
+      "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.",
+    ply: "h3",
+    atSec: 59.9,
+    plyAtSec: 60.9,
+  },
+  { caption: "Black's knight moves to e7.", ply: "Ne7", atSec: 67.8, plyAtSec: 68.7 },
+  {
+    caption: "Rook to e1 reinforces the e4, and the knight continues to g6.",
+    ply: "Re1",
+    atSec: 69.9,
+    plyAtSec: 70.2,
+    extraPlies: [{ ply: "Ng6", plyAtSec: 73.7 }],
+  },
+  {
+    caption:
+      "There we are, a sound Italian position, with every piece preparing for useful work.",
+    atSec: 75,
+  },
+  {
+    caption:
+      "Keep developing, watch the centre and be ready for the d4 break when the moment is right.",
+    atSec: 80.6,
+  },
+  {
+    caption: "Drill the line until the moves feel as natural as putting the kettle on.",
+    atSec: 86.2,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -558,7 +665,9 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introStemWhiteOnly: true,
     firstLineId: "it1",
     firstLineTitle: "Line 1",
-    firstLineBeats: [],
+    firstLineBeats: ITALIAN_LINE,
+    firstLineAudio: ITALIAN_LINE_WAV,
+    firstLineAudioFallbackSec: ITALIAN_LINE_SEC,
     introEndsOnLineList: true,
   },
 };

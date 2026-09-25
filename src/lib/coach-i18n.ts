@@ -348,6 +348,41 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La partida italiana es clásica, viva, y se apoya en el desarrollo natural, el control del centro y las posibilidades de ataque.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Bien, disfruta al familiarizarte más con la partida italiana y veamos adónde nos lleva ese alfil en c4.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Muy bien, bienvenido a la Línea 1 de nuestro pack de aprendizaje de la partida italiana.",
+    "This is the quieter Italian.": "Esta es la italiana más tranquila.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "No hace falta prender fuego a las cortinas cuando una preparación cuidadosa basta.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Empezamos con peón a e4, y las negras responden peón a e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "Caballo a f3, caballo a c6, alfil a c4, y las negras desarrollan el alfil a c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "Los dos alfiles ocupan sus puestos clásicos y vigilan el centro.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Jugamos peón a c3, preparando un futuro peón a d4.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "Las negras desarrollan el caballo a f6 y presionan e4.",
+    "Pawn to d3, pawn to d6.": "Peón a d3, peón a d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "Ambos bandos aseguran el centro antes de hacer grandes declaraciones.",
+    "We castle king side.": "Enrocamos en el flanco de rey.",
+    "Black plays pawn to a6.": "Las negras juegan peón a a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Respondemos peón a a4, ganando un poco de espacio en el flanco de dama, y el alfil se instala en a7.",
+    "Knight to d2 and black castles king side.":
+      "Caballo a d2 y las negras enrocan en el flanco de rey.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Jugamos peón a h3, evitando que un alfil se vuelva molesto en g4, y dando a nuestro rey una casilla útil para respirar.",
+    "Black's knight moves to e7.": "El caballo negro se mueve a e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "Torre a e1 refuerza e4, y el caballo sigue hasta g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "Ahí estamos, una posición italiana sólida, con cada pieza preparándose para un trabajo útil.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Sigue desarrollando, vigila el centro y estate listo para la ruptura d4 cuando llegue el momento.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Repite la línea hasta que las jugadas se sientan tan naturales como poner la tetera.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -517,6 +552,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "意大利开局古典、生动，建立在自然出子、中心控制与进攻可能之上。",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "好，享受进一步熟悉意大利开局的过程，我们来看看 c4 上的那只象会把我们带到哪里。",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "好，欢迎来到意大利开局学习包的第 1 条变例。",
+    "This is the quieter Italian.": "这是更安静的意大利开局。",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "仔细准备就够用了，不必把窗帘点着。",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "我们以兵到 e4 开始，黑方应兵到 e5。",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "马到 f3，马到 c6，象到 c4，黑方出象到 c5。",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "两只象都站上经典岗位，警惕地看着中心。",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "我们走兵到 c3，为将来的兵到 d4 做准备。",
+    "Black develops knight to f6 and places pressure on e4.":
+      "黑方出马到 f6，并对 e4 施压。",
+    "Pawn to d3, pawn to d6.": "兵到 d3，兵到 d6。",
+    "Both sides secure the centre before making any grand declarations.":
+      "双方都先稳住中心，再做任何宏大的宣告。",
+    "We castle king side.": "我们王翼易位。",
+    "Black plays pawn to a6.": "黑方走兵到 a6。",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "我们应兵到 a4，略微扩大后翼空间，象落在 a7。",
+    "Knight to d2 and black castles king side.": "马到 d2，黑方王翼易位。",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "我们走兵到 h3，防止一只象在 g4 上变得麻烦，也给我们的王一格有用的透气格。",
+    "Black's knight moves to e7.": "黑方的马走到 e7。",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "车到 e1 加固 e4，马继续走到 g6。",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "就是这样，一个稳健的意大利局面，每枚棋子都在为有用的工作做准备。",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "继续出子，盯住中心，时机合适时准备好 d4 突破。",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "把这条变例练到像烧开水壶一样自然。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -693,6 +762,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La partie italienne est classique, vive, et bâtie sur le développement naturel, le contrôle du centre et les possibilités d'attaque.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Bien, prenez plaisir à mieux connaître la partie italienne, et voyons où ce fou en c4 nous mène.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Bien, bienvenue dans la ligne 1 de notre pack d'apprentissage de la partie italienne.",
+    "This is the quieter Italian.": "Voici l'italienne plus calme.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "Inutile de mettre le feu aux rideaux quand une préparation soigneuse suffit très bien.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Nous commençons par le pion en e4, et les Noirs répondent par le pion en e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "Cavalier en f3, cavalier en c6, fou en c4, et les Noirs développent le fou en c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "Les deux fous occupent leurs postes classiques et gardent un œil vigilant sur le centre.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Nous jouons le pion en c3, préparant un futur pion en d4.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "Les Noirs développent le cavalier en f6 et exercent une pression sur e4.",
+    "Pawn to d3, pawn to d6.": "Pion en d3, pion en d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "Les deux camps sécurisent le centre avant toute grande déclaration.",
+    "We castle king side.": "Nous roquons côté roi.",
+    "Black plays pawn to a6.": "Les Noirs jouent le pion en a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Nous répondons par le pion en a4, gagnant un peu d'espace côté dame, et le fou s'installe en a7.",
+    "Knight to d2 and black castles king side.": "Cavalier en d2 et les Noirs roquent côté roi.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Nous jouons le pion en h3, empêchant un fou de devenir gênant en g4, et donnant à notre roi une case utile pour respirer.",
+    "Black's knight moves to e7.": "Le cavalier noir se déplace en e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "La tour en e1 renforce le e4, et le cavalier poursuit vers g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "Nous y voilà, une position italienne saine, chaque pièce se préparant à un travail utile.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Continue à développer, surveille le centre et sois prêt pour la rupture d4 quand le moment sera venu.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Répète la ligne jusqu'à ce que les coups semblent aussi naturels que de mettre la bouilloire.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -868,6 +971,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Die italienische Partie ist klassisch, lebendig und auf natürliche Entwicklung, Zentrumskontrolle und Angriffsmöglichkeiten gebaut.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Also, genieße es, die italienische Partie besser kennenzulernen, und schauen wir, wohin uns dieser Läufer auf c4 führt.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Also, willkommen bei Linie 1 unseres Lernpakets zur italienischen Partie.",
+    "This is the quieter Italian.": "Das ist die ruhigere italienische Partie.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "Kein Grund, die Vorhänge anzuzünden, wenn sorgfältige Vorbereitung völlig ausreicht.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Wir beginnen mit Bauer nach e4, und Schwarz antwortet mit Bauer nach e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "Springer nach f3, Springer nach c6, Läufer nach c4, und Schwarz entwickelt den Läufer nach c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "Beide Läufer beziehen ihre klassischen Posten und behalten das Zentrum wachsam im Blick.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Wir spielen Bauer nach c3 und bereiten einen künftigen Bauer nach d4 vor.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "Schwarz entwickelt den Springer nach f6 und setzt e4 unter Druck.",
+    "Pawn to d3, pawn to d6.": "Bauer nach d3, Bauer nach d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "Beide Seiten sichern das Zentrum, bevor sie große Erklärungen abgeben.",
+    "We castle king side.": "Wir rochieren kurz.",
+    "Black plays pawn to a6.": "Schwarz spielt Bauer nach a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Wir antworten mit Bauer nach a4, gewinnen etwas Raum am Damenflügel, und der Läufer lässt sich auf a7 nieder.",
+    "Knight to d2 and black castles king side.": "Springer nach d2, und Schwarz rochiert kurz.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Wir spielen Bauer nach h3, damit ein Läufer auf g4 nicht lästig wird, und geben unserem König ein nützliches Luftfeld.",
+    "Black's knight moves to e7.": "Der schwarze Springer zieht nach e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "Turm nach e1 verstärkt den e4, und der Springer zieht weiter nach g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "Da sind wir, eine gesunde italienische Stellung, in der jede Figur sich auf nützliche Arbeit vorbereitet.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Entwickle weiter, beobachte das Zentrum und sei bereit für den d4-Durchbruch, wenn der Moment stimmt.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Übe die Linie, bis sich die Züge so natürlich anfühlen wie das Aufsetzen des Kessels.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1042,6 +1179,41 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "A abertura italiana é clássica, viva, e assenta no desenvolvimento natural, no controlo do centro e nas possibilidades de ataque.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Certo, aproveita para te familiarizares mais com a abertura italiana, e vamos ver para onde nos leva aquele bispo em c4.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Muito bem, bem-vindo à Linha 1 do nosso pack de aprendizagem da abertura italiana.",
+    "This is the quieter Italian.": "Esta é a italiana mais calma.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "Não é preciso pegar fogo às cortinas quando uma preparação cuidadosa chega perfeitamente.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Começamos com peão a e4, e as pretas respondem peão a e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "Cavalo a f3, cavalo a c6, bispo a c4, e as pretas desenvolvem o bispo a c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "Os dois bispos ocupam os seus postos clássicos e vigiam o centro.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Jogamos peão a c3, a preparar um futuro peão a d4.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "As pretas desenvolvem o cavalo a f6 e pressionam e4.",
+    "Pawn to d3, pawn to d6.": "Peão a d3, peão a d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "Ambos os lados asseguram o centro antes de quaisquer grandes declarações.",
+    "We castle king side.": "Rocamos no flanco do rei.",
+    "Black plays pawn to a6.": "As pretas jogam peão a a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Respondemos peão a a4, ganhando um pouco de espaço no flanco da dama, e o bispo instala-se em a7.",
+    "Knight to d2 and black castles king side.":
+      "Cavalo a d2 e as pretas rocam no flanco do rei.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Jogamos peão a h3, impedindo que um bispo se torne incómodo em g4, e dando ao nosso rei uma casa útil para respirar.",
+    "Black's knight moves to e7.": "O cavalo das pretas move-se para e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "Torre a e1 reforça o e4, e o cavalo continua até g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "Aqui estamos, uma posição italiana sólida, com cada peça a preparar-se para um trabalho útil.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Continua a desenvolver, vigia o centro e fica pronto para a ruptura d4 quando chegar o momento.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Repete a linha até as jogadas parecerem tão naturais como pôr a chaleira ao lume.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1215,6 +1387,41 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Итальянская партия классическая, живая и построена на естественном развитии, контроле центра и атакующих возможностях.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Итак, приятного знакомства с итальянской партией, и посмотрим, куда нас ведёт этот слон на c4.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Итак, добро пожаловать в линию 1 нашего учебного набора по итальянской партии.",
+    "This is the quieter Italian.": "Это более спокойная итальянская партия.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "Незачем поджигать шторы, когда тщательная подготовка вполне справится.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Мы начинаем пешкой на e4, и чёрные отвечают пешкой на e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "Конь на f3, конь на c6, слон на c4, и чёрные развивают слона на c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "Оба слона занимают классические посты и зорко следят за центром.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Мы играем пешку на c3, готовя будущую пешку на d4.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "Чёрные развивают коня на f6 и оказывают давление на e4.",
+    "Pawn to d3, pawn to d6.": "Пешка на d3, пешка на d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "Обе стороны укрепляют центр, прежде чем делать громкие заявления.",
+    "We castle king side.": "Мы рокируемся в короткую сторону.",
+    "Black plays pawn to a6.": "Чёрные играют пешку на a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Мы отвечаем пешкой на a4, немного расширяя пространство на ферзевом фланге, и слон располагается на a7.",
+    "Knight to d2 and black castles king side.":
+      "Конь на d2, и чёрные рокируются в короткую сторону.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Мы играем пешку на h3, не давая слону стать неприятным на g4, и даём королю полезное поле для воздуха.",
+    "Black's knight moves to e7.": "Конь чёрных идёт на e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "Ладья на e1 укрепляет e4, и конь продолжает на g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "Вот и она, здоровая итальянская позиция, где каждая фигура готовится к полезной работе.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Продолжай развиваться, следи за центром и будь готов к прорыву d4, когда настанет момент.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Повторяй линию, пока ходы не станут такими же естественными, как поставить чайник.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1389,6 +1596,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La partita italiana è classica, vivace, e si fonda sullo sviluppo naturale, sul controllo del centro e sulle possibilità d'attacco.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Bene, goditi il prendere confidenza con la partita italiana e vediamo dove ci porta quell'alfiere in c4.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Bene, benvenuto alla linea 1 del nostro pacchetto di apprendimento della partita italiana.",
+    "This is the quieter Italian.": "Questa è l'italiana più tranquilla.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "Non serve dare fuoco alle tende quando una preparazione attenta basta e avanza.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Iniziamo con pedone in e4, e il Nero risponde con pedone in e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "Cavallo in f3, cavallo in c6, alfiere in c4, e il Nero sviluppa l'alfiere in c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "Entrambi gli alfieri occupano i loro posti classici e tengono d'occhio il centro.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Giochiamo pedone in c3, preparando un futuro pedone in d4.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "Il Nero sviluppa il cavallo in f6 e mette pressione su e4.",
+    "Pawn to d3, pawn to d6.": "Pedone in d3, pedone in d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "Entrambi i lati assicurano il centro prima di qualsiasi grande dichiarazione.",
+    "We castle king side.": "Arrocchiamo sul lato di re.",
+    "Black plays pawn to a6.": "Il Nero gioca pedone in a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Rispondiamo con pedone in a4, guadagnando un po' di spazio sul lato di donna, e l'alfiere si sistema in a7.",
+    "Knight to d2 and black castles king side.": "Cavallo in d2 e il Nero arrocca sul lato di re.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Giochiamo pedone in h3, impedendo che un alfiere diventi fastidioso in g4, e dando al nostro re una casa utile per respirare.",
+    "Black's knight moves to e7.": "Il cavallo del Nero si sposta in e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "Torre in e1 rinforza il e4, e il cavallo prosegue verso g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "Eccoci, una posizione italiana solida, con ogni pezzo che si prepara a un lavoro utile.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Continua a sviluppare, sorveglia il centro e sii pronto per la rottura d4 quando arriva il momento.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Ripeti la linea finché le mosse non sembrano naturali come mettere il bollitore.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1563,6 +1804,41 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "इतालवी ओपनिंग शास्त्रीय और जीवंत है, और स्वाभाविक विकास, केंद्र नियंत्रण और हमले की संभावनाओं पर बनी है।",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "ठीक, इतालवी ओपनिंग से और परिचित होने का आनंद लो, और देखें कि c4 पर वह ऊंट हमें कहाँ ले जाता है।",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "ठीक है, हमारे इतालवी ओपनिंग सीखने के पैक की लाइन 1 में स्वागत है।",
+    "This is the quieter Italian.": "यह शांत इतालवी ओपनिंग है।",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "जब सावधानी भरी तैयारी काफी हो, पर्दों में आग लगाने की ज़रूरत नहीं।",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "हम प्यादे से e4 पर शुरू करते हैं, और काला प्यादे से e5 पर जवाब देता है।",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "घोड़ा f3 पर, घोड़ा c6 पर, ऊंट c4 पर, और काला ऊंट को c5 पर विकसित करता है।",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "दोनों ऊंट अपने शास्त्रीय पद संभालते हैं और केंद्र पर चौकन्नी नज़र रखते हैं।",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "हम प्यादा c3 पर खेलते हैं, भविष्य के प्यादे d4 की तैयारी करते हुए।",
+    "Black develops knight to f6 and places pressure on e4.":
+      "काला घोड़े को f6 पर विकसित करता है और e4 पर दबाव डालता है।",
+    "Pawn to d3, pawn to d6.": "प्यादा d3 पर, प्यादा d6 पर।",
+    "Both sides secure the centre before making any grand declarations.":
+      "दोनों पक्ष कोई बड़ा ऐलान करने से पहले केंद्र को सुरक्षित करते हैं।",
+    "We castle king side.": "हम किंग साइड कैसल करते हैं।",
+    "Black plays pawn to a6.": "काला प्यादा a6 खेलता है।",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "हम प्यादे a4 से जवाब देते हैं, क्वीन साइड पर थोड़ी जगह पाते हैं, और ऊंट a7 पर जम जाता है।",
+    "Knight to d2 and black castles king side.":
+      "घोड़ा d2 पर और काला किंग साइड कैसल करता है।",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "हम प्यादा h3 खेलते हैं, ताकि कोई ऊंट g4 पर तकलीफ़देह न बने, और अपने राजा को साँस लेने की एक उपयोगी घर मिल जाए।",
+    "Black's knight moves to e7.": "काले का घोड़ा e7 पर जाता है।",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "हाथी e1 पर e4 को मज़बूत करता है, और घोड़ा g6 तक जाता है।",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "यह रही, एक ठोस इतालवी स्थिति, हर मोहरा उपयोगी काम की तैयारी में।",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "विकास जारी रखो, केंद्र पर नज़र रखो, और सही पल पर d4 तोड़ के लिए तैयार रहो।",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "लाइन को तब तक दोहराओ जब तक चालें केतली चढ़ाने जितनी स्वाभाविक न लगें।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1736,6 +2012,41 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "イタリア・ゲームは古典的で生き生きとしており、自然な展開、中心の支配、そして攻撃の可能性の上に築かれている。",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "よし、イタリア・ゲームにもっと親しむのを楽しんで、c4 のビショップが私たちをどこへ連れていくか見ていこう。",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "よし、イタリア・ゲーム学習パックのライン 1 へようこそ。",
+    "This is the quieter Italian.": "こちらが、より静かなイタリアだ。",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "入念な準備で十分なら、カーテンに火を付ける必要はない。",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "私たちはポーンを e4 へ進め、黒はポーンを e5 で応じる。",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "ナイトを f3、ナイトを c6、ビショップを c4、そして黒はビショップを c5 に展開する。",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "両方のビショップが古典的なポストに就き、センターを油断なく見守る。",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "私たちはポーンを c3 と指し、将来のポーンの d4 に備える。",
+    "Black develops knight to f6 and places pressure on e4.":
+      "黒はナイトを f6 に展開し、e4 に圧力をかける。",
+    "Pawn to d3, pawn to d6.": "ポーンを d3、ポーンを d6。",
+    "Both sides secure the centre before making any grand declarations.":
+      "双方は大きな宣言をする前にセンターを固める。",
+    "We castle king side.": "私たちはキングサイドにキャスリングする。",
+    "Black plays pawn to a6.": "黒はポーンを a6 と指す。",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "私たちはポーンを a4 で応じ、クイーンサイドに少し空間を得て、ビショップは a7 に落ち着く。",
+    "Knight to d2 and black castles king side.":
+      "ナイトを d2 へ、そして黒はキングサイドにキャスリングする。",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "私たちはポーンを h3 と指し、ビショップが g4 で厄介になるのを防ぎ、キングに役立つ息継ぎのマスを与える。",
+    "Black's knight moves to e7.": "黒のナイトは e7 へ動く。",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "ルークを e1 へ進めて e4 を補強し、ナイトは g6 へ続く。",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "ここまで来た。健全なイタリアの局面で、どの駒も役立つ仕事の準備をしている。",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "展開を続け、センターを見て、時機が来たら d4 の突破に備えよう。",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "手がやかんを火にかけるように自然になるまで、このラインを繰り返そう。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1907,6 +2218,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "الافتتاح الإيطالي كلاسيكي وحيوي، ومبني على التطوير الطبيعي والسيطرة على المركز وإمكانات الهجوم.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "حسنًا، استمتع بالتعرّف أكثر على الافتتاح الإيطالي، ولنرَ إلى أين يأخذنا ذلك الفيل على c4.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "حسنًا، أهلًا بك في الخط 1 من حزمة تعلّم الافتتاح الإيطالي.",
+    "This is the quieter Italian.": "هذه هي الإيطالية الأكثر هدوءًا.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "لا داعي لإضرام النار في الستائر حين تكفي العناية في التحضير.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "نبدأ ببيدق إلى e4، ويرد الأسود ببيدق إلى e5.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "حصان إلى f3، حصان إلى c6، فيل إلى c4، ويطوّر الأسود الفيل إلى c5.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "يتخذ الفيلان موقعيهما الكلاسيكيين ويبقيان عينًا يقظة على المركز.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "نلعب بيدقًا إلى c3، مهيئين لبيدق مستقبلي إلى d4.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "يطوّر الأسود الحصان إلى f6 ويضع ضغطًا على e4.",
+    "Pawn to d3, pawn to d6.": "بيدق إلى d3، بيدق إلى d6.",
+    "Both sides secure the centre before making any grand declarations.":
+      "يؤمّن الطرفان المركز قبل أي تصريحات كبيرة.",
+    "We castle king side.": "نبيت على جانب الملك.",
+    "Black plays pawn to a6.": "يلعب الأسود بيدقًا إلى a6.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "نجيب ببيدق إلى a4، نكسب قليلًا من الفضاء على جانب الملكة، ويستقر الفيل على a7.",
+    "Knight to d2 and black castles king side.": "حصان إلى d2 ويبيت الأسود على جانب الملك.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "نلعب بيدقًا إلى h3، نمنع فيلًا من أن يصبح مزعجًا على g4، ونمنح ملكنا مربعًا مفيدًا للتنفس.",
+    "Black's knight moves to e7.": "ينتقل حصان الأسود إلى e7.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "القلعة إلى e1 تعزز e4، ويتابع الحصان إلى g6.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "ها نحن، وضعية إيطالية سليمة، وكل قطعة تستعد لعمل مفيد.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "واصل التطوير، راقب المركز، وكن مستعدًا لاختراق d4 حين يحين الوقت.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "كرّر الخط حتى تشعر بالنقلات طبيعية كوضع الغلاية.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2080,5 +2425,39 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "İtalyan Açılışı klasik ve canlıdır, doğal gelişim, merkez kontrolü ve saldırı olanakları üzerine kuruludur.",
     "Right, enjoy getting more familiar with the Italian Game, and let's see where that bishop on c4 takes us.":
       "Peki, İtalyan Açılışına daha yakından alışmanın keyfini çıkar, ve c4'teki filin bizi nereye götürdüğüne bakalım.",
+    "Right then, welcome to Line 1 of our Italian Game Learning Pack.":
+      "Peki, İtalyan Açılışı öğrenme paketimizin 1. hattına hoş geldin.",
+    "This is the quieter Italian.": "Bu, daha sakin İtalyan.",
+    "No need to set fire to the curtains when careful preparation will do nicely.":
+      "Özenli bir hazırlık yetiyorsa perdeleri tutuşturmaya gerek yok.",
+    "We begin with pawn to e4, and black answers pawn to e5.":
+      "Piyonla e4 ile başlarız, siyah da piyonla e5 diye yanıt verir.",
+    "Knight to f3, knight to c6, bishop to c4, and black develops bishop to c5.":
+      "At f3'e, at c6'ya, fil c4'e, ve siyah fili c5'e geliştirir.",
+    "Both bishops take up their classical posts and keep a watchful eye on the centre.":
+      "İki fil de klasik mevzilerine yerleşir ve merkezi dikkatle izler.",
+    "We play pawn to c3, preparing a future pawn to d4.":
+      "Piyonu c3'e oynarız, ilerideki bir piyon d4 için hazırlık yaparak.",
+    "Black develops knight to f6 and places pressure on e4.":
+      "Siyah atı f6'ya geliştirir ve e4 üzerine baskı kurar.",
+    "Pawn to d3, pawn to d6.": "Piyon d3'e, piyon d6'ya.",
+    "Both sides secure the centre before making any grand declarations.":
+      "İki taraf da büyük açıklamalardan önce merkezi sağlamlaştırır.",
+    "We castle king side.": "Kısa rok yaparız.",
+    "Black plays pawn to a6.": "Siyah piyonu a6'ya oynar.",
+    "We answer pawn to a4, gaining a little queen side space and the bishop settles on a7.":
+      "Piyonla a4 diye yanıt veririz, vezir kanadında biraz yer kazanırız ve fil a7'ye yerleşir.",
+    "Knight to d2 and black castles king side.": "At d2'ye, siyah da kısa rok yapar.",
+    "We play pawn to h3, preventing a bishop from becoming troublesome on g4, and giving our king a useful breathing square.":
+      "Piyonu h3'e oynarız; bir filin g4'te sıkıntı çıkarmasını önler, şahımıza yararlı bir nefes karesi veririz.",
+    "Black's knight moves to e7.": "Siyahın atı e7'ye gider.",
+    "Rook to e1 reinforces the e4, and the knight continues to g6.":
+      "Kale e1'e giderek e4'ü pekiştirir, at da g6'ya devam eder.",
+    "There we are, a sound Italian position, with every piece preparing for useful work.":
+      "İşte oradayız: sağlam bir İtalyan konumu, her taş yararlı bir işe hazırlanıyor.",
+    "Keep developing, watch the centre and be ready for the d4 break when the moment is right.":
+      "Geliştirmeye devam et, merkezi izle ve anı geldiğinde d4 kırılmasına hazır ol.",
+    "Drill the line until the moves feel as natural as putting the kettle on.":
+      "Hamleler çaydanlığı ocağa koymak kadar doğal hissedilene kadar hattı tekrarla.",
   },
 };
