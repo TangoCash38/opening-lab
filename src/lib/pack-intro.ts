@@ -40,6 +40,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Nimzo-Larsen Attack is 1.b3. White fianchettoes the queen's bishop and pressures the centre from the flank, instead of occupying it with a pawn on move one.",
     "The idea is Bb2 plus a later c4 or e3. You meet …e5, …d5, …c5, and the kingside fianchetto with that same flank pressure, not a race to grab the middle on move one.",
   ],
+  "qg-white": [
+    "The Queen’s Gambit is 1.d4 d5 2.c4. White offers a wing pawn to fight for the centre.",
+    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
+  ],
   "italian-white": [
     "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White eyes f7 and meets …Bc5, the Two Knights, the Hungarian, …d6, and the kingside fianchetto with their own book replies.",
     "Lines 1–5 are book. Lines 6–10 punish one Black error: Rousseau …f5, Greco …Bxc3, an early …Nxe4, …Bxf2+ in the Evans, and a premature …Ng4. Practice with the green hint, then Test with none. Each line ends where the book ends.",

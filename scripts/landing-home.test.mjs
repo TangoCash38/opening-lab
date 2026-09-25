@@ -27,7 +27,7 @@ test("landing matches the signed-off home: gym CTA, live packs, real prices", ()
   assert.match(landing, /italian-white/);
   assert.match(landing, /ruy-white/);
   assert.match(landing, /french-white/);
-  assert.match(landing, /queens-gambit-white/);
+  assert.match(landing, /qg-white/);
   assert.match(landing, /Strict book-move trainer/);
   assert.match(landing, /coach-seated-v2\.png/);
   assert.match(landing, /\/brand\/opening-lab-logo\.png/);

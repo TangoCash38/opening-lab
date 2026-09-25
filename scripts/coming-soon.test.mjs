@@ -45,7 +45,7 @@ async function loadCatalog(t) {
   return import(pathToFileURL(tmp).href);
 }
 
-test("every visible pack except scotch, opening traps, caro-kann, london, and italian-white is coming soon", async (t) => {
+test("every visible pack except scotch, opening traps, caro-kann, london, italian-white, and qg-white is coming soon", async (t) => {
   const mod = await loadCatalog(t);
   if (!mod) return;
   const {
@@ -57,20 +57,22 @@ test("every visible pack except scotch, opening traps, caro-kann, london, and it
     canPurchaseBuyAll,
   } = mod;
 
-  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white"]);
+  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white"]);
   assert.equal(isPackComingSoon("scotch"), false);
   assert.equal(isPackComingSoon("opening-traps"), false);
   assert.equal(isPackComingSoon("caro-kann-black"), false);
   assert.equal(isPackComingSoon("london"), false);
   assert.equal(isPackComingSoon("italian-white"), false);
+  assert.equal(isPackComingSoon("qg-white"), false);
   assert.equal(canPurchasePack("scotch"), true);
   assert.equal(canPurchasePack("opening-traps"), true);
   assert.equal(canPurchasePack("caro-kann-black"), true);
   assert.equal(canPurchasePack("london"), true);
   assert.equal(canPurchasePack("italian-white"), true);
+  assert.equal(canPurchasePack("qg-white"), true);
   assert.equal(canPurchaseBuyAll(), false);
 
-  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white"]);
+  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white"]);
   const gated = [];
   for (const id of VISIBLE_PACK_IDS) {
     if (live.has(id)) {
@@ -90,6 +92,7 @@ test("every visible pack except scotch, opening traps, caro-kann, london, and it
   assert.equal(gated.includes("caro-kann-black"), false);
   assert.equal(gated.includes("london"), false);
   assert.equal(gated.includes("italian-white"), false);
+  assert.equal(gated.includes("qg-white"), false);
   assert.equal(gated.includes("qgd-black"), true);
 });
 
