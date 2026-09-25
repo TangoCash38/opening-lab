@@ -7,7 +7,7 @@
  * `pack_` + packId with `-` → `_` (`pack_qgd_black`).
  *
  * Official Console SKUs:
- *   pack_<id> for 32 paid visible packs + pack_caro_kann_black
+ *   pack_<id> for 33 paid visible packs + pack_caro_kann_black
  *   buy_all_packs  →  applyPurchase({ kind: "buy_all" })
  *
  * No Lab+ / no lab_plus_yearly / no subscriptions.
@@ -18,8 +18,9 @@ export const PLAY_SKU_BUY_ALL = "buy_all_packs";
 export const PLAY_SKU_PACK_PREFIX = "pack_";
 
 /**
- * 32 paid visible packs + caro-kann-black (Caro rest is
+ * 33 paid visible packs + caro-kann-black (Caro rest is
  * pack_caro_kann_black) + opening-traps (pack_opening_traps).
+ * London System (pack_london) keeps the existing £1 catalog price.
  * Set the Play Console price for pack_opening_traps to £1.99.
  * The product id stays pack_opening_traps.
  */
@@ -47,6 +48,7 @@ export const PLAY_PATH_B_PACK_IDS = [
   "queens-gambit-white",
   "opening-traps",
   "scotch",
+  "london",
   "english-white",
   "catalan-white",
   "nimzo-indian-black",

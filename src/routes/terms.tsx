@@ -28,8 +28,8 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          Three opening packs are on sale now: Scotch Gambit, Opening Traps,
-          and Caro-Kann Defence for Black. Some lines are free to try,
+          Four opening packs are on sale now: Scotch Gambit, Opening Traps,
+          Caro-Kann Defence for Black, and the London System. Some lines are free to try,
           including the first six traps in Opening Traps. The other opening
           packs show Coming soon and are not for sale until they relaunch. If
           you already own a pack, it stays unlocked. Buy all packs is not on
