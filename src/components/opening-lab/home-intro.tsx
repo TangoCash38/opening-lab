@@ -144,9 +144,9 @@ export function LandingHome({ onEnterGym, onOpenPack, onSupport, onCreateOwn, on
             </p>
             <div className="landing-cta-stack">
               <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
-                {t("Enter the gym")}
+                <span className="landing-cta-title">{t("Enter the gym")}</span>
+                <span className="landing-cta-note">{t("Opening drill packs")}</span>
               </button>
-              <p className="landing-cta-note">{t("Opening drill packs")}</p>
               {showLessons ? (
                 <button
                   type="button"
