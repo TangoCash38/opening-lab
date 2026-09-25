@@ -17,7 +17,8 @@ test("Practice open auto-starts Potato Pie pack intro once per session", () => {
   assert.match(hero, /!scotchCoachAlreadySeen\(\)/);
   assert.match(hero, /coachPackIntroApplies\(pack\.id\)/);
   assert.match(hero, /!coachIntroAlreadySeen\(pack\.id\)/);
-  assert.match(hero, /launchLine\(line, undefined, true\)/);
+  assert.match(hero, /const asPracticeEntry = true/);
+  assert.match(hero, /launchLine\(line, undefined, asPracticeEntry\)/);
   assert.match(hero, /\}, \[pack\.id\]\);/);
 });
 
@@ -25,7 +26,7 @@ test("Line taps during pack intro queue and do not skip Potato Pie", () => {
   assert.match(hero, /queuedLineRef/);
   assert.match(hero, /coachRef\.current\?\.talk === "intro"/);
   assert.match(hero, /queuedLineRef\.current = item/);
-  assert.match(hero, /const practiceLine = queued \?\? current\.line/);
+  assert.match(hero, /if \(queued\) current\.line = queued/);
 });
 
 test("Caro pack intro names e4 c6 on the board stem clock", () => {
