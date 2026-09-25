@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { PACKS } from "@/data/packs";
 import { coachAudioPlyCount, coachTextPlyCount } from "@/lib/coach-packs";
+import { playWhiteOnlySan, replayWhiteOnly } from "@/lib/london-intro-stem";
 import {
   SCOTCH_CANAL_LINE_ID,
   SCOTCH_CANAL_NARRATION_FALLBACK_SEC,
@@ -43,6 +44,11 @@ type Props = {
   stemSans?: readonly string[] | null;
   /** Seconds into the intro clip when each stem ply is spoken. */
   stemAtSec?: readonly number[] | null;
+  /**
+   * Intro stem is White moves only (London). Black never replies; the turn
+   * is handed back to White between moves.
+   */
+  whiteOnly?: boolean;
 };
 
 /** SAN for the talk. Canal reads pack id sg1. The cuppa stem stays the named moves. */
@@ -98,6 +104,7 @@ export function ScotchCoachBoard({
   plyFallbackSec = 0,
   stemSans = null,
   stemAtSec = null,
+  whiteOnly = false,
 }: Props) {
   const sans = useMemo(() => talkSans(talk, beatPlies, stemSans), [talk, beatPlies, stemSans]);
   const [game, setGame] = useState(() => new Chess());
@@ -116,6 +123,7 @@ export function ScotchCoachBoard({
   const plyAtSecRef = useRef(plyAtSec);
   const plyFallbackRef = useRef(plyFallbackSec);
   const stemAtSecRef = useRef(stemAtSec);
+  const whiteOnlyRef = useRef(whiteOnly);
   sansRef.current = sans;
   talkRef.current = talk;
   beatPliesRef.current = beatPlies;
@@ -123,24 +131,29 @@ export function ScotchCoachBoard({
   plyAtSecRef.current = plyAtSec;
   plyFallbackRef.current = plyFallbackSec;
   stemAtSecRef.current = stemAtSec;
+  whiteOnlyRef.current = whiteOnly;
 
   const pump = useCallback(() => {
     if (!aliveRef.current || slidingRef.current) return;
     if (playedRef.current >= targetRef.current) return;
     const san = sansRef.current[playedRef.current];
     if (!san) return;
-    const before = new Chess();
-    for (const move of gameRef.current.history()) {
-      try {
-        if (!before.move(move)) return;
-      } catch {
-        return;
+    const before = whiteOnlyRef.current
+      ? replayWhiteOnly(sansRef.current, playedRef.current)
+      : new Chess();
+    if (!whiteOnlyRef.current) {
+      for (const move of gameRef.current.history()) {
+        try {
+          if (!before.move(move)) return;
+        } catch {
+          return;
+        }
       }
     }
     const preview = new Chess(before.fen());
     let played;
     try {
-      played = preview.move(san);
+      played = whiteOnlyRef.current ? playWhiteOnlySan(preview, san) : preview.move(san);
     } catch {
       return;
     }
@@ -163,19 +176,23 @@ export function ScotchCoachBoard({
   const onSlideComplete = useCallback(() => {
     if (!aliveRef.current) return;
     const san = sansRef.current[playedRef.current];
-    const next = new Chess();
-    for (const move of gameRef.current.history()) {
-      try {
-        next.move(move);
-      } catch {
-        return;
+    const next = whiteOnlyRef.current
+      ? replayWhiteOnly(sansRef.current, playedRef.current + 1)
+      : new Chess();
+    if (!whiteOnlyRef.current) {
+      for (const move of gameRef.current.history()) {
+        try {
+          next.move(move);
+        } catch {
+          return;
+        }
       }
-    }
-    if (san) {
-      try {
-        next.move(san);
-      } catch {
-        /* fixed legal book moves */
+      if (san) {
+        try {
+          next.move(san);
+        } catch {
+          /* fixed legal book moves */
+        }
       }
     }
     gameRef.current = next;
@@ -235,6 +252,7 @@ export function ScotchCoachBoard({
   return (
     <div
       className="w-full"
+      data-coach-white-only={whiteOnly ? "true" : undefined}
       data-scotch-coach-stem={talk === "intro" && !beatPlies ? ply : undefined}
       data-scotch-canal-ply={talk === "canal" ? ply : undefined}
       data-coach-line-ply={beatPlies ? ply : undefined}

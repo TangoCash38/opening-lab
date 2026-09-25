@@ -35,6 +35,7 @@ const UI_KEYS = [
   "Scotch Gambit · a cuppa and the open board",
   "Line 1 · ten lines from the gambit",
   "Opening Traps",
+  "London System",
   "Line 1 · Legal's Mate",
   "Line 1",
 ];
@@ -59,10 +60,13 @@ function compile(t) {
   writeFileSync(join(dir, "scotch-coach.mjs"), scotchJs);
   const stemJs = ts.transpileModule(src("src/lib/caro-intro-stem.ts"), options).outputText;
   writeFileSync(join(dir, "caro-intro-stem.mjs"), stemJs);
+  const londonJs = ts.transpileModule(src("src/lib/london-intro-stem.ts"), options).outputText;
+  writeFileSync(join(dir, "london-intro-stem.mjs"), londonJs);
   const packsJs = ts
     .transpileModule(src("src/lib/coach-packs.ts"), options)
     .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs")
-    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs");
+    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs")
+    .replaceAll("@/lib/london-intro-stem", "./london-intro-stem.mjs");
   writeFileSync(join(dir, "coach-packs.mjs"), packsJs);
   const i18nJs = ts.transpileModule(src("src/lib/coach-i18n.ts"), options).outputText;
   writeFileSync(join(dir, "coach-i18n.mjs"), i18nJs);
@@ -112,7 +116,7 @@ test("every coach caption has a translation in every supported language", async 
   assert.equal(COACH_UI.es["Caro-Kann for Black"], undefined);
 
   const packIds = Object.keys(COACH_PACKS).sort();
-  assert.deepEqual(packIds, ["caro-kann-black", "opening-traps", "scotch"]);
+  assert.deepEqual(packIds, ["caro-kann-black", "london", "opening-traps", "scotch"]);
 
   const captions = [];
   for (const pack of Object.values(COACH_PACKS)) {

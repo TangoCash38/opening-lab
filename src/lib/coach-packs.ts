@@ -41,6 +41,7 @@ import {
   markScotchCoachSeen,
 } from "@/lib/scotch-coach";
 import { CARO_INTRO_STEM, CARO_INTRO_STEM_AT_SEC } from "@/lib/caro-intro-stem";
+import { LONDON_INTRO_STEM, LONDON_INTRO_STEM_AT_SEC } from "@/lib/london-intro-stem";
 
 /** Gentle caption dwell when a talk has no recording. About 4 to 6 seconds. */
 export const COACH_TEXT_BEAT_SEC = 5;
@@ -74,9 +75,14 @@ export type CoachPackConfig = {
   introAudioFallbackSec?: number;
   /** Timings for `introAudio`. Absent = equal slices of the clip. */
   introBeatAtSec?: readonly number[];
-  /** Narration-clock stem for an audio intro (Scotch gambit). */
+  /** Narration-clock stem for an audio intro (Scotch gambit, Caro e4 c6, London). */
   introStem?: readonly string[];
   introStemAtSec?: readonly number[];
+  /**
+   * Play `introStem` as White moves only. Black pieces stay on their
+   * home squares. The London formation uses this.
+   */
+  introStemWhiteOnly?: boolean;
   /** Book line that opens the first-line talk. Not the display title. */
   firstLineId: string;
   firstLineTitle: string;
@@ -336,6 +342,118 @@ const CARO_KANN_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+const LONDON_PACK_ID = "london";
+
+export const LONDON_INTRO_WAV = "/coach/london/professor-potato-pie-london-intro.wav";
+/** Sean's London intro. Beat times below were read off this clip. */
+export const LONDON_INTRO_SEC = 57.4;
+
+const LONDON_INTRO = [
+  "Right then, Professor Potato Pie here, tea in and, and today we're having a brief look at the London system.",
+  "The opening became closely associated with the Great London Tournament in 1922, where this dependable set-up attracted wider attention.",
+  "Right, normally begins with pawn to d4, knight to f3 and bishop to f4.",
+  "Then comes pawn to e3, pawn to c3, knight to d2, bishop to d3 and king side castling.",
+  "The precise order can change, but that familiar formation is the heart of the London system.",
+  "It is a solid, sensible opening that has been played by club players and grandmasters alike.",
+  "Right, enjoy getting more familiar with the London system and let's see how the pieces fit together.",
+] as const;
+
+const LONDON_INTRO_AT_SEC = [0, 9.9, 21.2, 27.4, 36.9, 44.1, 51.4] as const;
+
+export const LONDON_LINE_WAV = "/coach/london/professor-potato-pie-london-line1.wav";
+/** Sean's London Line 1 talk. Beat and spoken-move times were read off this clip. */
+export const LONDON_LINE_SEC = 79.9;
+
+const LONDON_LINE: readonly CoachLineBeat[] = [
+  {
+    caption: "Right then, let's have a look at the first line in our London learning pack.",
+    atSec: 0,
+  },
+  {
+    caption: "This is the London clamp, quiet to begin with, but there is method in every move.",
+    atSec: 4.9,
+  },
+  {
+    caption: "We play pawn to d4 and black answers pawn to d5.",
+    ply: "d4",
+    atSec: 11.2,
+    plyAtSec: 12.2,
+    extraPlies: [{ ply: "d5", plyAtSec: 14.8 }],
+  },
+  {
+    caption: "Bishop to f4, knight to f6, pawn to e3 and black strikes with pawn to c5.",
+    ply: "Bf4",
+    atSec: 16.2,
+    plyAtSec: 16.7,
+    extraPlies: [
+      { ply: "Nf6", plyAtSec: 18.1 },
+      { ply: "e3", plyAtSec: 19.7 },
+      { ply: "c5", plyAtSec: 22.2 },
+    ],
+  },
+  {
+    caption: "We build the familiar pyramid with pawn to c3, black develops knight to c6.",
+    ply: "c3",
+    atSec: 23.6,
+    plyAtSec: 26,
+    extraPlies: [{ ply: "Nc6", plyAtSec: 28.6 }],
+  },
+  {
+    caption: "Knight to d2 and black plays pawn to e6.",
+    ply: "Nd2",
+    atSec: 30.2,
+    plyAtSec: 30.5,
+    extraPlies: [{ ply: "e6", plyAtSec: 32.8 }],
+  },
+  {
+    caption: "Our other knight comes to f3, while black's bishop comes to d6.",
+    ply: "Ngf3",
+    atSec: 34.1,
+    plyAtSec: 35.3,
+    extraPlies: [{ ply: "Bd6", plyAtSec: 37.6 }],
+  },
+  {
+    caption: "We tuck our bishop back to g3, keeping it useful and secure.",
+    ply: "Bg3",
+    atSec: 38.8,
+    plyAtSec: 40.2,
+  },
+  {
+    caption:
+      "Black castles king side, we place our other bishop on d3, black plays pawn to b6 and now we plant the knight on e5, a splendid central outpost.",
+    ply: "O-O",
+    atSec: 43.9,
+    plyAtSec: 44,
+    extraPlies: [
+      { ply: "Bd3", plyAtSec: 47.2 },
+      { ply: "b6", plyAtSec: 49.5 },
+      { ply: "Ne5", plyAtSec: 52.1 },
+    ],
+  },
+  {
+    caption:
+      "Bishop to b7, we castle king side, black places the queen on c7 and we complete the clamp with pawn to f4.",
+    ply: "Bb7",
+    atSec: 55,
+    plyAtSec: 56.2,
+    extraPlies: [
+      { ply: "O-O", plyAtSec: 57.2 },
+      { ply: "Qc7", plyAtSec: 59.8 },
+      { ply: "f4", plyAtSec: 62.9 },
+    ],
+  },
+  {
+    caption:
+      "There it is, a compact London position with the centre firmly under supervision and our pieces beginning to glance towards the king side.",
+    atSec: 64.3,
+  },
+  {
+    caption:
+      "Drill it until your hand knows the route and your opponent wonders when the quiet opening became an attack.",
+    atSec: 73.7,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -380,6 +498,21 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: CARO_KANN_LINE,
     firstLineAudio: CARO_KANN_LINE_MP3,
     firstLineAudioFallbackSec: CARO_KANN_LINE_SEC,
+  },
+  [LONDON_PACK_ID]: {
+    introTitle: "London System",
+    introBeats: LONDON_INTRO,
+    introAudio: LONDON_INTRO_WAV,
+    introAudioFallbackSec: LONDON_INTRO_SEC,
+    introBeatAtSec: LONDON_INTRO_AT_SEC,
+    introStem: LONDON_INTRO_STEM,
+    introStemAtSec: LONDON_INTRO_STEM_AT_SEC,
+    introStemWhiteOnly: true,
+    firstLineId: "lon1",
+    firstLineTitle: "Line 1",
+    firstLineBeats: LONDON_LINE,
+    firstLineAudio: LONDON_LINE_WAV,
+    firstLineAudioFallbackSec: LONDON_LINE_SEC,
   },
 };
 
@@ -473,7 +606,7 @@ export function coachTalkPlies(
   const pack = COACH_PACKS[packId];
   if (!pack) return null;
   if (talk === "canal") return null;
-  // An intro stem (Scotch gambit, Caro e4 c6) follows the clip clock.
+  // An intro stem (Scotch gambit, Caro e4 c6, London formation) follows the clip clock.
   // Intros without a stem hold the start position: their captions have no plies.
   if (talk === "intro" && pack.introStem) return null;
   if (talk === "line" && pack.firstLinePlaysPackLine) return null;

@@ -333,6 +333,9 @@ export function HomeHero({
       let line: OpeningLine | undefined;
       if (pack.id === "caro-kann-black") {
         line = pack.lines.find((l) => l.id === "ckb1");
+      } else if (pack.id === "london") {
+        // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
+        line = pack.lines.find((l) => l.id === "lon1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -385,12 +388,16 @@ export function HomeHero({
     queuedLineRef.current = null;
     // A line tap during pack intro is applied here (do not skip Potato Pie).
     if (queued) current.line = queued;
+    const practiceOpen = subscribed || isLineUnlocked(pack, current.line.id, purchased);
     coachRef.current = null;
     stopScotchCoachNarration();
     setCoach(null);
+    // A locked line still heard the intro. Skip and the clip dismiss it.
+    // The drill stays behind the purchase; the board returns to the start.
+    if (!practiceOpen) return;
     // Canal demo playback stops here. Line 1 Practice starts on ply 0
     // with hints, the same as a line tap after the talk has already played.
-    // Pack intro stems (Caro e4 c6) must not carry into that board.
+    // Pack intro stems (Caro e4 c6, the London formation) must not carry into that board.
     const options = {
       plyLimit: current.plyLimit,
       startPly:
@@ -544,6 +551,7 @@ export function HomeHero({
                       frameCoords={!playApp}
                       stemSans={coachPack(pack.id)?.introStem}
                       stemAtSec={coachPack(pack.id)?.introStemAtSec}
+                      whiteOnly={coachPack(pack.id)?.introStemWhiteOnly === true}
                       plyFallbackSec={coachPack(pack.id)?.introAudioFallbackSec}
                     />
                   ) : coach.talk === "canal" ? (
