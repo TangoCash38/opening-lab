@@ -23,9 +23,11 @@ export const PLAY_SKU_PACK_PREFIX = "pack_";
  * In-app list price is £1.99 for every paid drill pack (including
  * pack_scotch and pack_london). Play Console prices are not stored here.
  * Set each live SKU to £1.99: pack_scotch, pack_london,
- * pack_opening_traps, and pack_caro_kann_black.
+ * pack_opening_traps, pack_caro_kann_black, and pack_italian_white.
  * Set the Play Console price for pack_opening_traps to £1.99.
  * The product id stays pack_opening_traps.
+ * Set the Play Console price for pack_italian_white to £1.99.
+ * The product id stays pack_italian_white. Do not create it from this repo.
  */
 export const PLAY_PATH_B_PACK_IDS = [
   "caro-kann-black",

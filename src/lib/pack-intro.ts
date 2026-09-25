@@ -41,8 +41,8 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The idea is Bb2 plus a later c4 or e3. You meet …e5, …d5, …c5, and the kingside fianchetto with that same flank pressure, not a race to grab the middle on move one.",
   ],
   "italian-white": [
-    "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White eyes f7, develops quickly, and can keep it quiet with d3 or open the centre with d4. The Two Knights, Evans Gambit, and Hungarian all sit in this family.",
-    "It is one of the oldest openings still played because the ideas are clean: develop, watch f7, and choose a quiet Giuoco Piano or a sharper d4 / Evans fight.",
+    "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White eyes f7 and meets …Bc5, the Two Knights, the Hungarian, …d6, and the kingside fianchetto with their own book replies.",
+    "Lines 1–5 are book. Lines 6–10 punish one Black error: Rousseau …f5, Greco …Bxc3, an early …Nxe4, …Bxf2+ in the Evans, and a premature …Ng4. Practice with the green hint, then Test with none. Each line ends where the book ends.",
   ],
   "ruy-white": [
     "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5. White pressures e5 by pinning the knight, then builds a Spanish centre with c3 and d4. The pack is distinct systems: Closed shell, Worrall, Classical, Bird, Cozio, Berlin, Exchange, Open, Marshall, Schliemann, Steinitz, Delayed Exchange, Arkhangelsk, Siesta, and Noah’s Ark.",

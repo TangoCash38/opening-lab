@@ -577,71 +577,121 @@ test("Nimzo-Larsen Attack for White is a sixth visible free White pack: 18 nl li
 });
 
 
-test("Italian Game Mastery for White is a seventh visible free White pack: 18 it lines, all playable", () => {
+test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it10 punish, on sale at £1.99", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
+  const catalog = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
+  const skus = readFileSync(join(root, "src/lib/play-skus.ts"), "utf8");
   const start = packs.indexOf('id: "italian-white"');
   assert.ok(start >= 0, "italian-white pack missing");
   const next = packs.indexOf("\n  {\n    id: \"", start + 1);
   const it = next >= 0 ? packs.slice(start, next) : packs.slice(start);
 
-  assert.match(it, /name: "Italian Game Mastery for White"/);
+  assert.match(it, /name: "Italian Game for White"/);
+  assert.doesNotMatch(it, /Italian Game Mastery/);
+  assert.doesNotMatch(packs, /id: "it1[1-8]"/);
   assert.match(it, /side: "White"/);
   assert.match(it, /section: "white"/);
   assert.match(it, /isFree: false/);
-  assert.match(it, /isPremium: false/);
-  assert.match(it, /price: null/);
-  assert.match(it, /blurb: "White · quiet Italian, Giuoco Piano, Two Knights, Evans, Hungarian"/);
-  assert.match(it, /closedLabel: "Free · 18 lines"/);
+  assert.match(it, /isPremium: true/);
+  assert.match(it, /price: "£1\.99"/);
+  assert.match(it, /blurb: "5 book lines \+ 5 punish"/);
+  assert.doesNotMatch(it, /closedLabel: "Free · 18 lines"/);
   assert.match(it, /Play the Italian as White/);
   assert.match(it, /Practice the main book moves with the green hint/);
   assert.match(it, /Then Test with none to prove you remember them/);
   assert.doesNotMatch(it, /Play on/);
-  assert.match(it, /eco: "C50"/);
+  assert.doesNotMatch(it, /vs computer|versus the computer/i);
+  assert.match(it, /eco: "C50–C59"/);
   assert.doesNotMatch(it, /setups/);
   assert.doesNotMatch(it, /follow-ups/);
   assert.doesNotMatch(it, /Core \d+ ·/);
   assert.doesNotMatch(it, /Follow-up \d+ ·/);
   assert.doesNotMatch(it, /Lab\+/);
-  assert.doesNotMatch(it, /£/);
   assert.doesNotMatch(it, /trap:\s*true/);
+  assert.match(catalog, /"italian-white"/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white"\]/);
+  assert.match(skus, /"italian-white"/);
+  assert.match(skus, /pack_italian_white/);
+  const billing = readFileSync(
+    join(root, "android/app/src/main/java/uk/co/openinglab/PlayBilling.java"),
+    "utf8",
+  );
+  const liveSale = billing.slice(
+    billing.indexOf("LIVE_SALE_PACK_IDS"),
+    billing.indexOf("private static final Set"),
+  );
+  assert.match(liveSale, /"italian-white"/);
+  assert.match(billing, /pack_italian_white/);
 
   const lineIds = [...it.matchAll(/id: "(it\d+)"/g)].map((m) => m[1]);
-  assert.deepEqual(
-    lineIds,
-    Array.from({ length: 18 }, (_, i) => `it${i + 1}`),
-  );
+  assert.deepEqual(lineIds, ["it1", "it2", "it3", "it4", "it5", "it6", "it7", "it8", "it9", "it10"]);
 
   const sides = [...it.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 18, "expected line sides");
+  assert.equal(sides.length, 10);
   assert.ok(sides.every((s) => s === "w"), "every line side must be w");
 
-  function linePlies(id) {
+  function lineBlock(id) {
     const from = it.indexOf(`id: "${id}"`);
     assert.ok(from >= 0, `${id} missing`);
     const to = it.indexOf('id: "', from + 10);
-    const line = it.slice(from, to >= 0 ? to : undefined);
+    return it.slice(from, to >= 0 ? to : undefined);
+  }
+
+  function linePlies(id) {
+    const line = lineBlock(id);
     const m = line.match(/plies: \[([^\]]+)\]/);
     assert.ok(m, `${id} plies missing`);
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  for (let i = 1; i <= 18; i++) {
-    const plies = linePlies(`it${i}`);
-    assert.deepEqual(plies.slice(0, 5), ["e4", "e5", "Nf3", "Nc6", "Bc4"], `it${i} must start e4 e5 Nf3 Nc6 Bc4`);
+  const names = Object.fromEntries(
+    [...it.matchAll(/id: "(it\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
+  );
+  for (const id of lineIds) {
+    assert.equal(names[id], `Line ${Number(id.slice(2))}`);
+    assert.doesNotMatch(names[id], /Rousseau|Greco|Evans|Giuoco|Hungarian|Two Knights|Trap ·|Punish the error/);
   }
 
-  assert.deepEqual(linePlies("it1"), ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "d3", "Nf6", "c3", "d6", "O-O", "O-O", "Re1", "a6"]);
-  assert.deepEqual(linePlies("it5"), ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2"]);
+  const stem = ["e4", "e5", "Nf3", "Nc6", "Bc4"];
+  const expected = {
+    it1: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d3", "d6", "O-O", "a6", "a4", "Ba7", "Nbd2", "O-O", "h3", "Ne7", "Re1", "Ng6"],
+    it2: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2", "h6", "Nf3", "e4", "Ne5", "Bd6"],
+    it3: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Be7", "d4", "exd4", "Nxd4", "Nf6", "Nc3", "O-O", "O-O", "d6", "h3", "Nxd4", "Qxd4", "c6", "Bf4", "Be6"],
+    it4: ["e4", "e5", "Nf3", "Nc6", "Bc4", "d6", "c3", "Be7", "Qb3", "Nh6", "d4", "O-O", "Bxh6", "gxh6", "O-O", "Bg5", "Na3", "Kh8", "Rfe1", "a5"],
+    it5: ["e4", "e5", "Nf3", "Nc6", "Bc4", "g6", "d3", "Bg7", "Ng5", "Nh6", "a4", "f6", "Nf3", "Nf7", "Nc3", "d6", "Be3", "O-O"],
+    it6: ["e4", "e5", "Nf3", "Nc6", "Bc4", "f5", "d4", "fxe4", "Nxe5", "d5", "Bb5", "Qd6", "O-O", "Bd7", "c4", "Nxe5", "dxe5"],
+    it7: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Nxc3", "bxc3", "Bxc3", "Ba3", "d5", "Bb5"],
+    it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Nxe4", "dxe4", "Bb4+", "c3"],
+    it9: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxf2+", "Kxf2", "Nf6", "Re1"],
+    it10: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d3", "Ng4", "d4", "Bd6", "O-O"],
+  };
+  for (const id of lineIds) {
+    const plies = linePlies(id);
+    assert.deepEqual(plies.slice(0, 5), stem, `${id} stem`);
+    assert.deepEqual(plies, expected[id], id);
+    assert.equal(lineBlock(id).match(/side: "w"/)?.[0], 'side: "w"');
+  }
 
-  const names = Object.fromEntries(
-    [...it.matchAll(/id: "(it\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
-      m[1],
-      m[2],
-    ]),
-  );
-  assert.equal(names.it1, "Quiet Italian: classical entry");
-  assert.equal(names.it5, "Two Knights: meet …d5");
-  assert.equal(names.it9, "Rousseau Gambit awareness");
+  assert.match(lineBlock("it6"), /Punish the error · …f5 \(Rousseau Gambit\)/);
+  assert.match(lineBlock("it7"), /Punish the error · …Bxc3 \(Greco gift\)/);
+  assert.match(lineBlock("it8"), /Punish the error · …Nxe4\?/);
+  assert.match(lineBlock("it9"), /Punish the error · …Bxf2\+\? in the Evans/);
+  assert.match(lineBlock("it10"), /Punish the error · …Ng4\?/);
+  for (const id of ["it1", "it2", "it3", "it4", "it5"]) {
+    assert.doesNotMatch(lineBlock(id), /Punish the error/);
+  }
+
+  const allPlies = lineIds.map((id) => ({ id, plies: linePlies(id) }));
+  for (let i = 0; i < allPlies.length; i++) {
+    for (let j = 0; j < allPlies.length; j++) {
+      if (i === j) continue;
+      const a = allPlies[i].plies;
+      const b = allPlies[j].plies;
+      if (a.length < b.length && a.every((p, k) => p === b[k])) {
+        assert.fail(`${allPlies[i].id} is a ply-prefix of ${allPlies[j].id}`);
+      }
+    }
+  }
 });
 
 
@@ -3213,7 +3263,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(abPack, "ab1", ["alekhine-black"])?.id, "ab2");
 });
 
-test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–18, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–10, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qgw1–18, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -3281,7 +3331,7 @@ test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   assertIdeas(d4s, "d4s", 18);
   assertIdeas(asb, "as", 18);
   assertIdeas(nl, "nl", 18);
-  assertIdeas(it, "it", 18);
+  assertIdeas(it, "it", 10);
   assertIdeas(rl, "rl", 18);
   assertIdeas(frw, "fr", 18);
   assertIdeas(alw, "al", 18);
