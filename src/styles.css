@@ -173,6 +173,13 @@ html[data-color-scheme="dark"] {
     letter-spacing: 0.01em;
   }
 
+  .app-header-logo {
+    width: 2.15rem;
+    height: 2.15rem;
+    flex: 0 0 auto;
+    object-fit: contain;
+  }
+
   .lang-toggle-wrap {
     display: grid;
     place-items: center;
@@ -3019,19 +3026,11 @@ html[data-color-scheme="dark"] .app-shell--landing {
 }
 
 .brand-mark {
-  display: grid;
-  width: 2.55rem;
-  height: 2.9rem;
+  display: block;
+  width: 2.85rem;
+  height: 2.85rem;
   flex: 0 0 auto;
-  place-items: center;
-  background: #2f5d50;
-  clip-path: polygon(50% 0, 100% 16%, 90% 64%, 50% 100%, 10% 64%, 0 16%);
-}
-
-.brand-mark img {
-  width: 58%;
-  height: auto;
-  margin-top: -6%;
+  object-fit: contain;
 }
 
 .landing-wordmark {
@@ -3101,54 +3100,84 @@ html[data-color-scheme="dark"] .app-shell--landing {
   margin: 0.15rem 0 0.35rem;
 }
 
+.landing-coach-wrap {
+  position: relative;
+  flex: 0 1 auto;
+  width: max-content;
+  max-width: 46%;
+  line-height: 0;
+  margin-right: -1.35rem;
+  margin-bottom: -0.15rem;
+  filter: drop-shadow(0 12px 14px rgba(60, 36, 18, 0.18));
+}
+
 .landing-coach {
   display: block;
   height: 15.25rem;
   width: auto;
-  max-width: 46%;
+  max-width: 100%;
   object-fit: contain;
   object-position: center bottom;
-  margin-right: -1.35rem;
-  margin-bottom: -0.15rem;
-  filter: drop-shadow(0 12px 14px rgba(60, 36, 18, 0.18));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Cup face on coach-seated-v2.png (640×1071). Percentages are of that image. */
+.landing-mug-logo {
+  position: absolute;
+  left: 79%;
+  top: 56.2%;
+  width: 18%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
 }
 
 .landing-board {
+  flex: 0 0 auto;
   width: min(46vw, 11.25rem);
-  padding: 0.45rem;
-  border-radius: 0.45rem;
-  background: linear-gradient(160deg, #8a5a38 0%, #5c3a22 100%);
-  box-shadow: 0 14px 28px rgba(60, 36, 18, 0.22);
+  padding: 0.42rem;
+  border-radius: 0.2rem;
+  background: #6b4428;
+  box-shadow: 0 10px 18px rgba(60, 36, 18, 0.16);
+  transform: none;
 }
 
 .landing-board-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 0.15rem;
+  transform: none;
 }
 
 .landing-sq {
-  display: grid;
-  place-items: center;
+  position: relative;
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
 }
 
 .landing-sq-light {
-  background: #f4e6c8;
+  background: #f3e6c8;
 }
 
 .landing-sq-dark {
-  background: #a56b3c;
+  background: #8d5a32;
 }
 
 .landing-sq .chess-piece-img {
-  width: 92%;
-  height: 92%;
+  position: absolute;
+  left: 8%;
+  top: 8%;
+  width: 84%;
+  height: 84%;
+  max-width: none;
   object-fit: contain;
 }
 
@@ -3285,10 +3314,13 @@ html[data-color-scheme="dark"] .landing-cta {
     margin: 0;
   }
 
-  .landing-coach {
-    height: 21.5rem;
+  .landing-coach-wrap {
     max-width: none;
     margin-right: -2rem;
+  }
+
+  .landing-coach {
+    height: 21.5rem;
   }
 
   .landing-board {

@@ -30,7 +30,12 @@ test("landing matches the signed-off home: gym CTA, live packs, real prices", ()
   assert.match(landing, /queens-gambit-white/);
   assert.match(landing, /Strict book-move trainer/);
   assert.match(landing, /coach-seated-v2\.png/);
-  assert.match(landing, /\/pieces\/wR\.svg/);
+  assert.match(landing, /\/brand\/opening-lab-logo\.png/);
+  assert.match(landing, /landing-mug-logo/);
+  assert.match(landing, /className="brand-mark"/);
+  assert.doesNotMatch(landing, /\/pieces\/wR\.svg/);
+  assert.doesNotMatch(landing, /App coming soon/);
+  assert.doesNotMatch(landing, /Continue on the web/);
   assert.doesNotMatch(landing, /£4\.99|£9\.99|£0\.99/);
   assert.doesNotMatch(landing, /Play on|versus the computer|vs computer/i);
   assert.doesNotMatch(landing, /human voice|recorded voice|voice actor|real person/i);
@@ -78,4 +83,21 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Learning packs":').length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
   assert.doesNotMatch(copy, /£/);
+});
+
+test("landing board is an even orthographic diagram and the app prompt is gone", () => {
+  assert.match(css, /grid-template-columns:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(css, /grid-template-rows:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(css, /\.landing-board[\s\S]*transform:\s*none/);
+  assert.doesNotMatch(css, /\.landing-board[\s\S]{0,400}perspective/);
+  assert.doesNotMatch(css, /\.landing-board[\s\S]{0,400}skew/);
+  const list = src("src/components/opening-lab/pack-list.tsx");
+  const shell = src("src/components/opening-lab/app-shell.tsx");
+  assert.doesNotMatch(list, /WebsiteAppPrompt/);
+  assert.doesNotMatch(list, /App coming soon/);
+  assert.doesNotMatch(list, /Continue on the web/);
+  assert.doesNotMatch(shell, /WebsiteAppPrompt/);
+  assert.doesNotMatch(shell, /App coming soon/);
+  assert.match(shell, /app-header-logo/);
+  assert.match(shell, /\/brand\/opening-lab-logo\.png/);
 });

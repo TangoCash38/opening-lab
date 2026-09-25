@@ -269,13 +269,23 @@ function OpeningLabInner() {
             <House className="header-home-icon" strokeWidth={1.75} aria-hidden />
             <span className="header-home-label">{t("Home")}</span>
           </button>
-          <div className="min-w-0 flex-1">
-            <strong className="block truncate text-[0.95rem] font-semibold tracking-tight">
-              Opening Lab
-            </strong>
-            <span className="app-header-sub">
-              {t("Guided practice · memory tests")}
-            </span>
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <img
+              className="app-header-logo"
+              src="/brand/opening-lab-logo.png"
+              alt=""
+              width={36}
+              height={36}
+              draggable={false}
+            />
+            <div className="min-w-0">
+              <strong className="block truncate text-[0.95rem] font-semibold tracking-tight">
+                Opening Lab
+              </strong>
+              <span className="app-header-sub">
+                {t("Guided practice · memory tests")}
+              </span>
+            </div>
           </div>
 
           <div className="flex shrink-0 items-center gap-1">

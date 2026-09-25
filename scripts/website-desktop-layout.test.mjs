@@ -11,7 +11,6 @@ const shell = src("src/components/opening-lab/app-shell.tsx");
 const hero = src("src/components/opening-lab/home-hero.tsx");
 const css = src("src/styles.css");
 const list = src("src/components/opening-lab/pack-list.tsx");
-const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
 
 test("app-shell gates data-surface website vs play via isPlayWrap", () => {
   assert.match(shell, /from "@\/lib\/play-app"/);
@@ -52,11 +51,9 @@ test("desktop home split classes and website-only CSS exist", () => {
   assert.match(css, /\[data-surface="website"\] \.pack-list-grid/);
 });
 
-test("WebsiteAppPrompt stays website-only download / continue", () => {
-  assert.match(prompt, /isPlayWrap\(\)/);
-  assert.match(prompt, /Download the app/);
-  assert.match(prompt, /Continue on the web/);
-  assert.match(prompt, /md:items-center/);
-  assert.doesNotMatch(prompt, /Play Billing/i);
-  assert.doesNotMatch(prompt, /Google Play bills/i);
+test("website pack list does not mount the app coming soon overlay", () => {
+  assert.doesNotMatch(list, /WebsiteAppPrompt/);
+  assert.doesNotMatch(list, /App coming soon/);
+  assert.doesNotMatch(list, /Continue on the web/);
+  assert.doesNotMatch(shell, /WebsiteAppPrompt/);
 });

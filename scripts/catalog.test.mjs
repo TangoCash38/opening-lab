@@ -2861,7 +2861,7 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   assert.match(packList, /useState\(\(\) => isPlayWrap\(\)\)/);
   assert.match(packList, /if \(playApp \|\| isPlayWrap\(\)\) \{/);
   assert.match(hero, /isLineUnlocked\(pack, item\.id/);
-  assert.match(packList, /WebsiteAppPrompt/);
+  assert.doesNotMatch(packList, /WebsiteAppPrompt/);
   const today = readFileSync(
     join(root, "src/components/opening-lab/today-strip.tsx"),
     "utf8",

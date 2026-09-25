@@ -210,22 +210,22 @@ test("Play wrap shows locked packs with prices and never starts Stripe", () => {
   assert.match(playSkus, /"opening-traps"/);
 });
 
-test("website app prompt is website-only and uses closed testing, not a store page", () => {
-  const prompt = src("src/components/opening-lab/website-app-prompt.tsx");
+test("website does not show the app coming soon / continue on the web overlay", () => {
   const packList = src("src/components/opening-lab/pack-list.tsx");
   const hero = src("src/components/opening-lab/home-hero.tsx");
-  assert.match(packList, /WebsiteAppPrompt/);
+  const landing = src("src/components/opening-lab/home-intro.tsx");
+  const shell = src("src/components/opening-lab/app-shell.tsx");
+  assert.doesNotMatch(packList, /WebsiteAppPrompt/);
   assert.doesNotMatch(hero, /WebsiteAppPrompt/);
+  assert.doesNotMatch(landing, /WebsiteAppPrompt/);
+  assert.doesNotMatch(shell, /WebsiteAppPrompt/);
   assert.doesNotMatch(hero, /isPlayWrap\(\)/);
-  assert.match(prompt, /isPlayWrap\(\)/);
-  assert.match(prompt, /if \(isPlayWrap\(\)\) return;/);
-  assert.match(prompt, /sessionStorage\.setItem\(WEBSITE_APP_PROMPT_KEY, "1"\)/);
-  assert.match(prompt, /https:\/\/play\.google\.com\/apps\/testing\/uk\.co\.openinglab/);
-  assert.doesNotMatch(prompt, /play\.google\.com\/store\/apps\/details/);
-  assert.doesNotMatch(prompt, /search Opening Lab/i);
-  assert.doesNotMatch(prompt, /How to play/);
-  assert.match(prompt, /t\("App coming soon"\)/);
-  assert.match(prompt, /t\("Continue on the web"\)/);
+  for (const file of [packList, hero, landing, shell]) {
+    assert.doesNotMatch(file, /App coming soon/);
+    assert.doesNotMatch(file, /Continue on the web/);
+  }
+  assert.doesNotMatch(packList, /play\.google\.com\/store\/apps\/details/);
+  assert.doesNotMatch(landing, /play\.google\.com\/store\/apps\/details/);
 });
 
 test("pack unlock sheet Stripe line has no Yours to keep", () => {
