@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
- * Applies Potato Pie Practice auto-jump + queue + Caro intro stem to home-hero.tsx.
- * Idempotent: no-ops if already patched. Runs from package.json pretest/prebuild.
+ * Legacy build patch. Practice auto-jump, the line-tap queue, and the Caro
+ * intro stem now live in home-hero.tsx and coach-packs.ts. If that source is
+ * already present this script does nothing, so a build cannot rewrite the
+ * stem onto the wrong board branch.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -10,7 +12,10 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const path = join(root, "src/components/opening-lab/home-hero.tsx");
 let s = readFileSync(path, "utf8");
-if (s.includes("Potato Pie jumps out as soon as this pack's Practice screen opens")) {
+if (
+  s.includes("Potato Pie jumps out as soon as this pack's Practice screen opens") &&
+  s.includes("stemSans={coachPack(pack.id)?.introStem}")
+) {
   process.exit(0);
 }
 

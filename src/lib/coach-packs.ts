@@ -40,6 +40,7 @@ import {
   markScotchCanalCoachSeen,
   markScotchCoachSeen,
 } from "@/lib/scotch-coach";
+import { CARO_INTRO_STEM, CARO_INTRO_STEM_AT_SEC } from "@/lib/caro-intro-stem";
 
 /** Gentle caption dwell when a talk has no recording. About 4 to 6 seconds. */
 export const COACH_TEXT_BEAT_SEC = 5;
@@ -372,6 +373,8 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introAudio: CARO_KANN_INTRO_MP3,
     introAudioFallbackSec: CARO_KANN_INTRO_SEC,
     introBeatAtSec: CARO_KANN_INTRO_AT_SEC,
+    introStem: CARO_INTRO_STEM,
+    introStemAtSec: CARO_INTRO_STEM_AT_SEC,
     firstLineId: "ckb1",
     firstLineTitle: "Line 1",
     firstLineBeats: CARO_KANN_LINE,
@@ -470,8 +473,8 @@ export function coachTalkPlies(
   const pack = COACH_PACKS[packId];
   if (!pack) return null;
   if (talk === "canal") return null;
-  // Scotch stem follows the cuppa clip. Any other intro, audio or not, holds
-  // the start position: its captions have no plies.
+  // An intro stem (Scotch gambit, Caro e4 c6) follows the clip clock.
+  // Intros without a stem hold the start position: their captions have no plies.
   if (talk === "intro" && pack.introStem) return null;
   if (talk === "line" && pack.firstLinePlaysPackLine) return null;
   const key = `${packId}:${talk}`;

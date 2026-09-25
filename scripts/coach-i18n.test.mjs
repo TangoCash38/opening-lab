@@ -57,9 +57,12 @@ function compile(t) {
   };
   const scotchJs = ts.transpileModule(src("src/lib/scotch-coach.ts"), options).outputText;
   writeFileSync(join(dir, "scotch-coach.mjs"), scotchJs);
+  const stemJs = ts.transpileModule(src("src/lib/caro-intro-stem.ts"), options).outputText;
+  writeFileSync(join(dir, "caro-intro-stem.mjs"), stemJs);
   const packsJs = ts
     .transpileModule(src("src/lib/coach-packs.ts"), options)
-    .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs");
+    .outputText.replaceAll("@/lib/scotch-coach", "./scotch-coach.mjs")
+    .replaceAll("@/lib/caro-intro-stem", "./caro-intro-stem.mjs");
   writeFileSync(join(dir, "coach-packs.mjs"), packsJs);
   const i18nJs = ts.transpileModule(src("src/lib/coach-i18n.ts"), options).outputText;
   writeFileSync(join(dir, "coach-i18n.mjs"), i18nJs);

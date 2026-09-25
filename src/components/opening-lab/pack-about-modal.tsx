@@ -24,8 +24,13 @@ type Props = {
  */
 export function PackAboutModal({ onClose, onStart }: Props) {
   useEffect(() => {
-    if (onStart) onStart();
-    else onClose();
+    // Strict Mode runs effects twice. A timeout cancelled on cleanup starts
+    // the line once, so the first run cannot mark the talk seen and skip it.
+    const id = window.setTimeout(() => {
+      if (onStart) onStart();
+      else onClose();
+    }, 0);
+    return () => window.clearTimeout(id);
   }, [onClose, onStart]);
 
   return null;
