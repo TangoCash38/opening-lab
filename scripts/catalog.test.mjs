@@ -2593,7 +2593,7 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   assert.doesNotMatch(packs, /id: "ak8"/);
 });
 
-test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book lines, £1.50, locked until purchase", () => {
+test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book lines, £1.99, locked until purchase", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "old-indian-black"');
   assert.ok(start >= 0, "old-indian-black pack missing");
@@ -2605,9 +2605,9 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
   assert.match(oib, /section: "black"/);
   assert.match(oib, /isFree: false/);
   assert.match(oib, /isPremium: true/);
-  assert.match(oib, /price: "£1\.50"/);
+  assert.match(oib, /price: "£1\.99"/);
   assert.match(oib, /blurb: "9-line basics · 1\.d4 d6 …Nbd7 Qc2"/);
-  assert.match(oib, /closedLabel: "£1\.50 · 9 lines"/);
+  assert.match(oib, /closedLabel: "£1\.99 · 9 lines"/);
   assert.match(oib, /Meet the Old Indian Defence for Black/);
   assert.match(oib, /Practice the main Black moves with the hint/);
   assert.match(oib, /Then Test with none/);
@@ -2786,7 +2786,8 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6 tra
   assert.match(lon, /name: "London System \(White\)"/);
   assert.match(lon, /side: "White"/);
   assert.match(lon, /section: "white"/);
-  assert.match(lon, /price: "£1"/);
+  assert.match(lon, /price: "£1\.99"/);
+  assert.doesNotMatch(lon, /price: "£1",/);
   assert.match(lon, /blurb: "5 book lines \+ 5 punish"/);
   assert.doesNotMatch(lon, /Jobava/);
   assert.doesNotMatch(lon, /Dutch/);

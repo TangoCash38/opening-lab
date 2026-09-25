@@ -1,6 +1,6 @@
 # Opening Lab
 
-Strict chess opening memory training — Practice & Test modes, animated board, free Scotch Gambit plus premium packs.
+Strict chess opening memory training — Practice & Test modes, animated board, and £1.99 drill packs.
 
 ## Stack
 
@@ -14,11 +14,12 @@ Strict chess opening memory training — Practice & Test modes, animated board, 
 
 | Tier | Price |
 |------|--------|
-| **Scotch Gambit** (5 main lines and 2 traps) | Free |
-| 5-line packs | **£1** |
-| 8–10 line packs | **£1.99** |
-| **Opening Lab+** | **£4.99 / month** or **£29.99 / year** |
-| Pay as you go | **£1** or **£1.99** per pack, keep forever |
+| Paid drill packs | **£1.99** |
+| Opening Traps | 6 lines free, then **£1.99** |
+| Caro-Kann for Black | 3 lines free, then **£1.99** |
+| Scotch Gambit lessons | **£2.99** (parked, not on sale) |
+| **Opening Lab+** | **£4.99 / month** or **£29.99 / year** (not on sale) |
+| Pay as you go | **£1.99** per pack |
 
 Demo unlocks use `localStorage` (`src/lib/unlocks.ts`).
 
@@ -71,7 +72,7 @@ src/
     mini-board.tsx
   data/
     packs.ts            # Lines + isFree / isPremium / price
-    pricing.ts          # £1 / £1.99 / Lab+ £4.99 mo · £29.99 yr
+    pricing.ts          # £1.99 drill packs / lessons £2.99 / Lab+ £4.99 mo · £29.99 yr
   hooks/use-unlocks.ts
   lib/unlocks.ts
   routes/

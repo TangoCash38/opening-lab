@@ -53,7 +53,7 @@ export const PACKS: Pack[] = [
     section: "white",
     isFree: false,
     isPremium: true,
-    price: "£2.99",
+    price: "£1.99",
     blurb: "5 book lines + 5 punish",
     lines: [
       {
@@ -354,7 +354,7 @@ export const PACKS: Pack[] = [
     section: "white",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "5-line White survey · Advance, Tal, Classical, Two Knights & Fantasy",
     lines: [
       { id: "caw1", name: "Line 1 · Advance Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Qxd4", "Nc6"], side: "w" },
@@ -372,7 +372,7 @@ export const PACKS: Pack[] = [
     section: "white",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "5 lines · QGA, QGD, Slav, Semi-Slav & Exchange",
     lines: [
       { id: "qg1", name: "Line 1 · Accepted (QGA)", plies: ["d4", "d5", "c4", "dxc4", "Nf3", "Nf6", "e3", "e6", "Bxc4", "c5", "O-O", "a6", "Bb3", "Nc6", "Nc3", "cxd4", "exd4", "Be7", "Re1", "O-O"], side: "w" },
@@ -390,7 +390,7 @@ export const PACKS: Pack[] = [
     section: "white",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "5 book lines + 5 punish",
     about:
       "The London System is White’s classical 1.d4 with Bf4. Five book lines meet the main Black replies. Five more punish one Black error.\n\nPractice the book moves with the green hint. Then Test with none to prove you remember them.",
@@ -4716,10 +4716,10 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1.50",
+    price: "£1.99",
     blurb: "9-line basics · 1.d4 d6 …Nbd7 Qc2",
     about: "Meet the Old Indian Defence for Black: 1.d4 d6 2.c4 Nf6 3.Nc3 Nbd7 4.Qc2, then Classical …e5, the exchange, closed d5, the Bg5 pin, and the …c6, …c5, and …e6 branches.\n\nPractice the main Black moves with the hint. Then Test with none to prove you remember them.",
-    closedLabel: "£1.50 · 9 lines",
+    closedLabel: "£1.99 · 9 lines",
     lines: [
       {
         id: "oib1",
@@ -5490,7 +5490,7 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "3-line survey · Classical, Rubinstein & Sämisch",
     lines: [
       { id: "ni1", name: "Line 1 · Classical main", plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "Qc2", "O-O", "a3", "Bxc3+", "Qxc3", "b6", "Bg5", "Bb7", "e3", "d6", "f3", "Nbd7", "Bd3", "c5"], side: "b" },
@@ -5527,7 +5527,7 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "3-line survey · …d5 on move 1 · Qa5 main line",
     lines: [
       { id: "sc1", name: "Line 1 · Main line …Qa5", plies: ["e4", "d5", "exd5", "Qxd5", "Nc3", "Qa5", "d4", "Nf6", "Nf3", "Bf5", "Bd2", "e6", "Bc4", "Bb4", "a3", "Bxc3", "Bxc3", "Qb6", "O-O", "Nbd7"], side: "b" },
@@ -5543,7 +5543,7 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "3-line survey · Hypermodern …d6 & …g6 vs 1.e4",
     lines: [
       { id: "pd1", name: "Line 1 · Classical system", plies: ["e4", "d6", "d4", "Nf6", "Nc3", "g6", "Nf3", "Bg7", "Be2", "O-O", "O-O", "c6", "a4", "Nbd7", "Re1", "e5", "h3", "exd4", "Nxd4", "Re8"], side: "b" },
@@ -5559,7 +5559,7 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "3-line survey · Solid …c6 · main line, exchange & Chebanenko",
     lines: [
       { id: "sd1", name: "Line 1 · Main line", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"], side: "b" },
@@ -5596,7 +5596,7 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "3-line survey · …f5 systems · Classical & Leningrad",
     lines: [
       { id: "dd1", name: "Line 1 · Classical Dutch", plies: ["d4", "f5", "g3", "Nf6", "Bg2", "e6", "Nf3", "Be7", "O-O", "O-O", "c4", "d6", "Nc3", "Qe8", "Re1", "Qh5", "e4", "fxe4", "Nxe4", "Nxe4"], side: "b" },
@@ -5612,7 +5612,7 @@ export const PACKS: Pack[] = [
     section: "black",
     isFree: false,
     isPremium: true,
-    price: "£1",
+    price: "£1.99",
     blurb: "3-line survey · …g6 without early …Nf6",
     lines: [
       { id: "md1", name: "Line 1 · Modern main", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "d6", "Be3", "a6", "Qd2", "b5", "O-O-O", "Nd7", "h4", "h5", "Nh3", "Bb7", "f3", "c5", "dxc5", "Nxc5"], side: "b" },
@@ -5736,7 +5736,7 @@ export const PACKS: Pack[] = [
     section: "special",
     isFree: false,
     isPremium: true,
-    price: "£3.99",
+    price: "£1.99",
     blurb: "25 separate lines · named master games as strict drills",
     badge: "Bundle",
     lines: [

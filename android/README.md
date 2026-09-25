@@ -103,6 +103,8 @@ Path B (no Lab+): create **managed, non-consumable** one-time products. Play pro
 | `pack_<pack_id_with_underscores>` | One-time managed | `applyPurchase({ kind: "pack", packId })` |
 | `buy_all_packs` | One-time managed | `{ kind: "buy_all" }` |
 
+In-app labels are **£1.99** for every paid drill pack. Play Console prices are not written by this repo. Set each live SKU (`pack_scotch`, `pack_london`, `pack_opening_traps`, `pack_caro_kann_black`) to £1.99. `buy_all_packs` stays £19.99 and is not on sale.
+
 Do not invent pack titles in Console — use the catalog id, not a marketing name, as the SKU suffix. No `lab_plus_yearly` / no subscriptions.
 
 Server verify (products API) runs only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` is set on the host (Vercel). Missing env → 503 `not_connected` and token save only — **no unlock grant**. Never put that JSON in the repo.
