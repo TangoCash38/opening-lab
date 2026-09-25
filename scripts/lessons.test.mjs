@@ -25,7 +25,8 @@ test("landing keeps the gym and drill packs, and adds Chess opening lessons", ()
   const cta = landing.indexOf("data-landing-cta");
   const drills = landing.indexOf("landing-cta-note");
   const lessons = landing.indexOf("data-landing-lessons");
-  assert.ok(cta >= 0 && drills > cta && lessons > drills);
+  const gymButtonEnd = landing.indexOf("</button>", cta);
+  assert.ok(cta >= 0 && drills > cta && gymButtonEnd > drills && lessons > gymButtonEnd);
   assert.match(landing, /t\("Enter the gym"\)/);
   assert.match(landing, /className="landing-cta-note"[\s\S]*t\("Opening drill packs"\)/);
   assert.match(landing, /t\("Chess opening lessons"\)/);

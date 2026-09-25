@@ -65,10 +65,10 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.doesNotMatch(landing, /Drill packs/);
   assert.match(landing, /aria-label=\{t\("Site"\)\}/);
   assert.match(landing, /data-landing-support/);
-  assert.match(
-    landing,
-    /data-landing-cta[\s\S]{0,160}t\("Enter the gym"\)[\s\S]{0,200}t\("Opening drill packs"\)/,
-  );
+  const gymButton = landing.match(/<button[^>]*data-landing-cta[\s\S]*?<\/button>/)?.[0] ?? "";
+  assert.match(gymButton, /t\("Enter the gym"\)/);
+  assert.match(gymButton, /className="landing-cta-note"[\s\S]*t\("Opening drill packs"\)/);
+  assert.doesNotMatch(gymButton, /Chess opening lessons/);
   assert.match(landing, /className="landing-cta-note"/);
   assert.match(
     landing,
