@@ -74,7 +74,7 @@ test("Italian Potato Pie intro plays the stem with speech and arrows the replies
   assert.match(hero, /if \(!practiceOpen\) return/);
   assert.match(hero, /whiteOnly=\{coachPack\(pack\.id\)\?\.introStemWhiteOnly === true\}/);
   assert.match(hero, /introArrows=\{coachPack\(pack\.id\)\?\.introArrows\}/);
-  assert.match(hero, /coachIntroEndsOnLineList\(pack\.id\)/);
+  assert.doesNotMatch(hero, /coachIntroEndsOnLineList/);
   assert.match(board, /playWhiteOnlySan/);
   assert.match(board, /data-coach-white-only/);
   assert.match(src("src/lib/coach-packs.ts"), /firstLineAudio: ITALIAN_LINE_WAV/);
@@ -95,7 +95,6 @@ test("Italian Potato Pie intro plays the stem with speech and arrows the replies
         ITALIAN_INTRO_STEM_AT_SEC,
         coachAudioPlyCount,
         coachIntroArrowsAt,
-        coachIntroEndsOnLineList,
         coachIntroSessionKey,
         coachLinePlyCues,
         coachLineSessionKey,
@@ -124,8 +123,7 @@ test("Italian Potato Pie intro plays the stem with speech and arrows the replies
       if (coach.firstLineAudioFallbackSec !== 89.84) throw new Error("line length");
       if (!coachTalkHasAudio("italian-white", "line")) throw new Error("line talk missing audio");
       if (coach.introStemWhiteOnly === true) throw new Error("italian stem plays black replies");
-      if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
-      if (coachIntroEndsOnLineList("italian-white") !== true) throw new Error("italian list gate");
+      if (coach.introEndsOnLineList) throw new Error("intro should hand off to Line 1");
       if (!coach.introStem || coach.introStem.join(" ") !== ITALIAN_INTRO_STEM.join(" ")) {
         throw new Error("stem " + coach.introStem);
       }
@@ -197,11 +195,11 @@ test("Italian Potato Pie intro plays the stem with speech and arrows the replies
         throw new Error("Line 1 tap should open the talk");
       }
       if (coachPackLineApplies({ packId: "italian-white", lineId: "it2" })) throw new Error("only it1");
-      if (coachTalkAfterPackIntro({ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== null) {
-        throw new Error("finishing the intro must not open Line 1");
+      if (coachTalkAfterPackIntro({ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== "line") {
+        throw new Error("finishing the intro must open Line 1");
       }
-      if (coachTalkAfterPackIntro({ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== null) {
-        throw new Error("skip stays off Line 1");
+      if (coachTalkAfterPackIntro({ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== "line") {
+        throw new Error("skip must open Line 1");
       }
       const it1 = pack.lines.find((item) => item.id === "it1");
       if (!it1) throw new Error("it1 missing");

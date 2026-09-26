@@ -10,7 +10,6 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
 import {
   coachIntroAlreadySeen,
-  coachIntroEndsOnLineList,
   coachLineAlreadySeen,
   coachPackIntroApplies,
   coachPackLineApplies,
@@ -370,21 +369,10 @@ export function HomeHero({
       stopScotchCoachNarration();
       return;
     }
-    // London and Italian stop on the line list. Skip and the clip both
-    // dismiss this talk only — they do not open Line 1. A tap during the
-    // intro still opens that line. Line 1 speech plays only when that
-    // pack has a first-line talk.
-    if (current.talk === "intro" && coachIntroEndsOnLineList(pack.id)) {
-      const queued = queuedLineRef.current;
-      queuedLineRef.current = null;
-      coachRef.current = null;
-      stopScotchCoachNarration();
-      setCoach(null);
-      if (queued) launchLine(queued);
-      return;
-    }
-    // Completing the intro opens the first-line talk before book Practice.
-    // Skip dismisses this talk only and does not mark the other one seen.
+    // Skip and a finished intro both open the first-line talk (Line 1
+    // speech and the board walkthrough) before book Practice. Skip
+    // dismisses only the intro. A line already heard this visit is not
+    // replayed, and a tap during the intro still waits until this handoff.
     if (current.talk === "intro") {
       const nextTalk = coachTalkAfterPackIntro({
         packId: pack.id,

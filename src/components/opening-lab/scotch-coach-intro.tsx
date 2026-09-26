@@ -362,7 +362,7 @@ function PackCoachCard({
   );
 }
 
-/** Cream history beats. Skip or the last beat starts book Practice. */
+/** Cream history beats. Skip or the last beat hands off to the Line 1 talk. */
 function ScotchCoachIntroCard({ onDone }: { onDone: CoachDone }) {
   const [beat, setBeat] = useState(0);
   const [muted, setMuted] = useState(false);
