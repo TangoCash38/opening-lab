@@ -82,6 +82,7 @@ function OpeningLabInner() {
     false /* onboard after mount */
   );
   const [playSurface, setPlaySurface] = useState(false);
+  const [buyAllNonce, setBuyAllNonce] = useState(0);
 
   const { complete, markLearned, failPractice, markTest, dueQueue, line: lineProgress } =
     useProgress();
@@ -339,10 +340,15 @@ function OpeningLabInner() {
             onFeedback={openFeedback}
             onCreateOwn={openCreate}
             onReport={openReport}
+            onBuyAll={() => {
+              setBuyAllNonce((n) => n + 1);
+              goPacks();
+            }}
           />
         )}
         {view === "home" && (
           <PackList
+            buyAllNonce={buyAllNonce}
             focusPackId={focusPackId}
             onStartLine={startLine}
             onHowToPlay={openGuide}

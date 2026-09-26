@@ -3344,6 +3344,68 @@ html[data-color-scheme="dark"] .app-shell--landing {
   font-weight: 750;
 }
 
+.buy-all-offer-slot {
+  width: 100%;
+  margin: 0.9rem 0 0.35rem;
+}
+
+.buy-all-offer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.22rem;
+  width: 100%;
+  padding: 0.95rem 1.05rem;
+  border: 2px solid color-mix(in srgb, #2f5d50 48%, var(--color-border));
+  border-radius: 1.05rem;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-card);
+  text-align: start;
+  color: inherit;
+}
+
+.buy-all-offer:disabled {
+  opacity: 0.65;
+}
+
+.buy-all-offer:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.buy-all-offer-kicker {
+  color: #2f5d50;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.buy-all-offer-title {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.buy-all-offer-copy,
+.buy-all-offer-note {
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 550;
+  line-height: 1.35;
+}
+
+.buy-all-offer-error {
+  margin: 0.45rem 0 0;
+  color: var(--color-danger);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+html[data-color-scheme="dark"] .buy-all-offer-kicker {
+  color: #e7f3ec;
+}
+
 html[data-color-scheme="dark"] .landing-pack-price,
 html[data-color-scheme="dark"] .landing-cta,
 html[data-color-scheme="dark"] .landing-cta-secondary {

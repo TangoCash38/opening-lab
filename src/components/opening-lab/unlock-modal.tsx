@@ -1,4 +1,5 @@
 import { Lock, X } from "lucide-react";
+import { BuyAllOffer } from "./buy-all-offer";
 import { canPurchaseBuyAll } from "@/lib/catalog";
 import { isPlayWrap } from "@/lib/play-app";
 import { useT } from "@/lib/i18n";
@@ -131,16 +132,7 @@ export function UnlockModal({
                 </div>
               )}
               {offerBuyAll ? (
-                <button
-                  type="button"
-                  onClick={() => onBuyAll?.()}
-                  disabled={busy}
-                  className="flex w-full items-center justify-center rounded-xl border border-border bg-bg-subtle px-4 py-3 text-center active:scale-[0.99] disabled:opacity-60"
-                >
-                  <span className="text-[0.92rem] font-semibold text-fg">
-                    {t("or buy all for just £19.99")}
-                  </span>
-                </button>
+                <BuyAllOffer onBuy={() => onBuyAll?.()} busy={busy} />
               ) : null}
               {onRestore ? (
                 <button
@@ -172,16 +164,7 @@ export function UnlockModal({
                 <span className="text-base font-bold text-accent">{price}</span>
               </button>
               {offerBuyAll ? (
-                <button
-                  type="button"
-                  onClick={() => onBuyAll?.()}
-                  disabled={busy}
-                  className="flex w-full items-center justify-center rounded-xl border border-border bg-bg-subtle px-4 py-3 text-center active:scale-[0.99] disabled:opacity-60"
-                >
-                  <span className="text-[0.92rem] font-semibold text-fg">
-                    {t("or buy all for just £19.99")}
-                  </span>
-                </button>
+                <BuyAllOffer onBuy={() => onBuyAll?.()} busy={busy} />
               ) : null}
             </>
           )}

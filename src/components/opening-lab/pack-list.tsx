@@ -36,6 +36,7 @@ import {
   startPlayBuyAll,
   startPlayPackBuy,
 } from "@/lib/play-billing";
+import { BuyAllOffer } from "./buy-all-offer";
 import { PackExpandHint } from "./pack-lines";
 import { LondonWarmupChip } from "./london-warmup-chip";
 import { MiniBoard } from "./mini-board";
@@ -77,6 +78,8 @@ type Props = {
   onReportLine: () => void;
   /** Open this pack when the gym mounts (landing card). */
   focusPackId?: string | null;
+  /** Landing Buy all click. Starts the same checkout as the gym offer. */
+  buyAllNonce?: number;
 };
 
 const LEAD_PACK_IDS = ["opening-traps", "caro-kann-black"] as const;
@@ -341,6 +344,7 @@ export function PackList({
   onFeedback,
   onReportLine,
   focusPackId = null,
+  buyAllNonce = 0,
 }: Props) {
   const t = useT();
   const { buyPack, subscribe, buyAll, paymentsEnabled, state, subscribed } = useUnlocks();
@@ -355,6 +359,7 @@ export function PackList({
   const [openPackId, setOpenPackId] = useState<string | null>(focusPackId);
   const [soonNoteId, setSoonNoteId] = useState<string | null>(null);
   const resumedCheckout = useRef(false);
+  const buyAllStarted = useRef(0);
   const wrap = playApp || isPlayWrap();
 
   useEffect(() => {
@@ -584,6 +589,12 @@ export function PackList({
     void pay(pending.kind, pending.packId);
   }, [isPending, signedIn, paymentsEnabled, playApp]);
 
+  useEffect(() => {
+    if (!buyAllNonce || buyAllStarted.current === buyAllNonce) return;
+    buyAllStarted.current = buyAllNonce;
+    void pay("buy_all");
+  }, [buyAllNonce]);
+
   const renderCard = (pack: Pack) => (
     <PackCard
       key={pack.id}
@@ -612,6 +623,14 @@ export function PackList({
           />
         </div>
       </div>
+      <BuyAllOffer
+        hidden={subscribed}
+        busy={payBusy}
+        error={modal || showSub ? null : payError}
+        onBuy={() => {
+          void pay("buy_all");
+        }}
+      />
       {unlockNotice ? (
         <p
           className={`mb-3 rounded-xl px-4 py-2.5 text-center text-[0.85rem] font-semibold ${

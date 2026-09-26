@@ -2,7 +2,7 @@
  * Server-only purchase / unlock persistence. Do not import from client code.
  */
 import { PACKS } from "@/data/packs";
-import { LESSON_PRODUCT_IDS } from "@/lib/lesson-products";
+import { LESSON_PRODUCT_IDS, isLessonProductId } from "@/lib/lesson-products";
 import { getSql } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth/verify.server";
 import { notifyPaidUnlock } from "@/lib/email.server";
@@ -212,8 +212,9 @@ export async function applyPurchase(userId: string, input: PurchaseApply): Promi
   if (input.kind === "pack" && input.packId && KNOWN_PACK_IDS.has(input.packId)) {
     packs = [input.packId];
   } else if (input.kind === "buy_all") {
-    // Snapshot every current pack id; plan buy_all also unlocks packs added later.
-    packs = PACKS.map((p) => p.id);
+    // Snapshot every current drill pack. Lessons are not included.
+    // plan buy_all also unlocks drill packs added later.
+    packs = PACKS.map((p) => p.id).filter((id) => !isLessonProductId(id));
   }
 
   let plan: SubPlan | null = null;

@@ -150,16 +150,23 @@ test("opening-traps free samples are ot1 through ot6 at £1.99", () => {
   assert.match(ot, /price: "£1\.99"/);
 });
 
-test("Buy all packs is £19.99 one-time checkout kind", () => {
-  assert.match(pricing, /PRICE_BUY_ALL = "£19\.99"/);
+test("Buy all packs is £10.99 one-time checkout kind", () => {
+  assert.match(pricing, /PRICE_BUY_ALL = "£10\.99"/);
+  assert.match(pricing, /PRICE_PACK = "£1\.99"/);
+  assert.doesNotMatch(pricing, /PRICE_BUY_ALL = "£19\.99"/);
   const checkout = readFileSync(join(root, "src/lib/checkout.ts"), "utf8");
   assert.match(checkout, /"buy_all"/);
   const stripe = readFileSync(join(root, "src/lib/stripe.server.ts"), "utf8");
   assert.match(stripe, /kind === "buy_all"/);
   assert.match(stripe, /PRICE_BUY_ALL/);
+  assert.match(stripe, /mode = "payment"/);
+  assert.match(stripe, /BUY_ALL_STRIPE_DESCRIPTION/);
+  assert.match(stripe, /STRIPE_BUY_ALL_PRODUCT_ID/);
+  assert.doesNotMatch(stripe, /kind === "buy_all"[\s\S]{0,400}mode = "subscription"/);
   const purchases = readFileSync(join(root, "src/lib/purchases.server.ts"), "utf8");
   assert.match(purchases, /kind === "buy_all"/);
   assert.match(purchases, /plan = "buy_all"/);
+  assert.match(purchases, /!isLessonProductId\(id\)/);
   const unlocks = readFileSync(join(root, "src/lib/unlocks.ts"), "utf8");
   assert.match(unlocks, /plan === "buy_all"/);
   assert.match(unlocks, /activateBuyAll/);
@@ -167,17 +174,35 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
     join(root, "src/components/opening-lab/unlock-modal.tsx"),
     "utf8",
   );
-  assert.match(modal, /or buy all for just £19\.99/);
+  const offer = readFileSync(
+    join(root, "src/components/opening-lab/buy-all-offer.tsx"),
+    "utf8",
+  );
+  assert.match(modal, /BuyAllOffer/);
   assert.match(modal, /canPurchaseBuyAll\(\)/);
   assert.match(modal, /offerBuyAll/);
+  assert.match(offer, /data-buy-all-offer/);
+  assert.match(offer, /PRICE_BUY_ALL/);
+  assert.match(
+    offer,
+    /Unlocks every drill pack available now and any future drill packs\. Not Lessons\./,
+  );
+  assert.match(offer, /One-time purchase\. Not a subscription\. Not lifetime access\./);
+  assert.doesNotMatch(offer, /Play on/);
+  const landing = readFileSync(join(root, "src/components/opening-lab/home-intro.tsx"), "utf8");
+  const list = readFileSync(join(root, "src/components/opening-lab/pack-list.tsx"), "utf8");
+  assert.match(landing, /data-buy-all-offer|BuyAllOffer/);
+  assert.match(list, /BuyAllOffer/);
+  assert.match(landing, /LESSONS_ENABLED && !isPlayApp\(\)/);
+  assert.doesNotMatch(`${landing}\n${list}\n${offer}`, /Play on/);
   const migration = readFileSync(join(root, "migrations/0005_buy_all.sql"), "utf8");
   assert.match(migration, /'buy_all'/);
   const terms = readFileSync(join(root, "src/routes/terms.tsx"), "utf8");
   const catalogSrc = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
-  assert.match(catalogSrc, /BUY_ALL_FOR_SALE = false/);
+  assert.match(catalogSrc, /BUY_ALL_FOR_SALE = true/);
   assert.match(
     terms,
-    /Four opening packs are on sale now: Scotch Gambit, Opening Traps,\s+Caro-Kann Defence for Black, and the London System\./,
+    /Buy all\s+packs for £10\.99 \(UK\) is on sale as a one-time purchase: it unlocks\s+every drill pack available now and any future drill packs we add\s+later\./,
   );
   assert.match(
     terms,
@@ -185,17 +210,20 @@ test("Buy all packs is £19.99 one-time checkout kind", () => {
   );
   assert.match(
     terms,
-    /packs that are on sale are one-time\s+in-app purchases via Google Play Billing\.\s+Buy all packs is not on\s+sale at the moment\. There is no Lab\+ subscription\./,
+    /individual packs and Buy all packs are\s+sold as one-time in-app purchases via Google Play Billing\. There is\s+no Lab\+ subscription\./,
   );
   assert.doesNotMatch(terms, /thirty-three|thirty-four opening packs|33 packs|30 packs/);
   assert.doesNotMatch(terms, /Packs you already bought together/);
   assert.match(
     terms,
-    /Buy all packs for £19\.99 is not on sale while other opening packs\s+are coming soon\. Purchases already made stay on your account\./,
+    /Buy all packs for £10\.99 \(UK\) is a one-time purchase \(Google Play\s+Billing in the Play app, or Stripe on the website\)\. It is not a\s+subscription and not a lifetime licence/,
   );
-  assert.match(terms, /25 September 2026/);
+  assert.match(terms, /does not include products that are not drill packs \(for example\s+Lessons, if offered later\)/);
+  assert.match(terms, /26 September 2026/);
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
+  const lessons = readFileSync(join(root, "src/lib/lesson-products.ts"), "utf8");
+  assert.match(lessons, /LESSONS_ENABLED: boolean = false/);
 });
 
 test("£1.99 is the whole pack, not one line", () => {

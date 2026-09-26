@@ -128,7 +128,7 @@ test("Terms has Your account above Cooling-off and the signed copy", () => {
     terms,
     /Training progress stays on each device, so\s+it does not move when you sign in somewhere else/,
   );
-  assert.match(terms, /updated="25 September 2026"/);
+  assert.match(terms, /updated="26 September 2026"/);
   assert.match(legal, /30 August 2026/);
 });
 

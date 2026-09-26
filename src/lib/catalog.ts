@@ -41,12 +41,12 @@ export function canPurchasePack(packId: string): boolean {
 }
 
 /**
- * Single switch for offering Buy all (website and Play wrap).
+ * Single switch for offering Buy all (website and Play wrap share this).
  * false hides every buy button, banner, upsell, and sales mention.
  * Existing plan === "buy_all" entitlements are not affected.
- * Set true to offer it again.
+ * true offers the one-time £10.99 drill-pack unlock again.
  */
-export const BUY_ALL_FOR_SALE = false;
+export const BUY_ALL_FOR_SALE = true;
 
 /** New Buy all checkouts only. Owners keep access either way. */
 export function canPurchaseBuyAll(): boolean {

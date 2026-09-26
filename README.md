@@ -20,6 +20,7 @@ Strict chess opening memory training — Practice & Test modes, animated board, 
 | Scotch Gambit lessons | **£2.99** (parked, not on sale) |
 | **Opening Lab+** | **£4.99 / month** or **£29.99 / year** (not on sale) |
 | Pay as you go | **£1.99** per pack |
+| **Buy all** | **£10.99** one-time. Every drill pack now and any future drill packs. Not Lessons. Not a subscription. Not lifetime access. |
 
 Demo unlocks use `localStorage` (`src/lib/unlocks.ts`).
 
