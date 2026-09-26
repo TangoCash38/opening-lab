@@ -320,7 +320,7 @@ test("opening traps mounts on ot1 by line id, with narration clips and per-pack 
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
-test("finishing the pack intro opens the first-line talk; Skip and the gym pages do not", (t) => {
+test("finishing or skipping the pack intro opens the first-line talk; the gym pages do not", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const modal = src("src/components/opening-lab/pack-about-modal.tsx");
@@ -350,20 +350,23 @@ test("finishing the pack intro opens the first-line talk; Skip and the gym pages
       const { coachTalkAfterPackIntro } = await import(${JSON.stringify(compiled)});
       const cases = [
         [{ packId: "scotch", lineId: "sg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "canal"],
-        [{ packId: "scotch", lineId: "sg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "scotch", lineId: "sg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "canal"],
         [{ packId: "scotch", lineId: "sg1", lineIndex: 0, skipped: false, lineAlreadySeen: true }, null],
+        [{ packId: "scotch", lineId: "sg1", lineIndex: 0, skipped: true, lineAlreadySeen: true }, null],
         [{ packId: "scotch", lineId: "sg2", lineIndex: 1, skipped: false, lineAlreadySeen: false }, null],
+        [{ packId: "scotch", lineId: "sg2", lineIndex: 1, skipped: true, lineAlreadySeen: false }, null],
         [{ packId: "opening-traps", lineId: "ot1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
-        [{ packId: "opening-traps", lineId: "ot1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "opening-traps", lineId: "ot1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
         [{ packId: "opening-traps", lineId: "ot2", lineIndex: 1, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
-        [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
-        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
-        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
-        [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
-        [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
-        [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
-        [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "caro-kann-black", lineId: "ckb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
+        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
+        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
+        [{ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: true }, null],
+        [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
+        [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
+        [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
+        [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
       ];
       for (const [input, expected] of cases) {
         const got = coachTalkAfterPackIntro(input);

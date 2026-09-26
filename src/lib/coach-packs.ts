@@ -12,11 +12,11 @@
  * Test never mounts a talk: only the Practice button and a learn-mode line
  * open pass these gates.
  *
- * Finishing the pack intro (the last Practice button, or the clip) opens the
- * first-line talk before book Practice, on the line that Practice started.
- * London is the exception: the intro stops on the line list, and Line 1
- * waits for a tap. Skip dismisses only the talk on screen. The gym intro
- * pages do not set these session keys.
+ * Finishing the pack intro, or pressing Skip, opens the first-line talk
+ * before book Practice, on the line that Practice started. Skip dismisses
+ * only the intro; the Line 1 speech and board walkthrough still start.
+ * A line already heard this visit is not replayed. The gym intro pages
+ * do not set these session keys.
  */
 import {
   SCOTCH_CANAL_BEATS,
@@ -111,12 +111,6 @@ export type CoachPackConfig = {
    * Every other pack plays `firstLineBeats[].ply` as each beat shows.
    */
   firstLinePlaysPackLine?: boolean;
-  /**
-   * Finishing or skipping the intro returns to the line list.
-   * The first-line talk waits for a tap on `firstLineId`.
-   * Other packs leave this unset and open that talk when the intro ends.
-   */
-  introEndsOnLineList?: boolean;
 };
 
 const OPENING_TRAPS_PACK_ID = "opening-traps";
@@ -806,7 +800,6 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: LONDON_LINE,
     firstLineAudio: LONDON_LINE_WAV,
     firstLineAudioFallbackSec: LONDON_LINE_SEC,
-    introEndsOnLineList: true,
   },
   [ITALIAN_WHITE_PACK_ID]: {
     introTitle: "Italian Game",
@@ -822,7 +815,6 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: ITALIAN_LINE,
     firstLineAudio: ITALIAN_LINE_WAV,
     firstLineAudioFallbackSec: ITALIAN_LINE_SEC,
-    introEndsOnLineList: true,
   },
   [QG_WHITE_PACK_ID]: {
     introTitle: "Queen’s Gambit",
@@ -837,7 +829,6 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: QG_WHITE_LINE,
     firstLineAudio: QG_WHITE_LINE_WAV,
     firstLineAudioFallbackSec: QG_WHITE_LINE_SEC,
-    introEndsOnLineList: true,
   },
 };
 
@@ -864,16 +855,13 @@ export function coachPackLineApplies(input: { packId: string; lineId: string }):
   return input.lineId === pack.firstLineId;
 }
 
-/** Intro end and Skip return to the line list. Line 1 waits for a tap. */
-export function coachIntroEndsOnLineList(packId: string): boolean {
-  return COACH_PACKS[packId]?.introEndsOnLineList === true;
-}
-
 /**
- * Talk to open when the pack intro finishes.
- * `null` for Skip, a line that is not the coached first line, a talk
- * already played this visit, or a pack whose intro ends on the line list
- * (London, Italian). Scotch sg1 is the canal talk; other packs use `firstLineId`.
+ * Talk to open when the pack intro finishes or the user presses Skip.
+ * `null` when that line was already heard this visit, or when `lineId` is
+ * not the coached first line. Scotch sg1 is the canal talk; other packs
+ * use `firstLineId`. Skip dismisses the intro only — it still hands off
+ * to this talk, the same as a natural finish. `skipped` is the caller's
+ * reason and does not suppress the handoff.
  */
 export function coachTalkAfterPackIntro(input: {
   packId: string;
@@ -882,8 +870,8 @@ export function coachTalkAfterPackIntro(input: {
   skipped: boolean;
   lineAlreadySeen: boolean;
 }): "canal" | "line" | null {
-  if (input.skipped || input.lineAlreadySeen) return null;
-  if (coachIntroEndsOnLineList(input.packId)) return null;
+  void input.skipped;
+  if (input.lineAlreadySeen) return null;
   if (
     scotchCanalCoachApplies({
       packId: input.packId,

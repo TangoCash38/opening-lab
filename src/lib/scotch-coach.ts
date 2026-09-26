@@ -4,8 +4,8 @@
  * Two talks, same seated portrait and cream plate / desktop dock:
  * - Main `Tap to practice`: cuppa and history (`scotchCoachApplies`).
  *   The board auto-plays the gambit stem while he speaks.
- *   Finishing that intro (Practice or the clip, not Skip) opens the
- *   Line 1 pack-recipe talk before book Practice.
+ *   Finishing that intro, or pressing Skip, opens the Line 1 pack-recipe
+ *   talk before book Practice. Skip dismisses the cuppa intro only.
  * - First book line, Line 1 (`sg1`): what the ten lines teach
  *   (`scotchCanalCoachApplies`). The board auto-plays that line's SAN
  *   from the pack (not a hardcoded copy) and holds the final position

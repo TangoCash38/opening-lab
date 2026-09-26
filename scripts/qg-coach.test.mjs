@@ -47,7 +47,7 @@ function compileCoachPacks(t) {
   return "./scripts/.generated-qg-coach/coach-packs.mjs";
 }
 
-test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits for a tap", (t) => {
+test("Queen's Gambit Potato Pie intro hands off to the Line 1 talk on Skip and finish", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/qg-white/professor-potato-pie-qg-intro.wav";
@@ -71,13 +71,11 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
   assert.match(hero, /Unpaid visitors still hear Potato Pie/);
   assert.match(hero, /if \(!practiceOpen\) return/);
   assert.match(hero, /whiteOnly=\{coachPack\(pack\.id\)\?\.introStemWhiteOnly === true\}/);
-  assert.match(hero, /coachIntroEndsOnLineList\(pack\.id\)/);
-  const stop = hero.slice(
-    hero.indexOf("coachIntroEndsOnLineList(pack.id)"),
-    hero.indexOf("const nextTalk"),
-  );
-  assert.match(stop, /if \(queued\) launchLine\(queued\)/);
-  assert.match(stop, /return;/);
+  assert.doesNotMatch(hero, /coachIntroEndsOnLineList/);
+  const finish = hero.slice(hero.indexOf("const finishCoach"), hero.indexOf("const activeLineId"));
+  assert.match(finish, /coachTalkAfterPackIntro/);
+  assert.match(finish, /skipped: reason === "skip"/);
+  assert.match(finish, /launchLine\(\s*current\.line,/);
   assert.match(board, /playWhiteOnlySan/);
   assert.match(board, /replayWhiteOnly/);
   assert.match(board, /data-coach-white-only/);
@@ -87,7 +85,7 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
   assert.doesNotMatch(copy, /human voice|voice actor|recorded by/i);
   assert.match(copy, /firstLineAudio: QG_WHITE_LINE_WAV/);
   assert.match(copy, /firstLineBeats: QG_WHITE_LINE/);
-  assert.match(copy, /introEndsOnLineList: true/);
+  assert.doesNotMatch(copy, /introEndsOnLineList/);
   assert.doesNotMatch(hero, /Play on|vs-computer|playComputer/i);
 
   const run = spawnSync(
@@ -109,7 +107,6 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
         coachLineSessionKey,
         coachPackIntroApplies,
         coachPackLineApplies,
-        coachIntroEndsOnLineList,
         coachTalkAfterPackIntro,
         coachTalkHasAudio,
         coachTalkPlies,
@@ -136,11 +133,7 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
       if (coach.firstLineBeats[15].caption !== "Very civilised and quietly ambitious.") throw new Error("line close");
       if (coach.firstLineId !== "qg1") throw new Error("first line id " + coach.firstLineId);
       if (coach.introStemWhiteOnly === true) throw new Error("qg stem plays black d5");
-      if (coach.introEndsOnLineList !== true) throw new Error("intro should stop on the line list");
-      if (coachIntroEndsOnLineList("qg-white") !== true) throw new Error("qg list gate");
-      if (coachIntroEndsOnLineList("caro-kann-black") || coachIntroEndsOnLineList("opening-traps") || coachIntroEndsOnLineList("scotch")) {
-        throw new Error("other packs must still chain");
-      }
+      if (coach.introEndsOnLineList) throw new Error("intro should hand off to Line 1");
       if (!coach.introStem || coach.introStem.join(" ") !== QG_INTRO_STEM.join(" ")) {
         throw new Error("stem " + coach.introStem);
       }
@@ -227,17 +220,19 @@ test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits 
       if (line.get("g8")?.type !== "k" || line.get("g8")?.color !== "b") throw new Error("black king");
       if (line.get("e1")?.type !== "k" || line.get("e1")?.color !== "w") throw new Error("white king");
       if (line.get("c4")?.type !== "b" || line.get("c4")?.color !== "w") throw new Error("bishop c4");
-      if (coachTalkAfterPackIntro({ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== null) {
-        throw new Error("finishing the intro must stay on the line list");
+      if (coachTalkAfterPackIntro({ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }) !== "line") {
+        throw new Error("finishing the intro must open Line 1");
       }
-      if (coachTalkAfterPackIntro({ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== null) {
-        throw new Error("skip stays on the intro");
+      if (coachTalkAfterPackIntro({ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== "line") {
+        throw new Error("skip must open Line 1");
       }
       const key = coachIntroSessionKey("qg-white");
       if (key !== "opening-lab:coach-intro:qg-white") throw new Error(key);
       const lineKey = coachLineSessionKey("qg-white", "qg1");
       if (lineKey !== "opening-lab:coach-line:qg-white:qg1") throw new Error(lineKey);
-      if (COACH_PACKS.london?.introEndsOnLineList !== true) throw new Error("london lock");
+      if (coachTalkAfterPackIntro({ packId: "london", lineId: "lon1", lineIndex: 0, skipped: true, lineAlreadySeen: false }) !== "line") {
+        throw new Error("london skip must open Line 1");
+      }
       `,
     ],
     { cwd: root, encoding: "utf8" },
