@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
 
 function Terms() {
   return (
-    <LegalPage title="Terms of Use" updated="25 September 2026">
+    <LegalPage title="Terms of Use" updated="26 September 2026">
       <p>
         These terms cover your use of Opening Lab, a strict chess opening
         trainer.
@@ -28,13 +28,19 @@ function Terms() {
 
       <LegalSection title="The catalog">
         <p>
-          Four opening packs are on sale now: Scotch Gambit, Opening Traps,
-          Caro-Kann Defence for Black, and the London System. Some lines are free to try,
-          including the first six traps in Opening Traps. The other opening
-          packs show Coming soon and are not for sale until they relaunch. If
-          you already own a pack, it stays unlocked. Buy all packs is not on
-          sale at the moment. Prices are shown before you buy and include VAT
-          where it applies.
+          Six opening packs are available in the Opening Lab app on Google
+          Play: Scotch Gambit, Opening Traps, Caro-Kann Defence for Black,
+          London System for White, Italian Game for White, and Queen’s Gambit
+          for White. The website may offer additional packs. Some lines are
+          free to try, including the first six traps in Opening Traps and free
+          lines in Caro-Kann Defence for Black. Other packs include a free
+          introduction; buying a pack unlocks the rest of that pack as a
+          one-time purchase at the price shown (£1.99 UK for a pack). Buy all
+          packs for £10.99 (UK) is on sale as a one-time purchase: it unlocks
+          every drill pack available now and any future drill packs we add
+          later. Packs that are not yet available show Coming soon until they
+          relaunch. If you already own a pack, it stays unlocked. Prices
+          include VAT where it applies.
         </p>
         <p>
           When a pack is on sale in the Opening Lab app from Google Play, it
@@ -46,17 +52,17 @@ function Terms() {
 
       <LegalSection title="Buy all packs">
         <p>
-          Buy all packs for £19.99 is not on sale while other opening packs
-          are coming soon. Purchases already made stay on your account. When
-          it is on sale, it is a one-time purchase (Google Play Billing in the
-          Play app, or Stripe on the website). It is not a lifetime licence
-          and we do not sell lifetime access.
+          Buy all packs for £10.99 (UK) is a one-time purchase (Google Play
+          Billing in the Play app, or Stripe on the website). It is not a
+          subscription and not a lifetime licence; we do not sell lifetime
+          access.
         </p>
         <p>
-          What you get: full access on your account to every opening pack on
-          the website at the time of purchase, and to packs we later add to
-          that Buy all offer, for as long as we keep Opening Lab available to
-          you.
+          What you get: full access on your account to every drill pack
+          available at the time of purchase, and to any future drill packs we
+          add later, for as long as we keep Opening Lab available to you. It
+          does not include products that are not drill packs (for example
+          Lessons, if offered later).
         </p>
         <p>
           We guarantee that access for at least 12 months from the purchase
@@ -151,10 +157,9 @@ function Terms() {
       <LegalSection title="Google Play">
         <p>
           The Opening Lab app from Google Play is the same trainer as the
-          website. In the Play app, packs that are on sale are one-time
-          in-app purchases via Google Play Billing. Buy all packs is not on
-          sale at the moment. There is no Lab+ subscription. Website
-          purchases use Stripe.
+          website. In the Play app, individual packs and Buy all packs are
+          sold as one-time in-app purchases via Google Play Billing. There is
+          no Lab+ subscription. Website purchases use Stripe.
         </p>
       </LegalSection>
 
