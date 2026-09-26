@@ -3345,7 +3345,8 @@ html[data-color-scheme="dark"] .app-shell--landing {
 }
 
 .landing-puzzle {
-  margin: 0.95rem 0 0.15rem;
+  margin: 0;
+  width: 100%;
 }
 
 .landing-puzzle-card {
