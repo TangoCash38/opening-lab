@@ -14,7 +14,7 @@ is not launched, so there is no splash handoff and the app works with or without
 | Theme | `#2f5d50` |
 | Splash / background | `#f4efe6` |
 | Surface | In-app WebView only (no TWA / Chrome handoff) |
-| Billing | Play Billing Library 7.1.1 + `com.android.vending.BILLING`. Server Path B verifies one-time `pack_*` / `buy_all_packs` on `POST /api/play/subscribe`. No Lab+. Digital Goods does not work in this raw System WebView. |
+| Billing | Play Billing Library 9.1.0 + `com.android.vending.BILLING`. Server Path B verifies one-time `pack_*` / `buy_all_packs` on `POST /api/play/subscribe`. No Lab+. Digital Goods does not work in this raw System WebView. |
 
 Launcher icons come from `public/icons/icon-512.png` and
 `icon-512-maskable.png`.
@@ -111,7 +111,7 @@ Server verify (products API) runs only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` i
 
 Mobile POSTs `{ packageName, productId, purchaseToken, orderId? }` to **`POST /api/play/subscribe`** (same-origin, session). Restore is one POST per `{productId, purchaseToken}`.
 
-App version for the next AAB: **versionCode 8 / versionName 1.0.7**. Do not upload an AAB from this note alone.
+App version for the next AAB: **versionCode 11 / versionName 1.0.10**. Do not upload an AAB from this note alone.
 
 ## Out of scope
 

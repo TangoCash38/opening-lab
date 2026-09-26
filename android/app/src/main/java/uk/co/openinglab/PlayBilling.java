@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Play Billing Library 8.x — Path B one-time INAPP only.
+ * Play Billing Library 9.1.0 — Path B one-time INAPP only.
  * Pack SKU: pack_&lt;id with hyphens → underscores&gt; (qgd-black → pack_qgd_black).
  * Buy all SKU: buy_all_packs (not a lifetime licence).
  *
