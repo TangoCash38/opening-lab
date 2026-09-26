@@ -49,7 +49,7 @@ export function UnlockModal({
     price,
     n: lineCount,
   });
-  const unlockLabel = trapsRest ? t("Unlock all 11 traps for £1.99") : wholePack;
+  const unlockLabel = trapsRest ? t("Unlock all 10 traps for £1.99") : wholePack;
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center"

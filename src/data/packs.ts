@@ -87,8 +87,8 @@ export const PACKS: Pack[] = [
       {
         id: "sg5",
         name: "Line 5",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "Nxd4", "Nf6", "Nc3", "Be7", "O-O", "O-O", "h3", "Nxd4", "Qxd4", "Be6", "Bxe6", "fxe6"],
-        idea: "Quiet decline 4…d6; White recaptures Nxd4 and develops into a small open-game plus.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "O-O", "Nf6", "e5", "Ng4", "Re1", "d6", "exd6", "Qxd6"],
+        idea: "Book engagement …Be7: 4.Bc4 Be7 O-O Nf6 e5 Ng4 Re1 d6 exd6, and the queen recaptures on d6.",
         side: "w",
       },
       {
@@ -406,9 +406,9 @@ export const PACKS: Pack[] = [
       {
         id: "lon2",
         name: "Line 2",
-        plies: ["d4", "d5", "Bf4", "Nf6", "e3", "Bf5", "Nf3", "e6", "Bd3", "Bxd3", "Qxd3", "c6", "Nbd2", "Nbd7", "O-O", "Be7", "c4", "O-O", "Rac1", "Rc8"],
-        idea: "Black develops …Bf5 instead of early …c5. Trade on d3, keep a solid c6–e6 shell, castle, then Rac1/…Rc8 — a quiet London vs the early bishop sortie.",
-        next: "Equal London vs …Bf5. Plans: e4 after preparation, or play on the c-file. Black aims …c5 or …Qa5 and queenside expansion.",
+        plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "cxd4", "exd4", "Bf5", "Ngf3", "e6", "Bb5", "Bd6"],
+        idea: "Classical London with early …c5. After …cxd4 exd4 Black plays …Bf5; White develops Ngf3, meets …e6 with Bb5, and Black answers …Bd6.",
+        next: "Open London centre. Castle, then Bg3 or Ne5. Black’s bishops are on f5 and d6.",
         side: "w",
       },
       {
@@ -454,9 +454,9 @@ export const PACKS: Pack[] = [
       {
         id: "lon8",
         name: "Line 8",
-        plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Bg4", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Bh5", "dxc5", "Bxc5"],
-        idea: "BOOK · ...Bg4 system vs classical London. Black pins Ngf3 instead of early Bf5; White develops Be2–Bg3, castles, and meets ...Bh5 calmly. Sound both sides — fills the slot after rejecting clown ...g5.",
-        next: "Quiet London vs ...Bg4. Plans: Qa4/dxc5 ideas, Ne5, or h3 asking the bishop. Black can ...Bxg3 or keep the pin with ...Bh5–Bg6.",
+        plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Qb6", "Qb3", "c4", "Qc2", "Nc6", "Nbd2", "Bg4", "Ngf3", "e6"],
+        idea: "BOOK · …Qb6 vs the classical London. After c3 …Qb6 White plays Qb3; …c4 is met by Qc2, then Nbd2 …Bg4 Ngf3 …e6.",
+        next: "Closed queenside pawns on c3 and c4. Finish development and castle. Black’s queen is on b6 and the bishop on g4.",
         side: "w",
       },
       {
@@ -471,7 +471,7 @@ export const PACKS: Pack[] = [
         id: "lon10",
         name: "Line 10",
         plies: ["d4", "d5", "Bf4", "Nf6", "e3", "Nc6", "Nd2", "Bf5", "c3", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Be2", "Ne7", "O-O", "c6", "Nh4", "Bg6"],
-        idea: "BOOK · Chigorin-ish …Nc6 vs classical London without early …c5. Black develops …Bf5 (kept, not traded like lon2), …Bd6–Bg3, then …Ne7–c6. Both sides near best — sound pad fill.",
+        idea: "BOOK · Chigorin-ish …Nc6 vs classical London without early …c5. Black develops …Bf5 (kept on the board), …Bd6–Bg3, then …Ne7–c6. Both sides near best — sound pad fill.",
         next: "Quiet equal London. White can Nxg6 or c4; Black aims …Nf5/…Qc7. Distinct pad: no …c5, bishop stays on the board.",
         side: "w",
       },
@@ -1660,17 +1660,17 @@ export const PACKS: Pack[] = [
       {
         id: "it8",
         name: "Line 8",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Nxe4", "dxe4", "Bb4+", "c3"],
-        idea: "Punish the error · …Nxe4?: after the quiet 4.d3, grabbing on e4 hangs the knight. dxe4 leaves White a clear piece up.",
-        next: "Piece up. Kick the bishop with c3, develop, and castle. No need for heroics.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
+        idea: "BOOK · Fried Liver. Two Knights with …Nxd5, distinct from Line 2. White plays Nxf7, then Qf3+ Ke6 Nc3 Nb4 O-O c6 d4, and Black answers …Qf6.",
+        next: "Attack against the king on e6. Keep the d4 centre and develop. This is the Fried Liver, not Line 2.",
         side: "w",
       },
       {
         id: "it9",
         name: "Line 9",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxf2+", "Kxf2", "Nf6", "Re1"],
-        idea: "Punish the error · …Bxf2+? in the Evans: instead of accepting 4…Bxb4, the check on f2 drops a piece. Kxf2 and Re1 consolidate a decisive plus.",
-        next: "Material up with a safe enough king. Develop Nc3/d4 and castle by hand. Black has no lasting attack.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6"],
+        idea: "BOOK · Classical Center Attack. …Bc5, then c3 Nf6 d4 exd4 e5 d5 Bb5 Ne4 cxd4 Bb6 — the open Italian centre with the bishop on b6.",
+        next: "Open centre. Continue with Be3 or Nc3 and castle. Black’s dark-squared bishop is on b6.",
         side: "w",
       },
       {
@@ -6018,14 +6018,6 @@ export const PACKS: Pack[] = [
         plies: ["d4", "Nf6", "c4", "e5", "dxe5", "Ng4", "Bf4", "Nc6", "Nf3", "Bb4+", "Nbd2", "Qe7", "a3", "Ngxe5", "axb4", "Nd3#"],
         side: "b",
       },
-      {
-        id: "ot11",
-        name: "Trap · Alien Gambit …Bxh1",
-        idea: "White’s Alien sac Nxf7 starts the attack. After Bxe6+ and g5, …Bxh1 takes the rook and walks into g6#. That rook grab is the trap.",
-        next: "Checkmate with the pawn on g6. Reset and drill Bxe6+ Kh7 g5, then g6# after the rook take. Mate finishes the line.",
-        plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nf6", "Ng5", "h6", "Nxf7", "Kxf7", "Nf3", "Bf5", "Ne5+", "Kg8", "Bc4+", "e6", "g4", "b5", "Bb3", "Be4", "Bxe6+", "Kh7", "g5", "Bxh1", "g6#"],
-        side: "w",
-      }
     ],
   },
 

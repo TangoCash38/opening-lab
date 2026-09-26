@@ -578,7 +578,7 @@ test("Nimzo-Larsen Attack for White is a sixth visible free White pack: 18 nl li
 });
 
 
-test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it10 punish, on sale at £1.99", () => {
+test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 and it10 punish, it8–it9 book, on sale at £1.99", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const catalog = readFileSync(join(root, "src/lib/catalog.ts"), "utf8");
   const skus = readFileSync(join(root, "src/lib/play-skus.ts"), "utf8");
@@ -666,8 +666,8 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it10 
     it5: ["e4", "e5", "Nf3", "Nc6", "Bc4", "g6", "d3", "Bg7", "Ng5", "Nh6", "a4", "f6", "Nf3", "Nf7", "Nc3", "d6", "Be3", "O-O"],
     it6: ["e4", "e5", "Nf3", "Nc6", "Bc4", "f5", "d4", "fxe4", "Nxe5", "d5", "Bb5", "Qd6", "O-O", "Bd7", "c4", "Nxe5", "dxe5"],
     it7: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Nxc3", "bxc3", "Bxc3", "Ba3", "d5", "Bb5"],
-    it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Nxe4", "dxe4", "Bb4+", "c3"],
-    it9: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxf2+", "Kxf2", "Nf6", "Re1"],
+    it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
+    it9: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6"],
     it10: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d3", "Ng4", "d4", "Bd6", "O-O"],
   };
   for (const id of lineIds) {
@@ -679,10 +679,14 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it10 
 
   assert.match(lineBlock("it6"), /Punish the error · …f5 \(Rousseau Gambit\)/);
   assert.match(lineBlock("it7"), /Punish the error · …Bxc3 \(Greco gift\)/);
-  assert.match(lineBlock("it8"), /Punish the error · …Nxe4\?/);
-  assert.match(lineBlock("it9"), /Punish the error · …Bxf2\+\? in the Evans/);
+  assert.match(lineBlock("it8"), /BOOK · Fried Liver/);
+  assert.match(lineBlock("it9"), /BOOK · Classical Center Attack/);
   assert.match(lineBlock("it10"), /Punish the error · …Ng4\?/);
-  for (const id of ["it1", "it2", "it3", "it4", "it5"]) {
+  assert.doesNotMatch(lineBlock("it8"), /Punish the error/);
+  assert.doesNotMatch(lineBlock("it9"), /Punish the error/);
+  assert.ok(!linePlies("it8").includes("Na5"), "it8 must not be the Line 2 …Na5 line");
+  assert.notDeepEqual(linePlies("it8"), linePlies("it2"));
+  for (const id of ["it1", "it2", "it3", "it4", "it5", "it8", "it9"]) {
     assert.doesNotMatch(lineBlock(id), /Punish the error/);
   }
 
@@ -2495,7 +2499,9 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.match(ot, /id: "ot6"/);
   assert.match(ot, /Trap · Stafford/);
   assert.match(ot, /Bg4#/);
+  assert.doesNotMatch(ot, /id: "ot11"/);
   assert.doesNotMatch(ot, /id: "ot12"/);
+  assert.doesNotMatch(ot, /Alien Gambit/);
   assert.doesNotMatch(ot, /Trap · Grob/);
   assert.match(ot, /blurb: ""/);
   assert.doesNotMatch(ot, /punish-the-take/);
@@ -2508,7 +2514,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   const otIds = [...ot.matchAll(/id: "(ot\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     otIds,
-    Array.from({ length: 11 }, (_, i) => `ot${i + 1}`),
+    Array.from({ length: 10 }, (_, i) => `ot${i + 1}`),
   );
 });
 
@@ -2864,7 +2870,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
     sg2: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
     sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4", "Re1+", "Be6", "Ng5", "Qd5", "Nc3", "Qf5"],
     sg4: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
-    sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "Nxd4", "Nf6", "Nc3", "Be7", "O-O", "O-O", "h3", "Nxd4", "Qxd4", "Be6", "Bxe6", "fxe6"],
+    sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "O-O", "Nf6", "e5", "Ng4", "Re1", "d6", "exd6", "Qxd6"],
     sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
     sg7: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3"],
     sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Ne5", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5"],
@@ -2939,7 +2945,7 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
   }
   assert.match(lineBlock("lon6"), /Punish the error · \.\.\.e5\?/);
   assert.match(lineBlock("lon7"), /Punish the error · …Ne4\?/);
-  assert.match(lineBlock("lon8"), /BOOK · \.\.\.Bg4/);
+  assert.match(lineBlock("lon8"), /BOOK · …Qb6/);
   assert.match(lineBlock("lon9"), /Punish the error · …e5\?/);
   assert.match(lineBlock("lon10"), /BOOK · Chigorin-ish/);
   assert.doesNotMatch(lineBlock("lon6"), /Trap · …Bf5/);
@@ -2948,13 +2954,13 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
 
   const expected = {
     lon1: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "O-O", "Qc7", "f4"],
-    lon2: ["d4", "d5", "Bf4", "Nf6", "e3", "Bf5", "Nf3", "e6", "Bd3", "Bxd3", "Qxd3", "c6", "Nbd2", "Nbd7", "O-O", "Be7", "c4", "O-O", "Rac1", "Rc8"],
+    lon2: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "cxd4", "exd4", "Bf5", "Ngf3", "e6", "Bb5", "Bd6"],
     lon3: ["d4", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "d5", "c3", "Nc6", "Nd2", "Bf5", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Qc7"],
     lon4: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Qe7", "Nbd2", "Re8"],
     lon5: ["d4", "Nf6", "Bf4", "e6", "e3", "c5", "c3", "Nc6", "Nd2", "d5", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "O-O", "Bb7", "Qe2", "Qc7"],
     lon6: ["d4", "d5", "Bf4", "Nf6", "e3", "e6", "Nd2", "c5", "c3", "Nc6", "Ngf3", "Bd6", "Bg3", "e5", "dxe5", "Nxe5", "Bxe5", "Bxe5", "Nxe5", "O-O", "Be2", "Re8", "Nd3"],
     lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Ne4", "Nxe4", "dxe4", "d5", "Na5", "Qa4+", "Bd7", "Qxe4", "f6", "O-O-O", "Qb6", "Bd3", "e5", "dxe6", "Qxe6"],
-    lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Bg4", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Bh5", "dxc5", "Bxc5"],
+    lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Qb6", "Qb3", "c4", "Qc2", "Nc6", "Nbd2", "Bg4", "Ngf3", "e6"],
     lon9: ["d4", "d5", "Bf4", "c5", "e3", "Nc6", "c3", "Nf6", "Nd2", "e5", "dxe5", "Nd7", "Ngf3", "Be7", "e4", "d4", "Bb5", "O-O", "O-O", "dxc3", "bxc3", "Nb6", "Bxc6", "bxc6"],
     lon10: ["d4", "d5", "Bf4", "Nf6", "e3", "Nc6", "Nd2", "Bf5", "c3", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Be2", "Ne7", "O-O", "c6", "Nh4", "Bg6"],
   };
