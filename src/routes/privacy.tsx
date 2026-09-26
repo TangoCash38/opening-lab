@@ -60,7 +60,7 @@ function Privacy() {
       </LegalSection>
 
       <LegalSection title="Payments">
-        <p>Paid packs (and Buy all packs, when it is on sale) may be sold:</p>
+        <p>Paid packs and Buy all packs (£10.99 UK for Buy all) may be sold:</p>
         <ul className="list-disc space-y-1 pl-5">
           <li>on this website via Stripe, or</li>
           <li>
