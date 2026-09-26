@@ -18,8 +18,15 @@ export const PRICE_OPENING_TRAPS = "£1.99";
 export const PRICE_PACK = "£1.99";
 /** Scotch Gambit lessons (`lesson-scotch`). Separate from the Scotch drill pack. */
 export const PRICE_LESSON_SCOTCH = "£2.99";
-/** One-time: unlock every opening pack (current + future on the website). */
-export const PRICE_BUY_ALL = "£19.99";
+/**
+ * One-time Buy all. Unlocks every drill pack available now and any future
+ * drill packs. Not Lessons. Not a subscription. Not lifetime access.
+ * Matches the 26 September 2026 terms.
+ */
+export const PRICE_BUY_ALL = "£10.99";
+export const BUY_ALL_NAME = "Buy all packs";
+export const BUY_ALL_STRIPE_DESCRIPTION =
+  "One-time purchase. Unlocks every drill pack available now and any future drill packs. Not Lessons. Not a subscription. Not lifetime access.";
 
 export const FREE_PACK_IDS = new Set(["caro-kann-black", "opening-traps"]);
 

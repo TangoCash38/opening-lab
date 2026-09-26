@@ -5,13 +5,16 @@ import { packPrice } from "@/data/pricing";
 import {
   FREE_SAMPLE_LINE_IDS,
   LIVE_PACK_IDS,
+  canPurchaseBuyAll,
   isPackComingSoon,
   isPackVisible,
 } from "@/lib/catalog";
+import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
 import { isPlayApp } from "@/lib/play-app";
+import { BuyAllOffer } from "./buy-all-offer";
 import { ChessPiece } from "./chess-pieces";
 import { LandingMenu } from "./landing-menu";
 
@@ -22,6 +25,7 @@ type Props = {
   onFeedback: () => void;
   onCreateOwn: () => void;
   onReport: () => void;
+  onBuyAll: () => void;
 };
 
 const START_RANKS = [
@@ -82,9 +86,12 @@ export function LandingHome({
   onFeedback,
   onCreateOwn,
   onReport,
+  onBuyAll,
 }: Props) {
   const t = useT();
   const navigate = useNavigate();
+  const { subscribed } = useUnlocks();
+  const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
@@ -188,6 +195,15 @@ export function LandingHome({
             </div>
           </div>
         </div>
+
+        {showBuyAll ? (
+          <section className="landing-section" aria-labelledby="landing-buy-all">
+            <h2 id="landing-buy-all" className="sr-only">
+              {t("On sale")}
+            </h2>
+            <BuyAllOffer onBuy={onBuyAll} />
+          </section>
+        ) : null}
 
         <section className="landing-section" aria-labelledby="landing-open-now">
           <div className="landing-section-head">

@@ -202,7 +202,12 @@ const en: Dict = {
   "Pay as you go. Billed by Google Play.": "Pay as you go. Billed by Google Play.",
   "Pay as you go. Not for sale on Google Play yet.":
     "Pay as you go. Not for sale on Google Play yet.",
-  "or buy all for just £19.99": "or buy all for just £19.99",
+  "On sale": "On sale",
+  "Buy all · {price}": "Buy all · {price}",
+  "Unlocks every drill pack available now and any future drill packs. Not Lessons.":
+    "Unlocks every drill pack available now and any future drill packs. Not Lessons.",
+  "One-time purchase. Not a subscription. Not lifetime access.":
+    "One-time purchase. Not a subscription. Not lifetime access.",
   "Restore purchases": "Restore purchases",
   "Opening Google Play…": "Opening Google Play…",
   "Billed by Google Play. One-time purchase.":

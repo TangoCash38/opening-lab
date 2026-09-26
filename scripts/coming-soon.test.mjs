@@ -70,7 +70,7 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(canPurchasePack("london"), true);
   assert.equal(canPurchasePack("italian-white"), true);
   assert.equal(canPurchasePack("qg-white"), true);
-  assert.equal(canPurchaseBuyAll(), false);
+  assert.equal(canPurchaseBuyAll(), true);
 
   const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white"]);
   const gated = [];
@@ -133,7 +133,7 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
   assert.equal(canPurchasePack(qgd.id), false);
   assert.equal(canPurchasePack(caro.id), true);
   assert.equal(canPurchasePack(traps.id), true);
-  assert.equal(canPurchaseBuyAll(), false);
+  assert.equal(canPurchaseBuyAll(), true);
 
   for (const line of qgd.lines) {
     assert.equal(isLineUnlocked(qgd, line.id, []), false, line.id);
@@ -223,6 +223,6 @@ test("coming soon does not rewrite pack lines, prices, or titles", () => {
   assert.match(packs, /name: "Line 1"/);
   assert.match(packs, /name: "Line 10"/);
   assert.match(pricing, /PRICE_PACK = "£1\.99"/);
-  assert.match(pricing, /PRICE_BUY_ALL = "£19\.99"/);
+  assert.match(pricing, /PRICE_BUY_ALL = "£10\.99"/);
   assert.doesNotMatch(packs, /comingSoon:\s*true/);
 });

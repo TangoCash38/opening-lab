@@ -4,7 +4,13 @@
 import Stripe from "stripe";
 import { PACKS } from "@/data/packs";
 import { canPurchaseBuyAll, canPurchasePack } from "@/lib/catalog";
-import { PRICE_BUY_ALL, packPrice, priceToPence } from "@/data/pricing";
+import {
+  BUY_ALL_NAME,
+  BUY_ALL_STRIPE_DESCRIPTION,
+  PRICE_BUY_ALL,
+  packPrice,
+  priceToPence,
+} from "@/data/pricing";
 import { isLessonProductId, lessonCheckout, lessonCheckoutReturnPath } from "@/lib/lesson-products";
 import { applyPurchase, signedInUserId } from "@/lib/purchases.server";
 import { MONTH_MS, YEAR_MS, type SubPlan } from "@/lib/unlocks";
@@ -128,6 +134,48 @@ async function persistPaidSession(
   }
 }
 
+/**
+ * Website Buy all line. No product id is stored in this repo. When
+ * STRIPE_BUY_ALL_PRODUCT_ID is set, reuse that product, refresh its name
+ * and description, and charge PRICE_BUY_ALL. Otherwise the session carries
+ * the same amount and copy on product_data.
+ */
+async function buyAllLineItem(
+  stripe: Stripe,
+  pence: number,
+): Promise<Stripe.Checkout.SessionCreateParams.LineItem> {
+  const productId = env("STRIPE_BUY_ALL_PRODUCT_ID");
+  if (productId) {
+    try {
+      await stripe.products.update(productId, {
+        name: BUY_ALL_NAME,
+        description: BUY_ALL_STRIPE_DESCRIPTION,
+      });
+      return {
+        quantity: 1,
+        price_data: {
+          currency: "gbp",
+          unit_amount: pence,
+          product: productId,
+        },
+      };
+    } catch (err) {
+      console.error("[stripe] buy-all product update failed", err);
+    }
+  }
+  return {
+    quantity: 1,
+    price_data: {
+      currency: "gbp",
+      unit_amount: pence,
+      product_data: {
+        name: BUY_ALL_NAME,
+        description: BUY_ALL_STRIPE_DESCRIPTION,
+      },
+    },
+  };
+}
+
 export async function createCheckoutSession(request: Request): Promise<Response> {
   const ua = request.headers.get("user-agent") ?? "";
   if (ua.includes("OpeningLabPlay")) {
@@ -174,15 +222,9 @@ export async function createCheckoutSession(request: Request): Promise<Response>
     }
     const pence = priceToPence(PRICE_BUY_ALL);
     if (!pence) return json({ error: "Invalid price" }, 400);
+    // One-time payment. Not a subscription and not lifetime access.
     mode = "payment";
-    lineItem = {
-      quantity: 1,
-      price_data: {
-        currency: "gbp",
-        unit_amount: pence,
-        product_data: { name: "Buy all packs" },
-      },
-    };
+    lineItem = await buyAllLineItem(stripe, pence);
   } else {
     if (typeof body.packId !== "string" || !body.packId) {
       return json({ error: "Missing pack" }, 400);

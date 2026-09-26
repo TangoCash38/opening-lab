@@ -34,7 +34,7 @@ test("Privacy names what we store and does not offer Buy all", () => {
   assert.match(privacy, /We do not use advertising\s+cookies or an Advertising ID/);
   assert.match(
     privacy,
-    /Paid packs \(and Buy all packs, when it is on sale\) may be sold:/,
+    /Paid packs and Buy all packs \(£10\.99 UK for Buy all\) may be sold:/,
   );
   assert.match(
     privacy,
@@ -47,7 +47,7 @@ test("Privacy names what we store and does not offer Buy all", () => {
     /We store that you bought a pack or\s+Buy all so we can unlock the trainer on your account/,
   );
   assert.doesNotMatch(privacy, /If you already bought every pack together/);
-  assert.match(privacy, /Paid packs \(and Buy all packs, when it is on sale\) may be sold:/);
+  assert.match(privacy, /Paid packs and Buy all packs \(£10\.99 UK for Buy all\) may be sold:/);
   assert.match(privacy, /uk\.co\.openinglab/);
   assert.match(privacy, /https:\/\/www\.openinglab\.co\.uk\/delete-account/);
   assert.match(privacy, /Account → Delete account/);
