@@ -117,17 +117,17 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
 
   const traps = {
     id: "opening-traps",
-    lines: ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7", "ot10", "ot11"].map((id) => ({ id })),
+    lines: ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7", "ot9", "ot10"].map((id) => ({ id })),
   };
   for (const id of ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"]) {
     assert.equal(isLineUnlocked(traps, id, []), true, id);
   }
   assert.equal(isLineUnlocked(traps, "ot7", []), false);
   assert.equal(isLineUnlocked(traps, "ot10", []), false);
-  assert.equal(isLineUnlocked(traps, "ot11", []), false);
+  assert.equal(isLineUnlocked(traps, "ot9", []), false);
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot7", ["opening-traps"]), true);
-  assert.equal(isLineUnlocked(traps, "ot11", ["opening-traps"]), true);
+  assert.equal(isLineUnlocked(traps, "ot10", ["opening-traps"]), true);
   assert.deepEqual(
     playableLines(traps).map((l) => l.id),
     ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
@@ -143,7 +143,7 @@ test("opening-traps free samples are ot1 through ot6 at £1.99", () => {
     join(root, "src/components/opening-lab/unlock-modal.tsx"),
     "utf8",
   );
-  assert.match(modal, /Unlock all 11 traps for £1\.99/);
+  assert.match(modal, /Unlock all 10 traps for £1\.99/);
   assert.doesNotMatch(modal, /99p/);
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const ot = packs.slice(packs.indexOf('id: "opening-traps"'));
