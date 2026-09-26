@@ -186,6 +186,20 @@ export function LandingHome({
                 <span className="landing-cta-title">{t("Enter the gym")}</span>
                 <span className="landing-cta-note">{t("Opening drill packs")}</span>
               </button>
+              {showPuzzle ? (
+                <section className="landing-puzzle" aria-label={t("Puzzle")}>
+                  <button
+                    type="button"
+                    className="landing-puzzle-card"
+                    data-landing-puzzle
+                    onClick={onOpenPuzzle}
+                  >
+                    <span className="landing-puzzle-kicker">{t("Puzzle")}</span>
+                    <span className="landing-puzzle-title">{t("Today's puzzle")}</span>
+                    <span className="landing-puzzle-note">{t("White to move · Mate in 2")}</span>
+                  </button>
+                </section>
+              ) : null}
               {showLessons ? (
                 <button
                   type="button"
@@ -233,21 +247,6 @@ export function LandingHome({
             ))}
           </div>
         </section>
-
-        {showPuzzle ? (
-          <section className="landing-puzzle" aria-label={t("Puzzle")}>
-            <button
-              type="button"
-              className="landing-puzzle-card"
-              data-landing-puzzle
-              onClick={onOpenPuzzle}
-            >
-              <span className="landing-puzzle-kicker">{t("Puzzle")}</span>
-              <span className="landing-puzzle-title">{t("Today's puzzle")}</span>
-              <span className="landing-puzzle-note">{t("White to move · Mate in 2")}</span>
-            </button>
-          </section>
-        ) : null}
 
         <section className="landing-section" aria-labelledby="landing-soon">
           <h2 id="landing-soon" className="landing-section-title">
