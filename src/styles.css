@@ -3344,6 +3344,51 @@ html[data-color-scheme="dark"] .app-shell--landing {
   font-weight: 750;
 }
 
+.landing-puzzle {
+  margin: 0.95rem 0 0.15rem;
+}
+
+.landing-puzzle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+  width: 100%;
+  max-width: 28rem;
+  padding: 0.75rem 0.95rem;
+  border: 1px solid color-mix(in srgb, #2f5d50 32%, var(--color-border));
+  border-radius: 1rem;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-card);
+  text-align: start;
+  color: inherit;
+}
+
+.landing-puzzle-card:active {
+  transform: scale(0.99);
+}
+
+.landing-puzzle-kicker {
+  color: #2f5d50;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing-puzzle-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.landing-puzzle-note {
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
 .buy-all-offer-slot {
   width: 100%;
   margin: 0.9rem 0 0.35rem;
@@ -3407,6 +3452,7 @@ html[data-color-scheme="dark"] .buy-all-offer-kicker {
 }
 
 html[data-color-scheme="dark"] .landing-pack-price,
+html[data-color-scheme="dark"] .landing-puzzle-kicker,
 html[data-color-scheme="dark"] .landing-cta,
 html[data-color-scheme="dark"] .landing-cta-secondary {
   color: #e7f3ec;

@@ -26,6 +26,7 @@ type Props = {
   onCreateOwn: () => void;
   onReport: () => void;
   onBuyAll: () => void;
+  onOpenPuzzle: () => void;
 };
 
 const START_RANKS = [
@@ -87,14 +88,17 @@ export function LandingHome({
   onCreateOwn,
   onReport,
   onBuyAll,
+  onOpenPuzzle,
 }: Props) {
   const t = useT();
   const navigate = useNavigate();
   const { subscribed } = useUnlocks();
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
+  const [showPuzzle, setShowPuzzle] = useState(false);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
+    setShowPuzzle(!isPlayApp());
   }, []);
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),
@@ -229,6 +233,21 @@ export function LandingHome({
             ))}
           </div>
         </section>
+
+        {showPuzzle ? (
+          <section className="landing-puzzle" aria-label={t("Puzzle")}>
+            <button
+              type="button"
+              className="landing-puzzle-card"
+              data-landing-puzzle
+              onClick={onOpenPuzzle}
+            >
+              <span className="landing-puzzle-kicker">{t("Puzzle")}</span>
+              <span className="landing-puzzle-title">{t("Today's puzzle")}</span>
+              <span className="landing-puzzle-note">{t("White to move · Mate in 2")}</span>
+            </button>
+          </section>
+        ) : null}
 
         <section className="landing-section" aria-labelledby="landing-soon">
           <h2 id="landing-soon" className="landing-section-title">
