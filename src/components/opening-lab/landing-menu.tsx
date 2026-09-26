@@ -3,6 +3,7 @@ import { Menu } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
+import { openLegalDocument } from "@/lib/legal-nav";
 import {
   getColorScheme,
   setColorScheme,
@@ -127,7 +128,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 search={{ forgot: undefined }}
                 className="home-menu-item no-underline"
                 data-menu-account
-                onClick={() => setOpen(false)}
+                onClick={openLegalDocument}
               >
                 {accountLabel}
               </Link>
@@ -135,7 +136,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 to="/terms"
                 className="home-menu-item no-underline"
                 data-menu-terms
-                onClick={() => setOpen(false)}
+                onClick={openLegalDocument}
               >
                 {t("Terms")}
               </Link>
@@ -143,7 +144,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 to="/privacy"
                 className="home-menu-item no-underline"
                 data-menu-privacy
-                onClick={() => setOpen(false)}
+                onClick={openLegalDocument}
               >
                 {t("Privacy Policy")}
               </Link>

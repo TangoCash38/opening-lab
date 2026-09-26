@@ -1,6 +1,7 @@
 import { useState, type FocusEvent, type FormEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { authClient, signOut } from "@/lib/auth/client";
+import { openLegalDocument } from "@/lib/legal-nav";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 
 export const Route = createFileRoute("/login")({
@@ -165,8 +166,18 @@ function Login() {
               ) : null}
             </div>
             <Link
+              to="/terms"
+              className="block w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-center text-sm font-semibold text-fg no-underline shadow-sm transition hover:bg-bg-subtle active:scale-[0.98]"
+              data-account-terms
+              onClick={openLegalDocument}
+            >
+              Terms
+            </Link>
+            <Link
               to="/privacy"
               className="block w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-center text-sm font-semibold text-fg no-underline shadow-sm transition hover:bg-bg-subtle active:scale-[0.98]"
+              data-account-privacy
+              onClick={openLegalDocument}
             >
               Privacy Policy
             </Link>

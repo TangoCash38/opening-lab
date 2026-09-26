@@ -1,5 +1,6 @@
 import { Lock, X } from "lucide-react";
 import { BuyAllOffer } from "./buy-all-offer";
+import { CheckoutLegalLinks } from "./legal-footer";
 import { canPurchaseBuyAll } from "@/lib/catalog";
 import { isPlayWrap } from "@/lib/play-app";
 import { useT } from "@/lib/i18n";
@@ -198,6 +199,7 @@ export function UnlockModal({
               {t("Payments are not live yet.")}
             </p>
           ) : null}
+          <CheckoutLegalLinks />
         </div>
       </div>
     </div>

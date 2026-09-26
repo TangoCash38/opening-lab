@@ -6,6 +6,7 @@ import {
   PRICE_YEARLY,
   PRICE_YEARLY_NOTE,
 } from "@/data/pricing";
+import { CheckoutLegalLinks } from "./legal-footer";
 type Props = {
   onClose: () => void;
   onSubscribeMonthly: () => void;
@@ -171,6 +172,7 @@ export function SubscribeModal({
               ) : null}
             </>
           )}
+          <CheckoutLegalLinks />
         </div>
       </div>
     </div>
