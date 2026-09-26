@@ -1,9 +1,9 @@
-import { useEffect, useId, useLayoutEffect, useState, type MouseEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
-import { OVERLAY_HISTORY_KEY } from "@/lib/overlay-history";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
+import { openLegalDocument } from "@/lib/legal-nav";
 import {
   getColorScheme,
   setColorScheme,
@@ -18,47 +18,6 @@ type Props = {
   onReport: () => void;
   onSupport: () => void;
 };
-
-function historyHasOverlay(): boolean {
-  const state = window.history.state;
-  return !!state && typeof state === "object" && OVERLAY_HISTORY_KEY in state;
-}
-
-/**
- * Menu links sit on an overlay history entry. TanStack Link flushSyncs the
- * sheet closed before navigate(), and that cleanup calls history.back() in
- * the same turn, so the route change never sticks. Pop the overlay entry
- * first, then load the href once that entry is gone.
- */
-function leaveOverlay(event: MouseEvent<HTMLAnchorElement>) {
-  if (
-    event.defaultPrevented ||
-    event.button !== 0 ||
-    event.metaKey ||
-    event.altKey ||
-    event.ctrlKey ||
-    event.shiftKey
-  ) {
-    return;
-  }
-  const href = event.currentTarget.href;
-  event.preventDefault();
-  if (!historyHasOverlay()) {
-    window.location.assign(href);
-    return;
-  }
-  window.history.back();
-  let tries = 0;
-  const go = () => {
-    if (historyHasOverlay() && tries < 10) {
-      tries += 1;
-      window.setTimeout(go, 0);
-      return;
-    }
-    window.location.assign(href);
-  };
-  window.setTimeout(go, 0);
-}
 
 /** Site menu. Support uses the same destination as the home-bar link. */
 export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
@@ -169,7 +128,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 search={{ forgot: undefined }}
                 className="home-menu-item no-underline"
                 data-menu-account
-                onClick={leaveOverlay}
+                onClick={openLegalDocument}
               >
                 {accountLabel}
               </Link>
@@ -177,7 +136,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 to="/terms"
                 className="home-menu-item no-underline"
                 data-menu-terms
-                onClick={leaveOverlay}
+                onClick={openLegalDocument}
               >
                 {t("Terms")}
               </Link>
@@ -185,7 +144,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 to="/privacy"
                 className="home-menu-item no-underline"
                 data-menu-privacy
-                onClick={leaveOverlay}
+                onClick={openLegalDocument}
               >
                 {t("Privacy Policy")}
               </Link>

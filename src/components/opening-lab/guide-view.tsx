@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { openLegalDocument } from "@/lib/legal-nav";
 import { LegalFooter } from "./legal-footer";
 import { useT } from "@/lib/i18n";
 
@@ -61,11 +62,21 @@ export function GuideView({ onBack, onShowIntro }: Props) {
 
       <Block title={t("Account")}>
         {t("Use the profile icon (top right) to sign in. See")}{" "}
-        <Link to="/privacy" className="font-semibold text-accent">
+        <Link
+          to="/privacy"
+          className="font-semibold text-accent"
+          data-support-privacy
+          onClick={openLegalDocument}
+        >
           {t("Privacy Policy")}
         </Link>
         {", "}
-        <Link to="/terms" className="font-semibold text-accent">
+        <Link
+          to="/terms"
+          className="font-semibold text-accent"
+          data-support-terms
+          onClick={openLegalDocument}
+        >
           {t("Terms")}
         </Link>
         {", "}

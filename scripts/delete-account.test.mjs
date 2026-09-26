@@ -106,9 +106,12 @@ test("delete API is authenticated, clears unlocks, keeps payment records", () =>
 
 test("Account surfaces link Privacy and Delete account", () => {
   assert.match(guide, /to="\/privacy"/);
+  assert.match(guide, /onClick=\{openLegalDocument\}/);
   assert.match(guide, /to="\/delete-account"/);
   assert.match(guide, /t\("Delete account"\)/);
+  assert.match(login, /to="\/terms"/);
   assert.match(login, /to="\/privacy"/);
+  assert.match(login, /onClick=\{openLegalDocument\}/);
   assert.match(login, /to="\/delete-account"/);
   assert.match(login, />\s*Delete account\s*</);
   assert.match(footer, /to="\/delete-account"/);

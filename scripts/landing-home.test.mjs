@@ -92,10 +92,8 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(menu, /search=\{\{ forgot: undefined \}\}/);
   assert.match(menu, /to="\/terms"/);
   assert.match(menu, /to="\/privacy"/);
-  assert.match(menu, /function leaveOverlay/);
-  assert.match(menu, /window\.history\.back\(\)/);
-  assert.match(menu, /window\.location\.assign\(href\)/);
-  assert.match(menu, /onClick=\{leaveOverlay\}/);
+  assert.match(menu, /onClick=\{openLegalDocument\}/);
+  assert.doesNotMatch(menu, /history\.back\(/);
   assert.doesNotMatch(menu, /data-menu-terms[\s\S]{0,160}setOpen\(false\)/);
   assert.doesNotMatch(menu, /data-menu-privacy[\s\S]{0,160}setOpen\(false\)/);
   assert.match(menu, /data-menu-report/);

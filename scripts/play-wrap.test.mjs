@@ -228,6 +228,29 @@ test("website does not show the app coming soon / continue on the web overlay", 
   assert.doesNotMatch(landing, /play\.google\.com\/store\/apps\/details/);
 });
 
+test("Terms and Privacy load in the WebView without history.back", () => {
+  const nav = src("src/lib/legal-nav.ts");
+  assert.match(nav, /window\.location\.assign\(event\.currentTarget\.href\)/);
+  assert.doesNotMatch(nav, /history\.back/);
+  const activity = src("android/app/src/main/java/uk/co/openinglab/LauncherActivity.java");
+  assert.match(activity, /Stay in this WebView/);
+  assert.match(activity, /return false/);
+  for (const rel of [
+    "src/components/opening-lab/landing-menu.tsx",
+    "src/components/opening-lab/legal-footer.tsx",
+    "src/components/opening-lab/guide-view.tsx",
+    "src/routes/login.tsx",
+    "src/components/opening-lab/unlock-modal.tsx",
+    "src/components/opening-lab/subscribe-modal.tsx",
+  ]) {
+    const text = src(rel);
+    assert.match(text, /openLegalDocument/, rel);
+    assert.match(text, /\/terms/, rel);
+    assert.match(text, /\/privacy/, rel);
+    assert.doesNotMatch(text, /history\.back\(/, rel);
+  }
+});
+
 test("pack unlock sheet Stripe line has no Yours to keep", () => {
   const modal = src("src/components/opening-lab/unlock-modal.tsx");
   const i18n = src("src/lib/i18n.ts");
