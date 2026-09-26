@@ -14,7 +14,7 @@ is not launched, so there is no splash handoff and the app works with or without
 | Theme | `#2f5d50` |
 | Splash / background | `#f4efe6` |
 | Surface | In-app WebView only (no TWA / Chrome handoff) |
-| Billing | Play Billing Library 7.1.1 + `com.android.vending.BILLING`. Server Path B verifies one-time `pack_*` / `buy_all_packs` on `POST /api/play/subscribe`. No Lab+. Digital Goods does not work in this raw System WebView. |
+| Billing | Play Billing Library **9.1.0** + `com.android.vending.BILLING`. Server Path B verifies one-time `pack_*` / `buy_all_packs` on `POST /api/play/subscribe`. No Lab+. Digital Goods does not work in this raw System WebView. |
 
 Launcher icons come from `public/icons/icon-512.png` and
 `icon-512-maskable.png`.
@@ -31,27 +31,33 @@ only.
 
 ## Build the file for Play Console
 
-From this `android/` folder:
+From this `android/` folder, on the machine that already has the Play upload key:
 
 ```bash
 # 1. Point Gradle at the Android SDK (once per machine)
 echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-# 2. Create an upload key (once). Keep this file safe — Play updates need it.
-keytool -genkeypair -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+# 2. keystore.properties must point at the SAME upload-keystore.jks already
+#    registered with Play App Signing. Do not generate a new key for this upload.
+#    Copy keystore.properties.example only if this machine does not have the file yet.
 
-# 3. Create keystore.properties from the example and fill in the passwords
-#    you just chose. Do not commit that file.
-
-# 4. Build the Android App Bundle
+# 3. Build the Android App Bundle
 ./gradlew bundleRelease
+```
+
+First-time key only (do not do this for an app that is already on Play):
+
+```bash
+keytool -genkeypair -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
 ```
 
 The upload file is:
 
 `app/build/outputs/bundle/release/app-release.aab`
 
-Upload that file to Play Console → **Closed testing**.
+This checkout builds **versionName 1.0.10 / versionCode 11** with Play Billing Library **9.1.0**. Play Console reads `com.google.android.play.billingclient.version` from the merged manifest inside the AAB. 9.1.0 is above the 8.0.0 policy floor. The last uploaded build was **1.0.9 / versionCode 10**, so this higher versionCode is what Console will accept as a new upload.
+
+Upload `app-release.aab` to Play Console → the track that rejected the previous bundle (Closed testing, unless you are promoting further). Do not upload an AAB built from an older checkout.
 
 ### Optional: Bubblewrap
 
@@ -111,7 +117,7 @@ Server verify (products API) runs only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` i
 
 Mobile POSTs `{ packageName, productId, purchaseToken, orderId? }` to **`POST /api/play/subscribe`** (same-origin, session). Restore is one POST per `{productId, purchaseToken}`.
 
-App version for the next AAB: **versionCode 8 / versionName 1.0.7**. Do not upload an AAB from this note alone.
+App version for the next AAB: **versionCode 11 / versionName 1.0.10** (Play Billing Library 9.1.0). Do not upload an AAB from this note alone.
 
 ## Out of scope
 

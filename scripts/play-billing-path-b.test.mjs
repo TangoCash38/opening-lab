@@ -12,17 +12,17 @@ function src(rel) {
   return readFileSync(join(root, rel), "utf8");
 }
 
-test("Android wrap is Billing 8 + versionCode 9 / 1.0.8 INAPP Path B", () => {
+test("Android wrap is Billing 9.1.0 + versionCode 11 / 1.0.10 INAPP Path B", () => {
   const gradle = src("android/app/build.gradle");
   const manifest = src("android/twa-manifest.json");
   const billing = src("android/app/src/main/java/uk/co/openinglab/PlayBilling.java");
   const androidManifest = src("android/app/src/main/AndroidManifest.xml");
 
-  assert.match(gradle, /com\.android\.billingclient:billing:8\./);
-  assert.match(gradle, /versionCode 9/);
-  assert.match(gradle, /versionName "1\.0\.8"/);
-  assert.match(manifest, /"appVersionCode": 9/);
-  assert.match(manifest, /"appVersion": "1\.0\.8"/);
+  assert.match(gradle, /com\.android\.billingclient:billing:9\.1\.0/);
+  assert.match(gradle, /versionCode 11/);
+  assert.match(gradle, /versionName "1\.0\.10"/);
+  assert.match(manifest, /"appVersionCode": 11/);
+  assert.match(manifest, /"appVersion": "1\.0\.10"/);
   assert.match(manifest, /"enableNotifications": false/);
 
   assert.match(billing, /ProductType\.INAPP/);
