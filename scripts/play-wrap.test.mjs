@@ -230,8 +230,9 @@ test("website does not show the app coming soon / continue on the web overlay", 
 
 test("Terms and Privacy load in the WebView without history.back", () => {
   const nav = src("src/lib/legal-nav.ts");
-  assert.match(nav, /window\.location\.assign\(event\.currentTarget\.href\)/);
-  assert.doesNotMatch(nav, /history\.back/);
+  const navCode = nav.replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.match(navCode, /window\.location\.assign\(event\.currentTarget\.href\)/);
+  assert.doesNotMatch(navCode, /history\.back/);
   const activity = src("android/app/src/main/java/uk/co/openinglab/LauncherActivity.java");
   assert.match(activity, /Stay in this WebView/);
   assert.match(activity, /return false/);
@@ -244,9 +245,9 @@ test("Terms and Privacy load in the WebView without history.back", () => {
     "src/components/opening-lab/subscribe-modal.tsx",
   ]) {
     const text = src(rel);
-    assert.match(text, /openLegalDocument/, rel);
-    assert.match(text, /\/terms/, rel);
-    assert.match(text, /\/privacy/, rel);
+    assert.match(text, /openLegalDocument|CheckoutLegalLinks/, rel);
+    const linksHere = /to="\/terms"/.test(text) && /to="\/privacy"/.test(text);
+    assert.ok(linksHere || text.includes("<CheckoutLegalLinks />"), rel);
     assert.doesNotMatch(text, /history\.back\(/, rel);
   }
 });
