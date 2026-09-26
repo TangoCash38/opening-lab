@@ -47,7 +47,7 @@ function compileCoachPacks(t) {
   return "./scripts/.generated-qg-coach/coach-packs.mjs";
 }
 
-test("Queen's Gambit Potato Pie intro returns to the line list and Line 1 waits for a tap", (t) => {
+test("Queen's Gambit Potato Pie intro hands off to the Line 1 talk on Skip and finish", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/qg-white/professor-potato-pie-qg-intro.wav";
