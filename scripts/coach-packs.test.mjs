@@ -67,6 +67,13 @@ test("coach config is keyed by pack id and keeps the Scotch recordings", () => {
   assert.match(packs, /firstLinePlaysPackLine: true/);
   assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white"\]/);
   assert.doesNotMatch(packs, /Play on|vs-computer|playComputer/i);
+  assert.match(packs, /RUY_LOPEZ_LINE_WAV = "\/coach\/ruy-lopez-white\/big-red-ruy-line1\.wav"/);
+  assert.match(packs, /firstLineAudio: RUY_LOPEZ_LINE_WAV/);
+  assert.match(packs, /lineTalkOnTapOnly: true/);
+  const ruy = packs.slice(packs.indexOf("[RUY_LOPEZ_WHITE_PACK_ID]"), packs.indexOf("};", packs.indexOf("[RUY_LOPEZ_WHITE_PACK_ID]")));
+  assert.match(ruy, /lineTalkOnTapOnly: true/);
+  assert.match(ruy, /firstLineAudio: RUY_LOPEZ_LINE_WAV/);
+  assert.doesNotMatch(ruy, /professor-potato-pie|Play on/i);
 });
 
 test("opening traps mounts on ot1 by line id, with narration clips and per-pack session keys", (t) => {
@@ -371,6 +378,7 @@ test("finishing or skipping the pack intro opens the first-line talk; the gym pa
         [{ packId: "french-black", lineId: "frb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
         [{ packId: "ruy-lopez-white", lineId: "rlw1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "ruy-lopez-white", lineId: "rlw1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "ruy-lopez-white", lineId: "rlw2", lineIndex: 1, skipped: true, lineAlreadySeen: false }, null],
       ];
       for (const [input, expected] of cases) {
         const got = coachTalkAfterPackIntro(input);
