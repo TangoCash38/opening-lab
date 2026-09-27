@@ -20,6 +20,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Sistema de Londres",
     "Italian Game": "Apertura Italiana",
     "Queen’s Gambit": "Gambito de dama",
+    "French Defence": "Defensa francesa",
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
   },
@@ -36,6 +37,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "伦敦体系",
     "Italian Game": "意大利开局",
     "Queen’s Gambit": "后翼弃兵",
+    "French Defence": "法兰西防御",
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
   },
@@ -52,6 +54,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Système de Londres",
     "Italian Game": "Partie italienne",
     "Queen’s Gambit": "Gambit dame",
+    "French Defence": "Défense française",
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
   },
@@ -68,6 +71,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Londoner System",
     "Italian Game": "Italienische Partie",
     "Queen’s Gambit": "Damengambit",
+    "French Defence": "Französische Verteidigung",
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
   },
@@ -84,6 +88,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Sistema de Londres",
     "Italian Game": "Abertura Italiana",
     "Queen’s Gambit": "Gambito da Dama",
+    "French Defence": "Defesa Francesa",
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
   },
@@ -100,6 +105,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Лондонская система",
     "Italian Game": "Итальянская партия",
     "Queen’s Gambit": "Ферзевый гамбит",
+    "French Defence": "Французская защита",
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
   },
@@ -116,6 +122,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Sistema di Londra",
     "Italian Game": "Partita Italiana",
     "Queen’s Gambit": "Gambetto di donna",
+    "French Defence": "Difesa francese",
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
   },
@@ -132,6 +139,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "लंदन प्रणाली",
     "Italian Game": "इतालवी ओपनिंग",
     "Queen’s Gambit": "क्वीन गैम्बिट",
+    "French Defence": "फ्रेंच डिफेंस",
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
   },
@@ -148,6 +156,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "ロンドン・システム",
     "Italian Game": "イタリア・ゲーム",
     "Queen’s Gambit": "クイーンズ・ギャンビット",
+    "French Defence": "フレンチ・ディフェンス",
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
   },
@@ -164,6 +173,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "نظام لندن",
     "Italian Game": "الافتتاح الإيطالي",
     "Queen’s Gambit": "غامبيت الملكة",
+    "French Defence": "الدفاع الفرنسي",
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
   },
@@ -180,6 +190,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "London System": "Londra sistemi",
     "Italian Game": "İtalyan Açılışı",
     "Queen’s Gambit": "Vezir gambiti",
+    "French Defence": "Fransız Savunması",
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
   },
@@ -440,6 +451,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Aprende la estructura, entiende los cambios y deja que la posición te diga cuándo es hora de presionar.",
     "Very civilised and quietly ambitious.": "Muy civilizado y discretamente ambicioso.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Muy bien, aquí Professor Potato Pie, te pongo a punto, y hoy nos encontramos con la defensa francesa: ¿cuáles son las respuestas más resistentes de las negras al peón de rey?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "Las blancas empiezan con peón a e4, y nosotros respondemos peón a e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "Las blancas ganan más espacio con peón a d4 y nosotros golpeamos de inmediato con peón a d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "La apertura tomó su nombre de una partida por correspondencia entre Londres y París en 1834, cuando el equipo de París empleó la defensa con éxito.",
+    "Its character is patient, but hardly passive.": "Su carácter es paciente, pero nada pasivo.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "Las negras construyen una sólida cadena de peones, invitan a las blancas a declarar sus intenciones y luego desafían el centro con jugadas como peón a c5 y, cuando llega el momento, peón a f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "Nuestro alfil de casillas claras puede exigir un poco de diplomacia, pero eso forma parte de la sutil arquitectura de la apertura.",
+    "Solid, combative and rich in counterplay.": "Sólida, combativa y rica en contrajuego.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "La francesa no precipita la discusión: la gana con una pregunta precisa cada vez.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "Así que acomódate, no pierdas de vista las rupturas de peón y disfruta al familiarizarte más con la defensa francesa.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -685,6 +714,23 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "学会这种结构，理解这些兑换，让局面告诉你何时向前推进。",
     "Very civilised and quietly ambitious.": "非常文明，又安静地抱有雄心。",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "好，这里是 Professor Potato Pie，先让你准备好，今天我们来认识法兰西防御：面对王兵，黑方最坚韧的应着是什么？",
+    "White begins with pawn to e4, we answer pawn to e6.": "白方以兵到 e4 开局，我们应以兵到 e6。",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "白方以兵到 d4 争取更多空间，我们立刻以兵到 d5 反击。",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "这个开局得名于 1834 年伦敦与巴黎的一场通讯赛，当时巴黎队成功地运用了这一防御。",
+    "Its character is patient, but hardly passive.": "它的性格是耐心的，但绝非被动。",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "黑方建立起稳固的兵链，请白方先表明意图，再用兵到 c5 之类的着法挑战中心，时机成熟时再兵到 f6。",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "我们的白格象也许需要一点外交手腕，但这正是该开局精妙结构的一部分。",
+    "Solid, combative and rich in counterplay.": "稳固、好斗，而且富于反击。",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "法兰西防御不急于争辩，它用一个个精确的问题把局面赢下来。",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "所以安下心来，留意兵的突破，享受对法兰西防御越来越熟悉的过程。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -941,6 +987,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Apprends la structure, comprends les échanges et laisse la position te dire quand il est temps d'avancer.",
     "Very civilised and quietly ambitious.": "Très civilisé, et discrètement ambitieux.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Bien, ici Professor Potato Pie, je vous mets en place, et aujourd'hui nous rencontrons la défense française : quelles sont les réponses les plus résilientes des Noirs au pion du roi ?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "Les Blancs commencent par pion en e4, nous répondons pion en e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "Les Blancs prennent plus d'espace avec pion en d4 et nous frappons aussitôt avec pion en d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "L'ouverture tire son nom d'une partie par correspondance entre Londres et Paris en 1834, lorsque l'équipe de Paris employa la défense avec succès.",
+    "Its character is patient, but hardly passive.": "Son caractère est patient, mais guère passif.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "Les Noirs bâtissent une solide chaîne de pions, invitent les Blancs à déclarer leurs intentions, puis contestent le centre par des coups tels que pion en c5 et, le moment venu, pion en f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "Notre fou de cases claires peut demander un peu de diplomatie, mais cela fait partie de l'architecture subtile de l'ouverture.",
+    "Solid, combative and rich in counterplay.": "Solide, combative et riche en contre-jeu.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "La française ne précipite pas le débat : elle le gagne, une question précise à la fois.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "Alors installez-vous, gardez l'œil sur les ruptures de pions et prenez plaisir à mieux connaître la défense française.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1196,6 +1260,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Lerne die Struktur, verstehe die Abtäusche und lass die Stellung dir sagen, wann es Zeit ist vorzugehen.",
     "Very civilised and quietly ambitious.": "Sehr gesittet und still ehrgeizig.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Also dann, hier ist Professor Potato Pie, ich mache Sie bereit, und heute begegnen wir der Französischen Verteidigung: Welches sind die widerstandsfähigsten Antworten von Schwarz auf den Königsbauern?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "Weiß beginnt mit Bauer nach e4, wir antworten mit Bauer nach e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "Weiß beansprucht mehr Raum mit Bauer nach d4, und wir schlagen sofort mit Bauer nach d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "Die Eröffnung erhielt ihren Namen von einem Fernschachwettkampf zwischen London und Paris im Jahr 1834, als die Pariser Mannschaft die Verteidigung erfolgreich einsetzte.",
+    "Its character is patient, but hardly passive.": "Ihr Charakter ist geduldig, aber kaum passiv.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "Schwarz baut eine solide Bauernkette, lädt Weiß ein, die Absichten zu erklären, und stellt dann das Zentrum mit Zügen wie Bauer nach c5 in Frage und, wenn der Augenblick reif ist, Bauer nach f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "Unser Läufer auf hellen Feldern mag ein wenig Diplomatie verlangen, doch das gehört zur feinen Architektur der Eröffnung.",
+    "Solid, combative and rich in counterplay.": "Solide, kämpferisch und reich an Gegenspiel.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "Die Französische drängt das Gespräch nicht: sie gewinnt es, eine präzise Frage nach der anderen.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "Also machen Sie es sich bequem, behalten Sie die Bauernhebel im Auge und genießen Sie, die Französische Verteidigung besser kennenzulernen.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1451,6 +1533,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Aprende a estrutura, entende as trocas e deixa a posição dizer-te quando é hora de avançar.",
     "Very civilised and quietly ambitious.": "Muito civilizado e discretamente ambicioso.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Muito bem, aqui Professor Potato Pie, deixo-te a postos, e hoje encontramos a defesa francesa: quais são as respostas mais resistentes das Negras ao peão do rei?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "As Brancas começam com peão para e4, nós respondemos peão para e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "As Brancas reclamam mais espaço com peão para d4 e nós golpeamos de imediato com peão para d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "A abertura tirou o nome de uma partida por correspondência entre Londres e Paris em 1834, quando a equipa de Paris empregou a defesa com sucesso.",
+    "Its character is patient, but hardly passive.": "O seu carácter é paciente, mas dificilmente passivo.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "As Negras constroem uma sólida cadeia de peões, convidam as Brancas a declarar as intenções e depois desafiam o centro com lances como peão para c5 e, quando o momento chega, peão para f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "O nosso bispo de casas claras pode exigir um pouco de diplomacia, mas isso faz parte da arquitectura subtil da abertura.",
+    "Solid, combative and rich in counterplay.": "Sólida, combativa e rica em contrajogo.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "A francesa não precipita a discussão: ganha-a, uma pergunta precisa de cada vez.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "Portanto acomoda-te, fica de olho nas rupturas de peão e aproveita para te familiarizares mais com a defesa francesa.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1705,6 +1805,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Изучи структуру, пойми размены и дай позиции подсказать, когда пора наступать.",
     "Very civilised and quietly ambitious.": "Очень цивилизованно и тихо амбициозно.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Итак, здесь Professor Potato Pie, привожу вас в готовность, и сегодня мы знакомимся с французской защитой: каковы самые стойкие ответы чёрных на королевскую пешку?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "Белые начинают пешкой на e4, мы отвечаем пешкой на e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "Белые захватывают больше пространства пешкой на d4, и мы сразу бьём пешкой на d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "Дебют получил имя по переписочному матчу между Лондоном и Парижем в 1834 году, когда парижская команда успешно применила эту защиту.",
+    "Its character is patient, but hardly passive.": "Его характер терпелив, но едва ли пассивен.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "Чёрные строят прочную пешечную цепь, приглашают белых объявить намерения, затем оспаривают центр ходами вроде пешки на c5 и, когда момент созреет, пешки на f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "Нашему белопольному слону может понадобиться немного дипломатии, но это часть тонкой архитектуры дебюта.",
+    "Solid, combative and rich in counterplay.": "Надёжно, боевито и богато контригрой.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "Французская не торопит спор: она выигрывает его по одному точному вопросу за раз.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "Так что устраивайтесь, следите за пешечными прорывами и наслаждайтесь тем, как французская защита становится вам ближе.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1959,6 +2077,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Impara la struttura, comprendi i cambi e lascia che la posizione ti dica quando è ora di spingere.",
     "Very civilised and quietly ambitious.": "Molto civile e quietamente ambizioso.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Bene, qui Professor Potato Pie, ti metto pronto, e oggi incontriamo la difesa francese: quali sono le risposte più resistenti del Nero al pedone di re?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "Il Bianco inizia con pedone in e4, noi rispondiamo con pedone in e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "Il Bianco reclama più spazio con pedone in d4 e noi colpiamo subito con pedone in d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "L'apertura prese il nome da una partita per corrispondenza tra Londra e Parigi nel 1834, quando la squadra di Parigi impiegò la difesa con successo.",
+    "Its character is patient, but hardly passive.": "Il suo carattere è paziente, ma tutt'altro che passivo.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "Il Nero costruisce una solida catena di pedoni, invita il Bianco a dichiarare le intenzioni, poi sfida il centro con mosse come pedone in c5 e, quando il momento è maturo, pedone in f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "Il nostro alfiere in caselle chiare può richiedere un po' di diplomazia, ma ciò fa parte della sottile architettura dell'apertura.",
+    "Solid, combative and rich in counterplay.": "Solida, combattiva e ricca di controgioco.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "La francese non affretta la discussione: la vince, una domanda precisa alla volta.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "Quindi mettiti comodo, tieni d'occhio le rotture di pedone e goditi il prendere confidenza con la difesa francese.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2214,6 +2350,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "ढाँचा सीखो, विनिमय समझो, और स्थिति को बताने दो कि आगे बढ़ने का समय कब है।",
     "Very civilised and quietly ambitious.": "बहुत सभ्य और चुपचाप महत्त्वाकांक्षी।",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "ठीक है, यहाँ Professor Potato Pie, आपको तैयार करता हूँ, और आज हम फ्रेंच डिफेंस से मिलते हैं: राजा के प्यादे पर काले के सबसे मज़बूत जवाब कौन से हैं?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "सफ़ेद प्यादा e4 पर चलाते हैं, हम प्यादा e6 से जवाब देते हैं।",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "सफ़ेद प्यादा d4 से और जगह लेते हैं और हम तुरंत प्यादा d5 से प्रहार करते हैं।",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "इस ओपनिंग का नाम 1834 में लंदन और पेरिस के बीच एक पत्राचार मैच से पड़ा, जब पेरिस की टीम ने इस बचाव को सफलता से खेला।",
+    "Its character is patient, but hardly passive.": "इसका स्वभाव धैर्यवान है, लेकिन निष्क्रिय कतई नहीं।",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "काले एक मज़बूत प्यादा शृंखला बनाते हैं, सफ़ेद को अपने इरादे बताने का न्योता देते हैं, फिर प्यादा c5 जैसी चालों से केंद्र को चुनौती देते हैं और जब समय आए, प्यादा f6।",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "हमारे हल्के रंग के ऊँट को थोड़ी कूटनीति चाहिए हो सकती है, लेकिन यही इस ओपनिंग की सूक्ष्म रचना का हिस्सा है।",
+    "Solid, combative and rich in counterplay.": "ठोस, लड़ाकू और पलटवार से भरपूर।",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "फ्रेंच बहस में जल्दबाज़ी नहीं करता, वह उसे एक-एक सटीक सवाल से जीतता है।",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "तो बैठ जाइए, प्यादे की तोड़ पर नज़र रखें और फ्रेंच डिफेंस से और परिचित होने का आनंद लें।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2468,6 +2622,24 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "構造を学び、交換を理解し、前進する時は局面に教えてもらいましょう。",
     "Very civilised and quietly ambitious.": "とても上品で、静かに野心的です。",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "さて、Professor Potato Pie です。準備を整えて、今日はフレンチ・ディフェンスに会いましょう。キングポーンに対する黒の最も粘り強い受けは何でしょう。",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "白はポーンを e4 へ進め、私たちはポーンを e6 で応じます。",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "白はポーンを d4 へ進めてより多くの空間を取り、私たちは直ちにポーンを d5 で打ちます。",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "このオープニングの名は、1834年のロンドンとパリの通信試合に由来します。パリのチームがこのディフェンスを成功させたのです。",
+    "Its character is patient, but hardly passive.": "その性格は辛抱強いものの、決して受動的ではありません。",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "黒は頑丈なポーンチェーンを築き、白に意図を明らかにさせ、それからポーンを c5 のような手で中央に挑み、機が熟せばポーンを f6 へ進めます。",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "私たちの白マスのビショップには少し外交が要るかもしれませんが、それもこのオープニングの繊細な構造の一部です。",
+    "Solid, combative and rich in counterplay.": "堅実で、闘争的で、カウンタープレイに富んでいます。",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "フレンチは議論を急がず、一度に一つの精密な問いかけでそれを勝ち取ります。",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "では腰を据えて、ポーンブレイクに目を配り、フレンチ・ディフェンスに親しむ時間を楽しんでください。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2719,6 +2891,23 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "تعلّم البنية، وافهم التبادلات، ودع الوضعية تخبرك متى يحين وقت التقدم.",
     "Very civilised and quietly ambitious.": "متحضّر جدًا وطموح بهدوء.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "حسنًا، هنا Professor Potato Pie، أجهّزك، واليوم نلتقي بالدفاع الفرنسي: ما أشد ردود الأسود صمودًا على بيدق الملك؟",
+    "White begins with pawn to e4, we answer pawn to e6.": "يبدأ الأبيض ببيدق إلى e4، ونرد ببيدق إلى e6.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "يأخذ الأبيض مساحة أكبر ببيدق إلى d4، ونضرب فورًا ببيدق إلى d5.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "أخذت الافتتاحية اسمها من مباراة بالمراسلة بين لندن وباريس عام 1834، حين استخدم فريق باريس الدفاع بنجاح.",
+    "Its character is patient, but hardly passive.": "طابعها صبور، لكنه أبعد ما يكون عن السلبية.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "يبني الأسود سلسلة بيادق متينة، ويدعو الأبيض إلى إعلان نواياه، ثم يتحدى المركز بنقلات مثل بيدق إلى c5 وحين يحين الوقت بيدق إلى f6.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "قد يحتاج فيلنا ذو المربعات الفاتحة إلى قليل من الدبلوماسية، لكن ذلك جزء من عمارة الافتتاحية الدقيقة.",
+    "Solid, combative and rich in counterplay.": "صلب، قتالي، وغني باللعب المضاد.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "الفرنسية لا تستعجل الجدال، بل تربحه سؤالًا دقيقًا في كل مرة.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "فاستقر، وأبقِ عينك على كسور البيادق، واستمتع بأن تصبح أكثر ألفة مع الدفاع الفرنسي.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2972,5 +3161,23 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Learn the structure, understand the exchanges and let the position tell you when it is time to press forward.":
       "Yapıyı öğren, değişimleri anla ve ne zaman ileri basmanın zamanı olduğunu konuma bırak.",
     "Very civilised and quietly ambitious.": "Çok medeni ve sessizce hırslı.",
+    "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?":
+      "Peki, burada Professor Potato Pie, seni hazırlıyorum, ve bugün Fransız Savunması ile tanışıyoruz: Şah piyonuna Siyah'ın en dirençli cevapları nelerdir?",
+    "White begins with pawn to e4, we answer pawn to e6.":
+      "Beyaz piyonu e4'e sürer, biz piyonla e6 diye yanıtlarız.",
+    "White claims more space with pawn to d4 and we strike at once with pawn to d5.":
+      "Beyaz piyonu d4 ile daha çok yer alır ve biz hemen piyonu d5 ile vururuz.",
+    "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.":
+      "Açılış adını, 1834'te Londra ile Paris arasındaki bir yazışma maçından aldı; Paris takımı savunmayı başarıyla kullanmıştı.",
+    "Its character is patient, but hardly passive.": "Karakteri sabırlıdır, ama pek de pasif değildir.",
+    "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.":
+      "Siyah sağlam bir piyon zinciri kurar, Beyaz'ı niyetini açıklamaya davet eder, sonra piyonu c5 gibi hamlelerle merkezi sorgular ve anı gelince piyonu f6'ya sürer.",
+    "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.":
+      "Açık renkli filimiz biraz diplomasi isteyebilir, ama bu, açılışın ince mimarisinin bir parçasıdır.",
+    "Solid, combative and rich in counterplay.": "Sağlam, mücadeleci ve karşı oyundan zengin.",
+    "The French does not rush the argument, it wins it one precise question at a time.":
+      "Fransız tartışmayı acele ettirmez; onu her seferinde tek kesin soruyla kazanır.",
+    "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
+      "O halde yerleş, piyon kırılmalarına gözünü dik ve Fransız Savunması'na daha aşina olmanın tadını çıkar.",
   },
 };

@@ -46,7 +46,7 @@ import { LondonWarmupChip } from "./london-warmup-chip";
 import { LineRow } from "./pack-lines";
 import { PackAboutModal } from "./pack-about-modal";
 import { ScotchCoachBoard } from "./scotch-coach-board";
-import { ScotchCoachCard, ScotchCoachFigure } from "./scotch-coach-intro";
+import { CoachPackReading, ScotchCoachCard, ScotchCoachFigure } from "./scotch-coach-intro";
 import { TrainView } from "./train-view";
 
 type TrainMode = "learn" | "practice";
@@ -377,6 +377,9 @@ export function HomeHero({
       } else if (pack.id === "qg-white") {
         // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
         line = pack.lines.find((l) => l.id === "qg1");
+      } else if (pack.id === "french-black") {
+        // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
+        line = pack.lines.find((l) => l.id === "frb1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -685,6 +688,14 @@ export function HomeHero({
 
             {linesVisible ? (
               <div className="home-lines-panel border-t border-border">
+                {!coach &&
+                !frame &&
+                coachPackIntroApplies(pack.id) &&
+                coachIntroAlreadySeen(pack.id) ? (
+                  <div className="px-3 pt-2">
+                    <CoachPackReading packId={pack.id} />
+                  </div>
+                ) : null}
                 {shownLines.map((item, i) => {
                   const unlocked = subscribed || isLineUnlocked(pack, item.id, purchased);
                   const complete = unlocked && isComplete(item.id);

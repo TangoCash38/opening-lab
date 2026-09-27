@@ -13,10 +13,10 @@
  * open pass these gates.
  *
  * Finishing the pack intro, or pressing Skip, opens the first-line talk
- * before book Practice, on the line that Practice started. Skip dismisses
- * only the intro; the Line 1 speech and board walkthrough still start.
- * A line already heard this visit is not replayed. The gym intro pages
- * do not set these session keys.
+ * before book Practice when that pack has line audio. Skip dismisses only
+ * the intro. An intro-only pack (empty firstLineBeats and no firstLineAudio)
+ * never opens a line talk. A line already heard this visit is not replayed.
+ * The gym intro pages do not set these session keys.
  */
 import {
   SCOTCH_CANAL_BEATS,
@@ -85,7 +85,7 @@ export type CoachPackConfig = {
   introAudioFallbackSec?: number;
   /** Timings for `introAudio`. Absent = equal slices of the clip. */
   introBeatAtSec?: readonly number[];
-  /** Narration-clock stem for an audio intro (Scotch gambit, Caro e4 c6, London, Italian). */
+  /** Narration-clock stem for an audio intro (Scotch gambit, Caro e4 c6, London, Italian, French). */
   introStem?: readonly string[];
   introStemAtSec?: readonly number[];
   /**
@@ -95,8 +95,8 @@ export type CoachPackConfig = {
   introStemWhiteOnly?: boolean;
   /**
    * Moves the intro names but does not play. One window at a time, while
-   * that option is being spoken. Italian …Bc5 / …Nf6. Other packs leave
-   * this unset.
+   * that option is being spoken. Italian …Bc5 / …Nf6. French …c5 / …f6.
+   * Other packs leave this unset.
    */
   introArrows?: readonly CoachIntroArrowCue[];
   /** Book line that opens the first-line talk. Not the display title. */
@@ -741,6 +741,46 @@ const ITALIAN_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+const FRENCH_BLACK_PACK_ID = "french-black";
+
+export const FRENCH_INTRO_WAV = "/coach/french-black/professor-potato-pie-french-intro.wav";
+/** Sean's French Defence intro. Beat times below were read off this clip. */
+export const FRENCH_INTRO_SEC = 75.52;
+
+const FRENCH_INTRO = [
+  "Right then, Professor Potato Pie here, set you at the ready and today we are meeting the French defence, what are Black's most resilient replies to the King's Pawn?",
+  "White begins with pawn to e4, we answer pawn to e6.",
+  "White claims more space with pawn to d4 and we strike at once with pawn to d5.",
+  "The opening took its name from a correspondence match between London and Paris in 1834, when the Paris team employed the defence successfully.",
+  "Its character is patient, but hardly passive.",
+  "Black builds a sturdy pawn chain, invites White to declare their intentions, then challenges the centre with moves such as pawn to c5 and when the moment is ripe, pawn to f6.",
+  "Our light-squared bishop may require a little diplomacy, but that is part of the opening's subtle architecture.",
+  "Solid, combative and rich in counterplay.",
+  "The French does not rush the argument, it wins it one precise question at a time.",
+  "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.",
+] as const;
+
+const FRENCH_INTRO_AT_SEC = [0, 12.1, 17.64, 24.72, 34.56, 38.28, 50.98, 58.6, 62.62, 68.52] as const;
+
+/**
+ * Opening stem spoken in the French intro: e4 e6 d4 d5.
+ * Times are the start of each named move, read off the clip.
+ * Later breaks (…c5, …f6) are arrows in FRENCH_INTRO_ARROWS.
+ */
+export const FRENCH_INTRO_STEM = ["e4", "e6", "d4", "d5"] as const;
+export const FRENCH_INTRO_STEM_AT_SEC = [13.34, 15.56, 19.4, 22.56] as const;
+
+/**
+ * Black's later pawn breaks, named after the stem and not played.
+ * "pawn to c5" ~46.34s (c7→c5). "pawn to f6" ~49.62s (f7→f6).
+ * Squares are algebraic, so a Black training board (flipped) still
+ * points the pawn forward. The pawn stays on c7 or f7.
+ */
+export const FRENCH_INTRO_ARROWS: readonly CoachIntroArrowCue[] = [
+  { atSec: 46.34, untilSec: 48.1, from: "c7", to: "c5" },
+  { atSec: 49.62, untilSec: 51.0, from: "f7", to: "f6" },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -830,6 +870,19 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineAudio: QG_WHITE_LINE_WAV,
     firstLineAudioFallbackSec: QG_WHITE_LINE_SEC,
   },
+  [FRENCH_BLACK_PACK_ID]: {
+    introTitle: "French Defence",
+    introBeats: FRENCH_INTRO,
+    introAudio: FRENCH_INTRO_WAV,
+    introAudioFallbackSec: FRENCH_INTRO_SEC,
+    introBeatAtSec: FRENCH_INTRO_AT_SEC,
+    introStem: FRENCH_INTRO_STEM,
+    introStemAtSec: FRENCH_INTRO_STEM_AT_SEC,
+    introArrows: FRENCH_INTRO_ARROWS,
+    firstLineId: "frb1",
+    firstLineTitle: "Line 1",
+    firstLineBeats: [], // intro-only for now — NO firstLineAudio
+  },
 };
 
 export function coachPack(packId: string): CoachPackConfig | undefined {
@@ -857,11 +910,12 @@ export function coachPackLineApplies(input: { packId: string; lineId: string }):
 
 /**
  * Talk to open when the pack intro finishes or the user presses Skip.
- * `null` when that line was already heard this visit, or when `lineId` is
- * not the coached first line. Scotch sg1 is the canal talk; other packs
- * use `firstLineId`. Skip dismisses the intro only — it still hands off
- * to this talk, the same as a natural finish. `skipped` is the caller's
- * reason and does not suppress the handoff.
+ * `null` when that line was already heard this visit, when `lineId` is
+ * not the coached first line, or when the pack is intro-only. Scotch sg1
+ * is the canal talk; other packs use `firstLineId`. Skip dismisses the
+ * intro only — it still hands off to this talk when one applies, the same
+ * as a natural finish. `skipped` is the caller's reason and does not
+ * suppress the handoff.
  */
 export function coachTalkAfterPackIntro(input: {
   packId: string;
@@ -927,7 +981,7 @@ export function coachTalkPlies(
   const pack = COACH_PACKS[packId];
   if (!pack) return null;
   if (talk === "canal") return null;
-  // An intro stem (Scotch gambit, Caro e4 c6, London, Italian) follows the clip clock.
+  // An intro stem (Scotch gambit, Caro e4 c6, London, Italian, French) follows the clip clock.
   // Intros without a stem hold the start position: their captions have no plies.
   if (talk === "intro" && pack.introStem) return null;
   if (talk === "line" && pack.firstLinePlaysPackLine) return null;
