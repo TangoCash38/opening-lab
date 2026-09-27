@@ -65,7 +65,7 @@ test("coach config is keyed by pack id and keeps the Scotch recordings", () => {
   assert.match(packs, /SCOTCH_CANAL_NARRATION_MP3/);
   assert.match(packs, /firstLineId: SCOTCH_CANAL_LINE_ID/);
   assert.match(packs, /firstLinePlaysPackLine: true/);
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white"\]/);
   assert.doesNotMatch(packs, /Play on|vs-computer|playComputer/i);
 });
 
@@ -369,6 +369,8 @@ test("finishing or skipping the pack intro opens the first-line talk; the gym pa
         [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
         [{ packId: "french-black", lineId: "frb1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
         [{ packId: "french-black", lineId: "frb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
+        [{ packId: "ruy-lopez-white", lineId: "rlw1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
+        [{ packId: "ruy-lopez-white", lineId: "rlw1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
       ];
       for (const [input, expected] of cases) {
         const got = coachTalkAfterPackIntro(input);

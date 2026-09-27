@@ -24,6 +24,8 @@ const NAMES = [
   "Horatio Caro",
   "Marcus Kann",
   "Nigel Short",
+  "Big Red",
+  "Ruy Lopez",
 ];
 const UI_KEYS = [
   "Mute",
@@ -39,6 +41,7 @@ const UI_KEYS = [
   "Italian Game",
   "Queen’s Gambit",
   "French Defence",
+  "Big Red · Ruy Lopez",
   "Line 1 · Legal's Mate",
   "Line 1",
 ];
@@ -129,6 +132,7 @@ test("every coach caption has a translation in every supported language", async 
     "london",
     "opening-traps",
     "qg-white",
+    "ruy-lopez-white",
     "scotch",
   ]);
 

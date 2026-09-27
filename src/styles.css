@@ -3668,6 +3668,13 @@ html[data-color-scheme="dark"] .landing-chip {
   user-select: none;
 }
 
+/* Per-pack bust (Big Red). Potato Pie stays the seated default above. */
+.scotch-coach-figure[data-coach-bust="true"] {
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
 @keyframes scotch-coach-emerge {
   0% {
     transform: translateX(-42%);

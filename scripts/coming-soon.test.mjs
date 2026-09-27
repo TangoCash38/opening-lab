@@ -57,7 +57,7 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
     canPurchaseBuyAll,
   } = mod;
 
-  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black"]);
+  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white"]);
   assert.equal(isPackComingSoon("scotch"), false);
   assert.equal(isPackComingSoon("opening-traps"), false);
   assert.equal(isPackComingSoon("caro-kann-black"), false);
@@ -65,6 +65,8 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(isPackComingSoon("italian-white"), false);
   assert.equal(isPackComingSoon("qg-white"), false);
   assert.equal(isPackComingSoon("french-black"), false);
+  assert.equal(isPackComingSoon("ruy-lopez-white"), false);
+  assert.equal(isPackComingSoon("ruy-white"), true);
   assert.equal(canPurchasePack("scotch"), true);
   assert.equal(canPurchasePack("opening-traps"), true);
   assert.equal(canPurchasePack("caro-kann-black"), true);
@@ -72,9 +74,11 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(canPurchasePack("italian-white"), true);
   assert.equal(canPurchasePack("qg-white"), true);
   assert.equal(canPurchasePack("french-black"), true);
+  assert.equal(canPurchasePack("ruy-lopez-white"), true);
+  assert.equal(canPurchasePack("ruy-white"), false);
   assert.equal(canPurchaseBuyAll(), true);
 
-  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black"]);
+  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white"]);
   const gated = [];
   for (const id of VISIBLE_PACK_IDS) {
     if (live.has(id)) {
@@ -96,6 +100,8 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(gated.includes("italian-white"), false);
   assert.equal(gated.includes("qg-white"), false);
   assert.equal(gated.includes("french-black"), false);
+  assert.equal(gated.includes("ruy-lopez-white"), false);
+  assert.equal(gated.includes("ruy-white"), false);
   assert.equal(gated.includes("qgd-black"), true);
 });
 

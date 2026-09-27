@@ -15,8 +15,9 @@
  * Finishing the pack intro, or pressing Skip, opens the first-line talk
  * before book Practice when that pack hands off. French Defence does not:
  * Skip and a finished intro stay on the line list, and the Winawer talk
- * starts only when Line 1 (frb1) is tapped. An intro-only pack never opens
- * a line talk. A line already heard this visit is not replayed.
+ * starts only when Line 1 (frb1) is tapped. Ruy Lopez for White is the same
+ * handoff, and it has no Line 1 speech until a wav exists. An intro-only
+ * pack never opens a line talk. A line already heard this visit is not replayed.
  * The gym intro pages do not set these session keys.
  */
 import {
@@ -100,6 +101,16 @@ export type CoachPackConfig = {
    * Other packs leave this unset.
    */
   introArrows?: readonly CoachIntroArrowCue[];
+  /**
+   * Cream-plate name. Absent: Professor Potato Pie.
+   * Big Red uses this so the Ruy Lopez dock is not Potato Pie.
+   */
+  coachName?: string;
+  /**
+   * Practice-dock portrait. Absent: the seated Potato Pie
+   * (`/scotch-coach/coach-seated-v2.png`).
+   */
+  portrait?: string;
   /** Book line that opens the first-line talk. Not the display title. */
   firstLineId: string;
   firstLineTitle: string;
@@ -933,6 +944,34 @@ const FRENCH_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+const RUY_LOPEZ_WHITE_PACK_ID = "ruy-lopez-white";
+
+export const RUY_LOPEZ_INTRO_WAV = "/coach/ruy-lopez-white/big-red-ruy-intro.wav";
+export const RUY_LOPEZ_PORTRAIT = "/coach/ruy-lopez-white/big-red-portrait.png";
+/** Sean's Big Red Ruy Lopez intro. Beat times were read off this clip. */
+export const RUY_LOPEZ_INTRO_SEC = 82.84;
+
+const RUY_LOPEZ_INTRO = [
+  "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,",
+  "also known as the Spanish opening. There's some history in this one. It takes its name",
+  "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in",
+  "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3",
+  "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there",
+  "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying",
+  "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.",
+  "From this elegant little beginning grows one of the grandest opening families in chess.",
+  "Some lines are calm and maneuvering, others can become lively before you've had time to settle",
+  "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still",
+  "bustling with possibilities. A little like London itself. So keep your eye on the centre,",
+  "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.",
+] as const;
+
+const RUY_LOPEZ_INTRO_AT_SEC = [0, 7.26, 13.12, 19.58, 28.48, 36.12, 42.8, 49.4, 55.1, 60.78, 69.1, 75.28] as const;
+
+/** Opening stem spoken in the Big Red intro: e4 e5 Nf3 Nc6 Bb5. */
+export const RUY_LOPEZ_INTRO_STEM = ["e4", "e5", "Nf3", "Nc6", "Bb5"] as const;
+export const RUY_LOPEZ_INTRO_STEM_AT_SEC = [23.4, 26.06, 27.94, 32.04, 34.7] as const;
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -1036,6 +1075,22 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: FRENCH_LINE,
     firstLineAudio: FRENCH_LINE_WAV,
     firstLineAudioFallbackSec: FRENCH_LINE_SEC,
+    lineTalkOnTapOnly: true,
+  },
+  [RUY_LOPEZ_WHITE_PACK_ID]: {
+    coachName: "Big Red",
+    portrait: RUY_LOPEZ_PORTRAIT,
+    introTitle: "Big Red · Ruy Lopez",
+    introBeats: RUY_LOPEZ_INTRO,
+    introAudio: RUY_LOPEZ_INTRO_WAV,
+    introAudioFallbackSec: RUY_LOPEZ_INTRO_SEC,
+    introBeatAtSec: RUY_LOPEZ_INTRO_AT_SEC,
+    introStem: RUY_LOPEZ_INTRO_STEM,
+    introStemAtSec: RUY_LOPEZ_INTRO_STEM_AT_SEC,
+    firstLineId: "rlw1",
+    firstLineTitle: "Line 1",
+    // Sean has not sent a Line 1 wav. No invented speech and no line audio.
+    firstLineBeats: [],
     lineTalkOnTapOnly: true,
   },
 };

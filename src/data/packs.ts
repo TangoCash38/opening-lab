@@ -1749,6 +1749,93 @@ export const PACKS: Pack[] = [
   },
 
   {
+    id: "ruy-lopez-white",
+    name: "Ruy Lopez for White",
+    eco: "C60–C99",
+    side: "White",
+    section: "white",
+    isFree: false,
+    isPremium: true,
+    price: "£1.99",
+    blurb: "10 lines from Opening Lab",
+    about:
+      "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5. 10 lines from Opening Lab.\n\nPractice the book moves with the green hint. Then Test with none to prove you remember them.",
+    lines: [
+      {
+        id: "rlw1",
+        name: "Line 1",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "d6", "c3", "O-O", "h3", "Nb8", "d4", "Nbd7", "Nbd2", "Bb7", "Bc2", "Re8", "Nf1"],
+        idea: "Morphy Closed Breyer: after 9.h3 …Nb8–d7, White completes the classical Spanish manoeuvre with Nbd2–Bc2–Nf1.",
+        side: "w",
+      },
+      {
+        id: "rlw2",
+        name: "Line 2",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "b5", "Bb3", "Bb7", "d3", "Be7", "a4", "O-O", "Re1", "d6", "Nbd2", "Na5", "Ba2"],
+        idea: "Arkhangelsk / Morphy …Bb7: White meets the early fianchetto with d3–a4–Re1–Nbd2 and tucks the bishop on a2.",
+        side: "w",
+      },
+      {
+        id: "rlw3",
+        name: "Line 3",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Nxe4", "d4", "Nd6", "Bxc6", "dxc6", "dxe5", "Nf5", "Qxd8+", "Kxd8", "Nc3", "Ke8", "h3", "Be6", "Rd1", "Be7", "Ne4"],
+        idea: "Berlin Endgame: queens off, White develops Nc3–h3–Rd1–Ne4 against the uncastled Black king.",
+        side: "w",
+      },
+      {
+        id: "rlw4",
+        name: "Line 4",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Nxe4", "d4", "b5", "Bb3", "d5", "dxe5", "Be6", "c3", "Bc5", "Nbd2", "O-O", "Bc2", "Nxd2", "Qxd2"],
+        idea: "Open Defence: White answers …Nxe4 with d4–Bb3–c3–Nbd2–Bc2 and recaptures on d2 with the queen.",
+        side: "w",
+      },
+      {
+        id: "rlw5",
+        name: "Line 5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Bxc6", "dxc6", "O-O", "f6", "d4", "Bg4", "dxe5", "Qxd1", "Rxd1", "fxe5", "Rd3", "Bd6", "Nbd2", "Nf6", "Nc4"],
+        idea: "Exchange Variation: after …f6 and …Bg4, White trades queens, lifts Rd3, and parks the knight on c4 hitting d6/e5.",
+        side: "w",
+      },
+      {
+        id: "rlw6",
+        name: "Line 6",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "f5", "Nc3", "fxe4", "Nxe4", "Nf6", "Qe2", "d5", "Nxf6+", "gxf6", "d4", "Bg7", "dxe5", "O-O", "Bxc6", "bxc6", "O-O"],
+        idea: "Schliemann (Jaenisch): White’s Nc3 main meets …fxe4 with Nxe4–Qe2–Nxf6+ and castles after Bxc6.",
+        side: "w",
+      },
+      {
+        id: "rlw7",
+        name: "Line 7",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Bc5", "c3", "Nf6", "O-O", "O-O", "d4", "Bb6", "dxe5", "Nxe4", "Qd5", "Nc5", "Bg5", "Ne7", "Qd1"],
+        idea: "Classical 3…Bc5: White plays c3–d4, meets …Nxe4 with Qd5–Bg5, then retreats Qd1 with a stable plus.",
+        side: "w",
+      },
+      {
+        id: "rlw8",
+        name: "Line 8",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "d6", "d4", "Bd7", "Nc3", "Nf6", "O-O", "Be7", "Re1", "exd4", "Nxd4", "O-O", "Bf1", "Re8", "Nf3"],
+        idea: "Old Steinitz 3…d6: White centres with d4–Nc3–Re1, then Bf1–Nf3 regroup after the …exd4 trade.",
+        side: "w",
+      },
+      {
+        id: "rlw9",
+        name: "Line 9",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "c6", "Bc4", "Nf6", "Re1", "d6", "c3", "Be7", "cxd4", "O-O", "Nc3"],
+        idea: "Bird Defence 3…Nd4: White takes, castles, meets …c6 with Bc4–Re1–c3 and develops Nc3 after the d-file opens.",
+        side: "w",
+      },
+      {
+        id: "rlw10",
+        name: "Line 10",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "a6", "Ba4", "Nf6", "O-O", "Be7", "Re1", "b5", "Bb3", "O-O", "c3", "d5", "exd5", "Nxd5", "Nxe5", "Nxe5", "Rxe5", "c6", "d4", "Bd6", "Re1", "Qh4", "g3", "Qh3", "Be3", "Bg4", "Qd3", "Rae8", "Nbd2"],
+        idea: "Marshall Gambit accepted: White takes the pawn, meets …Qh4–h3 with g3–Be3–Qd3–Nbd2 — club-critical main book.",
+        side: "w",
+      },
+    ],
+  },
+
+  // Coming-soon stub. The live catalog card is ruy-lopez-white.
+  {
     id: "ruy-white",
     name: "Ruy Lopez Mastery for White",
     eco: "C60",

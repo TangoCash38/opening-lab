@@ -38,7 +38,7 @@ export type DailySession = {
 const GUESS_PREFIXES: readonly { packId: string; lineId: string; plies: number }[] = [
   { packId: "caro-kann-black", lineId: "ckb1", plies: 12 },
   { packId: "italian-white", lineId: "it1", plies: 14 },
-  { packId: "ruy-white", lineId: "rl1", plies: 14 },
+  { packId: "ruy-lopez-white", lineId: "rlw1", plies: 14 },
   { packId: "french-white", lineId: "fr1", plies: 10 },
   { packId: "kg-black", lineId: "kg1", plies: 8 },
 ];

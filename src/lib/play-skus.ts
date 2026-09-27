@@ -12,7 +12,9 @@
  *
  * No Lab+ / no lab_plus_yearly / no subscriptions.
  * Do not invent pack titles. Ids match VISIBLE_PACK_IDS except
- * french-black, which is live on the website only until the next Play bundle.
+ * french-black and ruy-lopez-white, which are live on the website only
+ * until the next Play bundle. ruy-white stays here as the older
+ * coming-soon stub and is not a visible catalog card.
  */
 
 export const PLAY_SKU_BUY_ALL = "buy_all_packs";

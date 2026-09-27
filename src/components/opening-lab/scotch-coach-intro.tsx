@@ -30,17 +30,28 @@ import {
 } from "@/lib/scotch-coach-audio";
 import { useI18n, useT } from "@/lib/i18n";
 
-/** Seated in the practice dock, left of the wood, with the Opening Lab mug. */
-export function ScotchCoachFigure() {
+/**
+ * Seated Potato Pie in the practice dock, left of the wood.
+ * A pack may pass its own portrait and name. Other packs keep Potato Pie.
+ */
+export function ScotchCoachFigure({
+  portrait,
+  name,
+}: {
+  portrait?: string;
+  name?: string;
+} = {}) {
   const t = useT();
+  const bust = Boolean(portrait);
   return (
     <div className="scotch-coach-stage">
       <img
         className="scotch-coach-figure"
-        src="/scotch-coach/coach-seated-v2.png"
-        alt={t(SCOTCH_COACH_NAME)}
-        width={640}
-        height={1071}
+        src={portrait ?? "/scotch-coach/coach-seated-v2.png"}
+        alt={t(name ?? SCOTCH_COACH_NAME)}
+        width={bust ? 360 : 640}
+        height={bust ? 800 : 1071}
+        data-coach-bust={bust ? "true" : undefined}
         draggable={false}
       />
     </div>
@@ -90,6 +101,8 @@ type FrameProps = {
   muted: boolean;
   /** Text-only talks have no recording, so they hide Mute. */
   textOnly?: boolean;
+  /** Cream-plate name. Absent: Professor Potato Pie. */
+  name?: string;
   onMute: () => void;
   onSkip: () => void;
   onNext: () => void;
@@ -103,11 +116,13 @@ function CoachCardFrame({
   last,
   muted,
   textOnly = false,
+  name,
   onMute,
   onSkip,
   onNext,
 }: FrameProps) {
   const { t, lang } = useI18n();
+  const plateName = name ?? SCOTCH_COACH_NAME;
   return (
     <div
       className="scotch-coach-card"
@@ -116,10 +131,10 @@ function CoachCardFrame({
       data-scotch-coach-beat={beat}
       data-coach-text-only={textOnly ? "true" : undefined}
       role="region"
-      aria-label={t(SCOTCH_COACH_NAME)}
+      aria-label={t(plateName)}
     >
       <p className="scotch-coach-name" id="scotch-coach-name" data-scotch-coach-name>
-        {t(SCOTCH_COACH_NAME)}
+        {t(plateName)}
       </p>
       {textOnly || lang === "en" ? null : (
         <p className="scotch-coach-voice" data-coach-voice-note>
@@ -163,12 +178,14 @@ function TextOnlyCoachCard({
   talk,
   title,
   captions,
+  name,
   onDone,
   onBeat,
 }: {
   talk: PackTalk;
   title: string;
   captions: readonly string[];
+  name?: string;
   onDone: CoachDone;
   onBeat?: (beat: number) => void;
 }) {
@@ -203,6 +220,7 @@ function TextOnlyCoachCard({
       last={last}
       muted={false}
       textOnly
+      name={name}
       onMute={() => {}}
       onSkip={() => leave("skip")}
       onNext={() => {
@@ -227,6 +245,7 @@ function AudioPackCoachCard({
   atSec,
   fallbackSec,
   talk,
+  name,
   onDone,
   onBeat,
 }: {
@@ -238,6 +257,7 @@ function AudioPackCoachCard({
   atSec: readonly number[] | undefined;
   fallbackSec: number;
   talk: PackTalk;
+  name?: string;
   onDone: CoachDone;
   onBeat?: (beat: number) => void;
 }) {
@@ -301,6 +321,7 @@ function AudioPackCoachCard({
       text={text}
       last={last}
       muted={muted}
+      name={name}
       onMute={() => setMuted((value) => !value)}
       onSkip={() => leave("skip")}
       onNext={() => {
@@ -341,6 +362,7 @@ function PackCoachCard({
         talk={talk}
         title={title}
         captions={captions}
+        name={config.coachName}
         onDone={onDone}
         onBeat={onBeat}
       />
@@ -356,6 +378,7 @@ function PackCoachCard({
       atSec={atSec}
       fallbackSec={fallback}
       talk={talk}
+      name={config.coachName}
       onDone={onDone}
       onBeat={onBeat}
     />
@@ -605,7 +628,7 @@ export function CoachPackReading({ packId }: { packId: string }) {
       </button>
       {open ? (
         <div className="scotch-coach-reading-body" data-scotch-coach-transcript>
-          <p className="scotch-coach-reading-name">{t(SCOTCH_COACH_NAME)}</p>
+          <p className="scotch-coach-reading-name">{t(config.coachName ?? SCOTCH_COACH_NAME)}</p>
           {lang === "en" ? null : (
             <p className="scotch-coach-voice" data-coach-voice-note>
               {t("Voice in English")}

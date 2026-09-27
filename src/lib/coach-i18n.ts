@@ -23,6 +23,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Defensa francesa",
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
+    "Big Red · Ruy Lopez": "Big Red · Apertura española",
   },
   zh: {
     Mute: "静音",
@@ -40,6 +41,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "法兰西防御",
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
+    "Big Red · Ruy Lopez": "Big Red · 西班牙开局",
   },
   fr: {
     Mute: "Muet",
@@ -57,6 +59,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Défense française",
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
+    "Big Red · Ruy Lopez": "Big Red · Partie espagnole",
   },
   de: {
     Mute: "Stumm",
@@ -74,6 +77,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Französische Verteidigung",
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
+    "Big Red · Ruy Lopez": "Big Red · Spanische Partie",
   },
   pt: {
     Mute: "Mudo",
@@ -91,6 +95,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Defesa Francesa",
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
+    "Big Red · Ruy Lopez": "Big Red · Abertura Espanhola",
   },
   ru: {
     Mute: "Тихо",
@@ -108,6 +113,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Французская защита",
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
+    "Big Red · Ruy Lopez": "Big Red · Испанская партия",
   },
   it: {
     Mute: "Muto",
@@ -125,6 +131,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Difesa francese",
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
+    "Big Red · Ruy Lopez": "Big Red · Partita spagnola",
   },
   hi: {
     Mute: "मौन",
@@ -142,6 +149,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "फ्रेंच डिफेंस",
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
+    "Big Red · Ruy Lopez": "Big Red · स्पेनिश ओपनिंग",
   },
   ja: {
     Mute: "ミュート",
@@ -159,6 +167,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "フレンチ・ディフェンス",
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
+    "Big Red · Ruy Lopez": "Big Red · ルイ・ロペス",
   },
   ar: {
     Mute: "كتم",
@@ -176,6 +185,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "الدفاع الفرنسي",
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
+    "Big Red · Ruy Lopez": "Big Red · الافتتاح الإسباني",
   },
   tr: {
     Mute: "Sessiz",
@@ -193,6 +203,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "French Defence": "Fransız Savunması",
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
+    "Big Red · Ruy Lopez": "Big Red · İspanyol Açılışı",
   },
 };
 
@@ -503,6 +514,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Esa es la Winawer posicional: sólida en su construcción, combativa en su intención y con una cantidad considerable de electricidad oculta.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.":
       "Tu turno: practícala hasta que el orden de jugadas se sienta menos como memoria y más como sentido común.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Justo ahí, mis amores. Big Red aquí. Y hoy miramos como es debido la Ruy Lopez,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "también conocida como la apertura española. Hay historia en esta. Toma su nombre",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "de Ruy Lopez de Segura, un sacerdote español y escritor de ajedrez que estudió la apertura en",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "el siglo XVI. Las blancas empiezan con peón a e4. Las negras responden peón a e5. Caballo a f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "ataca ese peón y las negras lo defienden con caballo a c6. Luego viene el alfil a b5. Y ahí",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "lo tienes. La Ruy Lopez. El alfil no gana de inmediato el peón de e5. Está aplicando",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "presión al caballo que lo guarda, y deja a las negras un problema callado pero persistente.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "De este elegante comienzo crece una de las familias de aperturas más grandes del ajedrez.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Algunas líneas son tranquilas y de maniobra; otras pueden animarse antes de que hayas tenido tiempo de asentar",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "el té. Es clásica, sutil y llena de ideas estratégicas de verdad. Vieja, digna y todavía",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "llena de posibilidades. Un poco como el propio Londres. Así que vigila el centro,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "cuida tus piezas y disfruta familiarizarte más con la Ruy Lopez. Big Red te verá por aquí.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -788,6 +823,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.": "挑战 e5 兵，打开有用的线路，并有目的地在后翼展开活动。",
     "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.": "这就是局面型 Winawer：结构扎实，意图好斗，并藏着相当多的暗电。",
     "Your turn, drill it until the move order feels less like memory and more like common sense.": "轮到你了，反复演练，直到着法顺序不再像记忆，而更像常识。",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "就在这儿，亲爱的们。Big Red 来了。今天我们好好看一看 Ruy Lopez，",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "也叫西班牙开局。这一局里有一段历史。它的名字来自",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "Ruy Lopez de Segura，一位研究过这步开局的西班牙神父兼棋谱作者，时间在",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "16世纪。白方先走兵到 e4。黑方应兵到 e5。马到 f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "攻击那只兵，黑方用马到 c6 来防守。然后象到 b5。于是",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "就有了。Ruy Lopez。这只象并不是立刻赢下 e5 兵。它是在施加",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "压力，压住守卫那只兵的马，给黑方一个安静却持续的问题去想。",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "从这个优雅的小开头，长出国际象棋里最宏大的开局家族之一。",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "有些变例平静而善于调遣，另一些会在你还没来得及坐稳之前就活跃起来",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "你的茶。它古典、细腻，充满真正的战略思想。古老、庄重，却仍然",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "充满可能。有一点像伦敦本身。所以盯住中心，",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "照看好你的棋子，享受更熟悉 Ruy Lopez。Big Red 回头见。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1095,6 +1154,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Voilà la Winawer positionnelle : solide dans sa construction, combative dans son intention, et porteuse d'une bonne dose d'électricité cachée.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.":
       "À toi : répète-la jusqu'à ce que l'ordre des coups ressemble moins à de la mémoire et davantage au bon sens.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Juste là, mes amours. Big Red ici. Et aujourd'hui nous regardons comme il faut la Ruy Lopez,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "aussi appelée ouverture espagnole. Il y a de l'histoire dans celle-ci. Elle tient son nom",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "de Ruy Lopez de Segura, un prêtre espagnol et auteur d'échecs qui étudia l'ouverture au",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "XVIe siècle. Les Blancs commencent par le pion en e4. Les Noirs répondent pion en e5. Cavalier en f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "attaque ce pion et les Noirs le défendent avec le cavalier en c6. Puis vient le fou en b5. Et voilà",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "vous l'avez. La Ruy Lopez. Le fou ne gagne pas tout de suite le pion e5. Il applique",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "une pression sur le cavalier qui le garde, et laisse aux Noirs un problème discret mais tenace.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "De ce petit début élégant grandit l'une des plus grandes familles d'ouvertures aux échecs.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Certaines lignes sont calmes et manœuvrières, d'autres peuvent s'animer avant que vous ayez eu le temps de poser",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "votre thé. Elle est classique, subtile et pleine d'idées stratégiques sérieuses. Vieille, digne et encore",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "pleine de possibilités. Un peu comme Londres elle-même. Alors gardez l'œil sur le centre,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "soignez vos pièces et prenez plaisir à mieux connaître la Ruy Lopez. Big Red vous reverra.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1403,6 +1486,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Das ist die positionelle Winawer: solide gebaut, kämpferisch in der Absicht und mit einer beträchtlichen Menge verborgener Elektrizität.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.":
       "Du bist dran: übe sie, bis die Zugfolge sich weniger wie Gedächtnis und mehr wie gesunder Menschenverstand anfühlt.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Genau da, meine Lieben. Big Red hier. Und heute schauen wir uns die Ruy Lopez richtig an,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "auch bekannt als spanische Eröffnung. In dieser steckt Geschichte. Sie trägt ihren Namen",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "von Ruy Lopez de Segura, einem spanischen Priester und Schachautor, der die Eröffnung im",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "16. Jahrhundert studierte. Weiß beginnt mit Bauer nach e4. Schwarz antwortet Bauer nach e5. Springer nach f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "greift diesen Bauern an, und Schwarz verteidigt ihn mit Springer nach c6. Dann kommt Läufer nach b5. Und da",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "habt ihr sie. Die Ruy Lopez. Der Läufer gewinnt den e5-Bauern nicht sofort. Er übt",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "Druck auf den Springer aus, der ihn deckt, und gibt Schwarz ein stilles, aber hartnäckiges Problem.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "Aus diesem eleganten kleinen Anfang wächst eine der größten Eröffnungsfamilien im Schach.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Manche Varianten sind ruhig und manövrierend, andere können lebhaft werden, bevor ihr Zeit hattet,",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "den Tee abzustellen. Sie ist klassisch, fein und voll echter strategischer Ideen. Alt, würdevoll und immer noch",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "voller Möglichkeiten. Ein wenig wie London selbst. Also behaltet die Mitte im Auge,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "passt auf eure Figuren auf und freut euch, die Ruy Lopez besser kennenzulernen. Big Red sieht euch wieder.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1708,6 +1815,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
       "Essa é a Winawer posicional: sólida na construção, combativa na intenção e com uma dose considerável de electricidade oculta.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.": "A tua vez: treina-a até a ordem dos lances parecer menos memória e mais senso comum.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Bem aí, meus amores. Big Red aqui. E hoje vamos olhar a sério para a Ruy Lopez,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "também conhecida como a abertura espanhola. Há história nesta. Ela toma o nome",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "de Ruy Lopez de Segura, um padre espanhol e escritor de xadrez que estudou a abertura no",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "século XVI. As Brancas começam com peão para e4. As Negras respondem peão para e5. Cavalo para f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "ataca esse peão e as Negras defendem-no com cavalo para c6. Depois vem o bispo para b5. E aí",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "está. A Ruy Lopez. O bispo não ganha de imediato o peão de e5. Está a aplicar",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "pressão ao cavalo que o guarda, deixando às Negras um problema quieto mas persistente.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "Deste começo elegante cresce uma das maiores famílias de aberturas do xadrez.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Algumas linhas são calmas e de manobra, outras podem animar-se antes de teres tempo de pousar",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "o chá. É clássica, subtil e cheia de ideias estratégicas a sério. Velha, digna e ainda",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "cheia de possibilidades. Um pouco como a própria Londres. Por isso fica de olho no centro,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "cuida das tuas peças e disfruta de ficar mais familiar com a Ruy Lopez. Big Red vê-te por aí.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2010,6 +2141,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Это позиционная Winawer: прочная по построению, боевитая по намерению и несущая немалый запас скрытого электричества.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.":
       "Твой ход: повторяй её, пока порядок ходов не станет меньше похож на память и больше — на здравый смысл.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Вот здесь, мои дорогие. Big Red на связи. И сегодня мы как следует смотрим на Ruy Lopez,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "известную также как испанская партия. В ней есть история. Она берёт имя",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "от Ruy Lopez de Segura, испанского священника и шахматного автора, который изучал этот дебют в",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "XVI веке. Белые начинают пешкой на e4. Чёрные отвечают пешкой на e5. Конь на f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "атакует эту пешку, и чёрные защищают её конём на c6. Затем слон на b5. И вот",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "она. Ruy Lopez. Слон не выигрывает сразу пешку e5. Он оказывает",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "давление на коня, который её стережёт, и оставляет чёрным тихую, но настойчивую задачу.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "Из этого изящного начала вырастает одно из самых великих дебютных семейств в шахматах.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Одни варианты спокойны и маневренны, другие могут ожить раньше, чем вы успеете поставить",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "чай. Она классическая, тонкая и полна настоящих стратегических идей. Старая, достойная и всё ещё",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "полная возможностей. Немного как сам Лондон. Так что следите за центром,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "берегите фигуры и радуйтесь, узнавая Ruy Lopez ближе. Big Red ещё увидится с вами.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2316,6 +2471,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Questa è la Winawer posizionale: solida nella costruzione, combattiva nell'intenzione e carica di una notevole elettricità nascosta.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.":
       "Tocca a te: ripetila finché l'ordine delle mosse non sembri meno memoria e più buon senso.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Proprio lì, miei cari. Big Red qui. E oggi guardiamo come si deve la Ruy Lopez,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "nota anche come apertura spagnola. C'è della storia in questa. Prende il nome",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "da Ruy Lopez de Segura, un prete spagnolo e scrittore di scacchi che studiò l'apertura nel",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "XVI secolo. Il Bianco inizia con pedone in e4. Il Nero risponde pedone in e5. Cavallo in f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "attacca quel pedone e il Nero lo difende con cavallo in c6. Poi viene l'alfiere in b5. Ed ecco",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "che c'è. La Ruy Lopez. L'alfiere non sta vincendo subito il pedone e5. Sta applicando",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "pressione al cavallo che lo difende, lasciando al Nero un problema quieto ma insistente.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "Da questo piccolo inizio elegante cresce una delle più grandi famiglie di aperture degli scacchi.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Alcune linee sono calme e di manovra, altre possono animarsi prima che tu abbia avuto il tempo di posare",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "il tè. È classica, sottile e piena di idee strategiche vere. Vecchia, dignitosa e ancora",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "piena di possibilità. Un po' come Londra stessa. Tieni dunque d'occhio il centro,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "cura i pezzi e goditi il diventare più familiare con la Ruy Lopez. Big Red ti rivedrà.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2623,6 +2802,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "यही स्थितिगत Winawer है: बनावट में ठोस, इरादे में लड़ाकू, और छिपी बिजली की अच्छी मात्रा लिए हुए।",
     "Your turn, drill it until the move order feels less like memory and more like common sense.":
       "अब तुम्हारी बारी: इसे तब तक दोहराओ जब तक चालों का क्रम याददाश्त कम और सामान्य समझ ज़्यादा लगे।",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "ठीक वहीं, मेरे प्यारों। Big Red यहाँ है। और आज हम Ruy Lopez को अच्छे से देख रहे हैं,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "जिसे स्पेनिश ओपनिंग भी कहते हैं। इसमें कुछ इतिहास है। इसका नाम आता है",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "Ruy Lopez de Segura से, एक स्पेनिश पादरी और शतरंज लेखक जिन्होंने इस ओपनिंग को",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "16वीं सदी में पढ़ा। सफेद e4 पर पैदल से शुरू करता है। काला e5 पर पैदल से जवाब देता है। घोड़ा f3 पर",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "उस पैदल पर हमला करता है और काला c6 पर घोड़े से बचाव करता है। फिर हाथी b5 पर आता है। और वहीं",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "यह है। Ruy Lopez। हाथी e5 का पैदल तुरंत नहीं जीत रहा। वह दबाव डाल रहा है",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "उस घोड़े पर जो उसे रखवाली करता है, और काले को एक शांत लेकिन लगातार समस्या देता है।",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "इस सुंदर छोटी शुरुआत से शतरंज के सबसे भव्य ओपनिंग परिवारों में से एक उगता है।",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "कुछ लाइनें शांत और चालों वाली हैं, दूसरी तब तक जीवंत हो सकती हैं जब तक आपको बैठने का समय न मिले",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "आपकी चाय। यह शास्त्रीय, सूक्ष्म और असली रणनीतिक विचारों से भरी है। पुरानी, गरिमामय और अब भी",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "संभावनाओं से भरी। थोड़ी लंदन जैसी। इसलिए केंद्र पर नज़र रखो,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "अपने मोहरों का ध्यान रखो और Ruy Lopez से और परिचित होने का आनंद लो। Big Red फिर मिलेगा।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2918,6 +3121,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.": "e5 のポーンに挑み、役に立つラインを開き、明確な目的をもってクイーンサイドの活動を生み出します。",
     "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.": "これが局面的な Winawer です。構造は堅実、意図は闘争的、そしてかなりの隠れた電気を帯びています。",
     "Your turn, drill it until the move order feels less like memory and more like common sense.": "あなたの番です。指し順が記憶ではなく常識のように感じるまで、繰り返し練習してください。",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "ちょうどそこだ、愛する者たちよ。Big Red だ。今日は Ruy Lopez をきちんと見ていく、",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "スペイン定跡とも呼ばれる。これには歴史がある。名前の由来は",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "Ruy Lopez de Segura、この定跡を研究したスペインの司祭にしてチェスの著者で、時代は",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "16世紀。白はポーンを e4 へ。黒はポーンを e5 で応える。ナイトを f3 へ",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "そのポーンを攻め、黒はナイトを c6 で守る。それからビショップが b5 へ。そして",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "これだ。Ruy Lopez。ビショップは e5 のポーンをすぐに取っているのではない。圧力をかけている",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "それを守るナイトに対して、黒に静かだが根強い問題を残す。",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "この優雅な小さな始まりから、チェスで最も壮大な定跡の家系の一つが育つ。",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "ある変化は穏やかで手を組むもの、別の変化はお茶を置く間もなく活発になり得る",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "君のお茶。古典的で繊細、きちんとした戦略思想に満ちている。古く、品位があり、それでもなお",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "可能性で賑わっている。ロンドンそのものに少し似ている。だから中央から目を離すな、",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "駒を大切にし、Ruy Lopez にもっと親しむのを楽しんでくれ。Big Red はまた会う。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3213,6 +3440,30 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
       "هذه هي Winawer الموضعية: متينة في بنائها، قتالية في قصدها، وتحمل قدرًا كبيرًا من الكهرباء المخبوءة.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.": "دورك: كرّرها حتى يبدو ترتيب النقلات أقل شبهًا بالذاكرة وأكثر شبهًا بالبديهة.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "هنا تمامًا يا أحبائي. Big Red هنا. واليوم نلقي نظرة كما ينبغي على Ruy Lopez،",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "المعروفة أيضًا بالافتتاح الإسباني. في هذه تاريخ. وهي تأخذ اسمها",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "من Ruy Lopez de Segura، كاهن إسباني وكاتب شطرنج درس الافتتاح في",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "القرن السادس عشر. يبدأ الأبيض ببيدق إلى e4. يرد الأسود ببيدق إلى e5. حصان إلى f3",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "يهاجم ذلك البيدق ويدافع الأسود بحصان إلى c6. ثم يأتي الفيل إلى b5. وها",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "قد صارت. Ruy Lopez. الفيل لا يربح بيدق e5 فورًا. إنه يضغط",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "على الحصان الذي يحرسه، ويمنح الأسود مشكلة هادئة لكنها مستمرة.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "من هذه البداية الأنيقة الصغيرة تنمو إحدى أعظم عائلات الافتتاح في الشطرنج.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "بعض الخطوط هادئة ومناورة، وأخرى قد تنشط قبل أن يتسع وقتك لتضع",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "الشاي. إنها كلاسيكية ودقيقة ومليئة بأفكار استراتيجية حقيقية. قديمة ووقورة وما زالت",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "زاخرة بالاحتمالات. تشبه لندن نفسها قليلًا. فابقِ عينك على المركز،",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "اعتنِ بقطعك واستمتع بأن تصبح أكثر ألفة مع Ruy Lopez. Big Red سيراك لاحقًا.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3513,5 +3764,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
     "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
       "Konumsal Winawer budur: kuruluşu sağlam, niyeti mücadeleci ve hatırı sayılır gizli bir elektrik taşır.",
     "Your turn, drill it until the move order feels less like memory and more like common sense.": "Sıra sende: hamle sırası bellekten çok sağduyu gibi hissedilene kadar bunu çalış.",
+    "Right there my loves. Big Red here. And today we're having a proper look at the Ruy Lopez,":
+      "Tam orada, sevgililerim. Big Red burada. Ve bugün Ruy Lopez'e hakkını vererek bakıyoruz,",
+    "also known as the Spanish opening. There's some history in this one. It takes its name":
+      "İspanyol açılışı olarak da bilinir. Bunda biraz tarih var. Adını alır",
+    "from Ruy Lopez de Segura, a Spanish priest and chess writer who studied the opening in":
+      "Ruy Lopez de Segura'dan, açılışı inceleyen bir İspanyol rahip ve satranç yazarından,",
+    "the 16th century. White starts with pawn to e4. Black answers pawn to e5. Knight to f3":
+      "16. yüzyılda. Beyaz piyonu e4'e sürer. Siyah piyonla e5 diye yanıtlar. At f3'e",
+    "attacks that pawn and Black defends it with Knight to c6. Then comes Bishop to b5. And there":
+      "o piyona saldırır ve Siyah atla c6 diye savunur. Sonra fil b5'e gelir. Ve işte",
+    "you have it. The Ruy Lopez. The Bishop is not winning the e5 pawn immediately. It is applying":
+      "karşınızda. Ruy Lopez. Fil e5 piyonunu hemen kazanmıyor. Baskı uyguluyor",
+    "pressure to the Knight that guards it, giving Black a quiet but persistent problem to consider.":
+      "onu koruyan ata, ve Siyah'a sessiz ama ısrarlı bir sorun bırakıyor.",
+    "From this elegant little beginning grows one of the grandest opening families in chess.":
+      "Bu zarif küçük başlangıçtan satrancın en görkemli açılış ailelerinden biri büyür.",
+    "Some lines are calm and maneuvering, others can become lively before you've had time to settle":
+      "Bazı hatlar sakin ve manevralıdır, başkaları çayını koyacak vaktin olmadan canlanabilir",
+    "your tea. It is classical, subtle and full of proper strategic ideas. Old, dignified and still":
+      "çayın. Klasik, ince ve gerçek stratejik fikirlerle dolu. Eski, vakur ve hâlâ",
+    "bustling with possibilities. A little like London itself. So keep your eye on the centre,":
+      "olasılıklarla dolu. Biraz Londra'nın kendisi gibi. Bu yüzden merkeze göz kulak ol,",
+    "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
+      "taşlarına iyi bak ve Ruy Lopez'i daha yakından tanımanın tadını çıkar. Big Red seni yine görür.",
   },
 };

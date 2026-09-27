@@ -148,6 +148,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The French Defence is 1.e4 e6 2.d4 d5. Black challenges the e-pawn at once and accepts a cramped light-squared bishop in return for a solid centre and a later …c5 break. The book replies are Winawer, Advance, Tarrasch, Classical, Steinitz, Exchange, Rubinstein, and the King’s Indian Attack.",
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
+  "ruy-lopez-white": [
+    "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5, also called the Spanish opening. White's bishop applies pressure to the knight that guards the e5 pawn.",
+    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
