@@ -152,6 +152,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Ruy Lopez is 1.e4 e5 2.Nf3 Nc6 3.Bb5, also called the Spanish opening. White's bishop applies pressure to the knight that guards the e5 pawn.",
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
+  "sicilian-black": [
+    "The Sicilian Defence is 1.e4 c5. Black answers the King's Pawn from the flank and meets the Open Sicilian, Alapin, Smith-Morra, Grand Prix, Rossolimo, and Closed with their own replies.",
+    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */
