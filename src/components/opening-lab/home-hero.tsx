@@ -431,8 +431,9 @@ export function HomeHero({
         );
         return;
       }
-      // French: intro Skip/finish stays on the line list, even if the pack
-      // is unlocked. Line 1 speech starts only from a tap on frb1.
+      // French and Ruy Lopez: intro Skip/finish stays on the line list, even
+      // if the pack is unlocked. Line 1 speech starts only from a tap on
+      // frb1 or rlw1.
       if (coachPack(pack.id)?.lineTalkOnTapOnly) {
         const tapped = queuedLineRef.current;
         queuedLineRef.current = null;
@@ -744,9 +745,9 @@ export function HomeHero({
                             onComingSoon?.(pack);
                             return;
                           }
-                          // French Line 1: the first tap plays the Winawer talk
-                          // even while the drill is locked. Later taps use the
-                          // unlock or Practice path. A tap during the intro waits.
+                          // French frb1 and Ruy Lopez rlw1: the first tap plays the
+                          // Line 1 talk even while the drill is locked. Later taps
+                          // use the unlock or Practice path. A tap during the intro waits.
                           const hearsLineTalk =
                             coachPack(pack.id)?.lineTalkOnTapOnly === true &&
                             coachPackLineApplies({ packId: pack.id, lineId: item.id }) &&

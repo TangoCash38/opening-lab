@@ -538,6 +538,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "llena de posibilidades. Un poco como el propio Londres. Así que vigila el centro,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "cuida tus piezas y disfruta familiarizarte más con la Ruy Lopez. Big Red te verá por aquí.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "Muy bien, mis amores: Big Red vuelve al tablero y esta es la línea 1 de nuestro pack de la Ruy Lopez, la Defensa Morphy, variante cerrada Breyer.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Jugamos con las piezas blancas y esto es una auténtica obra maestra estratégica.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "Las blancas empiezan con peón a e4, las negras responden peón a e5, Nf3 ataca el peón y las negras lo defienden con Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 y la Ruy Lopez está en el tablero. Las negras juegan peón a a6 y anuncian la Defensa Morphy",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "y le hacen a nuestro alfil una pregunta muy directa. Retiramos el alfil a a4. Las negras desarrollan Nf6,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "enrocamos en el flanco de rey y las negras desarrollan el alfil a e7. La torre a e1 refuerza nuestro peón de e4",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "y coloca la torre frente al rey negro. Las negras se expanden con peón a b5, así que nuestro alfil se asienta",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "en b3. El peón a d6 da al centro negro una base firme. Jugamos peón a c3,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "preparando el gran avance central, peón a d4. Las negras enrocan en el flanco de rey. Ahora peón a h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "una jugada pequeña y útil que mantiene lejos de g4 a un alfil o un caballo y da aire a nuestro rey.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Luego llega la jugada que hace inconfundible la Breyer. Las negras retiran el caballo a b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "Parece que el caballo ha olvidado por qué salió, pero nada de eso. Esto es estratégico",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "reciclaje del más alto nivel. Golpeamos con peón a d4 y establecemos un centro magnífico. Las negras",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "reencaminan ese caballo a d7, donde apoya e5 y libera el peón de c para el contrajuego futuro.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "Nuestro caballo de dama se desarrolla a d2. El alfil negro va a b7 y apunta a e4. El alfil",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "a c2 conserva nuestro valioso alfil español y apunta hacia el flanco de rey. Las negras colocan la",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "torre en e8, sumando más apoyo al peón de e5. Por fin, nuestro caballo se desliza a f1. Ese caballo",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "tiene un itinerario espléndido. Desde f1 puede viajar a g3, aumentando la presión sobre f5 y ayudando",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "a que el ataque en el flanco de rey cobre impulso. Esa es la Breyer cerrada. Paciente, sofisticada y",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "absolutamente rebosante de vida y energía. Las blancas poseen el espacio central. Las negras han construido una posición compacta",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "y preparan el contragolpe. Juégala con convicción. Disfruta cada maniobra",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "y recuerda: las jugadas quietas no están esperando. Están cargando el resorte.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "Te toca: practícala hasta que ese viaje del caballo de b1 a d2 y luego a f1 se sienta tan natural como encontrar",
+    "your way around London.":
+      "el camino por Londres.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -847,6 +895,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "充满可能。有一点像伦敦本身。所以盯住中心，",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "照看好你的棋子，享受更熟悉 Ruy Lopez。Big Red 回头见。",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "好了，亲爱的们，Big Red 回到了棋盘前，这是我们 Ruy Lopez 学习包的第 1 线，Morphy 防御封闭 Breyer 变例。",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "我们执白棋，这是一盘真正的战略杰作。",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "白方以兵到 e4 开始，黑方应兵到 e5，Nf3 攻击那只兵，黑方用 Nc6 来防守。",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5，Ruy Lopez 已经在棋盘上。黑方走兵到 a6，宣告 Morphy 防御",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "并向我们的象提出一个非常直接的问题。我们把象退到 a4。黑方发展 Nf6，",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "我们王翼易位，黑方把象发展到 e7。车到 e1，加强我们的 e4 兵",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "并把车放到黑王对面。黑方以兵到 b5 扩张，于是我们的象落在",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "b3。兵到 d6 给黑方的中心一个结实的基础。我们走兵到 c3，",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "准备宏大的中心挺进，兵到 d4。黑方王翼易位。现在兵到 h3，",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "一步有用的小着，让象或马远离 g4，也给我们的王一点喘息的空间。",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "然后就是那步让 Breyer 一眼就能认出的着法。黑方把马退到 b8。",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "看起来这匹马好像忘了自己为什么出来，可完全不是这样。这是战略上的",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "最高级的回收。我们以兵到 d4 出击，建立起一座壮丽的中心。黑方",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "把那匹马改道到 d7，在那里支持 e5，并解放 c 兵以备日后的反击。",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "我们的后翼马发展到 d2。黑方的象走到 b7，瞄准 e4。象",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "到 c2，保住我们宝贵的西班牙象，并指向王翼。黑方把",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "车放到 e8，进一步支持 e5 兵。最后，我们的马滑到 f1。那匹马",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "有一条出色的路线。从 f1 它可以前往 g3，加大对 f5 的压力，并帮助",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "王翼进攻积聚势头。这就是封闭 Breyer。耐心、精致，而且",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "完全充满生命与能量。白方拥有中心空间。黑方已经建成一个紧凑的",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "局面，并在准备反击。带着信念去下。享受每一次调遣",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "并且记住，安静的着法不是在干等。它们正在给弹簧上弦。",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "交给你了，反复演练，直到那匹马从 b1 到 d2 再到 f1 的旅程，感觉像找到",
+    "your way around London.":
+      "在伦敦的路一样自然。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1178,6 +1274,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "pleine de possibilités. Un peu comme Londres elle-même. Alors gardez l'œil sur le centre,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "soignez vos pièces et prenez plaisir à mieux connaître la Ruy Lopez. Big Red vous reverra.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "Bien alors mes amours, Big Red est de retour à l'échiquier et voici la ligne 1 de notre pack d'apprentissage de la Ruy Lopez, la défense Morphy, variante fermée Breyer.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Nous jouons les pièces blanches et c'est un vrai chef-d'œuvre stratégique.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "Les Blancs commencent par le pion en e4, les Noirs répondent pion en e5, Nf3 attaque le pion et les Noirs le défendent avec Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 et la Ruy Lopez est sur l'échiquier. Les Noirs jouent le pion en a6, annonçant la défense Morphy",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "et posent à notre fou une question très directe. Nous reculons le fou en a4. Les Noirs développent Nf6,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "nous roquons côté roi et les Noirs développent le fou en e7. La tour en e1 renforce notre pion e4",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "et place la tour en face du roi noir. Les Noirs s'étendent avec le pion en b5, alors notre fou s'installe",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "en b3. Le pion en d6 donne au centre noir une base solide. Nous jouons le pion en c3,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "préparant la grande avance centrale, le pion en d4. Les Noirs roquent côté roi. Maintenant le pion en h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "un petit coup utile qui tient un fou ou un cavalier loin de g4 et donne à notre roi un peu d'air.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Vient alors le coup qui rend la Breyer impossible à confondre. Les Noirs reculent le cavalier en b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "On dirait que le cavalier a oublié pourquoi il est sorti, mais pas du tout. C'est stratégique",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "recyclage du plus haut ordre. Nous frappons avec le pion en d4, établissant un centre magnifique. Les Noirs",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "réacheminent ce cavalier en d7, où il soutient e5 et libère le pion c pour un futur contre-jeu.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "Notre cavalier de l'aile dame se développe en d2. Le fou noir va en b7 et vise e4. Le fou",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "en c2 préserve notre précieux fou espagnol et pointe vers l'aile roi. Les Noirs placent la",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "tour en e8, ajoutant encore du soutien au pion e5. Enfin, notre cavalier glisse en f1. Ce cavalier",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "a un itinéraire splendide. Depuis f1 il peut aller en g3, augmentant la pression sur f5 et aidant",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "l'attaque côté roi à prendre de l'élan. Voilà la Breyer fermée. Patiente, sophistiquée et",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "absolument débordante de vie et d'énergie. Les Blancs possèdent l'espace central. Les Noirs ont construit une position compacte",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "et préparent la contre-attaque. Jouez-la avec conviction. Savourez chaque manœuvre",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "et souvenez-vous : les coups tranquilles n'attendent pas. Ils arment le ressort.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "À vous : répétez-la jusqu'à ce que ce voyage du cavalier de b1 à d2 puis à f1 semble aussi naturel que de trouver",
+    "your way around London.":
+      "votre chemin dans Londres.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1510,6 +1654,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "voller Möglichkeiten. Ein wenig wie London selbst. Also behaltet die Mitte im Auge,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "passt auf eure Figuren auf und freut euch, die Ruy Lopez besser kennenzulernen. Big Red sieht euch wieder.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "So, meine Lieben, Big Red ist wieder am Brett und das ist Linie 1 unseres Lernpakets zur Ruy Lopez, die Morphy-Verteidigung, geschlossene Breyer-Variante.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Wir spielen mit den weißen Figuren und das ist ein echtes strategisches Meisterwerk.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "Weiß beginnt mit Bauer nach e4, Schwarz antwortet Bauer nach e5, Nf3 greift den Bauern an und Schwarz verteidigt ihn mit Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 und die Ruy Lopez steht auf dem Brett. Schwarz spielt Bauer nach a6 und kündigt die Morphy-Verteidigung an",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "und stellt unserem Läufer eine sehr direkte Frage. Wir ziehen den Läufer zurück nach a4. Schwarz entwickelt Nf6,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "wir rochieren kurz und Schwarz entwickelt den Läufer nach e7. Turm nach e1 verstärkt unseren e4-Bauern",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "und stellt den Turm dem schwarzen König gegenüber. Schwarz erweitert mit Bauer nach b5, also lässt sich unser Läufer nieder",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "auf b3. Bauer nach d6 gibt dem Zentrum von Schwarz ein solides Fundament. Wir spielen Bauer nach c3,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "und bereiten den großen zentralen Vorstoß vor, Bauer nach d4. Schwarz rochiert kurz. Nun Bauer nach h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "ein nützliches kleines Züglein, das einen Läufer oder Springer von g4 fernhält und unserem König etwas Luft gibt.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Dann kommt der Zug, der die Breyer unverwechselbar macht. Schwarz zieht den Springer zurück nach b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "Es sieht so aus, als hätte der Springer vergessen, warum er herauskam, aber keineswegs. Das ist strategisches",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "Recycling höchster Ordnung. Wir schlagen mit Bauer nach d4 zu und errichten ein großartiges Zentrum. Schwarz",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "lenkt diesen Springer nach d7 um, wo er e5 stützt und den c-Bauern für späteres Gegenspiel freimacht.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "Unser Damenspringer entwickelt sich nach d2. Der Läufer von Schwarz geht nach b7 und zielt auf e4. Der Läufer",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "nach c2 bewahrt unseren wertvollen spanischen Läufer und zeigt zur Königsseite. Schwarz stellt den",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "Turm auf e8 und stützt den e5-Bauern zusätzlich. Schließlich gleitet unser Springer nach f1. Dieser Springer",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "hat eine prächtige Reiseroute. Von f1 kann er nach g3 ziehen, den Druck auf f5 erhöhen und dabei helfen,",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "dass der Angriff auf der Königsseite Schwung aufnimmt. Das ist die geschlossene Breyer. Geduldig, raffiniert und",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "voller Leben und Energie. Weiß besitzt den zentralen Raum. Schwarz hat eine kompakte",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "Stellung aufgebaut und bereitet den Gegenschlag vor. Spielt sie mit Überzeugung. Genießt jedes Manöver",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "und denkt daran: die stillen Züge warten nicht herum. Sie spannen die Feder.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "Ihr seid dran: übt sie, bis diese Springerreise von b1 nach d2 und weiter nach f1 sich so natürlich anfühlt wie",
+    "your way around London.":
+      "den Weg durch London zu finden.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1839,6 +2031,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "cheia de possibilidades. Um pouco como a própria Londres. Por isso fica de olho no centro,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "cuida das tuas peças e disfruta de ficar mais familiar com a Ruy Lopez. Big Red vê-te por aí.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "Muito bem, meus amores, Big Red está de volta ao tabuleiro e esta é a linha 1 do nosso pack de aprendizagem da Ruy Lopez, a Defesa Morphy, variante fechada Breyer.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Jogamos com as peças brancas e isto é uma verdadeira obra-prima estratégica.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "As Brancas começam com peão para e4, as Pretas respondem peão para e5, Nf3 ataca o peão e as Pretas defendem-no com Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 e a Ruy Lopez está no tabuleiro. As Pretas jogam peão para a6, anunciando a Defesa Morphy",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "e fazem ao nosso bispo uma pergunta muito direta. Recuamos o bispo para a4. As Pretas desenvolvem Nf6,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "fazemos o roque do lado do rei e as Pretas desenvolvem o bispo para e7. A torre para e1 reforça o nosso peão de e4",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "e coloca a torre em frente ao rei preto. As Pretas expandem com peão para b5, por isso o nosso bispo assenta",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "em b3. O peão para d6 dá ao centro preto uma base firme. Jogamos peão para c3,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "preparando o grande avanço central, peão para d4. As Pretas fazem o roque do lado do rei. Agora peão para h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "um lance pequeno e útil que mantém um bispo ou um cavalo longe de g4 e dá ao nosso rei algum ar.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Depois vem o lance que torna a Breyer inconfundível. As Pretas recuam o cavalo para b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "Parece que o cavalo esqueceu por que saiu, mas nada disso. Isto é estratégico",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "reciclagem da mais alta ordem. Atacamos com peão para d4, estabelecendo um centro magnífico. As Pretas",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "reencaminham esse cavalo para d7, onde apoia e5 e liberta o peão de c para o futuro contra-jogo.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "O nosso cavalo da ala da dama desenvolve-se para d2. O bispo preto vai para b7 e aponta a e4. O bispo",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "para c2 preserva o nosso valioso bispo espanhol e aponta para o lado do rei. As Pretas colocam a",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "torre em e8, dando mais apoio ao peão de e5. Por fim, o nosso cavalo desliza para f1. Esse cavalo",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "tem um itinerário esplêndido. De f1 pode viajar para g3, aumentando a pressão sobre f5 e ajudando",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "o ataque do lado do rei a ganhar impulso. Essa é a Breyer fechada. Paciente, sofisticada e",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "absolutamente cheia de vida e energia. As Brancas possuem o espaço central. As Pretas construíram uma posição compacta",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "e preparam o contragolpe. Joga-a com convicção. Aproveita cada manobra",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "e lembra-te: os lances quietos não estão à espera. Estão a carregar a mola.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "A tua vez: treina até que essa viagem do cavalo de b1 para d2 e depois para f1 pareça tão natural como encontrar",
+    "your way around London.":
+      "o caminho por Londres.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2165,6 +2405,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "полная возможностей. Немного как сам Лондон. Так что следите за центром,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "берегите фигуры и радуйтесь, узнавая Ruy Lopez ближе. Big Red ещё увидится с вами.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "Ну что ж, мои дорогие, Big Red снова у доски, и это линия 1 нашего учебного пакета Ruy Lopez, защита Морфи, закрытый вариант Брейера.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Мы играем белыми фигурами, и это настоящий стратегический шедевр.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "Белые начинают пешкой на e4, чёрные отвечают пешкой на e5, Nf3 атакует пешку, и чёрные защищают её ходом Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5, и Ruy Lopez уже на доске. Чёрные играют пешкой на a6, объявляя защиту Морфи",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "и задают нашему слону очень прямой вопрос. Мы отступаем слоном на a4. Чёрные развивают Nf6,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "мы рокируемся в короткую сторону, и чёрные развивают слона на e7. Ладья на e1 укрепляет нашу пешку e4",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "и ставит ладью напротив чёрного короля. Чёрные расширяются пешкой на b5, и наш слон располагается",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "на b3. Пешка на d6 даёт центру чёрных прочное основание. Мы играем пешкой на c3,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "готовя грандиозное центральное продвижение, пешку на d4. Чёрные рокируются в короткую сторону. Теперь пешка на h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "полезный маленький ход, который не пускает слона или коня на g4 и даёт нашему королю немного воздуха.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Затем приходит ход, который делает Брейера безошибочным. Чёрные отступают конём на b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "Кажется, будто конь забыл, зачем вышел, но ничуть. Это стратегическая",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "переработка высшего порядка. Мы бьём пешкой на d4, создавая великолепный центр. Чёрные",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "переводят этого коня на d7, где он поддерживает e5 и освобождает пешку c для будущего контригры.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "Наш ферзевый конь развивается на d2. Слон чёрных идёт на b7 и целится на e4. Слон",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "на c2 сохраняет нашего ценного испанского слона и смотрит в сторону королевского фланга. Чёрные ставят",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "ладью на e8, ещё больше поддерживая пешку e5. Наконец наш конь скользит на f1. У этого коня",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "прекрасный маршрут. С f1 он может отправиться на g3, усиливая давление на f5 и помогая",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "атаке на королевском фланге набрать ход. Это закрытый Брейер. Терпеливый, изысканный и",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "абсолютно полный жизни и энергии. Белые владеют центральным пространством. Чёрные построили компактную",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "позицию и готовят контрудар. Играйте с убеждённостью. Наслаждайтесь каждым манёвром",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "и помните: тихие ходы не простаивают. Они взводят пружину.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "Теперь вы: повторяйте, пока путь этого коня с b1 на d2 и далее на f1 не станет таким же естественным, как найти",
+    "your way around London.":
+      "дорогу по Лондону.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2495,6 +2783,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "piena di possibilità. Un po' come Londra stessa. Tieni dunque d'occhio il centro,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "cura i pezzi e goditi il diventare più familiare con la Ruy Lopez. Big Red ti rivedrà.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "Bene allora, miei cari, Big Red è di nuovo alla scacchiera e questa è la linea 1 del nostro pacchetto sulla Ruy Lopez, la Difesa Morphy, variante chiusa Breyer.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Giochiamo con i pezzi bianchi e questa è un'autentica opera strategica.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "Il Bianco inizia con il pedone in e4, il Nero risponde con il pedone in e5, Nf3 attacca il pedone e il Nero lo difende con Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 e la Ruy Lopez è sulla scacchiera. Il Nero gioca il pedone in a6, annunciando la Difesa Morphy",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "e pone al nostro alfiere una domanda molto diretta. Ritiriamo l'alfiere in a4. Il Nero sviluppa Nf6,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "arrochiamo sul lato di re e il Nero sviluppa l'alfiere in e7. La torre in e1 rinforza il nostro pedone e4",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "e pone la torre di fronte al re nero. Il Nero si espande con il pedone in b5, così il nostro alfiere si sistema",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "in b3. Il pedone in d6 dà al centro nero una base solida. Giochiamo il pedone in c3,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "preparando il grande avanzamento centrale, il pedone in d4. Il Nero arrocca sul lato di re. Ora il pedone in h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "una piccola mossa utile che tiene un alfiere o un cavallo lontano da g4 e dà al nostro re un po' d'aria.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Poi arriva la mossa che rende la Breyer inconfondibile. Il Nero ritira il cavallo in b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "Sembra che il cavallo abbia dimenticato perché è uscito, ma nient'affatto. Questo è strategico",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "riciclo del più alto livello. Colpiamo con il pedone in d4, stabilendo un centro magnifico. Il Nero",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "reindirizza quel cavallo in d7, dove sostiene e5 e libera il pedone c per il futuro controgioco.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "Il nostro cavallo di donna si sviluppa in d2. L'alfiere nero va in b7 e mira a e4. L'alfiere",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "in c2 preserva il nostro prezioso alfiere spagnolo e punta verso il lato di re. Il Nero piazza la",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "torre in e8, aggiungendo ulteriore sostegno al pedone e5. Infine il nostro cavallo scivola in f1. Quel cavallo",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "ha un itinerario splendido. Da f1 può andare in g3, aumentando la pressione su f5 e aiutando",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "l'attacco sul lato di re a prendere slancio. Questa è la Breyer chiusa. Paziente, sofisticata e",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "assolutamente traboccante di vita e di energia. Il Bianco possiede lo spazio centrale. Il Nero ha costruito una posizione compatta",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "e sta preparando il contrattacco. Giocala con convinzione. Goditi ogni manovra",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "e ricorda: le mosse quiete non stanno ad aspettare. Stanno caricando la molla.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "Tocca a te: ripetila finché quel viaggio del cavallo da b1 a d2 e poi a f1 non sembri naturale come trovare",
+    "your way around London.":
+      "la strada per Londra.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2826,6 +3162,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "संभावनाओं से भरी। थोड़ी लंदन जैसी। इसलिए केंद्र पर नज़र रखो,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "अपने मोहरों का ध्यान रखो और Ruy Lopez से और परिचित होने का आनंद लो। Big Red फिर मिलेगा।",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "ठीक है मेरे प्यारों, Big Red बोर्ड पर वापस है और यह हमारे Ruy Lopez सीखने के पैक की लाइन 1 है, मॉर्फी डिफेंस की बंद ब्रेयर वैरिएशन।",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "हम सफ़ेद मोहरों से खेल रहे हैं और यह एक असली रणनीतिक उत्कृष्ट रचना है।",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "सफ़ेद पैदल e4 से शुरू करते हैं, काले पैदल e5 से जवाब देते हैं, Nf3 उस पैदल पर हमला करता है और काले Nc6 से उसकी रक्षा करते हैं।",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 और Ruy Lopez बोर्ड पर है। काले पैदल a6 खेलते हैं, मॉर्फी डिफेंस की घोषणा करते हुए",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "और हमारे हाथी से एक बहुत सीधा सवाल पूछते हैं। हम हाथी को a4 पर वापस लेते हैं। काले Nf6 विकसित करते हैं,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "हम राजा पक्ष में रोकाड करते हैं और काले हाथी को e7 पर विकसित करते हैं। रुक e1 पर हमारे e4 पैदल को मज़बूत करता है",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "और रुक को काले राजा के सामने रखता है। काले पैदल b5 से फैलते हैं, इसलिए हमारा हाथी बैठता है",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "b3 पर। पैदल d6 काले केंद्र को एक मज़बूत नींव देता है। हम पैदल c3 खेलते हैं,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "भव्य केंद्रीय बढ़त की तैयारी करते हुए, पैदल d4। काले राजा पक्ष में रोकाड करते हैं। अब पैदल h3,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "एक उपयोगी छोटी चाल जो हाथी या घोड़े को g4 से दूर रखती है और हमारे राजा को साँस लेने की जगह देती है।",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "फिर वह चाल आती है जो ब्रेयर को एकदम पहचानने लायक बनाती है। काले घोड़े को b8 पर वापस लेते हैं।",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "लगता है जैसे घोड़ा भूल गया कि वह क्यों निकला, पर ऐसा बिलकुल नहीं। यह रणनीतिक",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "सबसे ऊँचे दर्जे की रीसाइक्लिंग है। हम पैदल d4 से वार करते हैं और एक शानदार केंद्र बनाते हैं। काले",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "उस घोड़े को d7 पर मोड़ते हैं, जहाँ वह e5 का साथ देता है और भविष्य के पलटवार के लिए c पैदल को आज़ाद करता है।",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "हमारा रानी-पक्ष का घोड़ा d2 पर विकसित होता है। काले का हाथी b7 पर जाता है और e4 पर निशाना साधता है। हाथी",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "c2 पर हमारे कीमती स्पेनिश हाथी को बचाता है और राजा पक्ष की ओर इशारा करता है। काले रखते हैं",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "रुक को e8 पर, e5 पैदल को और सहारा देते हुए। अंत में हमारा घोड़ा f1 पर सरकता है। उस घोड़े का",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "एक शानदार रास्ता है। f1 से वह g3 जा सकता है, f5 पर दबाव बढ़ाते हुए और मदद करते हुए",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "राजा-पक्ष के हमले को रफ्तार पकड़ने में। यही बंद ब्रेयर है। धैर्यवान, परिष्कृत और",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "जीवन और ऊर्जा से बिल्कुल भरी हुई। सफ़ेद के पास केंद्रीय जगह है। काले ने एक सघन",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "स्थिति बनाई है और पलटवार की तैयारी कर रहे हैं। विश्वास के साथ खेलो। हर चाल का आनंद लो",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "और याद रखो, शांत चालें इंतज़ार नहीं कर रही। वे स्प्रिंग लाद रही हैं।",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "अब तुम्हारी बारी: इसे तब तक दोहराओ जब तक उस घोड़े की यात्रा b1 से d2 और फिर f1 तक उतनी स्वाभाविक लगे जितना ढूँढना",
+    "your way around London.":
+      "लंदन में अपना रास्ता।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3145,6 +3529,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "可能性で賑わっている。ロンドンそのものに少し似ている。だから中央から目を離すな、",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "駒を大切にし、Ruy Lopez にもっと親しむのを楽しんでくれ。Big Red はまた会う。",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "さあ、愛する者たちよ。Big Red が盤に戻った。これは私たちの Ruy Lopez 学習パックの第1線、モーフィー・ディフェンスのクローズド Breyer 変化だ。",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "私たちは白の駒を持っていて、これは立派な戦略の傑作だ。",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "白はポーンを e4 へ進め、黒はポーンを e5 で応じ、Nf3 がそのポーンを攻め、黒は Nc6 で守る。",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5、そして Ruy Lopez が盤上にある。黒はポーンを a6 と指し、モーフィー・ディフェンスを告げる",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "そして私たちのビショップにごく直接的な問いを投げる。ビショップを a4 へ退く。黒は Nf6 を展開し、",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "私たちはキングサイドにキャスリングし、黒はビショップを e7 へ展開する。ルークを e1 へ、私たちの e4 ポーンを補強する",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "そしてルークを黒のキングの正面に置く。黒はポーンを b5 で広がり、そこで私たちのビショップは落ち着く",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "b3 に。ポーンを d6 へ。黒のセンターに頑丈な土台を与える。私たちはポーンを c3 と指し、",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "壮大な中央の前進、ポーンの d4 を準備する。黒はキングサイドにキャスリングする。さてポーンを h3 へ、",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "ビショップやナイトを g4 から遠ざけ、キングに少し息をつく余地を与える、役に立つ小さな一手だ。",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "それから Breyer を見分けさせる一手が来る。黒はナイトを b8 へ退く。",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "ナイトは出てきた理由を忘れたように見えるが、とんでもない。これは戦略的な",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "最高の再利用だ。私たちはポーンを d4 で突き、見事なセンターを築く。黒は",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "そのナイトを d7 へ回し、そこで e5 を支え、将来のカウンターのために c ポーンを自由にする。",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "私たちのクイーンサイドのナイトは d2 へ展開する。黒のビショップは b7 へ行き、e4 を狙う。ビショップ",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "を c2 へ。大切なスペインのビショップを保ち、キングサイドを指す。黒は",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "ルークを e8 に置き、e5 ポーンをさらに支える。最後に私たちのナイトは f1 へ滑る。そのナイトには",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "見事な旅程がある。f1 から g3 へ旅でき、f5 への圧力を高め、助けとなる",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "キングサイドの攻撃が勢いを集める。これがクローズド Breyer だ。忍耐強く、洗練されて、そして",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "生命とエネルギーに満ちている。白が中央の空間を持つ。黒は引き締まった",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "陣形を築き、反撃の準備をしている。確信を持って指せ。一手一手の機動を楽しめ",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "そして覚えておけ。静かな手は待っているのではない。ばねを仕込んでいるのだ。",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "あとは君だ。そのナイトの旅が b1 から d2、そして f1 まで、道を見つけるのと同じくらい自然に感じるまで繰り返せ",
+    "your way around London.":
+      "ロンドンの中を。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3464,6 +3896,54 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "زاخرة بالاحتمالات. تشبه لندن نفسها قليلًا. فابقِ عينك على المركز،",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "اعتنِ بقطعك واستمتع بأن تصبح أكثر ألفة مع Ruy Lopez. Big Red سيراك لاحقًا.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "حسنًا يا أحبائي، Big Red عاد إلى الرقعة وهذه هي الخط 1 من حزمة تعلّم Ruy Lopez، دفاع مورفي، تنويعة Breyer المغلقة.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "نلعب بالقطع البيضاء وهذه تحفة استراتيجية بحق.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "يبدأ الأبيض ببيدق إلى e4، ويرد الأسود ببيدق إلى e5، و Nf3 يهاجم البيدق ويدافع الأسود عنه بـ Nc6.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 و Ruy Lopez على الرقعة. يلعب الأسود بيدقًا إلى a6، معلنًا دفاع مورفي",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "ويطرح على فيلنا سؤالًا مباشرًا جدًا. نتراجع بالفيل إلى a4. يطوّر الأسود Nf6،",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "نبيّت في جناح الملك ويطوّر الأسود الفيل إلى e7. القلعة إلى e1 تعزّز بيدق e4",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "وتضع القلعة مقابل ملك الأسود. يتوسع الأسود ببيدق إلى b5، فيستقر فيلنا",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "على b3. بيدق إلى d6 يمنح مركز الأسود أساسًا متينًا. نلعب بيدقًا إلى c3،",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "مهيّئين التقدم المركزي الكبير، بيدق إلى d4. يبيّت الأسود في جناح الملك. والآن بيدق إلى h3،",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "نقلة صغيرة مفيدة تُبعد فيلًا أو حصانًا عن g4 وتمنح ملكنا متسعًا للتنفس.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "ثم تأتي النقلة التي تجعل Breyer لا تُخطئ. يتراجع الأسود بالحصان إلى b8.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "يبدو كأن الحصان نسي لماذا خرج، لكن أبدًا. هذا تدوير",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "استراتيجي من أعلى طراز. نضرب ببيدق إلى d4 ونقيم مركزًا رائعًا. الأسود",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "يعيد توجيه ذلك الحصان إلى d7، حيث يدعم e5 ويحرر بيدق c للهجوم المضاد لاحقًا.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "يتطور حصان جناح الملكة لدينا إلى d2. يذهب فيل الأسود إلى b7 ويصوب نحو e4. الفيل",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "إلى c2 يحفظ فيلنا الإسباني الثمين ويشير نحو جناح الملك. يضع الأسود",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "القلعة على e8، مضيفًا مزيدًا من الدعم لبيدق e5. وأخيرًا ينزلق حصاننا إلى f1. لذلك الحصان",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "مسار رائع. من f1 يمكنه السفر إلى g3، فيزيد الضغط على f5 ويساعد",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "هجوم جناح الملك على جمع الزخم. هذه هي Breyer المغلقة. صبورة، راقية و",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "طافحة بالحياة والطاقة. الأبيض يملك الفضاء المركزي. بنى الأسود وضعية متماسكة",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "ويُعد الضربة المضادة. العبها باقتناع. استمتع بكل مناورة",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "وتذكّر: النقلات الهادئة لا تنتظر. إنها تشحن النابض.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "دورك: كرّرها حتى تبدو رحلة ذلك الحصان من b1 إلى d2 ثم إلى f1 طبيعية كالعثور على",
+    "your way around London.":
+      "طريقك في لندن.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3788,5 +4268,53 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "olasılıklarla dolu. Biraz Londra'nın kendisi gibi. Bu yüzden merkeze göz kulak ol,",
     "look after your pieces and enjoy becoming more familiar with the Ruy Lopez. Big Red will see you round.":
       "taşlarına iyi bak ve Ruy Lopez'i daha yakından tanımanın tadını çıkar. Big Red seni yine görür.",
+    "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.":
+      "Pekâlâ sevgililerim, Big Red tahtaya döndü ve bu, Ruy Lopez öğrenme paketimizin 1. hattı, Morphy Savunması Kapalı Breyer Varyantı.",
+    "We are playing the white pieces and this is a proper strategic masterpiece.":
+      "Beyaz taşlarla oynuyoruz ve bu gerçek bir stratejik başyapıt.",
+    "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.":
+      "Beyaz piyonu e4'e sürerek başlar, Siyah piyonla e5 diye yanıtlar, Nf3 o piyona saldırır ve Siyah Nc6 ile savunur.",
+    "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense":
+      "Bb5 ve Ruy Lopez tahtadadır. Siyah piyonu a6 oynar, Morphy Savunması'nı ilan ederek",
+    "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,":
+      "ve filimize çok doğrudan bir soru sorar. Fili a4'e çekeriz. Siyah Nf6 geliştirir,",
+    "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn":
+      "şah kanadına rokarız ve Siyah fili e7'ye geliştirir. Kale e1'e giderek e4 piyonumuzu pekiştirir",
+    "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles":
+      "ve kaleyi Siyah'ın şahının karşısına koyar. Siyah piyonla b5 diye genişler, böylece filimiz yerleşir",
+    "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,":
+      "b3'e. Piyon d6'ya gider ve Siyah'ın merkezine sağlam bir temel verir. Piyonu c3 oynarız,",
+    "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,":
+      "görkemli merkez ilerlemesini, piyonun d4'ünü hazırlayarak. Siyah şah kanadına rokar. Şimdi piyon h3'e,",
+    "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.":
+      "bir fili ya da atı g4'ten uzak tutan ve şahımıza biraz nefes alanı veren yararlı küçük bir hamle.",
+    "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.":
+      "Sonra Breyer'i şaşmaz kılan hamle gelir. Siyah atı b8'e çeker.",
+    "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic":
+      "At neden çıktığını unutmuş gibi görünür, ama hiç de değil. Bu stratejik",
+    "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black":
+      "geri dönüşümün en yüksek biçimidir. Piyonla d4 diye vurur, görkemli bir merkez kurarız. Siyah",
+    "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.":
+      "o atı d7'ye yönlendirir; orada e5'i destekler ve gelecekteki karşı oyun için c piyonunu serbest bırakır.",
+    "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop":
+      "Vezir kanadı atımız d2'ye gelişir. Siyah'ın fili b7'ye gider ve e4'ü hedefler. Fil",
+    "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the":
+      "c2'ye gider, değerli İspanyol filimizi korur ve şah kanadını gösterir. Siyah",
+    "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight":
+      "kaleyi e8'e koyar, e5 piyonuna daha fazla destek ekler. Sonunda atımız f1'e kayar. O atın",
+    "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping":
+      "görkemli bir güzergâhı vardır. f1'den g3'e gidebilir, f5 üzerindeki baskıyı artırır ve yardım eder",
+    "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and":
+      "şah kanadı saldırısının ivme toplamasına. Kapalı Breyer budur. Sabırlı, incelikli ve",
+    "absolutely brimming with life and energy. White owns the central space. Black has built a compact":
+      "yaşam ve enerjiyle dopdolu. Beyaz merkezdeki alanı elinde tutar. Siyah derli toplu bir",
+    "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver":
+      "konum kurmuştur ve karşı darbeyi hazırlar. İnançla oyna. Her manevranın tadını çıkar",
+    "and remember, the quiet moves are not waiting around. They are loading the spring.":
+      "ve unutma: sessiz hamleler bekleyip durmaz. Yayı kurarlar.",
+    "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding":
+      "Sıra sende: o atın b1'den d2'ye, oradan f1'e yolculuğu, bulmak kadar doğal hissedilene dek çalış",
+    "your way around London.":
+      "Londra'da yolunu.",
   },
 };

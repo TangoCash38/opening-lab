@@ -13,10 +13,9 @@
  * open pass these gates.
  *
  * Finishing the pack intro, or pressing Skip, opens the first-line talk
- * before book Practice when that pack hands off. French Defence does not:
- * Skip and a finished intro stay on the line list, and the Winawer talk
- * starts only when Line 1 (frb1) is tapped. Ruy Lopez for White is the same
- * handoff, and it has no Line 1 speech until a wav exists. An intro-only
+ * before book Practice when that pack hands off. French Defence and Ruy Lopez
+ * for White do not: Skip and a finished intro stay on the line list, and the
+ * Line 1 talk starts only when that line is tapped (frb1, rlw1). An intro-only
  * pack never opens a line talk. A line already heard this visit is not replayed.
  * The gym intro pages do not set these session keys.
  */
@@ -125,7 +124,8 @@ export type CoachPackConfig = {
   firstLinePlaysPackLine?: boolean;
   /**
    * Line 1 speech starts from a tap on `firstLineId`, not when the intro
-   * finishes or is skipped. French Defence. Other packs hand off.
+   * finishes or is skipped. French Defence and Ruy Lopez for White.
+   * Other packs hand off.
    */
   lineTalkOnTapOnly?: boolean;
 };
@@ -972,6 +972,168 @@ const RUY_LOPEZ_INTRO_AT_SEC = [0, 7.26, 13.12, 19.58, 28.48, 36.12, 42.8, 49.4,
 export const RUY_LOPEZ_INTRO_STEM = ["e4", "e5", "Nf3", "Nc6", "Bb5"] as const;
 export const RUY_LOPEZ_INTRO_STEM_AT_SEC = [23.4, 26.06, 27.94, 32.04, 34.7] as const;
 
+export const RUY_LOPEZ_LINE_WAV = "/coach/ruy-lopez-white/big-red-ruy-line1.wav";
+/** Sean's Big Red Closed Breyer Line 1. Beat times were read off this clip. */
+export const RUY_LOPEZ_LINE_SEC = 181.12;
+
+const RUY_LOPEZ_LINE: readonly CoachLineBeat[] = [
+  {
+    caption:
+      "Right then my loves, Big Red is back at the board and this is line 1 of our Ruy Lopez learning pack, the Morphy Defense Closed Breyer Variation.",
+    atSec: 0,
+  },
+  {
+    caption: "We are playing the white pieces and this is a proper strategic masterpiece.",
+    atSec: 12.02,
+  },
+  {
+    caption:
+      "White begins with pawn to e4, Black answers pawn to e5, Nf3 attacks the pawn and Black defends it with Nc6.",
+    atSec: 17.38,
+    ply: "e4",
+    plyAtSec: 19.1,
+    extraPlies: [
+      { ply: "e5", plyAtSec: 21.96 },
+      { ply: "Nf3", plyAtSec: 23.32 },
+      { ply: "Nc6", plyAtSec: 27.2 },
+    ],
+  },
+  {
+    caption:
+      "Bb5 and the Ruy Lopez is on the board. Black plays pawn to a6, announcing the Morphy Defense",
+    atSec: 29.78,
+    ply: "Bb5",
+    plyAtSec: 29.78,
+    extraPlies: [{ ply: "a6", plyAtSec: 34.94 }],
+  },
+  {
+    caption:
+      "and asking our bishop a very direct question. We retreat bishop to a4. Black develops Nf6,",
+    atSec: 37.34,
+    ply: "Ba4",
+    plyAtSec: 42.42,
+    extraPlies: [{ ply: "Nf6", plyAtSec: 44.68 }],
+  },
+  {
+    caption:
+      "we castle kingside and Black develops bishop to e7. Rook to e1 reinforces our e4 pawn",
+    atSec: 46.62,
+    ply: "O-O",
+    plyAtSec: 46.72,
+    extraPlies: [
+      { ply: "Be7", plyAtSec: 49.58 },
+      { ply: "Re1", plyAtSec: 51.48 },
+    ],
+  },
+  {
+    caption:
+      "and places the rook opposite Black's king. Black expands with pawn to b5, so our bishop settles",
+    atSec: 54.1,
+    ply: "b5",
+    plyAtSec: 59.16,
+  },
+  {
+    caption: "on b3. Pawn to d6 gives Black's center a sturdy foundation. We play pawn to c3,",
+    atSec: 61.16,
+    ply: "Bb3",
+    plyAtSec: 61.42,
+    extraPlies: [
+      { ply: "d6", plyAtSec: 63.34 },
+      { ply: "c3", plyAtSec: 68.1 },
+    ],
+  },
+  {
+    caption: "preparing the grand central advance, pawn to d4. Black castles kingside. Now pawn to h3,",
+    atSec: 69,
+    ply: "O-O",
+    plyAtSec: 73.7,
+    extraPlies: [{ ply: "h3", plyAtSec: 76.52 }],
+  },
+  {
+    caption:
+      "a useful little move that keeps a bishop or knight away from g4 and gives our king some breathing room.",
+    atSec: 77.56,
+  },
+  {
+    caption: "Then comes the move that makes the Breyer unmistakable. Black retreats knight to b8.",
+    atSec: 84.1,
+    ply: "Nb8",
+    plyAtSec: 89.16,
+  },
+  {
+    caption:
+      "It looks as though the knight has forgotten why it came out, but not a bit of it. This is strategic",
+    atSec: 90.4,
+  },
+  {
+    caption:
+      "recycling of the highest order. We strike with pawn to d4, establishing a magnificent center. Black",
+    atSec: 95.26,
+    ply: "d4",
+    plyAtSec: 100.12,
+  },
+  {
+    caption:
+      "reroutes that knight to d7, where it supports e5 and frees the c pawn for future counterplay.",
+    atSec: 104.94,
+    ply: "Nbd7",
+    plyAtSec: 106.62,
+  },
+  {
+    caption: "Our queenside knight develops to d2. Black's bishop goes to b7 and takes aim at e4. Bishop",
+    atSec: 113.12,
+    ply: "Nbd2",
+    plyAtSec: 115.44,
+    extraPlies: [{ ply: "Bb7", plyAtSec: 118.2 }],
+  },
+  {
+    caption:
+      "to c2 preserves our valuable Spanish bishop and points towards the kingside. Black places the",
+    atSec: 121.68,
+    ply: "Bc2",
+    plyAtSec: 121.94,
+  },
+  {
+    caption:
+      "rook on e8, adding further support to the e5 pawn. Finally, our knight glides to f1. That knight",
+    atSec: 129.06,
+    ply: "Re8",
+    plyAtSec: 129.48,
+    extraPlies: [{ ply: "Nf1", plyAtSec: 135.86 }],
+  },
+  {
+    caption:
+      "has a splendid itinerary. From f1 it can travel to g3, increasing the pressure on f5 and helping",
+    atSec: 137.9,
+  },
+  {
+    caption: "the kingside attack gather momentum. That is the closed Breyer. Patient, sophisticated and",
+    atSec: 145.24,
+  },
+  {
+    caption:
+      "absolutely brimming with life and energy. White owns the central space. Black has built a compact",
+    atSec: 152.66,
+  },
+  {
+    caption: "position and is preparing the counterstroke. Play it with conviction. Enjoy every maneuver",
+    atSec: 159.88,
+  },
+  {
+    caption: "and remember, the quiet moves are not waiting around. They are loading the spring.",
+    atSec: 166.18,
+  },
+  {
+    caption:
+      "Over to you, drill it until that knight journey from b1 to d2 to f1 feels as natural as finding",
+    atSec: 172.64,
+  },
+  {
+    caption: "your way around London.",
+    atSec: 179.5,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -1089,8 +1251,9 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introStemAtSec: RUY_LOPEZ_INTRO_STEM_AT_SEC,
     firstLineId: "rlw1",
     firstLineTitle: "Line 1",
-    // Sean has not sent a Line 1 wav. No invented speech and no line audio.
-    firstLineBeats: [],
+    firstLineBeats: RUY_LOPEZ_LINE,
+    firstLineAudio: RUY_LOPEZ_LINE_WAV,
+    firstLineAudioFallbackSec: RUY_LOPEZ_LINE_SEC,
     lineTalkOnTapOnly: true,
   },
 };
