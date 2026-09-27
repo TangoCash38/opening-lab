@@ -42,6 +42,7 @@ export function packShortLabel(pack: { id: string; name: string }): string {
     "stafford-black": "Stafford",
     "ponziani-white": "Ponziani",
     "alekhine-black": "Alekhine",
+    "french-black": "French Defence",
     "classic-fischer-sherwin-1957": "Classic GM",
   };
   if (known[pack.id]) return known[pack.id];
