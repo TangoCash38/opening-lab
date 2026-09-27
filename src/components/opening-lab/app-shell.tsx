@@ -76,6 +76,7 @@ function OpeningLabInner() {
     mode: TrainMode;
     plyLimit?: number;
     startPly?: number;
+    autoRunTheGame?: boolean;
   } | null>(null);
   const [queue, setQueue] = useState<
     { pack: Pack; line: OpeningLine; mode: TrainMode }[]
@@ -204,6 +205,7 @@ function OpeningLabInner() {
       mode,
       plyLimit: options?.plyLimit,
       startPly: options?.startPly,
+      autoRunTheGame: options?.autoRunTheGame,
     });
     setView("train");
     soundSelect();
@@ -398,6 +400,7 @@ function OpeningLabInner() {
             initialMode={active.mode}
             gym={isGymPack(active.pack)}
             parkRunTheGame={isClassicSamplePack(active.pack)}
+            autoRunTheGame={active.autoRunTheGame === true}
             plyLimit={active.plyLimit}
             startPly={active.startPly}
             testLocked={

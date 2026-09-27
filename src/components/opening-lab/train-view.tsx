@@ -57,6 +57,8 @@ type Props = {
    * Professor Potato Pie narrates the full game from 1.e4.
    */
   parkRunTheGame?: boolean;
+  /** Open already inside Run the game. Skip returns to Practice. */
+  autoRunTheGame?: boolean;
   /** Cap this session at startPly + plyLimit book plies (London warm-up). */
   plyLimit?: number;
   startPly?: number;
@@ -245,7 +247,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, plyLimit, startPly = 0, embedded = false, frameCoords = false }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, plyLimit, startPly = 0, embedded = false, frameCoords = false }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -257,7 +259,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     ? warmupEndPly(bookStartPly, line.plies.length, plyLimit)
     : line.plies.length;
   const [mode, setMode] = useState<Mode>(initialMode);
-  const [runTheGame, setRunTheGame] = useState(false);
+  const [runTheGame, setRunTheGame] = useState(() => autoRunTheGame && parkRunTheGame);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
   const [game, setGame] = useState(() => replaySans(line.plies, bookStartPly));
@@ -1214,7 +1216,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           {runTheGame ? (
             <ClassicRunTheGame
               frameCoords={frameCoords && !boardExpanded}
-              onLeave={() => setRunTheGame(false)}
+              onLeave={() => {
+                if (mode !== "learn") changeMode("learn");
+                else setRunTheGame(false);
+              }}
             />
           ) : (
           <div className="relative">

@@ -11,6 +11,8 @@ export const LONDON_WARMUP_PLIES = 3;
 export type TrainStartOptions = {
   plyLimit?: number;
   startPly?: number;
+  /** Website Classic: open straight into the Run the game replay. */
+  autoRunTheGame?: boolean;
 };
 
 export type LondonWarmupProgress = Pick<

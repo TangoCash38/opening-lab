@@ -6,6 +6,8 @@ import { packPrice } from "@/data/pricing";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isComingSoonClosed, isLineUnlocked } from "@/lib/catalog";
 import { isClassicSamplePack } from "@/lib/classic-sample";
+import { classicRunAlreadySeen, markClassicRunSeen } from "@/lib/classic-run";
+import { beginClassicRunNarration } from "./classic-run-the-game";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
@@ -55,6 +57,7 @@ type FrameSession = {
   mode: TrainMode;
   plyLimit?: number;
   startPly?: number;
+  autoRunTheGame?: boolean;
 };
 
 type CoachSession = FrameSession & {
@@ -150,8 +153,13 @@ export function HomeHero({
     return () => mq.removeEventListener("change", sync);
   }, [websiteSplit]);
 
+  const runHandoffRef = useRef(false);
+
   useEffect(() => {
-    return () => stopScotchCoachNarration();
+    return () => {
+      if (runHandoffRef.current) return;
+      stopScotchCoachNarration();
+    };
   }, []);
 
   useEffect(() => {
@@ -163,7 +171,7 @@ export function HomeHero({
     setCoach(null);
     setTextBeat(0);
     queuedLineRef.current = null;
-    stopScotchCoachNarration();
+    if (!isClassicSamplePack(pack)) stopScotchCoachNarration();
   }, [pack.id, linesInitiallyOpen]);
 
   const preferInFrame = () => {
@@ -314,6 +322,32 @@ export function HomeHero({
     }
     onStartLine(pack, line, "learn");
   };
+
+  /**
+   * Classic home-card open: Pie narrates Run the game immediately.
+   * Once per visit, so Skip into Practice is not restarted.
+   * Play never mounts this pack.
+   */
+  useEffect(() => {
+    if (playApp || !isClassicSamplePack(pack)) return;
+    const id = window.setTimeout(() => {
+      if (classicRunAlreadySeen()) return;
+      const line = pack.lines[0];
+      if (!line) return;
+      markClassicRunSeen();
+      beginClassicRunNarration();
+      if (preferInFrame()) {
+        setFrame({ line, mode: "learn", autoRunTheGame: true });
+        soundSelect();
+        return;
+      }
+      runHandoffRef.current = true;
+      onStartLine(pack, line, "learn", { autoRunTheGame: true });
+    }, 0);
+    return () => window.clearTimeout(id);
+    // preferInFrame reads the viewport at fire time. Once per pack open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- pack open only
+  }, [pack.id, playApp]);
 
   /**
    * Potato Pie jumps out as soon as this pack's Practice screen opens —
@@ -517,6 +551,7 @@ export function HomeHero({
                   startPly={frame.startPly}
                   testLocked={frame.plyLimit != null}
                   parkRunTheGame={isClassicSamplePack(pack)}
+                  autoRunTheGame={frame.autoRunTheGame === true}
                   embedded
                   frameCoords={!playApp}
                   onBack={() => setFrame(null)}

@@ -30,7 +30,9 @@ import {
 import { isPlayWrap } from "@/lib/play-app";
 import { packCompletePercent } from "@/lib/progress";
 import { isClassicSamplePack, classicSamplePack } from "@/lib/classic-sample";
+import { classicRunAlreadySeen } from "@/lib/classic-run";
 import { LONDON_PACK_ID, type TrainStartOptions } from "@/lib/london-warmup";
+import { beginClassicRunNarration } from "./classic-run-the-game";
 import {
   hasPlayBillingBridge,
   restorePlayPacks,
@@ -395,7 +397,11 @@ export function PackList({
 
   const togglePack = (pack: Pack) => {
     setSoonNoteId(null);
-    setOpenPackId((id) => (id === pack.id ? null : pack.id));
+    const opening = openPackId !== pack.id;
+    if (opening && isClassicSamplePack(pack) && !classicRunAlreadySeen()) {
+      beginClassicRunNarration();
+    }
+    setOpenPackId(opening ? pack.id : null);
   };
 
   const offerPlayLabPlus = catalogOffersLabPlus(catalog);

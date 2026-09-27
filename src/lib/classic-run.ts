@@ -115,3 +115,24 @@ export function verifyClassicRun(): string | null {
   if (game.history().length !== 65) return "history";
   return null;
 }
+
+/** This visit only. Closing the tab brings the walkthrough back. */
+const CLASSIC_RUN_SESSION_KEY = "opening-lab:classic-run-seen";
+
+export function classicRunAlreadySeen(): boolean {
+  if (typeof sessionStorage === "undefined") return false;
+  try {
+    return sessionStorage.getItem(CLASSIC_RUN_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function markClassicRunSeen(): void {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.setItem(CLASSIC_RUN_SESSION_KEY, "1");
+  } catch {
+    /* private mode / quota */
+  }
+}
