@@ -55,9 +55,9 @@ type Props = {
    */
   whiteOnly?: boolean;
   /**
-   * Named options that stay unplayed (Italian …Bc5 / …Nf6). Empty for
-   * every other intro. The arrow follows the clip and leaves when the
-   * next option, or the end of the sentence, arrives.
+   * Named options that stay unplayed (Italian …Bc5 / …Nf6, French …c5 / …f6).
+   * Empty when the intro does not name an unplayed move. The arrow follows
+   * the clip and leaves when the next option, or the end of the sentence, arrives.
    */
   introArrows?: readonly CoachIntroArrowCue[] | null;
 };

@@ -38,6 +38,7 @@ const UI_KEYS = [
   "London System",
   "Italian Game",
   "Queen’s Gambit",
+  "French Defence",
   "Line 1 · Legal's Mate",
   "Line 1",
 ];
@@ -121,7 +122,15 @@ test("every coach caption has a translation in every supported language", async 
   assert.equal(COACH_UI.es["Caro-Kann for Black"], undefined);
 
   const packIds = Object.keys(COACH_PACKS).sort();
-  assert.deepEqual(packIds, ["caro-kann-black", "italian-white", "london", "opening-traps", "qg-white", "scotch"]);
+  assert.deepEqual(packIds, [
+    "caro-kann-black",
+    "french-black",
+    "italian-white",
+    "london",
+    "opening-traps",
+    "qg-white",
+    "scotch",
+  ]);
 
   const captions = [];
   for (const pack of Object.values(COACH_PACKS)) {

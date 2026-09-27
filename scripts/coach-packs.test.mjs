@@ -367,6 +367,8 @@ test("finishing or skipping the pack intro opens the first-line talk; the gym pa
         [{ packId: "italian-white", lineId: "it1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
         [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, "line"],
         [{ packId: "qg-white", lineId: "qg1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, "line"],
+        [{ packId: "french-black", lineId: "frb1", lineIndex: 0, skipped: false, lineAlreadySeen: false }, null],
+        [{ packId: "french-black", lineId: "frb1", lineIndex: 0, skipped: true, lineAlreadySeen: false }, null],
       ];
       for (const [input, expected] of cases) {
         const got = coachTalkAfterPackIntro(input);
