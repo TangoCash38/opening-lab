@@ -51,6 +51,11 @@ type Props = {
   /** Create-your-own gym line: custom chrome, Test gated until Practice. */
   gym?: boolean;
   testLocked?: boolean;
+  /**
+   * Disabled third tab for the website Classic sample.
+   * TODO(run-the-game): Professor Potato Pie from 11.e5. Not wired.
+   */
+  parkRunTheGame?: boolean;
   /** Cap this session at startPly + plyLimit book plies (London warm-up). */
   plyLimit?: number;
   startPly?: number;
@@ -239,7 +244,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, plyLimit, startPly = 0, embedded = false, frameCoords = false }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, plyLimit, startPly = 0, embedded = false, frameCoords = false }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -1020,6 +1025,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             >
               Test
             </ModeTab>
+            {parkRunTheGame ? <RunTheGameTab label={t("Run the game")} title={t("Coming soon — Professor Potato Pie from 11.e5")} /> : null}
           </div>
           <div
             className={`mt-1 min-h-[1.2em] text-center text-[0.82rem] font-semibold text-accent transition-opacity duration-200 ${
@@ -1119,6 +1125,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         >
           Test
         </ModeTab>
+        {parkRunTheGame ? <RunTheGameTab label={t("Run the game")} title={t("Coming soon — Professor Potato Pie from 11.e5")} /> : null}
       </div>
 
       <div
@@ -1175,6 +1182,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               >
                 Test
               </ModeTab>
+              {parkRunTheGame ? <RunTheGameTab label={t("Run the game")} title={t("Coming soon — Professor Potato Pie from 11.e5")} /> : null}
             </div>
             <p
               className={`board-fs-hint text-center text-[0.85rem] font-semibold text-accent ${
@@ -1486,6 +1494,15 @@ function NearMissToast({
   );
 }
 
+/** Parked Classic mode. Disabled until Run the game ships. */
+function RunTheGameTab({ label, title }: { label: string; title: string }) {
+  return (
+    <ModeTab active={false} onClick={() => {}} disabled title={title} runTheGame>
+      {label}
+    </ModeTab>
+  );
+}
+
 function ModeTab({
   active,
   onClick,
@@ -1493,6 +1510,7 @@ function ModeTab({
   nudge,
   disabled,
   title,
+  runTheGame = false,
 }: {
   active: boolean;
   onClick: () => void;
@@ -1500,6 +1518,7 @@ function ModeTab({
   nudge?: boolean;
   disabled?: boolean;
   title?: string;
+  runTheGame?: boolean;
 }) {
   return (
     <button
@@ -1508,6 +1527,7 @@ function ModeTab({
       disabled={disabled}
       title={title}
       aria-disabled={disabled || undefined}
+      data-run-the-game={runTheGame ? "parked" : undefined}
       className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
         active
           ? "bg-bg-elevated text-fg shadow-sm"

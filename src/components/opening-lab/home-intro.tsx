@@ -5,6 +5,7 @@ import { packPrice } from "@/data/pricing";
 import {
   FREE_SAMPLE_LINE_IDS,
   LIVE_PACK_IDS,
+  WEBSITE_CLASSIC_SAMPLE_PACK_ID,
   canPurchaseBuyAll,
   isPackComingSoon,
   isPackVisible,
@@ -96,9 +97,11 @@ export function LandingHome({
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
   const [showPuzzle, setShowPuzzle] = useState(false);
+  const [showClassic, setShowClassic] = useState(false);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
     setShowPuzzle(!isPlayApp());
+    setShowClassic(!isPlayApp());
   }, []);
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),
@@ -197,6 +200,24 @@ export function LandingHome({
                     <span className="landing-puzzle-kicker">{t("Puzzle")}</span>
                     <span className="landing-puzzle-title">{t("Today's puzzle")}</span>
                     <span className="landing-puzzle-note">{t("White to move · Mate in 2")}</span>
+                  </button>
+                </section>
+              ) : null}
+              {showClassic ? (
+                <section className="landing-puzzle" aria-label={t("Classic GM — Fischer vs Sherwin, 1957")}>
+                  <button
+                    type="button"
+                    className="landing-puzzle-card"
+                    data-landing-classic
+                    onClick={() => onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID)}
+                  >
+                    <span className="landing-puzzle-kicker">{t("Free")}</span>
+                    <span className="landing-puzzle-title">
+                      {t("Classic GM — Fischer vs Sherwin, 1957")}
+                    </span>
+                    <span className="landing-puzzle-note">
+                      {t("King's Indian Attack vs Sicilian")}
+                    </span>
                   </button>
                 </section>
               ) : null}

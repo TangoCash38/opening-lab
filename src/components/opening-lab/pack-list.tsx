@@ -29,6 +29,7 @@ import {
 } from "@/lib/checkout";
 import { isPlayWrap } from "@/lib/play-app";
 import { packCompletePercent } from "@/lib/progress";
+import { isClassicSamplePack, classicSamplePack } from "@/lib/classic-sample";
 import { LONDON_PACK_ID, type TrainStartOptions } from "@/lib/london-warmup";
 import {
   hasPlayBillingBridge,
@@ -306,10 +307,12 @@ function PackCard({
                         price,
                         n: pack.lines.length,
                       })
-                  : t("Tap to see {n} {pack} lines", {
-                      n: pack.lines.length,
-                      pack: shortPack,
-                    })
+                  : isClassicSamplePack(pack)
+                    ? t("Free · KIA vs Sicilian")
+                    : t("Tap to see {n} {pack} lines", {
+                        n: pack.lines.length,
+                        pack: shortPack,
+                      })
             }
           />
         </button>
@@ -361,12 +364,18 @@ export function PackList({
   const resumedCheckout = useRef(false);
   const buyAllStarted = useRef(0);
   const wrap = playApp || isPlayWrap();
+  const [showClassicSample, setShowClassicSample] = useState(false);
 
   useEffect(() => {
     setPlayApp(isPlayWrap());
   }, []);
 
+  useLayoutEffect(() => {
+    setShowClassicSample(!isPlayWrap());
+  }, []);
+
   const catalog = visiblePacks(PACKS);
+  const classicSample = showClassicSample ? classicSamplePack() : null;
   const isLead = (p: Pack) => (LEAD_PACK_IDS as readonly string[]).includes(p.id);
   const lead = LEAD_PACK_IDS.map((id) => catalog.find((p) => p.id === id)).filter(
     (p): p is Pack => !!p,
@@ -646,6 +655,8 @@ export function PackList({
 
       <div className="pack-list-grid">
         {lead.map((pack) => renderCard(pack))}
+
+        {classicSample ? renderCard(classicSample) : null}
 
         {classicGames ? renderCard(classicGames) : null}
 
