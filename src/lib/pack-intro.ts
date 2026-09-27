@@ -144,6 +144,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "The Alekhine Defence is 1.e4 Nf6. Black invites White to push e5 and take a big centre, then chips it with …d6 and piece pressure against Modern, Exchange, Four Pawns, and Two Pawns structures.",
     "You are not racing for a mate on move ten. Know which Alekhine shell you are in, and practise the main Black moves before you mix plans.",
   ],
+  "french-black": [
+    "The French Defence is 1.e4 e6 2.d4 d5. Black challenges the e-pawn at once and accepts a cramped light-squared bishop in return for a solid centre and a later …c5 break. The book replies are Winawer, Advance, Tarrasch, Classical, Steinitz, Exchange, Rubinstein, and the King’s Indian Attack.",
+    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
+  ],
 };
 
 /** Kept so older tests and callers still resolve. Extra lines now live in PACK_OPENING. */

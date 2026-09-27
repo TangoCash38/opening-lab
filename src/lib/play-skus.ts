@@ -11,7 +11,8 @@
  *   buy_all_packs  →  applyPurchase({ kind: "buy_all" })
  *
  * No Lab+ / no lab_plus_yearly / no subscriptions.
- * Do not invent pack titles — ids match VISIBLE_PACK_IDS.
+ * Do not invent pack titles. Ids match VISIBLE_PACK_IDS except
+ * french-black, which is live on the website only until the next Play bundle.
  */
 
 export const PLAY_SKU_BUY_ALL = "buy_all_packs";
