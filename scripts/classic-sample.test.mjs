@@ -195,4 +195,19 @@ test("www shows the Classic card and the gym; Play wrap does not", () => {
   assert.match(copy, /run: "Run the game"/);
   assert.doesNotMatch(copy, /Coming soon|11\.e5/);
   assert.match(src("src/lib/i18n.ts"), /CLASSIC_COPY\[lang\]/);
+
+  assert.match(landing, /if \(!classicRunAlreadySeen\(\)\) beginClassicRunNarration\(\)/);
+  assert.match(landing, /onOpenPack\(WEBSITE_CLASSIC_SAMPLE_PACK_ID\)/);
+  assert.match(hero, /if \(playApp \|\| !isClassicSamplePack\(pack\)\) return/);
+  assert.match(hero, /if \(classicRunAlreadySeen\(\)\) return/);
+  assert.match(hero, /markClassicRunSeen\(\)/);
+  assert.match(hero, /beginClassicRunNarration\(\)/);
+  assert.match(hero, /autoRunTheGame: true/);
+  assert.match(hero, /autoRunTheGame=\{frame\.autoRunTheGame === true\}/);
+  assert.match(train, /useState\(\(\) => autoRunTheGame && parkRunTheGame\)/);
+  assert.match(train, /if \(mode !== "learn"\) changeMode\("learn"\)/);
+  assert.match(train, /else setRunTheGame\(false\)/);
+  assert.match(shell, /autoRunTheGame=\{active\.autoRunTheGame === true\}/);
+  assert.match(src("src/lib/classic-run.ts"), /opening-lab:classic-run-seen/);
+  assert.doesNotMatch(hero, /Play on|vs computer|versus the computer/i);
 });

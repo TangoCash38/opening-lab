@@ -14,7 +14,9 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
+import { classicRunAlreadySeen } from "@/lib/classic-run";
 import { isPlayApp } from "@/lib/play-app";
+import { beginClassicRunNarration } from "./classic-run-the-game";
 import { BuyAllOffer } from "./buy-all-offer";
 import { ChessPiece } from "./chess-pieces";
 import { LandingMenu } from "./landing-menu";
@@ -209,7 +211,10 @@ export function LandingHome({
                     type="button"
                     className="landing-puzzle-card"
                     data-landing-classic
-                    onClick={() => onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID)}
+                    onClick={() => {
+                      if (!classicRunAlreadySeen()) beginClassicRunNarration();
+                      onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID);
+                    }}
                   >
                     <span className="landing-puzzle-kicker">{t("Free")}</span>
                     <span className="landing-puzzle-title">
