@@ -48,7 +48,7 @@ const CHIP_LABEL: Record<string, string> = {
   "italian-white": "Italian",
   "ruy-white": "Ruy Lopez",
   "french-white": "French",
-  "anti-sicilian-black": "Sicilian",
+  "anti-sicilian-black": "Anti-Sicilian",
   "qg-white": "Queen's Gambit",
   "english-white": "English",
   "kings-indian-black": "King's Indian",
