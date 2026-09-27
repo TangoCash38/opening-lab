@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -46,12 +46,17 @@ async function loadClassic(t) {
       .outputText.replaceAll("@/lib/catalog", "./catalog.mjs")
       .replaceAll('from "@/data/packs"', ""),
   );
+  writeFileSync(
+    join(dir, "classic-run.mjs"),
+    ts.transpileModule(src("src/lib/classic-run.ts"), opts).outputText,
+  );
   t.after(() => {
     rmSync(dir, { recursive: true, force: true });
   });
   const classic = await import(pathToFileURL(join(dir, "classic-sample.mjs")).href);
   const catalog = await import(pathToFileURL(join(dir, "catalog.mjs")).href);
-  return { classic, catalog };
+  const run = await import(pathToFileURL(join(dir, "classic-run.mjs")).href);
+  return { classic, catalog, run };
 }
 
 test("Fischer vs Sherwin 1957 is the Sean-locked cut through 10...Qc7", async (t) => {
@@ -92,9 +97,37 @@ test("Fischer vs Sherwin 1957 is the Sean-locked cut through 10...Qc7", async (t
     "Qc7",
   ]);
   assert.equal(mod.verifyClassicSamplePlies(line.plies), null);
-  assert.equal(mod.CLASSIC_RUN_THE_GAME_FROM, "11.e5");
-  assert.match(src("src/lib/classic-sample.ts"), /TODO\(run-the-game\)/);
+  assert.doesNotMatch(src("src/lib/classic-sample.ts"), /TODO\(run-the-game\)|11\.e5/);
   assert.doesNotMatch(src("src/lib/classic-sample.ts"), /Play on|vs computer|versus the computer/i);
+
+  const run = loaded.run;
+  assert.equal(run.CLASSIC_RUN_AUDIO, "/coach/classic-fischer-sherwin/professor-potato-pie-run-the-game.wav");
+  assert.equal(run.CLASSIC_RUN_FALLBACK_SEC, 450.12);
+  assert.equal(run.CLASSIC_RUN_BEATS.length, 61);
+  assert.equal(run.verifyClassicRun(), null);
+  const moves = run.classicRunMoves();
+  assert.deepEqual(
+    moves.slice(0, 20).map((move) => move.ply),
+    line.plies,
+  );
+  assert.equal(moves[0].plyAtSec > run.CLASSIC_RUN_BEATS[3].atSec - 0.01, true);
+  assert.equal(moves.at(-1).ply, "Bc6+");
+  assert.equal(
+    existsSync(join(root, "public/coach/classic-fischer-sherwin/professor-potato-pie-run-the-game.wav")),
+    true,
+  );
+  let cursor = 0;
+  for (const beat of run.CLASSIC_RUN_BEATS) {
+    const owned = [];
+    if (beat.ply) owned.push(beat.plyAtSec);
+    for (const extra of beat.extraPlies ?? []) owned.push(extra.plyAtSec);
+    for (const at of owned) {
+      assert.equal(at >= beat.atSec - 0.001, true, beat.caption);
+      const next = run.CLASSIC_RUN_BEATS[cursor + 1];
+      if (next) assert.equal(at < next.atSec + 0.001, true, `${beat.ply} ${at}`);
+    }
+    cursor += 1;
+  }
 });
 
 test("the Classic sample is free on the website and not a Play SKU", async (t) => {
@@ -145,16 +178,21 @@ test("www shows the Classic card and the gym; Play wrap does not", () => {
   assert.match(shell, /isClassicSamplePack\(pack\)\) return !isPlayWrap\(\)/);
   assert.match(shell, /parkRunTheGame=\{isClassicSamplePack\(active\.pack\)\}/);
   assert.match(hero, /parkRunTheGame=\{isClassicSamplePack\(pack\)\}/);
-  assert.match(train, /data-run-the-game=\{runTheGame \? "parked" : undefined\}/);
-  assert.match(train, /TODO\(run-the-game\)/);
+  assert.match(train, /data-run-the-game=\{runTheGame \? "live" : undefined\}/);
+  assert.match(train, /beginClassicRunNarration\(\)/);
+  assert.match(train, /ClassicRunTheGame/);
+  assert.match(src("src/components/opening-lab/classic-run-the-game.tsx"), /CLASSIC_RUN_AUDIO/);
+  assert.match(src("src/components/opening-lab/classic-run-the-game.tsx"), /plyAtSec=\{plyAtSec\}/);
+  assert.doesNotMatch(train, /TODO\(run-the-game\)|Coming soon/);
   assert.doesNotMatch(train, /Play on|vs computer|versus the computer/i);
   assert.doesNotMatch(landing, /Play on|vs computer|versus the computer/i);
+  assert.doesNotMatch(src("src/components/opening-lab/classic-run-the-game.tsx"), /Play on|vs computer|versus the computer/i);
 
   const copy = src("src/lib/classic-copy.ts");
   for (const lang of ["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja", "ar", "tr"]) {
     assert.match(copy, new RegExp(`\\n  ${lang}:`));
   }
   assert.match(copy, /run: "Run the game"/);
-  assert.match(copy, /parked: "Coming soon — Professor Potato Pie from 11\.e5"/);
+  assert.doesNotMatch(copy, /Coming soon|11\.e5/);
   assert.match(src("src/lib/i18n.ts"), /CLASSIC_COPY\[lang\]/);
 });
