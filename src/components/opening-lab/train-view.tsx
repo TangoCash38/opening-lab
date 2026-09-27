@@ -30,6 +30,7 @@ import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
+import { beginClassicRunNarration, ClassicRunTheGame } from "./classic-run-the-game";
 
 type Mode = "learn" | "practice";
 
@@ -52,8 +53,8 @@ type Props = {
   gym?: boolean;
   testLocked?: boolean;
   /**
-   * Disabled third tab for the website Classic sample.
-   * TODO(run-the-game): Professor Potato Pie from 11.e5. Not wired.
+   * Website Classic sample: live watch-only Run the game.
+   * Professor Potato Pie narrates the full game from 1.e4.
    */
   parkRunTheGame?: boolean;
   /** Cap this session at startPly + plyLimit book plies (London warm-up). */
@@ -256,6 +257,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     ? warmupEndPly(bookStartPly, line.plies.length, plyLimit)
     : line.plies.length;
   const [mode, setMode] = useState<Mode>(initialMode);
+  const [runTheGame, setRunTheGame] = useState(false);
   const completedRef = useRef(false);
   const practiceMissedRef = useRef(false);
   const [game, setGame] = useState(() => replaySans(line.plies, bookStartPly));
@@ -416,9 +418,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const changeMode = (m: Mode) => {
     if (m === "practice" && lockTest) return;
     if (m === "practice") setNudgeTest(false);
+    setRunTheGame(false);
     setMode(m);
     onModeChange?.(m);
     resetLine(m);
+  };
+
+  const openRunTheGame = () => {
+    if (!parkRunTheGame || runTheGame) return;
+    beginClassicRunNarration();
+    setResultCard(null);
+    setNearMissSan(null);
+    setRunTheGame(true);
   };
 
   const stopCelebrate = useCallback(() => {
@@ -893,7 +904,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     plyIndex < bookEndPly;
   const exp = bookExp;
 
-  const hint = showHints && bookExp ? `Play: ${line.plies[plyIndex]}` : "";
+  const hint = runTheGame || !(showHints && bookExp) ? "" : `Play: ${line.plies[plyIndex]}`;
 
   const historyCount = livePly;
   const notationPairs = buildNotationPairs(historySans, historyCount, viewPly);
@@ -1025,7 +1036,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             >
               Test
             </ModeTab>
-            {parkRunTheGame ? <RunTheGameTab label={t("Run the game")} title={t("Coming soon — Professor Potato Pie from 11.e5")} /> : null}
+            {parkRunTheGame ? (
+              <RunTheGameTab label={t("Run the game")} active={runTheGame} onClick={openRunTheGame} />
+            ) : null}
           </div>
           <div
             className={`mt-1 min-h-[1.2em] text-center text-[0.82rem] font-semibold text-accent transition-opacity duration-200 ${
@@ -1125,7 +1138,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         >
           Test
         </ModeTab>
-        {parkRunTheGame ? <RunTheGameTab label={t("Run the game")} title={t("Coming soon — Professor Potato Pie from 11.e5")} /> : null}
+        {parkRunTheGame ? (
+          <RunTheGameTab label={t("Run the game")} active={runTheGame} onClick={openRunTheGame} />
+        ) : null}
       </div>
 
       <div
@@ -1182,7 +1197,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               >
                 Test
               </ModeTab>
-              {parkRunTheGame ? <RunTheGameTab label={t("Run the game")} title={t("Coming soon — Professor Potato Pie from 11.e5")} /> : null}
+              {parkRunTheGame ? (
+              <RunTheGameTab label={t("Run the game")} active={runTheGame} onClick={openRunTheGame} />
+            ) : null}
             </div>
             <p
               className={`board-fs-hint text-center text-[0.85rem] font-semibold text-accent ${
@@ -1194,6 +1211,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           </>
         ) : null}
         <div className={boardExpanded ? "board-fs-stage" : undefined}>
+          {runTheGame ? (
+            <ClassicRunTheGame
+              frameCoords={frameCoords && !boardExpanded}
+              onLeave={() => setRunTheGame(false)}
+            />
+          ) : (
           <div className="relative">
             <ChessBoard
               key={session}
@@ -1221,8 +1244,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               />
             ) : null}
           </div>
+          )}
         </div>
-        {boardExpanded ? (
+        {boardExpanded && !runTheGame ? (
           <>
             <p className={`board-fs-status text-center text-[0.9rem] ${statusColor}`}>
               {statusBody}
@@ -1268,6 +1292,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
       </div>
 
+      {runTheGame ? null : (
       <div className={`train-below${embedded ? " train-frame-below" : ""}`}>
       {/* Move history — single-row horizontal scroller (no wrap → no board jump) */}
       <div
@@ -1393,6 +1418,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
       {embedded ? null : <LineFeedback pack={pack} line={line} />}
       </div>
+      )}
       {resultCard ? (
         <LineResultModal
           kind={resultCard.kind}
@@ -1494,10 +1520,18 @@ function NearMissToast({
   );
 }
 
-/** Parked Classic mode. Disabled until Run the game ships. */
-function RunTheGameTab({ label, title }: { label: string; title: string }) {
+/** Live Classic watch mode. Pie narrates; the board is not a drill. */
+function RunTheGameTab({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
   return (
-    <ModeTab active={false} onClick={() => {}} disabled title={title} runTheGame>
+    <ModeTab active={active} onClick={onClick} runTheGame>
       {label}
     </ModeTab>
   );
@@ -1527,7 +1561,7 @@ function ModeTab({
       disabled={disabled}
       title={title}
       aria-disabled={disabled || undefined}
-      data-run-the-game={runTheGame ? "parked" : undefined}
+      data-run-the-game={runTheGame ? "live" : undefined}
       className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
         active
           ? "bg-bg-elevated text-fg shadow-sm"
