@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "reac
 import { CircleHelp, House, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import { isComingSoonClosed, isPackVisible, readRequestedPackId } from "@/lib/catalog";
+import { isClassicSamplePack } from "@/lib/classic-sample";
 import {
   gymPackFromLine,
   isGymPack,
@@ -92,6 +93,7 @@ function OpeningLabInner() {
   const canTrainPack = useCallback(
     (pack: Pick<Pack, "id"> | string): boolean => {
       if (isGymPack(pack)) return true;
+      if (isClassicSamplePack(pack)) return !isPlayWrap();
       if (!isPackVisible(pack)) return false;
       const id = typeof pack === "string" ? pack : pack.id;
       return !isComingSoonClosed(id, state.packs, subscribed);
@@ -395,6 +397,7 @@ function OpeningLabInner() {
             line={active.line}
             initialMode={active.mode}
             gym={isGymPack(active.pack)}
+            parkRunTheGame={isClassicSamplePack(active.pack)}
             plyLimit={active.plyLimit}
             startPly={active.startPly}
             testLocked={

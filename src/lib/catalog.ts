@@ -25,8 +25,21 @@ export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "lon
 
 export type LivePackId = (typeof LIVE_PACK_IDS)[number];
 
+/**
+ * Website-only free Classic GM sample (Fischer vs Sherwin, 1957).
+ * Not a VISIBLE_PACK_IDS entry and not a Play SKU.
+ */
+export const WEBSITE_CLASSIC_SAMPLE_PACK_ID = "classic-fischer-sherwin-1957";
+export const WEBSITE_CLASSIC_SAMPLE_LINE_ID = "fs1957";
+
+export function isWebsiteClassicSample(id: string): boolean {
+  return id === WEBSITE_CLASSIC_SAMPLE_PACK_ID;
+}
+
 export function isPackComingSoon(pack: Pick<Pack, "id"> | string): boolean {
   const id = typeof pack === "string" ? pack : pack.id;
+  // Live on the website gym, but still absent from the visible catalog.
+  if (isWebsiteClassicSample(id)) return false;
   return !(LIVE_PACK_IDS as readonly string[]).includes(id);
 }
 
@@ -37,6 +50,8 @@ export const COMING_SOON_PACK_IDS: readonly VisiblePackId[] = VISIBLE_PACK_IDS.f
 
 /** New purchases only. Existing unlocks are not touched. */
 export function canPurchasePack(packId: string): boolean {
+  // Free Classic sample. Not for sale on the website or in Play.
+  if (isWebsiteClassicSample(packId)) return false;
   return !isPackComingSoon(packId);
 }
 
@@ -103,6 +118,9 @@ export function isLineUnlocked(
   lineId: string,
   purchasedPackIds: readonly string[] = [],
 ): boolean {
+  // The one website Classic sample is free. It is not a Play SKU and has no
+  // paid extras, so it does not go through FREE_SAMPLE_LINE_IDS.
+  if (isWebsiteClassicSample(pack.id)) return lineId === WEBSITE_CLASSIC_SAMPLE_LINE_ID;
   if (isComingSoonClosed(pack.id, purchasedPackIds)) return false;
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
   if (ids) {

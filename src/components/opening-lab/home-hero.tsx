@@ -5,6 +5,7 @@ import { type OpeningLine, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isComingSoonClosed, isLineUnlocked } from "@/lib/catalog";
+import { isClassicSamplePack } from "@/lib/classic-sample";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { useT } from "@/lib/i18n";
@@ -515,6 +516,7 @@ export function HomeHero({
                   plyLimit={frame.plyLimit}
                   startPly={frame.startPly}
                   testLocked={frame.plyLimit != null}
+                  parkRunTheGame={isClassicSamplePack(pack)}
                   embedded
                   frameCoords={!playApp}
                   onBack={() => setFrame(null)}
@@ -660,7 +662,10 @@ export function HomeHero({
                         complete={complete}
                         mastery={mastery}
                         locked={!unlocked}
-                        showFree={!!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)}
+                        showFree={
+                          isClassicSamplePack(pack) ||
+                          !!FREE_SAMPLE_LINE_IDS[pack.id]?.includes(item.id)
+                        }
                         testPercent={unlocked ? testPercentOf(item.id, item.plies.length) : null}
                         selected={item.id === activeLineId}
                         onClick={() => {
