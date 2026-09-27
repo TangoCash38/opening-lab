@@ -408,9 +408,10 @@ export function HomeHero({
       return;
     }
     // Skip and a finished intro both open the first-line talk (Line 1
-    // speech and the board walkthrough) before book Practice. Skip
-    // dismisses only the intro. A line already heard this visit is not
-    // replayed, and a tap during the intro still waits until this handoff.
+    // speech and the board walkthrough) before book Practice, except a
+    // pack with lineTalkOnTapOnly. Skip dismisses only the intro. A line
+    // already heard this visit is not replayed, and a tap during the intro
+    // still waits until this handoff.
     if (current.talk === "intro") {
       const nextTalk = coachTalkAfterPackIntro({
         packId: pack.id,
@@ -425,6 +426,23 @@ export function HomeHero({
           { plyLimit: current.plyLimit, startPly: current.startPly },
           false,
         );
+        return;
+      }
+      // French: intro Skip/finish stays on the line list, even if the pack
+      // is unlocked. Line 1 speech starts only from a tap on frb1.
+      if (coachPack(pack.id)?.lineTalkOnTapOnly) {
+        const tapped = queuedLineRef.current;
+        queuedLineRef.current = null;
+        coachRef.current = null;
+        stopScotchCoachNarration();
+        setCoach(null);
+        if (
+          tapped &&
+          coachPackLineApplies({ packId: pack.id, lineId: tapped.id }) &&
+          !coachLineAlreadySeen(pack.id, tapped.id)
+        ) {
+          launchLine(tapped);
+        }
         return;
       }
     }
@@ -717,6 +735,21 @@ export function HomeHero({
                         onClick={() => {
                           if (isComingSoonClosed(pack.id, purchased, subscribed)) {
                             onComingSoon?.(pack);
+                            return;
+                          }
+                          // French Line 1: the first tap plays the Winawer talk
+                          // even while the drill is locked. Later taps use the
+                          // unlock or Practice path. A tap during the intro waits.
+                          const hearsLineTalk =
+                            coachPack(pack.id)?.lineTalkOnTapOnly === true &&
+                            coachPackLineApplies({ packId: pack.id, lineId: item.id }) &&
+                            !coachLineAlreadySeen(pack.id, item.id);
+                          if (hearsLineTalk) {
+                            if (coachRef.current?.talk === "intro") {
+                              queuedLineRef.current = item;
+                              return;
+                            }
+                            launchLine(item);
                             return;
                           }
                           if (unlocked) {

@@ -469,6 +469,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La francesa no precipita la discusión: la gana con una pregunta precisa cada vez.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "Así que acomódate, no pierdas de vista las rupturas de peón y disfruta al familiarizarte más con la defensa francesa.",
+    "Right then, welcome to Line 1 of our French defence learning pack.":
+      "Muy bien, bienvenido a la Línea 1 de nuestro paquete de aprendizaje de la defensa francesa.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "El título correcto es la defensa francesa, variante Winawer, línea principal posicional del avance, y la estamos practicando desde el lado de las negras.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "Las blancas empiezan con peón a e4, nosotros respondemos peón a e6, las blancas toman el centro con peón a d4 y nosotros lo desafiamos con peón a d5.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "Caballo a c3, luego alfil a b4: eso anuncia la Winawer.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Clavamos el caballo y preguntamos a las blancas cuán ambiciosas se sienten.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "Las blancas avanzan peón a e5 y nosotros contestamos de inmediato con peón a c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "Las blancas juegan peón a a3, desafiando a nuestro alfil, así que alfil toma c3, jaque.",
+    "White recaptures with the b-pawn to c3.": "Las blancas recapturan con el peón de b hacia c3.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "Las blancas han ganado la pareja de alfiles y un centro amplio, pero han aceptado peones de c doblados a cambio.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Ese intercambio y equilibrio es la gramática misma de la Winawer.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.":
+      "Desarrollamos el caballo a e7, las blancas desarrollan el caballo a f3 y nuestro alfil va a d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "Las blancas juegan peón a a4, frenando la expansión del flanco de dama.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Respondemos dama a a5, aplicando presión sobre c3 y ayudando a despejar el camino para el enroque en el flanco de dama.",
+    "Bishop to d2 and our knight develops to c6.": "Alfil a d2 y nuestro caballo se desarrolla a c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "Las blancas colocan el alfil en d3, mirando con cierta descortesía hacia h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "Avanzamos peón a c4, ganando espacio y enviando ese alfil de vuelta a e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "Ahora llega peón a f6, la palanca característica de la francesa.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.":
+      "No nos limitamos a admirar el centro de las blancas: le pedimos que presente sus credenciales.",
+    "White castles king side, black castles queen side.": "Las blancas enrocan en el flanco de rey y las negras enrocan en el flanco de dama.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "Los reyes quedan ahora en flancos opuestos, la posición está espléndidamente desequilibrada y el plan de las negras está claro.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "Desafía el peón de e5, abre líneas útiles y genera actividad en el flanco de dama con un propósito claro.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Esa es la Winawer posicional: sólida en su construcción, combativa en su intención y con una cantidad considerable de electricidad oculta.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.":
+      "Tu turno: practícala hasta que el orden de jugadas se sienta menos como memoria y más como sentido común.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -731,6 +765,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "法兰西防御不急于争辩，它用一个个精确的问题把局面赢下来。",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "所以安下心来，留意兵的突破，享受对法兰西防御越来越熟悉的过程。",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "好，欢迎来到我们法兰西防御学习棋包的第 1 线。",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.": "正式名称是法兰西防御 Winawer 变例、进兵的局面型主线，我们从黑方一侧来演练它。",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.": "白方以兵到 e4 开局，我们应以兵到 e6，白方以兵到 d4 占据中心，我们以兵到 d5 挑战它。",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "马到 c3，然后象到 b4，这就宣告了 Winawer。",
+    "We pin the knight and ask white how ambitious they're feeling.": "我们牵制这匹马，并问问白方此刻有多雄心勃勃。",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "白方兵进到 e5，我们立刻以兵到 c5 反击。",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "白方走兵到 a3，挑战我们的象，于是象吃 c3，将军。",
+    "White recaptures with the b-pawn to c3.": "白方用 b 兵吃回到 c3。",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.": "白方得到了双象和宽阔的中心，但作为交换接受了叠 c 兵。",
+    "That trade-and-balance is the very grammar of the Winawer.": "这种兑换与平衡，正是 Winawer 的语法本身。",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.": "我们把马发展到 e7，白方把马发展到 f3，我们的象走到 d7。",
+    "White plays pawn to a4, restraining queen side expansion.": "白方走兵到 a4，限制后翼的扩展。",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.": "我们应以后到 a5，对 c3 施压，并帮助为后翼易位清路。",
+    "Bishop to d2 and our knight develops to c6.": "象到 d2，我们的马发展到 c6。",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "白方把象放到 d3，颇为失礼地瞄向 h7。",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "我们兵进到 c4，赢得空间，并把那只象送回 e2。",
+    "Now comes pawn to f6, the characteristic French lever.": "现在是兵到 f6，法兰西防御特有的杠杆。",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.": "我们不只是在欣赏白方的中心，而是在要求它出示自己的资格。",
+    "White castles king side, black castles queen side.": "白方王翼易位，黑方后翼易位。",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.": "双方的王现在分居两翼，局面精彩地不平衡，黑方的计划也很清楚。",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.": "挑战 e5 兵，打开有用的线路，并有目的地在后翼展开活动。",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.": "这就是局面型 Winawer：结构扎实，意图好斗，并藏着相当多的暗电。",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.": "轮到你了，反复演练，直到着法顺序不再像记忆，而更像常识。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1005,6 +1062,39 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La française ne précipite pas le débat : elle le gagne, une question précise à la fois.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "Alors installez-vous, gardez l'œil sur les ruptures de pions et prenez plaisir à mieux connaître la défense française.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "Bien, bienvenue à la ligne 1 de notre pack d'apprentissage de la défense française.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "Le titre exact est la défense française, variante Winawer, ligne principale positionnelle de l'avance, et nous la travaillons du côté des Noirs.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "Les Blancs commencent par pion en e4, nous répondons pion en e6, les Blancs prennent le centre avec pion en d4 et nous le contestons avec pion en d5.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "Cavalier en c3, puis fou en b4 : cela annonce la Winawer.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Nous clouons le cavalier et demandons aux Blancs à quel point ils se sentent ambitieux.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "Les Blancs avancent le pion en e5, nous contre-attaquons aussitôt avec pion en c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "Les Blancs jouent pion en a3, défiant notre fou, donc le fou prend c3, échec.",
+    "White recaptures with the b-pawn to c3.": "Les Blancs reprennent avec le pion b vers c3.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "Les Blancs ont gagné la paire de fous et un large centre, mais ont accepté en échange des pions c doublés.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Cet échange et cet équilibre sont la grammaire même de la Winawer.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.":
+      "Nous développons le cavalier en e7, les Blancs développent le cavalier en f3 et notre fou va en d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "Les Blancs jouent pion en a4, freinant l'expansion à l'aile dame.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Nous répondons dame en a5, en pressant c3 et en aidant à dégager la voie pour le roque à l'aile dame.",
+    "Bishop to d2 and our knight develops to c6.": "Fou en d2 et notre cavalier se développe en c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "Les Blancs placent le fou en d3, jetant un regard plutôt impoli vers h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "Nous avançons le pion en c4, gagnant de l'espace et renvoyant ce fou en e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "Vient alors pion en f6, le levier caractéristique de la française.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.":
+      "Nous ne nous contentons pas d'admirer le centre des Blancs : nous lui demandons de présenter ses titres.",
+    "White castles king side, black castles queen side.": "Les Blancs roquent à l'aile roi, les Noirs roquent à l'aile dame.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "Les rois sont maintenant installés sur des ailes opposées, la position est splendidement déséquilibrée et le plan des Noirs est clair.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "Conteste le pion e5, ouvre des lignes utiles et crée de l'activité à l'aile dame avec un vrai dessein.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Voilà la Winawer positionnelle : solide dans sa construction, combative dans son intention, et porteuse d'une bonne dose d'électricité cachée.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.":
+      "À toi : répète-la jusqu'à ce que l'ordre des coups ressemble moins à de la mémoire et davantage au bon sens.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1278,6 +1368,41 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Die Französische drängt das Gespräch nicht: sie gewinnt es, eine präzise Frage nach der anderen.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "Also machen Sie es sich bequem, behalten Sie die Bauernhebel im Auge und genießen Sie, die Französische Verteidigung besser kennenzulernen.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "Also dann, willkommen bei Linie 1 unseres Lernpakets zur Französischen Verteidigung.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "Der eigentliche Titel ist die Französische Verteidigung, Winawer-Variante, positionelle Hauptlinie des Vorstoßes, und wir üben sie von der Seite von Schwarz.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "Weiß beginnt mit Bauer nach e4, wir antworten mit Bauer nach e6, Weiß nimmt das Zentrum mit Bauer nach d4 und wir stellen es mit Bauer nach d5 in Frage.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "Springer nach c3, dann Läufer nach b4: das kündigt die Winawer an.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Wir fesseln den Springer und fragen Weiß, wie ehrgeizig sie sich fühlen.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "Weiß zieht den Bauern nach e5 vor, wir kontern sofort mit Bauer nach c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.":
+      "Weiß spielt Bauer nach a3, fordert unseren Läufer heraus, also nimmt der Läufer c3, Schach.",
+    "White recaptures with the b-pawn to c3.": "Weiß schlägt mit dem b-Bauern nach c3 zurück.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "Weiß hat das Läuferpaar und ein breites Zentrum gewonnen, dafür aber doppelte c-Bauern in Kauf genommen.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Dieser Tausch und Ausgleich ist die eigentliche Grammatik der Winawer.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.":
+      "Wir entwickeln den Springer nach e7, Weiß entwickelt den Springer nach f3 und unser Läufer geht nach d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "Weiß spielt Bauer nach a4 und bremst die Erweiterung am Damenflügel.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Wir antworten mit Dame nach a5, setzen c3 unter Druck und helfen, den Weg für die Rochade am Damenflügel freizumachen.",
+    "Bishop to d2 and our knight develops to c6.": "Läufer nach d2 und unser Springer entwickelt sich nach c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "Weiß stellt den Läufer auf d3 und blickt ziemlich unhöflich nach h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.":
+      "Wir ziehen den Bauern nach c4 vor, gewinnen Raum und schicken diesen Läufer zurück nach e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "Nun kommt Bauer nach f6, der charakteristische Hebel der Französischen.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.":
+      "Wir bewundern das Zentrum von Weiß nicht nur, wir verlangen, dass es seine Berechtigung vorlegt.",
+    "White castles king side, black castles queen side.": "Weiß rochiert kurz, Schwarz rochiert lang.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "Die Könige stehen nun auf entgegengesetzten Flügeln, die Stellung ist prächtig unausgeglichen und der Plan von Schwarz ist klar.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "Stelle den Bauern e5 in Frage, öffne nützliche Linien und erzeuge mit klarer Absicht Spiel am Damenflügel.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Das ist die positionelle Winawer: solide gebaut, kämpferisch in der Absicht und mit einer beträchtlichen Menge verborgener Elektrizität.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.":
+      "Du bist dran: übe sie, bis die Zugfolge sich weniger wie Gedächtnis und mehr wie gesunder Menschenverstand anfühlt.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1551,6 +1676,38 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "A francesa não precipita a discussão: ganha-a, uma pergunta precisa de cada vez.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "Portanto acomoda-te, fica de olho nas rupturas de peão e aproveita para te familiarizares mais com a defesa francesa.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "Muito bem, bem-vindo à Linha 1 do nosso pacote de aprendizagem da defesa francesa.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "O título correcto é a defesa francesa, variante Winawer, linha principal posicional do avanço, e estamos a treiná-la do lado das Negras.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "As Brancas começam com peão para e4, nós respondemos peão para e6, as Brancas tomam o centro com peão para d4 e nós desafiamo-lo com peão para d5.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "Cavalo para c3, depois bispo para b4: isso anuncia a Winawer.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Cravamos o cavalo e perguntamos às Brancas quão ambiciosas se sentem.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "As Brancas avançam o peão para e5, nós contra-atacamos de imediato com peão para c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "As Brancas jogam peão para a3, desafiando o nosso bispo, por isso bispo toma c3, xeque.",
+    "White recaptures with the b-pawn to c3.": "As Brancas recapturam com o peão de b para c3.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "As Brancas ganharam o par de bispos e um centro amplo, mas aceitaram peões de c dobrados em troca.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Essa troca e esse equilíbrio são a própria gramática da Winawer.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.":
+      "Desenvolvemos o cavalo para e7, as Brancas desenvolvem o cavalo para f3 e o nosso bispo vai para d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "As Brancas jogam peão para a4, contendo a expansão na ala da dama.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Respondemos dama para a5, aplicando pressão sobre c3 e ajudando a abrir caminho para o roque na ala da dama.",
+    "Bishop to d2 and our knight develops to c6.": "Bispo para d2 e o nosso cavalo desenvolve-se para c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "As Brancas colocam o bispo em d3, olhando de forma bastante indelicada para h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "Avançamos o peão para c4, ganhando espaço e mandando esse bispo de volta para e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "Agora vem peão para f6, a alavanca característica da francesa.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.":
+      "Não estamos apenas a admirar o centro das Brancas: estamos a pedir-lhe que apresente as suas credenciais.",
+    "White castles king side, black castles queen side.": "As Brancas rocam na ala do rei, as Negras rocam na ala da dama.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "Os reis estão agora instalados em alas opostas, a posição está esplendidamente desequilibrada e o plano das Negras está claro.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "Desafia o peão de e5, abre linhas úteis e gera actividade na ala da dama com verdadeiro propósito.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Essa é a Winawer posicional: sólida na construção, combativa na intenção e com uma dose considerável de electricidade oculta.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.": "A tua vez: treina-a até a ordem dos lances parecer menos memória e mais senso comum.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1823,6 +1980,36 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Французская не торопит спор: она выигрывает его по одному точному вопросу за раз.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "Так что устраивайтесь, следите за пешечными прорывами и наслаждайтесь тем, как французская защита становится вам ближе.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "Итак, добро пожаловать в линию 1 нашего учебного пакета французской защиты.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "Точное название — французская защита, вариант Winawer, позиционная главная линия продвижения, и мы разбираем её со стороны чёрных.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "Белые начинают пешкой на e4, мы отвечаем пешкой на e6, белые занимают центр пешкой на d4, и мы оспариваем его пешкой на d5.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "Конь на c3, затем слон на b4: это объявляет Winawer.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Мы связываем коня и спрашиваем белых, насколько амбициозно они себя чувствуют.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "Белые продвигают пешку на e5, мы немедленно контратакуем пешкой на c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "Белые играют пешкой на a3, вызывая нашего слона, поэтому слон берёт c3, шах.",
+    "White recaptures with the b-pawn to c3.": "Белые бьют в ответ пешкой b на c3.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.": "Белые получили пару слонов и широкий центр, но взамен приняли сдвоенные пешки c.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Этот размен и равновесие — сама грамматика Winawer.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.": "Мы развиваем коня на e7, белые развивают коня на f3, и наш слон идёт на d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "Белые играют пешкой на a4, сдерживая расширение на ферзевом фланге.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Мы отвечаем ферзём на a5, давим на c3 и помогаем освободить путь для рокировки на ферзевый фланг.",
+    "Bishop to d2 and our knight develops to c6.": "Слон на d2, и наш конь развивается на c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "Белые ставят слона на d3, довольно невежливо поглядывая на h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "Мы продвигаем пешку на c4, захватывая пространство и отправляя этого слона назад на e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "Теперь пешка на f6, характерный рычаг французской защиты.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.": "Мы не просто любуемся центром белых: мы просим его предъявить свои полномочия.",
+    "White castles king side, black castles queen side.": "Белые рокируются в короткую сторону, чёрные рокируются в длинную.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "Короли теперь стоят на противоположных флангах, позиция великолепно неравновесна, и план чёрных ясен.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "Оспаривай пешку e5, открывай полезные линии и создавай игру на ферзевом фланге с ясным замыслом.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Это позиционная Winawer: прочная по построению, боевитая по намерению и несущая немалый запас скрытого электричества.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.":
+      "Твой ход: повторяй её, пока порядок ходов не станет меньше похож на память и больше — на здравый смысл.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2095,6 +2282,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "La francese non affretta la discussione: la vince, una domanda precisa alla volta.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "Quindi mettiti comodo, tieni d'occhio le rotture di pedone e goditi il prendere confidenza con la difesa francese.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "Bene, benvenuto alla Linea 1 del nostro pacchetto di studio della difesa francese.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "Il titolo esatto è la difesa francese, variante Winawer, linea principale posizionale dell'avanzata, e la stiamo esercitando dal lato del Nero.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "Il Bianco inizia con pedone in e4, noi rispondiamo con pedone in e6, il Bianco prende il centro con pedone in d4 e noi lo sfidiamo con pedone in d5.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "Cavallo in c3, poi alfiere in b4: questo annuncia la Winawer.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Inchiodiamo il cavallo e chiediamo al Bianco quanto si senta ambizioso.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "Il Bianco avanza il pedone in e5, noi contrattacchiamo subito con pedone in c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.":
+      "Il Bianco gioca pedone in a3, sfidando il nostro alfiere, quindi l'alfiere prende c3, scacco.",
+    "White recaptures with the b-pawn to c3.": "Il Bianco ricattura con il pedone b verso c3.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "Il Bianco ha guadagnato la coppia degli alfieri e un centro ampio, ma ha accettato in cambio pedoni c doppiati.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Quello scambio e quell'equilibrio sono la grammatica stessa della Winawer.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.":
+      "Sviluppiamo il cavallo in e7, il Bianco sviluppa il cavallo in f3 e il nostro alfiere va in d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "Il Bianco gioca pedone in a4, frenando l'espansione sull'ala di donna.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Rispondiamo con donna in a5, facendo pressione su c3 e aiutando a liberare la via per l'arrocco sull'ala di donna.",
+    "Bishop to d2 and our knight develops to c6.": "Alfiere in d2 e il nostro cavallo si sviluppa in c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "Il Bianco piazza l'alfiere in d3, gettando uno sguardo piuttosto sgarbato verso h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "Avanziamo il pedone in c4, guadagnando spazio e rimandando quell'alfiere in e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "Ora arriva pedone in f6, la leva caratteristica della francese.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.":
+      "Non stiamo soltanto ammirando il centro del Bianco: gli chiediamo di presentare le sue credenziali.",
+    "White castles king side, black castles queen side.": "Il Bianco arrocca sull'ala di re, il Nero arrocca sull'ala di donna.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "I re sono ora sistemati su ali opposte, la posizione è splendidamente squilibrata e il piano del Nero è chiaro.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "Sfida il pedone e5, apri linee utili e genera attività sull'ala di donna con uno scopo preciso.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Questa è la Winawer posizionale: solida nella costruzione, combattiva nell'intenzione e carica di una notevole elettricità nascosta.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.":
+      "Tocca a te: ripetila finché l'ordine delle mosse non sembri meno memoria e più buon senso.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2368,6 +2589,40 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "फ्रेंच बहस में जल्दबाज़ी नहीं करता, वह उसे एक-एक सटीक सवाल से जीतता है।",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "तो बैठ जाइए, प्यादे की तोड़ पर नज़र रखें और फ्रेंच डिफेंस से और परिचित होने का आनंद लें।",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "ठीक है, हमारे फ्रेंच डिफेंस सीखने वाले पैक की लाइन 1 में स्वागत है।",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "सही नाम है फ्रेंच डिफेंस Winawer रूपांतर, एडवांस की स्थितिगत मुख्य रेखा, और हम इसे काले की ओर से अभ्यास कर रहे हैं।",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "सफ़ेद प्यादा e4 से शुरू करते हैं, हम प्यादा e6 से जवाब देते हैं, सफ़ेद केंद्र प्यादा d4 से लेते हैं और हम उसे प्यादा d5 से चुनौती देते हैं।",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "घोड़ा c3 पर, फिर ऊँट b4 पर: यही Winawer की घोषणा है।",
+    "We pin the knight and ask white how ambitious they're feeling.":
+      "हम घोड़े को पिन करते हैं और सफ़ेद से पूछते हैं कि वे कितने महत्त्वाकांक्षी महसूस कर रहे हैं।",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "सफ़ेद प्यादा e5 आगे बढ़ाते हैं, हम तुरंत प्यादा c5 से पलटवार करते हैं।",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "सफ़ेद प्यादा a3 खेलते हैं, हमारे ऊँट को चुनौती देते हुए, इसलिए ऊँट c3 लेता है, शह।",
+    "White recaptures with the b-pawn to c3.": "सफ़ेद b-प्यादे से c3 पर वापस लेते हैं।",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "सफ़ेद को ऊँटों की जोड़ी और चौड़ा केंद्र मिला, पर बदले में दोहरे c-प्यादे स्वीकार करने पड़े।",
+    "That trade-and-balance is the very grammar of the Winawer.": "यही विनिमय और संतुलन Winawer का व्याकरण है।",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.":
+      "हम घोड़ा e7 पर विकसित करते हैं, सफ़ेद घोड़ा f3 पर विकसित करते हैं और हमारा ऊँट d7 पर जाता है।",
+    "White plays pawn to a4, restraining queen side expansion.": "सफ़ेद प्यादा a4 खेलते हैं, रानी पक्ष के विस्तार को रोकते हुए।",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "हम रानी a5 से जवाब देते हैं, c3 पर दबाव डालते हुए और रानी पक्ष के रोके के लिए रास्ता साफ़ करने में मदद करते हुए।",
+    "Bishop to d2 and our knight develops to c6.": "ऊँट d2 पर और हमारा घोड़ा c6 पर विकसित होता है।",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "सफ़ेद ऊँट को d3 पर रखते हैं, h7 की ओर कुछ असभ्य नज़र डालते हुए।",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "हम प्यादा c4 आगे बढ़ाते हैं, जगह पाते हैं और उस ऊँट को e2 पर वापस भेज देते हैं।",
+    "Now comes pawn to f6, the characteristic French lever.": "अब आता है प्यादा f6, फ्रेंच का खास लीवर।",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.":
+      "हम सफ़ेद के केंद्र की केवल प्रशंसा नहीं कर रहे, हम उससे अपनी साख पेश करने को कह रहे हैं।",
+    "White castles king side, black castles queen side.": "सफ़ेद राजा पक्ष में रोका करते हैं, काले रानी पक्ष में रोका करते हैं।",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "राजा अब विपरीत पक्षों पर बस गए हैं, स्थिति शानदार ढंग से असंतुलित है और काले की योजना साफ़ है।",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.":
+      "e5 प्यादे को चुनौती दो, उपयोगी लाइनें खोलो और सही उद्देश्य से रानी पक्ष में सक्रियता पैदा करो।",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "यही स्थितिगत Winawer है: बनावट में ठोस, इरादे में लड़ाकू, और छिपी बिजली की अच्छी मात्रा लिए हुए।",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.":
+      "अब तुम्हारी बारी: इसे तब तक दोहराओ जब तक चालों का क्रम याददाश्त कम और सामान्य समझ ज़्यादा लगे।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2640,6 +2895,29 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "フレンチは議論を急がず、一度に一つの精密な問いかけでそれを勝ち取ります。",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "では腰を据えて、ポーンブレイクに目を配り、フレンチ・ディフェンスに親しむ時間を楽しんでください。",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "さて、フレンチ・ディフェンス学習パックのライン 1 へようこそ。",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.": "正式な題はフレンチ・ディフェンス Winawer 変化、アドバンスの局面的本線で、私たちは黒側からこれを練習します。",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.": "白はポーンを e4 へ進め、私たちはポーンを e6 で応じ、白はポーンを d4 でセンターを取り、私たちはポーンを d5 で挑みます。",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "ナイトを c3 へ、それからビショップを b4 へ。これで Winawer の宣言です。",
+    "We pin the knight and ask white how ambitious they're feeling.": "そのナイトをピンし、白がどれほど野心的に感じているかを問います。",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "白はポーンを e5 へ進め、私たちは直ちにポーンを c5 で反撃します。",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "白はポーンを a3 と指し、私たちのビショップに挑むので、ビショップは c3 を取ってチェックです。",
+    "White recaptures with the b-pawn to c3.": "白は b ポーンで c3 に取り返しします。",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.": "白はビショップ・ペアと広いセンターを得ましたが、引き換えにダブル c ポーンを受け入れました。",
+    "That trade-and-balance is the very grammar of the Winawer.": "この交換と均衡こそ、Winawer の文法そのものです。",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.": "私たちはナイトを e7 へ展開し、白はナイトを f3 へ展開し、私たちのビショップは d7 へ行きます。",
+    "White plays pawn to a4, restraining queen side expansion.": "白はポーンを a4 と指し、クイーンサイドの拡大を抑えます。",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.": "私たちはクイーンを a5 で応じ、c3 に圧力をかけ、クイーンサイド・キャスリングへの道を開く助けをします。",
+    "Bishop to d2 and our knight develops to c6.": "ビショップを d2 へ、そして私たちのナイトは c6 へ展開します。",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "白はビショップを d3 に置き、かなり無礼に h7 を見やります。",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "私たちはポーンを c4 へ進め、空間を得て、そのビショップを e2 へ戻します。",
+    "Now comes pawn to f6, the characteristic French lever.": "ここでポーンを f6 へ。フレンチ特有のてこです。",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.": "私たちは白のセンターを眺めているだけではありません。その資格を示すよう求めています。",
+    "White castles king side, black castles queen side.": "白はキングサイドにキャスリングし、黒はクイーンサイドにキャスリングします。",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.": "キングは今や反対側の翼に落ち着き、局面は見事に不均衡で、黒の計画は明確です。",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.": "e5 のポーンに挑み、役に立つラインを開き、明確な目的をもってクイーンサイドの活動を生み出します。",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.": "これが局面的な Winawer です。構造は堅実、意図は闘争的、そしてかなりの隠れた電気を帯びています。",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.": "あなたの番です。指し順が記憶ではなく常識のように感じるまで、繰り返し練習してください。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2908,6 +3186,33 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "الفرنسية لا تستعجل الجدال، بل تربحه سؤالًا دقيقًا في كل مرة.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "فاستقر، وأبقِ عينك على كسور البيادق، واستمتع بأن تصبح أكثر ألفة مع الدفاع الفرنسي.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "حسنًا، أهلًا بك في الخط 1 من حزمة تعلّم الدفاع الفرنسي.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "العنوان الصحيح هو الدفاع الفرنسي، تنويع Winawer، الخط الرئيسي الموضعي للتقدم، وندرّبه من جانب الأسود.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "يبدأ الأبيض ببيدق إلى e4، ونرد ببيدق إلى e6، ويأخذ الأبيض المركز ببيدق إلى d4 ونتحداه ببيدق إلى d5.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "حصان إلى c3، ثم فيل إلى b4: هذا يعلن Winawer.",
+    "We pin the knight and ask white how ambitious they're feeling.": "نثبّت الحصان ونسأل الأبيض عن مدى طموحهم.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "يتقدم الأبيض ببيدق إلى e5، ونرد فورًا ببيدق إلى c5.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "يلعب الأبيض بيدق إلى a3 متحديًا فيلنا، فيأخذ الفيل c3، كش.",
+    "White recaptures with the b-pawn to c3.": "يستعيد الأبيض ببيدق b إلى c3.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.": "كسب الأبيض زوج الفيلة ومركزًا واسعًا، لكنه قبل في المقابل بيادق c مضاعفة.",
+    "That trade-and-balance is the very grammar of the Winawer.": "هذا التبادل والتوازن هو نحو Winawer نفسه.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.": "نطوّر الحصان إلى e7، ويطوّر الأبيض الحصان إلى f3، ويذهب فيلنا إلى d7.",
+    "White plays pawn to a4, restraining queen side expansion.": "يلعب الأبيض بيدق إلى a4، مقيّدًا التوسع في جناح الملكة.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.": "نرد بالملكة إلى a5، ضاغطين على c3 ومساعدين على إخلاء الطريق للتبييت في جناح الملكة.",
+    "Bishop to d2 and our knight develops to c6.": "فيل إلى d2 ويتطور حصاننا إلى c6.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "يضع الأبيض الفيل على d3، ناظرًا بوقاحة إلى حد ما نحو h7.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "نتقدم ببيدق إلى c4، نكسب مساحة ونعيد ذلك الفيل إلى e2.",
+    "Now comes pawn to f6, the characteristic French lever.": "والآن بيدق إلى f6، رافعة الفرنسي المميزة.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.": "لسنا نكتفي بالإعجاب بمركز الأبيض، بل نطلب منه أن يقدّم أوراق اعتماده.",
+    "White castles king side, black castles queen side.": "يبيّت الأبيض في جناح الملك، ويبيّت الأسود في جناح الملكة.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "استقر الملكان الآن على جناحين متقابلين، والوضعية غير متوازنة على نحو رائع، وخطة الأسود واضحة.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.": "تحدَّ بيدق e5، وافتح خطوطًا مفيدة، وولّد نشاطًا في جناح الملكة بغرض واضح.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "هذه هي Winawer الموضعية: متينة في بنائها، قتالية في قصدها، وتحمل قدرًا كبيرًا من الكهرباء المخبوءة.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.": "دورك: كرّرها حتى يبدو ترتيب النقلات أقل شبهًا بالذاكرة وأكثر شبهًا بالبديهة.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3179,5 +3484,34 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Fransız tartışmayı acele ettirmez; onu her seferinde tek kesin soruyla kazanır.",
     "So settle in, keep your eye on the pawn breaks and enjoy becoming more familiar with the French defence.":
       "O halde yerleş, piyon kırılmalarına gözünü dik ve Fransız Savunması'na daha aşina olmanın tadını çıkar.",
+    "Right then, welcome to Line 1 of our French defence learning pack.": "Peki, Fransız Savunması öğrenme paketimizin 1. hattına hoş geldin.",
+    "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.":
+      "Asıl adı Fransız Savunması Winawer varyantı, ilerletmenin konumsal ana hattıdır ve bunu Siyah'ın tarafından çalışıyoruz.",
+    "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.":
+      "Beyaz piyonu e4'e sürer, biz piyonla e6 diye yanıtlarız, Beyaz merkezi piyonu d4 ile alır ve biz onu piyonu d5 ile sorgularız.",
+    "Knight to c3, then bishop to b4, that announces the Winawer.": "At c3'e, sonra fil b4'e: bu, Winawer'i ilan eder.",
+    "We pin the knight and ask white how ambitious they're feeling.": "Atı bağlarız ve Beyaz'a ne kadar hırslı hissettiklerini sorarız.",
+    "White advances pawn to e5, we counter immediately with pawn to c5.": "Beyaz piyonu e5'e sürer, biz hemen piyonla c5 diye karşı koyarız.",
+    "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.": "Beyaz piyonu a3 oynar, filimize meydan okur, bu yüzden fil c3 alır, şah.",
+    "White recaptures with the b-pawn to c3.": "Beyaz b-piyonuyla c3'e geri alır.",
+    "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.":
+      "Beyaz fil çiftini ve geniş bir merkezi kazandı, ama karşılığında çiftlenmiş c-piyonlarını kabul etti.",
+    "That trade-and-balance is the very grammar of the Winawer.": "Bu değişim ve denge, Winawer'in ta kendisi olan dilbilgisidir.",
+    "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.": "Atı e7'ye geliştiririz, Beyaz atı f3'e geliştirir ve filimiz d7'ye gider.",
+    "White plays pawn to a4, restraining queen side expansion.": "Beyaz piyonu a4 oynar, vezir kanadı genişlemesini kısıtlar.",
+    "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.":
+      "Vezirle a5 diye yanıtlarız, c3'e baskı yapar ve vezir kanadı rokuna yol açmaya yardım ederiz.",
+    "Bishop to d2 and our knight develops to c6.": "Fil d2'ye ve atımız c6'ya gelişir.",
+    "White places the bishop on d3, glancing rather impolitely at h7.": "Beyaz fili d3'e koyar, h7'ye oldukça kabaca bir bakış atarak.",
+    "We advance pawn to c4, gaining space and sending that bishop back to e2.": "Piyonu c4'e süreriz, yer kazanır ve o fili e2'ye geri göndeririz.",
+    "Now comes pawn to f6, the characteristic French lever.": "Şimdi piyon f6'ya gelir, Fransız'ın karakteristik kaldıracı.",
+    "We are not merely admiring white's centre, we are asking it to provide its credentials.": "Beyaz'ın merkezine yalnızca hayran olmuyoruz; ondan kimliğini göstermesini istiyoruz.",
+    "White castles king side, black castles queen side.": "Beyaz şah kanadına rokar, Siyah vezir kanadına rokar.",
+    "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.":
+      "Şahlar artık karşı kanatlarda yerleşti, konum görkemli biçimde dengesiz ve Siyah'ın planı açık.",
+    "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.": "e5 piyonunu sorgula, yararlı hatlar aç ve vezir kanadında amaçlı bir etkinlik üret.",
+    "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.":
+      "Konumsal Winawer budur: kuruluşu sağlam, niyeti mücadeleci ve hatırı sayılır gizli bir elektrik taşır.",
+    "Your turn, drill it until the move order feels less like memory and more like common sense.": "Sıra sende: hamle sırası bellekten çok sağduyu gibi hissedilene kadar bunu çalış.",
   },
 };

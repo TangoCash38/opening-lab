@@ -13,9 +13,10 @@
  * open pass these gates.
  *
  * Finishing the pack intro, or pressing Skip, opens the first-line talk
- * before book Practice when that pack has line audio. Skip dismisses only
- * the intro. An intro-only pack (empty firstLineBeats and no firstLineAudio)
- * never opens a line talk. A line already heard this visit is not replayed.
+ * before book Practice when that pack hands off. French Defence does not:
+ * Skip and a finished intro stay on the line list, and the Winawer talk
+ * starts only when Line 1 (frb1) is tapped. An intro-only pack never opens
+ * a line talk. A line already heard this visit is not replayed.
  * The gym intro pages do not set these session keys.
  */
 import {
@@ -111,6 +112,11 @@ export type CoachPackConfig = {
    * Every other pack plays `firstLineBeats[].ply` as each beat shows.
    */
   firstLinePlaysPackLine?: boolean;
+  /**
+   * Line 1 speech starts from a tap on `firstLineId`, not when the intro
+   * finishes or is skipped. French Defence. Other packs hand off.
+   */
+  lineTalkOnTapOnly?: boolean;
 };
 
 const OPENING_TRAPS_PACK_ID = "opening-traps";
@@ -781,6 +787,152 @@ export const FRENCH_INTRO_ARROWS: readonly CoachIntroArrowCue[] = [
   { atSec: 49.62, untilSec: 51.0, from: "f7", to: "f6" },
 ];
 
+export const FRENCH_LINE_WAV = "/coach/french-black/professor-potato-pie-french-line1.wav";
+/** Sean's French Winawer Line 1. Beat and spoken-move times were read off this clip. */
+export const FRENCH_LINE_SEC = 143.76;
+
+const FRENCH_LINE: readonly CoachLineBeat[] = [
+  { caption: "Right then, welcome to Line 1 of our French defence learning pack.", atSec: 0 },
+  {
+    caption:
+      "The proper title is the French defence Winawer variation, Advance positional main line, and we're drilling it from Black's side.",
+    atSec: 5.82,
+  },
+  {
+    caption:
+      "White begins with pawn to e4, we answer pawn to e6, white takes the centre with pawn to d4 and we challenge it with pawn to d5.",
+    ply: "e4",
+    atSec: 14.98,
+    plyAtSec: 16.62,
+    extraPlies: [
+      { ply: "e6", plyAtSec: 19.02 },
+      { ply: "d4", plyAtSec: 22.2 },
+      { ply: "d5", plyAtSec: 24.76 },
+    ],
+  },
+  {
+    caption: "Knight to c3, then bishop to b4, that announces the Winawer.",
+    ply: "Nc3",
+    atSec: 26.38,
+    plyAtSec: 26.38,
+    extraPlies: [{ ply: "Bb4", plyAtSec: 28.1 }],
+  },
+  {
+    caption: "We pin the knight and ask white how ambitious they're feeling.",
+    atSec: 31.4,
+  },
+  {
+    caption: "White advances pawn to e5, we counter immediately with pawn to c5.",
+    ply: "e5",
+    atSec: 35.44,
+    plyAtSec: 36.88,
+    extraPlies: [{ ply: "c5", plyAtSec: 39.94 }],
+  },
+  {
+    caption: "White plays pawn to a3, challenging our bishop, so bishop takes c3, check.",
+    ply: "a3",
+    atSec: 41.36,
+    plyAtSec: 42.58,
+    extraPlies: [{ ply: "Bxc3+", plyAtSec: 45.12 }],
+  },
+  {
+    caption: "White recaptures with the b-pawn to c3.",
+    ply: "bxc3",
+    atSec: 47.72,
+    plyAtSec: 49.02,
+  },
+  {
+    caption:
+      "White has gained the bishop pair and a broad centre, but accepted doubled c-pawns in return.",
+    atSec: 51.28,
+  },
+  {
+    caption: "That trade-and-balance is the very grammar of the Winawer.",
+    atSec: 57.64,
+  },
+  {
+    caption: "We develop knight to e7, white develops knight to f3 and our bishop goes to d7.",
+    ply: "Ne7",
+    atSec: 61.32,
+    plyAtSec: 62.4,
+    extraPlies: [
+      { ply: "Nf3", plyAtSec: 64.84 },
+      { ply: "Bd7", plyAtSec: 67.02 },
+    ],
+  },
+  {
+    caption: "White plays pawn to a4, restraining queen side expansion.",
+    ply: "a4",
+    atSec: 68.32,
+    plyAtSec: 69.68,
+  },
+  {
+    caption:
+      "We answer queen to a5, applying pressure to c3 and helping clear the way for queen side castling.",
+    ply: "Qa5",
+    atSec: 73.32,
+    plyAtSec: 74.54,
+  },
+  {
+    caption: "Bishop to d2 and our knight develops to c6.",
+    ply: "Bd2",
+    atSec: 80.98,
+    plyAtSec: 81.64,
+    extraPlies: [{ ply: "Nbc6", plyAtSec: 84.16 }],
+  },
+  {
+    caption: "White places the bishop on d3, glancing rather impolitely at h7.",
+    ply: "Bd3",
+    atSec: 85.58,
+    plyAtSec: 87.1,
+  },
+  {
+    caption: "We advance pawn to c4, gaining space and sending that bishop back to e2.",
+    ply: "c4",
+    atSec: 91.5,
+    plyAtSec: 92.68,
+    extraPlies: [{ ply: "Be2", plyAtSec: 96.42 }],
+  },
+  {
+    caption: "Now comes pawn to f6, the characteristic French lever.",
+    ply: "f6",
+    atSec: 97.88,
+    plyAtSec: 99.22,
+  },
+  {
+    caption:
+      "We are not merely admiring white's centre, we are asking it to provide its credentials.",
+    atSec: 102.84,
+  },
+  {
+    caption: "White castles king side, black castles queen side.",
+    ply: "O-O",
+    atSec: 108.54,
+    plyAtSec: 109.08,
+    extraPlies: [{ ply: "O-O-O", plyAtSec: 111.1 }],
+  },
+  {
+    caption:
+      "The kings are now settled on opposite wings, the position is splendidly unbalanced and black's plan is clear.",
+    atSec: 113.3,
+  },
+  {
+    caption:
+      "Challenge the e5 pawn, open useful lines and generate queen side activity with proper purpose.",
+    atSec: 120.2,
+  },
+  {
+    caption:
+      "That is the positional Winawer, solid in construction, combative in intention and carrying a considerable amount of concealed electricity.",
+    atSec: 127.74,
+  },
+  {
+    caption:
+      "Your turn, drill it until the move order feels less like memory and more like common sense.",
+    atSec: 137.66,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -881,7 +1033,10 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introArrows: FRENCH_INTRO_ARROWS,
     firstLineId: "frb1",
     firstLineTitle: "Line 1",
-    firstLineBeats: [], // intro-only for now — NO firstLineAudio
+    firstLineBeats: FRENCH_LINE,
+    firstLineAudio: FRENCH_LINE_WAV,
+    firstLineAudioFallbackSec: FRENCH_LINE_SEC,
+    lineTalkOnTapOnly: true,
   },
 };
 
@@ -911,11 +1066,12 @@ export function coachPackLineApplies(input: { packId: string; lineId: string }):
 /**
  * Talk to open when the pack intro finishes or the user presses Skip.
  * `null` when that line was already heard this visit, when `lineId` is
- * not the coached first line, or when the pack is intro-only. Scotch sg1
- * is the canal talk; other packs use `firstLineId`. Skip dismisses the
- * intro only — it still hands off to this talk when one applies, the same
- * as a natural finish. `skipped` is the caller's reason and does not
- * suppress the handoff.
+ * not the coached first line, when the pack is intro-only, or when the
+ * pack keeps Line 1 for a tap (`lineTalkOnTapOnly`). Scotch sg1 is the
+ * canal talk; other packs use `firstLineId`. Skip dismisses the intro
+ * only — it still hands off to this talk when one applies, the same as a
+ * natural finish. `skipped` is the caller's reason and does not suppress
+ * the handoff.
  */
 export function coachTalkAfterPackIntro(input: {
   packId: string;
@@ -936,6 +1092,7 @@ export function coachTalkAfterPackIntro(input: {
   ) {
     return "canal";
   }
+  if (COACH_PACKS[input.packId]?.lineTalkOnTapOnly) return null;
   if (coachPackLineApplies({ packId: input.packId, lineId: input.lineId })) return "line";
   return null;
 }

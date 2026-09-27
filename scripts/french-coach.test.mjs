@@ -47,14 +47,14 @@ function compileCoachPacks(t) {
   return "./scripts/.generated-french-coach/coach-packs.mjs";
 }
 
-test("French Defence Potato Pie intro is audio-only and does not open Line 1 speech", (t) => {
+test("French Defence Potato Pie intro stays on the line list; Line 1 is the Winawer talk", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const wav = "public/coach/french-black/professor-potato-pie-french-intro.wav";
   assert.equal(existsSync(join(root, wav)), true);
   assert.equal(
     existsSync(join(root, "public/coach/french-black/professor-potato-pie-french-line1.wav")),
-    false,
+    true,
   );
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const board = src("src/components/opening-lab/scotch-coach-board.tsx");
@@ -81,7 +81,12 @@ test("French Defence Potato Pie intro is audio-only and does not open Line 1 spe
   assert.match(hero, /introArrows=\{coachPack\(pack\.id\)\?\.introArrows\}/);
   assert.match(hero, /CoachPackReading packId=\{pack\.id\}/);
   assert.match(board, /from: cue\.from as Square/);
-  assert.doesNotMatch(src("src/lib/coach-packs.ts"), /firstLineAudio: FRENCH/);
+  assert.match(src("src/lib/coach-packs.ts"), /firstLineAudio: FRENCH_LINE_WAV/);
+  assert.match(src("src/lib/coach-packs.ts"), /lineTalkOnTapOnly: true/);
+  assert.match(hero, /lineTalkOnTapOnly/);
+  assert.match(hero, /hearsLineTalk/);
+  assert.match(hero, /launchLine\(tapped\)/);
+  assert.doesNotMatch(hero, /Play on|vs-computer|playComputer/i);
 
   const run = spawnSync(
     process.execPath,
@@ -99,6 +104,8 @@ test("French Defence Potato Pie intro is audio-only and does not open Line 1 spe
         FRENCH_INTRO_STEM,
         FRENCH_INTRO_STEM_AT_SEC,
         FRENCH_INTRO_WAV,
+        FRENCH_LINE_SEC,
+        FRENCH_LINE_WAV,
         coachAudioBeatIndex,
         coachAudioPlyCount,
         coachIntroArrowsAt,
@@ -109,6 +116,7 @@ test("French Defence Potato Pie intro is audio-only and does not open Line 1 spe
         coachTalkAfterPackIntro,
         coachTalkHasAudio,
         coachTalkPlies,
+        coachTextPlayedSans,
       } = await import(${JSON.stringify(compiled)});
       const pack = PACKS.find((item) => item.id === "french-black");
       if (!pack) throw new Error("french pack missing");
@@ -130,11 +138,50 @@ test("French Defence Potato Pie intro is audio-only and does not open Line 1 spe
       }
       if (coach.firstLineId !== "frb1") throw new Error("first line " + coach.firstLineId);
       if (coach.firstLineTitle !== "Line 1") throw new Error("line title");
-      if (coach.firstLineBeats.length !== 0) throw new Error("line beats must stay empty");
-      if (coach.firstLineAudio) throw new Error("intro-only: no line audio");
-      if (coachLinePlyCues("french-black") != null) throw new Error("no line cues");
-      if (coachTalkHasAudio("french-black", "line")) throw new Error("line talk must stay silent");
+      if (coach.lineTalkOnTapOnly !== true) throw new Error("line talk must wait for a tap");
+      if (coach.firstLineBeats.length !== 23) throw new Error("line beats " + coach.firstLineBeats.length);
+      if (coach.firstLineAudio !== FRENCH_LINE_WAV) throw new Error("line audio " + coach.firstLineAudio);
+      if (coach.firstLineAudio !== "/coach/french-black/professor-potato-pie-french-line1.wav") {
+        throw new Error("line public path");
+      }
+      if (coach.firstLineAudioFallbackSec !== FRENCH_LINE_SEC || FRENCH_LINE_SEC !== 143.76) {
+        throw new Error("line length " + coach.firstLineAudioFallbackSec);
+      }
+      if (!coachTalkHasAudio("french-black", "line")) throw new Error("line audio missing");
       if (!coachTalkHasAudio("french-black", "intro")) throw new Error("intro audio");
+      if (!coach.firstLineBeats[0].caption.includes("welcome to Line 1")) throw new Error("welcome");
+      if (!coach.firstLineBeats[1].caption.includes("Winawer") || coach.firstLineBeats[1].caption.includes("win-hour")) {
+        throw new Error("Winawer title");
+      }
+      if (!coach.firstLineBeats[1].caption.includes("Black's side")) throw new Error("training side");
+      if (!coach.firstLineBeats[4].caption.includes("ambitious they're feeling")) throw new Error("ambition");
+      if (!coach.firstLineBeats[9].caption.includes("trade-and-balance")) throw new Error("grammar");
+      if (!coach.firstLineBeats[14].caption.includes("impolitely")) throw new Error("impolitely");
+      const lineCues = coachLinePlyCues("french-black");
+      const expectedCues = [16.62, 19.02, 22.2, 24.76, 26.38, 28.1, 36.88, 39.94, 42.58, 45.12, 49.02, 62.4, 64.84, 67.02, 69.68, 74.54, 81.64, 84.16, 87.1, 92.68, 96.42, 99.22, 109.08, 111.1];
+      if (!lineCues || lineCues.join(",") !== expectedCues.join(",")) throw new Error("cues " + lineCues);
+      const lineDur = 143.76;
+      for (let i = 0; i < lineCues.length; i += 1) {
+        if (i > 0 && !(lineCues[i] > lineCues[i - 1])) throw new Error("cue order " + i);
+        if (coachAudioPlyCount(lineCues, lineCues[i] - 0.01, lineDur, lineDur) !== i) {
+          throw new Error("ply early " + i);
+        }
+        if (coachAudioPlyCount(lineCues, lineCues[i], lineDur, lineDur) !== i + 1) {
+          throw new Error("ply late " + i);
+        }
+      }
+      const lineScript = coachTalkPlies("french-black", "line");
+      if (!lineScript) throw new Error("line script");
+      const played = coachTextPlayedSans(lineScript, lineScript.length - 1);
+      if (played.join(" ") !== frb1.plies.join(" ")) throw new Error("script " + played.join(" "));
+      const winawer = new Chess();
+      for (const san of played) {
+        if (!winawer.move(san)) throw new Error("illegal line ply " + san);
+      }
+      if (winawer.history().join(" ") !== frb1.plies.join(" ")) throw new Error("history drifted");
+      if (winawer.get("g1")?.type !== "k" || winawer.get("g1")?.color !== "w") throw new Error("white castle");
+      if (winawer.get("c8")?.type !== "k" || winawer.get("c8")?.color !== "b") throw new Error("black castle");
+      if (winawer.get("d8")?.type !== "r" || winawer.get("d8")?.color !== "b") throw new Error("black rook");
       if (coach.introStemWhiteOnly === true) throw new Error("french stem plays black replies");
       if (!coach.introStem || coach.introStem.join(" ") !== FRENCH_INTRO_STEM.join(" ")) {
         throw new Error("stem " + coach.introStem);
@@ -204,10 +251,11 @@ test("French Defence Potato Pie intro is audio-only and does not open Line 1 spe
       if (arrowAt(51).length !== 0) throw new Error("f6 should clear");
       if (coachTalkPlies("french-black", "intro") !== null) throw new Error("intro uses the stem clock");
       if (!coachPackIntroApplies("french-black")) throw new Error("intro gate");
-      if (coachPackLineApplies({ packId: "french-black", lineId: "frb1" })) {
-        throw new Error("intro-only must not open Line 1 speech");
+      if (!coachPackLineApplies({ packId: "french-black", lineId: "frb1" })) {
+        throw new Error("frb1 must open the Winawer talk");
       }
       if (coachPackLineApplies({ packId: "french-black", lineId: "frb2" })) throw new Error("frb2");
+      if (coachPackLineApplies({ packId: "french-black", lineId: "frb10" })) throw new Error("frb10");
       const handoff = { packId: "french-black", lineId: "frb1", lineIndex: 0, lineAlreadySeen: false };
       if (coachTalkAfterPackIntro({ ...handoff, skipped: false }) !== null) {
         throw new Error("finishing the intro must not open Line 1");
