@@ -4433,3 +4433,84 @@ html[data-color-scheme="dark"] .landing-chip {
   font-weight: 700;
   color: var(--color-accent);
 }
+
+/* Classic Run the game sits in the trainer column: Pie and captions, then the wood. */
+.classic-run-dock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.1rem 0.15rem 0.15rem;
+}
+
+.classic-run-dock .scotch-coach-plate {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.15rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.28rem 0.35rem 0.28rem 0.15rem;
+  border-radius: 0.95rem;
+  border: 1.5px solid #e4d2b0;
+  background: linear-gradient(180deg, #fbf6ea 0%, #f3e6cf 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.classic-run-dock .scotch-coach-stage {
+  width: 6.2rem;
+  height: 9.2rem;
+  aspect-ratio: auto;
+  align-self: flex-start;
+  overflow: hidden;
+}
+
+.classic-run-dock .scotch-coach-figure {
+  width: 6.2rem;
+  height: auto;
+}
+
+.classic-run-dock .scotch-coach-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0.05rem 0.05rem 0.05rem 0.15rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.classic-run-dock .scotch-coach-name {
+  margin: 0 0 0.08rem;
+  font-size: 0.88rem;
+  line-height: 1.15;
+}
+
+.classic-run-dock .scotch-coach-kicker {
+  margin: 0 0 0.15rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.classic-run-dock .scotch-coach-beat {
+  min-height: 4.4em;
+  max-height: 6.4em;
+  overflow: auto;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.classic-run-dock .scotch-coach-actions {
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  margin-top: 0.35rem;
+}
+
+.classic-run-dock .home-board .mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}

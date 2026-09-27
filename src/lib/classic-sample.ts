@@ -5,9 +5,8 @@
  * The user drills White (Fischer). Sean-locked Expert-cut SAN stops
  * inclusive at 10...Qc7. Not a Play SKU. Not in VISIBLE_PACK_IDS.
  *
- * TODO(run-the-game): third mode "Run the game" with Professor Potato Pie
- * from 11.e5 through the rest of this game. Do not require Pie audio here.
- * Practice and Test are the only live modes.
+ * Run the game is a separate watch-only replay of the whole game from 1.e4
+ * (see classic-run.ts). Practice and Test stay on this cut.
  */
 import { Chess } from "chess.js";
 import type { OpeningLine, Pack } from "@/data/packs";
@@ -17,9 +16,6 @@ import {
 } from "@/lib/catalog";
 
 export const CLASSIC_SAMPLE_LINE_ID = WEBSITE_CLASSIC_SAMPLE_LINE_ID;
-
-/** First move of the parked Run-the-game continuation. Not a drill ply. */
-export const CLASSIC_RUN_THE_GAME_FROM = "11.e5";
 
 /** Inclusive cut: 10...Qc7. Twenty plies, White to drill. */
 export const CLASSIC_SAMPLE_PLIES = [
@@ -57,7 +53,7 @@ export function classicSampleLine(): OpeningLine {
     plies: [...CLASSIC_SAMPLE_PLIES],
     side: "w",
     idea: "Fischer’s King’s Indian Attack against Sherwin’s Sicilian. Drill White’s book moves through 10...Qc7.",
-    next: "The book drill stops here, inclusive of 10...Qc7. Run the game, from 11.e5 with Professor Potato Pie, is parked.",
+    next: "The book drill stops here, inclusive of 10...Qc7. Run the game replays the whole game from 1.e4 with Professor Potato Pie.",
     players: {
       white: "Bobby Fischer",
       black: "J. Sherwin",
