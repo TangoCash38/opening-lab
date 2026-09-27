@@ -60,7 +60,7 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
   const catalog = src("src/lib/catalog.ts");
   const packs = src("src/data/packs.ts");
   const lessons = src("src/lib/lesson-products.ts");
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white"\]/);
   assert.match(packs, /id: "london"[\s\S]{0,240}price: "£1\.99"/);
   assert.match(lessons, /LESSONS_ENABLED: boolean = false/);
   assert.doesNotMatch(catalog, /"london":\s*\[/);

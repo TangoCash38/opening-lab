@@ -341,8 +341,10 @@ test("Professor Potato Pie names the scotch coach on the plate and in alt text",
   assert.match(lib, /SCOTCH_COACH_NAME = "Professor Potato Pie"/);
   assert.match(intro, /SCOTCH_COACH_NAME/);
   assert.match(intro, /data-scotch-coach-name/);
-  assert.match(intro, /aria-label=\{t\(SCOTCH_COACH_NAME\)\}/);
-  assert.match(intro, /alt=\{t\(SCOTCH_COACH_NAME\)\}/);
+  assert.match(intro, /aria-label=\{t\(plateName\)\}/);
+  assert.match(intro, /alt=\{t\(name \?\? SCOTCH_COACH_NAME\)\}/);
+  assert.match(intro, /plateName = name \?\? SCOTCH_COACH_NAME/);
+  assert.match(intro, /portrait \?\? "\/scotch-coach\/coach-seated-v2\.png"/);
   assert.match(intro, /coach-seated-v2\.png/);
   assert.match(css, /\.scotch-coach-name/);
   assert.doesNotMatch(intro, /aria-label=\{t\("Scotch coach"\)\}/);

@@ -380,6 +380,9 @@ export function HomeHero({
       } else if (pack.id === "french-black") {
         // Paid lines stay locked. Unpaid visitors still hear Potato Pie.
         line = pack.lines.find((l) => l.id === "frb1");
+      } else if (pack.id === "ruy-lopez-white") {
+        // Paid lines stay locked. Unpaid visitors still hear Big Red.
+        line = pack.lines.find((l) => l.id === "rlw1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -599,7 +602,11 @@ export function HomeHero({
               >
                 <div className="scotch-coach-plate" data-scotch-coach-plate>
                   {/* Distinct keys so a talk change deletes the previous figure. */}
-                  <ScotchCoachFigure key={`figure-${coach.talk}-${coach.line.id}`} />
+                  <ScotchCoachFigure
+                    key={`figure-${coach.talk}-${coach.line.id}`}
+                    portrait={coachPack(pack.id)?.portrait}
+                    name={coachPack(pack.id)?.coachName}
+                  />
                   <ScotchCoachCard
                     key={`card-${coach.talk}-${coach.line.id}`}
                     talk={coach.talk}
