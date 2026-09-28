@@ -769,8 +769,8 @@ export const PACKS: Pack[] = [
       {
         id: "sib5",
         name: "Line 5",
-        plies: ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nc6", "Nc3", "Qc7", "Be3", "a6", "Qd2", "Nf6", "O-O-O", "Bb4", "f3", "Ne5", "Nb3", "b5"],
-        idea: "Taimanov: …e6/…Nc6/…Qc7, then …Bb4 and …Ne5–…b5 against White’s long castle.",
+        plies: ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "Nc6", "Nxc6", "bxc6", "e5", "Nd5", "Ne4", "Qc7", "f4", "Qb6", "c4", "Bb4+", "Ke2", "f5"],
+        idea: "Four Knights: after …e6/…Nf6/…Nc6, White’s Nxc6 main; Black meets e5–Ne4–f4 with …Qc7–…Qb6, then …Bb4+ and …f5 against the uncastled king.",
         side: "b",
       },
       {
