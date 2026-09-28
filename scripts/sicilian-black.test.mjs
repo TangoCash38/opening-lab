@@ -143,19 +143,21 @@ const EXPECTED = {
     "d4",
     "cxd4",
     "Nxd4",
-    "Nc6",
-    "Nc3",
-    "Qc7",
-    "Be3",
-    "a6",
-    "Qd2",
     "Nf6",
-    "O-O-O",
-    "Bb4",
-    "f3",
-    "Ne5",
-    "Nb3",
-    "b5"
+    "Nc3",
+    "Nc6",
+    "Nxc6",
+    "bxc6",
+    "e5",
+    "Nd5",
+    "Ne4",
+    "Qc7",
+    "f4",
+    "Qb6",
+    "c4",
+    "Bb4+",
+    "Ke2",
+    "f5"
   ],
   "sib6": [
     "e4",
@@ -274,7 +276,7 @@ const IDEAS = {
   "sib2": "Dragon Yugoslav: after opposite castling Black breaks with …d5; mass exchanges on d5/c6/d4 leave a playable queen ending with …Qa5.",
   "sib3": "Classical Richter-Rauzer: …Nc6 and …e6, castle opposite, trade on d4, and plant …Qa5 with the rook on d8.",
   "sib4": "Sveshnikov: …e5 drives Nb5–a3–d5; Black takes on f6 with the bishop and activates …Bg5.",
-  "sib5": "Taimanov: …e6/…Nc6/…Qc7, then …Bb4 and …Ne5–…b5 against White’s long castle.",
+  "sib5": "Four Knights: after …e6/…Nf6/…Nc6, White’s Nxc6 main; Black meets e5–Ne4–f4 with …Qc7–…Qb6, then …Bb4+ and …f5 against the uncastled king.",
   "sib6": "Alapin main with …d5: queen comes out, Black develops …Nf6–…e6–…Nc6 and tucks the queen after Nb5.",
   "sib7": "Smith-Morra Accepted: Black returns development tempo with …Nc6–…d6–…e6–…Nf6 and completes …Be7.",
   "sib8": "Grand Prix: Black meets Bb5 with …Nd4, trades, then …d5 and recaptures on d5 with the knight.",
@@ -381,7 +383,7 @@ test("Sicilian for Black is the signed sicilian-black pack: sib1–sib10 book, �
     assert.deepEqual(plies, EXPECTED[id], id);
     assert.equal(names[id], NAMES[id], id);
     assert.equal(names[id], `Line ${Number(id.slice(3))}`);
-    assert.doesNotMatch(names[id], /·|Najdorf|Dragon|Sveshnikov|Taimanov|Alapin|Morra|Grand Prix|Rossolimo|Closed/);
+    assert.doesNotMatch(names[id], /·|Najdorf|Dragon|Sveshnikov|Taimanov|Four Knights|Alapin|Morra|Grand Prix|Rossolimo|Closed/);
     assert.equal(ideas[id], IDEAS[id], id);
     assert.equal(plies.length % 2, 0, `${id} must end after a Black move`);
     assert.equal(lineBlock(sib, id).includes('side: "b"'), true);
