@@ -2452,6 +2452,83 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   }
 }
 
+/* Free-try Practice: voice, Expand, and the wood share one column under the tabs. */
+.train-layout[data-free-try="true"] .train-top-chrome .my-3\.5 {
+  margin-bottom: 0.25rem;
+}
+
+.train-layout[data-free-try="true"] .train-board-band {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  max-width: 420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Free-try coach row. Same cream plate and green button as the other Potato Pie docks. */
+.free-try-voice {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.15rem 0.45rem 0.15rem 0.12rem;
+  border-radius: 0.95rem;
+  border: 1.5px solid #e4d2b0;
+  background: linear-gradient(180deg, #fbf6ea 0%, #f3e6cf 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Crop the seated portrait so Pie reads larger without pushing the wood down. */
+.free-try-voice-figure-wrap {
+  flex: 0 0 auto;
+  width: 3.7rem;
+  height: 5.15rem;
+  overflow: hidden;
+}
+
+.free-try-voice-figure {
+  height: 8rem;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: center top;
+  filter: drop-shadow(0 8px 10px rgba(60, 36, 18, 0.18));
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.free-try-voice-line {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #3a2a1c;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.free-try-voice-skip {
+  flex: 0 0 auto;
+  min-height: 2.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.free-try-voice-skip:active {
+  transform: scale(0.99);
+}
+
+.free-try-voice-skip:disabled {
+  opacity: 0.55;
+}
+
 
 .board-arrow {
   stroke-linecap: round;

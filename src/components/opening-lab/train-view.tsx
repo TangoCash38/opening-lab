@@ -23,6 +23,7 @@ import {
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { getBoardTheme } from "@/lib/board-theme";
 import { warmupEndPly } from "@/lib/london-warmup";
+import { coachLinePlyCues, coachPack, coachTalkPlies } from "@/lib/coach-packs";
 import { SCOTCH_PACK_ID } from "@/lib/scotch-coach";
 import { stopScotchCoachNarration } from "@/lib/scotch-coach-audio";
 import { ChessBoard, type SlideAnim } from "./chess-board";
@@ -33,6 +34,7 @@ import { LineResultModal } from "./line-result-modal";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
 import { beginClassicRunNarration, ClassicRunTheGame } from "./classic-run-the-game";
 import { FreeTryCard, FreeTryVoice } from "./free-try-card";
+import { ScotchCoachBoard } from "./scotch-coach-board";
 
 type Mode = "learn" | "practice";
 
@@ -308,6 +310,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
   const [freeTryDone, setFreeTryDone] = useState(false);
+  /** Spoken-move demo. Practice (the user’s moves) starts when it ends. */
+  const [freeTryDemo, setFreeTryDemo] = useState(freeTry);
   const [resultCard, setResultCard] = useState<{
     kind: "wrong" | "end";
     title: string;
@@ -1179,6 +1183,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         ) : null}
       </div>
 
+      {freeTryDemo ? null : (
       <div
         className={`mb-2 min-h-[1.2em] text-center text-[0.85rem] font-semibold text-accent transition-opacity duration-200 ${
           hint ? "opacity-100" : "opacity-0"
@@ -1186,11 +1191,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       >
         {hint || "\u00a0"}
       </div>
+      )}
       </div>
       )}
 
       <div className="train-board-band">
-      {freeTry && !freeTryDone ? <FreeTryVoice /> : null}
+      {freeTry && !freeTryDone ? (
+        <FreeTryVoice onDemoEnd={() => setFreeTryDemo(false)} />
+      ) : null}
       {!boardExpanded && !embedded ? (
         <div className="mb-1 flex items-center justify-end">
           <button
@@ -1258,6 +1266,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             />
           ) : (
           <div className="relative">
+            {freeTryDemo ? (
+              <ScotchCoachBoard
+                talk="line"
+                beatPlies={coachTalkPlies(pack.id, "line")}
+                plyAtSec={coachLinePlyCues(pack.id)}
+                plyFallbackSec={coachPack(pack.id)?.firstLineAudioFallbackSec}
+                flip={line.side === "b"}
+                frameCoords={frameCoords && !boardExpanded}
+              />
+            ) : (
             <ChessBoard
               key={session}
               game={displayGame}
@@ -1277,6 +1295,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               onMateBlastDone={stopMateBlast}
               interactive={!busy && !slide && !viewingHistory}
             />
+            )}
             {celebratePiece ? (
               <LineCompleteBurst
                 pieceCode={celebratePiece}
