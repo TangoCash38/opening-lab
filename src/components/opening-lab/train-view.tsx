@@ -24,6 +24,7 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { getBoardTheme } from "@/lib/board-theme";
 import { warmupEndPly } from "@/lib/london-warmup";
 import { SCOTCH_PACK_ID } from "@/lib/scotch-coach";
+import { stopScotchCoachNarration } from "@/lib/scotch-coach-audio";
 import { ChessBoard, type SlideAnim } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
@@ -31,6 +32,7 @@ import { PackAboutModal } from "./pack-about-modal";
 import { LineResultModal } from "./line-result-modal";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
 import { beginClassicRunNarration, ClassicRunTheGame } from "./classic-run-the-game";
+import { FreeTryCard, FreeTryVoice } from "./free-try-card";
 
 type Mode = "learn" | "practice";
 
@@ -69,6 +71,15 @@ type Props = {
   embedded?: boolean;
   /** Wood-margin file/rank labels. Off once the board is expanded. */
   frameCoords?: boolean;
+  /**
+   * Homepage “click the board” line. Practice starts immediately.
+   * Professor talks during the moves. The finish card stays on this board.
+   */
+  freeTry?: boolean;
+  onFreeTryBuyAll?: () => void;
+  onFreeTryPickPack?: () => void;
+  onFreeTryMoreFree?: () => void;
+  onFreeTryFeedback?: () => void;
 };
 
 type ResultNextAction = "practiceNext" | "testYourself" | "learn";
@@ -247,7 +258,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, plyLimit, startPly = 0, embedded = false, frameCoords = false }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, plyLimit, startPly = 0, embedded = false, frameCoords = false, freeTry = false, onFreeTryBuyAll, onFreeTryPickPack, onFreeTryMoreFree, onFreeTryFeedback }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -296,6 +307,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
+  const [freeTryDone, setFreeTryDone] = useState(false);
   const [resultCard, setResultCard] = useState<{
     kind: "wrong" | "end";
     title: string;
@@ -392,6 +404,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setSlide(null);
       setBusy(false);
       setResultCard(null);
+      setFreeTryDone(false);
       setHintsReady(true);
       setNearMissSan(null);
       const start = replaySans(line.plies, bookStartPly);
@@ -559,6 +572,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     }
 
     if (pending.nextPly >= bookEndPly) {
+      if (freeTry) {
+        stopScotchCoachNarration();
+        setStatus({
+          text: mode === "learn" ? "Practice done — Test with no hints" : t("Book solid"),
+          cls: "done",
+        });
+        if (mode !== "learn" && !practiceMissedRef.current) soundWin();
+        if (!completedRef.current) {
+          completedRef.current = true;
+          if (mode === "learn") onLearnDone?.();
+          else if (!practiceMissedRef.current) onLineComplete?.();
+        }
+        setFreeTryDone(true);
+        return;
+      }
       if (warmup && mode === "learn") {
         setStatus({
           text: t("Warm-up done"),
@@ -641,7 +669,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line, pack, purchased, subscribed, t, mode, warmup, bookEndPly, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard]);
+  }, [line, pack, purchased, subscribed, t, mode, warmup, bookEndPly, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard, freeTry]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -995,6 +1023,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   }, [nearMissSan, nearMissTick, mode, resultCard]);
 
 
+  useEffect(() => {
+    if (!freeTry) return;
+    return () => stopScotchCoachNarration();
+  }, [freeTry]);
+
   const canBack =
     !busy &&
     !slide &&
@@ -1009,6 +1042,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     <div
       className={`train-layout${embedded ? " train-embedded" : ""}`}
       data-frame-practice={embedded ? "true" : undefined}
+      data-free-try={freeTry ? "true" : undefined}
     >
       {embedded ? (
         <div className="train-frame-chrome">
@@ -1156,6 +1190,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       )}
 
       <div className="train-board-band">
+      {freeTry && !freeTryDone ? <FreeTryVoice /> : null}
       {!boardExpanded && !embedded ? (
         <div className="mb-1 flex items-center justify-end">
           <button
@@ -1246,6 +1281,14 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               <LineCompleteBurst
                 pieceCode={celebratePiece}
                 onFinished={stopCelebrate}
+              />
+            ) : null}
+            {freeTryDone ? (
+              <FreeTryCard
+                onBuyAll={() => onFreeTryBuyAll?.()}
+                onPickPack={() => onFreeTryPickPack?.()}
+                onMoreFree={() => onFreeTryMoreFree?.()}
+                onFeedback={() => onFreeTryFeedback?.()}
               />
             ) : null}
           </div>

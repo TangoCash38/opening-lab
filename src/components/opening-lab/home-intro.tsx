@@ -30,6 +30,8 @@ type Props = {
   onReport: () => void;
   onBuyAll: () => void;
   onOpenPuzzle: () => void;
+  /** Homepage board. Starts Legal’s Mate practice. No cutscene. */
+  onTryFree: () => void;
 };
 
 const START_RANKS = [
@@ -92,6 +94,7 @@ export function LandingHome({
   onReport,
   onBuyAll,
   onOpenPuzzle,
+  onTryFree,
 }: Props) {
   const t = useT();
   const navigate = useNavigate();
@@ -180,7 +183,7 @@ export function LandingHome({
                 draggable={false}
               />
             </div>
-            <LandingBoard />
+            <LandingBoard onTryFree={onTryFree} />
           </div>
           <div className="landing-copy">
             <p id="landing-title" className="landing-sub">
@@ -314,24 +317,34 @@ function BrandMark() {
   );
 }
 
-function LandingBoard() {
+function LandingBoard({ onTryFree }: { onTryFree: () => void }) {
   return (
-    <div className="landing-board" aria-hidden="true">
-      <div className="landing-board-grid">
-        {START_RANKS.map((rank, y) =>
-          rank.split("").map((code, x) => {
-            const light = (x + y) % 2 === 0;
-            return (
-              <div
-                key={`${x}-${y}`}
-                className={light ? "landing-sq landing-sq-light" : "landing-sq landing-sq-dark"}
-              >
-                {code !== "." ? <ChessPiece code={code} /> : null}
-              </div>
-            );
-          }),
-        )}
-      </div>
-    </div>
+    <button
+      type="button"
+      className="landing-board-tap"
+      data-try-free
+      onClick={onTryFree}
+      aria-label="Click the board to try free"
+    >
+      <span className="landing-board">
+        <span className="landing-board-grid">
+          {START_RANKS.map((rank, y) =>
+            rank.split("").map((code, x) => {
+              const light = (x + y) % 2 === 0;
+              return (
+                <span
+                  key={`${x}-${y}`}
+                  className={light ? "landing-sq landing-sq-light" : "landing-sq landing-sq-dark"}
+                >
+                  {code !== "." ? <ChessPiece code={code} /> : null}
+                </span>
+              );
+            }),
+          )}
+        </span>
+        <span className="landing-board-overlay">Click the board to try free</span>
+      </span>
+      <span className="landing-board-try">Click the board to try free</span>
+    </button>
   );
 }
