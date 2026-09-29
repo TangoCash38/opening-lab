@@ -28,7 +28,10 @@ import {
   subscribeColorScheme,
   type ColorScheme,
 } from "@/lib/color-scheme";
+import { coachPack } from "@/lib/coach-packs";
+import { legalMateLine } from "@/lib/legal-mate";
 import { isPlayWrap } from "@/lib/play-app";
+import { startCoachPackNarration } from "@/lib/scotch-coach-audio";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { FeedbackView } from "./feedback-view";
 import { GuideView } from "./guide-view";
@@ -77,6 +80,8 @@ function OpeningLabInner() {
     plyLimit?: number;
     startPly?: number;
     autoRunTheGame?: boolean;
+    /** Homepage board tap. Practice only. End card stays on this board. */
+    freeTry?: boolean;
   } | null>(null);
   const [queue, setQueue] = useState<
     { pack: Pack; line: OpeningLine; mode: TrainMode }[]
@@ -188,6 +193,49 @@ function OpeningLabInner() {
       goHome();
     }
   }, [view, active, canTrainPack]);
+
+  const startFreeTry = () => {
+    const found = legalMateLine();
+    if (!found || !canTrainPack(found.pack)) return;
+    const audio = coachPack(found.pack.id)?.firstLineAudio;
+    if (audio) {
+      startCoachPackNarration(audio, null, `${found.pack.id}:free-try`);
+    }
+    setQueue([]);
+    setFocusPackId(null);
+    setActive({
+      pack: found.pack,
+      line: found.line,
+      mode: "learn",
+      freeTry: true,
+    });
+    setView("train");
+    soundSelect();
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
+
+  const goOpenNow = () => {
+    setQueue([]);
+    setActive(null);
+    setFocusPackId(null);
+    setView("landing");
+    scrollAppTop();
+    window.setTimeout(() => {
+      document.getElementById("landing-open-now")?.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+      });
+    }, 60);
+  };
+
+  const openFeedbackFromFreeTry = () => {
+    setActive(null);
+    setReturnView("landing");
+    setView("feedback");
+    scrollAppTop();
+    requestAnimationFrame(() => scrollAppTop());
+  };
 
   const startLine = (
     pack: Pack,
@@ -359,6 +407,7 @@ function OpeningLabInner() {
               goPacks();
             }}
             onOpenPuzzle={openPuzzle}
+            onTryFree={startFreeTry}
           />
         )}
         {view === "puzzle" && !playSurface ? <PuzzleView onBack={goHome} /> : null}
@@ -428,6 +477,14 @@ function OpeningLabInner() {
             onPracticeNext={(nextLine) =>
               startLine(active.pack, nextLine, "learn")
             }
+            freeTry={active.freeTry === true}
+            onFreeTryBuyAll={() => {
+              setBuyAllNonce((n) => n + 1);
+              goPacks();
+            }}
+            onFreeTryPickPack={goOpenNow}
+            onFreeTryMoreFree={() => goPacks()}
+            onFreeTryFeedback={openFeedbackFromFreeTry}
           />
         )}
       </main>

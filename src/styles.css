@@ -3158,16 +3158,66 @@ html[data-color-scheme="dark"] .app-shell--landing {
   -webkit-user-drag: none;
 }
 
+.landing-board-tap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  width: min(48vw, 13.5rem);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+.landing-board-tap:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 0.45rem;
+}
+
 .landing-board {
   position: relative;
   z-index: 0;
-  flex: 0 1 auto;
-  width: min(42vw, 11.25rem);
+  display: block;
+  width: 100%;
   padding: 0.42rem;
   border-radius: 0.2rem;
   background: #6b4428;
-  box-shadow: 0 10px 18px rgba(60, 36, 18, 0.16);
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 10px 18px rgba(60, 36, 18, 0.16);
   transform: none;
+}
+
+.landing-board-overlay {
+  display: block;
+  margin-bottom: 0.35rem;
+  border-radius: 0.4rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.2;
+  padding: 0.35rem 0.4rem;
+  pointer-events: none;
+}
+
+.landing-board-try {
+  display: block;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.25;
+  padding: 0.45rem 0.65rem;
 }
 
 .landing-board-grid {
@@ -3544,8 +3594,8 @@ html[data-color-scheme="dark"] .landing-chip {
     height: 21.5rem;
   }
 
-  .landing-board {
-    width: 15.5rem;
+  .landing-board-tap {
+    width: 16.5rem;
   }
 
   .landing-copy {
