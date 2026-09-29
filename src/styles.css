@@ -3297,6 +3297,29 @@ html[data-color-scheme="dark"] .app-shell--landing {
   padding: 0.45rem 0.65rem;
 }
 
+/* Homepage cue only. 3.6s is 1.8s each way: a slow fade, not a blink. */
+@keyframes landing-try-beacon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.landing-board-overlay,
+.landing-board-try {
+  animation: landing-try-beacon 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-board-overlay,
+  .landing-board-try {
+    animation: none;
+  }
+}
+
 .landing-board-grid {
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
