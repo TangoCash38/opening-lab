@@ -3185,8 +3185,9 @@ html[data-color-scheme="dark"] .app-shell--landing {
 
 .landing-hero-art {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 0.55rem;
   min-height: 15.5rem;
   margin: 0.15rem 0 0.35rem;
@@ -3239,11 +3240,13 @@ html[data-color-scheme="dark"] .app-shell--landing {
   position: relative;
   z-index: 1;
   display: flex;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   flex-direction: column;
   align-items: stretch;
+  order: -1;
   gap: 0.4rem;
-  width: min(48vw, 13.5rem);
+  width: min(100%, 22rem);
+  max-width: 100%;
   margin: 0;
   padding: 0;
   border: 0;
@@ -3295,6 +3298,29 @@ html[data-color-scheme="dark"] .app-shell--landing {
   font-weight: 800;
   line-height: 1.25;
   padding: 0.45rem 0.65rem;
+}
+
+/* Homepage cue only. 3.6s is 1.8s each way: a slow fade, not a blink. */
+@keyframes landing-try-beacon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.landing-board-overlay,
+.landing-board-try {
+  animation: landing-try-beacon 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-board-overlay,
+  .landing-board-try {
+    animation: none;
+  }
 }
 
 .landing-board-grid {
@@ -3651,7 +3677,7 @@ html[data-color-scheme="dark"] .landing-chip {
   .landing-hero {
     display: grid;
     grid-template-columns: minmax(18rem, 1.05fr) minmax(16rem, 0.95fr);
-    align-items: center;
+    align-items: start;
     column-gap: 2rem;
     margin-top: 0.5rem;
   }
@@ -3672,7 +3698,7 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-board-tap {
-    width: 16.5rem;
+    width: min(100%, 26rem);
   }
 
   .landing-copy {
