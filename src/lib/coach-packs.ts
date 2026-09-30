@@ -1140,29 +1140,29 @@ const RUY_LOPEZ_LINE: readonly CoachLineBeat[] = [
 
 const SICILIAN_BLACK_PACK_ID = "sicilian-black";
 
-export const SICILIAN_INTRO_MP3 = "/coach/sicilian-black/sicilian-intro.mp3";
+export const SICILIAN_INTRO_MP3 = "/coach/sicilian-black/tango-sicilian-intro.mp3";
 export const SICILIAN_PORTRAIT = "/coach/sicilian-black/tango-portrait.png";
 /** Tango's Sicilian intro. Beat times were read off this clip. He does not name himself. */
-export const SICILIAN_INTRO_SEC = 38.5;
+export const SICILIAN_INTRO_SEC = 50.21;
 
 const SICILIAN_INTRO = [
-  "Right then, the Sicilian defence for Black.",
-  "White starts with one point e4, claiming the centre.",
-  "Black replies one point c5, striking from the side rather than copying White directly.",
+  "Right then, the Sicilian Defence for Black.",
+  "White starts with 1. e4, claiming the centre.",
+  "Black replies 1... c5, striking from the side rather than copying White directly.",
   "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
-  "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+  "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.",
   "There you are, a sharp, flexible defence with plenty of bite.",
 ] as const;
 
-const SICILIAN_INTRO_AT_SEC = [0, 3.15, 7.2, 13.8, 21.7, 34.6] as const;
+const SICILIAN_INTRO_AT_SEC = [0, 4.7, 9.9, 18.9, 27.5, 44.2] as const;
 
 /**
  * Moves named in the Sicilian intro, in the order they are first spoken.
- * e4 and c5 are the opening "one point" pair. The rest is the common route
+ * e4 and c5 are the opening "1. e4" / "1... c5" pair. The rest is the common route
  * (1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6), not the Najdorf book line.
  */
 export const SICILIAN_INTRO_STEM = ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nf6"] as const;
-export const SICILIAN_INTRO_STEM_AT_SEC = [4.59, 8.74, 26.12, 27.14, 28.6, 29.52, 31.7, 33.4] as const;
+export const SICILIAN_INTRO_STEM_AT_SEC = [6.2, 11.5, 33.1, 34.84, 36.5, 37.9, 40.1, 42.3] as const;
 
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
