@@ -3276,7 +3276,6 @@ html[data-color-scheme="dark"] .app-shell--landing {
   flex: 0 0 auto;
   flex-direction: column;
   align-items: stretch;
-  order: -1;
   gap: 0.4rem;
   width: min(100%, 22rem);
   max-width: 100%;
@@ -3716,6 +3715,8 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-hero-art {
+    flex-wrap: nowrap;
+    align-items: center;
     justify-content: flex-start;
     gap: 0.85rem;
     min-height: 22rem;
@@ -3723,6 +3724,7 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-coach-wrap {
+    flex: 0 0 auto;
     max-width: none;
   }
 
@@ -3731,7 +3733,10 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-board-tap {
-    width: min(100%, 26rem);
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: 26rem;
   }
 
   .landing-copy {
