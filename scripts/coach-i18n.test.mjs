@@ -42,6 +42,7 @@ const UI_KEYS = [
   "Queen’s Gambit",
   "French Defence",
   "Big Red · Ruy Lopez",
+  "Tango · Sicilian",
   "Line 1 · Legal's Mate",
   "Line 1",
 ];
@@ -134,6 +135,7 @@ test("every coach caption has a translation in every supported language", async 
     "qg-white",
     "ruy-lopez-white",
     "scotch",
+    "sicilian-black",
   ]);
 
   const captions = [];
