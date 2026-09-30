@@ -128,6 +128,7 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
         SICILIAN_PORTRAIT,
         SICILIAN_LINE_MP3,
         SICILIAN_LINE_SEC,
+        COACH_LINE_RESTART,
         coachAudioPlyCount,
         coachLinePlyCues,
         coachPackIntroApplies,
@@ -239,14 +240,40 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
       const lineScript = coachTalkPlies("sicilian-black", "line");
       if (!lineScript) throw new Error("line script");
       const played = coachTextPlayedSans(lineScript, lineScript.length - 1);
-      if (played.join(" ") !== book) throw new Error("script " + played.join(" "));
-      const najdorf = new Chess();
-      for (const san of played) {
-        if (!najdorf.move(san)) throw new Error("illegal line ply " + san);
+      const restartAt = played.indexOf(COACH_LINE_RESTART);
+      if (restartAt < 0 || played.indexOf(COACH_LINE_RESTART, restartAt + 1) !== -1) {
+        throw new Error("restart " + played.join(" "));
       }
-      if (najdorf.history().join(" ") !== book) throw new Error("history drifted");
+      const firstPass = played.slice(0, restartAt);
+      const secondPass = played.slice(restartAt + 1);
+      if (firstPass.join(" ") !== "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6") {
+        throw new Error("first pass " + firstPass.join(" "));
+      }
+      if (secondPass.join(" ") !== book) throw new Error("second pass " + secondPass.join(" "));
+      for (const pass of [firstPass, secondPass]) {
+        const game = new Chess();
+        for (const san of pass) {
+          if (!game.move(san)) throw new Error("illegal line ply " + san);
+        }
+      }
+      const recap = coach.firstLineBeats.find((beat) => beat.caption.startsWith("The first part of the line is"));
+      if (!recap?.restart || recap.atSec !== 54.36) throw new Error("recap restart");
+      const later = coach.firstLineBeats.filter((beat) => (beat.atSec ?? 0) > recap.atSec);
+      if (later.some((beat) => beat.restart)) throw new Error("third restart");
+      if (later[0]?.caption.startsWith("Now the line continues") !== true) throw new Error("continuation");
+      if (later.slice(1).some((beat) => beat.ply || beat.extraPlies)) throw new Error("explanation replay");
       const lineCues = coachLinePlyCues("sicilian-black");
       if (!lineCues || lineCues.length !== played.length) throw new Error("cues " + lineCues);
+      if (lineCues[restartAt] !== 54.36) throw new Error("restart clock " + lineCues[restartAt]);
+      if (coachAudioPlyCount(lineCues, 54.35, SICILIAN_LINE_SEC, SICILIAN_LINE_SEC) !== restartAt) {
+        throw new Error("still on the first pass");
+      }
+      if (coachAudioPlyCount(lineCues, 54.36, SICILIAN_LINE_SEC, SICILIAN_LINE_SEC) !== restartAt + 1) {
+        throw new Error("board should be back at the start");
+      }
+      if (coachAudioPlyCount(lineCues, 57.13, SICILIAN_LINE_SEC, SICILIAN_LINE_SEC) !== restartAt + 1) {
+        throw new Error("e4 not yet in the retelling");
+      }
       for (let i = 0; i < lineCues.length; i += 1) {
         if (i > 0 && !(lineCues[i] > lineCues[i - 1])) throw new Error("cue order " + i);
         if (lineCues[i] >= SICILIAN_LINE_SEC) throw new Error("cue past end " + i);

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { PACKS } from "@/data/packs";
 import {
+  COACH_LINE_RESTART,
   coachAudioPlyCount,
   coachIntroArrowsAt,
   coachTextPlyCount,
@@ -158,6 +159,18 @@ export function ScotchCoachBoard({
     if (playedRef.current >= targetRef.current) return;
     const san = sansRef.current[playedRef.current];
     if (!san) return;
+    if (san === COACH_LINE_RESTART) {
+      const fresh = new Chess();
+      gameRef.current = fresh;
+      playedRef.current += 1;
+      slidingRef.current = false;
+      setGame(fresh);
+      setPly(playedRef.current);
+      setSlide(null);
+      setLastMove(null);
+      pump();
+      return;
+    }
     const before = whiteOnlyRef.current
       ? replayWhiteOnly(sansRef.current, playedRef.current)
       : new Chess();
