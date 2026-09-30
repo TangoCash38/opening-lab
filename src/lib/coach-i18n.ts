@@ -609,6 +609,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Una ruta habitual es 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Ahí lo tienes: una defensa aguda y flexible, con mucho mordiente.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Muy bien, bienvenido a la línea 1 de la Sicilian, la Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "Esta es una de las respuestas más ambiciosas de las negras al peón a e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "Las blancas abren con peón a e4, y las negras golpean enseguida con peón a c5.",
+    "White develops knight to f3.":
+      "Las blancas desarrollan el caballo a f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "Las negras juegan peón a d6, y las blancas abren el centro con peón a d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "Las negras toman en d4 con el peón de c, las blancas recapturan con caballo toma d4.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "Las negras desarrollan el caballo a f6, y las blancas traen el otro caballo a c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Ahora llega la famosa jugada Najdorf, peón a a6, una jugada flexible y pequeña con mucho veneno detrás.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "Las negras mantienen la posición adaptable y se preparan para expandirse en el flanco de dama.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "La primera parte de la línea es peón a e4, peón a c5, caballo a f3, peón a d6, peón a d4, peón toma d4, caballo toma d4, caballo a f6, caballo a c3, peón a a6, alfil a e3, peón a e5, caballo a b3, alfil a e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "Ahora la línea sigue, peón a f3, alfil a e7, dama a d2, enroque corto, enroque largo, caballo a bd7, peón a g4, peón a b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "Las blancas preparan un asalto en el flanco de rey con peón a f3.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "Las negras desarrollan con calma el alfil a e7, y luego las blancas traen la dama a d2.",
+    "Black castles kingside and White castles queenside.":
+      "Las negras enrocan en corto y las blancas enrocan en largo.",
+    "Now the battle lines are drawn.":
+      "Ahora las líneas de batalla están trazadas.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "Las negras desarrollan el caballo a bd7 y las blancas empiezan la famosa tormenta de peones con peón a g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "Las negras responden con peón a b5 y ahí está, la Najdorf ha cobrado vida.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "Las blancas reúnen fuerzas en el flanco de rey, las negras avanzan por el flanco de dama, y ambos preparan algo bastante peligroso.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Muy bien, sigue las jugadas de cerca, mantén la atención y disfruta esta tremenda línea Sicilian.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -978,6 +1016,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "一条常见路线是 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6。",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "就是这样：一种锐利、灵活、很有锋芒的防御。",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "好，欢迎来到 Sicilian 的第 1 线，Najdorf。",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "这是黑方对兵到 e4 最有野心的应着之一。",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "白方以兵到 e4 开局，黑方立刻用兵到 c5 从侧面冲击。",
+    "White develops knight to f3.":
+      "白方把马发展到 f3。",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "黑方走兵到 d6，白方用兵到 d4 打开中心。",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "黑方用 c 兵在 d4 吃子，白方用马吃 d4 回吃。",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "黑方把马发展到 f6，白方把另一只马带到 c3。",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "现在是著名的 Najdorf 着法，兵到 a6，一步灵活的小棋，背后很有威力。",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "黑方保持局面的弹性，并准备在后翼扩张。",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "这条线的前半是兵到 e4，兵到 c5，马到 f3，兵到 d6，兵到 d4，兵吃 d4，马吃 d4，马到 f6，马到 c3，兵到 a6，象到 e3，兵到 e5，马到 b3，象到 e6。",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "现在这条线继续，兵到 f3，象到 e7，后到 d2，短易位，长易位，马到 bd7，兵到 g4，兵到 b5。",
+    "White prepares a kingside assault with pawn to f3.":
+      "白方用兵到 f3 准备王翼进攻。",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "黑方从容地把象发展到 e7，然后白方把后带到 d2。",
+    "Black castles kingside and White castles queenside.":
+      "黑方短易位，白方长易位。",
+    "Now the battle lines are drawn.":
+      "现在双方的战线已经划开。",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "黑方把马发展到 bd7，白方用兵到 g4 开始著名的兵冲。",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "黑方以兵到 b5 回应，Najdorf 就此活了起来。",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "白方在王翼集结兵力，黑方沿后翼推进，双方都在准备相当危险的一手。",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "好，紧跟这些着法，保持清醒，享受这条精彩的 Sicilian 线路。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1369,6 +1445,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Une voie courante est 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Vous y voilà : une défense aiguë et souple, avec beaucoup de mordant.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Bien, bienvenue à la ligne 1 de la Sicilian, la Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "C'est l'une des réponses les plus ambitieuses des Noirs au pion en e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "Les Blancs ouvrent par le pion en e4, et les Noirs frappent aussitôt par le pion en c5.",
+    "White develops knight to f3.":
+      "Les Blancs développent le cavalier en f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "Les Noirs jouent le pion en d6, et les Blancs ouvrent le centre par le pion en d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "Les Noirs prennent en d4 avec le pion c, les Blancs reprennent par cavalier prend d4.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "Les Noirs développent le cavalier en f6, et les Blancs amènent l'autre cavalier en c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Voici le fameux coup Najdorf, pion en a6, un petit coup souple avec beaucoup de venin.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "Les Noirs gardent la position adaptable et se préparent à s'étendre à l'aile dame.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "La première partie de la ligne est pion en e4, pion en c5, cavalier en f3, pion en d6, pion en d4, pion prend d4, cavalier prend d4, cavalier en f6, cavalier en c3, pion en a6, fou en e3, pion en e5, cavalier en b3, fou en e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "La ligne continue, pion en f3, fou en e7, dame en d2, petit roque, grand roque, cavalier en bd7, pion en g4, pion en b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "Les Blancs préparent un assaut à l'aile roi avec le pion en f3.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "Les Noirs développent calmement le fou en e7, puis les Blancs amènent la dame en d2.",
+    "Black castles kingside and White castles queenside.":
+      "Les Noirs roquent côté roi et les Blancs roquent côté dame.",
+    "Now the battle lines are drawn.":
+      "Les lignes de bataille sont maintenant tracées.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "Les Noirs développent le cavalier en bd7 et les Blancs lancent la fameuse tempête de pions avec le pion en g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "Les Noirs répondent par le pion en b5 et voilà, la Najdorf s'anime.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "Les Blancs rassemblent leurs forces à l'aile roi, les Noirs chargent à l'aile dame, et les deux préparent quelque chose de plutôt dangereux.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Bien, suivez les coups de près, gardez votre sang-froid et profitez de cette belle ligne Sicilian.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1761,6 +1875,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Ein üblicher Weg ist 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Da sind Sie: eine scharfe, flexible Verteidigung mit ordentlich Biss.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Also dann, willkommen bei Linie 1 der Sicilian, der Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "Das ist eine der ehrgeizigsten Antworten von Schwarz auf Bauer nach e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "Weiß eröffnet mit Bauer nach e4, und Schwarz schlägt sofort mit Bauer nach c5.",
+    "White develops knight to f3.":
+      "Weiß entwickelt den Springer nach f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "Schwarz spielt Bauer nach d6, und Weiß öffnet das Zentrum mit Bauer nach d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "Schwarz nimmt auf d4 mit dem c-Bauern, Weiß schlägt mit Springer nimmt d4 zurück.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "Schwarz entwickelt den Springer nach f6, und Weiß bringt den anderen Springer nach c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Jetzt kommt der berühmte Najdorf-Zug, Bauer nach a6, ein kleiner flexibler Zug mit viel Gift.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "Schwarz hält die Stellung anpassungsfähig und bereitet die Erweiterung am Damenflügel vor.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "Der erste Teil der Linie ist Bauer nach e4, Bauer nach c5, Springer nach f3, Bauer nach d6, Bauer nach d4, Bauer nimmt d4, Springer nimmt d4, Springer nach f6, Springer nach c3, Bauer nach a6, Läufer nach e3, Bauer nach e5, Springer nach b3, Läufer nach e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "Nun geht die Linie weiter, Bauer nach f3, Läufer nach e7, Dame nach d2, kurze Rochade, lange Rochade, Springer nach bd7, Bauer nach g4, Bauer nach b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "Weiß bereitet einen Angriff am Königsflügel mit Bauer nach f3 vor.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "Schwarz entwickelt ruhig den Läufer nach e7, dann bringt Weiß die Dame nach d2.",
+    "Black castles kingside and White castles queenside.":
+      "Schwarz rochiert kurz und Weiß rochiert lang.",
+    "Now the battle lines are drawn.":
+      "Jetzt sind die Fronten gezogen.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "Schwarz entwickelt den Springer nach bd7 und Weiß beginnt den berühmten Bauernsturm mit Bauer nach g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "Schwarz antwortet mit Bauer nach b5, und da ist sie, die Najdorf ist zum Leben erwacht.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "Weiß sammelt Kräfte am Königsflügel, Schwarz stürmt am Damenflügel, und beide bereiten etwas ziemlich Gefährliches vor.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Also dann, folgt den Zügen genau, bleibt wachsam und genießt diese prächtige Sicilian-Linie.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2150,6 +2302,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Uma rota comum é 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Aí está: uma defesa aguda e flexível, com bastante mordida.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Muito bem, bem-vindo à linha 1 da Sicilian, a Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "Esta é uma das respostas mais ambiciosas das pretas ao peão para e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "As brancas abrem com peão para e4, e as pretas golpeiam logo com peão para c5.",
+    "White develops knight to f3.":
+      "As brancas desenvolvem o cavalo para f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "As pretas jogam peão para d6, e as brancas abrem o centro com peão para d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "As pretas tomam em d4 com o peão de c, as brancas recapturam com cavalo toma d4.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "As pretas desenvolvem o cavalo para f6, e as brancas trazem o outro cavalo para c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Agora vem o famoso lance Najdorf, peão para a6, um lance pequeno e flexível com muito veneno.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "As pretas mantêm a posição adaptável e preparam a expansão na ala da dama.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "A primeira parte da linha é peão para e4, peão para c5, cavalo para f3, peão para d6, peão para d4, peão toma d4, cavalo toma d4, cavalo para f6, cavalo para c3, peão para a6, bispo para e3, peão para e5, cavalo para b3, bispo para e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "Agora a linha continua, peão para f3, bispo para e7, dama para d2, roque pequeno, roque grande, cavalo para bd7, peão para g4, peão para b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "As brancas preparam um assalto na ala do rei com peão para f3.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "As pretas desenvolvem com calma o bispo para e7, e então as brancas trazem a dama para d2.",
+    "Black castles kingside and White castles queenside.":
+      "As pretas rocam no lado do rei e as brancas rocam no lado da dama.",
+    "Now the battle lines are drawn.":
+      "Agora as linhas de batalha estão traçadas.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "As pretas desenvolvem o cavalo para bd7 e as brancas começam a famosa tempestade de peões com peão para g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "As pretas respondem com peão para b5 e aí está, a Najdorf ganhou vida.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "As brancas reúnem forças na ala do rei, as pretas avançam na ala da dama, e ambos preparam algo bastante perigoso.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Muito bem, acompanhe os lances de perto, mantenha a atenção e aproveite esta excelente linha Sicilian.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2536,6 +2726,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Обычный маршрут: 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Вот так: острая, гибкая защита с изрядным запасом зуба.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Итак, добро пожаловать в линию 1 Sicilian, Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "Это один из самых амбициозных ответов чёрных на пешку на e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "Белые открывают пешкой на e4, и чёрные сразу бьют пешкой на c5.",
+    "White develops knight to f3.":
+      "Белые развивают коня на f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "Чёрные играют пешку на d6, и белые открывают центр пешкой на d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "Чёрные берут на d4 пешкой c, белые отыгрывают конём берёт d4.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "Чёрные развивают коня на f6, и белые приводят другого коня на c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Теперь знаменитый ход Najdorf, пешка на a6, гибкий маленький ход с большим ядом.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "Чёрные сохраняют позицию гибкой и готовят расширение на ферзевом фланге.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "Первая часть линии: пешка на e4, пешка на c5, конь на f3, пешка на d6, пешка на d4, пешка берёт d4, конь берёт d4, конь на f6, конь на c3, пешка на a6, слон на e3, пешка на e5, конь на b3, слон на e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "Теперь линия продолжается, пешка на f3, слон на e7, ферзь на d2, короткая рокировка, длинная рокировка, конь на bd7, пешка на g4, пешка на b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "Белые готовят штурм королевского фланга пешкой на f3.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "Чёрные спокойно развивают слона на e7, затем белые приводят ферзя на d2.",
+    "Black castles kingside and White castles queenside.":
+      "Чёрные рокируют в короткую сторону, белые рокируют в длинную.",
+    "Now the battle lines are drawn.":
+      "Теперь линии боя обозначены.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "Чёрные развивают коня на bd7, и белые начинают знаменитую пешечную бурю пешкой на g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "Чёрные отвечают пешкой на b5, и вот она, Najdorf ожила.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "Белые собирают силы на королевском фланге, чёрные идут на ферзевом, и оба готовят нечто довольно опасное.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Итак, следите за ходами внимательно, не теряйте бдительности и наслаждайтесь этой отличной линией Sicilian.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2926,6 +3154,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Una strada comune è 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Eccoci: una difesa acuta e flessibile, con un bel morso.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Bene, benvenuto alla linea 1 della Sicilian, la Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "Questa è una delle risposte più ambiziose del Nero alla pedone in e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "Il Bianco apre con pedone in e4, e il Nero colpisce subito con pedone in c5.",
+    "White develops knight to f3.":
+      "Il Bianco sviluppa il cavallo in f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "Il Nero gioca pedone in d6, e il Bianco apre il centro con pedone in d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "Il Nero prende in d4 con il pedone c, il Bianco ricattura con cavallo prende d4.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "Il Nero sviluppa il cavallo in f6, e il Bianco porta l'altro cavallo in c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Ora arriva la famosa mossa Najdorf, pedone in a6, una piccola mossa flessibile con molto veleno.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "Il Nero tiene la posizione adattabile e si prepara a espandersi sul lato di donna.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "La prima parte della linea è pedone in e4, pedone in c5, cavallo in f3, pedone in d6, pedone in d4, pedone prende d4, cavallo prende d4, cavallo in f6, cavallo in c3, pedone in a6, alfiere in e3, pedone in e5, cavallo in b3, alfiere in e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "Ora la linea continua, pedone in f3, alfiere in e7, donna in d2, arroco corto, arroco lungo, cavallo in bd7, pedone in g4, pedone in b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "Il Bianco prepara un assalto sul lato di re con pedone in f3.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "Il Nero sviluppa con calma l'alfiere in e7, poi il Bianco porta la donna in d2.",
+    "Black castles kingside and White castles queenside.":
+      "Il Nero arrocca sul lato di re e il Bianco arrocca sul lato di donna.",
+    "Now the battle lines are drawn.":
+      "Ora le linee di battaglia sono tracciate.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "Il Nero sviluppa il cavallo in bd7 e il Bianco inizia la famosa tempesta di pedoni con pedone in g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "Il Nero risponde con pedone in b5 ed eccola, la Najdorf ha preso vita.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "Il Bianco raduna le forze sul lato di re, il Nero carica sul lato di donna, ed entrambi preparano qualcosa di piuttosto pericoloso.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Bene, segui le mosse da vicino, resta attento e goditi questa splendida linea Sicilian.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3317,6 +3583,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "एक आम रास्ता है 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6।",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "यह रहा: एक तीखी, लचीली रक्षा, जिसमें खूब काट है।",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "ठीक है, Sicilian की लाइन 1 में स्वागत है, Najdorf।",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "यह e4 पर मोहरे का काले का सबसे महत्वाकांक्षी जवाबों में से एक है।",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "सफेद e4 पर मोहरे से खोलता है, और काला तुरंत c5 पर मोहरे से वार करता है।",
+    "White develops knight to f3.":
+      "सफेद घोड़े को f3 पर विकसित करता है।",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "काला d6 पर मोहरा चलता है, और सफेद d4 पर मोहरे से केंद्र खोलता है।",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "काला c के मोहरे से d4 पर लेता है, सफेद घोड़े से d4 लेकर वापस लेता है।",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "काला घोड़े को f6 पर विकसित करता है, और सफेद दूसरा घोड़ा c3 पर लाता है।",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "अब प्रसिद्ध Najdorf चाल आती है, मोहरा a6 पर, एक लचीली छोटी चाल जिसके पीछे बहुत ज़हर है।",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "काला स्थिति को लचीला रखता है और रानी पक्ष पर फैलने की तैयारी करता है।",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "लाइन का पहला भाग है मोहरा e4, मोहरा c5, घोड़ा f3, मोहरा d6, मोहरा d4, मोहरा d4 लेता है, घोड़ा d4 लेता है, घोड़ा f6, घोड़ा c3, मोहरा a6, ऊंट e3, मोहरा e5, घोड़ा b3, ऊंट e6।",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "अब लाइन आगे बढ़ती है, मोहरा f3, ऊंट e7, रानी d2, छोटी रोकी, लंबी रोकी, घोड़ा bd7, मोहरा g4, मोहरा b5।",
+    "White prepares a kingside assault with pawn to f3.":
+      "सफेद f3 पर मोहरे से राजा पक्ष पर हमले की तैयारी करता है।",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "काला शांति से ऊंट को e7 पर विकसित करता है, फिर सफेद रानी को d2 पर लाता है।",
+    "Black castles kingside and White castles queenside.":
+      "काला राजा पक्ष में रोकी करता है और सफेद रानी पक्ष में रोकी करता है।",
+    "Now the battle lines are drawn.":
+      "अब युद्ध की रेखाएँ खिंच गई हैं।",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "काला घोड़े को bd7 पर विकसित करता है और सफेद g4 पर मोहरे से प्रसिद्ध मोहरा तूफान शुरू करता है।",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "काला b5 पर मोहरे से जवाब देता है और बस, Najdorf जीवंत हो उठी है।",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "सफेद राजा पक्ष पर सेना जुटा रहा है, काला रानी पक्ष पर बढ़ रहा है, और दोनों कुछ काफी खतरनाक तैयार कर रहे हैं।",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "ठीक है, चालों को ध्यान से देखें, होश रखें और इस शानदार Sicilian लाइन का आनंद लें।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3696,6 +4000,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "よくある道筋は 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6 です。",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "そこです。鋭く柔軟で、切れ味のある防御です。",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "さあ、Sicilian のライン 1、Najdorf へようこそ。",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "これは黒の、ポーンを e4 へ進める手への最も野心的な応手の一つです。",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "白はポーンを e4 へ進めて開始し、黒はすぐにポーンを c5 へ進めて側面から打ちます。",
+    "White develops knight to f3.":
+      "白はナイトを f3 へ展開します。",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "黒はポーンを d6 へ進め、白はポーンを d4 へ進めてセンターを開きます。",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "黒は c ポーンで d4 を取り、白はナイトが d4 を取って取り返しします。",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "黒はナイトを f6 へ展開し、白はもう一つのナイトを c3 へ連れてきます。",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "ここで有名な Najdorf の手、ポーンを a6 へ。柔軟な小さな手で、背後に強い毒があります。",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "黒は局面を柔軟に保ち、クイーンサイドでの拡張を準備します。",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "ラインの前半は、ポーンを e4、ポーンを c5、ナイトを f3、ポーンを d6、ポーンを d4、ポーンが d4 を取る、ナイトが d4 を取る、ナイトを f6、ナイトを c3、ポーンを a6、ビショップを e3、ポーンを e5、ナイトを b3、ビショップを e6。",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "ここからラインは続きます。ポーンを f3、ビショップを e7、クイーンを d2、キングサイドキャッスル、クイーンサイドキャッスル、ナイトを bd7、ポーンを g4、ポーンを b5。",
+    "White prepares a kingside assault with pawn to f3.":
+      "白はポーンを f3 へ進めてキングサイドの攻撃を準備します。",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "黒は落ち着いてビショップを e7 へ展開し、それから白はクイーンを d2 へ連れてきます。",
+    "Black castles kingside and White castles queenside.":
+      "黒はキングサイドにキャッスルし、白はクイーンサイドにキャッスルします。",
+    "Now the battle lines are drawn.":
+      "これで戦線が引かれました。",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "黒はナイトを bd7 へ展開し、白はポーンを g4 へ進めて有名なポーンストームを始めます。",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "黒はポーンを b5 へ進めて応え、Najdorf が生き生きと動き出します。",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "白はキングサイドに兵力を集め、黒はクイーンサイドを突き進み、両者ともかなり危険な何かを準備しています。",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "さあ、手をよく追い、油断せず、この見事な Sicilian のラインを楽しんでください。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -4075,6 +4417,44 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "طريق شائع هو 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "ها أنت: دفاع حاد ومرن، وفيه الكثير من العض.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "حسنًا، أهلًا بك في الخط 1 من Sicilian، Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "هذا أحد أكثر ردود الأسود طموحًا على البيدق إلى e4.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "يبدأ الأبيض بالبيدق إلى e4، ويضرب الأسود فورًا بالبيدق إلى c5.",
+    "White develops knight to f3.":
+      "يطوّر الأبيض الحصان إلى f3.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "يلعب الأسود البيدق إلى d6، ويفتح الأبيض المركز بالبيدق إلى d4.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "يأخذ الأسود على d4 ببيدق c، ويستعيد الأبيض بالحصان يأخذ d4.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "يطوّر الأسود الحصان إلى f6، ويجلب الأبيض الحصان الآخر إلى c3.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "الآن تأتي نقلة Najdorf الشهيرة، البيدق إلى a6، نقلة صغيرة مرنة وراءها قدر كبير من السم.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "يبقي الأسود الوضع قابلًا للتكيف ويستعد للتوسع في جناح الملكة.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "الجزء الأول من الخط هو البيدق إلى e4، البيدق إلى c5، الحصان إلى f3، البيدق إلى d6، البيدق إلى d4، البيدق يأخذ d4، الحصان يأخذ d4، الحصان إلى f6، الحصان إلى c3، البيدق إلى a6، الفيل إلى e3، البيدق إلى e5، الحصان إلى b3، الفيل إلى e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "الآن يستمر الخط، البيدق إلى f3، الفيل إلى e7، الملكة إلى d2، التبييت الصغير، التبييت الكبير، الحصان إلى bd7، البيدق إلى g4، البيدق إلى b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "يجهّز الأبيض هجومًا على جناح الملك بالبيدق إلى f3.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "يطوّر الأسود بهدوء الفيل إلى e7، ثم يجلب الأبيض الملكة إلى d2.",
+    "Black castles kingside and White castles queenside.":
+      "يبيّت الأسود على جناح الملك ويبيّت الأبيض على جناح الملكة.",
+    "Now the battle lines are drawn.":
+      "الآن رُسمت خطوط المعركة.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "يطوّر الأسود الحصان إلى bd7 ويبدأ الأبيض عاصفة البيادق الشهيرة بالبيدق إلى g4.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "يرد الأسود بالبيدق إلى b5 وها هي Najdorf قد انبعثت حيّة.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "يجمع الأبيض قواته على جناح الملك، ويندفع الأسود على جناح الملكة، وكلاهما يجهّز شيئًا خطيرًا إلى حد ما.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "حسنًا، تابع النقلات عن كثب، وابقَ يقظًا واستمتع بهذا الخط Sicilian الرائع.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -4459,5 +4839,43 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Sık bir yol 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "İşte oradasınız: keskin, esnek ve epey ısırığı olan bir savunma.",
+    "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
+      "Peki, Sicilian hattı 1'e hoş geldin, Najdorf.",
+    "This is one of Black's most ambitious answers to pawn to e4.":
+      "Bu, Siyahın e4 piyonuna en hırslı cevaplarından biridir.",
+    "White opens with pawn to e4, and Black immediately strikes with pawn to c5.":
+      "Beyaz e4 piyonuyla açar ve Siyah hemen c5 piyonuyla vurur.",
+    "White develops knight to f3.":
+      "Beyaz atı f3'e geliştirir.",
+    "Black plays pawn to d6, and White opens the centre with pawn to d4.":
+      "Siyah d6 piyonunu oynar ve Beyaz d4 piyonuyla merkezi açar.",
+    "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.":
+      "Siyah c piyonuyla d4'te alır, Beyaz at d4 alır diye geri alır.",
+    "Black develops knight to f6, and White brings the other knight to c3.":
+      "Siyah atı f6'ya geliştirir ve Beyaz öteki atı c3'e getirir.",
+    "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.":
+      "Şimdi ünlü Najdorf hamlesi gelir, piyon a6'ya, arkasında epey zehir olan esnek küçük bir hamle.",
+    "Black keeps the position adaptable and prepares to expand on the queenside.":
+      "Siyah konumu uyarlanabilir tutar ve vezir kanadında genişlemeye hazırlanır.",
+    "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.":
+      "Hattın ilk bölümü piyon e4, piyon c5, at f3, piyon d6, piyon d4, piyon d4 alır, at d4 alır, at f6, at c3, piyon a6, fil e3, piyon e5, at b3, fil e6.",
+    "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.":
+      "Şimdi hat sürer, piyon f3, fil e7, vezir d2, kısa rok, uzun rok, at bd7, piyon g4, piyon b5.",
+    "White prepares a kingside assault with pawn to f3.":
+      "Beyaz f3 piyonuyla şah kanadında bir saldırı hazırlar.",
+    "Black calmly develops bishop to e7, then White brings the queen to d2.":
+      "Siyah sakince fili e7'ye geliştirir, sonra Beyaz veziri d2'ye getirir.",
+    "Black castles kingside and White castles queenside.":
+      "Siyah şah kanadına rok yapar ve Beyaz vezir kanadına rok yapar.",
+    "Now the battle lines are drawn.":
+      "Artık savaş hatları çizildi.",
+    "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.":
+      "Siyah atı bd7'ye geliştirir ve Beyaz g4 piyonuyla ünlü piyon fırtınasını başlatır.",
+    "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.":
+      "Siyah b5 piyonuyla karşılık verir ve işte, Najdorf canlandı.",
+    "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.":
+      "Beyaz şah kanadında güç topluyor, Siyah vezir kanadından yükleniyor ve ikisi de oldukça tehlikeli bir şey hazırlıyor.",
+    "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.":
+      "Peki, hamleleri yakından izle, uyanık kal ve bu harika Sicilian hattının tadını çıkar.",
   },
 };
