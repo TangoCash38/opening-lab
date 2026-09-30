@@ -362,7 +362,7 @@ test("Sicilian for Black is the signed sicilian-black pack: sib1â€“sib10 book, Â
   assert.doesNotMatch(opening, /punish/i);
   assert.doesNotMatch(opening, /5 book/);
 
-  assert.doesNotMatch(coach, /sicilian-black/);
+  assert.match(coach, /SICILIAN_BLACK_PACK_ID = "sicilian-black"/);
 
   const lineIds = [...sib.matchAll(/id: "(sib\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(lineIds, Object.keys(EXPECTED));

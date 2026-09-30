@@ -24,6 +24,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
     "Big Red · Ruy Lopez": "Big Red · Apertura española",
+    "Tango · Sicilian": "Tango · Siciliana",
   },
   zh: {
     Mute: "静音",
@@ -42,6 +43,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
     "Big Red · Ruy Lopez": "Big Red · 西班牙开局",
+    "Tango · Sicilian": "Tango · 西西里防御",
   },
   fr: {
     Mute: "Muet",
@@ -60,6 +62,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
     "Big Red · Ruy Lopez": "Big Red · Partie espagnole",
+    "Tango · Sicilian": "Tango · Sicilienne",
   },
   de: {
     Mute: "Stumm",
@@ -78,6 +81,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
     "Big Red · Ruy Lopez": "Big Red · Spanische Partie",
+    "Tango · Sicilian": "Tango · Sizilianisch",
   },
   pt: {
     Mute: "Mudo",
@@ -96,6 +100,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
     "Big Red · Ruy Lopez": "Big Red · Abertura Espanhola",
+    "Tango · Sicilian": "Tango · Siciliana",
   },
   ru: {
     Mute: "Тихо",
@@ -114,6 +119,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
     "Big Red · Ruy Lopez": "Big Red · Испанская партия",
+    "Tango · Sicilian": "Tango · Сицилианская",
   },
   it: {
     Mute: "Muto",
@@ -132,6 +138,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
     "Big Red · Ruy Lopez": "Big Red · Partita spagnola",
+    "Tango · Sicilian": "Tango · Siciliana",
   },
   hi: {
     Mute: "मौन",
@@ -150,6 +157,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
     "Big Red · Ruy Lopez": "Big Red · स्पेनिश ओपनिंग",
+    "Tango · Sicilian": "Tango · सिसिलियन",
   },
   ja: {
     Mute: "ミュート",
@@ -168,6 +176,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
     "Big Red · Ruy Lopez": "Big Red · ルイ・ロペス",
+    "Tango · Sicilian": "Tango · シシリアン",
   },
   ar: {
     Mute: "كتم",
@@ -186,6 +195,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
     "Big Red · Ruy Lopez": "Big Red · الافتتاح الإسباني",
+    "Tango · Sicilian": "Tango · الصقلية",
   },
   tr: {
     Mute: "Sessiz",
@@ -204,6 +214,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
     "Big Red · Ruy Lopez": "Big Red · İspanyol Açılışı",
+    "Tango · Sicilian": "Tango · Sicilya",
   },
 };
 
@@ -586,6 +597,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Te toca: practícala hasta que ese viaje del caballo de b1 a d2 y luego a f1 se sienta tan natural como encontrar",
     "your way around London.":
       "el camino por Londres.",
+    "Right then, the Sicilian defence for Black.":
+      "Muy bien, la defensa siciliana para las negras.",
+    "White starts with one point e4, claiming the centre.":
+      "Las blancas empiezan con un punto e4 y reclaman el centro.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "Las negras responden un punto c5, golpeando de lado en vez de copiar a las blancas directamente.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "La idea es desafiar las ambiciones centrales de las blancas, desarrollarse con actividad y crear contrajuego desde el principio.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Una ruta habitual es 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "Ahí lo tienes: una defensa aguda y flexible, con mucho mordiente.",
   },
   zh: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -943,6 +966,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "交给你了，反复演练，直到那匹马从 b1 到 d2 再到 f1 的旅程，感觉像找到",
     "your way around London.":
       "在伦敦的路一样自然。",
+    "Right then, the Sicilian defence for Black.":
+      "好，这是黑方的西西里防御。",
+    "White starts with one point e4, claiming the centre.":
+      "白方以 1. e4 开局，争夺中心。",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "黑方应以 1. c5 从侧翼还击，而不是直接照搬白方。",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "其用意是挑战白方的中心野心，积极出子，并从一开始就制造反击。",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "一条常见路线是 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6。",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "就是这样：一种锐利、灵活、很有锋芒的防御。",
   },
   fr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1322,6 +1357,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "À vous : répétez-la jusqu'à ce que ce voyage du cavalier de b1 à d2 puis à f1 semble aussi naturel que de trouver",
     "your way around London.":
       "votre chemin dans Londres.",
+    "Right then, the Sicilian defence for Black.":
+      "Bien alors, la défense sicilienne pour les Noirs.",
+    "White starts with one point e4, claiming the centre.":
+      "Les Blancs commencent par un point e4 et revendiquent le centre.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "Les Noirs répondent un point c5, en frappant de côté plutôt qu'en copiant directement les Blancs.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "L'idée est de contester les ambitions centrales des Blancs, de se développer activement et de créer du contre-jeu dès le début.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Une voie courante est 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "Vous y voilà : une défense aiguë et souple, avec beaucoup de mordant.",
   },
   de: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -1702,6 +1749,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Ihr seid dran: übt sie, bis diese Springerreise von b1 nach d2 und weiter nach f1 sich so natürlich anfühlt wie",
     "your way around London.":
       "den Weg durch London zu finden.",
+    "Right then, the Sicilian defence for Black.":
+      "Also dann, die sizilianische Verteidigung für Schwarz.",
+    "White starts with one point e4, claiming the centre.":
+      "Weiß beginnt mit einem Punkt e4 und beansprucht das Zentrum.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "Schwarz antwortet mit einem Punkt c5 und schlägt von der Seite zu, statt Weiß direkt zu kopieren.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "Die Idee ist, die zentralen Ambitionen von Weiß herauszufordern, aktiv zu entwickeln und von Anfang an Gegenspiel zu schaffen.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Ein üblicher Weg ist 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "Da sind Sie: eine scharfe, flexible Verteidigung mit ordentlich Biss.",
   },
   pt: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2079,6 +2138,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "A tua vez: treina até que essa viagem do cavalo de b1 para d2 e depois para f1 pareça tão natural como encontrar",
     "your way around London.":
       "o caminho por Londres.",
+    "Right then, the Sicilian defence for Black.":
+      "Muito bem, a defesa siciliana para as Pretas.",
+    "White starts with one point e4, claiming the centre.":
+      "As Brancas começam com um ponto e4, reclamando o centro.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "As Pretas respondem um ponto c5, golpeando de lado em vez de copiar as Brancas diretamente.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "A ideia é desafiar as ambições centrais das Brancas, desenvolver-se com atividade e criar contrajogo desde o início.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Uma rota comum é 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "Aí está: uma defesa aguda e flexível, com bastante mordida.",
   },
   ru: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2453,6 +2524,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Теперь вы: повторяйте, пока путь этого коня с b1 на d2 и далее на f1 не станет таким же естественным, как найти",
     "your way around London.":
       "дорогу по Лондону.",
+    "Right then, the Sicilian defence for Black.":
+      "Итак, сицилианская защита за чёрных.",
+    "White starts with one point e4, claiming the centre.":
+      "Белые начинают с одного пункта e4 и претендуют на центр.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "Чёрные отвечают одним пунктом c5, ударяя с фланга, а не копируя белых напрямую.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "Идея в том, чтобы оспорить центральные амбиции белых, активно развиваться и создавать контригру с самого начала.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Обычный маршрут: 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "Вот так: острая, гибкая защита с изрядным запасом зуба.",
   },
   it: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -2831,6 +2914,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Tocca a te: ripetila finché quel viaggio del cavallo da b1 a d2 e poi a f1 non sembri naturale come trovare",
     "your way around London.":
       "la strada per Londra.",
+    "Right then, the Sicilian defence for Black.":
+      "Bene allora, la difesa siciliana per il Nero.",
+    "White starts with one point e4, claiming the centre.":
+      "Il Bianco inizia con un punto e4, reclamando il centro.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "Il Nero risponde un punto c5, colpendo di fianco invece di copiare direttamente il Bianco.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "L'idea è sfidare le ambizioni centrali del Bianco, svilupparsi con attività e creare controgioco fin dall'inizio.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Una strada comune è 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "Eccoci: una difesa acuta e flessibile, con un bel morso.",
   },
   hi: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3210,6 +3305,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "अब तुम्हारी बारी: इसे तब तक दोहराओ जब तक उस घोड़े की यात्रा b1 से d2 और फिर f1 तक उतनी स्वाभाविक लगे जितना ढूँढना",
     "your way around London.":
       "लंदन में अपना रास्ता।",
+    "Right then, the Sicilian defence for Black.":
+      "अच्छा, काले के लिए सिसिलियन रक्षा।",
+    "White starts with one point e4, claiming the centre.":
+      "सफ़ेद एक बिंदु e4 से शुरू करता है और केंद्र पर दावा करता है।",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "काला एक बिंदु c5 से जवाब देता है, सीधे सफ़ेद की नकल करने के बजाय बगल से प्रहार करता है।",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "विचार है सफ़ेद की केंद्रीय महत्वाकांक्षाओं को चुनौती देना, सक्रिय रूप से विकसित होना, और शुरुआत से ही काउंटरप्ले बनाना।",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "एक आम रास्ता है 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6।",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "यह रहा: एक तीखी, लचीली रक्षा, जिसमें खूब काट है।",
   },
   ja: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3577,6 +3684,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "あとは君だ。そのナイトの旅が b1 から d2、そして f1 まで、道を見つけるのと同じくらい自然に感じるまで繰り返せ",
     "your way around London.":
       "ロンドンの中を。",
+    "Right then, the Sicilian defence for Black.":
+      "さあ、黒のシシリアン・ディフェンスです。",
+    "White starts with one point e4, claiming the centre.":
+      "白はワンポイント e4 で始め、センターを主張します。",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "黒はワンポイント c5 で応え、白をそのまま真似るのではなく横から突きます。",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "狙いは白の中央の野心に挑み、積極的に駒を出し、最初からカウンタープレイを作ることです。",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "よくある道筋は 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6 です。",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "そこです。鋭く柔軟で、切れ味のある防御です。",
   },
   ar: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -3944,6 +4063,18 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "دورك: كرّرها حتى تبدو رحلة ذلك الحصان من b1 إلى d2 ثم إلى f1 طبيعية كالعثور على",
     "your way around London.":
       "طريقك في لندن.",
+    "Right then, the Sicilian defence for Black.":
+      "حسنًا، الدفاع الصقلي للأسود.",
+    "White starts with one point e4, claiming the centre.":
+      "يبدأ الأبيض بنقطة e4 ويطالب بالمركز.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "يرد الأسود بنقطة c5، ضاربًا من الجانب بدل نسخ الأبيض مباشرة.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "الفكرة هي تحدي طموح الأبيض في المركز، والتطوير بنشاط، وخلق لعب مضاد منذ البداية.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "طريق شائع هو 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "ها أنت: دفاع حاد ومرن، وفيه الكثير من العض.",
   },
   tr: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
@@ -4316,5 +4447,17 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Sıra sende: o atın b1'den d2'ye, oradan f1'e yolculuğu, bulmak kadar doğal hissedilene dek çalış",
     "your way around London.":
       "Londra'da yolunu.",
+    "Right then, the Sicilian defence for Black.":
+      "Peki o zaman, Siyah için Sicilya savunması.",
+    "White starts with one point e4, claiming the centre.":
+      "Beyaz bir nokta e4 ile başlar ve merkezi talep eder.",
+    "Black replies one point c5, striking from the side rather than copying White directly.":
+      "Siyah bir nokta c5 ile karşılık verir; Beyazı doğrudan kopyalamak yerine yandan vurur.",
+    "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
+      "Fikir, Beyazın merkezdeki hırsına meydan okumak, etkin gelişmek ve en başından karşı oyun kurmaktır.",
+    "A common route is 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.":
+      "Sık bir yol 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "There you are, a sharp, flexible defence with plenty of bite.":
+      "İşte oradasınız: keskin, esnek ve epey ısırığı olan bir savunma.",
   },
 };

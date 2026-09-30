@@ -383,6 +383,9 @@ export function HomeHero({
       } else if (pack.id === "ruy-lopez-white") {
         // Paid lines stay locked. Unpaid visitors still hear Big Red.
         line = pack.lines.find((l) => l.id === "rlw1");
+      } else if (pack.id === "sicilian-black") {
+        // Paid lines stay locked. Unpaid visitors still hear Tango.
+        line = pack.lines.find((l) => l.id === "sib1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -431,9 +434,9 @@ export function HomeHero({
         );
         return;
       }
-      // French and Ruy Lopez: intro Skip/finish stays on the line list, even
-      // if the pack is unlocked. Line 1 speech starts only from a tap on
-      // frb1 or rlw1.
+      // French, Ruy Lopez, and Sicilian: intro Skip/finish stays on the line
+      // list, even if the pack is unlocked. Line 1 speech starts only from
+      // a tap on frb1 or rlw1. Sicilian has no line recording.
       if (coachPack(pack.id)?.lineTalkOnTapOnly) {
         const tapped = queuedLineRef.current;
         queuedLineRef.current = null;
