@@ -436,7 +436,7 @@ export function HomeHero({
       }
       // French, Ruy Lopez, and Sicilian: intro Skip/finish stays on the line
       // list, even if the pack is unlocked. Line 1 speech starts only from
-      // a tap on frb1 or rlw1. Sicilian has no line recording.
+      // a tap on frb1, rlw1, or sib1.
       if (coachPack(pack.id)?.lineTalkOnTapOnly) {
         const tapped = queuedLineRef.current;
         queuedLineRef.current = null;
@@ -748,7 +748,7 @@ export function HomeHero({
                             onComingSoon?.(pack);
                             return;
                           }
-                          // French frb1 and Ruy Lopez rlw1: the first tap plays the
+                          // French frb1, Ruy Lopez rlw1, and Sicilian sib1: the first tap plays the
                           // Line 1 talk even while the drill is locked. Later taps
                           // use the unlock or Practice path. A tap during the intro waits.
                           const hearsLineTalk =

@@ -128,8 +128,7 @@ export type CoachPackConfig = {
   /**
    * Line 1 speech starts from a tap on `firstLineId`, not when the intro
    * finishes or is skipped. French Defence, Ruy Lopez for White, and
-   * Sicilian for Black. Other packs hand off. Sicilian has no line clip,
-   * so the tap still does not open a talk.
+   * Sicilian for Black. Other packs hand off.
    */
   lineTalkOnTapOnly?: boolean;
 };
@@ -1164,6 +1163,122 @@ const SICILIAN_INTRO_AT_SEC = [0, 4.7, 9.9, 18.9, 27.5, 44.2] as const;
 export const SICILIAN_INTRO_STEM = ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nf6"] as const;
 export const SICILIAN_INTRO_STEM_AT_SEC = [6.2, 11.5, 33.1, 34.84, 36.5, 37.9, 40.1, 42.3] as const;
 
+export const SICILIAN_LINE_MP3 = "/coach/sicilian-black/tango-sicilian-line1.mp3";
+/** Tango's Najdorf Line 1. Beat and spoken-move times were read off this clip. He does not name himself. */
+export const SICILIAN_LINE_SEC = 143.3;
+
+const SICILIAN_LINE: readonly CoachLineBeat[] = [
+  { caption: "Right then, welcome to Line 1 of the Sicilian, the Najdorf.", atSec: 0 },
+  {
+    caption: "This is one of Black's most ambitious answers to pawn to e4.",
+    atSec: 7.48,
+  },
+  {
+    caption: "White opens with pawn to e4, and Black immediately strikes with pawn to c5.",
+    atSec: 12.06,
+    ply: "e4",
+    plyAtSec: 13.68,
+    extraPlies: [{ ply: "c5", plyAtSec: 17.4 }],
+  },
+  {
+    caption: "White develops knight to f3.",
+    atSec: 18.8,
+    ply: "Nf3",
+    plyAtSec: 20.5,
+  },
+  {
+    caption: "Black plays pawn to d6, and White opens the centre with pawn to d4.",
+    atSec: 21.44,
+    ply: "d6",
+    plyAtSec: 22.76,
+    extraPlies: [{ ply: "d4", plyAtSec: 26.34 }],
+  },
+  {
+    caption: "Black takes on d4 with the c-pawn, White recaptures with knight takes d4.",
+    atSec: 27.66,
+    ply: "cxd4",
+    plyAtSec: 29.74,
+    extraPlies: [{ ply: "Nxd4", plyAtSec: 32.92 }],
+  },
+  {
+    caption: "Black develops knight to f6, and White brings the other knight to c3.",
+    atSec: 33.92,
+    ply: "Nf6",
+    plyAtSec: 35.36,
+    extraPlies: [{ ply: "Nc3", plyAtSec: 37.9 }],
+  },
+  {
+    caption:
+      "Now comes the famous Najdorf move, pawn to a6, a flexible little move with a great deal of venom behind it.",
+    atSec: 39.46,
+    ply: "a6",
+    plyAtSec: 43.3,
+  },
+  {
+    caption: "Black keeps the position adaptable and prepares to expand on the queenside.",
+    atSec: 49.2,
+  },
+  {
+    caption:
+      "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.",
+    atSec: 54.36,
+    ply: "Be3",
+    plyAtSec: 74.16,
+    extraPlies: [
+      { ply: "e5", plyAtSec: 75.84 },
+      { ply: "Nb3", plyAtSec: 77.78 },
+      { ply: "Be6", plyAtSec: 79.44 },
+    ],
+  },
+  {
+    caption:
+      "Now the line continues, pawn to f3, bishop to e7, queen to d2, castle kingside, castle queenside, knight to bd7, pawn to g4, pawn to b5.",
+    atSec: 80.96,
+    ply: "f3",
+    plyAtSec: 83.72,
+    extraPlies: [
+      { ply: "Be7", plyAtSec: 85.46 },
+      { ply: "Qd2", plyAtSec: 87.1 },
+      { ply: "O-O", plyAtSec: 88.42 },
+      { ply: "O-O-O", plyAtSec: 89.98 },
+      { ply: "Nbd7", plyAtSec: 91.82 },
+      { ply: "g4", plyAtSec: 93.9 },
+      { ply: "b5", plyAtSec: 95.6 },
+    ],
+  },
+  {
+    caption: "White prepares a kingside assault with pawn to f3.",
+    atSec: 97,
+  },
+  {
+    caption: "Black calmly develops bishop to e7, then White brings the queen to d2.",
+    atSec: 101.2,
+  },
+  {
+    caption: "Black castles kingside and White castles queenside.",
+    atSec: 106.82,
+  },
+  { caption: "Now the battle lines are drawn.", atSec: 111.02 },
+  {
+    caption: "Black develops knight to bd7 and White begins the famous pawn storm with pawn to g4.",
+    atSec: 113.7,
+  },
+  {
+    caption: "Black answers with pawn to b5 and there it is, the Najdorf has burst into life.",
+    atSec: 120.32,
+  },
+  {
+    caption:
+      "White is gathering forces on the kingside, Black is charging down the queenside, and both players are preparing something rather dangerous.",
+    atSec: 127.46,
+  },
+  {
+    caption:
+      "Right then, follow the moves closely, keep your wits about you and enjoy this cracking Sicilian line.",
+    atSec: 136.3,
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -1298,7 +1413,9 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     introStemAtSec: SICILIAN_INTRO_STEM_AT_SEC,
     firstLineId: "sib1",
     firstLineTitle: "Line 1",
-    firstLineBeats: [],
+    firstLineBeats: SICILIAN_LINE,
+    firstLineAudio: SICILIAN_LINE_MP3,
+    firstLineAudioFallbackSec: SICILIAN_LINE_SEC,
     lineTalkOnTapOnly: true,
   },
 };
