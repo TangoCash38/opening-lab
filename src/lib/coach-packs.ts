@@ -76,7 +76,16 @@ export type CoachLineBeat = {
    * Each lands when its `plyAtSec` is reached. A one-move beat leaves this out.
    */
   extraPlies?: readonly { ply: string; plyAtSec: number }[];
+  /**
+   * When this caption begins, the board returns to the initial position,
+   * then plays `ply` and `extraPlies` from there. Sicilian Line 1 uses this
+   * for the retelling that starts "The first part of the line is".
+   */
+  restart?: boolean;
 };
+
+/** Not a SAN. The line board returns to the start when this script entry is reached. */
+export const COACH_LINE_RESTART = "restart";
 
 export type CoachPackConfig = {
   introTitle: string;
@@ -1222,9 +1231,20 @@ const SICILIAN_LINE: readonly CoachLineBeat[] = [
     caption:
       "The first part of the line is pawn to e4, pawn to c5, knight to f3, pawn to d6, pawn to d4, pawn takes d4, knight takes d4, knight to f6, knight to c3, pawn to a6, bishop to e3, pawn to e5, knight to b3, bishop to e6.",
     atSec: 54.36,
-    ply: "Be3",
-    plyAtSec: 74.16,
+    restart: true,
+    ply: "e4",
+    plyAtSec: 57.14,
     extraPlies: [
+      { ply: "c5", plyAtSec: 58.64 },
+      { ply: "Nf3", plyAtSec: 60.54 },
+      { ply: "d6", plyAtSec: 62.06 },
+      { ply: "d4", plyAtSec: 63.72 },
+      { ply: "cxd4", plyAtSec: 65.58 },
+      { ply: "Nxd4", plyAtSec: 67.44 },
+      { ply: "Nf6", plyAtSec: 69.1 },
+      { ply: "Nc3", plyAtSec: 70.68 },
+      { ply: "a6", plyAtSec: 72.32 },
+      { ply: "Be3", plyAtSec: 74.16 },
       { ply: "e5", plyAtSec: 75.84 },
       { ply: "Nb3", plyAtSec: 77.78 },
       { ply: "Be6", plyAtSec: 79.44 },
@@ -1497,8 +1517,9 @@ function lineBeatScript(beats: readonly CoachLineBeat[]): (string | undefined)[]
   const out: (string | undefined)[] = [];
   for (const beat of beats) {
     const extras = beat.extraPlies ?? [];
+    if (beat.restart) out.push(COACH_LINE_RESTART);
     if (!beat.ply && extras.length === 0) {
-      out.push(undefined);
+      if (!beat.restart) out.push(undefined);
       continue;
     }
     if (beat.ply) out.push(beat.ply);
@@ -1569,6 +1590,10 @@ export function coachLinePlyCues(packId: string): readonly number[] | null {
   if (!pack?.firstLineAudio) return null;
   const times: number[] = [];
   for (const beat of pack.firstLineBeats) {
+    if (beat.restart) {
+      if (beat.atSec == null) return null;
+      times.push(beat.atSec);
+    }
     const moves: { ply?: string; plyAtSec?: number }[] = [];
     if (beat.ply) moves.push({ ply: beat.ply, plyAtSec: beat.plyAtSec });
     for (const extra of beat.extraPlies ?? []) moves.push(extra);
