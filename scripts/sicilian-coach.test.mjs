@@ -50,10 +50,12 @@ function compileCoachPacks(t) {
 test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
-  const mp3 = "public/coach/sicilian-black/sicilian-intro.mp3";
+  const mp3 = "public/coach/sicilian-black/tango-sicilian-intro.mp3";
+  const oldMp3 = "public/coach/sicilian-black/sicilian-intro.mp3";
   const portrait = "public/coach/sicilian-black/tango-portrait.png";
   assert.equal(existsSync(join(root, mp3)), true, mp3);
-  assert.ok(statSync(join(root, mp3)).size > 10_000, mp3);
+  assert.equal(existsSync(join(root, oldMp3)), false, oldMp3);
+  assert.ok(statSync(join(root, mp3)).size > 700_000, mp3);
   assert.equal(existsSync(join(root, portrait)), true, portrait);
   assert.ok(statSync(join(root, portrait)).size > 10_000, portrait);
 
@@ -139,8 +141,11 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
       if (coach.portrait !== SICILIAN_PORTRAIT) throw new Error("portrait");
       if (coach.portrait !== "/coach/sicilian-black/tango-portrait.png") throw new Error("portrait path");
       if (coach.introAudio !== SICILIAN_INTRO_MP3) throw new Error("audio");
-      if (coach.introAudio !== "/coach/sicilian-black/sicilian-intro.mp3") throw new Error("audio path");
-      if (coach.introAudioFallbackSec !== SICILIAN_INTRO_SEC || SICILIAN_INTRO_SEC !== 38.5) {
+      if (coach.introAudio !== "/coach/sicilian-black/tango-sicilian-intro.mp3") throw new Error("audio path");
+      if (coach.introAudio.includes("sicilian-intro.mp3") && !coach.introAudio.endsWith("tango-sicilian-intro.mp3")) {
+        throw new Error("old audio path");
+      }
+      if (coach.introAudioFallbackSec !== SICILIAN_INTRO_SEC || SICILIAN_INTRO_SEC !== 50.21) {
         throw new Error("length " + coach.introAudioFallbackSec);
       }
       if (coach.introTitle !== "Tango · Sicilian") throw new Error("title");
@@ -164,13 +169,18 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
         if (next !== null) throw new Error("handoff " + skipped + " " + next);
       }
       if (coach.introBeats.length !== 6) throw new Error("beats " + coach.introBeats.length);
-      if (coach.introBeats[0] !== "Right then, the Sicilian defence for Black.") throw new Error("open");
-      if (!coach.introBeats[1].includes("one point e4")) throw new Error("e4 words");
-      if (!coach.introBeats[2].includes("one point c5")) throw new Error("c5 words");
-      if (!coach.introBeats[4].includes("cxd4") || !coach.introBeats[4].includes("Nf6")) throw new Error("route");
-      if (coach.introBeats.at(-1) !== "There you are, a sharp, flexible defence with plenty of bite.") {
-        throw new Error("close");
-      }
+      const captions = [
+        "Right then, the Sicilian Defence for Black.",
+        "White starts with 1. e4, claiming the centre.",
+        "Black replies 1... c5, striking from the side rather than copying White directly.",
+        "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
+        "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.",
+        "There you are, a sharp, flexible defence with plenty of bite.",
+      ];
+      if (coach.introBeats.join("\\n") !== captions.join("\\n")) throw new Error("captions\\n" + coach.introBeats.join("\\n"));
+      const spoken = coach.introBeats.join(" ");
+      if (/one point|Now let's see|builds the position|Tango/i.test(spoken)) throw new Error("cut or old words");
+      if (!spoken.endsWith("plenty of bite.")) throw new Error("closer");
       if (!coach.introBeatAtSec || coach.introBeatAtSec.length !== coach.introBeats.length) throw new Error("beat clock");
       if (coach.introStem.join(" ") !== SICILIAN_INTRO_STEM.join(" ")) throw new Error("stem");
       if (coach.introStem.join(" ") !== "e4 c5 Nf3 e6 d4 cxd4 Nxd4 Nf6") throw new Error("spoken stem");
