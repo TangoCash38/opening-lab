@@ -2468,6 +2468,39 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   margin-left: auto;
 }
 
+/* Desktop: Pie and Skip share the row to the left of the wood. Phone stays a column with Pie first. */
+@media (min-width: 960px) {
+  .train-layout[data-free-try="true"] .train-board-band {
+    display: grid;
+    grid-template-columns: minmax(14rem, 17.5rem) minmax(16rem, 26rem);
+    grid-template-areas:
+      "voice expand"
+      "voice board";
+    align-items: center;
+    justify-content: start;
+    column-gap: 0.85rem;
+    row-gap: 0.2rem;
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .train-layout[data-free-try="true"] .free-try-voice {
+    grid-area: voice;
+  }
+
+  .train-layout[data-free-try="true"] .train-board-band > .mb-1 {
+    grid-area: expand;
+    margin-bottom: 0;
+  }
+
+  .train-layout[data-free-try="true"] .train-board-anchor {
+    grid-area: board;
+    width: 100%;
+  }
+}
+
 /* Free-try coach row. Same cream plate and green button as the other Potato Pie docks. */
 .free-try-voice {
   display: flex;
