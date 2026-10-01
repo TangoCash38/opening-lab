@@ -312,8 +312,10 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.match(view, /data-memory-line=\{item\.id\}/);
   assert.match(view, /role="group"/);
   assert.match(view, /aria-pressed=\{item\.id === choiceId\}/);
+  assert.match(view, /sqmem-pick-portrait/);
+  assert.match(view, /src=\{item\.portrait\}/);
   assert.match(css, /\.sqmem-pick\s*\{[^}]*grid-template-columns:\s*1fr 1fr/);
-  assert.match(css, /\.sqmem-pick-line\s*\{[^}]*min-height:\s*2\.85rem/);
+  assert.match(css, /\.sqmem-pick-line\s*\{[^}]*min-height:\s*8\.6rem/);
   assert.match(view, /data-square-memory-stage/);
   assert.match(view, /<h1 className="sqmem-title">Square Memory<\/h1>/);
   assert.doesNotMatch(view, /London Memory|Square London/);

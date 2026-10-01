@@ -4803,10 +4803,17 @@ html[data-color-scheme="dark"] .landing-buy-all {
   width: min(100%, 36rem);
   min-height: 100dvh;
   margin: 0 auto;
-  padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.5rem, env(safe-area-inset-right, 0px))
-    max(0.65rem, env(safe-area-inset-bottom, 0px)) max(0.5rem, env(safe-area-inset-left, 0px));
-  background: var(--color-bg);
+  padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.7rem, env(safe-area-inset-right, 0px))
+    max(0.85rem, env(safe-area-inset-bottom, 0px)) max(0.7rem, env(safe-area-inset-left, 0px));
+  background-color: #f3eadc;
+  background-image: radial-gradient(rgba(92, 64, 32, 0.055) 0.65px, transparent 0.8px);
+  background-size: 5px 5px;
   color: var(--color-fg);
+}
+
+html[data-color-scheme="dark"] .sqmem {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 0.65px, transparent 0.8px);
 }
 
 .sqmem-bar {
@@ -4823,13 +4830,21 @@ html[data-color-scheme="dark"] .landing-buy-all {
   text-decoration: none;
 }
 
+.sqmem-mast {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 1.7rem;
+}
+
 .sqmem-title,
 .sqmem-opening,
 .sqmem-clock {
   margin: 0;
   min-width: 0;
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.55rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
@@ -4837,7 +4852,7 @@ html[data-color-scheme="dark"] .landing-buy-all {
 
 .sqmem-clock {
   font-variant-numeric: tabular-nums;
-  font-size: 1.45rem;
+  font-size: 1.85rem;
   font-weight: 750;
 }
 
@@ -4887,7 +4902,7 @@ html[data-color-scheme="dark"] .landing-buy-all {
 .sqmem-choice {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .sqmem-pick-label {
@@ -4902,36 +4917,94 @@ html[data-color-scheme="dark"] .landing-buy-all {
 .sqmem-pick {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.35rem;
+  gap: 0.55rem;
   margin: 0;
-  padding: 0.28rem;
-  border-radius: 0.95rem;
-  background: color-mix(in srgb, #23483c 8%, var(--color-bg-subtle));
+  padding: 0;
+  background: transparent;
 }
 
 .sqmem-pick-line {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 8.6rem;
+  padding: 0;
+  overflow: hidden;
+  border: 1.5px solid color-mix(in srgb, #a97850 35%, var(--color-border));
+  border-radius: 0.95rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  text-align: start;
+}
+
+.sqmem-pick-portrait {
+  display: block;
+  height: 5.6rem;
+  overflow: hidden;
+  background: #f6efe4;
+}
+
+.sqmem-pick-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sqmem-pick-line[data-memory-line="london"] .sqmem-pick-portrait img {
+  object-position: center 8%;
+}
+
+.sqmem-pick-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
   min-height: 2.85rem;
-  padding: 0.45rem 0.55rem;
-  border: 0;
-  border-radius: 0.72rem;
-  background: transparent;
-  color: var(--color-fg-muted);
+  padding: 0.4rem 0.55rem 0.5rem;
+}
+
+.sqmem-pick-name {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
 }
 
+.sqmem-pick-coach {
+  color: var(--color-fg-muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
 .sqmem-pick-line[aria-pressed="true"] {
+  border-color: #23483c;
+  box-shadow: 0 0 0 2px #23483c;
   background: #23483c;
   color: #f7f3ea;
-  text-decoration: none;
+}
+
+.sqmem-pick-line[aria-pressed="true"] .sqmem-pick-coach {
+  color: #efe6d6;
+}
+
+html[data-color-scheme="dark"] .sqmem-pick-portrait {
+  background: #2a2420;
 }
 
 html[data-color-scheme="dark"] .sqmem-pick-line[aria-pressed="true"] {
+  border-color: #e7f3ec;
+  box-shadow: 0 0 0 2px #2f6a58;
   background: #2f6a58;
   color: #e7f3ec;
+}
+
+html[data-color-scheme="dark"] .sqmem-pick-line[aria-pressed="true"] .sqmem-pick-coach {
+  color: #d5e8de;
 }
 
 .sqmem-time {

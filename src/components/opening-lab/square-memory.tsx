@@ -398,18 +398,6 @@ export function SquareMemory() {
         <Link to="/" className="sqmem-home" data-square-memory-home>
           Home
         </Link>
-        {snap.phase === "title" ? <h1 className="sqmem-title">Square Memory</h1> : null}
-        {clockVisible(snap.phase) ? (
-          <p className="sqmem-clock" data-square-memory-clock>
-            <span className="sr-only">Time</span>
-            {formatClearTime(clockMs)}
-          </p>
-        ) : null}
-        {revealing ? (
-          <p className="sqmem-opening" data-square-memory-opening>
-            {choice.name}
-          </p>
-        ) : null}
         <button
           type="button"
           className="sqmem-mute"
@@ -426,6 +414,20 @@ export function SquareMemory() {
         </button>
       </header>
       <section className="sqmem-stage" data-square-memory-stage>
+        <div className="sqmem-mast">
+          {snap.phase === "title" ? <h1 className="sqmem-title">Square Memory</h1> : null}
+          {clockVisible(snap.phase) ? (
+            <p className="sqmem-clock" data-square-memory-clock>
+              <span className="sr-only">Time</span>
+              {formatClearTime(clockMs)}
+            </p>
+          ) : null}
+          {revealing ? (
+            <p className="sqmem-opening" data-square-memory-opening>
+              {choice.name}
+            </p>
+          ) : null}
+        </div>
         {snap.phase === "title" ? (
           <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
         ) : null}
@@ -562,7 +564,7 @@ function LinePick({
   return (
     <div className="sqmem-choice">
       <p className="sqmem-pick-label" id={labelId}>
-        Opening
+        Choose an opening
       </p>
       <div
         className="sqmem-pick"
@@ -579,7 +581,13 @@ function LinePick({
             aria-pressed={item.id === choiceId}
             onClick={() => onChoose(item.id)}
           >
-            {item.pick}
+            <span className="sqmem-pick-portrait">
+              <img src={item.portrait} alt="" width={item.portraitWidth} height={item.portraitHeight} />
+            </span>
+            <span className="sqmem-pick-copy">
+              <span className="sqmem-pick-name">{item.name}</span>
+              <span className="sqmem-pick-coach">{item.coach}</span>
+            </span>
           </button>
         ))}
       </div>
