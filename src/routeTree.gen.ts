@@ -16,6 +16,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SquareMemoryRouteImport } from './routes/square-memory'
+import { Route as SquareMemoryLondonRouteImport } from './routes/square-memory-london'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
@@ -66,6 +67,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const SquareMemoryRoute = SquareMemoryRouteImport.update({
   id: '/square-memory',
   path: '/square-memory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SquareMemoryLondonRoute = SquareMemoryLondonRouteImport.update({
+  id: '/square-memory-london',
+  path: '/square-memory-london',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/square-memory': typeof SquareMemoryRoute
+  '/square-memory-london': typeof SquareMemoryLondonRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
@@ -182,6 +189,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/square-memory': typeof SquareMemoryRoute
+  '/square-memory-london': typeof SquareMemoryLondonRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/square-memory': typeof SquareMemoryRoute
+  '/square-memory-london': typeof SquareMemoryLondonRoute
   '/terms': typeof TermsRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/square-memory'
+    | '/square-memory-london'
     | '/terms'
     | '/api/checkout'
     | '/api/feedback'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/square-memory'
+    | '/square-memory-london'
     | '/terms'
     | '/api/checkout'
     | '/api/feedback'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/square-memory'
+    | '/square-memory-london'
     | '/terms'
     | '/api/checkout'
     | '/api/feedback'
@@ -309,6 +321,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SquareMemoryRoute: typeof SquareMemoryRoute
+  SquareMemoryLondonRoute: typeof SquareMemoryLondonRoute
   TermsRoute: typeof TermsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiFeedbackRoute: typeof ApiFeedbackRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/square-memory'
       fullPath: '/square-memory'
       preLoaderRoute: typeof SquareMemoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/square-memory-london': {
+      id: '/square-memory-london'
+      path: '/square-memory-london'
+      fullPath: '/square-memory-london'
+      preLoaderRoute: typeof SquareMemoryLondonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -535,6 +555,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SquareMemoryRoute: SquareMemoryRoute,
+  SquareMemoryLondonRoute: SquareMemoryLondonRoute,
   TermsRoute: TermsRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiFeedbackRoute: ApiFeedbackRoute,

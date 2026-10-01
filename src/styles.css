@@ -3699,9 +3699,22 @@ html[data-color-scheme="dark"] .landing-chip {
   border-color: rgba(255, 255, 255, 0.72);
 }
 
+.landing-memory-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.landing-memory-row .landing-puzzle-card {
+  max-width: none;
+  height: 100%;
+}
+
 .landing-square-memory {
   margin: 0;
   width: 100%;
+  min-width: 0;
 }
 
 .landing-square-memory .landing-puzzle-card {
