@@ -214,3 +214,11 @@ export function readRequestedPackId(
   const hashParams = new URLSearchParams(raw.includes("=") ? raw : "");
   return hashParams.get("pack") ?? hashParams.get("packId");
 }
+
+/** Square Memory celebration opens the pack list, not one pack. */
+export function readRequestedGym(
+  hash = typeof window === "undefined" ? "" : window.location.hash,
+): boolean {
+  const raw = hash.replace(/^#\/?/, "").split(/[/?&]/)[0] ?? "";
+  return raw === "gym";
+}

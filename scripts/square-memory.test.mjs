@@ -206,3 +206,34 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(css, /\.sqmem-board\s*\{[^}]*width:\s*100%/);
   assert.match(view, /data-square-memory-status=\{snap\.phase\}/);
 });
+
+test("a perfect line brings Big Red in; a miss does not", () => {
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const audio = src("src/lib/square-memory-audio.ts");
+  const css = src("src/styles.css");
+  const shell = src("src/components/opening-lab/app-shell.tsx");
+  const catalog = src("src/lib/catalog.ts");
+  const coach = src("src/lib/coach-packs.ts");
+  const portrait = coach.match(/RUY_LOPEZ_PORTRAIT = "([^"]+)"/)?.[1];
+  assert.equal(portrait, "/coach/ruy-lopez-white/big-red-portrait.png");
+  assert.match(view, /const BIG_RED_PORTRAIT = "\/coach\/ruy-lopez-white\/big-red-portrait\.png"/);
+  assert.match(view, /perfect \? <PerfectCheer \/> : null/);
+  assert.match(view, /revealing && !snap\.perfect/);
+  assert.match(
+    view,
+    /You smashed it\. That's the Ruy Lopez\. Want to learn openings properly\? Try the opening packs\./,
+  );
+  assert.match(view, /data-square-memory-cheer/);
+  assert.match(view, /alt="Big Red"/);
+  assert.match(view, /data-square-memory-gym/);
+  assert.match(view, /href="\/#gym"/);
+  assert.doesNotMatch(view, /Potato Pie|coach-seated/);
+  assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
+  assert.doesNotMatch(audio, /You smashed it/);
+  assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);
+  assert.match(css, /\.sqmem-cheer-bubble/);
+  assert.match(catalog, /export function readRequestedGym/);
+  assert.match(catalog, /raw === "gym"/);
+  assert.match(shell, /readRequestedGym\(\) && !isPlayWrap\(\)\) goPacks\(\)/);
+  assert.match(shell, /if \(isPlayWrap\(\)\) return/);
+});
