@@ -252,6 +252,10 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.doesNotMatch(audio, /speechSynthesis|new Audio\(/);
   assert.match(
     css,
+    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*#ffe400/,
+  );
+  assert.doesNotMatch(
+    css,
     /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*background:\s*#ffe400/,
   );
   assert.match(css, /\.sqmem-board\s*\{[^}]*width:\s*100%/);
@@ -330,7 +334,10 @@ test("a full clear is timed and only that time can join the shared board", () =>
   const migration = src("migrations/0007_square_memory_scores.sql");
   assert.match(view, /runStartRef\.current = now/);
   assert.match(view, /data-square-memory-time/);
-  assert.match(view, /perfect && clearMs != null \?/);
+  assert.match(view, /perfect && showClearTime && clearMs != null/);
+  assert.match(view, /No times yet\./);
+  assert.match(view, /data-square-memory-all-times/);
+  assert.match(view, /All times/);
   assert.match(view, /data-square-memory-score-form/);
   assert.match(view, /data-square-memory-boards/);
   assert.match(view, /data-square-memory-leaderboard=\{lineId\}/);
