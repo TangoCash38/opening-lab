@@ -237,3 +237,43 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   assert.match(shell, /readRequestedGym\(\) && !isPlayWrap\(\)\) goPacks\(\)/);
   assert.match(shell, /if \(isPlayWrap\(\)\) return/);
 });
+
+test("London Memory uses the opening of pack Line 1 and Potato Pie", () => {
+  const packs = src("src/data/packs.ts");
+  const line = src("src/lib/square-memory-london.ts");
+  const view = src("src/components/opening-lab/square-memory-london.tsx");
+  const page = src("src/routes/square-memory-london.tsx");
+  const landing = src("src/components/opening-lab/home-intro.tsx");
+  const ruy = src("src/components/opening-lab/square-memory.tsx");
+  const ruyLine = src("src/lib/square-memory-line.ts");
+  const lon1 = packs.slice(packs.indexOf('id: "lon1"'), packs.indexOf('id: "lon2"'));
+  assert.match(lon1, /\["d4", "d5", "Bf4", "Nf6", "e3",/);
+  assert.match(line, /LONDON_MEMORY_MOVES = \["d4", "d5", "Bf4", "Nf6", "e3"\]/);
+  assert.match(line, /LONDON_MEMORY_PACK_ID = "london"/);
+  assert.match(line, /LONDON_MEMORY_NAME = "London System"/);
+  assert.match(
+    view,
+    /You smashed it\. That's the London System\. Want to learn openings properly\? Try the opening packs\./,
+  );
+  assert.match(view, /perfect \? <PerfectCheer \/> : null/);
+  assert.match(view, /revealing && !snap\.perfect/);
+  assert.match(view, /coach-seated-v2\.png/);
+  assert.match(view, /Professor Potato Pie/);
+  assert.doesNotMatch(view, /big-red-portrait|Big Red/);
+  assert.match(view, /data-square-memory-gym/);
+  assert.match(view, /href="\/#gym"/);
+  assert.match(view, /href=\{`\/#pack\/\$\{LONDON_MEMORY_PACK_ID\}`\}/);
+  assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
+  assert.match(page, /createFileRoute\("\/square-memory-london"\)/);
+  assert.match(page, /isPlayApp\(\)/);
+  assert.match(page, /window\.location\.replace\("\/"\)/);
+  const memory = landing.indexOf("data-landing-square-memory");
+  const london = landing.indexOf("data-landing-london-memory");
+  const puzzle = landing.indexOf("data-landing-puzzle");
+  assert.ok(memory > 0 && london > memory && puzzle > london);
+  assert.match(landing, /to="\/square-memory-london"/);
+  assert.match(landing, /London Memory/);
+  assert.match(ruy, /That's the Ruy Lopez/);
+  assert.match(ruyLine, /SQUARE_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bb5"\]/);
+  assert.doesNotMatch(ruy, /London System|coach-seated/);
+});
