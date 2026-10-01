@@ -124,7 +124,10 @@ export function SquareMemory() {
   const [cheerOn, setCheerOn] = useState(false);
   const [clearMs, setClearMs] = useState<number | null>(null);
   const [playerName, setPlayerName] = useState("");
-  const [scores, setScores] = useState<BoardRow[]>([]);
+  const [boards, setBoards] = useState<Record<MemoryChoice["id"], BoardRow[]>>({
+    ruy: [],
+    london: [],
+  });
   const [boardNote, setBoardNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [boardVersion, setBoardVersion] = useState(0);
@@ -132,7 +135,6 @@ export function SquareMemory() {
   const bestRef = useRef(0);
   const bestAtStart = useRef(0);
   const runStartRef = useRef(0);
-  const boardLineRef = useRef<MemoryChoice["id"]>("ruy");
   const choice = CHOICES.find((item) => item.id === choiceId) ?? CHOICES[0]!;
   const choiceRef = useRef(choice);
   choiceRef.current = choice;
@@ -295,28 +297,25 @@ export function SquareMemory() {
 
   useEffect(() => {
     if (!showBoard) return;
-    const line = choice.id;
-    if (boardLineRef.current !== line) {
-      boardLineRef.current = line;
-      setScores([]);
-    }
     const ctrl = new AbortController();
-    fetch(`/api/square-memory-scores?line=${line}`, { signal: ctrl.signal })
-      .then(async (res) => {
+    Promise.all(
+      CHOICES.map(async (item) => {
+        const res = await fetch(`/api/square-memory-scores?line=${item.id}`, { signal: ctrl.signal });
         if (!res.ok) throw new Error("down");
-        return (await res.json()) as { scores?: BoardRow[] };
-      })
-      .then((data) => {
-        setScores(Array.isArray(data.scores) ? data.scores : []);
+        const data = (await res.json()) as { scores?: BoardRow[] };
+        return [item.id, Array.isArray(data.scores) ? data.scores : []] as const;
+      }),
+    )
+      .then((pairs) => {
+        setBoards({ ruy: [], london: [], ...Object.fromEntries(pairs) });
         setBoardNote("");
       })
       .catch((err: unknown) => {
         if (err instanceof Error && err.name === "AbortError") return;
-        setScores([]);
         setBoardNote("The board is not available right now.");
       });
     return () => ctrl.abort();
-  }, [showBoard, choice.id, boardVersion]);
+  }, [showBoard, boardVersion]);
 
   async function saveTime(event: FormEvent) {
     event.preventDefault();
@@ -345,8 +344,10 @@ export function SquareMemory() {
       } catch {
         /* private mode */
       }
-      if (Array.isArray(data.scores)) setScores(data.scores);
-      else setBoardVersion((n) => n + 1);
+      if (Array.isArray(data.scores)) {
+        const saved = data.scores;
+        setBoards((current) => ({ ...current, [choice.id]: saved }));
+      } else setBoardVersion((n) => n + 1);
       setBoardNote(
         typeof data.ms === "number" && data.ms < clearMs
           ? `Your best is still ${formatClearTime(data.ms)}.`
@@ -421,6 +422,25 @@ export function SquareMemory() {
           <span className="sqmem-time-note">Full clear</span>
         </p>
       ) : null}
+      {showBoard ? (
+        <div className="sqmem-boards" data-square-memory-boards>
+          {CHOICES.map((item) => (
+            <Leaderboard
+              key={item.id}
+              lineId={item.id}
+              name={item.name}
+              rows={boards[item.id]}
+              selected={item.id === choice.id}
+            />
+          ))}
+          {boardNote ? <p className="sqmem-best sqmem-boards-note">{boardNote}</p> : null}
+        </div>
+      ) : null}
+      {snap.phase === "title" ? (
+        <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
+          Begin
+        </button>
+      ) : null}
 
       <div className="sqmem-board">
         <MemoryBoard
@@ -452,11 +472,6 @@ export function SquareMemory() {
             Best · {bestLabel} {bestLabel === 1 ? "square" : "squares"}
           </p>
         ) : null}
-        {snap.phase === "title" ? (
-          <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-            Begin
-          </button>
-        ) : null}
         {revealing ? (
           <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
             Play again
@@ -479,9 +494,6 @@ export function SquareMemory() {
             </button>
           </form>
         ) : null}
-        {showBoard ? (
-          <Leaderboard lineId={choice.id} name={choice.name} rows={scores} note={boardNote} />
-        ) : null}
         {showPackLink ? <PackLink choice={choice} /> : null}
       </footer>
     </main>
@@ -492,30 +504,34 @@ function Leaderboard({
   lineId,
   name,
   rows,
-  note,
+  selected,
 }: {
   lineId: MemoryChoice["id"];
   name: string;
   rows: readonly BoardRow[];
-  note: string;
+  selected: boolean;
 }) {
+  const shown = rows.slice(0, 5);
   return (
-    <section className="sqmem-leaderboard" data-square-memory-leaderboard={lineId} aria-label={`${name} times`}>
-      <p className="sqmem-moves-label">Fastest · {name}</p>
-      {rows.length === 0 ? (
-        <p className="sqmem-best">No times yet.</p>
+    <section
+      className="sqmem-leaderboard"
+      data-square-memory-leaderboard={lineId}
+      data-selected={selected ? "true" : "false"}
+      aria-label={`${name} times`}
+    >
+      <h2 className="sqmem-leaderboard-name">{name}</h2>
+      {shown.length === 0 ? (
+        <p className="sqmem-leaderboard-empty">No times yet.</p>
       ) : (
         <ol className="sqmem-board-list">
-          {rows.map((row, index) => (
+          {shown.map((row, index) => (
             <li className="sqmem-board-row" key={`${row.name}-${row.ms}-${index}`}>
-              <span>{index + 1}</span>
               <span>{row.name}</span>
               <span>{formatClearTime(row.ms)}</span>
             </li>
           ))}
         </ol>
       )}
-      {note ? <p className="sqmem-best">{note}</p> : null}
     </section>
   );
 }

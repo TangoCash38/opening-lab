@@ -4822,9 +4822,45 @@ html[data-color-scheme="dark"] .landing-chip {
   letter-spacing: -0.03em;
 }
 
-.sqmem-time-note,
-.sqmem-leaderboard .sqmem-best {
+.sqmem-time-note {
   margin: 0;
+}
+
+.sqmem-boards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0;
+}
+
+.sqmem-boards-note {
+  grid-column: 1 / -1;
+}
+
+.sqmem-leaderboard {
+  min-width: 0;
+  padding: 0.45rem 0.5rem 0.4rem;
+  border: 2px solid #111110;
+  border-radius: 0.8rem;
+  background: #fff8e8;
+  color: #1a120c;
+}
+
+.sqmem-leaderboard[data-selected="true"] {
+  background: #ffe400;
+}
+
+.sqmem-leaderboard-name,
+.sqmem-leaderboard-empty {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.sqmem-leaderboard-empty {
+  margin-top: 0.35rem;
+  font-size: 1rem;
 }
 
 .sqmem-score-form {
@@ -4860,17 +4896,31 @@ html[data-color-scheme="dark"] .landing-chip {
 }
 
 .sqmem-board-list {
-  margin: 0.3rem 0 0;
+  margin: 0.35rem 0 0;
   padding: 0;
   list-style: none;
 }
 
 .sqmem-board-row {
-  display: grid;
-  grid-template-columns: 1.4rem minmax(0, 1fr) auto;
-  gap: 0.45rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem;
+  font-size: 1.15rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.sqmem-board-row span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sqmem-board-row span:last-child {
   font-variant-numeric: tabular-nums;
-  font-weight: 650;
+  font-size: 1.3rem;
 }
 
 .sqmem-status {
