@@ -73,6 +73,27 @@ export function minimumClearMs(squareCount: number): number {
   return ms;
 }
 
+/**
+ * The live clock counts from Begin through every flash, tap, and the pause
+ * between lengths. It stops on a miss, and on the tap that clears the line.
+ */
+export function clockRunning(
+  phase: Phase,
+  cursor: number,
+  length: number,
+  totalSquares: number,
+): boolean {
+  if (phase === "watch") return true;
+  if (phase !== "input") return false;
+  const cleared = length >= totalSquares && cursor >= length;
+  return !cleared;
+}
+
+/** On screen from Begin until the result replaces the board. Hidden before Begin. */
+export function clockVisible(phase: Phase): boolean {
+  return phase === "watch" || phase === "input" || phase === "punish";
+}
+
 /** `m:ss.t` from a millisecond clear. */
 export function formatClearTime(ms: number): string {
   const clamped = Math.max(0, Math.round(ms));

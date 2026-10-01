@@ -21,14 +21,14 @@ const board = src("src/components/opening-lab/lesson-board.tsx");
 const cues = JSON.parse(src("src/data/lessons/scotch/BOARD_CUES.json"));
 const captions = src("src/data/lessons/scotch/CAPTIONS.txt");
 
-test("landing keeps the gym and drill packs, and parks Chess opening lessons", () => {
-  const cta = landing.indexOf("data-landing-cta");
-  const drills = landing.indexOf("landing-cta-note");
+test("landing keeps the drill packs, and parks Chess opening lessons", () => {
+  const openNow = landing.indexOf('t("Open now")');
   const lessons = landing.indexOf("data-landing-lessons");
-  const gymButtonEnd = landing.indexOf("</button>", cta);
-  assert.ok(cta >= 0 && drills > cta && gymButtonEnd > drills && lessons > gymButtonEnd);
-  assert.match(landing, /t\("Enter the gym"\)/);
-  assert.match(landing, /className="landing-cta-note"[\s\S]*t\("Opening drill packs"\)/);
+  assert.ok(openNow >= 0 && lessons > openNow);
+  assert.doesNotMatch(landing, /data-landing-cta/);
+  assert.match(landing, /className="landing-pack-enter"[\s\S]{0,40}t\("Enter the gym"\)/);
+  const hero = landing.slice(landing.indexOf("landing-hero"), landing.indexOf("landing-openings"));
+  assert.doesNotMatch(hero, /Enter the gym/);
   assert.match(landing, /t\("Chess opening lessons"\)/);
   assert.doesNotMatch(landing, /data-landing-drills/);
   assert.match(landing, /navigate\(\{ to: "\/lessons" \}\)/);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { Volume2, VolumeX } from "lucide-react";
 import { ChessPiece, pieceName } from "./chess-pieces";
@@ -25,6 +25,8 @@ import {
 } from "@/lib/square-memory-london";
 import {
   begin,
+  clockRunning,
+  clockVisible,
   formatClearTime,
   tap,
   tick,
@@ -123,6 +125,7 @@ export function SquareMemory() {
   const [muted, setMutedState] = useState(false);
   const [cheerOn, setCheerOn] = useState(false);
   const [clearMs, setClearMs] = useState<number | null>(null);
+  const [clockMs, setClockMs] = useState(0);
   const [playerName, setPlayerName] = useState("");
   const [scores, setScores] = useState<BoardRow[]>([]);
   const [boardNote, setBoardNote] = useState("");
@@ -132,6 +135,7 @@ export function SquareMemory() {
   const bestRef = useRef(0);
   const bestAtStart = useRef(0);
   const runStartRef = useRef(0);
+  const clockTenthRef = useRef(-1);
   const boardLineRef = useRef<MemoryChoice["id"]>("ruy");
   const choice = CHOICES.find((item) => item.id === choiceId) ?? CHOICES[0]!;
   const choiceRef = useRef(choice);
@@ -149,6 +153,16 @@ export function SquareMemory() {
   };
   const commitRef = useRef(commit);
   commitRef.current = commit;
+
+  const publishClock = (ms: number, force = false) => {
+    const safe = Math.max(0, ms);
+    const tenth = Math.floor(safe / 100);
+    if (!force && tenth === clockTenthRef.current) return;
+    clockTenthRef.current = tenth;
+    setClockMs(safe);
+  };
+  const publishClockRef = useRef(publishClock);
+  publishClockRef.current = publishClock;
 
   useEffect(() => {
     const stored = readBest(choiceRef.current.bestKey);
@@ -182,7 +196,14 @@ export function SquareMemory() {
       const now = performance.now();
       try {
         const prev = snapRef.current;
-        const next = tick(prev, now, choiceRef.current.line.squares);
+        const squares = choiceRef.current.line.squares;
+        const next = tick(prev, now, squares);
+        if (
+          runStartRef.current > 0 &&
+          clockRunning(next.phase, next.cursor, next.length, squares.length)
+        ) {
+          publishClockRef.current(Math.round(now - runStartRef.current));
+        }
         if (next !== prev) {
           commitRef.current(next);
           if (
@@ -220,6 +241,7 @@ export function SquareMemory() {
     }
     const now = performance.now();
     runStartRef.current = now;
+    publishClockRef.current(0, true);
     bestAtStart.current = bestRef.current;
     setCheerOn(false);
     setClearMs(null);
@@ -238,13 +260,13 @@ export function SquareMemory() {
     const now = performance.now();
     const next = tap(prev, square, squares, now);
     if (next === prev) return;
-    if (
+    const elapsed = Math.max(0, Math.round(now - runStartRef.current));
+    const cleared =
       next.litKind === "hit" &&
       next.length === squares.length &&
-      next.cursor === squares.length
-    ) {
-      setClearMs(Math.round(now - runStartRef.current));
-    }
+      next.cursor === squares.length;
+    if (cleared || next.phase === "punish") publishClockRef.current(elapsed, true);
+    if (cleared) setClearMs(elapsed);
     commit(next);
     if (next.phase === "punish") {
       playMiss();
@@ -377,6 +399,12 @@ export function SquareMemory() {
           Home
         </Link>
         {snap.phase === "title" ? <h1 className="sqmem-title">Square Memory</h1> : null}
+        {clockVisible(snap.phase) ? (
+          <p className="sqmem-clock" data-square-memory-clock>
+            <span className="sr-only">Time</span>
+            {formatClearTime(clockMs)}
+          </p>
+        ) : null}
         {revealing ? (
           <p className="sqmem-opening" data-square-memory-opening>
             {choice.name}
@@ -397,42 +425,59 @@ export function SquareMemory() {
           )}
         </button>
       </header>
-      {snap.phase === "title" ? (
-        <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
-      ) : null}
-      {snap.phase === "title" || revealing ? (
-        <LinePick choiceId={choice.id} onChoose={chooseLine} />
-      ) : null}
-      {playing ? <PlayStatus snap={snap} /> : null}
-      {revealing ? (
-        <p className="sqmem-score-line">
-          <span className="sqmem-score" data-square-memory-score>
-            {snap.score}
-          </span>
-          <span className="sqmem-score-note">
-            {snap.score === 1 ? "Square remembered" : "Squares remembered"}
-            {snap.score > bestAtStart.current && snap.score > 0 ? " · New best" : ""}
-          </span>
-        </p>
-      ) : null}
-      {perfect && clearMs != null ? (
-        <p className="sqmem-time" data-square-memory-time>
-          <span className="sqmem-time-value">{formatClearTime(clearMs)}</span>
-          <span className="sqmem-time-note">Full clear</span>
-        </p>
-      ) : null}
+      <section className="sqmem-stage" data-square-memory-stage>
+        {snap.phase === "title" ? (
+          <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
+        ) : null}
+        {snap.phase === "title" || revealing ? (
+          <LinePick choiceId={choice.id} onChoose={chooseLine} />
+        ) : null}
+        {playing ? <PlayStatus snap={snap} /> : null}
+        {revealing ? (
+          <p className="sqmem-score-line">
+            <span className="sqmem-score" data-square-memory-score>
+              {snap.score}
+            </span>
+            <span className="sqmem-score-note">
+              {snap.score === 1 ? "Square remembered" : "Squares remembered"}
+              {snap.score > bestAtStart.current && snap.score > 0 ? " · New best" : ""}
+            </span>
+          </p>
+        ) : null}
+        {perfect && clearMs != null ? (
+          <p className="sqmem-time" data-square-memory-time>
+            <span className="sqmem-time-value">{formatClearTime(clearMs)}</span>
+            <span className="sqmem-time-note">Full clear</span>
+          </p>
+        ) : null}
 
-      <div className="sqmem-board">
-        <MemoryBoard
-          lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
-          interactive={snap.phase === "input" && snap.cursor < snap.length}
-          position={position}
-          lastMove={last ? { from: last.from, to: last.to } : null}
-          found={partial ? partial.from : null}
-          onTap={onTap}
-        />
-        {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
-      </div>
+        <div className="sqmem-board">
+          <MemoryBoard
+            lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
+            interactive={snap.phase === "input" && snap.cursor < snap.length}
+            position={position}
+            lastMove={last ? { from: last.from, to: last.to } : null}
+            found={partial ? partial.from : null}
+            onTap={onTap}
+          />
+          {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
+        </div>
+        {snap.phase === "title" && bestLabel > 0 ? (
+          <p className="sqmem-best" data-square-memory-best>
+            Best · {bestLabel} {bestLabel === 1 ? "square" : "squares"}
+          </p>
+        ) : null}
+        {snap.phase === "title" ? (
+          <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
+            Begin
+          </button>
+        ) : null}
+        {revealing ? (
+          <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
+            Play again
+          </button>
+        ) : null}
+      </section>
 
       <footer className="sqmem-dock">
         {revealing ? (
@@ -447,20 +492,6 @@ export function SquareMemory() {
                 : null
             }
           />
-        ) : snap.phase === "title" && bestLabel > 0 ? (
-          <p className="sqmem-best" data-square-memory-best>
-            Best · {bestLabel} {bestLabel === 1 ? "square" : "squares"}
-          </p>
-        ) : null}
-        {snap.phase === "title" ? (
-          <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-            Begin
-          </button>
-        ) : null}
-        {revealing ? (
-          <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-            Play again
-          </button>
         ) : null}
         {perfect && clearMs != null ? (
           <form className="sqmem-score-form" data-square-memory-score-form onSubmit={saveTime}>
@@ -527,20 +558,31 @@ function LinePick({
   choiceId: MemoryChoice["id"];
   onChoose: (id: MemoryChoice["id"]) => void;
 }) {
+  const labelId = useId();
   return (
-    <div className="sqmem-pick" data-square-memory-choice={choiceId}>
-      {CHOICES.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          className="sqmem-pick-line"
-          data-memory-line={item.id}
-          aria-pressed={item.id === choiceId}
-          onClick={() => onChoose(item.id)}
-        >
-          {item.pick}
-        </button>
-      ))}
+    <div className="sqmem-choice">
+      <p className="sqmem-pick-label" id={labelId}>
+        Opening
+      </p>
+      <div
+        className="sqmem-pick"
+        role="group"
+        aria-labelledby={labelId}
+        data-square-memory-choice={choiceId}
+      >
+        {CHOICES.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className="sqmem-pick-line"
+            data-memory-line={item.id}
+            aria-pressed={item.id === choiceId}
+            onClick={() => onChoose(item.id)}
+          >
+            {item.pick}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

@@ -70,7 +70,10 @@ test("cold open is the branded landing, not a second splash", () => {
   assert.match(intro, /data-landing/);
   assert.doesNotMatch(intro, /Learn the book\. Keep the book\./);
   assert.match(intro, /Practice with hints\. Test with none\./);
-  assert.match(intro, /Enter the gym/);
+  assert.match(intro, /className="landing-pack-enter"/);
+  assert.match(intro, /data-open-pack=\{pack\.id\}/);
+  const hero = intro.slice(intro.indexOf("landing-hero"), intro.indexOf("landing-openings"));
+  assert.doesNotMatch(hero, /Enter the gym/);
   assert.match(intro, /Study first\. Then test yourself from memory/);
   assert.doesNotMatch(intro, /Strict book-move trainer/);
   assert.match(intro, /coach-seated-v2\.png/);
