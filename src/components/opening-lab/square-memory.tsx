@@ -122,6 +122,8 @@ export function SquareMemory() {
   const [bestLabel, setBestLabel] = useState(0);
   const [muted, setMutedState] = useState(false);
   const [cheerOn, setCheerOn] = useState(false);
+  const [showClearTime, setShowClearTime] = useState(false);
+  const [allTimes, setAllTimes] = useState(false);
   const [clearMs, setClearMs] = useState<number | null>(null);
   const [playerName, setPlayerName] = useState("");
   const [boards, setBoards] = useState<Record<MemoryChoice["id"], BoardRow[]>>({
@@ -224,7 +226,9 @@ export function SquareMemory() {
     runStartRef.current = now;
     bestAtStart.current = bestRef.current;
     setCheerOn(false);
+    setShowClearTime(false);
     setClearMs(null);
+    setAllTimes(false);
     setBoardNote("");
     commit(begin(bestRef.current, now, choiceRef.current.line.squares));
     try {
@@ -271,10 +275,15 @@ export function SquareMemory() {
   useEffect(() => {
     if (!(snap.phase === "reveal" && snap.perfect)) {
       setCheerOn(false);
+      setShowClearTime(false);
       return;
     }
-    const id = window.setTimeout(() => setCheerOn(true), BOARD_BEFORE_CHEER_MS);
-    return () => window.clearTimeout(id);
+    const timeId = window.setTimeout(() => setShowClearTime(true), 1000);
+    const cheerId = window.setTimeout(() => setCheerOn(true), BOARD_BEFORE_CHEER_MS);
+    return () => {
+      window.clearTimeout(timeId);
+      window.clearTimeout(cheerId);
+    };
   }, [snap.phase, snap.perfect]);
 
   function chooseLine(id: MemoryChoice["id"]) {
@@ -288,7 +297,9 @@ export function SquareMemory() {
     setChoiceId(id);
     setBestLabel(best);
     setCheerOn(false);
+    setShowClearTime(false);
     setClearMs(null);
+    setAllTimes(false);
     setBoardNote("");
     if (phase === "reveal") commit(titleState(best));
   }
@@ -383,6 +394,7 @@ export function SquareMemory() {
             {choice.name}
           </p>
         ) : null}
+        {playing ? <PlayStatus snap={snap} /> : null}
         <button
           type="button"
           className="sqmem-mute"
@@ -401,57 +413,61 @@ export function SquareMemory() {
       {snap.phase === "title" ? (
         <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
       ) : null}
-      {snap.phase === "title" || revealing ? (
-        <LinePick choiceId={choice.id} onChoose={chooseLine} />
-      ) : null}
-      {playing ? <PlayStatus snap={snap} /> : null}
-      {revealing ? (
-        <p className="sqmem-score-line">
-          <span className="sqmem-score" data-square-memory-score>
-            {snap.score}
-          </span>
-          <span className="sqmem-score-note">
-            {snap.score === 1 ? "Square remembered" : "Squares remembered"}
-            {snap.score > bestAtStart.current && snap.score > 0 ? " · New best" : ""}
-          </span>
-        </p>
-      ) : null}
-      {perfect && clearMs != null ? (
-        <p className="sqmem-time" data-square-memory-time>
-          <span className="sqmem-time-value">{formatClearTime(clearMs)}</span>
-          <span className="sqmem-time-note">Full clear</span>
-        </p>
-      ) : null}
-      {showBoard ? (
-        <div className="sqmem-boards" data-square-memory-boards>
-          {CHOICES.map((item) => (
-            <Leaderboard
-              key={item.id}
-              lineId={item.id}
-              name={item.name}
-              rows={boards[item.id]}
-              selected={item.id === choice.id}
-            />
-          ))}
-          {boardNote ? <p className="sqmem-best sqmem-boards-note">{boardNote}</p> : null}
-        </div>
-      ) : null}
-      {snap.phase === "title" ? (
-        <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-          Begin
-        </button>
-      ) : null}
 
-      <div className="sqmem-board">
-        <MemoryBoard
-          lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
-          interactive={snap.phase === "input" && snap.cursor < snap.length}
-          position={position}
-          lastMove={last ? { from: last.from, to: last.to } : null}
-          found={partial ? partial.from : null}
-          onTap={onTap}
-        />
-        {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
+      <div className="sqmem-table">
+        {showBoard ? (
+          <div className="sqmem-boards" data-square-memory-boards>
+            <div className="sqmem-plaque-col">
+              <ScorePlaque lineId={CHOICES[0].id} name={CHOICES[0].name} rows={boards[CHOICES[0].id]} />
+              <button
+                type="button"
+                className="sqmem-all-times"
+                data-square-memory-all-times
+                onClick={() => setAllTimes(true)}
+              >
+                All times
+              </button>
+            </div>
+            <ScorePlaque lineId={CHOICES[1].id} name={CHOICES[1].name} rows={boards[CHOICES[1].id]} />
+            {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
+          </div>
+        ) : null}
+
+        <div className="sqmem-frame">
+          {snap.phase === "title" || revealing ? (
+            <div className="sqmem-frame-tools">
+              <LinePick choiceId={choice.id} onChoose={chooseLine} />
+              {snap.phase === "title" ? (
+                <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
+                  Begin
+                </button>
+              ) : (
+                <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
+                  Play again
+                </button>
+              )}
+            </div>
+          ) : null}
+
+          {perfect && showClearTime && clearMs != null ? (
+            <p className="sqmem-time" data-square-memory-time>
+              <span className="sqmem-time-value">{formatClearTime(clearMs)}</span>
+              <span className="sqmem-time-note">Full clear</span>
+            </p>
+          ) : null}
+
+          <div className="sqmem-board">
+            <MemoryBoard
+              lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
+              interactive={snap.phase === "input" && snap.cursor < snap.length}
+              position={position}
+              lastMove={last ? { from: last.from, to: last.to } : null}
+              found={partial ? partial.from : null}
+              onTap={onTap}
+            />
+            {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
+          </div>
+        </div>
       </div>
 
       <footer className="sqmem-dock">
@@ -472,12 +488,7 @@ export function SquareMemory() {
             Best · {bestLabel} {bestLabel === 1 ? "square" : "squares"}
           </p>
         ) : null}
-        {revealing ? (
-          <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-            Play again
-          </button>
-        ) : null}
-        {perfect && clearMs != null ? (
+        {perfect && showClearTime && clearMs != null ? (
           <form className="sqmem-score-form" data-square-memory-score-form onSubmit={saveTime}>
             <input
               className="sqmem-score-name"
@@ -496,43 +507,79 @@ export function SquareMemory() {
         ) : null}
         {showPackLink ? <PackLink choice={choice} /> : null}
       </footer>
+      {allTimes ? (
+        <AllTimes boards={boards} onClose={() => setAllTimes(false)} />
+      ) : null}
     </main>
   );
 }
 
-function Leaderboard({
+function ScorePlaque({
   lineId,
   name,
   rows,
-  selected,
 }: {
   lineId: MemoryChoice["id"];
   name: string;
   rows: readonly BoardRow[];
-  selected: boolean;
 }) {
-  const shown = rows.slice(0, 5);
+  const shown = rows.slice(0, 3);
   return (
-    <section
-      className="sqmem-leaderboard"
-      data-square-memory-leaderboard={lineId}
-      data-selected={selected ? "true" : "false"}
-      aria-label={`${name} times`}
-    >
-      <h2 className="sqmem-leaderboard-name">{name}</h2>
+    <section className="sqmem-plaque" data-square-memory-leaderboard={lineId} aria-label={`${name} times`}>
+      <h2 className="sqmem-plaque-name">{name}</h2>
       {shown.length === 0 ? (
-        <p className="sqmem-leaderboard-empty">No times yet.</p>
+        <p className="sqmem-plaque-empty">No times yet.</p>
       ) : (
-        <ol className="sqmem-board-list">
+        <ol className="sqmem-plaque-list">
           {shown.map((row, index) => (
-            <li className="sqmem-board-row" key={`${row.name}-${row.ms}-${index}`}>
-              <span>{row.name}</span>
-              <span>{formatClearTime(row.ms)}</span>
+            <li className="sqmem-plaque-row" key={`${row.name}-${row.ms}`} data-place={index + 1}>
+              <span className="sqmem-plaque-person">{row.name}</span>
+              <span className="sqmem-plaque-time">{formatClearTime(row.ms)}</span>
             </li>
           ))}
         </ol>
       )}
     </section>
+  );
+}
+
+function AllTimes({
+  boards,
+  onClose,
+}: {
+  boards: Record<MemoryChoice["id"], readonly BoardRow[]>;
+  onClose: () => void;
+}) {
+  return (
+    <div className="sqmem-sheet-back" data-square-memory-sheet>
+      <div className="sqmem-sheet" role="dialog" aria-label="All times">
+        <div className="sqmem-sheet-bar">
+          <h2>All times</h2>
+          <button type="button" className="sqmem-sheet-close" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        <div className="sqmem-sheet-cols">
+          {CHOICES.map((item) => (
+            <section key={item.id} aria-label={`${item.name} times`}>
+              <h3>{item.name}</h3>
+              {boards[item.id].length === 0 ? (
+                <p className="sqmem-plaque-empty">No times yet.</p>
+              ) : (
+                <ol className="sqmem-sheet-list">
+                  {boards[item.id].map((row, index) => (
+                    <li key={`${item.id}-${row.name}-${row.ms}`} data-place={index + 1}>
+                      <span>{row.name}</span>
+                      <span>{formatClearTime(row.ms)}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </section>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
