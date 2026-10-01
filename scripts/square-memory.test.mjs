@@ -50,8 +50,10 @@ test("rounds grow by two and a miss keeps the finished squares", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory.ts", "logic.mjs");
   if (!mod) return;
   const { begin, tap, tick, FLASH_MS, GAP_MS, HIT_MS } = mod;
-  assert.equal(FLASH_MS, 1200);
-  assert.equal(GAP_MS, 200);
+  assert.equal(FLASH_MS, 520);
+  assert.equal(GAP_MS, 100);
+  assert.ok(FLASH_MS < 1200);
+  assert.ok(FLASH_MS > 380);
   assert.ok(GAP_MS < FLASH_MS);
 
   let now = 1000;
@@ -192,4 +194,15 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.doesNotMatch(view, /document\.addEventListener\(\s*["']click/);
   assert.doesNotMatch(view, /speechSynthesis|\.mp3|\.wav|new Audio\(/);
   assert.doesNotMatch(`${page}\n${view}`, /stripe|play-billing|checkout|buyPack/i);
+
+  const audio = src("src/lib/square-memory-audio.ts");
+  assert.match(audio, /osc\.type = "square"/);
+  assert.match(audio, /punch\(freq, 0\.11, 0\.72\)/);
+  assert.doesNotMatch(audio, /speechSynthesis|new Audio\(/);
+  assert.match(
+    css,
+    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*background:\s*#ffe400/,
+  );
+  assert.match(css, /\.sqmem-board\s*\{[^}]*width:\s*100%/);
+  assert.match(view, /data-square-memory-status=\{snap\.phase\}/);
 });

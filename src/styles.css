@@ -4730,20 +4730,20 @@ html[data-color-scheme="dark"] .landing-chip {
 .sqmem {
   display: flex;
   flex-direction: column;
-  width: min(32rem, 100%);
+  width: min(100%, 36rem);
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 0.85rem max(0.95rem, env(safe-area-inset-right, 0px))
-    max(1.4rem, env(safe-area-inset-bottom, 0px)) max(0.95rem, env(safe-area-inset-left, 0px));
+  padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.5rem, env(safe-area-inset-right, 0px))
+    max(0.65rem, env(safe-area-inset-bottom, 0px)) max(0.5rem, env(safe-area-inset-left, 0px));
   background: var(--color-bg);
   color: var(--color-fg);
 }
 
 .sqmem-bar {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.5rem;
 }
 
 .sqmem-home {
@@ -4753,13 +4753,19 @@ html[data-color-scheme="dark"] .landing-chip {
   text-decoration: none;
 }
 
-.sqmem-title {
-  margin: 0.35rem 0 0;
+.sqmem-title,
+.sqmem-opening {
+  margin: 0;
+  min-width: 0;
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
+}
+
+.sqmem-opening {
+  color: #2f5d50;
 }
 
 .sqmem-instruction,
@@ -4767,22 +4773,43 @@ html[data-color-scheme="dark"] .landing-chip {
 .sqmem-moves-label,
 .sqmem-found,
 .sqmem-score-note {
-  margin: 0.35rem 0 0;
+  margin: 0.2rem 0 0;
   color: var(--color-fg-muted);
-  font-size: 0.95rem;
-  line-height: 1.35;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.sqmem-score-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0.25rem 0 0;
 }
 
 .sqmem-status {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  margin: 0.45rem 0 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.35rem 0 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.75rem;
+  background: #23483c;
+  color: #f7f3ea;
+}
+
+.sqmem[data-phase="input"] .sqmem-status {
+  background: #ffe400;
+  color: #111110;
+}
+
+.sqmem[data-phase="punish"] .sqmem-status {
+  background: #b5453a;
+  color: #fff8f6;
 }
 
 .sqmem-status-word,
-.sqmem-score,
-.sqmem-opening {
+.sqmem-score {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
@@ -4790,28 +4817,29 @@ html[data-color-scheme="dark"] .landing-chip {
   line-height: 1;
 }
 
-.sqmem-status-word,
-.sqmem-score {
-  font-size: 1.85rem;
+.sqmem-status-word {
+  font-size: 1.65rem;
+  color: inherit;
 }
 
-.sqmem-opening {
-  margin-top: 0.35rem;
-  color: #2f5d50;
-  font-size: 1.25rem;
+.sqmem-score {
+  font-size: 1.65rem;
 }
 
 .sqmem-status-detail {
-  color: var(--color-fg-muted);
-  font-size: 0.92rem;
+  color: inherit;
+  font-size: 1.05rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
 }
 
 .sqmem-mute {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-left: auto;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: var(--color-bg-elevated);
@@ -4819,8 +4847,12 @@ html[data-color-scheme="dark"] .landing-chip {
 }
 
 .sqmem-board {
-  width: min(100%, 28rem);
-  margin: 0.9rem auto 0;
+  width: 100%;
+  margin: 0.35rem 0 0;
+}
+
+.sqmem-board > .board-frame {
+  width: 100%;
 }
 
 .sqmem-grid {
@@ -4848,20 +4880,25 @@ html[data-color-scheme="dark"] .landing-chip {
   background: #a97850;
 }
 
-.sqmem-sq.is-flash {
-  background: #f4d35e;
-}
-
+.sqmem-sq.is-flash,
+.sqmem-sq-light.is-flash,
 .sqmem-sq-dark.is-flash {
-  background: #e2b43a;
+  background: #ffe400;
+  box-shadow: inset 0 0 0 4px #111110;
 }
 
-.sqmem-sq.is-hit {
-  box-shadow: inset 0 0 0 3px #2f7a4a;
+.sqmem-sq.is-hit,
+.sqmem-sq-light.is-hit,
+.sqmem-sq-dark.is-hit {
+  background: #39f27a;
+  box-shadow: inset 0 0 0 4px #0c3d22;
 }
 
-.sqmem-sq.is-miss {
-  background: #e07066;
+.sqmem-sq.is-miss,
+.sqmem-sq-light.is-miss,
+.sqmem-sq-dark.is-miss {
+  background: #ff4d3a;
+  box-shadow: inset 0 0 0 4px #3d100c;
 }
 
 .sqmem-sq.is-last {
@@ -4884,13 +4921,14 @@ html[data-color-scheme="dark"] .landing-chip {
 .sqmem-dock {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.7rem;
-  width: min(100%, 28rem);
-  margin: 0.95rem auto 0;
+  align-items: stretch;
+  gap: 0.45rem;
+  width: 100%;
+  margin: 0.4rem 0 0;
 }
 
 .sqmem-begin {
+  width: 100%;
   min-height: 2.75rem;
   padding: 0.55rem 1.25rem;
   border: 0;
