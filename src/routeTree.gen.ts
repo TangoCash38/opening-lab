@@ -23,6 +23,7 @@ import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
 import { Route as ApiInboxRouteImport } from './routes/api/inbox'
 import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
+import { Route as ApiSquareMemoryScoresRouteImport } from './routes/api/square-memory-scores'
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as LessonsCourseIdRouteImport } from './routes/lessons_.$courseId'
 import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
@@ -104,6 +105,11 @@ const ApiPracticeReviewEvalRoute = ApiPracticeReviewEvalRouteImport.update({
   path: '/api/practice-review-eval',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSquareMemoryScoresRoute = ApiSquareMemoryScoresRouteImport.update({
+  id: '/api/square-memory-scores',
+  path: '/api/square-memory-scores',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiUnlocksRoute = ApiUnlocksRouteImport.update({
   id: '/api/unlocks',
   path: '/api/unlocks',
@@ -170,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/api/inbox': typeof ApiInboxRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/lessons/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/api/inbox': typeof ApiInboxRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/api/inbox': typeof ApiInboxRoute
   '/api/payments': typeof ApiPaymentsRoute
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
+  '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/lessons_/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
@@ -250,6 +259,7 @@ export interface FileRouteTypes {
     | '/api/inbox'
     | '/api/payments'
     | '/api/practice-review-eval'
+    | '/api/square-memory-scores'
     | '/api/unlocks'
     | '/lessons/$courseId'
     | '/api/account/delete'
@@ -276,6 +286,7 @@ export interface FileRouteTypes {
     | '/api/inbox'
     | '/api/payments'
     | '/api/practice-review-eval'
+    | '/api/square-memory-scores'
     | '/api/unlocks'
     | '/api/account/delete'
     | '/api/auth/$'
@@ -301,6 +312,7 @@ export interface FileRouteTypes {
     | '/api/inbox'
     | '/api/payments'
     | '/api/practice-review-eval'
+    | '/api/square-memory-scores'
     | '/api/unlocks'
     | '/lessons_/$courseId'
     | '/api/account/delete'
@@ -328,6 +340,7 @@ export interface RootRouteChildren {
   ApiInboxRoute: typeof ApiInboxRoute
   ApiPaymentsRoute: typeof ApiPaymentsRoute
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
+  ApiSquareMemoryScoresRoute: typeof ApiSquareMemoryScoresRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   LessonsCourseIdRoute: typeof LessonsCourseIdRouteWithChildren
   ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
@@ -434,6 +447,13 @@ declare module '@tanstack/react-router' {
       path: '/api/practice-review-eval'
       fullPath: '/api/practice-review-eval'
       preLoaderRoute: typeof ApiPracticeReviewEvalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/square-memory-scores': {
+      id: '/api/square-memory-scores'
+      path: '/api/square-memory-scores'
+      fullPath: '/api/square-memory-scores'
+      preLoaderRoute: typeof ApiSquareMemoryScoresRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/unlocks': {
@@ -562,6 +582,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiInboxRoute: ApiInboxRoute,
   ApiPaymentsRoute: ApiPaymentsRoute,
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
+  ApiSquareMemoryScoresRoute: ApiSquareMemoryScoresRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   LessonsCourseIdRoute: LessonsCourseIdRouteWithChildren,
   ApiAccountDeleteRoute: ApiAccountDeleteRoute,
