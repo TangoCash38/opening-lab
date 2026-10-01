@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { CircleHelp, House, Moon, Sun, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
-import { isComingSoonClosed, isPackVisible, readRequestedPackId } from "@/lib/catalog";
+import {
+  isComingSoonClosed,
+  isPackComingSoon,
+  isPackVisible,
+  readRequestedPackId,
+} from "@/lib/catalog";
 import { isClassicSamplePack } from "@/lib/classic-sample";
 import {
   gymPackFromLine,
@@ -183,9 +188,15 @@ function OpeningLabInner() {
 
   useEffect(() => {
     const packId = readRequestedPackId();
-    if (packId && !isPackVisible(packId) && !isGymPack(packId)) {
+    if (!packId) return;
+    if (!isPackVisible(packId) && !isGymPack(packId)) {
       goHome();
+      return;
     }
+    // Website deep link into a live pack (Square Memory → Ruy Lopez intro).
+    // Play keeps the landing. This does not start a purchase.
+    if (isPlayWrap()) return;
+    if (isPackVisible(packId) && !isPackComingSoon(packId)) goPacks(packId);
   }, []);
 
   useEffect(() => {
