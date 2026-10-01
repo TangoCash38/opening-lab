@@ -49,24 +49,92 @@ export function begin(best: number, now: number, squares: readonly string[]): Sn
   return startWatch(titleState(best), Math.min(2, squares.length), now, squares);
 }
 
+/** A posted time longer than this is not a real sitting. */
+export const MAX_CLEAR_MS = 30 * 60 * 1000;
+
+export const SCORE_NAME_MAX = 16;
+
+/**
+ * Shortest possible full clear: every flash, every gap, and the hit pause
+ * between rounds, measured to the last correct tap. Tap time is extra, so a
+ * real clear cannot be faster than this.
+ */
+export function minimumClearMs(squareCount: number): number {
+  const total = Math.max(0, Math.floor(squareCount));
+  if (total <= 0) return 0;
+  let ms = 0;
+  let length = Math.min(2, total);
+  while (true) {
+    ms += length * FLASH_MS + Math.max(0, length - 1) * GAP_MS;
+    if (length >= total) break;
+    ms += HIT_MS;
+    length = Math.min(length + 2, total);
+  }
+  return ms;
+}
+
+/** `m:ss.t` from a millisecond clear. */
+export function formatClearTime(ms: number): string {
+  const clamped = Math.max(0, Math.round(ms));
+  const tenths = Math.floor(clamped / 100) % 10;
+  const totalSeconds = Math.floor(clamped / 1000);
+  const seconds = totalSeconds % 60;
+  const minutes = Math.floor(totalSeconds / 60);
+  return `${minutes}:${String(seconds).padStart(2, "0")}.${tenths}`;
+}
+
+/** A display name. No account, no email address. */
+export function cleanScoreName(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const name = raw.replace(/\s+/g, " ").trim();
+  if (name.length < 1 || name.length > SCORE_NAME_MAX) return null;
+  if (!/^[\p{L}\p{N} .'-]+$/u.test(name)) return null;
+  return name;
+}
+
+/**
+ * One clock for every flash. The first square of a round used to be lit
+ * inside startWatch while the rest waited on the gap. Both paths now call
+ * openFlash, so each square is on for FLASH_MS and the dark gap is GAP_MS.
+ * The opening pair is not a shorter preview.
+ */
+function openFlash(state: Snapshot, now: number, squares: readonly string[]): Snapshot {
+  const next = state.cursor + 1;
+  if (next >= state.length) {
+    return { ...state, phase: "input", cursor: 0, lit: null, litKind: null, gapUntil: 0 };
+  }
+  return {
+    ...state,
+    cursor: next,
+    lit: squares[next] ?? null,
+    litKind: "flash",
+    litUntil: now + FLASH_MS,
+    gapUntil: 0,
+  };
+}
+
+function armWatch(prev: Snapshot, length: number, now: number): Snapshot {
+  return {
+    phase: "watch",
+    length,
+    cursor: -1,
+    lit: null,
+    litKind: null,
+    litUntil: 0,
+    gapUntil: now,
+    score: 0,
+    perfect: false,
+    best: prev.best,
+  };
+}
+
 function startWatch(
   prev: Snapshot,
   length: number,
   now: number,
   squares: readonly string[],
 ): Snapshot {
-  return {
-    phase: "watch",
-    length,
-    cursor: 0,
-    lit: squares[0] ?? null,
-    litKind: "flash",
-    litUntil: now + FLASH_MS,
-    gapUntil: 0,
-    score: 0,
-    perfect: false,
-    best: prev.best,
-  };
+  return openFlash(armWatch(prev, length, now), now, squares);
 }
 
 function reveal(prev: Snapshot, score: number, perfect: boolean): Snapshot {
@@ -88,18 +156,7 @@ export function tick(state: Snapshot, now: number, squares: readonly string[]): 
       return { ...state, lit: null, litKind: null, gapUntil: now + GAP_MS };
     }
     if (!state.lit && state.gapUntil > 0 && now >= state.gapUntil) {
-      const next = state.cursor + 1;
-      if (next < state.length) {
-        return {
-          ...state,
-          cursor: next,
-          lit: squares[next] ?? null,
-          litKind: "flash",
-          litUntil: now + FLASH_MS,
-          gapUntil: 0,
-        };
-      }
-      return { ...state, phase: "input", cursor: 0, lit: null, litKind: null, gapUntil: 0 };
+      return openFlash(state, now, squares);
     }
     return state;
   }

@@ -1,16 +1,12 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { LondonMemory } from "@/components/opening-lab/square-memory-london";
-import { initBoardTheme } from "@/lib/board-theme";
-import { initColorScheme } from "@/lib/color-scheme";
-import { I18nProvider } from "@/lib/i18n";
 import { isPlayApp } from "@/lib/play-app";
 
 export const Route = createFileRoute("/square-memory-london")({
-  component: LondonMemoryRoute,
+  component: SquareMemoryLondonRedirect,
   head: () => ({
     meta: [
-      { title: "London Memory · Opening Lab" },
+      { title: "Square Memory · Opening Lab" },
       {
         name: "description",
         content: "Watch the squares. Tap them back in order.",
@@ -19,28 +15,9 @@ export const Route = createFileRoute("/square-memory-london")({
   }),
 });
 
-function LondonMemoryRoute() {
-  const [allowed, setAllowed] = useState<boolean | null>(null);
+function SquareMemoryLondonRedirect() {
   useLayoutEffect(() => {
-    const stopBoard = initBoardTheme();
-    const stopColor = initColorScheme();
-    if (isPlayApp()) {
-      setAllowed(false);
-      window.location.replace("/");
-    } else {
-      setAllowed(true);
-    }
-    return () => {
-      stopBoard();
-      stopColor();
-    };
+    window.location.replace(isPlayApp() ? "/" : "/square-memory");
   }, []);
-  if (allowed !== true) return null;
-  return (
-    <I18nProvider>
-      <div data-surface="website" data-london-memory-page>
-        <LondonMemory />
-      </div>
-    </I18nProvider>
-  );
+  return null;
 }

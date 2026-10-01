@@ -197,28 +197,16 @@ export function LandingHome({
                 <span className="landing-cta-note">{t("Opening drill packs")}</span>
               </button>
               {showMemory ? (
-                <div className="landing-memory-row">
-                  <section className="landing-square-memory" aria-label="Square Memory">
-                    <Link
-                      to="/square-memory"
-                      className="landing-puzzle-card"
-                      data-landing-square-memory
-                    >
-                      <span className="landing-puzzle-kicker">{t("Free")}</span>
-                      <span className="landing-puzzle-title">Square Memory</span>
-                    </Link>
-                  </section>
-                  <section className="landing-square-memory" aria-label="London Memory">
-                    <Link
-                      to="/square-memory-london"
-                      className="landing-puzzle-card"
-                      data-landing-london-memory
-                    >
-                      <span className="landing-puzzle-kicker">{t("Free")}</span>
-                      <span className="landing-puzzle-title">London Memory</span>
-                    </Link>
-                  </section>
-                </div>
+                <section className="landing-square-memory" aria-label="Square Memory">
+                  <Link
+                    to="/square-memory"
+                    className="landing-puzzle-card"
+                    data-landing-square-memory
+                  >
+                    <span className="landing-puzzle-kicker">{t("Free")}</span>
+                    <span className="landing-puzzle-title">Square Memory</span>
+                  </Link>
+                </section>
               ) : null}
               {showPuzzle ? (
                 <section className="landing-puzzle" aria-label={t("Puzzle")}>

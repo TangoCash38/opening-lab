@@ -130,6 +130,56 @@ test("taps during the flash are ignored and a perfect line reveals", async (t) =
   assert.equal(state.score, 2);
 });
 
+test("every flash uses the same on-time and gap, including the first", async (t) => {
+  const mod = await loadModule(t, "src/lib/square-memory.ts", "logic-timing.mjs");
+  if (!mod) return;
+  const { begin, tap, tick, FLASH_MS, GAP_MS, HIT_MS, minimumClearMs, formatClearTime, cleanScoreName } = mod;
+  const squares = ["e2", "e4", "c7", "c5", "g1", "f3", "b8", "c6"];
+
+  function flashes(state, now) {
+    const ons = [];
+    const gaps = [];
+    for (let guard = 0; guard < 40 && state.phase === "watch"; guard++) {
+      if (state.lit) {
+        ons.push(state.litUntil - now);
+        now = state.litUntil;
+      } else {
+        gaps.push(state.gapUntil - now);
+        now = state.gapUntil;
+      }
+      const next = tick(state, now, squares);
+      if (next === state) throw new Error("watch tick made no progress");
+      state = next;
+    }
+    return { ons, gaps, state, now };
+  }
+
+  let now = 5000;
+  let state = begin(0, now, squares);
+  const first = flashes(state, now);
+  state = first.state;
+  now = first.now;
+  assert.ok(first.ons.length >= 2);
+  assert.ok(first.ons.every((ms) => ms === FLASH_MS));
+  assert.ok(first.gaps.every((ms) => ms === GAP_MS));
+  assert.equal(first.ons[0], first.ons[first.ons.length - 1]);
+
+  state = tap(state, "e2", squares, now);
+  state = tap(state, "e4", squares, now);
+  now += HIT_MS;
+  state = tick(state, now, squares);
+  const longer = flashes(state, now);
+  assert.equal(longer.ons.length, 4);
+  assert.ok(longer.ons.every((ms) => ms === first.ons[0]));
+  assert.ok(longer.gaps.every((ms) => ms === GAP_MS));
+
+  assert.equal(minimumClearMs(10), 30 * FLASH_MS + 25 * GAP_MS + 4 * HIT_MS);
+  assert.equal(formatClearTime(32480), "0:32.4");
+  assert.equal(cleanScoreName("  Sean  "), "Sean");
+  assert.equal(cleanScoreName("sean@lab.co"), null);
+  assert.equal(cleanScoreName("a name that is far too long"), null);
+});
+
 test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory-line.ts", "line.mjs");
   if (!mod) return;
@@ -186,8 +236,9 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(view, /Watch the squares\. Tap them back in order\./);
   assert.match(view, /data-begin/);
   assert.match(view, /data-mute/);
-  assert.match(view, /data-square-memory-pack=\{SQUARE_MEMORY_PACK_ID\}/);
-  assert.match(view, /href=\{`\/#pack\/\$\{SQUARE_MEMORY_PACK_ID\}`\}/);
+  assert.match(view, /data-square-memory-pack=\{choice\.packId\}/);
+  assert.match(view, /href=\{`\/#pack\/\$\{choice\.packId\}`\}/);
+  assert.match(view, /SQUARE_MEMORY_PACK_ID/);
   assert.match(view, /Play again/);
   assert.match(view, /localStorage/);
   assert.doesNotMatch(view, /document\.addEventListener\(\s*["']pointerdown/);
@@ -217,17 +268,18 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   const portrait = coach.match(/RUY_LOPEZ_PORTRAIT = "([^"]+)"/)?.[1];
   assert.equal(portrait, "/coach/ruy-lopez-white/big-red-portrait.png");
   assert.match(view, /const BIG_RED_PORTRAIT = "\/coach\/ruy-lopez-white\/big-red-portrait\.png"/);
-  assert.match(view, /perfect \? <PerfectCheer \/> : null/);
+  assert.match(view, /perfect && cheerOn \? <PerfectCheer choice=\{choice\} \/> : null/);
+  assert.match(view, /BOARD_BEFORE_CHEER_MS = 2000/);
   assert.match(view, /revealing && !snap\.perfect/);
   assert.match(
     view,
     /You smashed it\. That's the Ruy Lopez\. Want to learn openings properly\? Try the opening packs\./,
   );
   assert.match(view, /data-square-memory-cheer/);
-  assert.match(view, /alt="Big Red"/);
+  assert.match(view, /coach: "Big Red"/);
   assert.match(view, /data-square-memory-gym/);
   assert.match(view, /href="\/#gym"/);
-  assert.doesNotMatch(view, /Potato Pie|coach-seated/);
+  assert.match(view, /unlockAudio\(\)[\s\S]{0,280}performance\.now\(\)/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.doesNotMatch(audio, /You smashed it/);
   assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);
@@ -238,13 +290,12 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   assert.match(shell, /if \(isPlayWrap\(\)\) return/);
 });
 
-test("London Memory uses the opening of pack Line 1 and Potato Pie", () => {
+test("both openings live on Square Memory, and the old London URL redirects", () => {
   const packs = src("src/data/packs.ts");
   const line = src("src/lib/square-memory-london.ts");
-  const view = src("src/components/opening-lab/square-memory-london.tsx");
+  const view = src("src/components/opening-lab/square-memory.tsx");
   const page = src("src/routes/square-memory-london.tsx");
   const landing = src("src/components/opening-lab/home-intro.tsx");
-  const ruy = src("src/components/opening-lab/square-memory.tsx");
   const ruyLine = src("src/lib/square-memory-line.ts");
   const lon1 = packs.slice(packs.indexOf('id: "lon1"'), packs.indexOf('id: "lon2"'));
   assert.match(lon1, /\["d4", "d5", "Bf4", "Nf6", "e3",/);
@@ -255,25 +306,39 @@ test("London Memory uses the opening of pack Line 1 and Potato Pie", () => {
     view,
     /You smashed it\. That's the London System\. Want to learn openings properly\? Try the opening packs\./,
   );
-  assert.match(view, /perfect \? <PerfectCheer \/> : null/);
-  assert.match(view, /revealing && !snap\.perfect/);
   assert.match(view, /coach-seated-v2\.png/);
   assert.match(view, /Professor Potato Pie/);
-  assert.doesNotMatch(view, /big-red-portrait|Big Red/);
-  assert.match(view, /data-square-memory-gym/);
-  assert.match(view, /href="\/#gym"/);
-  assert.match(view, /href=\{`\/#pack\/\$\{LONDON_MEMORY_PACK_ID\}`\}/);
+  assert.match(view, /data-memory-line=\{item\.id\}/);
+  assert.match(view, /<h1 className="sqmem-title">Square Memory<\/h1>/);
+  assert.doesNotMatch(view, /London Memory|Square London/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.match(page, /createFileRoute\("\/square-memory-london"\)/);
   assert.match(page, /isPlayApp\(\)/);
-  assert.match(page, /window\.location\.replace\("\/"\)/);
+  assert.match(page, /window\.location\.replace\(isPlayApp\(\) \? "\/" : "\/square-memory"\)/);
+  assert.match(page, /Square Memory · Opening Lab/);
+  assert.doesNotMatch(page, /London Memory/);
   const memory = landing.indexOf("data-landing-square-memory");
-  const london = landing.indexOf("data-landing-london-memory");
   const puzzle = landing.indexOf("data-landing-puzzle");
-  assert.ok(memory > 0 && london > memory && puzzle > london);
-  assert.match(landing, /to="\/square-memory-london"/);
-  assert.match(landing, /London Memory/);
-  assert.match(ruy, /That's the Ruy Lopez/);
+  assert.ok(memory > 0 && puzzle > memory);
+  assert.doesNotMatch(landing, /data-landing-london-memory|London Memory|landing-memory-row/);
   assert.match(ruyLine, /SQUARE_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bb5"\]/);
-  assert.doesNotMatch(ruy, /London System|coach-seated/);
+});
+
+test("a full clear is timed and only that time can join the shared board", () => {
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const api = src("src/routes/api/square-memory-scores.ts");
+  const migration = src("migrations/0007_square_memory_scores.sql");
+  assert.match(view, /runStartRef\.current = now/);
+  assert.match(view, /data-square-memory-time/);
+  assert.match(view, /perfect && clearMs != null \?/);
+  assert.match(view, /data-square-memory-score-form/);
+  assert.match(view, /data-square-memory-leaderboard=\{lineId\}/);
+  assert.match(view, /\/api\/square-memory-scores/);
+  assert.doesNotMatch(view, /localStorage\.setItem\([^)]*square-memory-scores/);
+  assert.match(api, /getSql\(/);
+  assert.match(api, /minimumClearMs/);
+  assert.match(api, /cleanScoreName/);
+  assert.match(migration, /create table if not exists square_memory_scores/);
+  assert.match(migration, /line in \('ruy', 'london'\)/);
+  assert.doesNotMatch(api, /localStorage/);
 });
