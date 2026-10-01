@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { PACKS, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
 import {
@@ -103,10 +103,12 @@ export function LandingHome({
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
   const [showPuzzle, setShowPuzzle] = useState(false);
   const [showClassic, setShowClassic] = useState(false);
+  const [showMemory, setShowMemory] = useState(false);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
     setShowPuzzle(!isPlayApp());
     setShowClassic(!isPlayApp());
+    setShowMemory(!isPlayApp());
   }, []);
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),
@@ -194,6 +196,18 @@ export function LandingHome({
                 <span className="landing-cta-title">{t("Enter the gym")}</span>
                 <span className="landing-cta-note">{t("Opening drill packs")}</span>
               </button>
+              {showMemory ? (
+                <section className="landing-square-memory" aria-label="Square Memory">
+                  <Link
+                    to="/square-memory"
+                    className="landing-puzzle-card"
+                    data-landing-square-memory
+                  >
+                    <span className="landing-puzzle-kicker">{t("Free")}</span>
+                    <span className="landing-puzzle-title">Square Memory</span>
+                  </Link>
+                </section>
+              ) : null}
               {showPuzzle ? (
                 <section className="landing-puzzle" aria-label={t("Puzzle")}>
                   <button
