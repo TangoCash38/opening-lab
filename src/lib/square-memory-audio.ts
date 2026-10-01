@@ -1,9 +1,14 @@
-/** Soft wooden chimes. The context is created on Begin, never at import. No voice. */
+/**
+ * Arcade hits. The context is created on Begin, never at import.
+ * Mute stays silent. No spoken voice.
+ */
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 let muted = false;
 let blocked = false;
+
+const LOUD = 1;
 
 function context(): AudioContext | null {
   if (blocked || typeof window === "undefined") return null;
@@ -15,7 +20,7 @@ function context(): AudioContext | null {
     try {
       ctx = new Ctor();
       master = ctx.createGain();
-      master.gain.value = muted ? 0 : 0.85;
+      master.gain.value = muted ? 0 : LOUD;
       master.connect(ctx.destination);
     } catch {
       blocked = true;
@@ -47,7 +52,7 @@ export function resumeAudio(): void {
 export function setMuted(next: boolean): void {
   muted = next;
   try {
-    if (master && ctx) master.gain.setTargetAtTime(next ? 0 : 0.85, ctx.currentTime, 0.02);
+    if (master && ctx) master.gain.setTargetAtTime(next ? 0 : LOUD, ctx.currentTime, 0.01);
   } catch {
     /* ignore */
   }
@@ -57,7 +62,16 @@ export function isMuted(): boolean {
   return muted;
 }
 
-function tone(freq: number, dur: number, gain: number, type: OscillatorType): void {
+function noiseBuffer(audio: AudioContext, seconds: number): AudioBuffer {
+  const n = Math.max(1, Math.floor(audio.sampleRate * seconds));
+  const buf = audio.createBuffer(1, n, audio.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) data[i] = Math.random() * 2 - 1;
+  return buf;
+}
+
+/** Square-wave stab plus a noise click. Peak is high on purpose. */
+function punch(freq: number, dur: number, gain: number): void {
   if (muted) return;
   const audio = ctx;
   const bus = master;
@@ -66,62 +80,80 @@ function tone(freq: number, dur: number, gain: number, type: OscillatorType): vo
     const t = audio.currentTime;
     const osc = audio.createOscillator();
     const amp = audio.createGain();
-    osc.type = type;
+    osc.type = "square";
     osc.frequency.setValueAtTime(freq, t);
-    osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq * 0.62), t + dur);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(80, freq * 0.62), t + dur);
     amp.gain.setValueAtTime(0.0001, t);
-    amp.gain.exponentialRampToValueAtTime(gain, t + 0.012);
+    amp.gain.exponentialRampToValueAtTime(gain, t + 0.004);
     amp.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     osc.connect(amp);
     amp.connect(bus);
     osc.start(t);
     osc.stop(t + dur + 0.02);
-    osc.onended = () => {
+
+    const click = audio.createBufferSource();
+    click.buffer = noiseBuffer(audio, 0.045);
+    const bp = audio.createBiquadFilter();
+    bp.type = "highpass";
+    bp.frequency.value = 900;
+    const ng = audio.createGain();
+    ng.gain.setValueAtTime(0.0001, t);
+    ng.gain.exponentialRampToValueAtTime(Math.min(0.45, gain * 0.55), t + 0.002);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.04);
+    click.connect(bp);
+    bp.connect(ng);
+    ng.connect(bus);
+    click.start(t);
+    click.stop(t + 0.05);
+
+    const end = () => {
       osc.disconnect();
       amp.disconnect();
+      click.disconnect();
+      bp.disconnect();
+      ng.disconnect();
     };
+    osc.onended = end;
   } catch {
-    /* a failed chime must not cancel the round */
+    /* a failed hit must not cancel the round */
   }
 }
 
-/** A bright ding on the flash. The landing square sits higher than the piece's square. */
+/** Loud hit on the flash. The landing square sits higher than the piece's square. */
 export function playWatch(index: number): void {
   const ply = Math.floor(index / 2);
   const fromSquare = index % 2 === 0;
-  const root = ply % 2 === 0 ? 659 : 523;
-  const freq = fromSquare ? root : root * 1.26;
-  tone(freq, 0.1, 0.32, "sine");
-  tone(freq * 2.02, 0.06, 0.1, "triangle");
+  const root = fromSquare ? 392 : 587;
+  const freq = root * (1 + (ply % 5) * 0.06);
+  punch(freq, 0.11, 0.72);
 }
 
 export function playHit(): void {
-  tone(880 * (1 + (Math.random() - 0.5) * 0.02), 0.12, 0.12, "sine");
+  punch(880, 0.07, 0.38);
 }
 
 export function playMiss(): void {
-  tone(146, 0.28, 0.16, "triangle");
-  tone(92, 0.34, 0.1, "sine");
+  punch(110, 0.22, 0.55);
 }
 
 export function playWin(): void {
   if (muted || !ctx || !master) return;
   try {
     const audio = ctx;
-    const notes = [523, 659, 784];
+    const notes = [523, 659, 784, 1046];
     notes.forEach((freq, i) => {
-      const t = audio.currentTime + i * 0.12;
+      const t = audio.currentTime + i * 0.08;
       const osc = audio.createOscillator();
       const amp = audio.createGain();
-      osc.type = "sine";
+      osc.type = "square";
       osc.frequency.setValueAtTime(freq, t);
       amp.gain.setValueAtTime(0.0001, t);
-      amp.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
-      amp.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+      amp.gain.exponentialRampToValueAtTime(0.42, t + 0.008);
+      amp.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
       osc.connect(amp);
       amp.connect(master!);
       osc.start(t);
-      osc.stop(t + 0.42);
+      osc.stop(t + 0.18);
       osc.onended = () => {
         osc.disconnect();
         amp.disconnect();

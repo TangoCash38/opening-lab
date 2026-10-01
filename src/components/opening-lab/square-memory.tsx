@@ -174,34 +174,17 @@ export function SquareMemory() {
   const showPackLink = snap.phase === "title" || revealing;
 
   return (
-    <main className="sqmem" data-square-memory>
+    <main className="sqmem" data-square-memory data-phase={snap.phase}>
       <header className="sqmem-bar">
-        <div className="min-w-0">
-          <Link to="/" className="sqmem-home" data-square-memory-home>
-            Home
-          </Link>
-          {snap.phase === "title" ? (
-            <>
-              <h1 className="sqmem-title">Square Memory</h1>
-              <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
-            </>
-          ) : null}
-          {playing ? <PlayStatus snap={snap} /> : null}
-          {revealing ? (
-            <>
-              <p className="sqmem-score" data-square-memory-score>
-                {snap.score}
-              </p>
-              <p className="sqmem-score-note">
-                {snap.score === 1 ? "Square remembered" : "Squares remembered"}
-                {snap.score > bestAtStart.current && snap.score > 0 ? " · New best" : ""}
-              </p>
-              <p className="sqmem-opening" data-square-memory-opening>
-                {SQUARE_MEMORY_NAME}
-              </p>
-            </>
-          ) : null}
-        </div>
+        <Link to="/" className="sqmem-home" data-square-memory-home>
+          Home
+        </Link>
+        {snap.phase === "title" ? <h1 className="sqmem-title">Square Memory</h1> : null}
+        {revealing ? (
+          <p className="sqmem-opening" data-square-memory-opening>
+            {SQUARE_MEMORY_NAME}
+          </p>
+        ) : null}
         <button
           type="button"
           className="sqmem-mute"
@@ -217,6 +200,21 @@ export function SquareMemory() {
           )}
         </button>
       </header>
+      {snap.phase === "title" ? (
+        <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
+      ) : null}
+      {playing ? <PlayStatus snap={snap} /> : null}
+      {revealing ? (
+        <p className="sqmem-score-line">
+          <span className="sqmem-score" data-square-memory-score>
+            {snap.score}
+          </span>
+          <span className="sqmem-score-note">
+            {snap.score === 1 ? "Square remembered" : "Squares remembered"}
+            {snap.score > bestAtStart.current && snap.score > 0 ? " · New best" : ""}
+          </span>
+        </p>
+      ) : null}
 
       <div className="sqmem-board">
         <MemoryBoard
@@ -283,7 +281,7 @@ function PlayStatus({ snap }: { snap: Snapshot }) {
         ? `${snap.cursor + 1} of ${snap.length}`
         : `${snap.cursor} of ${snap.length}`;
   return (
-    <p className="sqmem-status" aria-live="polite">
+    <p className="sqmem-status" data-square-memory-status={snap.phase} aria-live="polite">
       <span className="sqmem-status-word">{word}</span>
       <span className="sqmem-status-detail">{detail}</span>
     </p>

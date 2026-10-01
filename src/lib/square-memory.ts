@@ -1,13 +1,14 @@
 /**
  * Square Memory rounds.
  *
- * Each square stays lit for 1.2s so it is readable on a phone, then goes
- * dark for 0.2s before the next square. A 3s flash is clear but drags once
- * the line is long; 380ms was too fast to see.
+ * 520ms is an arcade tempo: long enough to read a square on a phone, short
+ * enough that a lengthening line does not drag. 1.2s felt slow. 380ms was
+ * too fast when the square was only a faint tint. The gap is 100ms so each
+ * flash separates without a pause.
  */
 
-export const FLASH_MS = 1200;
-export const GAP_MS = 200;
+export const FLASH_MS = 520;
+export const GAP_MS = 100;
 export const HIT_MS = 280;
 export const MISS_MS = 680;
 
