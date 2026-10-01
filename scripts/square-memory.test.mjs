@@ -332,7 +332,9 @@ test("a full clear is timed and only that time can join the shared board", () =>
   assert.match(view, /data-square-memory-time/);
   assert.match(view, /perfect && clearMs != null \?/);
   assert.match(view, /data-square-memory-score-form/);
+  assert.match(view, /data-square-memory-boards/);
   assert.match(view, /data-square-memory-leaderboard=\{lineId\}/);
+  assert.match(view, /CHOICES\.map\(\(item\) =>/);
   assert.match(view, /\/api\/square-memory-scores/);
   assert.doesNotMatch(view, /localStorage\.setItem\([^)]*square-memory-scores/);
   assert.match(api, /getSql\(/);
