@@ -13,10 +13,14 @@ const shell = src("src/components/opening-lab/app-shell.tsx");
 const css = src("src/styles.css");
 const copy = src("src/lib/landing-copy.ts");
 
-test("landing matches the signed-off home: gym CTA, live packs, real prices", () => {
+test("landing matches the signed-off home: live packs, real prices", () => {
   assert.match(landing, /data-landing/);
-  assert.match(landing, /data-landing-cta/);
-  assert.match(landing, /onEnterGym/);
+  assert.doesNotMatch(landing, /data-landing-cta/);
+  assert.doesNotMatch(landing, /onEnterGym/);
+  assert.match(landing, /onOpenPack\(pack\.id\)/);
+  assert.match(landing, /className="landing-pack-enter"[\s\S]{0,40}t\("Enter the gym"\)/);
+  const hero = landing.slice(landing.indexOf("landing-hero"), landing.indexOf("landing-openings"));
+  assert.doesNotMatch(hero, /Enter the gym|data-landing-cta/);
   assert.match(landing, /LIVE_PACK_IDS/);
   assert.match(landing, /packPrice/);
   assert.match(landing, /FREE_SAMPLE_LINE_IDS/);
@@ -56,7 +60,7 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(shell, /onClick=\{goHome\}/);
   assert.match(shell, /setView\("landing"\)/);
   assert.match(shell, /showAppHeader = view !== "landing"/);
-  assert.match(shell, /onEnterGym=\{\(\) => goPacks\(\)\}/);
+  assert.doesNotMatch(shell, /onEnterGym/);
   assert.match(shell, /onOpenPack=\{\(packId\) => goPacks\(packId\)\}/);
   assert.match(shell, /onCreateOwn=\{openCreate\}/);
   assert.match(shell, /setView\("home"\)/);
@@ -66,16 +70,9 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.doesNotMatch(landing, /Drill packs/);
   assert.match(landing, /aria-label=\{t\("Site"\)\}/);
   assert.match(landing, /data-landing-support/);
-  const gymButton = landing.match(/<button[^>]*data-landing-cta[\s\S]*?<\/button>/)?.[0] ?? "";
-  assert.match(gymButton, /t\("Enter the gym"\)/);
-  assert.match(gymButton, /className="landing-cta-note"[\s\S]*t\("Opening drill packs"\)/);
-  assert.doesNotMatch(gymButton, /Chess opening lessons/);
-  assert.match(landing, /className="landing-cta-note"/);
-  assert.match(
-    landing,
-    /t\("Open now"\)[\s\S]{0,220}t\("Chess opening drills available now"\)/,
-  );
-  assert.match(landing, /onClick=\{onEnterGym\}/);
+  assert.doesNotMatch(landing, /landing-cta-note/);
+  assert.doesNotMatch(landing, /landing-puzzle-card/);
+  assert.match(landing, /t\("Open now"\)/);
   assert.match(landing, /onClick=\{onSupport\}/);
   assert.match(landing, /onOpenPack\(pack\.id\)/);
   assert.match(landing, /data-coming-soon-feedback/);
@@ -144,15 +141,13 @@ test("landing board is an even orthographic diagram and the app prompt is gone",
   assert.doesNotMatch(shell, /App coming soon/);
   assert.match(shell, /app-header-logo/);
   assert.match(shell, /\/brand\/opening-lab-logo\.png/);
-  assert.match(css, /\.landing-chip \{[\s\S]*background:\s*#111110/);
-  assert.match(css, /\.landing-chip \{[\s\S]*color:\s*#ffffff/);
+  assert.match(css, /\.landing-chip \{[\s\S]*background:\s*transparent/);
+  assert.match(css, /\.landing-chip \{[\s\S]*color:\s*var\(--color-fg-muted\)/);
   assert.match(
     css,
-    /html\[data-color-scheme="dark"\] \.landing-chip \{[\s\S]*background:\s*#000000/,
+    /html\[data-color-scheme="dark"\] \.landing-chip \{[\s\S]*background:\s*transparent/,
   );
-  assert.match(
-    css,
-    /html\[data-color-scheme="dark"\] \.landing-chip \{[\s\S]*color:\s*#ffffff/,
-  );
+  assert.doesNotMatch(css, /\.landing-chip \{[\s\S]*background:\s*#111110/);
   assert.doesNotMatch(css, /\.landing-chip \{[\s\S]*#f4e6c8/);
+  assert.doesNotMatch(css, /landing-try-beacon/);
 });

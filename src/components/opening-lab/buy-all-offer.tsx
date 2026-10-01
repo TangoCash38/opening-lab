@@ -8,12 +8,44 @@ type Props = {
   error?: string | null;
   /** Hide when this account already unlocks every drill pack. */
   hidden?: boolean;
+  /** One line on the homepage. The gym and unlock sheet keep the full card. */
+  compact?: boolean;
 };
 
 /** One-time Buy all. Shared by the website and the Play wrap. */
-export function BuyAllOffer({ onBuy, busy = false, error = null, hidden = false }: Props) {
+export function BuyAllOffer({
+  onBuy,
+  busy = false,
+  error = null,
+  hidden = false,
+  compact = false,
+}: Props) {
   const t = useT();
   if (hidden || !canPurchaseBuyAll()) return null;
+  if (compact) {
+    return (
+      <div className="buy-all-offer-slot buy-all-offer-slot-compact">
+        <button
+          type="button"
+          className="landing-buy-all"
+          data-buy-all-offer
+          onClick={onBuy}
+          disabled={busy}
+        >
+          {t("Buy all · {price}", { price: PRICE_BUY_ALL })}
+        </button>
+        <p className="landing-buy-all-note">
+          {t("Unlocks every drill pack available now and any future drill packs. Not Lessons.")}{" "}
+          {t("One-time purchase. Not a subscription. Not lifetime access.")}
+        </p>
+        {error ? (
+          <p className="buy-all-offer-error" role="alert">
+            {error}
+          </p>
+        ) : null}
+      </div>
+    );
+  }
   return (
     <div className="buy-all-offer-slot">
       <button

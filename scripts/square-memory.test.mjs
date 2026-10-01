@@ -133,7 +133,7 @@ test("taps during the flash are ignored and a perfect line reveals", async (t) =
 test("every flash uses the same on-time and gap, including the first", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory.ts", "logic-timing.mjs");
   if (!mod) return;
-  const { begin, tap, tick, FLASH_MS, GAP_MS, HIT_MS, minimumClearMs, formatClearTime, cleanScoreName } = mod;
+  const { begin, tap, tick, stampShown, FLASH_MS, GAP_MS, HIT_MS, minimumClearMs, formatClearTime, cleanScoreName } = mod;
   const squares = ["e2", "e4", "c7", "c5", "g1", "f3", "b8", "c6"];
 
   function flashes(state, now) {
@@ -172,6 +172,43 @@ test("every flash uses the same on-time and gap, including the first", async (t)
   assert.equal(longer.ons.length, 4);
   assert.ok(longer.ons.every((ms) => ms === first.ons[0]));
   assert.ok(longer.gaps.every((ms) => ms === GAP_MS));
+
+  // A late first paint used to cut the opening pair. Stamping at paint time
+  // gives that square the same on-time and the same gap as a later one.
+  function shown(state, now, lag) {
+    const ons = [];
+    const gaps = [];
+    for (let guard = 0; guard < 40 && state.phase === "watch"; guard++) {
+      const paintedAt = now + lag;
+      const pinned = stampShown(state, paintedAt);
+      if (state.lit) {
+        ons.push(pinned.litUntil - paintedAt);
+        assert.equal(tick(pinned, state.litUntil, squares), pinned);
+        now = pinned.litUntil;
+      } else {
+        gaps.push(pinned.gapUntil - paintedAt);
+        now = pinned.gapUntil;
+      }
+      state = tick(pinned, now, squares);
+    }
+    return { ons, gaps, state, now };
+  }
+
+  now = 8000;
+  state = begin(0, now, squares);
+  const slowOpen = shown(state, now, 400);
+  state = slowOpen.state;
+  now = slowOpen.now;
+  assert.deepEqual(slowOpen.ons, [FLASH_MS, FLASH_MS]);
+  assert.ok(slowOpen.gaps.every((ms) => ms === GAP_MS));
+  state = tap(state, "e2", squares, now);
+  state = tap(state, "e4", squares, now);
+  now += HIT_MS;
+  state = tick(state, now, squares);
+  const settled = shown(state, now, 16);
+  assert.equal(settled.ons.length, 4);
+  assert.ok(settled.ons.every((ms) => ms === slowOpen.ons[0]));
+  assert.ok(settled.gaps.every((ms) => ms === slowOpen.gaps[0]));
 
   assert.equal(minimumClearMs(10), 30 * FLASH_MS + 25 * GAP_MS + 4 * HIT_MS);
   assert.equal(formatClearTime(32480), "0:32.4");
@@ -219,16 +256,16 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(landing, /data-landing-square-memory/);
   assert.match(landing, /to="\/square-memory"/);
   assert.match(landing, /Square Memory/);
-  const gym = landing.indexOf("data-landing-cta");
   const art = landing.indexOf("landing-hero-art");
   const memory = landing.indexOf("data-landing-square-memory");
   const puzzle = landing.indexOf("data-landing-puzzle");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(art >= 0 && gym > art && memory > gym && puzzle > memory && openNow > memory);
+  assert.ok(art >= 0 && memory > art && openNow > memory && puzzle > openNow);
   assert.doesNotMatch(landing, /function LandingBoard[\s\S]*data-landing-square-memory/);
+  assert.doesNotMatch(landing, /data-landing-cta|landing-puzzle-card/);
 
-  assert.match(css, /\.landing-square-memory\s*\{[^}]*width:\s*100%/);
-  assert.match(css, /@media \(min-width: 960px\)[\s\S]*\.landing-square-memory\s*\{[^}]*width:\s*min\(22rem,\s*100%\)/);
+  assert.match(css, /\.landing-memory-link\s*\{/);
+  assert.doesNotMatch(css, /\.landing-square-memory\s*\{/);
   assert.doesNotMatch(hero, /square-memory|Square Memory/);
 
   assert.match(page, /isPlayApp\(\)/);
@@ -280,6 +317,9 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   assert.match(view, /data-square-memory-gym/);
   assert.match(view, /href="\/#gym"/);
   assert.match(view, /unlockAudio\(\)[\s\S]{0,280}performance\.now\(\)/);
+  assert.match(view, /useLayoutEffect/);
+  assert.match(view, /stampShown\(state, performance\.now\(\)\)/);
+  assert.doesNotMatch(view, /playWatch\(0\)/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.doesNotMatch(audio, /You smashed it/);
   assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);
@@ -296,6 +336,7 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   const view = src("src/components/opening-lab/square-memory.tsx");
   const page = src("src/routes/square-memory-london.tsx");
   const landing = src("src/components/opening-lab/home-intro.tsx");
+  const css = src("src/styles.css");
   const ruyLine = src("src/lib/square-memory-line.ts");
   const lon1 = packs.slice(packs.indexOf('id: "lon1"'), packs.indexOf('id: "lon2"'));
   assert.match(lon1, /\["d4", "d5", "Bf4", "Nf6", "e3",/);
@@ -309,6 +350,13 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.match(view, /coach-seated-v2\.png/);
   assert.match(view, /Professor Potato Pie/);
   assert.match(view, /data-memory-line=\{item\.id\}/);
+  assert.match(view, /role="group"/);
+  assert.match(view, /aria-pressed=\{item\.id === choiceId\}/);
+  assert.match(view, /sqmem-pick-portrait/);
+  assert.match(view, /src=\{item\.portrait\}/);
+  assert.match(css, /\.sqmem-pick\s*\{[^}]*grid-template-columns:\s*1fr 1fr/);
+  assert.match(css, /\.sqmem-pick-line\s*\{[^}]*min-height:\s*8\.6rem/);
+  assert.match(view, /data-square-memory-stage/);
   assert.match(view, /<h1 className="sqmem-title">Square Memory<\/h1>/);
   assert.doesNotMatch(view, /London Memory|Square London/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
@@ -324,11 +372,73 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.match(ruyLine, /SQUARE_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bb5"\]/);
 });
 
+test("the live clock runs from Begin and stops on a miss or a clear", async (t) => {
+  const mod = await loadModule(t, "src/lib/square-memory.ts", "clock.mjs");
+  if (!mod) return;
+  const { begin, tap, tick, clockRunning, clockVisible, titleState } = mod;
+  const title = titleState(0);
+  assert.equal(clockVisible(title.phase), false);
+  assert.equal(clockRunning(title.phase, title.cursor, title.length, SQUARES.length), false);
+
+  let now = 5000;
+  let state = begin(0, now, SQUARES);
+  assert.equal(clockVisible(state.phase), true);
+  assert.equal(clockRunning(state.phase, state.cursor, state.length, SQUARES.length), true);
+  ({ state, now } = drainWatch(tick, state, now));
+  assert.equal(state.phase, "input");
+  assert.equal(clockRunning(state.phase, state.cursor, state.length, SQUARES.length), true);
+  state = tap(state, "e2", SQUARES, now);
+  state = tap(state, "e4", SQUARES, now);
+  assert.equal(state.cursor, state.length);
+  assert.equal(clockRunning(state.phase, state.cursor, state.length, SQUARES.length), true);
+  now += mod.HIT_MS;
+  state = tick(state, now, SQUARES);
+  assert.equal(state.phase, "watch");
+  assert.equal(clockRunning(state.phase, state.cursor, state.length, SQUARES.length), true);
+
+  ({ state, now } = drainWatch(tick, state, now));
+  state = tap(state, "a1", SQUARES, now);
+  assert.equal(state.phase, "punish");
+  assert.equal(clockVisible(state.phase), true);
+  assert.equal(clockRunning(state.phase, state.cursor, state.length, SQUARES.length), false);
+  state = tick(state, state.litUntil, SQUARES);
+  assert.equal(state.phase, "reveal");
+  assert.equal(clockVisible(state.phase), false);
+
+  const full = SQUARES;
+  let clear = begin(0, 0, full);
+  let at = 0;
+  for (let guard = 0; guard < 80 && clear.phase !== "reveal"; guard++) {
+    if (clear.phase === "watch" || (clear.phase === "input" && clear.cursor === clear.length)) {
+      at = clear.phase === "watch" ? (clear.lit ? clear.litUntil : clear.gapUntil) : clear.litUntil;
+      clear = tick(clear, at, full);
+      continue;
+    }
+    if (clear.phase === "input") {
+      const square = full[clear.cursor];
+      const before = clear.length;
+      clear = tap(clear, square, full, at);
+      if (before >= full.length && clear.cursor >= full.length) {
+        assert.equal(clockRunning(clear.phase, clear.cursor, clear.length, full.length), false);
+      }
+      continue;
+    }
+    break;
+  }
+  assert.equal(clear.perfect, true);
+  assert.equal(clockVisible("reveal"), false);
+});
+
 test("a full clear is timed and only that time can join the shared board", () => {
   const view = src("src/components/opening-lab/square-memory.tsx");
   const api = src("src/routes/api/square-memory-scores.ts");
   const migration = src("migrations/0007_square_memory_scores.sql");
   assert.match(view, /runStartRef\.current = now/);
+  assert.match(view, /data-square-memory-clock/);
+  assert.match(view, /clockVisible\(snap\.phase\)/);
+  assert.match(view, /clockRunning\(/);
+  assert.match(view, /publishClockRef\.current\(0, true\)/);
+  assert.doesNotMatch(view, /data-square-memory-clock[\s\S]{0,80}snap\.phase === "title"/);
   assert.match(view, /data-square-memory-time/);
   assert.match(view, /perfect && clearMs != null \?/);
   assert.match(view, /data-square-memory-score-form/);

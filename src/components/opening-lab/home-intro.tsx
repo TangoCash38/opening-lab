@@ -22,7 +22,6 @@ import { ChessPiece } from "./chess-pieces";
 import { LandingMenu } from "./landing-menu";
 
 type Props = {
-  onEnterGym: () => void;
   onOpenPack: (packId: string) => void;
   onSupport: () => void;
   onFeedback: () => void;
@@ -86,7 +85,6 @@ function openNowTitle(pack: Pack): string {
  * splash poster are folded into this, so Home does not run two intros.
  */
 export function LandingHome({
-  onEnterGym,
   onOpenPack,
   onSupport,
   onFeedback,
@@ -191,88 +189,19 @@ export function LandingHome({
             <p id="landing-title" className="landing-sub">
               {t("Practice with hints. Test with none.")}
             </p>
-            <div className="landing-cta-stack">
-              <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
-                <span className="landing-cta-title">{t("Enter the gym")}</span>
-                <span className="landing-cta-note">{t("Opening drill packs")}</span>
-              </button>
-              {showMemory ? (
-                <section className="landing-square-memory" aria-label="Square Memory">
-                  <Link
-                    to="/square-memory"
-                    className="landing-puzzle-card"
-                    data-landing-square-memory
-                  >
-                    <span className="landing-puzzle-kicker">{t("Free")}</span>
-                    <span className="landing-puzzle-title">Square Memory</span>
-                  </Link>
-                </section>
-              ) : null}
-              {showPuzzle ? (
-                <section className="landing-puzzle" aria-label={t("Puzzle")}>
-                  <button
-                    type="button"
-                    className="landing-puzzle-card"
-                    data-landing-puzzle
-                    onClick={onOpenPuzzle}
-                  >
-                    <span className="landing-puzzle-kicker">{t("Puzzle")}</span>
-                    <span className="landing-puzzle-title">{t("Today's puzzle")}</span>
-                    <span className="landing-puzzle-note">{t("White to move · Mate in 2")}</span>
-                  </button>
-                </section>
-              ) : null}
-              {showClassic ? (
-                <section className="landing-puzzle" aria-label={t("Classic GM — Fischer vs Sherwin, 1957")}>
-                  <button
-                    type="button"
-                    className="landing-puzzle-card"
-                    data-landing-classic
-                    onClick={() => {
-                      if (!classicRunAlreadySeen()) beginClassicRunNarration();
-                      onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID);
-                    }}
-                  >
-                    <span className="landing-puzzle-kicker">{t("Free")}</span>
-                    <span className="landing-puzzle-title">
-                      {t("Classic GM — Fischer vs Sherwin, 1957")}
-                    </span>
-                    <span className="landing-puzzle-note">
-                      {t("King's Indian Attack vs Sicilian")}
-                    </span>
-                  </button>
-                </section>
-              ) : null}
-              {showLessons ? (
-                <button
-                  type="button"
-                  className="landing-cta-secondary"
-                  data-landing-lessons
-                  onClick={() => navigate({ to: "/lessons" })}
-                >
-                  {t("Chess opening lessons")}
-                </button>
-              ) : null}
-            </div>
+            {showMemory ? (
+              <Link to="/square-memory" className="landing-memory-link" data-landing-square-memory>
+                <span className="landing-puzzle-kicker">{t("Free")}</span>
+                <span>Square Memory</span>
+              </Link>
+            ) : null}
           </div>
         </div>
 
-        {showBuyAll ? (
-          <section className="landing-section" aria-labelledby="landing-buy-all">
-            <h2 id="landing-buy-all" className="sr-only">
-              {t("On sale")}
-            </h2>
-            <BuyAllOffer onBuy={onBuyAll} />
-          </section>
-        ) : null}
-
-        <section className="landing-section" aria-labelledby="landing-open-now">
-          <div className="landing-section-head">
-            <h2 id="landing-open-now" className="landing-section-title">
-              {t("Open now")}
-            </h2>
-            <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
-          </div>
+        <section className="landing-section landing-openings" aria-labelledby="landing-open-now">
+          <h2 id="landing-open-now" className="landing-section-title">
+            {t("Open now")}
+          </h2>
           <div className="landing-open-grid" data-open-now>
             {openPacks.map((pack) => (
               <button
@@ -282,14 +211,67 @@ export function LandingHome({
                 data-open-pack={pack.id}
                 onClick={() => onOpenPack(pack.id)}
               >
-                <span className="landing-pack-name">{openNowTitle(pack)}</span>
-                <span className="landing-pack-price" data-open-pack-price={pack.id}>
-                  {priceLabel(pack)}
+                <span className="landing-pack-copy">
+                  <span className="landing-pack-name">{openNowTitle(pack)}</span>
+                  <span className="landing-pack-price" data-open-pack-price={pack.id}>
+                    {priceLabel(pack)}
+                  </span>
                 </span>
+                <span className="landing-pack-enter">{t("Enter the gym")}</span>
               </button>
             ))}
           </div>
         </section>
+
+        {showBuyAll ? (
+          <section className="landing-section landing-buy-quiet" aria-labelledby="landing-buy-all">
+            <h2 id="landing-buy-all" className="sr-only">
+              {t("On sale")}
+            </h2>
+            <BuyAllOffer compact onBuy={onBuyAll} />
+          </section>
+        ) : null}
+
+        {showPuzzle || showClassic || showLessons ? (
+          <div className="landing-quiet">
+            {showPuzzle ? (
+              <button
+                type="button"
+                className="landing-quiet-link"
+                data-landing-puzzle
+                onClick={onOpenPuzzle}
+              >
+                {t("Today's puzzle")}
+                <span className="landing-quiet-note">{t("White to move · Mate in 2")}</span>
+              </button>
+            ) : null}
+            {showClassic ? (
+              <button
+                type="button"
+                className="landing-quiet-link"
+                data-landing-classic
+                aria-label={t("Classic GM — Fischer vs Sherwin, 1957")}
+                onClick={() => {
+                  if (!classicRunAlreadySeen()) beginClassicRunNarration();
+                  onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID);
+                }}
+              >
+                {t("Classic GM — Fischer vs Sherwin, 1957")}
+                <span className="landing-quiet-note">{t("King's Indian Attack vs Sicilian")}</span>
+              </button>
+            ) : null}
+            {showLessons ? (
+              <button
+                type="button"
+                className="landing-quiet-link"
+                data-landing-lessons
+                onClick={() => navigate({ to: "/lessons" })}
+              >
+                {t("Chess opening lessons")}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
         <section className="landing-section" aria-labelledby="landing-soon">
           <h2 id="landing-soon" className="landing-section-title">
@@ -356,7 +338,6 @@ function LandingBoard({ onTryFree }: { onTryFree: () => void }) {
             }),
           )}
         </span>
-        <span className="landing-board-overlay">Click the board to try free</span>
       </span>
       <span className="landing-board-try">Click the board to try free</span>
     </button>

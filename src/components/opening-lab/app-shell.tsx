@@ -412,7 +412,6 @@ function OpeningLabInner() {
       >
         {view === "landing" && (
           <LandingHome
-            onEnterGym={() => goPacks()}
             onOpenPack={(packId) => goPacks(packId)}
             onSupport={openGuide}
             onFeedback={openFeedback}
