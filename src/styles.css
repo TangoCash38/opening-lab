@@ -3699,22 +3699,9 @@ html[data-color-scheme="dark"] .landing-chip {
   border-color: rgba(255, 255, 255, 0.72);
 }
 
-.landing-memory-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.45rem;
-  width: 100%;
-}
-
-.landing-memory-row .landing-puzzle-card {
-  max-width: none;
-  height: 100%;
-}
-
 .landing-square-memory {
   margin: 0;
   width: 100%;
-  min-width: 0;
 }
 
 .landing-square-memory .landing-puzzle-card {
@@ -4797,6 +4784,93 @@ html[data-color-scheme="dark"] .landing-chip {
   align-items: baseline;
   gap: 0.55rem;
   margin: 0.25rem 0 0;
+}
+
+.sqmem-pick {
+  display: flex;
+  gap: 0.9rem;
+  margin: 0.15rem 0 0;
+}
+
+.sqmem-pick-line {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-fg-muted);
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.sqmem-pick-line[aria-pressed="true"] {
+  color: #23483c;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.sqmem-time {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0.1rem 0 0;
+}
+
+.sqmem-time-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.45rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.sqmem-time-note,
+.sqmem-leaderboard .sqmem-best {
+  margin: 0;
+}
+
+.sqmem-score-form {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.sqmem-score-name {
+  min-width: 0;
+  flex: 1;
+  min-height: 2.6rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid rgba(35, 72, 60, 0.35);
+  border-radius: 0.75rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-fg);
+  font-size: 1rem;
+}
+
+.sqmem-score-save {
+  min-height: 2.6rem;
+  padding: 0.4rem 0.8rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background: #23483c;
+  color: #f7f3ea;
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+.sqmem-score-save:disabled {
+  opacity: 0.55;
+}
+
+.sqmem-board-list {
+  margin: 0.3rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sqmem-board-row {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
 }
 
 .sqmem-status {
