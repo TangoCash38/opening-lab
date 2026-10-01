@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { Volume2, VolumeX } from "lucide-react";
 import { ChessPiece, pieceName } from "./chess-pieces";
@@ -28,6 +28,7 @@ import {
   clockRunning,
   clockVisible,
   formatClearTime,
+  stampShown,
   tap,
   tick,
   titleState,
@@ -135,6 +136,8 @@ export function SquareMemory() {
   const bestRef = useRef(0);
   const bestAtStart = useRef(0);
   const runStartRef = useRef(0);
+  const runIdRef = useRef(0);
+  const pinnedRef = useRef("");
   const clockTenthRef = useRef(-1);
   const boardLineRef = useRef<MemoryChoice["id"]>("ruy");
   const choice = CHOICES.find((item) => item.id === choiceId) ?? CHOICES[0]!;
@@ -206,14 +209,6 @@ export function SquareMemory() {
         }
         if (next !== prev) {
           commitRef.current(next);
-          if (
-            next.phase === "watch" &&
-            next.lit &&
-            next.litKind === "flash" &&
-            (prev.phase !== "watch" || prev.cursor !== next.cursor)
-          ) {
-            playWatch(next.cursor);
-          }
           if (next.phase === "reveal" && prev.phase !== "reveal" && next.perfect) {
             playWin();
           }
@@ -229,6 +224,26 @@ export function SquareMemory() {
     };
   }, []);
 
+  // Pin every flash, including the first, to the paint that shows it.
+  // The sound plays on that same paint, then the on-time and the gap are
+  // stamped, so a slow opening punch cannot shorten the first beats.
+  useLayoutEffect(() => {
+    const state = snapRef.current;
+    if (state.phase !== "watch") return;
+    const key = `${runIdRef.current}:${state.length}:${state.cursor}:${state.lit ? "on" : "off"}`;
+    if (pinnedRef.current === key) return;
+    pinnedRef.current = key;
+    if (state.lit && state.litKind === "flash") {
+      try {
+        playWatch(state.cursor);
+      } catch {
+        /* sound is optional */
+      }
+    }
+    const stamped = stampShown(state, performance.now());
+    if (stamped !== state) commitRef.current(stamped);
+  }, [snap.phase, snap.length, snap.cursor, snap.lit, snap.litKind]);
+
   function start() {
     const phase = snapRef.current.phase;
     if (phase !== "title" && phase !== "reveal") return;
@@ -240,6 +255,8 @@ export function SquareMemory() {
       /* sound is optional */
     }
     const now = performance.now();
+    runIdRef.current += 1;
+    pinnedRef.current = "";
     runStartRef.current = now;
     publishClockRef.current(0, true);
     bestAtStart.current = bestRef.current;
@@ -247,11 +264,6 @@ export function SquareMemory() {
     setClearMs(null);
     setBoardNote("");
     commit(begin(bestRef.current, now, choiceRef.current.line.squares));
-    try {
-      playWatch(0);
-    } catch {
-      /* sound is optional */
-    }
   }
 
   function onTap(square: string) {

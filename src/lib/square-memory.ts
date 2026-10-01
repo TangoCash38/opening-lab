@@ -117,8 +117,26 @@ export function cleanScoreName(raw: unknown): string | null {
  * One clock for every flash. The first square of a round used to be lit
  * inside startWatch while the rest waited on the gap. Both paths now call
  * openFlash, so each square is on for FLASH_MS and the dark gap is GAP_MS.
- * The opening pair is not a shorter preview.
+ * The opening pair is not a shorter preview and there is no ramp.
+ *
+ * stampShown pins that deadline to the paint which shows the square. A slow
+ * first sound or a heavy first render must not eat the opening beats.
  */
+export function stampShown(state: Snapshot, now: number): Snapshot {
+  if (state.phase !== "watch") return state;
+  if (state.lit && state.litKind === "flash") {
+    const litUntil = now + FLASH_MS;
+    if (litUntil <= state.litUntil) return state;
+    return { ...state, litUntil };
+  }
+  if (!state.lit && state.gapUntil > 0) {
+    const gapUntil = now + GAP_MS;
+    if (gapUntil <= state.gapUntil) return state;
+    return { ...state, gapUntil };
+  }
+  return state;
+}
+
 function openFlash(state: Snapshot, now: number, squares: readonly string[]): Snapshot {
   const next = state.cursor + 1;
   if (next >= state.length) {

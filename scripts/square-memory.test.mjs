@@ -133,7 +133,7 @@ test("taps during the flash are ignored and a perfect line reveals", async (t) =
 test("every flash uses the same on-time and gap, including the first", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory.ts", "logic-timing.mjs");
   if (!mod) return;
-  const { begin, tap, tick, FLASH_MS, GAP_MS, HIT_MS, minimumClearMs, formatClearTime, cleanScoreName } = mod;
+  const { begin, tap, tick, stampShown, FLASH_MS, GAP_MS, HIT_MS, minimumClearMs, formatClearTime, cleanScoreName } = mod;
   const squares = ["e2", "e4", "c7", "c5", "g1", "f3", "b8", "c6"];
 
   function flashes(state, now) {
@@ -172,6 +172,43 @@ test("every flash uses the same on-time and gap, including the first", async (t)
   assert.equal(longer.ons.length, 4);
   assert.ok(longer.ons.every((ms) => ms === first.ons[0]));
   assert.ok(longer.gaps.every((ms) => ms === GAP_MS));
+
+  // A late first paint used to cut the opening pair. Stamping at paint time
+  // gives that square the same on-time and the same gap as a later one.
+  function shown(state, now, lag) {
+    const ons = [];
+    const gaps = [];
+    for (let guard = 0; guard < 40 && state.phase === "watch"; guard++) {
+      const paintedAt = now + lag;
+      const pinned = stampShown(state, paintedAt);
+      if (state.lit) {
+        ons.push(pinned.litUntil - paintedAt);
+        assert.equal(tick(pinned, state.litUntil, squares), pinned);
+        now = pinned.litUntil;
+      } else {
+        gaps.push(pinned.gapUntil - paintedAt);
+        now = pinned.gapUntil;
+      }
+      state = tick(pinned, now, squares);
+    }
+    return { ons, gaps, state, now };
+  }
+
+  now = 8000;
+  state = begin(0, now, squares);
+  const slowOpen = shown(state, now, 400);
+  state = slowOpen.state;
+  now = slowOpen.now;
+  assert.deepEqual(slowOpen.ons, [FLASH_MS, FLASH_MS]);
+  assert.ok(slowOpen.gaps.every((ms) => ms === GAP_MS));
+  state = tap(state, "e2", squares, now);
+  state = tap(state, "e4", squares, now);
+  now += HIT_MS;
+  state = tick(state, now, squares);
+  const settled = shown(state, now, 16);
+  assert.equal(settled.ons.length, 4);
+  assert.ok(settled.ons.every((ms) => ms === slowOpen.ons[0]));
+  assert.ok(settled.gaps.every((ms) => ms === slowOpen.gaps[0]));
 
   assert.equal(minimumClearMs(10), 30 * FLASH_MS + 25 * GAP_MS + 4 * HIT_MS);
   assert.equal(formatClearTime(32480), "0:32.4");
@@ -280,6 +317,9 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   assert.match(view, /data-square-memory-gym/);
   assert.match(view, /href="\/#gym"/);
   assert.match(view, /unlockAudio\(\)[\s\S]{0,280}performance\.now\(\)/);
+  assert.match(view, /useLayoutEffect/);
+  assert.match(view, /stampShown\(state, performance\.now\(\)\)/);
+  assert.doesNotMatch(view, /playWatch\(0\)/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.doesNotMatch(audio, /You smashed it/);
   assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);

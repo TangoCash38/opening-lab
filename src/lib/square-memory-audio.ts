@@ -5,6 +5,7 @@
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
+let noise: AudioBuffer | null = null;
 let muted = false;
 let blocked = false;
 
@@ -35,7 +36,11 @@ function context(): AudioContext | null {
 export function unlockAudio(): void {
   try {
     const audio = context();
-    if (audio && audio.state === "suspended") void audio.resume().catch(() => {});
+    if (!audio) return;
+    if (audio.state === "suspended") void audio.resume().catch(() => {});
+    // Build the click once, before the first flash is timed. Doing it on the
+    // opening punch used to stall that beat shorter than the ones after it.
+    if (!noise) noise = noiseBuffer(audio, 0.045);
   } catch {
     blocked = true;
   }
@@ -92,7 +97,8 @@ function punch(freq: number, dur: number, gain: number): void {
     osc.stop(t + dur + 0.02);
 
     const click = audio.createBufferSource();
-    click.buffer = noiseBuffer(audio, 0.045);
+    if (!noise) noise = noiseBuffer(audio, 0.045);
+    click.buffer = noise;
     const bp = audio.createBiquadFilter();
     bp.type = "highpass";
     bp.frequency.value = 900;
