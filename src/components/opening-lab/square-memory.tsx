@@ -25,6 +25,9 @@ const LINE = SQUARE_MEMORY_LINE;
 const SQUARES = LINE.squares;
 const BEST_KEY = "opening-lab:square-memory-best";
 const MUTE_KEY = "opening-lab:square-memory-muted";
+const BIG_RED_PORTRAIT = "/coach/ruy-lopez-white/big-red-portrait.png";
+const CHEER_LINE =
+  "You smashed it. That's the Ruy Lopez. Want to learn openings properly? Try the opening packs.";
 const FILES = "abcdefgh";
 const RANKS = ["8", "7", "6", "5", "4", "3", "2", "1"];
 
@@ -171,7 +174,8 @@ export function SquareMemory() {
   const last = revealing && plyCount > 0 ? LINE.plies[plyCount - 1] : undefined;
   const partial = revealing && snap.score % 2 === 1 ? LINE.plies[plyCount] : undefined;
   const foundPiece = partial && position ? pieceAt(position, partial.from) : null;
-  const showPackLink = snap.phase === "title" || revealing;
+  const perfect = revealing && snap.perfect;
+  const showPackLink = snap.phase === "title" || (revealing && !snap.perfect);
 
   return (
     <main className="sqmem" data-square-memory data-phase={snap.phase}>
@@ -225,6 +229,7 @@ export function SquareMemory() {
           found={partial ? partial.from : null}
           onTap={onTap}
         />
+        {perfect ? <PerfectCheer /> : null}
       </div>
 
       <footer className="sqmem-dock">
@@ -268,6 +273,38 @@ function PackLink() {
     >
       Ruy Lopez for White
     </a>
+  );
+}
+
+function PerfectCheer() {
+  return (
+    <section className="sqmem-cheer" data-square-memory-cheer aria-label="Big Red">
+      <img
+        className="sqmem-cheer-portrait"
+        src={BIG_RED_PORTRAIT}
+        alt="Big Red"
+        width={360}
+        height={800}
+        decoding="async"
+        draggable={false}
+      />
+      <div className="sqmem-cheer-card">
+        <p className="sqmem-cheer-name">Big Red</p>
+        <p className="sqmem-cheer-bubble" data-square-memory-cheer-line>
+          {CHEER_LINE}
+        </p>
+        <a
+          className="sqmem-cheer-btn"
+          data-square-memory-pack={SQUARE_MEMORY_PACK_ID}
+          href={`/#pack/${SQUARE_MEMORY_PACK_ID}`}
+        >
+          Ruy Lopez for White
+        </a>
+        <a className="sqmem-cheer-btn sqmem-cheer-btn-gym" data-square-memory-gym href="/#gym">
+          Opening packs
+        </a>
+      </div>
+    </section>
   );
 }
 

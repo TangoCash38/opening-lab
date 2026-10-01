@@ -5,6 +5,7 @@ import {
   isComingSoonClosed,
   isPackComingSoon,
   isPackVisible,
+  readRequestedGym,
   readRequestedPackId,
 } from "@/lib/catalog";
 import { isClassicSamplePack } from "@/lib/classic-sample";
@@ -188,15 +189,19 @@ function OpeningLabInner() {
 
   useEffect(() => {
     const packId = readRequestedPackId();
-    if (!packId) return;
-    if (!isPackVisible(packId) && !isGymPack(packId)) {
-      goHome();
+    if (packId) {
+      if (!isPackVisible(packId) && !isGymPack(packId)) {
+        goHome();
+        return;
+      }
+      // Website deep link into a live pack (Square Memory → Ruy Lopez intro).
+      // Play keeps the landing. This does not start a purchase.
+      if (isPlayWrap()) return;
+      if (isPackVisible(packId) && !isPackComingSoon(packId)) goPacks(packId);
       return;
     }
-    // Website deep link into a live pack (Square Memory → Ruy Lopez intro).
-    // Play keeps the landing. This does not start a purchase.
-    if (isPlayWrap()) return;
-    if (isPackVisible(packId) && !isPackComingSoon(packId)) goPacks(packId);
+    // Square Memory celebration → the pack list. Play keeps the landing.
+    if (readRequestedGym() && !isPlayWrap()) goPacks();
   }, []);
 
   useEffect(() => {
