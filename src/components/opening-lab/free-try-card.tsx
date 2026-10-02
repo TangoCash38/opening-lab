@@ -42,9 +42,11 @@ export function FreeTryCard({
       data-landing-pack-offer={beside ? "visible" : undefined}
       role={beside ? "region" : "dialog"}
       aria-modal={beside ? undefined : true}
-      aria-labelledby="free-try-title"
+      aria-label={beside ? "Packs" : undefined}
+      aria-labelledby={beside ? undefined : "free-try-title"}
     >
       <div className="w-full rounded-2xl border-[1.5px] border-accent/30 bg-bg-elevated p-3 shadow-[var(--shadow-card)]">
+        {beside ? null : (
         <div className="flex items-start gap-2.5">
           <img
             src="/scotch-coach/coach-seated-v2.png"
@@ -63,11 +65,12 @@ export function FreeTryCard({
             </p>
           </div>
         </div>
+        )}
         <button
           type="button"
           data-free-try-buy-all
           onClick={onBuyAll}
-          className="mt-3 min-h-11 w-full rounded-2xl bg-accent px-3 py-2.5 text-[0.92rem] font-bold text-accent-fg active:scale-[0.99]"
+          className={`${beside ? "mt-0" : "mt-3"} min-h-11 w-full rounded-2xl bg-accent px-3 py-2.5 text-[0.92rem] font-bold text-accent-fg active:scale-[0.99]`}
         >
           {`Buy all packs · ${PRICE_BUY_ALL}`}
         </button>
