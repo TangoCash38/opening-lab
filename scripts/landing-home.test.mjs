@@ -139,6 +139,30 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.doesNotMatch(copy, /Learn the book/);
 });
 
+test("homepage plays one Square Memory preview after three Legal's Mate cycles", () => {
+  const demo = src("src/components/opening-lab/landing-mate-demo.tsx");
+  assert.match(demo, /const CYCLE = 4/);
+  assert.match(demo, /const MEMORY_SLOT = 3/);
+  assert.match(demo, /run % CYCLE === MEMORY_SLOT/);
+  assert.match(demo, /setPhase\("practice"\)/);
+  assert.match(demo, /await playLine\(true\)/);
+  assert.match(demo, /setPhase\("test"\)/);
+  assert.match(demo, /await playLine\(false\)/);
+  assert.match(demo, /Try the new Square Memory game for free\./);
+  assert.match(demo, /Try Square Memory free\. Tap Square Memory game to play\./);
+  assert.doesNotMatch(demo, /What's new|What&apos;s new/);
+  assert.match(demo, /big-red-portrait\.png/);
+  assert.match(demo, /SQUARE_MEMORY_LINE\.squares\.slice\(0,\s*4\)/);
+  assert.match(demo, /FLASH_MS/);
+  assert.match(demo, /data-landing-memory-invite/);
+  assert.match(demo, /data-landing-memory-note/);
+  assert.match(demo, /memoryFlash=\{flash\}/);
+  assert.match(css, /\.sq-memory-flash/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce\)[\s\S]*\.landing-memory-pop\s*\{[^}]*animation:\s*none/);
+  assert.doesNotMatch(landing, /What&apos;s new|What's new/);
+  assert.match(landing, /Square Memory game/);
+});
+
 test("landing board plays itself and the app prompt is gone", () => {
   assert.match(landing, /LandingMateDemo/);
   assert.doesNotMatch(landing, /Click the board to try free/);
