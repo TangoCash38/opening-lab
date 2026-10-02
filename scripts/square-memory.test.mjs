@@ -293,6 +293,10 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.doesNotMatch(audio, /You smashed it/);
   assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);
+  assert.match(
+    css,
+    /@media \(max-width: 959px\) \{\s*\.sqmem-cheer-portrait\s*\{[^}]*object-fit:\s*cover[^}]*max-height:\s*11\.25rem/,
+  );
   assert.match(css, /\.sqmem-cheer-bubble/);
   assert.match(catalog, /export function readRequestedGym/);
   assert.match(catalog, /raw === "gym"/);
