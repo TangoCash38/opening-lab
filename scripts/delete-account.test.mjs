@@ -124,7 +124,7 @@ test("Account surfaces link Privacy and Delete account", () => {
   assert.match(i18n, /"Delete account": "Eliminar cuenta"/);
 });
 
-test("Account is labeled on the home bar and in the app header", () => {
+test("Account is labeled on the home bar, in the menu, and in the app header", () => {
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
   assert.match(nav, /data-landing-account/);
   assert.match(nav, /t\("Account"\)/);
@@ -136,6 +136,8 @@ test("Account is labeled on the home bar and in the app header", () => {
   assert.doesNotMatch(nav, /isPlayApp\(\)/);
   assert.match(menu, /data-menu-account/);
   assert.match(menu, /t\("Account"\)/);
+  assert.match(menu, /to="\/login"/);
+  assert.match(menu, /onClick=\{openLegalDocument\}/);
   assert.doesNotMatch(menu, /t\("Log in"\)/);
   assert.match(homeMenu, /data-menu-account/);
   assert.match(homeMenu, /t\("Account"\)/);

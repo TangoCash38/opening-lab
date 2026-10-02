@@ -1,6 +1,5 @@
 import { useLayoutEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { isPlayApp, readSquareMemoryPlayPreview } from "@/lib/play-app";
 
 export const Route = createFileRoute("/square-memory-london")({
   component: SquareMemoryLondonRedirect,
@@ -17,9 +16,7 @@ export const Route = createFileRoute("/square-memory-london")({
 
 function SquareMemoryLondonRedirect() {
   useLayoutEffect(() => {
-    window.location.replace(
-      isPlayApp() && !readSquareMemoryPlayPreview() ? "/" : "/square-memory",
-    );
+    window.location.replace("/square-memory");
   }, []);
   return null;
 }
