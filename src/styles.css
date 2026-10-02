@@ -5525,18 +5525,31 @@ html[data-color-scheme="dark"] .sqmem-start {
   user-select: none;
 }
 
-/* Phone plates are short, so a full-length drawing shrinks to a sliver.
-   Fill that same plate with the head and shoulders. Height is capped so
-   the drawing cannot stretch the plate over the board. */
+/* On a phone the plate under the board is wide and the coach was only using
+   the left half. The drawing fills that plate. The same caption sits on the
+   lower edge, so the squares above stay clear. */
 @media (max-width: 959px) {
+  .sqmem-cheer {
+    display: grid;
+    height: 16rem;
+    max-height: 16rem;
+  }
+
   .sqmem-cheer-portrait {
-    flex: 0 0 46%;
-    width: 46%;
-    height: 11.25rem;
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 16rem;
     min-height: 0;
-    max-height: 11.25rem;
+    max-height: 16rem;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 18%;
+  }
+
+  .sqmem-cheer-card {
+    grid-area: 1 / 1;
+    align-self: end;
+    width: auto;
+    margin: 0 0.4rem 0.35rem;
   }
 }
 
@@ -5638,29 +5651,38 @@ html[data-color-scheme="dark"] .sqmem-start {
   }
 
   .sqmem-table.is-cheer .sqmem-cheer {
-    flex: 0 0 9.35rem;
-    width: 9.35rem;
-    margin-top: 0;
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    flex: 0 0 12.25rem;
+    width: 12.25rem;
+    height: auto;
+    max-height: none;
+    margin-top: 0;
     justify-content: flex-end;
-    gap: 0.2rem;
+    gap: 0.25rem;
   }
 
   .sqmem-table.is-cheer .sqmem-cheer-portrait {
-    flex: 1 1 6.4rem;
+    grid-area: auto;
+    flex: 1 1 0;
     width: 100%;
-    height: 6.4rem;
+    height: auto;
     min-height: 0;
-    max-height: 6.4rem;
+    max-height: none;
     object-fit: cover;
     object-position: center top;
   }
 
   .sqmem-table.is-cheer .sqmem-cheer-card {
-    flex: 0 1 auto;
+    grid-area: auto;
+    align-self: stretch;
+    flex: 0 0 auto;
+    width: auto;
+    max-height: none;
+    margin: 0;
     gap: 0.18rem;
     padding: 0.32rem 0.38rem 0.32rem;
+    overflow: visible;
   }
 
   .sqmem-table.is-cheer .sqmem-cheer-name {

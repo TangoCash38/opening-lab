@@ -295,7 +295,7 @@ test("a perfect line brings Big Red in; a miss does not", () => {
   assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);
   assert.match(
     css,
-    /@media \(max-width: 959px\) \{\s*\.sqmem-cheer-portrait\s*\{[^}]*object-fit:\s*cover[^}]*max-height:\s*11\.25rem/,
+    /@media \(max-width: 959px\) \{[\s\S]*?\.sqmem-cheer-portrait\s*\{[^}]*max-height:\s*16rem[^}]*object-fit:\s*cover/,
   );
   assert.match(css, /\.sqmem-cheer-bubble/);
   assert.match(catalog, /export function readRequestedGym/);
