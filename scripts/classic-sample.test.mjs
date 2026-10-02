@@ -166,11 +166,10 @@ test("www shows the Classic card and the gym; Play wrap does not", () => {
   assert.match(landing, /t\("Classic GM — Fischer vs Sherwin, 1957"\)/);
   assert.match(landing, /t\("King's Indian Attack vs Sicilian"\)/);
   assert.match(landing, /onOpenPack\(WEBSITE_CLASSIC_SAMPLE_PACK_ID\)/);
-  const gym = landing.indexOf("data-landing-cta");
   const puzzle = landing.indexOf("data-landing-puzzle");
   const classic = landing.indexOf("data-landing-classic");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(puzzle > gym && classic > puzzle && openNow > classic);
+  assert.ok(openNow >= 0 && puzzle > openNow && classic > puzzle);
 
   assert.match(list, /setShowClassicSample\(!isPlayWrap\(\)\)/);
   assert.match(list, /showClassicSample \? classicSamplePack\(\)/);

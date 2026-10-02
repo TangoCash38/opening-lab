@@ -13,10 +13,10 @@ const shell = src("src/components/opening-lab/app-shell.tsx");
 const css = src("src/styles.css");
 const copy = src("src/lib/landing-copy.ts");
 
-test("landing matches the signed-off home: gym CTA, live packs, real prices", () => {
+test("landing matches the signed-off home: live packs, real prices", () => {
   assert.match(landing, /data-landing/);
-  assert.match(landing, /data-landing-cta/);
-  assert.match(landing, /onEnterGym/);
+  assert.doesNotMatch(landing, /data-landing-cta/);
+  assert.doesNotMatch(landing, /Enter the gym/);
   assert.match(landing, /LIVE_PACK_IDS/);
   assert.match(landing, /packPrice/);
   assert.match(landing, /FREE_SAMPLE_LINE_IDS/);
@@ -56,7 +56,7 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(shell, /onClick=\{goHome\}/);
   assert.match(shell, /setView\("landing"\)/);
   assert.match(shell, /showAppHeader = view !== "landing"/);
-  assert.match(shell, /onEnterGym=\{\(\) => goPacks\(\)\}/);
+  assert.doesNotMatch(shell, /onEnterGym/);
   assert.match(shell, /onOpenPack=\{\(packId\) => goPacks\(packId\)\}/);
   assert.match(shell, /onCreateOwn=\{openCreate\}/);
   assert.match(shell, /setView\("home"\)/);
@@ -66,16 +66,13 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.doesNotMatch(landing, /Drill packs/);
   assert.match(landing, /aria-label=\{t\("Site"\)\}/);
   assert.match(landing, /data-landing-support/);
-  const gymButton = landing.match(/<button[^>]*data-landing-cta[\s\S]*?<\/button>/)?.[0] ?? "";
-  assert.match(gymButton, /t\("Enter the gym"\)/);
-  assert.match(gymButton, /className="landing-cta-note"[\s\S]*t\("Opening drill packs"\)/);
-  assert.doesNotMatch(gymButton, /Chess opening lessons/);
-  assert.match(landing, /className="landing-cta-note"/);
+  assert.doesNotMatch(landing, /className="landing-cta-note"/);
   assert.match(
     landing,
     /t\("Open now"\)[\s\S]{0,220}t\("Chess opening drills available now"\)/,
   );
-  assert.match(landing, /onClick=\{onEnterGym\}/);
+  assert.doesNotMatch(landing, /That was Legal/);
+  assert.doesNotMatch(landing, /data-free-try-buy-all/);
   assert.match(landing, /onClick=\{onSupport\}/);
   assert.match(landing, /onOpenPack\(pack\.id\)/);
   assert.match(landing, /data-coming-soon-feedback/);
@@ -129,12 +126,10 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.doesNotMatch(copy, /Learn the book/);
 });
 
-test("landing board is an even orthographic diagram and the app prompt is gone", () => {
-  assert.match(css, /grid-template-columns:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
-  assert.match(css, /grid-template-rows:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
-  assert.match(css, /\.landing-board[\s\S]*transform:\s*none/);
-  assert.doesNotMatch(css, /\.landing-board[\s\S]{0,400}perspective/);
-  assert.doesNotMatch(css, /\.landing-board[\s\S]{0,400}skew/);
+test("landing board plays itself and the app prompt is gone", () => {
+  assert.match(landing, /LandingMateDemo/);
+  assert.doesNotMatch(landing, /Click the board to try free/);
+  assert.doesNotMatch(landing, /data-try-free/);
   const list = src("src/components/opening-lab/pack-list.tsx");
   const shell = src("src/components/opening-lab/app-shell.tsx");
   assert.doesNotMatch(list, /WebsiteAppPrompt/);

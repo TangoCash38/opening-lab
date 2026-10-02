@@ -70,7 +70,8 @@ test("cold open is the branded landing, not a second splash", () => {
   assert.match(intro, /data-landing/);
   assert.doesNotMatch(intro, /Learn the book\. Keep the book\./);
   assert.match(intro, /Practice with hints\. Test with none\./);
-  assert.match(intro, /Enter the gym/);
+  assert.match(intro, /Open now/);
+  assert.doesNotMatch(intro, /Enter the gym/);
   assert.match(intro, /Study first\. Then test yourself from memory/);
   assert.doesNotMatch(intro, /Strict book-move trainer/);
   assert.match(intro, /coach-seated-v2\.png/);

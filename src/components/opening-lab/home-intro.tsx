@@ -27,7 +27,6 @@ import { LandingMateDemo } from "./landing-mate-demo";
 import { LandingMenu } from "./landing-menu";
 
 type Props = {
-  onEnterGym: () => void;
   onOpenPack: (packId: string) => void;
   onSupport: () => void;
   onFeedback: () => void;
@@ -78,7 +77,6 @@ function openNowTitle(pack: Pack): string {
  * splash poster are folded into this, so Home does not run two intros.
  */
 export function LandingHome({
-  onEnterGym,
   onOpenPack,
   onSupport,
   onFeedback,
@@ -186,27 +184,37 @@ export function LandingHome({
                 draggable={false}
               />
             </div>
-            <LandingMateDemo
-              onBuyAll={onBuyAll}
-              onPickPack={() => {
-                document.getElementById("landing-open-now")?.scrollIntoView({
-                  behavior: "auto",
-                  block: "start",
-                });
-              }}
-              onMoreFree={onEnterGym}
-              onFeedback={onFeedback}
-            />
+            <LandingMateDemo />
           </div>
           <div className="landing-copy">
             <p id="landing-title" className="landing-sub">
               {t("Practice with hints. Test with none.")}
             </p>
+            <section className="landing-open-here" aria-labelledby="landing-open-now">
+              <div className="landing-section-head">
+                <h2 id="landing-open-now" className="landing-section-title">
+                  {t("Open now")}
+                </h2>
+                <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
+              </div>
+              <div className="landing-open-grid" data-open-now>
+                {openPacks.map((pack) => (
+                  <button
+                    key={pack.id}
+                    type="button"
+                    className="landing-pack-card"
+                    data-open-pack={pack.id}
+                    onClick={() => onOpenPack(pack.id)}
+                  >
+                    <span className="landing-pack-name">{openNowTitle(pack)}</span>
+                    <span className="landing-pack-price" data-open-pack-price={pack.id}>
+                      {priceLabel(pack)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
             <div className="landing-cta-stack">
-              <button type="button" className="landing-cta" data-landing-cta onClick={onEnterGym}>
-                <span className="landing-cta-title">{t("Enter the gym")}</span>
-                <span className="landing-cta-note">{t("Opening drill packs")}</span>
-              </button>
               {showMemory ? (
                 <section className="landing-square-memory" aria-label="Square Memory">
                   <Link
@@ -276,31 +284,6 @@ export function LandingHome({
             <BuyAllOffer onBuy={onBuyAll} />
           </section>
         ) : null}
-
-        <section className="landing-section" aria-labelledby="landing-open-now">
-          <div className="landing-section-head">
-            <h2 id="landing-open-now" className="landing-section-title">
-              {t("Open now")}
-            </h2>
-            <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
-          </div>
-          <div className="landing-open-grid" data-open-now>
-            {openPacks.map((pack) => (
-              <button
-                key={pack.id}
-                type="button"
-                className="landing-pack-card"
-                data-open-pack={pack.id}
-                onClick={() => onOpenPack(pack.id)}
-              >
-                <span className="landing-pack-name">{openNowTitle(pack)}</span>
-                <span className="landing-pack-price" data-open-pack-price={pack.id}>
-                  {priceLabel(pack)}
-                </span>
-              </button>
-            ))}
-          </div>
-        </section>
 
         <section className="landing-section" aria-labelledby="landing-soon">
           <h2 id="landing-soon" className="landing-section-title">

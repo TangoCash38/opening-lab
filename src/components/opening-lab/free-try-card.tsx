@@ -21,32 +21,19 @@ type CardProps = {
   onMoreFree: () => void;
   onTryAgain: () => void;
   onFeedback: () => void;
-  /** Homepage demo keeps the offer in the page. The train card covers the wood. */
-  placement?: "overlay" | "beside";
 };
 
 /** End-of-line card. Stays on this board. Prices come from pricing.ts. */
-export function FreeTryCard({
-  onBuyAll,
-  onPickPack,
-  onMoreFree,
-  onTryAgain,
-  onFeedback,
-  placement = "overlay",
-}: CardProps) {
-  const beside = placement === "beside";
+export function FreeTryCard({ onBuyAll, onPickPack, onMoreFree, onTryAgain, onFeedback }: CardProps) {
   return (
     <div
-      className={beside ? "landing-demo-offer" : "absolute inset-x-0 top-0 z-30 px-1"}
+      className="absolute inset-x-0 top-0 z-30 px-1"
       data-free-try-card
-      data-landing-pack-offer={beside ? "visible" : undefined}
-      role={beside ? "region" : "dialog"}
-      aria-modal={beside ? undefined : true}
-      aria-label={beside ? "Packs" : undefined}
-      aria-labelledby={beside ? undefined : "free-try-title"}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="free-try-title"
     >
       <div className="w-full rounded-2xl border-[1.5px] border-accent/30 bg-bg-elevated p-3 shadow-[var(--shadow-card)]">
-        {beside ? null : (
         <div className="flex items-start gap-2.5">
           <img
             src="/scotch-coach/coach-seated-v2.png"
@@ -65,12 +52,11 @@ export function FreeTryCard({
             </p>
           </div>
         </div>
-        )}
         <button
           type="button"
           data-free-try-buy-all
           onClick={onBuyAll}
-          className={`${beside ? "mt-0" : "mt-3"} min-h-11 w-full rounded-2xl bg-accent px-3 py-2.5 text-[0.92rem] font-bold text-accent-fg active:scale-[0.99]`}
+          className="mt-3 min-h-11 w-full rounded-2xl bg-accent px-3 py-2.5 text-[0.92rem] font-bold text-accent-fg active:scale-[0.99]"
         >
           {`Buy all packs · ${PRICE_BUY_ALL}`}
         </button>
