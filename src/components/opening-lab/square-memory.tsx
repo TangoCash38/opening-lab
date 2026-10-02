@@ -23,6 +23,7 @@ import {
   LONDON_MEMORY_LINE,
   LONDON_MEMORY_PACK_ID,
 } from "@/lib/square-memory-london";
+import { QG_MEMORY_LINE, QG_MEMORY_PACK_ID } from "@/lib/square-memory-qg";
 import {
   begin,
   formatClearTime,
@@ -42,7 +43,7 @@ const BIG_RED_PORTRAIT = "/coach/ruy-lopez-white/big-red-portrait.png";
 const BOARD_BEFORE_CHEER_MS = 2000;
 
 type MemoryChoice = {
-  id: "ruy" | "london";
+  id: "ruy" | "london" | "qg";
   pick: string;
   name: string;
   packId: string;
@@ -84,6 +85,21 @@ const CHOICES: readonly MemoryChoice[] = [
     coach: "Professor Potato Pie",
     cheer:
       "You smashed it. That's the London System. Want to learn openings properly? Try the opening packs.",
+    portraitWidth: 640,
+    portraitHeight: 1071,
+  },
+  {
+    id: "qg",
+    pick: "Queen's Gambit",
+    name: "Queen's Gambit for White",
+    packId: QG_MEMORY_PACK_ID,
+    packLabel: "Queen's Gambit for White",
+    line: QG_MEMORY_LINE,
+    bestKey: "opening-lab:square-memory-qg-best",
+    portrait: "/scotch-coach/coach-seated-v2.png",
+    coach: "Professor Potato Pie",
+    cheer:
+      "You smashed it. That's the Queen's Gambit. Want to learn openings properly? Try the opening packs.",
     portraitWidth: 640,
     portraitHeight: 1071,
   },
@@ -129,6 +145,7 @@ export function SquareMemory() {
   const [boards, setBoards] = useState<Record<MemoryChoice["id"], BoardRow[]>>({
     ruy: [],
     london: [],
+    qg: [],
   });
   const [boardNote, setBoardNote] = useState("");
   const [saving, setSaving] = useState(false);
@@ -318,7 +335,7 @@ export function SquareMemory() {
       }),
     )
       .then((pairs) => {
-        setBoards({ ruy: [], london: [], ...Object.fromEntries(pairs) });
+        setBoards({ ruy: [], london: [], qg: [], ...Object.fromEntries(pairs) });
         setBoardNote("");
       })
       .catch((err: unknown) => {
@@ -416,9 +433,14 @@ export function SquareMemory() {
 
       <div className="sqmem-table">
         {showBoard ? (
-          <div className="sqmem-boards" data-square-memory-boards>
+          <div className="sqmem-boards" data-square-memory-boards data-selected={choice.id}>
             <div className="sqmem-plaque-col">
-              <ScorePlaque lineId={CHOICES[0].id} name={CHOICES[0].name} rows={boards[CHOICES[0].id]} />
+              <ScorePlaque
+                lineId="ruy"
+                name="Ruy Lopez"
+                rows={boards.ruy}
+                selected={choice.id === "ruy"}
+              />
               <button
                 type="button"
                 className="sqmem-all-times"
@@ -428,7 +450,20 @@ export function SquareMemory() {
                 All times
               </button>
             </div>
-            <ScorePlaque lineId={CHOICES[1].id} name={CHOICES[1].name} rows={boards[CHOICES[1].id]} />
+            <div className="sqmem-plaque-pair">
+              <ScorePlaque
+                lineId="london"
+                name="London System"
+                rows={boards.london}
+                selected={choice.id === "london"}
+              />
+              <ScorePlaque
+                lineId="qg"
+                name="Queen's Gambit for White"
+                rows={boards.qg}
+                selected={choice.id === "qg"}
+              />
+            </div>
             {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
           </div>
         ) : null}
@@ -518,14 +553,22 @@ function ScorePlaque({
   lineId,
   name,
   rows,
+  selected,
 }: {
   lineId: MemoryChoice["id"];
   name: string;
   rows: readonly BoardRow[];
+  selected: boolean;
 }) {
   const shown = rows.slice(0, 3);
   return (
-    <section className="sqmem-plaque" data-square-memory-leaderboard={lineId} aria-label={`${name} times`}>
+    <section
+      className="sqmem-plaque"
+      data-square-memory-leaderboard={lineId}
+      data-line={lineId}
+      data-selected={selected ? "true" : "false"}
+      aria-label={`${name} times`}
+    >
       <h2 className="sqmem-plaque-name">{name}</h2>
       {shown.length === 0 ? (
         <p className="sqmem-plaque-empty">No times yet.</p>

@@ -4783,6 +4783,8 @@ body:has([data-square-memory-page]) {
 
 .sqmem-opening {
   color: #2f5d50;
+  font-size: 0.98rem;
+  white-space: nowrap;
 }
 
 .sqmem-instruction,
@@ -4842,15 +4844,16 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-pick-line {
-  flex: 1 1 0;
-  min-width: 0;
-  padding: 0.32rem 0.45rem;
+  flex: 1 1 auto;
+  min-width: max-content;
+  padding: 0.3rem 0.32rem;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #f6e7d2;
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .sqmem-pick-line[aria-pressed="true"] {
@@ -4884,10 +4887,14 @@ body:has([data-square-memory-page]) {
 
 .sqmem-boards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-areas:
+    "focus side-a"
+    "focus side-b"
+    "all all";
   align-items: start;
-  gap: 0.08rem 0.85rem;
-  padding: 0.38rem 0.6rem 0.32rem;
+  gap: 0.08rem 0.7rem;
+  padding: 0.32rem 0.5rem 0.28rem;
   border-radius: 0.7rem;
   background: rgba(247, 241, 230, 0.94);
   color: #3a2618;
@@ -4896,12 +4903,33 @@ body:has([data-square-memory-page]) {
     0 1px 0 rgba(90, 58, 32, 0.12);
 }
 
-.sqmem-plaque-col {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  min-width: 0;
-  gap: 0.12rem;
+.sqmem-plaque-col,
+.sqmem-plaque-pair {
+  display: contents;
+}
+
+.sqmem-plaque[data-selected="true"] {
+  grid-area: focus;
+}
+
+.sqmem-boards[data-selected="ruy"] .sqmem-plaque[data-line="london"],
+.sqmem-boards[data-selected="london"] .sqmem-plaque[data-line="ruy"],
+.sqmem-boards[data-selected="qg"] .sqmem-plaque[data-line="ruy"] {
+  grid-area: side-a;
+}
+
+.sqmem-boards[data-selected="ruy"] .sqmem-plaque[data-line="qg"],
+.sqmem-boards[data-selected="london"] .sqmem-plaque[data-line="qg"],
+.sqmem-boards[data-selected="qg"] .sqmem-plaque[data-line="london"] {
+  grid-area: side-b;
+}
+
+.sqmem-plaque:not([data-selected="true"]) .sqmem-plaque-row:nth-child(n + 2) {
+  display: none;
+}
+
+.sqmem-plaque-name {
+  overflow-wrap: break-word;
 }
 
 .sqmem-boards-note {
@@ -4909,6 +4937,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-all-times {
+  grid-area: all;
   justify-self: start;
   padding: 0.05rem 0;
   border: 0;
@@ -5052,9 +5081,13 @@ body:has([data-square-memory-page]) {
 
 .sqmem-sheet-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
   gap: 0.8rem;
   margin-top: 0.7rem;
+}
+
+.sqmem-sheet h3 {
+  overflow-wrap: break-word;
 }
 
 .sqmem-sheet-list {
@@ -5256,7 +5289,7 @@ body:has([data-square-memory-page]) {
 .sqmem-begin {
   flex: 0 0 auto;
   min-height: 2.15rem;
-  padding: 0.35rem 0.85rem;
+  padding: 0.35rem 0.7rem;
   border: 0;
   border-radius: 999px;
   background: #f7f1e6;
@@ -5333,11 +5366,27 @@ html[data-color-scheme="dark"] .sqmem-begin {
     box-shadow: none;
   }
 
+  .sqmem-plaque-col,
+  .sqmem-plaque-pair {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
   .sqmem-plaque-col {
     grid-column: 1;
     grid-row: 1 / span 2;
-    align-self: center;
-    gap: 0.45rem;
+  }
+
+  .sqmem-plaque-pair {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+
+  .sqmem-plaque:not([data-selected="true"]) .sqmem-plaque-row:nth-child(n + 2) {
+    display: grid;
   }
 
   .sqmem-plaque {
@@ -5350,15 +5399,19 @@ html[data-color-scheme="dark"] .sqmem-begin {
       0 8px 16px rgba(74, 48, 28, 0.08);
   }
 
-  .sqmem-boards > .sqmem-plaque {
-    grid-column: 3;
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-
   .sqmem-all-times {
+    grid-area: auto;
     margin: 0 0 0 0.15rem;
     color: #6a4328;
+  }
+
+  .sqmem-pick {
+    flex: 0 1 34rem;
+  }
+
+  .sqmem-pick-line {
+    font-size: 0.84rem;
+    padding: 0.32rem 0.55rem;
   }
 
   .sqmem-boards-note {
@@ -5383,10 +5436,6 @@ html[data-color-scheme="dark"] .sqmem-begin {
 
   .sqmem-frame-tools {
     justify-content: center;
-  }
-
-  .sqmem-pick {
-    flex: 0 1 22rem;
   }
 
   .sqmem-dock {

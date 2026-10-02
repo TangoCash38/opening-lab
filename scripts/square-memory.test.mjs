@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { Chess } from "chess.js";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
@@ -326,12 +327,51 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.ok(memory > 0 && puzzle > memory);
   assert.doesNotMatch(landing, /data-landing-london-memory|London Memory|landing-memory-row/);
   assert.match(ruyLine, /SQUARE_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bb5"\]/);
+  assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
+});
+
+test("Queen's Gambit for White is the third hidden line on the same page", () => {
+  const packs = src("src/data/packs.ts");
+  const line = src("src/lib/square-memory-qg.ts");
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const api = src("src/routes/api/square-memory-scores.ts");
+  const migration = src("migrations/0008_square_memory_qg.sql");
+  const qg = packs.slice(packs.indexOf('id: "qg-white"'), packs.indexOf('id: "english-white"'));
+  const qg1 = qg.slice(qg.indexOf('id: "qg1"'), qg.indexOf('id: "qg2"'));
+  const moves = ["d4", "d5", "c4", "e6", "Nc3"];
+  assert.match(qg1, /\["d4", "d5", "c4", "e6", "Nc3",/);
+  assert.match(line, /QG_MEMORY_MOVES = \["d4", "d5", "c4", "e6", "Nc3"\]/);
+  assert.match(line, /QG_MEMORY_PACK_ID = "qg-white"/);
+  assert.match(line, /QG_MEMORY_NAME = "Queen's Gambit for White"/);
+  const chess = new Chess();
+  const squares = [];
+  for (const san of moves) {
+    const played = chess.move(san);
+    assert.ok(played, san);
+    assert.equal(played.san, san);
+    squares.push(played.from, played.to);
+  }
+  assert.deepEqual(squares, ["d2", "d4", "d7", "d5", "c2", "c4", "e7", "e6", "b1", "c3"]);
+  assert.match(
+    view,
+    /You smashed it\. That's the Queen's Gambit\. Want to learn openings properly\? Try the opening packs\./,
+  );
+  assert.match(view, /pick: "Queen's Gambit"/);
+  assert.match(view, /name: "Queen's Gambit for White"/);
+  assert.match(view, /packId: QG_MEMORY_PACK_ID/);
+  assert.match(view, /id: "qg"/);
+  assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
+  assert.match(api, /value === "qg"/);
+  assert.match(api, /qg: QG_MEMORY_LINE\.squares\.length/);
+  assert.match(migration, /line in \('ruy', 'london', 'qg'\)/);
+  assert.doesNotMatch(migration, /delete from square_memory_scores/);
 });
 
 test("a full clear is timed and only that time can join the shared board", () => {
   const view = src("src/components/opening-lab/square-memory.tsx");
   const api = src("src/routes/api/square-memory-scores.ts");
   const migration = src("migrations/0007_square_memory_scores.sql");
+  const qgMigration = src("migrations/0008_square_memory_qg.sql");
   assert.match(view, /runStartRef\.current = now/);
   assert.match(view, /data-square-memory-time/);
   assert.match(view, /perfect && showClearTime && clearMs != null/);
@@ -349,5 +389,6 @@ test("a full clear is timed and only that time can join the shared board", () =>
   assert.match(api, /cleanScoreName/);
   assert.match(migration, /create table if not exists square_memory_scores/);
   assert.match(migration, /line in \('ruy', 'london'\)/);
+  assert.match(qgMigration, /line in \('ruy', 'london', 'qg'\)/);
   assert.doesNotMatch(api, /localStorage/);
 });
