@@ -208,13 +208,15 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
-test("Square Memory sits in the top bar next to Account", () => {
+test("Square Memory sits in the top bar next to Feedback", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const css = src("src/styles.css");
-  const account = landing.indexOf("data-landing-account");
-  const memory = landing.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(memory - 180, memory + 280);
-  assert.ok(account > 0 && memory > account);
+  const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
+  const feedback = nav.indexOf("data-landing-feedback");
+  const memory = nav.indexOf("data-landing-memory-bar");
+  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 180, landing.indexOf("data-landing-memory-bar") + 280);
+  assert.ok(feedback > 0 && memory > feedback);
+  assert.doesNotMatch(nav, /data-landing-account|t\("Account"\)/);
   assert.match(chip, /to="\/square-memory"/);
   assert.match(chip, /Square Memory/);
   assert.match(chip, /<span className="landing-memory-new">New<\/span>/);

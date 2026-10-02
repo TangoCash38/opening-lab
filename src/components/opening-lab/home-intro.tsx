@@ -148,22 +148,15 @@ export function LandingHome({
           >
             {t("Support")}
           </button>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-feedback
-            onClick={onFeedback}
-          >
-            {t("Feedback")}
-          </button>
           <span className="landing-nav-pair">
-            <Link
-              to="/login"
+            <button
+              type="button"
               className="landing-nav-link"
-              data-landing-account
+              data-landing-feedback
+              onClick={onFeedback}
             >
-              {t("Account")}
-            </Link>
+              {t("Feedback")}
+            </button>
             <Link
               to="/square-memory"
               className="landing-memory-chip"
