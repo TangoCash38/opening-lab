@@ -5489,6 +5489,7 @@ html[data-color-scheme="dark"] .sqmem-start {
     width: 100%;
     height: auto;
     max-height: 13rem;
+    object-fit: contain;
     object-position: center bottom;
   }
 
@@ -5522,6 +5523,21 @@ html[data-color-scheme="dark"] .sqmem-start {
   animation: sqmem-cheer-pop 0.46s cubic-bezier(0.16, 0.84, 0.28, 1.18) both;
   -webkit-user-drag: none;
   user-select: none;
+}
+
+/* Phone plates are short, so a full-length drawing shrinks to a sliver.
+   Fill that same plate with the head and shoulders. Height is capped so
+   the drawing cannot stretch the plate over the board. */
+@media (max-width: 959px) {
+  .sqmem-cheer-portrait {
+    flex: 0 0 46%;
+    width: 46%;
+    height: 11.25rem;
+    min-height: 0;
+    max-height: 11.25rem;
+    object-fit: cover;
+    object-position: center top;
+  }
 }
 
 .sqmem-cheer-card {
@@ -5632,11 +5648,13 @@ html[data-color-scheme="dark"] .sqmem-start {
   }
 
   .sqmem-table.is-cheer .sqmem-cheer-portrait {
-    flex: 0 1 auto;
+    flex: 1 1 6.4rem;
     width: 100%;
-    height: 5.6rem;
-    max-height: 42%;
-    object-position: center bottom;
+    height: 6.4rem;
+    min-height: 0;
+    max-height: 6.4rem;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .sqmem-table.is-cheer .sqmem-cheer-card {
