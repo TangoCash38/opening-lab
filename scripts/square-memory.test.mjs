@@ -208,7 +208,7 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
-test("website home shows Square Memory under the gym and Play does not", () => {
+test("website and Play home show Square Memory under the packs", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const page = src("src/routes/square-memory.tsx");
   const view = src("src/components/opening-lab/square-memory.tsx");
@@ -407,7 +407,7 @@ test("a full clear is timed and only that time can join the shared board", () =>
   assert.doesNotMatch(api, /localStorage/);
 });
 
-test("Play preview is off until seven taps, and the website ignores it", async (t) => {
+test("Play shows Square Memory until seven taps hide it, and the website ignores the switch", async (t) => {
   const mod = await loadModule(t, "src/lib/play-app.ts", "play-preview.mjs");
   if (!mod) return;
   const store = new Map();
@@ -419,7 +419,7 @@ test("Play preview is off until seven taps, and the website ignores it", async (
   t.after(() => {
     delete globalThis.localStorage;
   });
-  assert.equal(mod.readSquareMemoryPlayPreview(), false);
+  assert.equal(mod.readSquareMemoryPlayPreview(), true);
   assert.equal(mod.SQUARE_MEMORY_PREVIEW_TAPS, 7);
   let taps = [];
   for (let i = 0; i < 6; i++) {
@@ -433,10 +433,10 @@ test("Play preview is off until seven taps, and the website ignores it", async (
   const stale = mod.nextSquareMemoryPreviewTaps([1_000], 1_000 + mod.SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS);
   assert.equal(stale.toggled, false);
   assert.equal(stale.taps.length, 1);
-  assert.equal(mod.toggleSquareMemoryPlayPreview(), true);
-  assert.equal(mod.readSquareMemoryPlayPreview(), true);
   assert.equal(mod.toggleSquareMemoryPlayPreview(), false);
   assert.equal(mod.readSquareMemoryPlayPreview(), false);
+  assert.equal(mod.toggleSquareMemoryPlayPreview(), true);
+  assert.equal(mod.readSquareMemoryPlayPreview(), true);
   const landing = src("src/components/opening-lab/home-intro.tsx");
   assert.match(landing, /if \(!isPlayApp\(\)\) return/);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);

@@ -178,27 +178,26 @@ export function isPlayWrap(): boolean {
 }
 
 /**
- * Play-only Square Memory preview. Off unless this phone has turned it on.
- * The public website ignores the flag and always shows the game.
+ * Play Square Memory switch. The card is on unless this phone has hidden it.
+ * Seven taps still toggles that. The public website ignores the flag.
  */
 export const SQUARE_MEMORY_PLAY_PREVIEW_KEY = "opening-lab:square-memory-play-preview";
 export const SQUARE_MEMORY_PREVIEW_TAPS = 7;
 export const SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS = 8000;
 
 export function readSquareMemoryPlayPreview(): boolean {
-  if (typeof localStorage === "undefined") return false;
+  if (typeof localStorage === "undefined") return true;
   try {
-    return localStorage.getItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY) === "1";
+    return localStorage.getItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY) !== "0";
   } catch {
-    return false;
+    return true;
   }
 }
 
 export function toggleSquareMemoryPlayPreview(): boolean {
   const next = !readSquareMemoryPlayPreview();
   try {
-    if (next) localStorage.setItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY, "1");
-    else localStorage.removeItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY);
+    localStorage.setItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY, next ? "1" : "0");
   } catch {
     return readSquareMemoryPlayPreview();
   }
