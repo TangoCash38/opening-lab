@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getSql } from "@/lib/db";
 import { LONDON_MEMORY_LINE } from "@/lib/square-memory-london";
+import { QG_MEMORY_LINE } from "@/lib/square-memory-qg";
 import { SQUARE_MEMORY_LINE } from "@/lib/square-memory-line";
 import { cleanScoreName, MAX_CLEAR_MS, minimumClearMs } from "@/lib/square-memory";
 
 const LINES = {
   ruy: SQUARE_MEMORY_LINE.squares.length,
   london: LONDON_MEMORY_LINE.squares.length,
+  qg: QG_MEMORY_LINE.squares.length,
 } as const;
 
 type LineId = keyof typeof LINES;
@@ -18,7 +20,7 @@ function json(data: unknown, status = 200): Response {
 }
 
 function lineId(value: unknown): LineId | null {
-  return value === "ruy" || value === "london" ? value : null;
+  return value === "ruy" || value === "london" || value === "qg" ? value : null;
 }
 
 async function readBoard(line: LineId): Promise<ScoreRow[]> {
