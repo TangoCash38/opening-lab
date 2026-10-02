@@ -9,11 +9,13 @@ import {
   canPurchaseBuyAll,
   isPackComingSoon,
   isPackVisible,
+  packHasPlayableFreeLines,
 } from "@/lib/catalog";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
+import { classicSamplePack } from "@/lib/classic-sample";
 import { classicRunAlreadySeen } from "@/lib/classic-run";
 import {
   isPlayApp,
@@ -23,6 +25,7 @@ import {
 } from "@/lib/play-app";
 import { beginClassicRunNarration } from "./classic-run-the-game";
 import { BuyAllOffer } from "./buy-all-offer";
+import { ColorSchemeToggle } from "./color-scheme-toggle";
 import { LandingMateDemo } from "./landing-mate-demo";
 import { LandingMenu } from "./landing-menu";
 
@@ -153,12 +156,22 @@ export function LandingHome({
           >
             {t("Feedback")}
           </button>
+          <Link
+            to="/login"
+            className="landing-nav-link"
+            data-landing-account
+          >
+            {t("Account")}
+          </Link>
         </nav>
-        <LandingMenu
-          onCreateOwn={onCreateOwn}
-          onReport={onReport}
-          onSupport={onSupport}
-        />
+        <div className="landing-tools">
+          <ColorSchemeToggle labeled />
+          <LandingMenu
+            onCreateOwn={onCreateOwn}
+            onReport={onReport}
+            onSupport={onSupport}
+          />
+        </div>
       </header>
 
       <div className="landing-inner">
@@ -174,6 +187,8 @@ export function LandingHome({
                 decoding="async"
                 draggable={false}
               />
+              <span className="landing-coach-lid landing-coach-lid--left" data-coach-blink aria-hidden />
+              <span className="landing-coach-lid landing-coach-lid--right" data-coach-blink aria-hidden />
               <img
                 className="landing-mug-logo"
                 src="/brand/opening-lab-logo.png"
@@ -197,6 +212,14 @@ export function LandingHome({
                 </h2>
                 <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
               </div>
+              {showBuyAll ? (
+                <section aria-labelledby="landing-buy-all">
+                  <h2 id="landing-buy-all" className="sr-only">
+                    {t("On sale")}
+                  </h2>
+                  <BuyAllOffer onBuy={onBuyAll} />
+                </section>
+              ) : null}
               <div className="landing-open-grid" data-open-now>
                 {openPacks.map((pack) => (
                   <button
@@ -204,6 +227,7 @@ export function LandingHome({
                     type="button"
                     className="landing-pack-card"
                     data-open-pack={pack.id}
+                    data-free-lines={packHasPlayableFreeLines(pack) ? "true" : "false"}
                     onClick={() => onOpenPack(pack.id)}
                   >
                     <span className="landing-pack-name">{openNowTitle(pack)}</span>
@@ -247,6 +271,9 @@ export function LandingHome({
                     type="button"
                     className="landing-puzzle-card"
                     data-landing-classic
+                    data-free-lines={
+                      packHasPlayableFreeLines(classicSamplePack()) ? "true" : "false"
+                    }
                     onClick={() => {
                       if (!classicRunAlreadySeen()) beginClassicRunNarration();
                       onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID);
@@ -275,15 +302,6 @@ export function LandingHome({
             </div>
           </div>
         </div>
-
-        {showBuyAll ? (
-          <section className="landing-section" aria-labelledby="landing-buy-all">
-            <h2 id="landing-buy-all" className="sr-only">
-              {t("On sale")}
-            </h2>
-            <BuyAllOffer onBuy={onBuyAll} />
-          </section>
-        ) : null}
 
         <section className="landing-section" aria-labelledby="landing-soon">
           <h2 id="landing-soon" className="landing-section-title">

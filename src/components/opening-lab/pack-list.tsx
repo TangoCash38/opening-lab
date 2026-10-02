@@ -11,6 +11,7 @@ import {
   isComingSoonClosed,
   isLineUnlocked,
   isPackComingSoon,
+  packHasPlayableFreeLines,
   visiblePacks,
 } from "@/lib/catalog";
 import { packShortLabel } from "@/lib/featured-pack";
@@ -183,6 +184,7 @@ function PackCard({
       }`}
       data-pack-card={pack.id}
       data-pack-open={open ? "true" : "false"}
+      data-free-lines={packHasPlayableFreeLines(pack) ? "true" : "false"}
       data-pack-access={comingSoonClosed ? "coming-soon" : anyOpen ? "open" : "locked"}
       data-pack-coming-soon={comingSoon ? "true" : "false"}
       onClick={comingSoonClosed ? () => onComingSoon(pack) : undefined}

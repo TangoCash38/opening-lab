@@ -31,6 +31,14 @@ test("landing matches the signed-off home: live packs, real prices", () => {
   assert.match(landing, /Study first\. Then test yourself from memory/);
   assert.doesNotMatch(landing, /Strict book-move trainer/);
   assert.match(landing, /coach-seated-v2\.png/);
+  assert.match(landing, /data-coach-blink/);
+  assert.match(landing, /landing-coach-lid--left/);
+  assert.match(landing, /landing-coach-lid--right/);
+  assert.match(css, /@keyframes landing-coach-blink/);
+  assert.match(css, /animation:\s*landing-coach-blink 5s linear infinite/);
+  assert.match(css, /\.landing-coach-lid--left\s*\{[^}]*left:\s*41\.36%/);
+  assert.match(css, /\.landing-coach-lid--right\s*\{[^}]*left:\s*54\.94%/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce\)[\s\S]*\.landing-coach-lid\s*\{[^}]*animation:\s*none/);
   assert.match(landing, /\/brand\/opening-lab-logo\.png/);
   assert.match(landing, /landing-mug-logo/);
   assert.match(css, /\.landing-mug-logo\s*\{[^}]*left:\s*48\.125%/);
@@ -116,6 +124,10 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Whole pack · {price} — all {n} lines":').length - 1, 12);
   assert.match(landing, /Whole pack · \{price\} — all \{n\} lines/);
   assert.match(landing, /\{n\} free · \{price\} unlocks the whole pack/);
+  const sale = landing.indexOf("<BuyAllOffer");
+  const grid = landing.indexOf("data-open-now");
+  assert.ok(sale > -1 && grid > sale, "On sale sits above the pack grid");
+  assert.equal(landing.indexOf("<BuyAllOffer", grid), -1);
   assert.equal(copy.split('"Study first. Then test yourself from memory":').length - 1, 12);
   assert.equal(
     copy.split('"Please leave feedback for openings you’d like to see":').length - 1,
@@ -150,4 +162,39 @@ test("landing board plays itself and the app prompt is gone", () => {
     /html\[data-color-scheme="dark"\] \.landing-chip \{[\s\S]*color:\s*#ffffff/,
   );
   assert.doesNotMatch(css, /\.landing-chip \{[\s\S]*#f4e6c8/);
+});
+
+test("only packs with playable free lines are marked green", () => {
+  const catalog = src("src/lib/catalog.ts");
+  const packs = src("src/data/packs.ts");
+  const list = src("src/components/opening-lab/pack-list.tsx");
+  assert.match(catalog, /export function packHasPlayableFreeLines/);
+  assert.match(landing, /packHasPlayableFreeLines\(pack\)/);
+  assert.match(landing, /data-free-lines=\{packHasPlayableFreeLines\(pack\) \? "true" : "false"\}/);
+  assert.match(landing, /packHasPlayableFreeLines\(classicSamplePack\(\)\)/);
+  assert.match(list, /data-free-lines=\{packHasPlayableFreeLines\(pack\) \? "true" : "false"\}/);
+  assert.match(css, /\.landing-pack-card\[data-free-lines="true"\]/);
+  assert.match(css, /\.pack-card\[data-free-lines="true"\]/);
+  assert.match(
+    css,
+    /html\[data-color-scheme="dark"\] \.landing-pack-card\[data-free-lines="true"\]/,
+  );
+  assert.match(css, /background: #14663a/);
+  assert.match(css, /color: #f4fff8/);
+  const fn = catalog.slice(
+    catalog.indexOf("export function packHasPlayableFreeLines"),
+    catalog.indexOf("export function playableLines"),
+  );
+  assert.match(fn, /isWebsiteClassicSample/);
+  assert.match(fn, /FREE_SAMPLE_LINE_IDS/);
+  assert.doesNotMatch(fn, /isPackFree/);
+  assert.doesNotMatch(fn, /PACK_OPENING/);
+  for (const id of ["ckb1", "ckb3", "ckb5", "ot1", "ot2", "ot3", "ot4", "ot5", "ot6"]) {
+    assert.match(packs, new RegExp(`id: "${id}"`));
+  }
+  assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
+  assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
+  const classic = landing.match(/data-landing-classic[\s\S]*?<\/button>/)?.[0] ?? "";
+  assert.match(classic, /t\("Free"\)/);
+  assert.doesNotMatch(classic, /\{n\} free/);
 });

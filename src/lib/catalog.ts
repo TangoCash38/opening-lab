@@ -98,6 +98,21 @@ export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> =
   "opening-traps": ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
 };
 
+/**
+ * Packs a visitor can actually play a drill line of without paying.
+ * Every live pack's intro is free; that does not count. Sample ids must
+ * exist on the pack. The website Classic sample is the other free line.
+ */
+export function packHasPlayableFreeLines(
+  pack: Pick<Pack, "id"> & { lines?: readonly Pick<OpeningLine, "id">[] },
+): boolean {
+  if (isWebsiteClassicSample(pack.id)) return true;
+  const ids = FREE_SAMPLE_LINE_IDS[pack.id];
+  if (!ids?.length) return false;
+  const present = new Set((pack.lines ?? []).map((line) => line.id));
+  return ids.some((id) => present.has(id));
+}
+
 export function playableLines(pack: Pack): OpeningLine[] {
   if (isPackComingSoon(pack.id)) return [];
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];

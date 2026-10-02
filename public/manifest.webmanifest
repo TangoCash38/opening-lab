@@ -4,8 +4,8 @@
   "description": "Strict chess opening lines · memory training",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4efe6",
-  "theme_color": "#2f5d50",
+  "background_color": "#141210",
+  "theme_color": "#141210",
   "orientation": "portrait-primary",
   "icons": [
     {

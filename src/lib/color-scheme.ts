@@ -1,26 +1,31 @@
-import { isPlayWrap, PLAY_PACKAGE, PLAY_UA_TOKEN } from "@/lib/play-app";
-
 export const COLOR_SCHEMES = ["light", "dark"] as const;
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export const COLOR_SCHEME_STORAGE_KEY = "opening-lab:color-scheme";
-export const DEFAULT_COLOR_SCHEME: ColorScheme = "light";
+export const DEFAULT_COLOR_SCHEME: ColorScheme = "dark";
 
 const EVENT = "opening-lab:color-scheme";
 
+const THEME_COLOR: Record<ColorScheme, string> = {
+  dark: "#141210",
+  light: "#f4efe6",
+};
+
 /**
- * Runs before first paint. Stored light/dark wins. When the key is missing,
- * the Play wrap (OpeningLabPlay UA or android-app referrer) starts dark and
- * the website stays light. Does not write localStorage.
+ * Runs before first paint. A stored light or dark choice wins, including
+ * inside the Play wrap. When the key is missing, the website and the Play
+ * wrap both start dark. Does not write localStorage.
  */
 export const COLOR_SCHEME_BOOT_SCRIPT = `(() => {
+  var scheme = ${JSON.stringify(DEFAULT_COLOR_SCHEME)};
   try {
     var stored = localStorage.getItem(${JSON.stringify(COLOR_SCHEME_STORAGE_KEY)});
-    var ua = navigator.userAgent || "";
-    var ref = document.referrer || "";
-    var play = ua.indexOf(${JSON.stringify(PLAY_UA_TOKEN)}) !== -1 || /^android-app:\\/\\/${PLAY_PACKAGE.replace(/\./g, "\\.")}([/?#]|$)/i.test(ref);
-    var scheme = stored === "light" || stored === "dark" ? stored : (play ? "dark" : ${JSON.stringify(DEFAULT_COLOR_SCHEME)});
+    if (stored === "light" || stored === "dark") scheme = stored;
+  } catch (e) {}
+  try {
     document.documentElement.dataset.colorScheme = scheme;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", scheme === "light" ? "#f4efe6" : "#141210");
   } catch (e) {}
 })();`;
 
@@ -30,7 +35,7 @@ export function isColorScheme(
   return value === "light" || value === "dark";
 }
 
-/** Unknown / missing → light. */
+/** Unknown / missing → dark. A stored "light" stays light. */
 export function normalizeColorScheme(
   value: string | null | undefined,
 ): ColorScheme {
@@ -47,9 +52,8 @@ function readStoredColorScheme(): ColorScheme | null {
   }
 }
 
-/** Website default is light. Play wrap defaults to dark only when unset. */
+/** Website and Play wrap both start dark until this device stores a choice. */
 export function defaultColorScheme(): ColorScheme {
-  if (typeof window !== "undefined" && isPlayWrap()) return "dark";
   return DEFAULT_COLOR_SCHEME;
 }
 
@@ -60,6 +64,8 @@ export function getColorScheme(): ColorScheme {
 export function applyColorScheme(scheme: ColorScheme): void {
   if (typeof document === "undefined") return;
   document.documentElement.dataset.colorScheme = scheme;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", THEME_COLOR[scheme]);
 }
 
 export function setColorScheme(scheme: ColorScheme): void {
