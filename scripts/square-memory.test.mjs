@@ -398,6 +398,16 @@ test("Queen's Gambit Declined is the third hidden line on the same page", () => 
   assert.doesNotMatch(migration, /delete from square_memory_scores/);
 });
 
+test("only Pip's fake Ruy Lopez time is removed", () => {
+  const migration = src("migrations/0009_remove_pip_ruy_score.sql");
+  assert.match(migration, /delete from square_memory_scores/);
+  assert.match(migration, /line = 'ruy'/);
+  assert.match(migration, /name_key = 'pip'/);
+  assert.match(migration, /name = 'Pip'/);
+  assert.match(migration, /ms = 20574/);
+  assert.doesNotMatch(migration, /BaLamo|Lez J|insert into square_memory_scores/);
+});
+
 test("a full clear is timed and only that time can join the shared board", () => {
   const view = src("src/components/opening-lab/square-memory.tsx");
   const api = src("src/routes/api/square-memory-scores.ts");
