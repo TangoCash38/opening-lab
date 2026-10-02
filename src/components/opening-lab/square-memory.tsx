@@ -431,7 +431,7 @@ export function SquareMemory() {
         <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
       ) : null}
 
-      <div className="sqmem-table">
+      <div className={perfect && cheerOn ? "sqmem-table is-cheer" : "sqmem-table"}>
         {showBoard ? (
           <div className="sqmem-boards" data-square-memory-boards data-selected={choice.id}>
             <div className="sqmem-plaque-col">
@@ -491,15 +491,17 @@ export function SquareMemory() {
             </p>
           ) : null}
 
-          <div className="sqmem-board">
-            <MemoryBoard
-              lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
-              interactive={snap.phase === "input" && snap.cursor < snap.length}
-              position={position}
-              lastMove={last ? { from: last.from, to: last.to } : null}
-              found={partial ? partial.from : null}
-              onTap={onTap}
-            />
+          <div className="sqmem-play">
+            <div className="sqmem-board">
+              <MemoryBoard
+                lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
+                interactive={snap.phase === "input" && snap.cursor < snap.length}
+                position={position}
+                lastMove={last ? { from: last.from, to: last.to } : null}
+                found={partial ? partial.from : null}
+                onTap={onTap}
+              />
+            </div>
             {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
           </div>
         </div>
@@ -680,16 +682,18 @@ function PerfectCheer({ choice }: { choice: MemoryChoice }) {
         <p className="sqmem-cheer-bubble" data-square-memory-cheer-line>
           {choice.cheer}
         </p>
-        <a
-          className="sqmem-cheer-btn"
-          data-square-memory-pack={choice.packId}
-          href={`/#pack/${choice.packId}`}
-        >
-          {choice.packLabel}
-        </a>
-        <a className="sqmem-cheer-btn sqmem-cheer-btn-gym" data-square-memory-gym href="/#gym">
-          Opening packs
-        </a>
+        <div className="sqmem-cheer-actions">
+          <a
+            className="sqmem-cheer-btn"
+            data-square-memory-pack={choice.packId}
+            href={`/#pack/${choice.packId}`}
+          >
+            {choice.packLabel}
+          </a>
+          <a className="sqmem-cheer-btn sqmem-cheer-btn-gym" data-square-memory-gym href="/#gym">
+            Opening packs
+          </a>
+        </div>
       </div>
     </section>
   );
