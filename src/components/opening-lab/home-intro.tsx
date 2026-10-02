@@ -156,22 +156,13 @@ export function LandingHome({
           >
             {t("Feedback")}
           </button>
-          <span className="landing-nav-pair">
-            <Link
-              to="/login"
-              className="landing-nav-link"
-              data-landing-account
-            >
-              {t("Account")}
-            </Link>
-            <Link
-              to="/square-memory"
-              className="landing-nav-link"
-              data-landing-memory-bar
-            >
-              Square Memory game
-            </Link>
-          </span>
+          <Link
+            to="/square-memory"
+            className="landing-nav-link"
+            data-landing-memory-bar
+          >
+            Square Memory game
+          </Link>
         </nav>
         <div className="landing-tools">
           <ColorSchemeToggle labeled />

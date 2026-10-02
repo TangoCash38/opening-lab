@@ -3186,7 +3186,7 @@ html[data-color-scheme="dark"] .app-shell--landing {
   flex-wrap: wrap;
   order: 3;
   align-items: center;
-  gap: 0.15rem 1rem;
+  gap: 0.15rem 0.6rem;
   min-width: 0;
 }
 
@@ -3209,11 +3209,14 @@ html[data-color-scheme="dark"] .app-shell--landing {
   opacity: 0.7;
 }
 
-.landing-nav-pair {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-  gap: 1rem;
+@media (max-width: 349px) {
+  .landing-nav {
+    gap: 0.15rem 0.4rem;
+  }
+
+  .landing-nav-link {
+    font-size: 0.84rem;
+  }
 }
 
 .landing-tools {
