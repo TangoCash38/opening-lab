@@ -163,6 +163,14 @@ export function LandingHome({
           >
             {t("Account")}
           </Link>
+          <Link
+            to="/square-memory"
+            className="landing-memory-chip"
+            data-landing-memory-bar
+          >
+            Square Memory
+            <span className="landing-memory-new">New</span>
+          </Link>
         </nav>
         <div className="landing-tools">
           <ColorSchemeToggle labeled />

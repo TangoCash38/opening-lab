@@ -208,6 +208,22 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
+test("Square Memory sits in the top bar next to Account", () => {
+  const landing = src("src/components/opening-lab/home-intro.tsx");
+  const css = src("src/styles.css");
+  const account = landing.indexOf("data-landing-account");
+  const memory = landing.indexOf("data-landing-memory-bar");
+  const chip = landing.slice(memory - 180, memory + 280);
+  assert.ok(account > 0 && memory > account);
+  assert.match(chip, /to="\/square-memory"/);
+  assert.match(chip, /Square Memory/);
+  assert.match(chip, /<span className="landing-memory-new">New<\/span>/);
+  assert.doesNotMatch(chip, /isPlayApp|showMemory|Square Memory game/);
+  assert.match(css, /@keyframes landing-memory-flash[\s\S]*#ffe400/);
+  assert.match(css, /\.landing-memory-new\s*\{[^}]*font-size:\s*0\.58rem/);
+  assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
+});
+
 test("website home shows Square Memory under the gym and Play does not", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const page = src("src/routes/square-memory.tsx");
@@ -234,8 +250,7 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(css, /@media \(min-width: 960px\)[\s\S]*\.landing-square-memory\s*\{[^}]*width:\s*min\(22rem,\s*100%\)/);
   assert.doesNotMatch(hero, /square-memory|Square Memory/);
 
-  assert.match(page, /isPlayApp\(\) && !readSquareMemoryPlayPreview\(\)/);
-  assert.match(page, /window\.location\.replace\("\/"\)/);
+  assert.doesNotMatch(page, /readSquareMemoryPlayPreview|window\.location\.replace/);
   assert.match(view, /Watch the squares\. Tap them back in order\./);
   assert.match(view, /data-begin/);
   assert.match(view, /"Start"/);
@@ -326,11 +341,8 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.doesNotMatch(view, /London Memory|Square London/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.match(page, /createFileRoute\("\/square-memory-london"\)/);
-  assert.match(page, /isPlayApp\(\)/);
-  assert.match(
-    page,
-    /isPlayApp\(\) && !readSquareMemoryPlayPreview\(\) \? "\/" : "\/square-memory"/,
-  );
+  assert.match(page, /window\.location\.replace\("\/square-memory"\)/);
+  assert.doesNotMatch(page, /isPlayApp\(\)|readSquareMemoryPlayPreview/);
   assert.match(page, /Square Memory · Opening Lab/);
   assert.doesNotMatch(page, /London Memory/);
   const memory = landing.indexOf("data-landing-square-memory");
