@@ -34,10 +34,7 @@ import {
   subscribeColorScheme,
   type ColorScheme,
 } from "@/lib/color-scheme";
-import { coachPack } from "@/lib/coach-packs";
-import { legalMateLine } from "@/lib/legal-mate";
 import { isPlayWrap } from "@/lib/play-app";
-import { startCoachPackNarration } from "@/lib/scotch-coach-audio";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { FeedbackView } from "./feedback-view";
 import { GuideView } from "./guide-view";
@@ -209,27 +206,6 @@ function OpeningLabInner() {
       goHome();
     }
   }, [view, active, canTrainPack]);
-
-  const startFreeTry = () => {
-    const found = legalMateLine();
-    if (!found || !canTrainPack(found.pack)) return;
-    const audio = coachPack(found.pack.id)?.firstLineAudio;
-    if (audio) {
-      startCoachPackNarration(audio, null, `${found.pack.id}:free-try`);
-    }
-    setQueue([]);
-    setFocusPackId(null);
-    setActive({
-      pack: found.pack,
-      line: found.line,
-      mode: "learn",
-      freeTry: true,
-    });
-    setView("train");
-    soundSelect();
-    scrollAppTop();
-    requestAnimationFrame(() => scrollAppTop());
-  };
 
   const goOpenNow = () => {
     setQueue([]);
@@ -423,7 +399,6 @@ function OpeningLabInner() {
               goPacks();
             }}
             onOpenPuzzle={openPuzzle}
-            onTryFree={startFreeTry}
           />
         )}
         {view === "puzzle" && !playSurface ? <PuzzleView onBack={goHome} /> : null}

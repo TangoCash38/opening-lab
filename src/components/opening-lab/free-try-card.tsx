@@ -21,16 +21,27 @@ type CardProps = {
   onMoreFree: () => void;
   onTryAgain: () => void;
   onFeedback: () => void;
+  /** Homepage demo keeps the offer in the page. The train card covers the wood. */
+  placement?: "overlay" | "beside";
 };
 
 /** End-of-line card. Stays on this board. Prices come from pricing.ts. */
-export function FreeTryCard({ onBuyAll, onPickPack, onMoreFree, onTryAgain, onFeedback }: CardProps) {
+export function FreeTryCard({
+  onBuyAll,
+  onPickPack,
+  onMoreFree,
+  onTryAgain,
+  onFeedback,
+  placement = "overlay",
+}: CardProps) {
+  const beside = placement === "beside";
   return (
     <div
-      className="absolute inset-x-0 top-0 z-30 px-1"
+      className={beside ? "landing-demo-offer" : "absolute inset-x-0 top-0 z-30 px-1"}
       data-free-try-card
-      role="dialog"
-      aria-modal="true"
+      data-landing-pack-offer={beside ? "visible" : undefined}
+      role={beside ? "region" : "dialog"}
+      aria-modal={beside ? undefined : true}
       aria-labelledby="free-try-title"
     >
       <div className="w-full rounded-2xl border-[1.5px] border-accent/30 bg-bg-elevated p-3 shadow-[var(--shadow-card)]">
