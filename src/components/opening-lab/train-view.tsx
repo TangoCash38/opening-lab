@@ -1233,7 +1233,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         ) : null}
       </div>
 
-      {freeTryDemo ? null : (
+      {freeTry ? null : (
       <div
         className={`mb-2 min-h-[1.2em] text-center text-[0.85rem] font-semibold text-accent transition-opacity duration-200 ${
           hint ? "opacity-100" : "opacity-0"
@@ -1250,7 +1250,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         <FreeTryVoice onDemoEnd={() => setFreeTryDemo(false)} />
       ) : null}
       {!boardExpanded && !embedded ? (
-        <div className="mb-1 flex items-center justify-end">
+        <div className="mb-1 flex min-h-11 items-center gap-2">
+          {freeTry ? (
+            <p
+              className={`pointer-events-none min-w-0 flex-1 text-center text-[0.85rem] font-semibold leading-none text-accent ${
+                hint && !freeTryDemo ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {hint || "\u00a0"}
+            </p>
+          ) : (
+            <span className="flex-1" />
+          )}
           <button
             type="button"
             onClick={() => setBoardExpanded(true)}

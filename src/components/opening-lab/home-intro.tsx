@@ -23,7 +23,7 @@ import {
 } from "@/lib/play-app";
 import { beginClassicRunNarration } from "./classic-run-the-game";
 import { BuyAllOffer } from "./buy-all-offer";
-import { ChessPiece } from "./chess-pieces";
+import { LandingMateDemo } from "./landing-mate-demo";
 import { LandingMenu } from "./landing-menu";
 
 type Props = {
@@ -35,20 +35,7 @@ type Props = {
   onReport: () => void;
   onBuyAll: () => void;
   onOpenPuzzle: () => void;
-  /** Homepage board. Starts Legal’s Mate practice. No cutscene. */
-  onTryFree: () => void;
 };
-
-const START_RANKS = [
-  "rnbqkbnr",
-  "pppppppp",
-  "........",
-  "........",
-  "........",
-  "........",
-  "PPPPPPPP",
-  "RNBQKBNR",
-];
 
 /** Sketch labels for real coming-soon packs. Ids stay the catalog ids. */
 const CHIP_LABEL: Record<string, string> = {
@@ -99,7 +86,6 @@ export function LandingHome({
   onReport,
   onBuyAll,
   onOpenPuzzle,
-  onTryFree,
 }: Props) {
   const t = useT();
   const navigate = useNavigate();
@@ -200,7 +186,17 @@ export function LandingHome({
                 draggable={false}
               />
             </div>
-            <LandingBoard onTryFree={onTryFree} />
+            <LandingMateDemo
+              onBuyAll={onBuyAll}
+              onPickPack={() => {
+                document.getElementById("landing-open-now")?.scrollIntoView({
+                  behavior: "auto",
+                  block: "start",
+                });
+              }}
+              onMoreFree={onEnterGym}
+              onFeedback={onFeedback}
+            />
           </div>
           <div className="landing-copy">
             <p id="landing-title" className="landing-sub">
@@ -343,37 +339,5 @@ function BrandMark() {
       height={48}
       draggable={false}
     />
-  );
-}
-
-function LandingBoard({ onTryFree }: { onTryFree: () => void }) {
-  return (
-    <button
-      type="button"
-      className="landing-board-tap"
-      data-try-free
-      onClick={onTryFree}
-      aria-label="Click the board to try free"
-    >
-      <span className="landing-board">
-        <span className="landing-board-grid">
-          {START_RANKS.map((rank, y) =>
-            rank.split("").map((code, x) => {
-              const light = (x + y) % 2 === 0;
-              return (
-                <span
-                  key={`${x}-${y}`}
-                  className={light ? "landing-sq landing-sq-light" : "landing-sq landing-sq-dark"}
-                >
-                  {code !== "." ? <ChessPiece code={code} /> : null}
-                </span>
-              );
-            }),
-          )}
-        </span>
-        <span className="landing-board-overlay">Click the board to try free</span>
-      </span>
-      <span className="landing-board-try">Click the board to try free</span>
-    </button>
   );
 }

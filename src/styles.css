@@ -3244,7 +3244,7 @@ html[data-color-scheme="dark"] .app-shell--landing {
 
 .landing-hero-art {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: flex-start;
   gap: 0.55rem;
@@ -3295,126 +3295,54 @@ html[data-color-scheme="dark"] .app-shell--landing {
   -webkit-user-drag: none;
 }
 
-.landing-board-tap {
+.landing-demo {
   position: relative;
   z-index: 1;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.4rem;
+  gap: 0.35rem;
   width: auto;
   min-width: 0;
   max-width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  text-align: center;
 }
 
-.landing-board-tap:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: 0.45rem;
+.landing-demo .mb-4 {
+  margin-bottom: 0;
 }
 
-.landing-board {
-  position: relative;
-  z-index: 0;
-  display: block;
-  width: 100%;
-  padding: 0.42rem;
-  border-radius: 0.2rem;
-  background: #6b4428;
-  box-shadow:
-    0 0 0 2px var(--color-accent),
-    0 10px 18px rgba(60, 36, 18, 0.16);
-  transform: none;
-}
-
-.landing-board-overlay {
-  display: block;
-  margin-bottom: 0.35rem;
-  border-radius: 0.4rem;
-  background: var(--color-bg-elevated);
-  color: var(--color-accent);
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1.2;
-  padding: 0.35rem 0.4rem;
+.landing-demo .board-play button {
   pointer-events: none;
 }
 
-.landing-board-try {
-  display: block;
+.landing-demo-modes {
+  display: flex;
+  gap: 0.3rem;
   border-radius: 999px;
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
+  background: var(--color-bg-subtle);
+  padding: 0.2rem;
+}
+
+.landing-demo-tab {
+  flex: 1 1 auto;
+  border-radius: 999px;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
   font-size: 0.78rem;
-  font-weight: 800;
-  line-height: 1.25;
-  padding: 0.45rem 0.65rem;
+  font-weight: 700;
+  color: var(--color-fg-muted);
 }
 
-/* Homepage cue only. 3.6s is 1.8s each way: a slow fade, not a blink. */
-@keyframes landing-try-beacon {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
+.landing-demo-tab.is-active {
+  background: var(--color-bg-elevated);
+  color: var(--color-fg);
+  box-shadow: 0 1px 2px rgba(28, 25, 21, 0.08);
 }
 
-.landing-board-overlay,
-.landing-board-try {
-  animation: landing-try-beacon 3.6s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .landing-board-overlay,
-  .landing-board-try {
-    animation: none;
-  }
-}
-
-.landing-board-grid {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  grid-template-rows: repeat(8, minmax(0, 1fr));
-  width: 100%;
-  aspect-ratio: 1;
-  overflow: hidden;
-  transform: none;
-}
-
-.landing-sq {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.landing-sq-light {
-  background: #f3e6c8;
-}
-
-.landing-sq-dark {
-  background: #8d5a32;
-}
-
-.landing-sq .chess-piece-img {
-  position: absolute;
-  left: 8%;
-  top: 8%;
-  width: 84%;
-  height: 84%;
-  max-width: none;
-  object-fit: contain;
+.landing-demo-offer {
+  flex: 1 0 100%;
+  margin: 0.15rem 0 0;
 }
 
 .landing-copy {
@@ -3751,7 +3679,7 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-hero-art {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     gap: 0.85rem;
@@ -3768,7 +3696,7 @@ html[data-color-scheme="dark"] .landing-chip {
     height: 21.5rem;
   }
 
-  .landing-board-tap {
+  .landing-demo {
     flex: 1 1 auto;
     width: auto;
     min-width: 0;
