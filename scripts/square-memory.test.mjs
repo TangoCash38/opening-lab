@@ -236,6 +236,8 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(page, /window\.location\.replace\("\/"\)/);
   assert.match(view, /Watch the squares\. Tap them back in order\./);
   assert.match(view, /data-begin/);
+  assert.match(view, /"Start"/);
+  assert.doesNotMatch(view, /"Begin"/);
   assert.match(view, /data-mute/);
   assert.match(view, /data-square-memory-pack=\{choice\.packId\}/);
   assert.match(view, /href=\{`\/#pack\/\$\{choice\.packId\}`\}/);
@@ -330,7 +332,7 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
 });
 
-test("Queen's Gambit for White is the third hidden line on the same page", () => {
+test("Queen's Gambit Declined is the third hidden line on the same page", () => {
   const packs = src("src/data/packs.ts");
   const line = src("src/lib/square-memory-qg.ts");
   const view = src("src/components/opening-lab/square-memory.tsx");
@@ -342,7 +344,8 @@ test("Queen's Gambit for White is the third hidden line on the same page", () =>
   assert.match(qg1, /\["d4", "d5", "c4", "e6", "Nc3",/);
   assert.match(line, /QG_MEMORY_MOVES = \["d4", "d5", "c4", "e6", "Nc3"\]/);
   assert.match(line, /QG_MEMORY_PACK_ID = "qg-white"/);
-  assert.match(line, /QG_MEMORY_NAME = "Queen's Gambit for White"/);
+  assert.match(line, /QG_MEMORY_NAME = "Queen's Gambit Declined"/);
+  assert.doesNotMatch(line, /QG_MEMORY_MOVES = \[[^\]]*dxc4/);
   const chess = new Chess();
   const squares = [];
   for (const san of moves) {
@@ -354,10 +357,12 @@ test("Queen's Gambit for White is the third hidden line on the same page", () =>
   assert.deepEqual(squares, ["d2", "d4", "d7", "d5", "c2", "c4", "e7", "e6", "b1", "c3"]);
   assert.match(
     view,
-    /You smashed it\. That's the Queen's Gambit\. Want to learn openings properly\? Try the opening packs\./,
+    /You smashed it\. That's the Queen's Gambit Declined\. Want to learn openings properly\? Try the opening packs\./,
   );
-  assert.match(view, /pick: "Queen's Gambit"/);
-  assert.match(view, /name: "Queen's Gambit for White"/);
+  assert.match(view, /pick: "Declined"/);
+  assert.match(view, /name: QG_MEMORY_NAME/);
+  assert.match(view, /name=\{QG_MEMORY_NAME\}/);
+  assert.match(view, /packLabel: "Queen's Gambit for White"/);
   assert.match(view, /packId: QG_MEMORY_PACK_ID/);
   assert.match(view, /id: "qg"/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
