@@ -3213,29 +3213,7 @@ html[data-color-scheme="dark"] .app-shell--landing {
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: 0.35rem;
-}
-
-.landing-memory-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  min-height: 44px;
-  padding: 0 0.1rem;
-  border-radius: 0;
-  background: transparent;
-  color: var(--color-fg-muted);
-  font-size: 0.72rem;
-  font-weight: 650;
-  line-height: 1;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.landing-memory-new {
-  font-size: 0.58rem;
-  font-weight: 650;
-  color: var(--color-fg-subtle);
+  gap: 1rem;
 }
 
 .landing-tools {
