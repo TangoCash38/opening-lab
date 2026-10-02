@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { CircleHelp, House, Moon, Sun, UserRound } from "lucide-react";
+import { CircleHelp, House, UserRound } from "lucide-react";
 import { PACKS, type OpeningLine, type Pack } from "@/data/packs";
 import {
   isComingSoonClosed,
@@ -27,13 +27,7 @@ import {
   useT,
 } from "@/lib/i18n";
 import { initBoardTheme } from "@/lib/board-theme";
-import {
-  getColorScheme,
-  initColorScheme,
-  setColorScheme,
-  subscribeColorScheme,
-  type ColorScheme,
-} from "@/lib/color-scheme";
+import { initColorScheme } from "@/lib/color-scheme";
 import { isPlayWrap } from "@/lib/play-app";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { FeedbackView } from "./feedback-view";
@@ -45,6 +39,7 @@ import { ReportLineView } from "./report-line";
 import { TrainView } from "./train-view";
 import { CreateOwnView } from "./create-own-view";
 import { Onboarding } from "./onboarding";
+import { ColorSchemeToggle } from "./color-scheme-toggle";
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
@@ -489,35 +484,6 @@ function OpeningLabInner() {
         />
       )}
     </div>
-  );
-}
-
-function ColorSchemeToggle() {
-  const t = useT();
-  const [scheme, setScheme] = useState<ColorScheme>("light");
-
-  useLayoutEffect(() => {
-    setScheme(getColorScheme());
-    return subscribeColorScheme(() => setScheme(getColorScheme()));
-  }, []);
-
-  const dark = scheme === "dark";
-  const label = dark ? t("Light mode") : t("Dark mode");
-
-  return (
-    <button
-      type="button"
-      className="header-icon-btn"
-      aria-label={label}
-      title={label}
-      onClick={() => setColorScheme(dark ? "light" : "dark")}
-    >
-      {dark ? (
-        <Sun className="size-[22px]" strokeWidth={1.75} />
-      ) : (
-        <Moon className="size-[22px]" strokeWidth={1.75} />
-      )}
-    </button>
   );
 }
 

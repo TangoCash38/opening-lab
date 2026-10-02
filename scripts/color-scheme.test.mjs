@@ -10,11 +10,13 @@ const src = (rel) => readFileSync(join(root, rel), "utf8");
 const scheme = src("src/lib/color-scheme.ts");
 const css = src("src/styles.css");
 const shell = src("src/components/opening-lab/app-shell.tsx");
+const toggle = src("src/components/opening-lab/color-scheme-toggle.tsx");
+const landing = src("src/components/opening-lab/home-intro.tsx");
 const rootDoc = src("src/routes/__root.tsx");
 const i18n = src("src/lib/i18n.ts");
 const boardTheme = src("src/lib/board-theme.ts");
 
-test("color-scheme helper validates unknown → light and persists", () => {
+test("color-scheme helper validates unknown → dark and keeps a stored light choice", () => {
   assert.match(scheme, /COLOR_SCHEMES = \["light", "dark"\]/);
   assert.match(scheme, /COLOR_SCHEME_STORAGE_KEY = "opening-lab:color-scheme"/);
   assert.match(scheme, /DEFAULT_COLOR_SCHEME/);
@@ -30,13 +32,14 @@ test("color-scheme helper validates unknown → light and persists", () => {
     scheme,
     /return isColorScheme\(value\) \? value : DEFAULT_COLOR_SCHEME/,
   );
-  assert.match(scheme, /DEFAULT_COLOR_SCHEME:\s*ColorScheme\s*=\s*"light"/);
-  assert.match(scheme, /isPlayWrap\(\)/);
-  assert.match(scheme, /return "dark"/);
+  assert.match(scheme, /DEFAULT_COLOR_SCHEME:\s*ColorScheme\s*=\s*"dark"/);
+  assert.match(scheme, /if \(stored === "light" \|\| stored === "dark"\) scheme = stored/);
+  assert.doesNotMatch(scheme, /isPlayWrap/);
+  assert.doesNotMatch(scheme, /play \? "dark"/);
   assert.match(scheme, /COLOR_SCHEME_BOOT_SCRIPT/);
-  assert.match(scheme, /OpeningLabPlay/);
-  assert.match(scheme, /PLAY_UA_TOKEN/);
   assert.match(rootDoc, /COLOR_SCHEME_BOOT_SCRIPT/);
+  assert.match(rootDoc, /background: #141210/);
+  assert.match(rootDoc, /html\[data-color-scheme="light"\]/);
   const initBody = scheme.slice(scheme.indexOf("export function initColorScheme"));
   assert.doesNotMatch(initBody, /setItem/);
   assert.doesNotMatch(initBody, /localStorage\.setItem/);
@@ -66,19 +69,26 @@ test("dark CSS overrides chrome tokens without changing board squares", () => {
   assert.match(css, /\.sq-hint-to\s*\{[^}]*#9edda8/s);
 });
 
-test("header toggle sits next to language picker and inits with board theme", () => {
+test("header toggle sits next to language picker and on the landing bar", () => {
   assert.match(shell, /initColorScheme/);
   assert.match(shell, /initBoardTheme/);
-  assert.match(shell, /Moon/);
-  assert.match(shell, /Sun/);
   assert.match(shell, /from "lucide-react"/);
   assert.match(shell, /header-icon-btn/);
-  assert.match(shell, /t\("Dark mode"\)/);
-  assert.match(shell, /t\("Light mode"\)/);
-  assert.match(shell, /setColorScheme/);
-  assert.match(shell, /getColorScheme/);
-  assert.match(shell, /subscribeColorScheme/);
   assert.match(shell, /<LangToggle \/>\s*<ColorSchemeToggle \/>/s);
+  assert.match(toggle, /Moon/);
+  assert.match(toggle, /Sun/);
+  assert.match(toggle, /from "lucide-react"/);
+  assert.match(toggle, /t\("Dark mode"\)/);
+  assert.match(toggle, /t\("Light mode"\)/);
+  assert.match(toggle, /setColorScheme/);
+  assert.match(toggle, /getColorScheme/);
+  assert.match(toggle, /subscribeColorScheme/);
+  assert.match(toggle, /data-color-scheme-toggle/);
+  assert.match(toggle, /header-icon-btn/);
+  assert.match(toggle, /landing-theme-btn/);
+  assert.match(landing, /<ColorSchemeToggle labeled \/>/);
+  assert.match(landing, /className="landing-tools"/);
+  assert.match(css, /\.landing-theme-btn/);
 });
 
 test("i18n keys for dark and light mode exist in every language dict", () => {

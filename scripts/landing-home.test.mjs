@@ -151,3 +151,35 @@ test("landing board plays itself and the app prompt is gone", () => {
   );
   assert.doesNotMatch(css, /\.landing-chip \{[\s\S]*#f4e6c8/);
 });
+
+test("only packs with playable free lines are marked green", () => {
+  const catalog = src("src/lib/catalog.ts");
+  const packs = src("src/data/packs.ts");
+  const list = src("src/components/opening-lab/pack-list.tsx");
+  assert.match(catalog, /export function packHasPlayableFreeLines/);
+  assert.match(landing, /packHasPlayableFreeLines\(pack\)/);
+  assert.match(landing, /data-free-lines=\{packHasPlayableFreeLines\(pack\) \? "true" : "false"\}/);
+  assert.match(landing, /packHasPlayableFreeLines\(classicSamplePack\(\)\)/);
+  assert.match(list, /data-free-lines=\{packHasPlayableFreeLines\(pack\) \? "true" : "false"\}/);
+  assert.match(css, /\.landing-pack-card\[data-free-lines="true"\]/);
+  assert.match(css, /\.pack-card\[data-free-lines="true"\]/);
+  assert.match(
+    css,
+    /html\[data-color-scheme="dark"\] \.landing-pack-card\[data-free-lines="true"\]/,
+  );
+  assert.match(css, /background: #14663a/);
+  assert.match(css, /color: #f4fff8/);
+  const fn = catalog.slice(
+    catalog.indexOf("export function packHasPlayableFreeLines"),
+    catalog.indexOf("export function playableLines"),
+  );
+  assert.match(fn, /isWebsiteClassicSample/);
+  assert.match(fn, /FREE_SAMPLE_LINE_IDS/);
+  assert.doesNotMatch(fn, /isPackFree/);
+  assert.doesNotMatch(fn, /PACK_OPENING/);
+  for (const id of ["ckb1", "ckb3", "ckb5", "ot1", "ot2", "ot3", "ot4", "ot5", "ot6"]) {
+    assert.match(packs, new RegExp(`id: "${id}"`));
+  }
+  assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
+  assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
+});

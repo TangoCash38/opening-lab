@@ -32,6 +32,10 @@
 }
 
 html {
+  color-scheme: dark;
+}
+
+html[data-color-scheme="light"] {
   color-scheme: light;
 }
 
@@ -3148,9 +3152,37 @@ html[data-color-scheme="dark"] .app-shell--landing {
   opacity: 0.7;
 }
 
-.landing-menu {
+.landing-tools {
   order: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
   margin-inline-start: auto;
+}
+
+.landing-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0 0.7rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+  color: var(--color-fg);
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.landing-theme-btn:active {
+  background: color-mix(in srgb, var(--color-fg) 8%, var(--color-bg-elevated));
+}
+
+.landing-menu {
+  order: 0;
+  margin-inline-start: 0;
 }
 
 @media (min-width: 760px) {
@@ -3160,6 +3192,10 @@ html[data-color-scheme="dark"] .app-shell--landing {
 
   .landing-nav {
     flex: 0 1 auto;
+    order: 0;
+  }
+
+  .landing-tools {
     order: 0;
   }
 
@@ -3775,6 +3811,39 @@ html[data-color-scheme="dark"] .landing-chip {
 
 .pack-card[data-pack-access="coming-soon"] {
   border-color: #c4b29a;
+}
+
+/* Packs with a drill line you can play without paying. The free intro
+   every pack has is not enough. Bright enough to read on the dark page. */
+.landing-pack-card[data-free-lines="true"],
+.landing-puzzle-card[data-free-lines="true"],
+.pack-card[data-free-lines="true"] {
+  border-color: #1b7a46;
+  background: #dff6e8;
+  color: #143024;
+}
+
+.landing-pack-card[data-free-lines="true"] .landing-pack-price,
+.landing-puzzle-card[data-free-lines="true"] .landing-puzzle-kicker,
+.landing-puzzle-card[data-free-lines="true"] .landing-puzzle-note {
+  color: #14663a;
+}
+
+html[data-color-scheme="dark"] .landing-pack-card[data-free-lines="true"],
+html[data-color-scheme="dark"] .landing-puzzle-card[data-free-lines="true"],
+html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
+  border-color: #8ee0ad;
+  background: #14663a;
+  color: #f4fff8;
+}
+
+html[data-color-scheme="dark"] .landing-pack-card[data-free-lines="true"] .landing-pack-name,
+html[data-color-scheme="dark"] .landing-pack-card[data-free-lines="true"] .landing-pack-price,
+html[data-color-scheme="dark"] .landing-puzzle-card[data-free-lines="true"] .landing-puzzle-kicker,
+html[data-color-scheme="dark"] .landing-puzzle-card[data-free-lines="true"] .landing-puzzle-title,
+html[data-color-scheme="dark"] .landing-puzzle-card[data-free-lines="true"] .landing-puzzle-note,
+html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
+  color: #f4fff8;
 }
 
 /* Scotch coach — cream dock left of the wood on website desktop.

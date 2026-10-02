@@ -26,7 +26,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
   const titleId = useId();
   const { user, isPending } = useCurrentUserState();
   const signedIn = !!user && !user.isDevFallback;
-  const [scheme, setScheme] = useState<ColorScheme>("light");
+  const [scheme, setScheme] = useState<ColorScheme>("dark");
 
   useOverlayHistory(open, () => setOpen(false), "landing-menu");
 

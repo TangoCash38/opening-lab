@@ -18,8 +18,9 @@ import { COLOR_SCHEME_BOOT_SCRIPT } from "@/lib/color-scheme";
  * has applied. Fonts do not hold the tab.
  */
 const APP_BOOT_CSS = `
-html, body { background: #f4efe6; }
-html[data-color-scheme="dark"], html[data-color-scheme="dark"] body { background: #141210; }
+html, body { background: #141210; color: #f3efe8; }
+html[data-color-scheme="light"], html[data-color-scheme="light"] body { background: #f4efe6; color: #1c1915; }
+html[data-color-scheme="dark"], html[data-color-scheme="dark"] body { background: #141210; color: #f3efe8; }
 html:not(.opening-lab-booted) body > :not(#app-loading-tab) { visibility: hidden; }
 html.opening-lab-booted #app-loading-tab { display: none; }
 #app-loading-tab { animation: app-loading-tab 1s ease-in-out infinite; }
@@ -91,7 +92,7 @@ export const Route = createRootRoute({
       { name: "apple-mobile-web-app-title", content: APP_NAME },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "mobile-web-app-capable", content: "yes" },
-      { name: "theme-color", content: "#2f5d50" },
+      { name: "theme-color", content: "#141210" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: APP_NAME },
       {

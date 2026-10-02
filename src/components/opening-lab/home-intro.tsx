@@ -9,11 +9,13 @@ import {
   canPurchaseBuyAll,
   isPackComingSoon,
   isPackVisible,
+  packHasPlayableFreeLines,
 } from "@/lib/catalog";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
+import { classicSamplePack } from "@/lib/classic-sample";
 import { classicRunAlreadySeen } from "@/lib/classic-run";
 import {
   isPlayApp,
@@ -23,6 +25,7 @@ import {
 } from "@/lib/play-app";
 import { beginClassicRunNarration } from "./classic-run-the-game";
 import { BuyAllOffer } from "./buy-all-offer";
+import { ColorSchemeToggle } from "./color-scheme-toggle";
 import { LandingMateDemo } from "./landing-mate-demo";
 import { LandingMenu } from "./landing-menu";
 
@@ -154,11 +157,14 @@ export function LandingHome({
             {t("Feedback")}
           </button>
         </nav>
-        <LandingMenu
-          onCreateOwn={onCreateOwn}
-          onReport={onReport}
-          onSupport={onSupport}
-        />
+        <div className="landing-tools">
+          <ColorSchemeToggle labeled />
+          <LandingMenu
+            onCreateOwn={onCreateOwn}
+            onReport={onReport}
+            onSupport={onSupport}
+          />
+        </div>
       </header>
 
       <div className="landing-inner">
@@ -204,6 +210,7 @@ export function LandingHome({
                     type="button"
                     className="landing-pack-card"
                     data-open-pack={pack.id}
+                    data-free-lines={packHasPlayableFreeLines(pack) ? "true" : "false"}
                     onClick={() => onOpenPack(pack.id)}
                   >
                     <span className="landing-pack-name">{openNowTitle(pack)}</span>
@@ -247,6 +254,9 @@ export function LandingHome({
                     type="button"
                     className="landing-puzzle-card"
                     data-landing-classic
+                    data-free-lines={
+                      packHasPlayableFreeLines(classicSamplePack()) ? "true" : "false"
+                    }
                     onClick={() => {
                       if (!classicRunAlreadySeen()) beginClassicRunNarration();
                       onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID);
