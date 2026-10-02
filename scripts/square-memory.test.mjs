@@ -208,21 +208,25 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
-test("Square Memory sits in the top bar next to Feedback", () => {
+test("Square Memory sits quietly next to Account and opens the free game", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const css = src("src/styles.css");
+  const page = src("src/routes/square-memory.tsx");
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
   const feedback = nav.indexOf("data-landing-feedback");
+  const account = nav.indexOf("data-landing-account");
   const memory = nav.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 180, landing.indexOf("data-landing-memory-bar") + 280);
-  assert.ok(feedback > 0 && memory > feedback);
-  assert.doesNotMatch(nav, /data-landing-account|t\("Account"\)/);
+  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 220, landing.indexOf("data-landing-memory-bar") + 320);
+  assert.ok(feedback > 0 && account > feedback && memory > account);
   assert.match(chip, /to="\/square-memory"/);
   assert.match(chip, /Square Memory/);
-  assert.match(chip, /<span className="landing-memory-new">New<\/span>/);
-  assert.doesNotMatch(chip, /isPlayApp|showMemory|Square Memory game/);
-  assert.match(css, /@keyframes landing-memory-flash[\s\S]*#ffe400/);
+  assert.match(chip, /What&apos;s new/);
+  assert.doesNotMatch(chip, /isPlayApp|showMemory|Square Memory game|>New</);
+  assert.doesNotMatch(css, /landing-memory-flash/);
+  assert.doesNotMatch(css, /\.landing-memory-chip\s*\{[^}]*(#ffe400|animation)/);
   assert.match(css, /\.landing-memory-new\s*\{[^}]*font-size:\s*0\.58rem/);
+  assert.match(page, /<SquareMemory \/>/);
+  assert.doesNotMatch(page, /readSquareMemoryPlayPreview|buyPack|checkout|unlock|stripe/i);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
 });
 
