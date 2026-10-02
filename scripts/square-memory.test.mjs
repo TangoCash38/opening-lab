@@ -218,13 +218,12 @@ test("Square Memory sits quietly next to Account and opens the free game", () =>
   const memory = nav.indexOf("data-landing-memory-bar");
   const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 220, landing.indexOf("data-landing-memory-bar") + 320);
   assert.ok(feedback > 0 && account > feedback && memory > account);
+  assert.match(chip, /className="landing-nav-link"/);
   assert.match(chip, /to="\/square-memory"/);
-  assert.match(chip, /Square Memory/);
-  assert.match(chip, /What&apos;s new/);
-  assert.doesNotMatch(chip, /isPlayApp|showMemory|Square Memory game|>New</);
-  assert.doesNotMatch(css, /landing-memory-flash/);
-  assert.doesNotMatch(css, /\.landing-memory-chip\s*\{[^}]*(#ffe400|animation)/);
-  assert.match(css, /\.landing-memory-new\s*\{[^}]*font-size:\s*0\.58rem/);
+  assert.match(chip, />\s*Square Memory game\s*</);
+  assert.doesNotMatch(landing, /What's new|What&apos;s new|>New</);
+  assert.doesNotMatch(chip, /isPlayApp|showMemory/);
+  assert.doesNotMatch(css, /landing-memory-flash|landing-memory-chip|landing-memory-new/);
   assert.match(page, /<SquareMemory \/>/);
   assert.doesNotMatch(page, /readSquareMemoryPlayPreview|buyPack|checkout|unlock|stripe/i);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);

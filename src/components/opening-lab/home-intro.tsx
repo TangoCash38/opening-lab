@@ -166,11 +166,10 @@ export function LandingHome({
             </Link>
             <Link
               to="/square-memory"
-              className="landing-memory-chip"
+              className="landing-nav-link"
               data-landing-memory-bar
             >
-              Square Memory
-              <span className="landing-memory-new">What&apos;s new</span>
+              Square Memory game
             </Link>
           </span>
         </nav>
