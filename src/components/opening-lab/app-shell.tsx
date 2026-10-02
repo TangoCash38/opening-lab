@@ -16,7 +16,6 @@ import {
   type GymLine,
 } from "@/lib/gym-line";
 import { soundSelect } from "@/lib/sounds";
-import { SignedIn, SignedOut } from "@/lib/auth/gates";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { Link } from "@tanstack/react-router";
 import { hasSeenOnboarding, markOnboardingSeen } from "@/lib/progress";
@@ -492,48 +491,29 @@ function AccountButton() {
   const { user, isPending } = useCurrentUserState();
 
   if (isPending) {
-    return (
-      <div
-        className="header-icon-btn animate-pulse bg-bg-subtle"
-        aria-hidden
-      />
-    );
+    return <div className="header-account-btn header-account-btn--pending" aria-hidden />;
   }
 
+  const initial = (user?.displayName ?? user?.primaryEmail ?? "A").charAt(0).toUpperCase();
+
   return (
-    <>
-      <SignedOut>
-        <Link
-          to="/login"
-          className="header-icon-btn no-underline"
-          aria-label={t("Account")}
-          title={t("Account")}
-        >
-          <UserRound className="size-[22px]" strokeWidth={1.75} />
-        </Link>
-      </SignedOut>
-      <SignedIn>
-        <Link
-          to="/login"
-          className="header-icon-btn no-underline overflow-hidden p-0"
-          aria-label={user?.displayName ?? user?.primaryEmail ?? t("Account")}
-          title={t("Account")}
-        >
-          {user?.profileImageUrl ? (
-            <img
-              src={user.profileImageUrl}
-              alt=""
-              className="size-full object-cover"
-            />
-          ) : (
-            <span className="grid size-full place-items-center bg-accent/15 text-[0.8rem] font-bold text-accent">
-              {(user?.displayName ?? user?.primaryEmail ?? "A")
-                .charAt(0)
-                .toUpperCase()}
-            </span>
-          )}
-        </Link>
-      </SignedIn>
-    </>
+    <Link
+      to="/login"
+      className="header-account-btn no-underline"
+      data-header-account
+      aria-label={t("Account")}
+      title={t("Account")}
+    >
+      <span className="header-account-mark" aria-hidden>
+        {user?.profileImageUrl ? (
+          <img src={user.profileImageUrl} alt="" className="size-full object-cover" />
+        ) : user ? (
+          <span className="header-account-initial">{initial}</span>
+        ) : (
+          <UserRound className="size-[18px]" strokeWidth={1.75} />
+        )}
+      </span>
+      <span className="header-home-label">{t("Account")}</span>
+    </Link>
   );
 }

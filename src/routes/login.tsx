@@ -184,6 +184,7 @@ function Login() {
             <Link
               to="/delete-account"
               className="block w-full rounded-full border border-border bg-bg-elevated px-4 py-3 text-center text-sm font-semibold text-fg no-underline shadow-sm transition hover:bg-bg-subtle active:scale-[0.98]"
+              data-account-delete
             >
               Delete account
             </Link>

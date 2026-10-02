@@ -156,6 +156,13 @@ export function LandingHome({
           >
             {t("Feedback")}
           </button>
+          <Link
+            to="/login"
+            className="landing-nav-link"
+            data-landing-account
+          >
+            {t("Account")}
+          </Link>
         </nav>
         <div className="landing-tools">
           <ColorSchemeToggle labeled />
@@ -205,6 +212,14 @@ export function LandingHome({
                 </h2>
                 <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
               </div>
+              {showBuyAll ? (
+                <section aria-labelledby="landing-buy-all">
+                  <h2 id="landing-buy-all" className="sr-only">
+                    {t("On sale")}
+                  </h2>
+                  <BuyAllOffer onBuy={onBuyAll} />
+                </section>
+              ) : null}
               <div className="landing-open-grid" data-open-now>
                 {openPacks.map((pack) => (
                   <button
@@ -287,15 +302,6 @@ export function LandingHome({
             </div>
           </div>
         </div>
-
-        {showBuyAll ? (
-          <section className="landing-section" aria-labelledby="landing-buy-all">
-            <h2 id="landing-buy-all" className="sr-only">
-              {t("On sale")}
-            </h2>
-            <BuyAllOffer onBuy={onBuyAll} />
-          </section>
-        ) : null}
 
         <section className="landing-section" aria-labelledby="landing-soon">
           <h2 id="landing-soon" className="landing-section-title">

@@ -124,6 +124,10 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Whole pack · {price} — all {n} lines":').length - 1, 12);
   assert.match(landing, /Whole pack · \{price\} — all \{n\} lines/);
   assert.match(landing, /\{n\} free · \{price\} unlocks the whole pack/);
+  const sale = landing.indexOf("<BuyAllOffer");
+  const grid = landing.indexOf("data-open-now");
+  assert.ok(sale > -1 && grid > sale, "On sale sits above the pack grid");
+  assert.equal(landing.indexOf("<BuyAllOffer", grid), -1);
   assert.equal(copy.split('"Study first. Then test yourself from memory":').length - 1, 12);
   assert.equal(
     copy.split('"Please leave feedback for openings you’d like to see":').length - 1,
@@ -190,4 +194,7 @@ test("only packs with playable free lines are marked green", () => {
   }
   assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
   assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
+  const classic = landing.match(/data-landing-classic[\s\S]*?<\/button>/)?.[0] ?? "";
+  assert.match(classic, /t\("Free"\)/);
+  assert.doesNotMatch(classic, /\{n\} free/);
 });

@@ -1,6 +1,8 @@
 import { useEffect, useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
+import { openLegalDocument } from "@/lib/legal-nav";
 import { useT } from "@/lib/i18n";
 
 type Props = {
@@ -98,6 +100,14 @@ export function HomeMenu({ onCreateOwn, onHelp, onFeedback, onReport }: Props) {
               >
                 {t("Report incorrect line")}
               </button>
+              <Link
+                to="/login"
+                className="home-menu-item no-underline"
+                data-menu-account
+                onClick={openLegalDocument}
+              >
+                {t("Account")}
+              </Link>
               <button
                 type="button"
                 className="home-menu-close"
