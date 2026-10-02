@@ -309,9 +309,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [boardExpanded, setBoardExpanded] = useState(false);
-  const [freeTryDone, setFreeTryDone] = useState(false);
+  /** Pack offer. Only after a Test attempt, pass or fail. */
+  const [freeTryOffer, setFreeTryOffer] = useState(false);
   /** Spoken-move demo. Practice (the user’s moves) starts when it ends. */
   const [freeTryDemo, setFreeTryDemo] = useState(freeTry);
+  /** Test must not replay the intro they already heard or skipped. */
+  const [freeTryIntroDismissed, setFreeTryIntroDismissed] = useState(false);
   const [resultCard, setResultCard] = useState<{
     kind: "wrong" | "end";
     title: string;
@@ -408,7 +411,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setSlide(null);
       setBusy(false);
       setResultCard(null);
-      setFreeTryDone(false);
+      setFreeTryOffer(false);
       setHintsReady(true);
       setNearMissSan(null);
       const start = replaySans(line.plies, bookStartPly);
@@ -437,10 +440,27 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const changeMode = (m: Mode) => {
     if (m === "practice" && lockTest) return;
     if (m === "practice") setNudgeTest(false);
+    if (m === "practice" && freeTry) {
+      setFreeTryIntroDismissed(true);
+      setFreeTryDemo(false);
+      stopScotchCoachNarration();
+    }
     setRunTheGame(false);
     setMode(m);
     onModeChange?.(m);
     resetLine(m);
+  };
+
+  const retryFreeTry = () => {
+    setNudgeTest(false);
+    setFreeTryIntroDismissed(true);
+    setFreeTryDemo(false);
+    stopScotchCoachNarration();
+    if (mode !== "practice") {
+      setMode("practice");
+      onModeChange?.("practice");
+    }
+    resetLine("practice");
   };
 
   const openRunTheGame = () => {
@@ -576,19 +596,31 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     }
 
     if (pending.nextPly >= bookEndPly) {
+      if (freeTry && mode === "learn") {
+        stopScotchCoachNarration();
+        setNudgeTest(true);
+        setStatus({
+          text: "Practice done — Test with no hints",
+          cls: "done",
+        });
+        if (!completedRef.current) {
+          completedRef.current = true;
+          onLearnDone?.();
+        }
+        return;
+      }
       if (freeTry) {
         stopScotchCoachNarration();
         setStatus({
-          text: mode === "learn" ? "Practice done — Test with no hints" : t("Book solid"),
+          text: practiceMissedRef.current ? t("Try again") : t("Book solid"),
           cls: "done",
         });
-        if (mode !== "learn" && !practiceMissedRef.current) soundWin();
+        if (!practiceMissedRef.current) soundWin();
         if (!completedRef.current) {
           completedRef.current = true;
-          if (mode === "learn") onLearnDone?.();
-          else if (!practiceMissedRef.current) onLineComplete?.();
+          if (!practiceMissedRef.current) onLineComplete?.();
         }
-        setFreeTryDone(true);
+        setFreeTryOffer(true);
         return;
       }
       if (warmup && mode === "learn") {
@@ -766,16 +798,24 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setSelected(null);
       if (mode === "practice") {
         setNearMissSan(null);
-        setResultCard({
-          kind: "wrong",
-          title: t("Inaccurate move"),
-          body: t("The book move is {san}.", { san: exp.san }),
-          primaryLabel: t("Try again"),
-          actionLabel: t("Practice again"),
-          nextAction: "learn",
-        });
         practiceMissedRef.current = true;
         onPracticeFail?.();
+        if (freeTry) {
+          stopScotchCoachNarration();
+          setFreeTryDemo(false);
+          setFreeTryIntroDismissed(true);
+          setStatus({ text: t("Try again"), cls: "bad" });
+          setFreeTryOffer(true);
+        } else {
+          setResultCard({
+            kind: "wrong",
+            title: t("Inaccurate move"),
+            body: t("The book move is {san}.", { san: exp.san }),
+            primaryLabel: t("Try again"),
+            actionLabel: t("Practice again"),
+            nextAction: "learn",
+          });
+        }
       } else {
         // Practice: toast with book SAN. Never a blocking sheet. Never in Test.
         setResultCard(null);
@@ -1032,6 +1072,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     return () => stopScotchCoachNarration();
   }, [freeTry]);
 
+  useEffect(() => {
+    if (!freeTry || !nudgeTest) return;
+    document
+      .querySelector<HTMLElement>("[data-test-flash='yellow']")
+      ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [freeTry, nudgeTest]);
+
   const canBack =
     !busy &&
     !slide &&
@@ -1047,6 +1094,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       className={`train-layout${embedded ? " train-embedded" : ""}`}
       data-frame-practice={embedded ? "true" : undefined}
       data-free-try={freeTry ? "true" : undefined}
+      data-free-try-test-flash={freeTry && nudgeTest ? "yellow" : undefined}
     >
       {embedded ? (
         <div className="train-frame-chrome">
@@ -1070,7 +1118,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             <ModeTab
               active={mode === "practice"}
               onClick={() => changeMode("practice")}
-              nudge={nudgeTest}
+              nudge={nudgeTest && !freeTry}
+              flashYellow={freeTry && nudgeTest}
               disabled={lockTest}
               title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
             >
@@ -1172,7 +1221,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         <ModeTab
           active={mode === "practice"}
           onClick={() => changeMode("practice")}
-          nudge={nudgeTest}
+          nudge={nudgeTest && !freeTry}
+          flashYellow={freeTry && nudgeTest}
           disabled={lockTest}
           title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
         >
@@ -1196,7 +1246,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       )}
 
       <div className="train-board-band">
-      {freeTry && !freeTryDone ? (
+      {freeTry && mode === "learn" && !freeTryIntroDismissed && !freeTryOffer ? (
         <FreeTryVoice onDemoEnd={() => setFreeTryDemo(false)} />
       ) : null}
       {!boardExpanded && !embedded ? (
@@ -1236,7 +1286,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               <ModeTab
                 active={mode === "practice"}
                 onClick={() => changeMode("practice")}
-                nudge={nudgeTest}
+                nudge={nudgeTest && !freeTry}
+                flashYellow={freeTry && nudgeTest}
                 disabled={lockTest}
                 title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
               >
@@ -1266,7 +1317,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             />
           ) : (
           <div className="relative">
-            {freeTryDemo ? (
+            {freeTryDemo && !freeTryIntroDismissed ? (
               <ScotchCoachBoard
                 talk="line"
                 beatPlies={coachTalkPlies(pack.id, "line")}
@@ -1302,11 +1353,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 onFinished={stopCelebrate}
               />
             ) : null}
-            {freeTryDone ? (
+            {freeTryOffer ? (
               <FreeTryCard
                 onBuyAll={() => onFreeTryBuyAll?.()}
                 onPickPack={() => onFreeTryPickPack?.()}
                 onMoreFree={() => onFreeTryMoreFree?.()}
+                onTryAgain={retryFreeTry}
                 onFeedback={() => onFreeTryFeedback?.()}
               />
             ) : null}
@@ -1609,6 +1661,7 @@ function ModeTab({
   onClick,
   children,
   nudge,
+  flashYellow,
   disabled,
   title,
   runTheGame = false,
@@ -1617,6 +1670,7 @@ function ModeTab({
   onClick: () => void;
   children: ReactNode;
   nudge?: boolean;
+  flashYellow?: boolean;
   disabled?: boolean;
   title?: string;
   runTheGame?: boolean;
@@ -1629,11 +1683,12 @@ function ModeTab({
       title={title}
       aria-disabled={disabled || undefined}
       data-run-the-game={runTheGame ? "live" : undefined}
+      data-test-flash={flashYellow ? "yellow" : undefined}
       className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
         active
           ? "bg-bg-elevated text-fg shadow-sm"
           : "bg-transparent text-fg-muted"
-      }${nudge ? " mode-tab-nudge" : ""}${disabled ? " opacity-40" : ""}`}
+      }${flashYellow ? " mode-tab-nudge-yellow" : nudge ? " mode-tab-nudge" : ""}${disabled ? " opacity-40" : ""}`}
     >
       {children}
     </button>

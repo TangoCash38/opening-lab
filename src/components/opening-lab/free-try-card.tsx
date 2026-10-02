@@ -19,11 +19,12 @@ type CardProps = {
   onBuyAll: () => void;
   onPickPack: () => void;
   onMoreFree: () => void;
+  onTryAgain: () => void;
   onFeedback: () => void;
 };
 
 /** End-of-line card. Stays on this board. Prices come from pricing.ts. */
-export function FreeTryCard({ onBuyAll, onPickPack, onMoreFree, onFeedback }: CardProps) {
+export function FreeTryCard({ onBuyAll, onPickPack, onMoreFree, onTryAgain, onFeedback }: CardProps) {
   return (
     <div
       className="absolute inset-x-0 top-0 z-30 px-1"
@@ -77,6 +78,14 @@ export function FreeTryCard({ onBuyAll, onPickPack, onMoreFree, onFeedback }: Ca
           className="mt-2 min-h-11 w-full rounded-2xl bg-accent px-3 py-2.5 text-[0.92rem] font-bold text-accent-fg active:scale-[0.99]"
         >
           More free drills
+        </button>
+        <button
+          type="button"
+          data-free-try-again
+          onClick={onTryAgain}
+          className="mt-2 min-h-11 w-full rounded-2xl border-[1.5px] border-fg/15 bg-bg px-3 py-2.5 text-[0.92rem] font-bold text-fg active:scale-[0.99]"
+        >
+          Try again
         </button>
         <button
           type="button"
