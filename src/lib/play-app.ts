@@ -176,3 +176,42 @@ export function isPlayApp(): boolean {
 export function isPlayWrap(): boolean {
   return isPlayApp();
 }
+
+/**
+ * Play-only Square Memory preview. Off unless this phone has turned it on.
+ * The public website ignores the flag and always shows the game.
+ */
+export const SQUARE_MEMORY_PLAY_PREVIEW_KEY = "opening-lab:square-memory-play-preview";
+export const SQUARE_MEMORY_PREVIEW_TAPS = 7;
+export const SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS = 8000;
+
+export function readSquareMemoryPlayPreview(): boolean {
+  if (typeof localStorage === "undefined") return false;
+  try {
+    return localStorage.getItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function toggleSquareMemoryPlayPreview(): boolean {
+  const next = !readSquareMemoryPlayPreview();
+  try {
+    if (next) localStorage.setItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY, "1");
+    else localStorage.removeItem(SQUARE_MEMORY_PLAY_PREVIEW_KEY);
+  } catch {
+    return readSquareMemoryPlayPreview();
+  }
+  return next;
+}
+
+/** Seven taps inside the window toggle the preview. A slower gap starts again. */
+export function nextSquareMemoryPreviewTaps(
+  previous: readonly number[],
+  now: number,
+): { taps: number[]; toggled: boolean } {
+  const taps = previous.filter((stamp) => now - stamp < SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS);
+  taps.push(now);
+  if (taps.length >= SQUARE_MEMORY_PREVIEW_TAPS) return { taps: [], toggled: true };
+  return { taps, toggled: false };
+}

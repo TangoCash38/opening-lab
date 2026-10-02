@@ -4,7 +4,7 @@ import { SquareMemory } from "@/components/opening-lab/square-memory";
 import { initBoardTheme } from "@/lib/board-theme";
 import { initColorScheme } from "@/lib/color-scheme";
 import { I18nProvider } from "@/lib/i18n";
-import { isPlayApp } from "@/lib/play-app";
+import { isPlayApp, readSquareMemoryPlayPreview } from "@/lib/play-app";
 
 export const Route = createFileRoute("/square-memory")({
   component: SquareMemoryRoute,
@@ -24,7 +24,7 @@ function SquareMemoryRoute() {
   useLayoutEffect(() => {
     const stopBoard = initBoardTheme();
     const stopColor = initColorScheme();
-    if (isPlayApp()) {
+    if (isPlayApp() && !readSquareMemoryPlayPreview()) {
       setAllowed(false);
       window.location.replace("/");
     } else {

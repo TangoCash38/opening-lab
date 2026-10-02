@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { PACKS, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
@@ -15,7 +15,12 @@ import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
 import { classicRunAlreadySeen } from "@/lib/classic-run";
-import { isPlayApp } from "@/lib/play-app";
+import {
+  isPlayApp,
+  nextSquareMemoryPreviewTaps,
+  readSquareMemoryPlayPreview,
+  toggleSquareMemoryPlayPreview,
+} from "@/lib/play-app";
 import { beginClassicRunNarration } from "./classic-run-the-game";
 import { BuyAllOffer } from "./buy-all-offer";
 import { ChessPiece } from "./chess-pieces";
@@ -104,12 +109,20 @@ export function LandingHome({
   const [showPuzzle, setShowPuzzle] = useState(false);
   const [showClassic, setShowClassic] = useState(false);
   const [showMemory, setShowMemory] = useState(false);
+  const previewTaps = useRef<number[]>([]);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
     setShowPuzzle(!isPlayApp());
     setShowClassic(!isPlayApp());
-    setShowMemory(!isPlayApp());
+    setShowMemory(!isPlayApp() || readSquareMemoryPlayPreview());
   }, []);
+  const onWordmarkClick = () => {
+    if (!isPlayApp()) return;
+    const next = nextSquareMemoryPreviewTaps(previewTaps.current, Date.now());
+    previewTaps.current = next.taps;
+    if (!next.toggled) return;
+    setShowMemory(toggleSquareMemoryPlayPreview());
+  };
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),
   );
@@ -135,7 +148,9 @@ export function LandingHome({
       <header className="landing-bar">
         <div className="landing-brand">
           <BrandMark />
-          <span className="landing-wordmark">Opening Lab</span>
+          <span className="landing-wordmark" data-play-memory-preview="" onClick={onWordmarkClick}>
+            Opening Lab
+          </span>
         </div>
         <nav className="landing-nav" aria-label={t("Site")}>
           <button

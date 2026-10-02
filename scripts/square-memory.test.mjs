@@ -215,7 +215,10 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const css = src("src/styles.css");
 
-  assert.match(landing, /setShowMemory\(!isPlayApp\(\)\)/);
+  assert.match(landing, /setShowMemory\(!isPlayApp\(\) \|\| readSquareMemoryPlayPreview\(\)\)/);
+  assert.match(landing, /data-play-memory-preview/);
+  assert.match(landing, /nextSquareMemoryPreviewTaps/);
+  assert.doesNotMatch(landing, /Test mode|Preview Square Memory/);
   assert.match(landing, /showMemory \?/);
   assert.match(landing, /data-landing-square-memory/);
   assert.match(landing, /to="\/square-memory"/);
@@ -232,7 +235,7 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(css, /@media \(min-width: 960px\)[\s\S]*\.landing-square-memory\s*\{[^}]*width:\s*min\(22rem,\s*100%\)/);
   assert.doesNotMatch(hero, /square-memory|Square Memory/);
 
-  assert.match(page, /isPlayApp\(\)/);
+  assert.match(page, /isPlayApp\(\) && !readSquareMemoryPlayPreview\(\)/);
   assert.match(page, /window\.location\.replace\("\/"\)/);
   assert.match(view, /Watch the squares\. Tap them back in order\./);
   assert.match(view, /data-begin/);
@@ -321,7 +324,10 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.match(page, /createFileRoute\("\/square-memory-london"\)/);
   assert.match(page, /isPlayApp\(\)/);
-  assert.match(page, /window\.location\.replace\(isPlayApp\(\) \? "\/" : "\/square-memory"\)/);
+  assert.match(
+    page,
+    /isPlayApp\(\) && !readSquareMemoryPlayPreview\(\) \? "\/" : "\/square-memory"/,
+  );
   assert.match(page, /Square Memory · Opening Lab/);
   assert.doesNotMatch(page, /London Memory/);
   const memory = landing.indexOf("data-landing-square-memory");
@@ -396,4 +402,39 @@ test("a full clear is timed and only that time can join the shared board", () =>
   assert.match(migration, /line in \('ruy', 'london'\)/);
   assert.match(qgMigration, /line in \('ruy', 'london', 'qg'\)/);
   assert.doesNotMatch(api, /localStorage/);
+});
+
+test("Play preview is off until seven taps, and the website ignores it", async (t) => {
+  const mod = await loadModule(t, "src/lib/play-app.ts", "play-preview.mjs");
+  if (!mod) return;
+  const store = new Map();
+  globalThis.localStorage = {
+    getItem: (key) => (store.has(key) ? store.get(key) : null),
+    setItem: (key, value) => store.set(key, String(value)),
+    removeItem: (key) => store.delete(key),
+  };
+  t.after(() => {
+    delete globalThis.localStorage;
+  });
+  assert.equal(mod.readSquareMemoryPlayPreview(), false);
+  assert.equal(mod.SQUARE_MEMORY_PREVIEW_TAPS, 7);
+  let taps = [];
+  for (let i = 0; i < 6; i++) {
+    const step = mod.nextSquareMemoryPreviewTaps(taps, 1_000 + i * 200);
+    taps = step.taps;
+    assert.equal(step.toggled, false);
+  }
+  const on = mod.nextSquareMemoryPreviewTaps(taps, 1_000 + 6 * 200);
+  assert.equal(on.toggled, true);
+  assert.deepEqual(on.taps, []);
+  const stale = mod.nextSquareMemoryPreviewTaps([1_000], 1_000 + mod.SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS);
+  assert.equal(stale.toggled, false);
+  assert.equal(stale.taps.length, 1);
+  assert.equal(mod.toggleSquareMemoryPlayPreview(), true);
+  assert.equal(mod.readSquareMemoryPlayPreview(), true);
+  assert.equal(mod.toggleSquareMemoryPlayPreview(), false);
+  assert.equal(mod.readSquareMemoryPlayPreview(), false);
+  const landing = src("src/components/opening-lab/home-intro.tsx");
+  assert.match(landing, /if \(!isPlayApp\(\)\) return/);
+  assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
 });
