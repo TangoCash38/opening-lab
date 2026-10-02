@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Chess, type Move, type Square } from "chess.js";
 import { legalMateLine } from "@/lib/legal-mate";
 import { ChessBoard, SLIDE_MS, type SlideAnim } from "./chess-board";
-import { FreeTryCard } from "./free-try-card";
 
 const START_FEN = new Chess().fen();
 const HINT_MS = 480;
@@ -12,18 +11,11 @@ const HOLD_MS = 800;
 
 type Phase = "practice" | "test";
 
-type Props = {
-  onBuyAll: () => void;
-  onPickPack: () => void;
-  onMoreFree: () => void;
-  onFeedback: () => void;
-};
-
 /**
  * Homepage board. Legal’s Mate plays itself: Practice with hints, then Test
- * with none. The visitor never moves a piece. The pack offer stays in view.
+ * with none. The visitor never moves a piece.
  */
-export function LandingMateDemo({ onBuyAll, onPickPack, onMoreFree, onFeedback }: Props) {
+export function LandingMateDemo() {
   const script = useMemo(() => legalMateLine()?.line.plies ?? [], []);
   const side = useMemo(() => legalMateLine()?.line.side ?? "w", []);
   const [fen, setFen] = useState(START_FEN);
@@ -121,7 +113,6 @@ export function LandingMateDemo({ onBuyAll, onPickPack, onMoreFree, onFeedback }
   }, [fen, phase, ply, script, showHint]);
 
   return (
-    <>
       <div className="landing-demo" data-landing-demo data-landing-demo-phase={phase} data-landing-demo-ply={ply}>
         <div className="landing-demo-modes" role="group" aria-label="Legal’s Mate demo">
           <span className={`landing-demo-tab${phase === "practice" ? " is-active" : ""}`}>Practice</span>
@@ -148,14 +139,5 @@ export function LandingMateDemo({ onBuyAll, onPickPack, onMoreFree, onFeedback }
           interactive={false}
         />
       </div>
-      <FreeTryCard
-        placement="beside"
-        onBuyAll={onBuyAll}
-        onPickPack={onPickPack}
-        onMoreFree={onMoreFree}
-        onTryAgain={() => setRun((n) => n + 1)}
-        onFeedback={onFeedback}
-      />
-    </>
   );
 }

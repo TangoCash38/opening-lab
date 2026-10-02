@@ -223,12 +223,11 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(landing, /data-landing-square-memory/);
   assert.match(landing, /to="\/square-memory"/);
   assert.match(landing, /Square Memory/);
-  const gym = landing.indexOf("data-landing-cta");
   const art = landing.indexOf("landing-hero-art");
   const memory = landing.indexOf("data-landing-square-memory");
   const puzzle = landing.indexOf("data-landing-puzzle");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(art >= 0 && gym > art && memory > gym && puzzle > memory && openNow > memory);
+  assert.ok(art >= 0 && openNow > art && memory > openNow && puzzle > memory);
   assert.doesNotMatch(landing, /function LandingBoard[\s\S]*data-landing-square-memory/);
 
   assert.match(css, /\.landing-square-memory\s*\{[^}]*width:\s*100%/);

@@ -3244,7 +3244,7 @@ html[data-color-scheme="dark"] .app-shell--landing {
 
 .landing-hero-art {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-end;
   justify-content: flex-start;
   gap: 0.55rem;
@@ -3340,11 +3340,6 @@ html[data-color-scheme="dark"] .app-shell--landing {
   box-shadow: 0 1px 2px rgba(28, 25, 21, 0.08);
 }
 
-.landing-demo-offer {
-  flex: 1 0 100%;
-  margin: 0.15rem 0 0;
-}
-
 .landing-copy {
   text-align: center;
 }
@@ -3416,6 +3411,14 @@ html[data-color-scheme="dark"] .app-shell--landing {
   font-size: 0.8rem;
   font-weight: 650;
   line-height: 1.2;
+}
+
+.landing-open-here {
+  margin-top: 0.85rem;
+}
+
+.landing-open-here .landing-section-head {
+  margin-top: 0;
 }
 
 .landing-section-head {
@@ -3679,7 +3682,7 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-hero-art {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-start;
     gap: 0.85rem;
