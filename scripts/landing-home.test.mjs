@@ -31,6 +31,14 @@ test("landing matches the signed-off home: live packs, real prices", () => {
   assert.match(landing, /Study first\. Then test yourself from memory/);
   assert.doesNotMatch(landing, /Strict book-move trainer/);
   assert.match(landing, /coach-seated-v2\.png/);
+  assert.match(landing, /data-coach-blink/);
+  assert.match(landing, /landing-coach-lid--left/);
+  assert.match(landing, /landing-coach-lid--right/);
+  assert.match(css, /@keyframes landing-coach-blink/);
+  assert.match(css, /animation:\s*landing-coach-blink 5s linear infinite/);
+  assert.match(css, /\.landing-coach-lid--left\s*\{[^}]*left:\s*41\.36%/);
+  assert.match(css, /\.landing-coach-lid--right\s*\{[^}]*left:\s*54\.94%/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce\)[\s\S]*\.landing-coach-lid\s*\{[^}]*animation:\s*none/);
   assert.match(landing, /\/brand\/opening-lab-logo\.png/);
   assert.match(landing, /landing-mug-logo/);
   assert.match(css, /\.landing-mug-logo\s*\{[^}]*left:\s*48\.125%/);

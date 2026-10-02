@@ -180,6 +180,8 @@ export function LandingHome({
                 decoding="async"
                 draggable={false}
               />
+              <span className="landing-coach-lid landing-coach-lid--left" data-coach-blink aria-hidden />
+              <span className="landing-coach-lid landing-coach-lid--right" data-coach-blink aria-hidden />
               <img
                 className="landing-mug-logo"
                 src="/brand/opening-lab-logo.png"
