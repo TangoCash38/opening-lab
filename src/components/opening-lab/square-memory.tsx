@@ -23,7 +23,7 @@ import {
   LONDON_MEMORY_LINE,
   LONDON_MEMORY_PACK_ID,
 } from "@/lib/square-memory-london";
-import { QG_MEMORY_LINE, QG_MEMORY_PACK_ID } from "@/lib/square-memory-qg";
+import { QG_MEMORY_LINE, QG_MEMORY_NAME, QG_MEMORY_PACK_ID } from "@/lib/square-memory-qg";
 import {
   begin,
   formatClearTime,
@@ -90,8 +90,8 @@ const CHOICES: readonly MemoryChoice[] = [
   },
   {
     id: "qg",
-    pick: "Queen's Gambit",
-    name: "Queen's Gambit for White",
+    pick: "Declined",
+    name: QG_MEMORY_NAME,
     packId: QG_MEMORY_PACK_ID,
     packLabel: "Queen's Gambit for White",
     line: QG_MEMORY_LINE,
@@ -99,7 +99,7 @@ const CHOICES: readonly MemoryChoice[] = [
     portrait: "/scotch-coach/coach-seated-v2.png",
     coach: "Professor Potato Pie",
     cheer:
-      "You smashed it. That's the Queen's Gambit. Want to learn openings properly? Try the opening packs.",
+      "You smashed it. That's the Queen's Gambit Declined. Want to learn openings properly? Try the opening packs.",
     portraitWidth: 640,
     portraitHeight: 1071,
   },
@@ -459,7 +459,7 @@ export function SquareMemory() {
               />
               <ScorePlaque
                 lineId="qg"
-                name="Queen's Gambit for White"
+                name={QG_MEMORY_NAME}
                 rows={boards.qg}
                 selected={choice.id === "qg"}
               />
@@ -472,15 +472,6 @@ export function SquareMemory() {
           {snap.phase === "title" || revealing ? (
             <div className="sqmem-frame-tools">
               <LinePick choiceId={choice.id} onChoose={chooseLine} />
-              {snap.phase === "title" ? (
-                <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-                  Begin
-                </button>
-              ) : (
-                <button type="button" data-begin="" className="sqmem-begin" onClick={start}>
-                  Play again
-                </button>
-              )}
             </div>
           ) : null}
 
@@ -500,6 +491,8 @@ export function SquareMemory() {
                 lastMove={last ? { from: last.from, to: last.to } : null}
                 found={partial ? partial.from : null}
                 onTap={onTap}
+                startLabel={snap.phase === "title" ? "Start" : revealing ? "Play again" : null}
+                onStart={start}
               />
             </div>
             {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
@@ -773,6 +766,8 @@ function MemoryBoard({
   lastMove,
   found,
   onTap,
+  startLabel,
+  onStart,
 }: {
   lit: { square: string; kind: LitKind } | null;
   interactive: boolean;
@@ -780,6 +775,8 @@ function MemoryBoard({
   lastMove: { from: string; to: string } | null;
   found: string | null;
   onTap: (square: string) => void;
+  startLabel: string | null;
+  onStart: () => void;
 }) {
   return (
     <div className={interactive ? "board-frame board-frame--margin-coords sqmem-live" : "board-frame board-frame--margin-coords"}>
@@ -826,6 +823,11 @@ function MemoryBoard({
             }),
           )}
         </div>
+        {startLabel ? (
+          <button type="button" className="sqmem-start" data-begin="" onClick={onStart}>
+            {startLabel}
+          </button>
+        ) : null}
       </div>
       <div className="board-margin-files" aria-hidden="true">
         {FILES.split("").map((file) => (

@@ -5207,6 +5207,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem .board-frame-inner {
+  position: relative;
   border-radius: 0.2rem;
   box-shadow:
     inset 0 0 0 1px rgba(42, 24, 12, 0.45),
@@ -5298,21 +5299,31 @@ body:has([data-square-memory-page]) {
   overflow: auto;
 }
 
-.sqmem-begin {
-  flex: 0 0 auto;
-  min-height: 2.15rem;
-  padding: 0.35rem 0.7rem;
+.sqmem-start {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(16.5rem, 82%);
+  min-height: 4.6rem;
+  padding: 0.75rem 1.1rem;
   border: 0;
-  border-radius: 999px;
-  background: #f7f1e6;
-  color: #3a2618;
+  border-radius: 1rem;
+  background: #23483c;
+  color: #f7f3ea;
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: clamp(1.45rem, 7cqw, 2.05rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 248, 236, 0.28),
+    0 14px 26px rgba(32, 18, 10, 0.38);
 }
 
-.sqmem-begin:active {
-  transform: scale(0.99);
+.sqmem-start:active {
+  transform: translate(-50%, -50%) scale(0.98);
 }
 
 .sqmem-moves ol {
@@ -5341,9 +5352,9 @@ html[data-color-scheme="dark"] .sqmem-opening {
   color: #2f5d50;
 }
 
-html[data-color-scheme="dark"] .sqmem-begin {
-  background: #f7f1e6;
-  color: #3a2618;
+html[data-color-scheme="dark"] .sqmem-start {
+  background: #23483c;
+  color: #f7f3ea;
 }
 
 @media (min-width: 960px) {
