@@ -196,7 +196,8 @@ function Login() {
             </button>
           </div>
         ) : (
-          forgotSent ? (
+          <>
+          {forgotSent ? (
             <div className="space-y-3">
               <p className="text-sm text-fg">
                 If that email has an account, we sent a reset link.
@@ -350,7 +351,15 @@ function Login() {
               </>
             )}
             </form>
-          )
+          )}
+          <Link
+            to="/delete-account"
+            className="block text-center text-sm font-semibold text-fg-muted no-underline underline-offset-2 hover:underline"
+            data-account-delete
+          >
+            Delete account
+          </Link>
+          </>
         )}
 
         <Link

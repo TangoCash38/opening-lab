@@ -15,6 +15,10 @@ const deleteClient = src("src/lib/account-delete.ts");
 const guide = src("src/components/opening-lab/guide-view.tsx");
 const login = src("src/routes/login.tsx");
 const footer = src("src/components/opening-lab/legal-footer.tsx");
+const landing = src("src/components/opening-lab/home-intro.tsx");
+const menu = src("src/components/opening-lab/landing-menu.tsx");
+const homeMenu = src("src/components/opening-lab/home-menu.tsx");
+const shell = src("src/components/opening-lab/app-shell.tsx");
 const routeTree = src("src/routeTree.gen.ts");
 const legal = src("src/components/opening-lab/legal-page.tsx");
 const i18n = src("src/lib/i18n.ts");
@@ -114,9 +118,31 @@ test("Account surfaces link Privacy and Delete account", () => {
   assert.match(login, /onClick=\{openLegalDocument\}/);
   assert.match(login, /to="\/delete-account"/);
   assert.match(login, />\s*Delete account\s*</);
+  assert.match(login, /data-account-delete/);
   assert.match(footer, /to="\/delete-account"/);
   assert.match(i18n, /"Delete account": "Delete account"/);
   assert.match(i18n, /"Delete account": "Eliminar cuenta"/);
+});
+
+test("Account is labeled on the website home and in the app header", () => {
+  const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
+  assert.match(nav, /data-landing-account/);
+  assert.match(nav, /t\("Account"\)/);
+  assert.match(nav, /to="\/login"/);
+  assert.ok(
+    nav.indexOf("data-landing-feedback") < nav.indexOf("data-landing-account"),
+    "Account follows Feedback on the home bar",
+  );
+  assert.match(menu, /data-menu-account/);
+  assert.match(menu, /t\("Account"\)/);
+  assert.doesNotMatch(menu, /t\("Log in"\)/);
+  assert.match(homeMenu, /data-menu-account/);
+  assert.match(homeMenu, /t\("Account"\)/);
+  assert.match(homeMenu, /to="\/login"/);
+  assert.match(homeMenu, /onClick=\{openLegalDocument\}/);
+  assert.match(shell, /data-header-account/);
+  assert.match(shell, /t\("Account"\)/);
+  assert.match(shell, /to="\/login"/);
 });
 
 test("deleteAccountForUser is idempotent and keeps payment ids (mock)", async () => {
