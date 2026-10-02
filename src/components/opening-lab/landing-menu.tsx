@@ -2,7 +2,6 @@ import { useEffect, useId, useLayoutEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
-import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { openLegalDocument } from "@/lib/legal-nav";
 import {
   getColorScheme,
@@ -24,8 +23,6 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const titleId = useId();
-  const { user, isPending } = useCurrentUserState();
-  const signedIn = !!user && !user.isDevFallback;
   const [scheme, setScheme] = useState<ColorScheme>("light");
 
   useOverlayHistory(open, () => setOpen(false), "landing-menu");
@@ -50,7 +47,6 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
   };
 
   const dark = scheme === "dark";
-  const accountLabel = isPending ? t("Account") : signedIn ? t("Account") : t("Log in");
 
   return (
     <div className="landing-menu">
@@ -130,7 +126,7 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 data-menu-account
                 onClick={openLegalDocument}
               >
-                {accountLabel}
+                {t("Account")}
               </Link>
               <Link
                 to="/terms"

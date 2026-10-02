@@ -169,6 +169,13 @@ export function LandingHome({
           >
             {t("Feedback")}
           </button>
+          <Link
+            to="/login"
+            className="landing-nav-link"
+            data-landing-account
+          >
+            {t("Account")}
+          </Link>
         </nav>
         <LandingMenu
           onCreateOwn={onCreateOwn}
