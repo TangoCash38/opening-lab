@@ -114,7 +114,7 @@ export type CoachPackConfig = {
   /**
    * Cream-plate name. Absent: Professor Potato Pie.
    * Big Red uses this so the Ruy Lopez dock is not Potato Pie.
-   * Tango uses this for Sicilian for Black.
+   * King Cedar uses this for Sicilian for Black.
    */
   coachName?: string;
   /**
@@ -1149,8 +1149,8 @@ const RUY_LOPEZ_LINE: readonly CoachLineBeat[] = [
 const SICILIAN_BLACK_PACK_ID = "sicilian-black";
 
 export const SICILIAN_INTRO_MP3 = "/coach/sicilian-black/tango-sicilian-intro.mp3";
-export const SICILIAN_PORTRAIT = "/coach/sicilian-black/tango-portrait.png";
-/** Tango's Sicilian intro. Beat times were read off this clip. He does not name himself. */
+export const SICILIAN_PORTRAIT = "/coach/sicilian-black/king-cedar-portrait.jpg";
+/** King Cedar's Sicilian intro. Beat times were read off this clip. He does not name himself. */
 export const SICILIAN_INTRO_SEC = 50.21;
 
 const SICILIAN_INTRO = [
@@ -1173,7 +1173,7 @@ export const SICILIAN_INTRO_STEM = ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4
 export const SICILIAN_INTRO_STEM_AT_SEC = [6.2, 11.5, 33.1, 34.84, 36.5, 37.9, 40.1, 42.3] as const;
 
 export const SICILIAN_LINE_MP3 = "/coach/sicilian-black/tango-sicilian-line1.mp3";
-/** Tango's Najdorf Line 1. Beat and spoken-move times were read off this clip. He does not name himself. */
+/** King Cedar's Najdorf Line 1. Beat and spoken-move times were read off this clip. He does not name himself. */
 export const SICILIAN_LINE_SEC = 143.3;
 
 const SICILIAN_LINE: readonly CoachLineBeat[] = [
@@ -1422,9 +1422,9 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     lineTalkOnTapOnly: true,
   },
   [SICILIAN_BLACK_PACK_ID]: {
-    coachName: "Tango",
+    coachName: "King Cedar",
     portrait: SICILIAN_PORTRAIT,
-    introTitle: "Tango · Sicilian",
+    introTitle: "King Cedar · Sicilian",
     introBeats: SICILIAN_INTRO,
     introAudio: SICILIAN_INTRO_MP3,
     introAudioFallbackSec: SICILIAN_INTRO_SEC,

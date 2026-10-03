@@ -42,7 +42,7 @@ const UI_KEYS = [
   "Queen’s Gambit",
   "French Defence",
   "Big Red · Ruy Lopez",
-  "Tango · Sicilian",
+  "King Cedar · Sicilian",
   "Line 1 · Legal's Mate",
   "Line 1",
 ];
