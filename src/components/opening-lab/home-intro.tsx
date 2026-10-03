@@ -155,6 +155,9 @@ export function LandingHome({
               data-landing-memory-bar
             >
               Square Memory game
+              <span className="landing-nav-new" data-landing-memory-new>
+                New
+              </span>
             </Link>
           </span>
         </nav>
