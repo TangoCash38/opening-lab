@@ -269,9 +269,9 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(landing, /Square Memory/);
   const art = landing.indexOf("landing-hero-art");
   const memory = landing.indexOf("data-landing-square-memory");
-  const puzzle = landing.indexOf("data-landing-puzzle");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(art >= 0 && memory > art && puzzle > memory && openNow > puzzle);
+  assert.equal(landing.indexOf("data-landing-puzzle"), -1);
+  assert.ok(art >= 0 && memory > art && openNow > memory);
   assert.doesNotMatch(landing, /function LandingBoard[\s\S]*data-landing-square-memory/);
 
   assert.match(css, /\.landing-square-memory\s*\{[^}]*width:\s*100%/);
@@ -455,8 +455,9 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.match(page, /Square Memory · Opening Lab/);
   assert.doesNotMatch(page, /London Memory/);
   const memory = landing.indexOf("data-landing-square-memory");
-  const puzzle = landing.indexOf("data-landing-puzzle");
-  assert.ok(memory > 0 && puzzle > memory);
+  const classic = landing.indexOf("data-landing-classic");
+  assert.equal(landing.indexOf("data-landing-puzzle"), -1);
+  assert.ok(memory > 0 && classic > memory);
   assert.doesNotMatch(landing, /data-landing-london-memory|London Memory|landing-memory-row/);
   assert.match(ruyLine, /SQUARE_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bb5"\]/);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);

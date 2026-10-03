@@ -67,35 +67,19 @@ test("starter mate in 2 is Qb8+ Bd8 Qxd8# and not mate in 1", async (t) => {
   assert.equal(mateInOne, false);
 });
 
-test("website home shows the puzzle card only outside the Play wrap", () => {
+test("website no longer links to or routes the daily puzzle", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const shell = src("src/components/opening-lab/app-shell.tsx");
-  const view = src("src/components/opening-lab/puzzle-view.tsx");
-  const copy = src("src/lib/puzzle-copy.ts");
-  const joined = [landing, shell, view, src("src/lib/lab-puzzle.ts")].join("\n");
+  const menu = src("src/components/opening-lab/landing-menu.tsx");
+  const homeMenu = src("src/components/opening-lab/home-menu.tsx");
+  const routes = src("src/routes/index.tsx");
 
-  assert.match(landing, /data-landing-puzzle/);
-  assert.match(landing, /setShowPuzzle\(!isPlayApp\(\)\)/);
-  const puzzle = landing.indexOf("data-landing-puzzle");
-  const openNow = landing.indexOf('t("Open now")');
-  assert.ok(openNow >= 0 && puzzle < openNow, "puzzle card sits under the front board");
-  assert.match(landing, /showPuzzle \?/);
-  assert.match(landing, /t\("Today's puzzle"\)/);
-  assert.match(landing, /t\("White to move · Mate in 2"\)/);
-  assert.match(shell, /view === "puzzle" && !playSurface/);
-  assert.match(shell, /onOpenPuzzle/);
-  assert.doesNotMatch(shell, /FindMate/);
-  assert.doesNotMatch(shell, /onOpenMate/);
-  assert.match(view, /data-puzzle-retry/);
-  assert.match(view, /data-puzzle-hint/);
-  assert.doesNotMatch(view, /chesspuzzles/i);
-  assert.doesNotMatch(joined, /chesspuzzles/i);
-  assert.doesNotMatch(joined, /Play on|versus the computer|vs computer/i);
-  assert.doesNotMatch(view, /stripe|play-billing|Play Billing/i);
-
-  for (const lang of ["en", "es", "zh", "fr", "de", "pt", "ru", "it", "hi", "ja", "ar", "tr"]) {
-    assert.match(copy, new RegExp(`\\n  ${lang}:`));
-  }
-  assert.equal(copy.split('"Today\'s puzzle":').length - 1, 12);
-  assert.equal(copy.split('"Mate in 2":').length - 1, 12);
+  assert.equal(landing.indexOf("data-landing-puzzle"), -1);
+  assert.doesNotMatch(landing, /Today's puzzle|onOpenPuzzle|showPuzzle|White to move · Mate in 2/);
+  assert.doesNotMatch(shell, /PuzzleView|onOpenPuzzle|setView\("puzzle"\)|view === "puzzle"/);
+  assert.doesNotMatch(menu, /Today's puzzle|Daily Puzzle|onOpenPuzzle|data-menu-puzzle/);
+  assert.doesNotMatch(homeMenu, /Today's puzzle|Daily Puzzle|onOpenPuzzle|data-menu-puzzle/);
+  assert.doesNotMatch(routes, /puzzle-view|Today's puzzle|Daily Puzzle/);
+  assert.match(landing, /data-landing-square-memory/);
+  assert.match(landing, /data-landing-classic/);
 });
