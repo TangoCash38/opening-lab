@@ -122,6 +122,24 @@ test("the page is a five-second rebuild with a tray, a shutter, and a score", ()
   assert.match(css, /\.gmv-sq\.is-bad::after/);
 });
 
+test("the phone page is a level picker, then a board and tray that share the viewport", () => {
+  assert.match(view, /data-gmv-view=\{phase === "menu" \? "levels" : "board"\}/);
+  assert.match(view, /Beginner/);
+  assert.match(view, /Intermediate/);
+  assert.match(view, /Advanced/);
+  assert.match(view, /phase === "menu" \? \([\s\S]*<LevelPicker/);
+  assert.match(view, /data-gmv-board/);
+  assert.match(view, /gmv-coord-rank/);
+  assert.match(view, /gmv-coord-file/);
+  assert.match(view, /data-gmv-tray-box/);
+  assert.match(css, /\[data-grandmaster-vision-page\]/);
+  assert.match(css, /overflow:\s*hidden/);
+  assert.match(css, /\.gmv-coord-rank/);
+  assert.match(css, /\.gmv-drawer/);
+  assert.doesNotMatch(css, /\.gmv-file-row/);
+  assert.doesNotMatch(css, /\.gmv-frame\s*\{[^}]*padding:\s*0\.7rem/);
+});
+
 test("Grandmaster Vision is a website menu item and stays off the Square Memory hero", () => {
   assert.match(menu, /data-menu-vision/);
   assert.match(menu, /to="\/grandmaster-vision"/);

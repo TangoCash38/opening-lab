@@ -24,6 +24,11 @@ const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
 const RANKS = [8, 7, 6, 5, 4, 3, 2, 1] as const;
 const WHITE_TRAY = ["P", "N", "B", "R", "Q", "K"] as const;
 const BLACK_TRAY = ["p", "n", "b", "r", "q", "k"] as const;
+const LEVEL_GROUPS = [
+  { id: "beginner", label: "Beginner", from: 1, to: 3 },
+  { id: "intermediate", label: "Intermediate", from: 4, to: 7 },
+  { id: "advanced", label: "Advanced", from: 8, to: 10 },
+] as const;
 const PIECE_SRC: Record<string, string> = {
   P: "/pieces/wP.svg",
   N: "/pieces/wN.svg",
@@ -131,6 +136,13 @@ export function GrandmasterVision() {
     setRemain(1);
     setElapsed(0);
     setPhase("snapshot");
+  }
+
+  function leaveToLevels() {
+    hideGhost();
+    dragRef.current = null;
+    setSelection(null);
+    setPhase("menu");
   }
 
   function place(sq: string, code: string) {
@@ -317,15 +329,16 @@ export function GrandmasterVision() {
     else playErrorTone();
   }
 
-  const playing = phase !== "menu";
   const showPieces = phase === "snapshot" || phase === "clearing" || phase === "feedback" || phase === "rebuild";
   const levelInfo = LEVEL_INFO.find((info) => info.level === level);
+  const trayLive = phase === "rebuild";
 
   return (
     <main
       className="gmv"
       data-grandmaster-vision
       data-gmv-phase={phase}
+      data-gmv-view={phase === "menu" ? "levels" : "board"}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -335,174 +348,173 @@ export function GrandmasterVision() {
         <Link to="/" className="gmv-home" data-gmv-home>
           Opening Lab
         </Link>
-        <div className="gmv-heading">
-          <h1 className="gmv-title">Grandmaster Vision</h1>
-          <p className="gmv-lead">Look for five seconds. Rebuild the position.</p>
-        </div>
+        <h1 className="gmv-title">Grandmaster Vision</h1>
+        {phase !== "menu" ? (
+          <button type="button" className="gmv-back" data-gmv-back onClick={leaveToLevels}>
+            Levels
+          </button>
+        ) : null}
       </header>
 
-      <div
-        className="gmv-levels"
-        data-gmv-levels
-        data-compact={playing ? "true" : "false"}
-        role="group"
-        aria-label="Levels"
-      >
-        {LEVEL_INFO.map((info) => (
-          <button
-            key={info.level}
-            type="button"
-            className={level === info.level ? "is-on" : ""}
-            data-gmv-level={info.level}
-            aria-pressed={level === info.level}
-            aria-label={`Level ${info.level}, ${info.name}, ${info.range}`}
-            onClick={() => startLevel(info.level)}
-          >
-            <span className="gmv-lv-num">{info.level}</span>
-            <span className="gmv-lv-name">{info.name}</span>
-            <span className="gmv-lv-range">{info.range}</span>
-          </button>
-        ))}
-      </div>
-
-      <p className="gmv-status" data-gmv-status={phase} aria-live="polite">
-        {phase === "menu" && "Choose a level. A legal position stays up for five seconds."}
-        {phase === "snapshot" &&
-          `Level ${level} · ${levelInfo?.name ?? "Board"} · memorise the position`}
-        {phase === "clearing" && "The board clears."}
-        {phase === "rebuild" && "Set the pieces back. Drag a piece off the board to take it away."}
-        {phase === "feedback" && position && `${position.title}. ${result?.accuracy ?? 0}% accurate.`}
-      </p>
-
-      {phase === "snapshot" ? (
-        <div className="gmv-count" data-gmv-countdown aria-hidden>
-          <div className="gmv-count-fill" style={{ transform: `scaleX(${remain})` }} />
-        </div>
+      {phase === "menu" ? (
+        <LevelPicker onPick={startLevel} />
       ) : (
-        <div className="gmv-count gmv-count-idle" aria-hidden />
-      )}
+        <div className="gmv-play">
+          <div className="gmv-readout">
+            <p className="gmv-status" data-gmv-status={phase} aria-live="polite">
+              {phase === "snapshot" &&
+                `Level ${level} · ${levelInfo?.name ?? "Board"} · memorise the position`}
+              {phase === "clearing" && "The board clears."}
+              {phase === "rebuild" && "Set the pieces from the tray. Drag one off the board to remove it."}
+              {phase === "feedback" && position && `${position.title}. ${result?.accuracy ?? 0}% accurate.`}
+            </p>
+            {phase === "snapshot" ? (
+              <div className="gmv-count" data-gmv-countdown aria-hidden>
+                <div className="gmv-count-fill" style={{ transform: `scaleX(${remain})` }} />
+              </div>
+            ) : (
+              <div className="gmv-count gmv-count-idle" aria-hidden />
+            )}
+          </div>
 
-      <div
-        className={`gmv-frame ${phase === "clearing" ? "is-wipe" : ""}`}
-        data-gmv-board
-        ref={boardRef}
-      >
-        <div className="gmv-grid" role="grid" aria-label="Chessboard">
-          {RANKS.map((rank) => (
-            <div className="gmv-rank-row" key={rank}>
-              <span className="gmv-coord gmv-coord-rank">{rank}</span>
-              {FILES.map((file) => {
-                const sq = squareName(file, rank);
-                const light = (file.charCodeAt(0) + rank) % 2 === 1;
-                const want = original[sq];
-                const got = attempt[sq];
-                const mark = phase === "feedback" ? result?.marks[sq] : undefined;
-                const shown =
-                  phase === "snapshot" || phase === "clearing"
-                    ? want
-                    : phase === "feedback"
-                      ? mark === "miss"
-                        ? undefined
-                        : got || (mark === "ok" ? want : undefined)
-                      : got;
-                const ghost = phase === "feedback" && want && mark && mark !== "ok" ? want : undefined;
-                const armed =
-                  phase === "rebuild" &&
-                  ((selection?.kind === "board" && selection.sq === sq) || false);
-                return (
-                  <button
-                    key={sq}
-                    type="button"
-                    role="gridcell"
-                    className={`gmv-sq ${light ? "is-light" : "is-dark"}${mark === "ok" ? " is-ok" : ""}${
-                      mark === "miss" || mark === "wrong" ? " is-bad" : ""
-                    }${armed ? " is-armed" : ""}`}
-                    data-gmv-square={sq}
-                    data-gmv-piece={shown ?? ""}
-                    data-gmv-mark={mark ?? ""}
-                    aria-label={`${sq}${shown ? `, ${pieceName(shown)}` : ghost ? `, missed ${pieceName(ghost)}` : ", empty"}`}
-                    aria-disabled={phase !== "rebuild"}
-                  >
-                    {ghost ? (
-                      <span className="gmv-ghost" data-gmv-ghost={ghost}>
-                        <ChessPiece code={ghost} />
-                      </span>
-                    ) : null}
-                    {shown && showPieces ? (
-                      <span className="gmv-live">
-                        <ChessPiece code={shown} />
-                      </span>
-                    ) : null}
-                  </button>
-                );
-              })}
+          <div className="gmv-stage">
+            <div
+              className={`gmv-frame ${phase === "clearing" ? "is-wipe" : ""}`}
+              data-gmv-board
+              ref={boardRef}
+            >
+              <div className="gmv-grid" role="grid" aria-label="Chessboard">
+                {RANKS.flatMap((rank) =>
+                  FILES.map((file) => {
+                    const sq = squareName(file, rank);
+                    const light = (file.charCodeAt(0) + rank) % 2 === 1;
+                    const want = original[sq];
+                    const got = attempt[sq];
+                    const mark = phase === "feedback" ? result?.marks[sq] : undefined;
+                    const shown =
+                      phase === "snapshot" || phase === "clearing"
+                        ? want
+                        : phase === "feedback"
+                          ? mark === "miss"
+                            ? undefined
+                            : got || (mark === "ok" ? want : undefined)
+                          : got;
+                    const ghost = phase === "feedback" && want && mark && mark !== "ok" ? want : undefined;
+                    const armed =
+                      phase === "rebuild" &&
+                      ((selection?.kind === "board" && selection.sq === sq) || false);
+                    return (
+                      <button
+                        key={sq}
+                        type="button"
+                        role="gridcell"
+                        className={`gmv-sq ${light ? "is-light" : "is-dark"}${mark === "ok" ? " is-ok" : ""}${
+                          mark === "miss" || mark === "wrong" ? " is-bad" : ""
+                        }${armed ? " is-armed" : ""}`}
+                        data-gmv-square={sq}
+                        data-gmv-piece={shown ?? ""}
+                        data-gmv-mark={mark ?? ""}
+                        aria-label={`${sq}${shown ? `, ${pieceName(shown)}` : ghost ? `, missed ${pieceName(ghost)}` : ", empty"}`}
+                        aria-disabled={phase !== "rebuild"}
+                      >
+                        {ghost ? (
+                          <span className="gmv-ghost" data-gmv-ghost={ghost}>
+                            <ChessPiece code={ghost} />
+                          </span>
+                        ) : null}
+                        {shown && showPieces ? (
+                          <span className="gmv-live">
+                            <ChessPiece code={shown} />
+                          </span>
+                        ) : null}
+                        {file === "a" ? (
+                          <span className="gmv-coord gmv-coord-rank" aria-hidden="true">
+                            {rank}
+                          </span>
+                        ) : null}
+                        {rank === 1 ? (
+                          <span className="gmv-coord gmv-coord-file" aria-hidden="true">
+                            {file}
+                          </span>
+                        ) : null}
+                      </button>
+                    );
+                  }),
+                )}
+              </div>
             </div>
-          ))}
-          <div className="gmv-file-row">
-            <span className="gmv-coord gmv-coord-corner" />
-            {FILES.map((file) => (
-              <span key={file} className="gmv-coord gmv-coord-file">
-                {file}
-              </span>
-            ))}
+          </div>
+
+          <div className="gmv-drawer">
+            <div className="gmv-drawer-inner">
+              {phase === "feedback" && result ? (
+                <section className="gmv-score" data-gmv-score aria-label="Score">
+                  <p className="gmv-accuracy" data-gmv-accuracy>
+                    {result.accuracy}%
+                  </p>
+                  <p className="gmv-score-note">
+                    {result.correct} of {result.total} pieces on the right square
+                  </p>
+                  <p className="gmv-time" data-gmv-time>
+                    Time to rebuild {formatRebuildTime(elapsed)}
+                  </p>
+                  <div className="gmv-score-actions">
+                    <button
+                      type="button"
+                      className="gmv-next"
+                      data-gmv-next
+                      onClick={() => startLevel(level === 10 ? 10 : (level ?? 1) + 1)}
+                    >
+                      Next Level
+                    </button>
+                    <button
+                      type="button"
+                      className="gmv-again"
+                      data-gmv-again
+                      onClick={() => level && startLevel(level)}
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                </section>
+              ) : (
+                <>
+                  <div
+                    className="gmv-tray"
+                    data-gmv-tray-box
+                    data-live={trayLive ? "true" : "false"}
+                    aria-label="Piece tray"
+                  >
+                    <TrayRow
+                      label="White"
+                      codes={WHITE_TRAY}
+                      selected={selection?.kind === "tray" ? selection.code : null}
+                      live={trayLive}
+                    />
+                    <TrayRow
+                      label="Black"
+                      codes={BLACK_TRAY}
+                      selected={selection?.kind === "tray" ? selection.code : null}
+                      live={trayLive}
+                    />
+                  </div>
+                  <div className="gmv-actions">
+                    <button
+                      type="button"
+                      className="gmv-submit"
+                      data-gmv-submit
+                      disabled={!trayLive}
+                      onClick={submitBoard}
+                    >
+                      Submit Board
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-
-      {phase === "rebuild" ? (
-        <div className="gmv-tray" data-gmv-tray-box aria-label="Piece tray">
-          <TrayRow
-            label="White"
-            codes={WHITE_TRAY}
-            selected={selection?.kind === "tray" ? selection.code : null}
-          />
-          <TrayRow
-            label="Black"
-            codes={BLACK_TRAY}
-            selected={selection?.kind === "tray" ? selection.code : null}
-          />
-        </div>
-      ) : null}
-
-      {phase === "rebuild" ? (
-        <div className="gmv-actions">
-          <button type="button" className="gmv-submit" data-gmv-submit onClick={submitBoard}>
-            Submit Board
-          </button>
-        </div>
-      ) : null}
-
-      {phase === "feedback" && result ? (
-        <section className="gmv-score" data-gmv-score aria-label="Score">
-          <p className="gmv-accuracy" data-gmv-accuracy>
-            {result.accuracy}%
-          </p>
-          <p className="gmv-score-note">
-            {result.correct} of {result.total} pieces on the right square
-          </p>
-          <p className="gmv-time" data-gmv-time>
-            Time to rebuild {formatRebuildTime(elapsed)}
-          </p>
-          <div className="gmv-score-actions">
-            <button
-              type="button"
-              className="gmv-next"
-              data-gmv-next
-              onClick={() => startLevel(level === 10 ? 10 : (level ?? 1) + 1)}
-            >
-              Next Level
-            </button>
-            <button
-              type="button"
-              className="gmv-again"
-              data-gmv-again
-              onClick={() => level && startLevel(level)}
-            >
-              Try Again
-            </button>
-          </div>
-        </section>
-      ) : null}
+      )}
 
       <div className="gmv-float" ref={ghostRef} hidden>
         <img alt="" draggable={false} />
@@ -511,14 +523,51 @@ export function GrandmasterVision() {
   );
 }
 
+function LevelPicker({ onPick }: { onPick: (level: number) => void }) {
+  return (
+    <section className="gmv-picker" data-gmv-levels aria-label="Choose a level">
+      <p className="gmv-picker-lead">Look for five seconds. Rebuild the position.</p>
+      <div className="gmv-picker-bands">
+        {LEVEL_GROUPS.map((group) => (
+          <div className="gmv-band" key={group.id} data-gmv-band={group.id}>
+            <h2 className="gmv-band-label">
+              {group.label}
+              <span>
+                {group.from}–{group.to}
+              </span>
+            </h2>
+            <div className="gmv-band-grid" role="group" aria-label={`${group.label} levels ${group.from} to ${group.to}`}>
+              {LEVEL_INFO.filter((info) => info.level >= group.from && info.level <= group.to).map((info) => (
+                <button
+                  key={info.level}
+                  type="button"
+                  data-gmv-level={info.level}
+                  aria-label={`Level ${info.level}, ${info.name}, ${info.range}`}
+                  onClick={() => onPick(info.level)}
+                >
+                  <span className="gmv-lv-num">{info.level}</span>
+                  <span className="gmv-lv-name">{info.name}</span>
+                  <span className="gmv-lv-range">{info.range.replace(" pieces", "")}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function TrayRow({
   label,
   codes,
   selected,
+  live,
 }: {
   label: string;
   codes: readonly string[];
   selected: string | null;
+  live: boolean;
 }) {
   return (
     <div className="gmv-tray-row">
@@ -532,6 +581,7 @@ function TrayRow({
             data-gmv-tray={code}
             aria-label={pieceName(code)}
             aria-pressed={selected === code}
+            disabled={!live}
           >
             <ChessPiece code={code} />
           </button>
