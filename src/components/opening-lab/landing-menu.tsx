@@ -16,10 +16,11 @@ type Props = {
   onCreateOwn: () => void;
   onReport: () => void;
   onSupport: () => void;
+  onFeedback: () => void;
 };
 
-/** Site menu. Support uses the same destination as the home-bar link. */
-export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
+/** Site menu. Support, Feedback, and Account live here, not on the home bar. */
+export function LandingMenu({ onCreateOwn, onReport, onSupport, onFeedback }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const titleId = useId();
@@ -95,6 +96,14 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                 onClick={() => pick(onSupport)}
               >
                 {t("Support")}
+              </button>
+              <button
+                type="button"
+                className="home-menu-item"
+                data-menu-feedback
+                onClick={() => pick(onFeedback)}
+              >
+                {t("Feedback")}
               </button>
               <button
                 type="button"

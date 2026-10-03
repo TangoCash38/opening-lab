@@ -169,7 +169,7 @@ test("www shows the Classic card and the gym; Play wrap does not", () => {
   const puzzle = landing.indexOf("data-landing-puzzle");
   const classic = landing.indexOf("data-landing-classic");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(openNow >= 0 && puzzle > openNow && classic > puzzle);
+  assert.ok(openNow >= 0 && puzzle < openNow && classic > puzzle && classic < openNow);
 
   assert.match(list, /setShowClassicSample\(!isPlayWrap\(\)\)/);
   assert.match(list, /showClassicSample \? classicSamplePack\(\)/);

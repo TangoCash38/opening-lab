@@ -140,30 +140,15 @@ export function LandingHome({
           </span>
         </div>
         <nav className="landing-nav" aria-label={t("Site")}>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-support
-            onClick={onSupport}
-          >
-            {t("Support")}
-          </button>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-feedback
-            onClick={onFeedback}
-          >
-            {t("Feedback")}
-          </button>
-          <span className="landing-nav-pair">
-            <Link
-              to="/login"
+          <span className="landing-nav-links">
+            <button
+              type="button"
               className="landing-nav-link"
-              data-landing-account
+              data-landing-feedback
+              onClick={onFeedback}
             >
-              {t("Account")}
-            </Link>
+              {t("Feedback")}
+            </button>
             <Link
               to="/square-memory"
               className="landing-nav-link"
@@ -179,12 +164,14 @@ export function LandingHome({
             onCreateOwn={onCreateOwn}
             onReport={onReport}
             onSupport={onSupport}
+            onFeedback={onFeedback}
           />
         </div>
       </header>
 
       <div className="landing-inner">
         <div className="landing-hero">
+          <div className="landing-hero-main">
           <div className="landing-hero-art">
             <div className="landing-coach-wrap">
               <img
@@ -210,44 +197,8 @@ export function LandingHome({
             </div>
             <LandingMateDemo />
           </div>
-          <div className="landing-copy">
-            <p id="landing-title" className="landing-sub">
-              {t("Practice with hints. Test with none.")}
-            </p>
-            <section className="landing-open-here" aria-labelledby="landing-open-now">
-              <div className="landing-section-head">
-                <h2 id="landing-open-now" className="landing-section-title">
-                  {t("Open now")}
-                </h2>
-                <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
-              </div>
-              {showBuyAll ? (
-                <section aria-labelledby="landing-buy-all">
-                  <h2 id="landing-buy-all" className="sr-only">
-                    {t("On sale")}
-                  </h2>
-                  <BuyAllOffer onBuy={onBuyAll} />
-                </section>
-              ) : null}
-              <div className="landing-open-grid" data-open-now>
-                {openPacks.map((pack) => (
-                  <button
-                    key={pack.id}
-                    type="button"
-                    className="landing-pack-card"
-                    data-open-pack={pack.id}
-                    data-free-lines={packHasPlayableFreeLines(pack) ? "true" : "false"}
-                    onClick={() => onOpenPack(pack.id)}
-                  >
-                    <span className="landing-pack-name">{openNowTitle(pack)}</span>
-                    <span className="landing-pack-price" data-open-pack-price={pack.id}>
-                      {priceLabel(pack)}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </section>
-            <div className="landing-cta-stack">
+          {showMemory || showPuzzle || showClassic ? (
+            <div className="landing-under-board" data-landing-under-board>
               {showMemory ? (
                 <section className="landing-square-memory" aria-label="Square Memory">
                   <Link
@@ -256,7 +207,7 @@ export function LandingHome({
                     data-landing-square-memory
                   >
                     <span className="landing-puzzle-kicker">{t("Free")}</span>
-                    <span className="landing-puzzle-title">Square Memory</span>
+                    <span className="landing-puzzle-title">Square Memory game</span>
                   </Link>
                 </section>
               ) : null}
@@ -298,6 +249,47 @@ export function LandingHome({
                   </button>
                 </section>
               ) : null}
+            </div>
+          ) : null}
+          </div>
+          <div className="landing-copy">
+            <p id="landing-title" className="landing-sub">
+              {t("Practice with hints. Test with none.")}
+            </p>
+            <section className="landing-open-here" aria-labelledby="landing-open-now">
+              <div className="landing-section-head">
+                <h2 id="landing-open-now" className="landing-section-title">
+                  {t("Open now")}
+                </h2>
+                <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
+              </div>
+              {showBuyAll ? (
+                <section aria-labelledby="landing-buy-all">
+                  <h2 id="landing-buy-all" className="sr-only">
+                    {t("On sale")}
+                  </h2>
+                  <BuyAllOffer onBuy={onBuyAll} />
+                </section>
+              ) : null}
+              <div className="landing-open-grid" data-open-now>
+                {openPacks.map((pack) => (
+                  <button
+                    key={pack.id}
+                    type="button"
+                    className="landing-pack-card"
+                    data-open-pack={pack.id}
+                    data-free-lines={packHasPlayableFreeLines(pack) ? "true" : "false"}
+                    onClick={() => onOpenPack(pack.id)}
+                  >
+                    <span className="landing-pack-name">{openNowTitle(pack)}</span>
+                    <span className="landing-pack-price" data-open-pack-price={pack.id}>
+                      {priceLabel(pack)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+            <div className="landing-cta-stack">
               {showLessons ? (
                 <button
                   type="button"

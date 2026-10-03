@@ -73,7 +73,8 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.doesNotMatch(landing, /data-landing-packs/);
   assert.doesNotMatch(landing, /Drill packs/);
   assert.match(landing, /aria-label=\{t\("Site"\)\}/);
-  assert.match(landing, /data-landing-support/);
+  assert.match(landing, /data-landing-feedback/);
+  assert.doesNotMatch(landing, /data-landing-support|data-landing-account/);
   assert.doesNotMatch(landing, /className="landing-cta-note"/);
   assert.match(
     landing,
@@ -81,7 +82,7 @@ test("Home in the app header returns to the landing; landing links stay visible"
   );
   assert.doesNotMatch(landing, /That was Legal/);
   assert.doesNotMatch(landing, /data-free-try-buy-all/);
-  assert.match(landing, /onClick=\{onSupport\}/);
+  assert.match(landing, /onFeedback=\{onFeedback\}/);
   assert.match(landing, /onOpenPack\(pack\.id\)/);
   assert.match(landing, /data-coming-soon-feedback/);
   assert.match(landing, /Please leave feedback for openings you’d like to see/);
