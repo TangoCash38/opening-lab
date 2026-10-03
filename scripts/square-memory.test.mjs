@@ -208,22 +208,25 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
-test("Square Memory sits quietly next to Account and opens the free game", () => {
+test("Square Memory game stays on the top bar and opens the free game", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const css = src("src/styles.css");
   const page = src("src/routes/square-memory.tsx");
+  const menu = src("src/components/opening-lab/landing-menu.tsx");
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
-  const feedback = nav.indexOf("data-landing-feedback");
-  const account = nav.indexOf("data-landing-account");
   const memory = nav.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 220, landing.indexOf("data-landing-memory-bar") + 320);
-  assert.ok(feedback > 0 && account > feedback && memory > account);
+  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 220, landing.indexOf("data-landing-memory-bar") + 220);
+  assert.ok(memory > 0);
+  assert.doesNotMatch(nav, /data-landing-account|data-landing-feedback|data-landing-support/);
   assert.match(chip, /className="landing-nav-link"/);
   assert.match(chip, /to="\/square-memory"/);
   assert.match(chip, />\s*Square Memory game\s*</);
   assert.doesNotMatch(landing, /What's new|What&apos;s new|>New</);
   assert.doesNotMatch(chip, /isPlayApp|showMemory/);
-  assert.doesNotMatch(css, /landing-memory-flash|landing-memory-chip|landing-memory-new/);
+  assert.doesNotMatch(css, /landing-memory-flash|landing-memory-chip|landing-memory-new|landing-nav-pair/);
+  assert.match(menu, /data-menu-account/);
+  assert.match(menu, /data-menu-feedback/);
+  assert.match(menu, /data-menu-support/);
   assert.match(page, /<SquareMemory \/>/);
   assert.doesNotMatch(page, /readSquareMemoryPlayPreview|buyPack|checkout|unlock|stripe/i);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);

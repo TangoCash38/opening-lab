@@ -140,38 +140,13 @@ export function LandingHome({
           </span>
         </div>
         <nav className="landing-nav" aria-label={t("Site")}>
-          <button
-            type="button"
+          <Link
+            to="/square-memory"
             className="landing-nav-link"
-            data-landing-support
-            onClick={onSupport}
+            data-landing-memory-bar
           >
-            {t("Support")}
-          </button>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-feedback
-            onClick={onFeedback}
-          >
-            {t("Feedback")}
-          </button>
-          <span className="landing-nav-pair">
-            <Link
-              to="/login"
-              className="landing-nav-link"
-              data-landing-account
-            >
-              {t("Account")}
-            </Link>
-            <Link
-              to="/square-memory"
-              className="landing-nav-link"
-              data-landing-memory-bar
-            >
-              Square Memory game
-            </Link>
-          </span>
+            Square Memory game
+          </Link>
         </nav>
         <div className="landing-tools">
           <ColorSchemeToggle labeled />
@@ -179,6 +154,7 @@ export function LandingHome({
             onCreateOwn={onCreateOwn}
             onReport={onReport}
             onSupport={onSupport}
+            onFeedback={onFeedback}
           />
         </div>
       </header>
