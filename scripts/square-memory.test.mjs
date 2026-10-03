@@ -318,7 +318,7 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.match(view, /data-square-memory-status=\{snap\.phase\}/);
 });
 
-test("rank pitches follow a C pentatonic and the board keeps its cyberpunk cues", async (t) => {
+test("rank pitches follow a C pentatonic and the board keeps its glow cues", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory-audio.ts", "audio.mjs");
   if (!mod) return;
   const view = src("src/components/opening-lab/square-memory.tsx");
@@ -345,8 +345,16 @@ test("rank pitches follow a C pentatonic and the board keeps its cyberpunk cues"
   assert.match(view, /playWin\(\)/);
   assert.match(view, /className="sqmem-trace"/);
   assert.match(view, /className="sqmem-ripple"/);
-  assert.match(css, /\.sqmem-sq-dark\s*\{[^}]*#10131a/);
-  assert.match(css, /\.sqmem-sq\s*\{[^}]*rgba\(120, 210, 255, 0\.2\)/);
+  assert.match(view, /sqmem-coord-rank/);
+  assert.match(view, /sqmem-coord-file/);
+  assert.doesNotMatch(view, /board-margin-ranks|board-margin-files|board-frame--margin-coords/);
+  assert.match(css, /\.sqmem-sq-dark\s*\{[^}]*#14110e/);
+  assert.match(css, /\.sqmem-sq-light\s*\{[^}]*#3f2d22/);
+  assert.match(css, /\.sqmem-sq\s*\{[^}]*rgba\(212, 164, 84, 0\.28\)/);
+  assert.match(css, /\.sqmem-coord\s*\{[^}]*rgba\(243, 220, 186, 0\.4\)/);
+  assert.match(css, /\.sqmem-board\s*\{[^}]*place-items:\s*center/);
+  assert.doesNotMatch(css, /\.sqmem-start\s*\{[^}]*background:\s*#23483c/);
+  assert.match(css, /\.sqmem-start\s*\{[^}]*backdrop-filter:\s*blur/);
   assert.match(css, /@keyframes sqmem-glitch/);
   assert.match(css, /@keyframes sqmem-shake/);
   assert.match(css, /@keyframes sqmem-particle/);
