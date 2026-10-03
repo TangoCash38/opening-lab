@@ -6742,8 +6742,8 @@ body:has([data-grandmaster-vision-page]) {
     max-height: 6.4rem;
   }
 
-  .gmv-lv-name {
-    display: none;
+  .gmv-lv-num {
+    font-size: 1.05rem;
   }
 
   .gmv-tray-piece {
@@ -6761,8 +6761,3 @@ body:has([data-grandmaster-vision-page]) {
   }
 }
 
-@media (max-width: 380px) {
-  .gmv-lv-name {
-    display: none;
-  }
-}
