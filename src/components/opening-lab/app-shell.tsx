@@ -32,7 +32,6 @@ import type { TrainStartOptions } from "@/lib/london-warmup";
 import { FeedbackView } from "./feedback-view";
 import { GuideView } from "./guide-view";
 import { LandingHome } from "./home-intro";
-import { PuzzleView } from "./puzzle-view";
 import { PackList } from "./pack-list";
 import { ReportLineView } from "./report-line";
 import { TrainView } from "./train-view";
@@ -42,7 +41,7 @@ import { ColorSchemeToggle } from "./color-scheme-toggle";
 import { LangToggle } from "./lang-picker";
 import { accessibleCandidates } from "./today-strip";
 
-type View = "landing" | "home" | "train" | "guide" | "create" | "report" | "feedback" | "puzzle";
+type View = "landing" | "home" | "train" | "guide" | "create" | "report" | "feedback";
 type TrainMode = "learn" | "practice";
 
 function scrollAppTop() {
@@ -146,15 +145,6 @@ function OpeningLabInner() {
   const openFeedback = () => {
     setReturnView(view);
     setView("feedback");
-    scrollAppTop();
-    requestAnimationFrame(() => scrollAppTop());
-  };
-
-  const openPuzzle = () => {
-    if (isPlayWrap() || playSurface) return;
-    setQueue([]);
-    setActive(null);
-    setView("puzzle");
     scrollAppTop();
     requestAnimationFrame(() => scrollAppTop());
   };
@@ -391,10 +381,8 @@ function OpeningLabInner() {
               setBuyAllNonce((n) => n + 1);
               goPacks();
             }}
-            onOpenPuzzle={openPuzzle}
           />
         )}
-        {view === "puzzle" && !playSurface ? <PuzzleView onBack={goHome} /> : null}
         {view === "home" && (
           <PackList
             buyAllNonce={buyAllNonce}

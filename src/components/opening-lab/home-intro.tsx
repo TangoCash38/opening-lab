@@ -36,7 +36,6 @@ type Props = {
   onCreateOwn: () => void;
   onReport: () => void;
   onBuyAll: () => void;
-  onOpenPuzzle: () => void;
 };
 
 /** Sketch labels for real coming-soon packs. Ids stay the catalog ids. */
@@ -86,20 +85,17 @@ export function LandingHome({
   onCreateOwn,
   onReport,
   onBuyAll,
-  onOpenPuzzle,
 }: Props) {
   const t = useT();
   const navigate = useNavigate();
   const { subscribed } = useUnlocks();
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
-  const [showPuzzle, setShowPuzzle] = useState(false);
   const [showClassic, setShowClassic] = useState(false);
   const [showMemory, setShowMemory] = useState(false);
   const previewTaps = useRef<number[]>([]);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
-    setShowPuzzle(!isPlayApp());
     setShowClassic(!isPlayApp());
     setShowMemory(!isPlayApp() || readSquareMemoryPlayPreview());
   }, []);
@@ -200,7 +196,7 @@ export function LandingHome({
             </div>
             <LandingMateDemo />
           </div>
-          {showMemory || showPuzzle || showClassic ? (
+          {showMemory || showClassic ? (
             <div className="landing-under-board" data-landing-under-board>
               {showMemory ? (
                 <section className="landing-square-memory" aria-label="Square Memory">
@@ -212,20 +208,6 @@ export function LandingHome({
                     <span className="landing-puzzle-kicker">{t("Free")}</span>
                     <span className="landing-puzzle-title">Square Memory game</span>
                   </Link>
-                </section>
-              ) : null}
-              {showPuzzle ? (
-                <section className="landing-puzzle" aria-label={t("Puzzle")}>
-                  <button
-                    type="button"
-                    className="landing-puzzle-card"
-                    data-landing-puzzle
-                    onClick={onOpenPuzzle}
-                  >
-                    <span className="landing-puzzle-kicker">{t("Puzzle")}</span>
-                    <span className="landing-puzzle-title">{t("Today's puzzle")}</span>
-                    <span className="landing-puzzle-note">{t("White to move · Mate in 2")}</span>
-                  </button>
                 </section>
               ) : null}
               {showClassic ? (
