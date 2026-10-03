@@ -348,10 +348,39 @@ test("rank pitches follow a C pentatonic and the board keeps its glow cues", asy
   assert.match(view, /sqmem-coord-rank/);
   assert.match(view, /sqmem-coord-file/);
   assert.doesNotMatch(view, /board-margin-ranks|board-margin-files|board-frame--margin-coords/);
-  assert.match(css, /\.sqmem-sq-dark\s*\{[^}]*#14110e/);
-  assert.match(css, /\.sqmem-sq-light\s*\{[^}]*#3f2d22/);
-  assert.match(css, /\.sqmem-sq\s*\{[^}]*rgba\(212, 164, 84, 0\.28\)/);
-  assert.match(css, /\.sqmem-coord\s*\{[^}]*rgba\(243, 220, 186, 0\.4\)/);
+  assert.match(css, /--square-dark:\s*#1b2028/i);
+  assert.match(css, /--square-light:\s*#3e4756/i);
+  assert.match(css, /--board-border:\s*#12151a/i);
+  assert.match(css, /--coordinates:\s*rgba\(226,\s*232,\s*240,\s*0\.7\)/);
+  assert.match(css, /--glow-amber:\s*#ffb800/i);
+  assert.match(css, /--success-green:\s*#10b981/i);
+  assert.match(css, /--error-red:\s*#ef4444/i);
+  assert.match(css, /--app-bg:\s*#0f1216/i);
+  assert.match(css, /--panel-bg:\s*#1e232a/i);
+  assert.match(css, /--text-primary:\s*#f8fafc/i);
+  assert.match(css, /\.sqmem-sq-dark\s*\{[^}]*var\(--square-dark\)/);
+  assert.match(css, /\.sqmem-sq-light\s*\{[^}]*var\(--square-light\)/);
+  assert.match(css, /\.sqmem-sq\s*\{[^}]*var\(--board-border\)/);
+  assert.match(css, /\.sqmem-coord\s*\{[^}]*var\(--coordinates\)/);
+  assert.match(css, /\.sqmem-board > \.board-frame\s*\{[^}]*var\(--board-border\)/);
+  assert.match(css, /\.sqmem\s*\{[^}]*background:\s*var\(--app-bg\)/);
+  assert.match(css, /\.sqmem\s*\{[^}]*color:\s*var\(--text-primary\)/);
+  assert.match(css, /\.sqmem-boards\s*\{[^}]*background:\s*var\(--panel-bg\)/);
+  assert.match(css, /\.sqmem-frame\s*\{[^}]*background:\s*var\(--panel-bg\)/);
+  assert.match(css, /\.sqmem-frame-tools\s*\{[^}]*background:\s*var\(--panel-bg\)/);
+  assert.match(css, /\.sqmem-dock\s*\{[^}]*background:\s*var\(--panel-bg\)/);
+  assert.match(
+    css,
+    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*var\(--glow-amber\)/,
+  );
+  assert.match(
+    css,
+    /\.sqmem-sq\.is-hit,\s*\.sqmem-sq-light\.is-hit,\s*\.sqmem-sq-dark\.is-hit\s*\{[^}]*var\(--success-green\)/,
+  );
+  assert.match(
+    css,
+    /\.sqmem-sq\.is-miss,\s*\.sqmem-sq-light\.is-miss,\s*\.sqmem-sq-dark\.is-miss\s*\{[^}]*var\(--error-red\)/,
+  );
   assert.match(css, /\.sqmem-board\s*\{[^}]*place-items:\s*center/);
   assert.doesNotMatch(css, /\.sqmem-start\s*\{[^}]*background:\s*#23483c/);
   assert.match(css, /\.sqmem-start\s*\{[^}]*backdrop-filter:\s*blur/);
