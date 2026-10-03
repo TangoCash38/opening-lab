@@ -139,38 +139,25 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.doesNotMatch(copy, /Learn the book/);
 });
 
-test("homepage plays two Square Memory rounds after three Legal's Mate cycles", () => {
+test("homepage board only plays Legal's Mate", () => {
   const demo = src("src/components/opening-lab/landing-mate-demo.tsx");
-  assert.match(demo, /const CYCLE = 4/);
-  assert.match(demo, /const MEMORY_SLOT = 3/);
-  assert.match(demo, /run % CYCLE === MEMORY_SLOT/);
+  const board = src("src/components/opening-lab/chess-board.tsx");
   assert.match(demo, /setPhase\("practice"\)/);
   assert.match(demo, /await playLine\(true\)/);
   assert.match(demo, /setPhase\("test"\)/);
   assert.match(demo, /await playLine\(false\)/);
-  assert.match(demo, /Try the new Square Memory game for free\./);
-  assert.match(demo, /Try Square Memory free\. Tap Square Memory game to play\./);
-  assert.doesNotMatch(demo, /What's new|What&apos;s new/);
-  assert.match(demo, /big-red-portrait\.png/);
-  assert.match(demo, /const MEMORY_ROUNDS = 2/);
-  assert.match(demo, /let length = 2/);
-  assert.match(demo, /length \+= 2/);
-  assert.match(demo, /round <= MEMORY_ROUNDS/);
-  assert.doesNotMatch(demo, /squares\.slice\(0,\s*4\)/);
-  assert.match(demo, /FLASH_MS/);
-  assert.match(demo, /data-landing-memory-invite/);
-  assert.match(demo, /data-landing-memory-note/);
-  assert.match(demo, /memoryFlash=\{flash\}/);
-  assert.match(css, /\.sq-memory-flash/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce\)[\s\S]*\.landing-memory-pop\s*\{[^}]*animation:\s*none/);
+  assert.match(demo, /Legal’s Mate plays on its own/);
+  assert.doesNotMatch(demo, /memory|Square Memory|FLASH_MS|big-red|Big Red|CYCLE|MEMORY_/);
+  assert.doesNotMatch(demo, /isPlayApp|isPlayWrap/);
+  assert.doesNotMatch(board, /memoryFlash|sq-memory-flash|data-memory-flash/);
+  assert.doesNotMatch(css, /landing-memory-pop|landing-memory-invite|sq-memory-flash/);
   assert.doesNotMatch(landing, /What&apos;s new|What's new/);
   assert.match(landing, /Square Memory game/);
   assert.match(landing, /data-landing-memory-new/);
-  assert.match(demo, /data-landing-demo-cycle="3-mate-2-memory"/);
-  assert.doesNotMatch(demo, /isPlayApp|isPlayWrap|showMemory/);
+  assert.match(landing, />\s*New\s*</);
   const demoAt = landing.indexOf("<LandingMateDemo />");
   const cardGate = landing.indexOf("showMemory ?");
-  assert.ok(demoAt > 0 && cardGate > demoAt, "the board cycle is not behind the Play card gate");
+  assert.ok(demoAt > 0 && cardGate > demoAt);
 });
 
 test("landing board plays itself and the app prompt is gone", () => {

@@ -75,8 +75,6 @@ type Props = {
    * default everywhere else — the pack frame only opts in when they fit.
    */
   frameCoords?: boolean;
-  /** One Square Memory flash on the homepage preview. */
-  memoryFlash?: Square | null;
 };
 
 type PlacedPiece = {
@@ -336,7 +334,6 @@ export function ChessBoard({
   arrows,
   hintMoves,
   frameCoords = false,
-  memoryFlash = null,
 }: Props) {
   const completeRef = useRef(onSlideComplete);
   completeRef.current = onSlideComplete;
@@ -634,7 +631,6 @@ export function ChessBoard({
       const isLegal = legalTargets.has(sq);
       const isLastFrom = lastMove?.from === sq;
       const isLastTo = lastMove?.to === sq;
-      const isMemoryFlash = memoryFlash === sq;
 
       const rows = fenBoard.split("/");
       const fenRow = rows[rr]!.replace(/\d/g, (n) => ".".repeat(+n));
@@ -645,7 +641,6 @@ export function ChessBoard({
           key={sq}
           type="button"
           data-sq={sq}
-          data-memory-flash={isMemoryFlash ? "true" : undefined}
           disabled={!interactive}
           style={isDraggablePiece ? { touchAction: "none" } : undefined}
           onClick={() => {
@@ -664,7 +659,6 @@ export function ChessBoard({
             isWrong ? "sq-wrong" : "",
             isFrom ? "sq-hint-from" : "",
             isTo ? "sq-hint-to" : "",
-            isMemoryFlash ? "sq-memory-flash" : "",
             !isFrom && !isTo && !isWrong && !isSelected && isLastFrom
               ? "sq-last-from"
               : "",
