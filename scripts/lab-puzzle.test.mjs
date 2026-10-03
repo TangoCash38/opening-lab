@@ -78,7 +78,7 @@ test("website home shows the puzzle card only outside the Play wrap", () => {
   assert.match(landing, /setShowPuzzle\(!isPlayApp\(\)\)/);
   const puzzle = landing.indexOf("data-landing-puzzle");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(openNow >= 0 && puzzle > openNow, "puzzle card sits under the open packs");
+  assert.ok(openNow >= 0 && puzzle < openNow, "puzzle card sits under the front board");
   assert.match(landing, /showPuzzle \?/);
   assert.match(landing, /t\("Today's puzzle"\)/);
   assert.match(landing, /t\("White to move · Mate in 2"\)/);
