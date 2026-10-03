@@ -222,9 +222,12 @@ test("Square Memory game stays on the top bar and opens the free game", () => {
   assert.match(chip, /className="landing-nav-link"/);
   assert.match(chip, /to="\/square-memory"/);
   assert.match(chip, />\s*Square Memory game\s*</);
-  assert.doesNotMatch(landing, /What's new|What&apos;s new|>New</);
+  assert.match(chip, /data-landing-memory-new[\s\S]*?>\s*New\s*</);
+  assert.doesNotMatch(landing, /What's new|What&apos;s new/);
   assert.doesNotMatch(chip, /isPlayApp|showMemory/);
   assert.doesNotMatch(css, /landing-memory-flash|landing-memory-chip|landing-memory-new|landing-nav-pair/);
+  assert.match(css, /\.landing-nav-new\s*\{[^}]*font-size:\s*0\.62rem/);
+  assert.doesNotMatch(css, /\.landing-nav-new\s*\{[^}]*(#ffe400|animation)/);
   assert.match(menu, /data-menu-account/);
   assert.match(menu, /data-menu-feedback/);
   assert.match(menu, /data-menu-support/);

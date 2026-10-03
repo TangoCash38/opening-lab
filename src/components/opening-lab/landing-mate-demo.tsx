@@ -23,9 +23,10 @@ const BIG_RED = "/coach/ruy-lopez-white/big-red-portrait.png";
 type Phase = "practice" | "test" | "memory";
 
 /**
- * Homepage board. Legal’s Mate plays itself: Practice with hints, then Test
- * with none. After three of those plays, two Square Memory rounds flash
- * on the board, then Legal’s Mate returns.
+ * Homepage board, on the public site and in the Play webview.
+ * Legal’s Mate plays itself: Practice with hints, then Test with none.
+ * After three of those plays, two Square Memory rounds flash on the board,
+ * then Legal’s Mate returns. This is not gated on the Play app.
  */
 export function LandingMateDemo() {
   const script = useMemo(() => legalMateLine()?.line.plies ?? [], []);
@@ -175,6 +176,7 @@ export function LandingMateDemo() {
     <div
       className="landing-demo"
       data-landing-demo
+      data-landing-demo-cycle="3-mate-2-memory"
       data-landing-demo-phase={phase}
       data-landing-demo-ply={ply}
       data-landing-memory-round={phase === "memory" ? memoryRound : undefined}

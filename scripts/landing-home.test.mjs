@@ -165,6 +165,12 @@ test("homepage plays two Square Memory rounds after three Legal's Mate cycles", 
   assert.match(css, /prefers-reduced-motion:\s*reduce\)[\s\S]*\.landing-memory-pop\s*\{[^}]*animation:\s*none/);
   assert.doesNotMatch(landing, /What&apos;s new|What's new/);
   assert.match(landing, /Square Memory game/);
+  assert.match(landing, /data-landing-memory-new/);
+  assert.match(demo, /data-landing-demo-cycle="3-mate-2-memory"/);
+  assert.doesNotMatch(demo, /isPlayApp|isPlayWrap|showMemory/);
+  const demoAt = landing.indexOf("<LandingMateDemo />");
+  const cardGate = landing.indexOf("showMemory ?");
+  assert.ok(demoAt > 0 && cardGate > demoAt, "the board cycle is not behind the Play card gate");
 });
 
 test("landing board plays itself and the app prompt is gone", () => {
