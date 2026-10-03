@@ -6092,3 +6092,453 @@ html[data-color-scheme="dark"] .sqmem-start {
     font-size: 0.68rem;
   }
 }
+
+/* Grandmaster Vision — wooden tournament board. Website page only. */
+.gmv {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: max(0.7rem, env(safe-area-inset-top, 0px)) max(0.85rem, env(safe-area-inset-right, 0px))
+    max(1.2rem, env(safe-area-inset-bottom, 0px)) max(0.85rem, env(safe-area-inset-left, 0px));
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(255, 236, 206, 0.55), transparent 46%),
+    linear-gradient(180deg, #f4ead8 0%, #e7d3b4 48%, #d9c09a 100%);
+  color: #2c1c12;
+  font-family: var(--font-sans);
+}
+
+.gmv-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  max-width: 44rem;
+  margin: 0 auto 0.65rem;
+}
+
+.gmv-home {
+  flex: 0 0 auto;
+  margin-top: 0.35rem;
+  color: #6b3a22;
+  font-size: 0.92rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.gmv-home:hover {
+  text-decoration: underline;
+}
+
+.gmv-heading {
+  min-width: 0;
+}
+
+.gmv-title {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.gmv-lead,
+.gmv-status,
+.gmv-score-note,
+.gmv-time {
+  margin: 0.2rem 0 0;
+  color: #5c4332;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.gmv-levels {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.45rem;
+  max-width: 44rem;
+  margin: 0 auto 0.75rem;
+}
+
+.gmv-levels button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  min-height: 3.4rem;
+  padding: 0.4rem 0.5rem 0.45rem;
+  border: 1px solid rgba(62, 36, 18, 0.22);
+  border-radius: 0.7rem;
+  background: rgba(255, 250, 242, 0.72);
+  color: #2c1c12;
+  text-align: left;
+  cursor: pointer;
+}
+
+.gmv-levels button.is-on {
+  border-color: #6b3a22;
+  background: #6b3a22;
+  color: #f8ecd8;
+}
+
+.gmv-levels button.is-on .gmv-lv-range {
+  color: rgba(248, 236, 216, 0.82);
+}
+
+.gmv-lv-num {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.gmv-lv-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.gmv-lv-range {
+  color: #6d5644;
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.gmv-levels[data-compact="true"] {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.28rem;
+}
+
+.gmv-levels[data-compact="true"] button {
+  align-items: center;
+  min-height: 2.6rem;
+  padding: 0.2rem;
+  text-align: center;
+}
+
+.gmv-levels[data-compact="true"] .gmv-lv-name,
+.gmv-levels[data-compact="true"] .gmv-lv-range {
+  display: none;
+}
+
+.gmv-status {
+  max-width: 44rem;
+  margin: 0 auto 0.45rem;
+  min-height: 1.3rem;
+}
+
+.gmv-count {
+  max-width: 34rem;
+  height: 0.72rem;
+  margin: 0 auto 0.55rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #3a2416;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.gmv-count-idle {
+  visibility: hidden;
+}
+
+.gmv-count-fill {
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(180deg, #f3ddb0 0%, #e2b15a 100%);
+}
+
+.gmv-frame {
+  position: relative;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 0.7rem;
+  border-radius: 0.45rem;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 226, 186, 0.05) 0 2px,
+      transparent 2px 7px
+    ),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 6px),
+    linear-gradient(145deg, #8a5a34 0%, #4a2c18 38%, #6b4124 68%, #2e1a10 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 180, 0.28),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.18),
+    0 16px 30px rgba(48, 24, 10, 0.28);
+}
+
+.gmv-frame.is-wipe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(46, 26, 16, 0) 0%,
+    rgba(255, 244, 220, 0.55) 46%,
+    rgba(46, 26, 16, 0.2) 100%
+  );
+  animation: gmv-shutter 0.32s linear both;
+  pointer-events: none;
+}
+
+@keyframes gmv-shutter {
+  from {
+    transform: translateX(-105%);
+  }
+  to {
+    transform: translateX(105%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gmv-frame.is-wipe::after {
+    animation: none;
+  }
+}
+
+.gmv-grid {
+  user-select: none;
+}
+
+.gmv-rank-row,
+.gmv-file-row {
+  display: grid;
+  grid-template-columns: 1.4rem repeat(8, minmax(0, 1fr));
+}
+
+.gmv-sq {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  appearance: none;
+}
+
+.gmv-sq[aria-disabled="true"] {
+  cursor: default;
+}
+
+.gmv-sq.is-light {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 42%),
+    #f0d2a4;
+}
+
+.gmv-sq.is-dark {
+  background:
+    linear-gradient(180deg, rgba(255, 214, 170, 0.12), transparent 40%),
+    #7a4324;
+}
+
+.gmv-sq.is-armed {
+  box-shadow: inset 0 0 0 3px #e6b15a;
+}
+
+.gmv-sq.is-ok::after,
+.gmv-sq.is-bad::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gmv-sq.is-ok::after {
+  background: rgba(32, 140, 58, 0.45);
+  box-shadow: inset 0 0 0 3px #187233;
+}
+
+.gmv-sq.is-bad::after {
+  background: rgba(176, 36, 32, 0.42);
+  box-shadow: inset 0 0 0 3px #9d1b18;
+}
+
+.gmv-live,
+.gmv-ghost {
+  display: grid;
+  place-items: center;
+  width: 86%;
+  height: 86%;
+}
+
+.gmv-live {
+  position: relative;
+  z-index: 1;
+}
+
+.gmv-ghost {
+  position: absolute;
+  inset: 7%;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  opacity: 0.55;
+  filter: sepia(1) saturate(7) hue-rotate(-16deg);
+  pointer-events: none;
+}
+
+.gmv-sq.is-bad .gmv-live {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  z-index: 2;
+  width: 46%;
+  height: 46%;
+}
+
+.gmv-live .chess-piece-img,
+.gmv-ghost .chess-piece-img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 1px rgba(40, 18, 6, 0.38));
+}
+
+.gmv-coord {
+  display: grid;
+  place-items: center;
+  color: #fff6e8;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.gmv-coord-file {
+  height: 1.4rem;
+}
+
+.gmv-tray {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 34rem;
+  margin: 0.75rem auto 0;
+  padding: 0.55rem 0.6rem 0.65rem;
+  border-radius: 0.7rem;
+  background: rgba(255, 248, 238, 0.76);
+  box-shadow: inset 0 0 0 1px rgba(62, 36, 18, 0.12);
+}
+
+.gmv-tray-row {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.gmv-tray-label {
+  color: #5c4332;
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.gmv-tray-pieces {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.28rem;
+}
+
+.gmv-tray-piece {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-height: 2.6rem;
+  padding: 0.1rem;
+  border: 1px solid rgba(62, 36, 18, 0.16);
+  border-radius: 0.5rem;
+  background: #f7efe2;
+  cursor: grab;
+  touch-action: none;
+}
+
+.gmv-tray-piece.is-on {
+  border-color: #6b3a22;
+  box-shadow: inset 0 0 0 2px #6b3a22;
+}
+
+.gmv-tray-piece .chess-piece-img {
+  width: 86%;
+  height: 86%;
+}
+
+.gmv-actions,
+.gmv-score {
+  max-width: 34rem;
+  margin: 0.75rem auto 0;
+}
+
+.gmv-submit,
+.gmv-next,
+.gmv-again {
+  min-height: 2.8rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.gmv-submit,
+.gmv-next {
+  width: 100%;
+  border: 0;
+  background: #4a2c18;
+  color: #f8ecd8;
+}
+
+.gmv-again {
+  width: 100%;
+  border: 1px solid rgba(62, 36, 18, 0.35);
+  background: transparent;
+  color: #3a2416;
+}
+
+.gmv-score-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.gmv-accuracy {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.gmv-float {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 3.4rem;
+  height: 3.4rem;
+  pointer-events: none;
+}
+
+.gmv-float img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 6px rgba(40, 18, 6, 0.4));
+}
+
+.gmv-sq,
+.gmv-frame {
+  touch-action: none;
+}
+
+@media (max-width: 720px) {
+  .gmv-levels:not([data-compact="true"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
