@@ -139,7 +139,7 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.doesNotMatch(copy, /Learn the book/);
 });
 
-test("homepage plays one Square Memory preview after three Legal's Mate cycles", () => {
+test("homepage plays two Square Memory rounds after three Legal's Mate cycles", () => {
   const demo = src("src/components/opening-lab/landing-mate-demo.tsx");
   assert.match(demo, /const CYCLE = 4/);
   assert.match(demo, /const MEMORY_SLOT = 3/);
@@ -152,7 +152,11 @@ test("homepage plays one Square Memory preview after three Legal's Mate cycles",
   assert.match(demo, /Try Square Memory free\. Tap Square Memory game to play\./);
   assert.doesNotMatch(demo, /What's new|What&apos;s new/);
   assert.match(demo, /big-red-portrait\.png/);
-  assert.match(demo, /SQUARE_MEMORY_LINE\.squares\.slice\(0,\s*4\)/);
+  assert.match(demo, /const MEMORY_ROUNDS = 2/);
+  assert.match(demo, /let length = 2/);
+  assert.match(demo, /length \+= 2/);
+  assert.match(demo, /round <= MEMORY_ROUNDS/);
+  assert.doesNotMatch(demo, /squares\.slice\(0,\s*4\)/);
   assert.match(demo, /FLASH_MS/);
   assert.match(demo, /data-landing-memory-invite/);
   assert.match(demo, /data-landing-memory-note/);

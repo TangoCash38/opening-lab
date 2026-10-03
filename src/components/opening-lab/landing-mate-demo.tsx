@@ -10,21 +10,22 @@ const HINT_MS = 480;
 const THINK_MS = 260;
 const MOVE_GAP_MS = 140;
 const HOLD_MS = 800;
-/** Three Legal's Mate cycles, then one Square Memory preview. */
+/** Three Legal's Mate cycles, then the Square Memory preview. */
 const CYCLE = 4;
 const MEMORY_SLOT = 3;
-/** Opening two moves of the free line. A flash preview, not a game to win. */
-const PREVIEW_SQUARES = SQUARE_MEMORY_LINE.squares.slice(0, 4) as Square[];
+/** Two watch rounds, growing the way the free game does: 2 squares, then 4. */
+const MEMORY_ROUNDS = 2;
 const NOTE_LEAD_MS = 700;
-const NOTE_HOLD_MS = 900;
+const ROUND_GAP_MS = 700;
+const NOTE_HOLD_MS = 800;
 const BIG_RED = "/coach/ruy-lopez-white/big-red-portrait.png";
 
 type Phase = "practice" | "test" | "memory";
 
 /**
  * Homepage board. Legal’s Mate plays itself: Practice with hints, then Test
- * with none. After three of those cycles, one short Square Memory preview
- * plays, then Legal’s Mate returns.
+ * with none. After three of those plays, two Square Memory rounds flash
+ * on the board, then Legal’s Mate returns.
  */
 export function LandingMateDemo() {
   const script = useMemo(() => legalMateLine()?.line.plies ?? [], []);
@@ -36,6 +37,7 @@ export function LandingMateDemo() {
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [flash, setFlash] = useState<Square | null>(null);
+  const [memoryRound, setMemoryRound] = useState(0);
   const [run, setRun] = useState(0);
   const game = useMemo(() => new Chess(fen), [fen]);
 
@@ -57,17 +59,31 @@ export function LandingMateDemo() {
       setFlash(null);
     };
 
-    const playMemory = async () => {
-      setPhase("memory");
-      resetBoard();
-      await later(NOTE_LEAD_MS);
-      for (const square of PREVIEW_SQUARES) {
+    const playRound = async (length: number) => {
+      for (let i = 0; i < length; i++) {
         if (cancelled) return;
-        setFlash(square);
+        setFlash(SQUARE_MEMORY_LINE.squares[i] as Square);
         await later(FLASH_MS);
         if (cancelled) return;
         setFlash(null);
         await later(GAP_MS);
+      }
+    };
+
+    const playMemory = async () => {
+      setPhase("memory");
+      resetBoard();
+      await later(NOTE_LEAD_MS);
+      let length = 2;
+      for (let round = 1; round <= MEMORY_ROUNDS; round++) {
+        if (cancelled) return;
+        setMemoryRound(round);
+        await playRound(Math.min(length, SQUARE_MEMORY_LINE.squares.length));
+        length += 2;
+        if (round < MEMORY_ROUNDS) {
+          setFlash(null);
+          await later(ROUND_GAP_MS);
+        }
       }
       if (cancelled) return;
       await later(NOTE_HOLD_MS);
@@ -156,7 +172,13 @@ export function LandingMateDemo() {
   }, [fen, phase, ply, script, showHint]);
 
   return (
-    <div className="landing-demo" data-landing-demo data-landing-demo-phase={phase} data-landing-demo-ply={ply}>
+    <div
+      className="landing-demo"
+      data-landing-demo
+      data-landing-demo-phase={phase}
+      data-landing-demo-ply={ply}
+      data-landing-memory-round={phase === "memory" ? memoryRound : undefined}
+    >
       {phase === "memory" ? (
         <p className="landing-memory-invite" data-landing-memory-invite>
           Try the new Square Memory game for free.
