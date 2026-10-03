@@ -338,10 +338,7 @@ export function SquareMemory() {
     if (phase === "reveal") commit(titleState(best));
   }
 
-  const showBoard = snap.phase === "title" || snap.phase === "reveal";
-
   useEffect(() => {
-    if (!showBoard) return;
     const ctrl = new AbortController();
     Promise.all(
       CHOICES.map(async (item) => {
@@ -362,7 +359,7 @@ export function SquareMemory() {
         setBoardNote("The board is not available right now.");
       });
     return () => ctrl.abort();
-  }, [showBoard, boardVersion]);
+  }, [boardVersion]);
 
   async function saveTime(event: FormEvent) {
     event.preventDefault();
@@ -447,39 +444,41 @@ export function SquareMemory() {
           )}
         </button>
       </header>
-      {snap.phase === "title" ? (
-        <p className="sqmem-instruction">Watch the squares. Tap them back in order.</p>
+      {snap.phase === "title" || playing ? (
+        <p
+          className="sqmem-instruction"
+          data-held={playing ? "" : undefined}
+          aria-hidden={playing ? true : undefined}
+        >
+          Watch the squares. Tap them back in order.
+        </p>
       ) : null}
 
       <div className={perfect && cheerOn ? "sqmem-table is-cheer" : "sqmem-table"}>
-        {showBoard ? (
-          <div className="sqmem-boards" data-square-memory-boards data-selected={choice.id}>
-            <div className="sqmem-plaque-col" data-square-memory-active={choice.id}>
-              <LinePlaque id={choice.id} rows={boards[choice.id]} selected />
-              <button
-                type="button"
-                className="sqmem-all-times"
-                data-square-memory-all-times
-                onClick={() => setAllTimes(true)}
-              >
-                All times
-              </button>
-            </div>
-            <div className="sqmem-plaque-pair">
-              {otherChoices.map((item) => (
-                <LinePlaque key={item.id} id={item.id} rows={boards[item.id]} selected={false} />
-              ))}
-            </div>
-            {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
+        <div className="sqmem-boards" data-square-memory-boards data-selected={choice.id}>
+          <div className="sqmem-plaque-col" data-square-memory-active={choice.id}>
+            <LinePlaque id={choice.id} rows={boards[choice.id]} selected />
+            <button
+              type="button"
+              className="sqmem-all-times"
+              data-square-memory-all-times
+              onClick={() => setAllTimes(true)}
+            >
+              All times
+            </button>
           </div>
-        ) : null}
+          <div className="sqmem-plaque-pair">
+            {otherChoices.map((item) => (
+              <LinePlaque key={item.id} id={item.id} rows={boards[item.id]} selected={false} />
+            ))}
+          </div>
+          {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
+        </div>
 
         <div className="sqmem-frame">
-          {snap.phase === "title" || revealing ? (
-            <div className="sqmem-frame-tools">
-              <LinePick choiceId={choice.id} onChoose={chooseLine} />
-            </div>
-          ) : null}
+          <div className="sqmem-frame-tools">
+            <LinePick choiceId={choice.id} onChoose={chooseLine} />
+          </div>
 
           {perfect && showClearTime && clearMs != null ? (
             <p className="sqmem-time" data-square-memory-time>
@@ -527,7 +526,7 @@ export function SquareMemory() {
                 : null
             }
           />
-        ) : snap.phase === "title" && bestLabel > 0 ? (
+        ) : bestLabel > 0 ? (
           <p className="sqmem-best" data-square-memory-best>
             Best · {bestLabel} {bestLabel === 1 ? "square" : "squares"}
           </p>
@@ -553,7 +552,7 @@ export function SquareMemory() {
             </button>
           </form>
         ) : null}
-        {showPackLink ? <PackLink choice={choice} /> : null}
+        {showPackLink || playing ? <PackLink choice={choice} /> : null}
       </footer>
       {allTimes ? <AllTimes boards={boards} onClose={() => setAllTimes(false)} /> : null}
     </main>
@@ -873,20 +872,7 @@ function MemoryBoard({
   onStart: () => void;
 }) {
   return (
-    <div
-      className={
-        interactive
-          ? "board-frame board-frame--margin-coords sqmem-live"
-          : "board-frame board-frame--margin-coords"
-      }
-    >
-      <div className="board-margin-ranks" aria-hidden="true">
-        {RANKS.map((rank) => (
-          <span key={rank} className="board-margin-label">
-            {rank}
-          </span>
-        ))}
-      </div>
+    <div className="board-frame">
       <div className="board-frame-inner">
         <div className="sqmem-grid" role="group" aria-label="Chessboard, White at the bottom">
           {RANKS.map((rank) =>
@@ -919,6 +905,16 @@ function MemoryBoard({
                 >
                   {burst?.square === name ? <HitRipple id={burst.id} /> : null}
                   {piece ? <ChessPiece code={pieceCode(piece)} /> : null}
+                  {file === "a" ? (
+                    <span className="sqmem-coord sqmem-coord-rank" aria-hidden="true">
+                      {rank}
+                    </span>
+                  ) : null}
+                  {rank === "1" ? (
+                    <span className="sqmem-coord sqmem-coord-file" aria-hidden="true">
+                      {file}
+                    </span>
+                  ) : null}
                 </button>
               );
             }),
@@ -930,13 +926,6 @@ function MemoryBoard({
             {startLabel}
           </button>
         ) : null}
-      </div>
-      <div className="board-margin-files" aria-hidden="true">
-        {FILES.split("").map((file) => (
-          <span key={file} className="board-margin-label">
-            {file}
-          </span>
-        ))}
       </div>
     </div>
   );
