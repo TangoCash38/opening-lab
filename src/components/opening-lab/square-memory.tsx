@@ -391,6 +391,7 @@ export function SquareMemory() {
   const playing = snap.phase === "watch" || snap.phase === "input" || snap.phase === "punish";
   const revealing = snap.phase === "reveal";
   const line = choice.line;
+  const otherChoices = CHOICES.filter((item) => item.id !== choice.id);
   const plyCount = revealing ? Math.floor(snap.score / 2) : 0;
   const position = revealing ? (line.positions[plyCount] ?? line.positions[0]!) : null;
   const last = revealing && plyCount > 0 ? line.plies[plyCount - 1] : undefined;
@@ -434,13 +435,8 @@ export function SquareMemory() {
       <div className={perfect && cheerOn ? "sqmem-table is-cheer" : "sqmem-table"}>
         {showBoard ? (
           <div className="sqmem-boards" data-square-memory-boards data-selected={choice.id}>
-            <div className="sqmem-plaque-col">
-              <ScorePlaque
-                lineId="ruy"
-                name="Ruy Lopez"
-                rows={boards.ruy}
-                selected={choice.id === "ruy"}
-              />
+            <div className="sqmem-plaque-col" data-square-memory-active={choice.id}>
+              <LinePlaque id={choice.id} rows={boards[choice.id]} selected />
               <button
                 type="button"
                 className="sqmem-all-times"
@@ -451,18 +447,14 @@ export function SquareMemory() {
               </button>
             </div>
             <div className="sqmem-plaque-pair">
-              <ScorePlaque
-                lineId="london"
-                name="London System"
-                rows={boards.london}
-                selected={choice.id === "london"}
-              />
-              <ScorePlaque
-                lineId="qg"
-                name={QG_MEMORY_NAME}
-                rows={boards.qg}
-                selected={choice.id === "qg"}
-              />
+              {otherChoices.map((item) => (
+                <LinePlaque
+                  key={item.id}
+                  id={item.id}
+                  rows={boards[item.id]}
+                  selected={false}
+                />
+              ))}
             </div>
             {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
           </div>
@@ -542,6 +534,24 @@ export function SquareMemory() {
       ) : null}
     </main>
   );
+}
+
+function LinePlaque({
+  id,
+  rows,
+  selected,
+}: {
+  id: MemoryChoice["id"];
+  rows: readonly BoardRow[];
+  selected: boolean;
+}) {
+  if (id === "london") {
+    return <ScorePlaque lineId="london" name="London System" rows={rows} selected={selected} />;
+  }
+  if (id === "qg") {
+    return <ScorePlaque lineId="qg" name={QG_MEMORY_NAME} rows={rows} selected={selected} />;
+  }
+  return <ScorePlaque lineId="ruy" name="Ruy Lopez" rows={rows} selected={selected} />;
 }
 
 function ScorePlaque({

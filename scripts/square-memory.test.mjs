@@ -420,6 +420,16 @@ test("a full clear is timed and only that time can join the shared board", () =>
   assert.match(view, /data-square-memory-boards/);
   assert.match(view, /data-square-memory-leaderboard=\{lineId\}/);
   assert.match(view, /CHOICES\.map\(\(item\) =>/);
+  const active = view.slice(view.indexOf("sqmem-plaque-col"), view.indexOf("sqmem-plaque-pair"));
+  assert.match(active, /data-square-memory-active=\{choice\.id\}/);
+  assert.match(active, /rows=\{boards\[choice\.id\]\}/);
+  assert.match(active, /selected /);
+  assert.doesNotMatch(active, /lineId="ruy"|rows=\{boards\.ruy\}/);
+  assert.match(view, /otherChoices\.map/);
+  assert.doesNotMatch(
+    src("src/styles.css"),
+    /\.sqmem-plaque:not\(\[data-selected="true"\]\) \.sqmem-plaque-row:nth-child\(n \+ 2\) \{\s*display:\s*grid/,
+  );
   assert.match(view, /\/api\/square-memory-scores/);
   assert.doesNotMatch(view, /localStorage\.setItem\([^)]*square-memory-scores/);
   assert.match(api, /getSql\(/);
