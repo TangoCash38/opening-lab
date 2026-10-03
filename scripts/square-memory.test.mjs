@@ -214,10 +214,11 @@ test("Square Memory game stays on the top bar and opens the free game", () => {
   const page = src("src/routes/square-memory.tsx");
   const menu = src("src/components/opening-lab/landing-menu.tsx");
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
+  const feedback = nav.indexOf("data-landing-feedback");
   const memory = nav.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 220, landing.indexOf("data-landing-memory-bar") + 220);
-  assert.ok(memory > 0);
-  assert.doesNotMatch(nav, /data-landing-account|data-landing-feedback|data-landing-support/);
+  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 280, landing.indexOf("data-landing-memory-bar") + 220);
+  assert.ok(feedback > 0 && memory > feedback);
+  assert.doesNotMatch(nav, /data-landing-account|data-landing-support/);
   assert.match(chip, /className="landing-nav-link"/);
   assert.match(chip, /to="\/square-memory"/);
   assert.match(chip, />\s*Square Memory game\s*</);

@@ -140,13 +140,23 @@ export function LandingHome({
           </span>
         </div>
         <nav className="landing-nav" aria-label={t("Site")}>
-          <Link
-            to="/square-memory"
-            className="landing-nav-link"
-            data-landing-memory-bar
-          >
-            Square Memory game
-          </Link>
+          <span className="landing-nav-links">
+            <button
+              type="button"
+              className="landing-nav-link"
+              data-landing-feedback
+              onClick={onFeedback}
+            >
+              {t("Feedback")}
+            </button>
+            <Link
+              to="/square-memory"
+              className="landing-nav-link"
+              data-landing-memory-bar
+            >
+              Square Memory game
+            </Link>
+          </span>
         </nav>
         <div className="landing-tools">
           <ColorSchemeToggle labeled />
@@ -161,6 +171,7 @@ export function LandingHome({
 
       <div className="landing-inner">
         <div className="landing-hero">
+          <div className="landing-hero-main">
           <div className="landing-hero-art">
             <div className="landing-coach-wrap">
               <img
@@ -240,6 +251,7 @@ export function LandingHome({
               ) : null}
             </div>
           ) : null}
+          </div>
           <div className="landing-copy">
             <p id="landing-title" className="landing-sub">
               {t("Practice with hints. Test with none.")}

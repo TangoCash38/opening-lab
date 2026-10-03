@@ -3182,11 +3182,24 @@ html[data-color-scheme="dark"] .app-shell--landing {
 
 .landing-nav {
   display: flex;
-  flex: 0 1 auto;
-  order: 1;
+  flex: 1 1 100%;
+  order: 3;
   align-items: center;
-  gap: 0.15rem 0.6rem;
   min-width: 0;
+}
+
+.landing-nav-links {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.6rem;
+}
+
+@media (min-width: 720px) {
+  .landing-nav {
+    flex: 0 1 auto;
+    order: 1;
+  }
 }
 
 .landing-nav-link {
@@ -3827,16 +3840,12 @@ html[data-color-scheme="dark"] .landing-chip {
   .landing-hero {
     display: grid;
     grid-template-columns: minmax(18rem, 1.05fr) minmax(16rem, 0.95fr);
-    grid-template-areas:
-      "art copy"
-      "under copy";
     align-items: start;
     column-gap: 2rem;
     margin-top: 0.5rem;
   }
 
   .landing-hero-art {
-    grid-area: art;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-start;
@@ -3846,7 +3855,6 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-under-board {
-    grid-area: under;
     margin-top: 0.85rem;
   }
 
@@ -3867,7 +3875,6 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-copy {
-    grid-area: copy;
     text-align: start;
   }
 

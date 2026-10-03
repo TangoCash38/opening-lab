@@ -15,21 +15,20 @@ const email = src("src/lib/email.server.ts");
 const route = src("src/routes/api/inbox.ts");
 const copy = src("src/lib/voice-copy.ts");
 
-test("Feedback and Support live in the menu, not the home top bar", () => {
+test("Feedback sits next to Square Memory on the home bar; Support stays in the menu", () => {
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
   const menu = src("src/components/opening-lab/landing-menu.tsx");
-  assert.doesNotMatch(nav, /data-landing-support|data-landing-feedback/);
-  assert.match(menu, /data-menu-support/);
-  assert.match(menu, /data-menu-feedback/);
+  assert.match(nav, /data-landing-feedback/);
+  assert.doesNotMatch(nav, /data-landing-support/);
   assert.ok(
-    menu.indexOf("data-menu-support") < menu.indexOf("data-menu-feedback"),
-    "Feedback follows Support in the menu",
+    nav.indexOf("data-landing-feedback") < nav.indexOf("data-landing-memory-bar"),
+    "Feedback sits next to Square Memory game",
   );
+  assert.match(nav, /t\("Feedback"\)/);
+  assert.match(menu, /data-menu-support/);
   assert.match(menu, /t\("Support"\)/);
-  assert.match(menu, /t\("Feedback"\)/);
-  assert.match(menu, /onClick=\{\(\) => pick\(onFeedback\)\}/);
   assert.doesNotMatch(menu, /Request a drill pack/);
-  assert.match(landing, /onFeedback=\{onFeedback\}/);
+  assert.match(landing, /onFeedback/);
   assert.match(shell, /onFeedback=\{openFeedback\}/);
   assert.match(shell, /setView\("feedback"\)/);
   assert.match(shell, /FeedbackView/);

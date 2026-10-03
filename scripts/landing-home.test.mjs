@@ -73,7 +73,8 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.doesNotMatch(landing, /data-landing-packs/);
   assert.doesNotMatch(landing, /Drill packs/);
   assert.match(landing, /aria-label=\{t\("Site"\)\}/);
-  assert.doesNotMatch(landing, /data-landing-support|data-landing-feedback|data-landing-account/);
+  assert.match(landing, /data-landing-feedback/);
+  assert.doesNotMatch(landing, /data-landing-support|data-landing-account/);
   assert.doesNotMatch(landing, /className="landing-cta-note"/);
   assert.match(
     landing,
