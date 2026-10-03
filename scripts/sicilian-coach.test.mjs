@@ -47,19 +47,21 @@ function compileCoachPacks(t) {
   return "./scripts/.generated-sicilian-coach/coach-packs.mjs";
 }
 
-test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => {
+test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
   const mp3 = "public/coach/sicilian-black/tango-sicilian-intro.mp3";
   const lineMp3 = "public/coach/sicilian-black/tango-sicilian-line1.mp3";
   const oldMp3 = "public/coach/sicilian-black/sicilian-intro.mp3";
-  const portrait = "public/coach/sicilian-black/tango-portrait.png";
+  const portrait = "public/coach/sicilian-black/king-cedar-portrait.jpg";
+  const oldPortrait = "public/coach/sicilian-black/tango-portrait.png";
   assert.equal(existsSync(join(root, mp3)), true, mp3);
   assert.equal(existsSync(join(root, lineMp3)), true, lineMp3);
   assert.equal(existsSync(join(root, oldMp3)), false, oldMp3);
   assert.ok(statSync(join(root, mp3)).size > 700_000, mp3);
   assert.equal(statSync(join(root, lineMp3)).size, 2_293_292, lineMp3);
   assert.equal(existsSync(join(root, portrait)), true, portrait);
+  assert.equal(existsSync(join(root, oldPortrait)), false, oldPortrait);
   assert.ok(statSync(join(root, portrait)).size > 10_000, portrait);
 
   const coachSrc = src("src/lib/coach-packs.ts");
@@ -79,7 +81,7 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
   assert.doesNotMatch(pricing, /sicilian-intro|tango-portrait/);
   assert.match(hero, /pack\.id === "sicilian-black"/);
   assert.match(hero, /l\.id === "sib1"/);
-  assert.match(hero, /Unpaid visitors still hear Tango/);
+  assert.match(hero, /Unpaid visitors still hear King Cedar/);
   assert.match(hero, /lineTalkOnTapOnly/);
   assert.match(hero, /portrait=\{coachPack\(pack\.id\)\?\.portrait\}/);
   assert.match(hero, /name=\{coachPack\(pack\.id\)\?\.coachName\}/);
@@ -88,9 +90,9 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
   const start = coachSrc.indexOf("[SICILIAN_BLACK_PACK_ID]");
   assert.ok(start >= 0, "coach entry missing");
   const entry = coachSrc.slice(start, coachSrc.indexOf("};", start));
-  assert.match(entry, /coachName: "Tango"/);
+  assert.match(entry, /coachName: "King Cedar"/);
   assert.match(entry, /portrait: SICILIAN_PORTRAIT/);
-  assert.match(entry, /introTitle: "Tango · Sicilian"/);
+  assert.match(entry, /introTitle: "King Cedar · Sicilian"/);
   assert.match(entry, /introAudio: SICILIAN_INTRO_MP3/);
   assert.match(entry, /lineTalkOnTapOnly: true/);
   assert.match(entry, /firstLineId: "sib1"/);
@@ -148,9 +150,9 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
       if (sib1.plies.join(" ") !== book) throw new Error("book changed " + sib1.plies.join(" "));
       const coach = COACH_PACKS["sicilian-black"];
       if (!coach) throw new Error("coach missing");
-      if (coach.coachName !== "Tango") throw new Error("name " + coach.coachName);
+      if (coach.coachName !== "King Cedar") throw new Error("name " + coach.coachName);
       if (coach.portrait !== SICILIAN_PORTRAIT) throw new Error("portrait");
-      if (coach.portrait !== "/coach/sicilian-black/tango-portrait.png") throw new Error("portrait path");
+      if (coach.portrait !== "/coach/sicilian-black/king-cedar-portrait.jpg") throw new Error("portrait path");
       if (coach.introAudio !== SICILIAN_INTRO_MP3) throw new Error("audio");
       if (coach.introAudio !== "/coach/sicilian-black/tango-sicilian-intro.mp3") throw new Error("audio path");
       if (coach.introAudio.includes("sicilian-intro.mp3") && !coach.introAudio.endsWith("tango-sicilian-intro.mp3")) {
@@ -159,7 +161,7 @@ test("Tango introduces Sicilian for Black; Skip stays on the line list", (t) => 
       if (coach.introAudioFallbackSec !== SICILIAN_INTRO_SEC || SICILIAN_INTRO_SEC !== 50.21) {
         throw new Error("length " + coach.introAudioFallbackSec);
       }
-      if (coach.introTitle !== "Tango · Sicilian") throw new Error("title");
+      if (coach.introTitle !== "King Cedar · Sicilian") throw new Error("title");
       if (coach.lineTalkOnTapOnly !== true) throw new Error("tap only");
       if (coach.firstLineId !== "sib1") throw new Error("line id");
       if (coach.firstLineAudio !== SICILIAN_LINE_MP3) throw new Error("line audio " + coach.firstLineAudio);

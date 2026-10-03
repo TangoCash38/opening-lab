@@ -24,7 +24,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Línea 1 · Legal's Mate",
     "Line 1": "Línea 1",
     "Big Red · Ruy Lopez": "Big Red · Apertura española",
-    "Tango · Sicilian": "Tango · Siciliana",
+    "King Cedar · Sicilian": "King Cedar · Siciliana",
   },
   zh: {
     Mute: "静音",
@@ -43,7 +43,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "第 1 线 · Legal's Mate",
     "Line 1": "第 1 线",
     "Big Red · Ruy Lopez": "Big Red · 西班牙开局",
-    "Tango · Sicilian": "Tango · 西西里防御",
+    "King Cedar · Sicilian": "King Cedar · 西西里防御",
   },
   fr: {
     Mute: "Muet",
@@ -62,7 +62,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Ligne 1 · Legal's Mate",
     "Line 1": "Ligne 1",
     "Big Red · Ruy Lopez": "Big Red · Partie espagnole",
-    "Tango · Sicilian": "Tango · Sicilienne",
+    "King Cedar · Sicilian": "King Cedar · Sicilienne",
   },
   de: {
     Mute: "Stumm",
@@ -81,7 +81,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Linie 1 · Legal's Mate",
     "Line 1": "Linie 1",
     "Big Red · Ruy Lopez": "Big Red · Spanische Partie",
-    "Tango · Sicilian": "Tango · Sizilianisch",
+    "King Cedar · Sicilian": "King Cedar · Sizilianisch",
   },
   pt: {
     Mute: "Mudo",
@@ -100,7 +100,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Linha 1 · Legal's Mate",
     "Line 1": "Linha 1",
     "Big Red · Ruy Lopez": "Big Red · Abertura Espanhola",
-    "Tango · Sicilian": "Tango · Siciliana",
+    "King Cedar · Sicilian": "King Cedar · Siciliana",
   },
   ru: {
     Mute: "Тихо",
@@ -119,7 +119,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Линия 1 · Legal's Mate",
     "Line 1": "Линия 1",
     "Big Red · Ruy Lopez": "Big Red · Испанская партия",
-    "Tango · Sicilian": "Tango · Сицилианская",
+    "King Cedar · Sicilian": "King Cedar · Сицилианская",
   },
   it: {
     Mute: "Muto",
@@ -138,7 +138,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Linea 1 · Legal's Mate",
     "Line 1": "Linea 1",
     "Big Red · Ruy Lopez": "Big Red · Partita spagnola",
-    "Tango · Sicilian": "Tango · Siciliana",
+    "King Cedar · Sicilian": "King Cedar · Siciliana",
   },
   hi: {
     Mute: "मौन",
@@ -157,7 +157,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "लाइन 1 · Legal's Mate",
     "Line 1": "लाइन 1",
     "Big Red · Ruy Lopez": "Big Red · स्पेनिश ओपनिंग",
-    "Tango · Sicilian": "Tango · सिसिलियन",
+    "King Cedar · Sicilian": "King Cedar · सिसिलियन",
   },
   ja: {
     Mute: "ミュート",
@@ -176,7 +176,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "ライン 1 · Legal's Mate",
     "Line 1": "ライン 1",
     "Big Red · Ruy Lopez": "Big Red · ルイ・ロペス",
-    "Tango · Sicilian": "Tango · シシリアン",
+    "King Cedar · Sicilian": "King Cedar · シシリアン",
   },
   ar: {
     Mute: "كتم",
@@ -195,7 +195,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "الخط 1 · Legal's Mate",
     "Line 1": "الخط 1",
     "Big Red · Ruy Lopez": "Big Red · الافتتاح الإسباني",
-    "Tango · Sicilian": "Tango · الصقلية",
+    "King Cedar · Sicilian": "King Cedar · الصقلية",
   },
   tr: {
     Mute: "Sessiz",
@@ -214,7 +214,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
     "Line 1 · Legal's Mate": "Hat 1 · Legal's Mate",
     "Line 1": "Hat 1",
     "Big Red · Ruy Lopez": "Big Red · İspanyol Açılışı",
-    "Tango · Sicilian": "Tango · Sicilya",
+    "King Cedar · Sicilian": "King Cedar · Sicilya",
   },
 };
 

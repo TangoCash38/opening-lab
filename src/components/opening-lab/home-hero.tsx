@@ -384,7 +384,7 @@ export function HomeHero({
         // Paid lines stay locked. Unpaid visitors still hear Big Red.
         line = pack.lines.find((l) => l.id === "rlw1");
       } else if (pack.id === "sicilian-black") {
-        // Paid lines stay locked. Unpaid visitors still hear Tango.
+        // Paid lines stay locked. Unpaid visitors still hear King Cedar.
         line = pack.lines.find((l) => l.id === "sib1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
