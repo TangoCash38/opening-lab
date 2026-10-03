@@ -126,6 +126,7 @@ test("Grandmaster Vision is a website menu item and stays off the Square Memory 
   assert.match(menu, /data-menu-vision/);
   assert.match(menu, /to="\/grandmaster-vision"/);
   assert.match(menu, /Grandmaster Vision/);
+  assert.match(menu, /window\.location\.assign\("\/grandmaster-vision"\)/);
   assert.match(menu, /isPlayApp\(\)/);
   assert.match(menu, /setOnWebsite\(!isPlayApp\(\)\)/);
   assert.doesNotMatch(landing, /grandmaster-vision|Grandmaster Vision/);
