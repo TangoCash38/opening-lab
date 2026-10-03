@@ -208,47 +208,56 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
-test("Square Memory sits quietly next to Account and opens the free game", () => {
+test("the main screen leads with Play Square Memory free", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const css = src("src/styles.css");
   const page = src("src/routes/square-memory.tsx");
-  const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
-  const feedback = nav.indexOf("data-landing-feedback");
-  const account = nav.indexOf("data-landing-account");
-  const memory = nav.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 220, landing.indexOf("data-landing-memory-bar") + 320);
-  assert.ok(feedback > 0 && account > feedback && memory > account);
-  assert.match(chip, /className="landing-nav-link"/);
-  assert.match(chip, /to="\/square-memory"/);
-  assert.match(chip, />\s*Square Memory game\s*</);
+  const play = landing.slice(
+    landing.indexOf("data-landing-memory-play") - 200,
+    landing.indexOf("data-landing-memory-play") + 240,
+  );
+  assert.match(play, /to="\/square-memory"/);
+  assert.match(play, /Play Square Memory free/);
+  assert.match(play, /website \?/);
+  assert.doesNotMatch(play, /isPlayApp|showMemory/);
   assert.doesNotMatch(landing, /What's new|What&apos;s new|>New</);
-  assert.doesNotMatch(chip, /isPlayApp|showMemory/);
+  assert.doesNotMatch(landing, /data-landing-memory-bar/);
+  assert.doesNotMatch(landing, />\s*Square Memory game\s*</);
+  const art = landing.indexOf("landing-hero-art");
+  const button = landing.indexOf("data-landing-memory-play");
+  const openNow = landing.indexOf('t("Open now")');
+  assert.ok(art >= 0 && button > art && openNow > button);
+  assert.match(css, /\.landing-memory-play\s*\{[^}]*min-height:\s*3\.5rem/);
+  assert.match(css, /\.landing-memory-play\s*\{[^}]*font-size:\s*1\.12rem/);
   assert.doesNotMatch(css, /landing-memory-flash|landing-memory-chip|landing-memory-new/);
   assert.match(page, /<SquareMemory \/>/);
   assert.doesNotMatch(page, /readSquareMemoryPlayPreview|buyPack|checkout|unlock|stripe/i);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
 });
 
-test("website home shows Square Memory under the gym and Play does not", () => {
+test("website home leads with Square Memory and Play keeps the hidden card", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const page = src("src/routes/square-memory.tsx");
   const view = src("src/components/opening-lab/square-memory.tsx");
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const css = src("src/styles.css");
 
+  assert.match(landing, /setWebsite\(!isPlayApp\(\)\)/);
   assert.match(landing, /setShowMemory\(!isPlayApp\(\) \|\| readSquareMemoryPlayPreview\(\)\)/);
   assert.match(landing, /data-play-memory-preview/);
   assert.match(landing, /nextSquareMemoryPreviewTaps/);
   assert.doesNotMatch(landing, /Test mode|Preview Square Memory/);
-  assert.match(landing, /showMemory \?/);
+  assert.match(landing, /showMemory && !website \?/);
   assert.match(landing, /data-landing-square-memory/);
+  assert.match(landing, /data-landing-memory-play/);
   assert.match(landing, /to="\/square-memory"/);
-  assert.match(landing, /Square Memory/);
+  assert.match(landing, /Play Square Memory free/);
   const art = landing.indexOf("landing-hero-art");
+  const play = landing.indexOf("data-landing-memory-play");
   const memory = landing.indexOf("data-landing-square-memory");
   const puzzle = landing.indexOf("data-landing-puzzle");
   const openNow = landing.indexOf('t("Open now")');
-  assert.ok(art >= 0 && openNow > art && memory > openNow && puzzle > memory);
+  assert.ok(art >= 0 && play > art && openNow > play && memory > openNow && puzzle > memory);
   assert.doesNotMatch(landing, /function LandingBoard[\s\S]*data-landing-square-memory/);
 
   assert.match(css, /\.landing-square-memory\s*\{[^}]*width:\s*100%/);

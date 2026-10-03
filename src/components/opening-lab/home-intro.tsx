@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { PACKS, type Pack } from "@/data/packs";
 import { packPrice } from "@/data/pricing";
@@ -96,8 +96,14 @@ export function LandingHome({
   const [showPuzzle, setShowPuzzle] = useState(false);
   const [showClassic, setShowClassic] = useState(false);
   const [showMemory, setShowMemory] = useState(false);
+  const [website, setWebsite] = useState(false);
+  const [memoryOn, setMemoryOn] = useState(false);
+  const onMemoryPreview = useCallback((active: boolean) => {
+    setMemoryOn(active);
+  }, []);
   const previewTaps = useRef<number[]>([]);
   useLayoutEffect(() => {
+    setWebsite(!isPlayApp());
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
     setShowPuzzle(!isPlayApp());
     setShowClassic(!isPlayApp());
@@ -139,46 +145,13 @@ export function LandingHome({
             Opening Lab
           </span>
         </div>
-        <nav className="landing-nav" aria-label={t("Site")}>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-support
-            onClick={onSupport}
-          >
-            {t("Support")}
-          </button>
-          <button
-            type="button"
-            className="landing-nav-link"
-            data-landing-feedback
-            onClick={onFeedback}
-          >
-            {t("Feedback")}
-          </button>
-          <span className="landing-nav-pair">
-            <Link
-              to="/login"
-              className="landing-nav-link"
-              data-landing-account
-            >
-              {t("Account")}
-            </Link>
-            <Link
-              to="/square-memory"
-              className="landing-nav-link"
-              data-landing-memory-bar
-            >
-              Square Memory game
-            </Link>
-          </span>
-        </nav>
         <div className="landing-tools">
           <ColorSchemeToggle labeled />
           <LandingMenu
             onCreateOwn={onCreateOwn}
             onReport={onReport}
             onSupport={onSupport}
+            onFeedback={onFeedback}
           />
         </div>
       </header>
@@ -186,29 +159,48 @@ export function LandingHome({
       <div className="landing-inner">
         <div className="landing-hero">
           <div className="landing-hero-art">
-            <div className="landing-coach-wrap">
-              <img
-                className="landing-coach"
-                src="/scotch-coach/coach-seated-v2.png"
-                width={640}
-                height={1071}
-                alt={t("Professor Potato Pie")}
-                decoding="async"
-                draggable={false}
-              />
-              <span className="landing-coach-lid landing-coach-lid--left" data-coach-blink aria-hidden />
-              <span className="landing-coach-lid landing-coach-lid--right" data-coach-blink aria-hidden />
-              <img
-                className="landing-mug-logo"
-                src="/brand/opening-lab-logo.png"
-                width={72}
-                height={72}
-                alt=""
-                decoding="async"
-                draggable={false}
-              />
+            <div className="landing-hero-stage">
+              <div className="landing-coach-wrap">
+                <img
+                  className="landing-coach"
+                  src="/scotch-coach/coach-seated-v2.png"
+                  width={640}
+                  height={1071}
+                  alt={t("Professor Potato Pie")}
+                  decoding="async"
+                  draggable={false}
+                />
+                <span className="landing-coach-lid landing-coach-lid--left" data-coach-blink aria-hidden />
+                <span className="landing-coach-lid landing-coach-lid--right" data-coach-blink aria-hidden />
+                <img
+                  className="landing-mug-logo"
+                  src="/brand/opening-lab-logo.png"
+                  width={72}
+                  height={72}
+                  alt=""
+                  decoding="async"
+                  draggable={false}
+                />
+              </div>
+              <LandingMateDemo memoryPreview={website} onPreviewChange={onMemoryPreview} />
             </div>
-            <LandingMateDemo />
+            {website && memoryOn ? (
+              <div className="landing-memory-banner" data-landing-memory-invite>
+                <img
+                  src="/coach/ruy-lopez-white/big-red-portrait.png"
+                  alt="Big Red"
+                  width={360}
+                  height={800}
+                  draggable={false}
+                />
+                <p>Try the new Square Memory game for free.</p>
+              </div>
+            ) : null}
+            {website ? (
+              <Link to="/square-memory" className="landing-memory-play" data-landing-memory-play>
+                Play Square Memory free
+              </Link>
+            ) : null}
           </div>
           <div className="landing-copy">
             <p id="landing-title" className="landing-sub">
@@ -248,7 +240,7 @@ export function LandingHome({
               </div>
             </section>
             <div className="landing-cta-stack">
-              {showMemory ? (
+              {showMemory && !website ? (
                 <section className="landing-square-memory" aria-label="Square Memory">
                   <Link
                     to="/square-memory"
