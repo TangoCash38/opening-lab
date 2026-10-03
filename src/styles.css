@@ -5581,10 +5581,6 @@ html[data-color-scheme="dark"] .sqmem-start {
     grid-row: 1 / span 2;
   }
 
-  .sqmem-plaque:not([data-selected="true"]) .sqmem-plaque-row:nth-child(n + 2) {
-    display: grid;
-  }
-
   .sqmem-plaque {
     width: 100%;
     padding: 0.65rem 0.8rem 0.7rem;
