@@ -3,6 +3,7 @@ import { Menu } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { openLegalDocument } from "@/lib/legal-nav";
+import { isPlayApp } from "@/lib/play-app";
 import {
   getColorScheme,
   setColorScheme,
@@ -25,11 +26,13 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport, onFeedback }: Pr
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const [scheme, setScheme] = useState<ColorScheme>("dark");
+  const [onWebsite, setOnWebsite] = useState(false);
 
   useOverlayHistory(open, () => setOpen(false), "landing-menu");
 
   useLayoutEffect(() => {
     setScheme(getColorScheme());
+    setOnWebsite(!isPlayApp());
     return subscribeColorScheme(() => setScheme(getColorScheme()));
   }, []);
 
@@ -81,6 +84,16 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport, onFeedback }: Pr
               {t("Menu")}
             </h2>
             <div className="flex flex-col gap-1.5">
+              {onWebsite ? (
+                <Link
+                  to="/grandmaster-vision"
+                  className="home-menu-item no-underline"
+                  data-menu-vision
+                  onClick={() => setOpen(false)}
+                >
+                  Grandmaster Vision
+                </Link>
+              ) : null}
               <button
                 type="button"
                 className="home-menu-item"

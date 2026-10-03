@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DeleteAccountRouteImport } from './routes/delete-account'
+import { Route as GrandmasterVisionRouteImport } from './routes/grandmaster-vision'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -43,6 +44,11 @@ const IndexRoute = IndexRouteImport.update({
 const DeleteAccountRoute = DeleteAccountRouteImport.update({
   id: '/delete-account',
   path: '/delete-account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrandmasterVisionRoute = GrandmasterVisionRouteImport.update({
+  id: '/grandmaster-vision',
+  path: '/grandmaster-vision',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LessonsRoute = LessonsRouteImport.update({
@@ -164,6 +170,7 @@ const LessonsCourseIdLessonIdRoute = LessonsCourseIdLessonIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/grandmaster-vision': typeof GrandmasterVisionRoute
   '/lessons': typeof LessonsRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/grandmaster-vision': typeof GrandmasterVisionRoute
   '/lessons': typeof LessonsRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/delete-account': typeof DeleteAccountRoute
+  '/grandmaster-vision': typeof GrandmasterVisionRoute
   '/lessons': typeof LessonsRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/delete-account'
+    | '/grandmaster-vision'
     | '/lessons'
     | '/login'
     | '/privacy'
@@ -274,6 +284,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/delete-account'
+    | '/grandmaster-vision'
     | '/lessons'
     | '/login'
     | '/privacy'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/delete-account'
+    | '/grandmaster-vision'
     | '/lessons'
     | '/login'
     | '/privacy'
@@ -328,6 +340,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DeleteAccountRoute: typeof DeleteAccountRoute
+  GrandmasterVisionRoute: typeof GrandmasterVisionRoute
   LessonsRoute: typeof LessonsRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/delete-account'
       fullPath: '/delete-account'
       preLoaderRoute: typeof DeleteAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grandmaster-vision': {
+      id: '/grandmaster-vision'
+      path: '/grandmaster-vision'
+      fullPath: '/grandmaster-vision'
+      preLoaderRoute: typeof GrandmasterVisionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lessons': {
@@ -570,6 +590,7 @@ const LessonsCourseIdRouteWithChildren = LessonsCourseIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DeleteAccountRoute: DeleteAccountRoute,
+  GrandmasterVisionRoute: GrandmasterVisionRoute,
   LessonsRoute: LessonsRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
