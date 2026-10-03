@@ -72,8 +72,9 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(css, /\.header-home-btn[\s\S]*min-height:\s*44px/);
   assert.doesNotMatch(landing, /data-landing-packs/);
   assert.doesNotMatch(landing, /Drill packs/);
-  assert.match(landing, /aria-label=\{t\("Site"\)\}/);
-  assert.match(landing, /data-landing-support/);
+  assert.doesNotMatch(landing, /data-landing-support/);
+  assert.doesNotMatch(landing, /data-landing-feedback/);
+  assert.doesNotMatch(landing, /data-landing-account/);
   assert.doesNotMatch(landing, /className="landing-cta-note"/);
   assert.match(
     landing,
@@ -81,7 +82,6 @@ test("Home in the app header returns to the landing; landing links stay visible"
   );
   assert.doesNotMatch(landing, /That was Legal/);
   assert.doesNotMatch(landing, /data-free-try-buy-all/);
-  assert.match(landing, /onClick=\{onSupport\}/);
   assert.match(landing, /onOpenPack\(pack\.id\)/);
   assert.match(landing, /data-coming-soon-feedback/);
   assert.match(landing, /Please leave feedback for openings you’d like to see/);
@@ -105,7 +105,11 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.match(menu, /data-menu-support/);
   assert.match(menu, /t\("Support"\)/);
   assert.match(menu, /onSupport/);
+  assert.match(menu, /data-menu-feedback/);
+  assert.match(menu, /t\("Feedback"\)/);
+  assert.match(menu, /onFeedback/);
   assert.match(landing, /onSupport=\{onSupport\}/);
+  assert.match(landing, /onFeedback=\{onFeedback\}/);
   assert.match(menu, /LangToggle/);
   assert.doesNotMatch(menu, /Play on/);
 });
@@ -136,6 +140,34 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.doesNotMatch(copy, /Strict book-move trainer/);
   assert.doesNotMatch(copy, /£/);
   assert.doesNotMatch(copy, /Learn the book/);
+});
+
+test("homepage board swaps into a visible Square Memory preview", () => {
+  const demo = src("src/components/opening-lab/landing-mate-demo.tsx");
+  assert.match(demo, /memoryPreview/);
+  assert.match(demo, /LEAD_MS/);
+  assert.match(demo, /setPhase\("memory"\)/);
+  assert.match(demo, /setPhase\("practice"\)/);
+  assert.match(demo, /await playLine\(true\)/);
+  assert.match(demo, /setPhase\("test"\)/);
+  assert.match(demo, /await playLine\(false\)/);
+  assert.match(demo, /Try the new Square Memory game for free\./);
+  assert.match(demo, /SQUARE_MEMORY_LINE\.squares\.slice\(0,\s*4\)/);
+  assert.match(demo, /FLASH_MS/);
+  assert.match(demo, /PREVIEW_LOOPS = 3/);
+  assert.match(demo, /data-landing-memory-label/);
+  assert.match(demo, /memoryFlash=\{flash\}/);
+  assert.doesNotMatch(demo, /What's new|Play on|5 book/);
+  assert.match(landing, /memoryPreview=\{website\}/);
+  assert.match(landing, /data-landing-memory-invite/);
+  assert.match(landing, /big-red-portrait\.png/);
+  assert.match(landing, /Try the new Square Memory game for free\./);
+  assert.match(landing, /Play Square Memory free/);
+  assert.match(landing, /data-landing-memory-play/);
+  assert.match(css, /\.sq-memory-flash/);
+  assert.match(css, /\.landing-memory-banner/);
+  assert.match(css, /\.landing-memory-play\s*\{[^}]*width:\s*100%/);
+  assert.doesNotMatch(landing, /data-landing-memory-bar/);
 });
 
 test("landing board plays itself and the app prompt is gone", () => {

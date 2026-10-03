@@ -16,10 +16,11 @@ type Props = {
   onCreateOwn: () => void;
   onReport: () => void;
   onSupport: () => void;
+  onFeedback: () => void;
 };
 
-/** Site menu. Support uses the same destination as the home-bar link. */
-export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
+/** Site menu. Support, Account, and Feedback live here. */
+export function LandingMenu({ onCreateOwn, onReport, onSupport, onFeedback }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const titleId = useId();
@@ -99,6 +100,23 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
               <button
                 type="button"
                 className="home-menu-item"
+                data-menu-feedback
+                onClick={() => pick(onFeedback)}
+              >
+                {t("Feedback")}
+              </button>
+              <Link
+                to="/login"
+                search={{ forgot: undefined }}
+                className="home-menu-item no-underline"
+                data-menu-account
+                onClick={openLegalDocument}
+              >
+                {t("Account")}
+              </Link>
+              <button
+                type="button"
+                className="home-menu-item"
                 data-menu-report
                 onClick={() => pick(onReport)}
               >
@@ -119,15 +137,6 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport }: Props) {
                   {dark ? t("Light mode") : t("Dark mode")}
                 </span>
               </button>
-              <Link
-                to="/login"
-                search={{ forgot: undefined }}
-                className="home-menu-item no-underline"
-                data-menu-account
-                onClick={openLegalDocument}
-              >
-                {t("Account")}
-              </Link>
               <Link
                 to="/terms"
                 className="home-menu-item no-underline"
