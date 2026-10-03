@@ -889,7 +889,6 @@ function MemoryBoard({
       </div>
       <div className="board-frame-inner">
         <div className="sqmem-grid" role="group" aria-label="Chessboard, White at the bottom">
-          <PathTrace squares={trace} />
           {RANKS.map((rank) =>
             FILES.split("").map((file) => {
               const name = `${file}${rank}`;
@@ -925,6 +924,7 @@ function MemoryBoard({
             }),
           )}
         </div>
+        <PathTrace squares={trace} />
         {startLabel ? (
           <button type="button" className="sqmem-start" data-begin="" onClick={onStart}>
             {startLabel}
