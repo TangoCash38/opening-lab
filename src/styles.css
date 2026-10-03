@@ -4900,16 +4900,32 @@ html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
   margin-right: auto;
 }
 
+/* Square Memory page palette. Scoped here so the rest of the site is unchanged. */
+html:has([data-square-memory-page]) {
+  --square-dark: #1b2028;
+  --square-light: #3e4756;
+  --board-border: #12151a;
+  --coordinates: rgba(226, 232, 240, 0.7);
+  --glow-amber: #ffb800;
+  --success-green: #10b981;
+  --error-red: #ef4444;
+  --app-bg: #0f1216;
+  --panel-bg: #1e232a;
+  --text-primary: #f8fafc;
+}
+
 html:has([data-square-memory-page]),
 body:has([data-square-memory-page]) {
   height: 100%;
   overflow: hidden;
-  background: #12100e;
+  background: var(--app-bg);
 }
 
 [data-square-memory-page] {
   height: 100dvh;
   overflow: hidden;
+  background: var(--app-bg);
+  color: var(--text-primary);
 }
 
 .sqmem {
@@ -4922,10 +4938,8 @@ body:has([data-square-memory-page]) {
   overflow: hidden;
   padding: max(0.3rem, env(safe-area-inset-top, 0px)) max(0.55rem, env(safe-area-inset-right, 0px))
     max(0.35rem, env(safe-area-inset-bottom, 0px)) max(0.55rem, env(safe-area-inset-left, 0px));
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(92, 62, 28, 0.28), transparent 46%),
-    linear-gradient(180deg, #1a1612 0%, #12100e 100%);
-  color: #f3e6d4;
+  background: var(--app-bg);
+  color: var(--text-primary);
   font-family: var(--font-sans);
 }
 
@@ -4941,7 +4955,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-home {
-  color: #e4c48a;
+  color: var(--text-primary);
   font-size: 0.92rem;
   font-weight: 750;
   text-decoration: none;
@@ -4963,7 +4977,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-opening {
-  color: #e4c48a;
+  color: var(--text-primary);
   font-size: 0.98rem;
   white-space: nowrap;
 }
@@ -4974,7 +4988,7 @@ body:has([data-square-memory-page]) {
 .sqmem-found,
 .sqmem-score-note {
   margin: 0.12rem 0 0;
-  color: rgba(243, 230, 212, 0.72);
+  color: color-mix(in srgb, var(--text-primary) 72%, transparent);
   font-size: 0.86rem;
   line-height: 1.25;
 }
@@ -5006,6 +5020,8 @@ body:has([data-square-memory-page]) {
   display: flex;
   flex-direction: column;
   margin-top: 0.4rem;
+  border-radius: 0.7rem;
+  background: var(--panel-bg);
 }
 
 .sqmem-frame-tools {
@@ -5014,10 +5030,8 @@ body:has([data-square-memory-page]) {
   gap: 0.4rem;
   padding: 0.38rem 0.42rem;
   border-radius: 0.7rem 0.7rem 0 0;
-  background:
-    linear-gradient(180deg, rgba(255, 220, 170, 0.08), transparent 46%),
-    linear-gradient(180deg, #2c241c 0%, #1a140f 100%);
-  box-shadow: inset 0 1px 0 rgba(224, 184, 106, 0.22);
+  background: var(--panel-bg);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text-primary) 8%, transparent);
 }
 
 .sqmem-pick {
@@ -5026,7 +5040,7 @@ body:has([data-square-memory-page]) {
   min-width: 0;
   padding: 0.16rem;
   border-radius: 999px;
-  background: rgba(8, 6, 4, 0.45);
+  background: color-mix(in srgb, var(--app-bg) 72%, transparent);
 }
 
 .sqmem-pick-line {
@@ -5036,17 +5050,17 @@ body:has([data-square-memory-page]) {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #f6e7d2;
+  color: var(--text-primary);
   font-size: 0.68rem;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .sqmem-pick-line[aria-pressed="true"] {
-  background: rgba(224, 184, 106, 0.16);
-  color: #f6e7c8;
+  background: var(--square-light);
+  color: var(--text-primary);
   font-weight: 750;
-  box-shadow: inset 0 0 0 1px rgba(224, 184, 106, 0.5);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-primary) 28%, transparent);
 }
 
 .sqmem-time {
@@ -5055,8 +5069,8 @@ body:has([data-square-memory-page]) {
   gap: 0.45rem;
   margin: 0;
   padding: 0.15rem 0.7rem 0.3rem;
-  background: #6a4630;
-  color: #f7f1e6;
+  background: var(--panel-bg);
+  color: var(--text-primary);
 }
 
 .sqmem-time-value {
@@ -5068,7 +5082,7 @@ body:has([data-square-memory-page]) {
 
 .sqmem-time-note {
   margin: 0;
-  color: #f3ddb4;
+  color: color-mix(in srgb, var(--text-primary) 72%, transparent);
   font-size: 0.82rem;
 }
 
@@ -5083,11 +5097,9 @@ body:has([data-square-memory-page]) {
   gap: 0.08rem 0.7rem;
   padding: 0.32rem 0.5rem 0.28rem;
   border-radius: 0.7rem;
-  background: rgba(22, 18, 14, 0.72);
-  color: #f3e6d4;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 236, 210, 0.06),
-    inset 0 0 0 1px rgba(224, 184, 106, 0.16);
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-primary) 8%, transparent);
 }
 
 .sqmem-plaque-col,
@@ -5129,7 +5141,7 @@ body:has([data-square-memory-page]) {
   padding: 0.05rem 0;
   border: 0;
   background: none;
-  color: #e4c48a;
+  color: var(--text-primary);
   font-size: 0.78rem;
   font-weight: 750;
   text-decoration: underline;
@@ -5175,8 +5187,8 @@ body:has([data-square-memory-page]) {
   height: 0.42rem;
   margin-right: 0.28rem;
   border-radius: 50%;
-  background: #c6a15b;
-  box-shadow: inset 0 0 0 1px rgba(74, 48, 20, 0.35);
+  background: var(--glow-amber);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--board-border) 35%, transparent);
   vertical-align: 0.05em;
 }
 
@@ -5200,10 +5212,10 @@ body:has([data-square-memory-page]) {
   flex: 1;
   min-height: 2.6rem;
   padding: 0.4rem 0.7rem;
-  border: 1px solid rgba(35, 72, 60, 0.35);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
   border-radius: 0.75rem;
-  background: var(--color-bg-elevated);
-  color: var(--color-fg);
+  background: var(--app-bg);
+  color: var(--text-primary);
   font-size: 1rem;
 }
 
@@ -5212,8 +5224,8 @@ body:has([data-square-memory-page]) {
   padding: 0.4rem 0.8rem;
   border: 0;
   border-radius: 0.75rem;
-  background: #23483c;
-  color: #f7f3ea;
+  background: var(--square-light);
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 750;
 }
@@ -5229,7 +5241,7 @@ body:has([data-square-memory-page]) {
   display: grid;
   place-items: end center;
   padding: 0.6rem;
-  background: rgba(48, 30, 16, 0.28);
+  background: color-mix(in srgb, var(--app-bg) 55%, transparent);
 }
 
 .sqmem-sheet {
@@ -5237,10 +5249,10 @@ body:has([data-square-memory-page]) {
   max-height: min(70dvh, 32rem);
   overflow: auto;
   padding: 0.8rem 0.85rem 1rem;
-  border: 1px solid rgba(224, 184, 106, 0.22);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
   border-radius: 1rem;
-  background: #1a1612;
-  color: #f3e6d4;
+  background: var(--panel-bg);
+  color: var(--text-primary);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
@@ -5260,10 +5272,10 @@ body:has([data-square-memory-page]) {
 
 .sqmem-sheet-close {
   padding: 0.25rem 0.55rem;
-  border: 1px solid rgba(224, 184, 106, 0.35);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 22%, transparent);
   border-radius: 999px;
-  background: rgba(224, 184, 106, 0.12);
-  color: #f6e7c8;
+  background: var(--square-light);
+  color: var(--text-primary);
   font-weight: 700;
 }
 
@@ -5313,11 +5325,11 @@ body:has([data-square-memory-page]) {
   margin: 0;
   padding: 0;
   background: none;
-  color: #f3e6d4;
+  color: var(--text-primary);
 }
 
 .sqmem[data-phase="punish"] .sqmem-status {
-  color: #ff8d84;
+  color: var(--error-red);
 }
 
 .sqmem-status-word,
@@ -5352,10 +5364,10 @@ body:has([data-square-memory-page]) {
   width: 2.5rem;
   height: 2.5rem;
   margin-left: auto;
-  border: 1px solid rgba(224, 184, 106, 0.35);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 22%, transparent);
   border-radius: 999px;
-  background: rgba(20, 16, 12, 0.72);
-  color: #f3e6d4;
+  background: var(--panel-bg);
+  color: var(--text-primary);
 }
 
 .sqmem-play {
@@ -5388,11 +5400,9 @@ body:has([data-square-memory-page]) {
   max-height: 100%;
   padding: 0.42rem;
   border-radius: 0 0 0.5rem 0.5rem;
-  background: linear-gradient(165deg, #4a3424 0%, #2a1c12 48%, #16110c 100%);
+  background: var(--board-border);
   box-shadow:
-    inset 0 0 0 1px rgba(224, 184, 106, 0.34),
-    inset 0 0 18px rgba(90, 50, 16, 0.28),
-    0 0 22px rgba(180, 120, 40, 0.14),
+    inset 0 0 0 1px color-mix(in srgb, var(--text-primary) 8%, transparent),
     0 14px 28px rgba(0, 0, 0, 0.55);
 }
 
@@ -5405,7 +5415,7 @@ body:has([data-square-memory-page]) {
   min-height: 0;
   padding: 0;
   border-radius: 0.15rem;
-  background: #100e0c;
+  background: var(--board-border);
   box-shadow: none;
 }
 
@@ -5442,12 +5452,12 @@ body:has([data-square-memory-page]) {
 
 .sqmem-trace-path,
 .sqmem-trace-glow {
-  stroke: rgba(232, 184, 96, 0.42);
+  stroke: color-mix(in srgb, var(--glow-amber) 42%, transparent);
   stroke-width: 0.9;
 }
 
 .sqmem-trace-draw {
-  stroke: rgba(255, 228, 176, 0.86);
+  stroke: color-mix(in srgb, var(--glow-amber) 86%, white);
   stroke-width: 0.38;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -5467,22 +5477,22 @@ body:has([data-square-memory-page]) {
   border: 0;
   overflow: hidden;
   background: transparent;
-  box-shadow: inset 0 0 0 1px rgba(212, 164, 84, 0.28);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--board-border) 80%, transparent);
   appearance: none;
 }
 
 .sqmem-sq-light {
-  background: #3f2d22;
+  background: var(--square-light);
 }
 
 .sqmem-sq-dark {
-  background: #14110e;
+  background: var(--square-dark);
 }
 
 .sqmem-coord {
   position: absolute;
   z-index: 2;
-  color: rgba(243, 220, 186, 0.4);
+  color: var(--coordinates);
   font-size: clamp(0.55rem, 3.1cqmin, 0.78rem);
   font-weight: 650;
   line-height: 1;
@@ -5503,7 +5513,7 @@ body:has([data-square-memory-page]) {
 .sqmem-sq.is-flash .sqmem-coord,
 .sqmem-sq.is-hit .sqmem-coord,
 .sqmem-sq.is-miss .sqmem-coord {
-  color: rgba(28, 16, 8, 0.4);
+  color: color-mix(in srgb, var(--board-border) 78%, transparent);
 }
 
 .sqmem-sq.is-flash,
@@ -5512,14 +5522,15 @@ body:has([data-square-memory-page]) {
   z-index: 3;
   background: radial-gradient(
     circle,
-    rgba(255, 236, 196, 0.96) 0%,
-    rgba(232, 168, 60, 0.78) 38%,
-    rgba(80, 42, 12, 0.45) 72%,
-    rgba(20, 12, 8, 0.2) 100%
+    color-mix(in srgb, var(--glow-amber) 18%, white) 0%,
+    var(--glow-amber) 38%,
+    color-mix(in srgb, var(--glow-amber) 42%, transparent) 72%,
+    color-mix(in srgb, var(--square-dark) 20%, transparent) 100%
   );
   box-shadow:
-    inset 0 0 16px rgba(255, 214, 140, 0.95),
-    inset 0 0 0 1px rgba(255, 206, 120, 0.85);
+    inset 0 0 16px var(--glow-amber),
+    inset 0 0 0 1px var(--glow-amber),
+    0 0 18px color-mix(in srgb, var(--glow-amber) 65%, transparent);
 }
 
 .sqmem-sq.is-hit,
@@ -5528,13 +5539,14 @@ body:has([data-square-memory-page]) {
   z-index: 3;
   background: radial-gradient(
     circle,
-    rgba(255, 244, 220, 0.96) 0%,
-    rgba(232, 176, 72, 0.62) 42%,
-    rgba(40, 24, 8, 0.25) 100%
+    color-mix(in srgb, var(--success-green) 16%, white) 0%,
+    var(--success-green) 42%,
+    color-mix(in srgb, var(--success-green) 28%, transparent) 100%
   );
   box-shadow:
-    inset 0 0 14px rgba(255, 220, 160, 0.9),
-    inset 0 0 0 1px rgba(255, 206, 130, 0.8);
+    inset 0 0 14px var(--success-green),
+    inset 0 0 0 1px var(--success-green),
+    0 0 14px color-mix(in srgb, var(--success-green) 60%, transparent);
 }
 
 .sqmem-ripple {
@@ -5552,8 +5564,8 @@ body:has([data-square-memory-page]) {
   width: 42%;
   height: 42%;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 220, 160, 0.92);
-  box-shadow: 0 0 10px rgba(232, 168, 60, 0.75);
+  border: 1.5px solid color-mix(in srgb, var(--success-green) 92%, white);
+  box-shadow: 0 0 10px var(--success-green);
   transform: translate(-50%, -50%) scale(0.35);
   animation: sqmem-ring 460ms ease-out forwards;
 }
@@ -5566,8 +5578,8 @@ body:has([data-square-memory-page]) {
   height: 5px;
   margin: -2.5px 0 0 -2.5px;
   border-radius: 50%;
-  background: #fff4dc;
-  box-shadow: 0 0 8px #e8b45a;
+  background: color-mix(in srgb, var(--success-green) 12%, white);
+  box-shadow: 0 0 8px var(--success-green);
   transform: rotate(calc(var(--sqmem-i) * 45deg)) translateY(0);
   animation: sqmem-particle 460ms ease-out forwards;
 }
@@ -5576,10 +5588,11 @@ body:has([data-square-memory-page]) {
 .sqmem-sq-light.is-miss,
 .sqmem-sq-dark.is-miss {
   z-index: 3;
-  background: #ff1f3d;
+  background: var(--error-red);
   box-shadow:
-    inset 0 0 16px rgba(255, 90, 110, 0.95),
-    inset 0 0 0 1px rgba(255, 160, 170, 0.9);
+    inset 0 0 16px color-mix(in srgb, var(--error-red) 70%, white),
+    inset 0 0 0 1px var(--error-red),
+    0 0 14px color-mix(in srgb, var(--error-red) 55%, transparent);
   animation: sqmem-glitch 0.55s linear both;
 }
 
@@ -5589,7 +5602,7 @@ body:has([data-square-memory-page]) {
   inset: 0;
   z-index: 5;
   pointer-events: none;
-  background: rgba(255, 16, 48, 0.34);
+  background: color-mix(in srgb, var(--error-red) 34%, transparent);
   animation: sqmem-crimson 0.42s linear both;
 }
 
@@ -5598,11 +5611,11 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-sq.is-last {
-  box-shadow: inset 0 0 0 999px rgba(224, 168, 72, 0.18);
+  box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--glow-amber) 18%, transparent);
 }
 
 .sqmem-sq.is-found {
-  box-shadow: inset 0 0 0 2px rgba(232, 184, 96, 0.9);
+  box-shadow: inset 0 0 0 2px var(--glow-amber);
 }
 
 .sqmem-sq .chess-piece-img {
@@ -5715,6 +5728,9 @@ body:has([data-square-memory-page]) {
   max-height: 12rem;
   margin: 0.28rem 0 0;
   overflow: auto;
+  border-radius: 0.7rem;
+  background: var(--panel-bg);
+  color: var(--text-primary);
 }
 
 .sqmem-start {
@@ -5726,21 +5742,24 @@ body:has([data-square-memory-page]) {
   width: min(16.5rem, 82%);
   min-height: 4.6rem;
   padding: 0.75rem 1.1rem;
-  border: 1px solid rgba(224, 184, 106, 0.78);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 28%, transparent);
   border-radius: 1rem;
-  background: linear-gradient(180deg, rgba(42, 32, 24, 0.62), rgba(14, 11, 9, 0.58));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--panel-bg) 62%, transparent),
+    color-mix(in srgb, var(--app-bg) 58%, transparent)
+  );
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: #f7f1e6;
+  color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: clamp(1.45rem, 7cqw, 2.05rem);
   font-weight: 650;
   letter-spacing: 0.01em;
   line-height: 1.05;
   box-shadow:
-    0 0 0 1px rgba(224, 184, 106, 0.2),
-    0 0 18px rgba(212, 160, 64, 0.38),
-    inset 0 1px 0 rgba(255, 236, 210, 0.18),
+    0 0 0 1px color-mix(in srgb, var(--text-primary) 10%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--text-primary) 16%, transparent),
     0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
@@ -5763,7 +5782,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-pack-link {
-  color: #d7c4a4;
+  color: color-mix(in srgb, var(--text-primary) 78%, transparent);
   font-size: 0.9rem;
   font-weight: 650;
   text-underline-offset: 0.18em;
@@ -5771,7 +5790,7 @@ body:has([data-square-memory-page]) {
 
 html[data-color-scheme="dark"] .sqmem-home,
 html[data-color-scheme="dark"] .sqmem-opening {
-  color: #e4c48a;
+  color: var(--text-primary);
 }
 
 @media (min-width: 960px) {
@@ -5828,23 +5847,23 @@ html[data-color-scheme="dark"] .sqmem-opening {
   .sqmem-plaque {
     width: 100%;
     padding: 0.65rem 0.8rem 0.7rem;
-    border: 1px solid rgba(224, 184, 106, 0.16);
+    border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
     border-radius: 0.75rem;
-    background: rgba(28, 22, 18, 0.9);
-    box-shadow: inset 0 1px 0 rgba(255, 236, 210, 0.05);
+    background: var(--panel-bg);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text-primary) 5%, transparent);
   }
 
   .sqmem-plaque[data-selected="true"] {
-    border-color: rgba(224, 184, 106, 0.42);
+    border-color: color-mix(in srgb, var(--glow-amber) 55%, transparent);
     box-shadow:
-      inset 0 1px 0 rgba(255, 236, 210, 0.06),
-      0 0 16px rgba(212, 160, 64, 0.12);
+      inset 0 1px 0 color-mix(in srgb, var(--text-primary) 6%, transparent),
+      0 0 16px color-mix(in srgb, var(--glow-amber) 16%, transparent);
   }
 
   .sqmem-all-times {
     grid-area: auto;
     margin: 0 0 0 0.15rem;
-    color: #e4c48a;
+    color: var(--text-primary);
   }
 
   .sqmem-pick {
@@ -5982,11 +6001,11 @@ html[data-color-scheme="dark"] .sqmem-opening {
   overflow: visible;
   margin: 0;
   padding: 0.45rem 0.5rem 0.4rem;
-  border: 1px solid rgba(90, 58, 32, 0.22);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 14%, transparent);
   border-radius: 0.85rem;
-  background: rgba(247, 241, 230, 0.96);
-  color: #3a2618;
-  box-shadow: 0 8px 16px rgba(42, 24, 12, 0.12);
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.28);
   animation: sqmem-cheer-card 0.38s ease 0.1s both;
 }
 
@@ -5996,7 +6015,7 @@ html[data-color-scheme="dark"] .sqmem-opening {
   font-size: 0.95rem;
   font-weight: 750;
   line-height: 1.2;
-  color: #8c2f24;
+  color: var(--glow-amber);
 }
 
 .sqmem-cheer-bubble {
@@ -6018,8 +6037,8 @@ html[data-color-scheme="dark"] .sqmem-opening {
   min-height: 1.9rem;
   padding: 0.28rem 0.4rem;
   border-radius: 0.7rem;
-  background: #23483c;
-  color: #f7f3ea;
+  background: var(--square-light);
+  color: var(--text-primary);
   font-size: 0.78rem;
   font-weight: 750;
   line-height: 1.15;
@@ -6028,8 +6047,8 @@ html[data-color-scheme="dark"] .sqmem-opening {
 }
 
 .sqmem-cheer-btn-gym {
-  background: #f3e5c8;
-  color: #3a2618;
+  background: var(--app-bg);
+  color: var(--text-primary);
 }
 
 @keyframes sqmem-cheer-pop {
