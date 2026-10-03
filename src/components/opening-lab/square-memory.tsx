@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { Volume2, VolumeX } from "lucide-react";
 import { ChessPiece, pieceName } from "./chess-pieces";
@@ -19,10 +19,7 @@ import {
   type MemoryPly,
   type PlayedMemory,
 } from "@/lib/square-memory-line";
-import {
-  LONDON_MEMORY_LINE,
-  LONDON_MEMORY_PACK_ID,
-} from "@/lib/square-memory-london";
+import { LONDON_MEMORY_LINE, LONDON_MEMORY_PACK_ID } from "@/lib/square-memory-london";
 import { QG_MEMORY_LINE, QG_MEMORY_NAME, QG_MEMORY_PACK_ID } from "@/lib/square-memory-qg";
 import {
   begin,
@@ -150,6 +147,7 @@ export function SquareMemory() {
   const [boardNote, setBoardNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [boardVersion, setBoardVersion] = useState(0);
+  const [burst, setBurst] = useState<{ square: string; id: number } | null>(null);
   const snapRef = useRef(snap);
   const bestRef = useRef(0);
   const bestAtStart = useRef(0);
@@ -212,10 +210,7 @@ export function SquareMemory() {
             next.litKind === "flash" &&
             (prev.phase !== "watch" || prev.cursor !== next.cursor)
           ) {
-            playWatch(next.cursor);
-          }
-          if (next.phase === "reveal" && prev.phase !== "reveal" && next.perfect) {
-            playWin();
+            playWatch(next.lit);
           }
         }
       } finally {
@@ -247,15 +242,22 @@ export function SquareMemory() {
     setClearMs(null);
     setAllTimes(false);
     setBoardNote("");
+    setBurst(null);
     commit(begin(bestRef.current, now, choiceRef.current.line.squares));
     try {
-      playWatch(0);
+      const opening = choiceRef.current.line.squares[0];
+      if (opening) playWatch(opening);
     } catch {
       /* sound is optional */
     }
   }
 
   function onTap(square: string) {
+    try {
+      unlockAudio();
+    } catch {
+      /* sound is optional */
+    }
     const prev = snapRef.current;
     const squares = choiceRef.current.line.squares;
     const now = performance.now();
@@ -269,12 +271,19 @@ export function SquareMemory() {
       setClearMs(Math.round(now - runStartRef.current));
     }
     commit(next);
-    if (next.phase === "punish") {
-      playMiss();
-      navigator.vibrate?.(20);
-    } else {
-      playHit();
-      navigator.vibrate?.(8);
+    try {
+      if (next.phase === "punish") {
+        playMiss();
+        setBurst(null);
+        navigator.vibrate?.(20);
+      } else if (next.litKind === "hit") {
+        playHit(square);
+        setBurst({ square, id: now });
+        if (next.cursor === next.length) playWin();
+        navigator.vibrate?.(8);
+      }
+    } catch {
+      /* visuals already committed */
     }
   }
 
@@ -288,6 +297,14 @@ export function SquareMemory() {
       /* private mode */
     }
   }
+
+  useEffect(() => {
+    if (!burst) return;
+    const id = window.setTimeout(() => {
+      setBurst((current) => (current?.id === burst.id ? null : current));
+    }, 520);
+    return () => window.clearTimeout(id);
+  }, [burst]);
 
   useEffect(() => {
     if (!(snap.phase === "reveal" && snap.perfect)) {
@@ -328,7 +345,9 @@ export function SquareMemory() {
     const ctrl = new AbortController();
     Promise.all(
       CHOICES.map(async (item) => {
-        const res = await fetch(`/api/square-memory-scores?line=${item.id}`, { signal: ctrl.signal });
+        const res = await fetch(`/api/square-memory-scores?line=${item.id}`, {
+          signal: ctrl.signal,
+        });
         if (!res.ok) throw new Error("down");
         const data = (await res.json()) as { scores?: BoardRow[] };
         return [item.id, Array.isArray(data.scores) ? data.scores : []] as const;
@@ -448,12 +467,7 @@ export function SquareMemory() {
             </div>
             <div className="sqmem-plaque-pair">
               {otherChoices.map((item) => (
-                <LinePlaque
-                  key={item.id}
-                  id={item.id}
-                  rows={boards[item.id]}
-                  selected={false}
-                />
+                <LinePlaque key={item.id} id={item.id} rows={boards[item.id]} selected={false} />
               ))}
             </div>
             {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
@@ -477,7 +491,15 @@ export function SquareMemory() {
           <div className="sqmem-play">
             <div className="sqmem-board">
               <MemoryBoard
-                lit={playing && snap.lit && snap.litKind ? { square: snap.lit, kind: snap.litKind } : null}
+                lit={
+                  playing && snap.lit && snap.litKind
+                    ? { square: snap.lit, kind: snap.litKind }
+                    : null
+                }
+                trace={
+                  snap.phase === "watch" ? line.squares.slice(0, Math.max(0, snap.cursor + 1)) : []
+                }
+                burst={burst}
                 interactive={snap.phase === "input" && snap.cursor < snap.length}
                 position={position}
                 lastMove={last ? { from: last.from, to: last.to } : null}
@@ -522,16 +544,18 @@ export function SquareMemory() {
               value={playerName}
               onChange={(event) => setPlayerName(event.target.value)}
             />
-            <button type="submit" className="sqmem-score-save" disabled={saving || !playerName.trim()}>
+            <button
+              type="submit"
+              className="sqmem-score-save"
+              disabled={saving || !playerName.trim()}
+            >
               {saving ? "Saving" : "Save time"}
             </button>
           </form>
         ) : null}
         {showPackLink ? <PackLink choice={choice} /> : null}
       </footer>
-      {allTimes ? (
-        <AllTimes boards={boards} onClose={() => setAllTimes(false)} />
-      ) : null}
+      {allTimes ? <AllTimes boards={boards} onClose={() => setAllTimes(false)} /> : null}
     </main>
   );
 }
@@ -769,8 +793,66 @@ function moveRows(
   return rows;
 }
 
+function squareCenter(square: string): { x: number; y: number } | null {
+  if (square.length < 2) return null;
+  const file = square.charCodeAt(0) - 97;
+  const rank = Number(square[1]);
+  if (file < 0 || file > 7 || rank < 1 || rank > 8) return null;
+  return { x: ((file + 0.5) / 8) * 100, y: ((8.5 - rank) / 8) * 100 };
+}
+
+function PathTrace({ squares }: { squares: readonly string[] }) {
+  const points = squares
+    .map(squareCenter)
+    .filter((point): point is { x: number; y: number } => point !== null);
+  if (points.length < 2) return null;
+  const settled = points.slice(0, -1);
+  const prev = points[points.length - 2]!;
+  const last = points[points.length - 1]!;
+  return (
+    <svg className="sqmem-trace" viewBox="0 0 100 100" aria-hidden="true">
+      {settled.length >= 2 ? (
+        <polyline
+          className="sqmem-trace-path"
+          points={settled.map((point) => `${point.x},${point.y}`).join(" ")}
+        />
+      ) : null}
+      <g key={`${prev.x}:${prev.y}:${last.x}:${last.y}`}>
+        <line
+          className="sqmem-trace-glow"
+          pathLength={1}
+          x1={prev.x}
+          y1={prev.y}
+          x2={last.x}
+          y2={last.y}
+        />
+        <line
+          className="sqmem-trace-draw"
+          pathLength={1}
+          x1={prev.x}
+          y1={prev.y}
+          x2={last.x}
+          y2={last.y}
+        />
+      </g>
+    </svg>
+  );
+}
+
+function HitRipple({ id }: { id: number }) {
+  return (
+    <span className="sqmem-ripple" data-ripple={id} aria-hidden="true">
+      {Array.from({ length: 8 }, (_, i) => (
+        <span key={i} style={{ "--sqmem-i": i } as CSSProperties} />
+      ))}
+    </span>
+  );
+}
+
 function MemoryBoard({
   lit,
+  trace,
+  burst,
   interactive,
   position,
   lastMove,
@@ -780,6 +862,8 @@ function MemoryBoard({
   onStart,
 }: {
   lit: { square: string; kind: LitKind } | null;
+  trace: readonly string[];
+  burst: { square: string; id: number } | null;
   interactive: boolean;
   position: MemoryBoard | null;
   lastMove: { from: string; to: string } | null;
@@ -789,7 +873,13 @@ function MemoryBoard({
   onStart: () => void;
 }) {
   return (
-    <div className={interactive ? "board-frame board-frame--margin-coords sqmem-live" : "board-frame board-frame--margin-coords"}>
+    <div
+      className={
+        interactive
+          ? "board-frame board-frame--margin-coords sqmem-live"
+          : "board-frame board-frame--margin-coords"
+      }
+    >
       <div className="board-margin-ranks" aria-hidden="true">
         {RANKS.map((rank) => (
           <span key={rank} className="board-margin-label">
@@ -799,6 +889,7 @@ function MemoryBoard({
       </div>
       <div className="board-frame-inner">
         <div className="sqmem-grid" role="group" aria-label="Chessboard, White at the bottom">
+          <PathTrace squares={trace} />
           {RANKS.map((rank) =>
             FILES.split("").map((file) => {
               const name = `${file}${rank}`;
@@ -827,6 +918,7 @@ function MemoryBoard({
                   }}
                   onContextMenu={(event) => event.preventDefault()}
                 >
+                  {burst?.square === name ? <HitRipple id={burst.id} /> : null}
                   {piece ? <ChessPiece code={pieceCode(piece)} /> : null}
                 </button>
               );

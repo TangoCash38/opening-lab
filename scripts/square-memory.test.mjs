@@ -134,7 +134,17 @@ test("taps during the flash are ignored and a perfect line reveals", async (t) =
 test("every flash uses the same on-time and gap, including the first", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory.ts", "logic-timing.mjs");
   if (!mod) return;
-  const { begin, tap, tick, FLASH_MS, GAP_MS, HIT_MS, minimumClearMs, formatClearTime, cleanScoreName } = mod;
+  const {
+    begin,
+    tap,
+    tick,
+    FLASH_MS,
+    GAP_MS,
+    HIT_MS,
+    minimumClearMs,
+    formatClearTime,
+    cleanScoreName,
+  } = mod;
   const squares = ["e2", "e4", "c7", "c5", "g1", "f3", "b8", "c6"];
 
   function flashes(state, now) {
@@ -216,7 +226,10 @@ test("Square Memory game stays on the top bar and opens the free game", () => {
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
   const feedback = nav.indexOf("data-landing-feedback");
   const memory = nav.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(landing.indexOf("data-landing-memory-bar") - 280, landing.indexOf("data-landing-memory-bar") + 220);
+  const chip = landing.slice(
+    landing.indexOf("data-landing-memory-bar") - 280,
+    landing.indexOf("data-landing-memory-bar") + 220,
+  );
   assert.ok(feedback > 0 && memory > feedback);
   assert.doesNotMatch(nav, /data-landing-account|data-landing-support/);
   assert.match(chip, /className="landing-nav-link"/);
@@ -225,7 +238,10 @@ test("Square Memory game stays on the top bar and opens the free game", () => {
   assert.match(chip, /data-landing-memory-new[\s\S]*?>\s*New\s*</);
   assert.doesNotMatch(landing, /What's new|What&apos;s new/);
   assert.doesNotMatch(chip, /isPlayApp|showMemory/);
-  assert.doesNotMatch(css, /landing-memory-flash|landing-memory-chip|landing-memory-new|landing-nav-pair/);
+  assert.doesNotMatch(
+    css,
+    /landing-memory-flash|landing-memory-chip|landing-memory-new|landing-nav-pair/,
+  );
   assert.match(css, /\.landing-nav-new\s*\{[^}]*font-size:\s*0\.62rem/);
   assert.doesNotMatch(css, /\.landing-nav-new\s*\{[^}]*(#ffe400|animation)/);
   assert.match(menu, /data-menu-account/);
@@ -259,7 +275,10 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   assert.doesNotMatch(landing, /function LandingBoard[\s\S]*data-landing-square-memory/);
 
   assert.match(css, /\.landing-square-memory\s*\{[^}]*width:\s*100%/);
-  assert.match(css, /@media \(min-width: 960px\)[\s\S]*\.landing-square-memory\s*\{[^}]*width:\s*min\(22rem,\s*100%\)/);
+  assert.match(
+    css,
+    /@media \(min-width: 960px\)[\s\S]*\.landing-square-memory\s*\{[^}]*width:\s*min\(22rem,\s*100%\)/,
+  );
   assert.doesNotMatch(hero, /square-memory|Square Memory/);
 
   assert.doesNotMatch(page, /readSquareMemoryPlayPreview|window\.location\.replace/);
@@ -280,11 +299,16 @@ test("website home shows Square Memory under the gym and Play does not", () => {
 
   const audio = src("src/lib/square-memory-audio.ts");
   assert.match(audio, /osc\.type = "square"/);
-  assert.match(audio, /punch\(freq, 0\.11, 0\.72\)/);
-  assert.doesNotMatch(audio, /speechSynthesis|new Audio\(/);
+  assert.match(audio, /RANK_HZ/);
+  assert.match(audio, /function woodClick/);
+  assert.doesNotMatch(audio, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.match(
     css,
-    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*#ffe400/,
+    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*radial-gradient/,
+  );
+  assert.match(
+    css,
+    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*box-shadow:/,
   );
   assert.doesNotMatch(
     css,
@@ -292,6 +316,42 @@ test("website home shows Square Memory under the gym and Play does not", () => {
   );
   assert.match(css, /\.sqmem-board\s*\{[^}]*width:\s*100%/);
   assert.match(view, /data-square-memory-status=\{snap\.phase\}/);
+});
+
+test("rank pitches follow a C pentatonic and the board keeps its cyberpunk cues", async (t) => {
+  const mod = await loadModule(t, "src/lib/square-memory-audio.ts", "audio.mjs");
+  if (!mod) return;
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const audio = src("src/lib/square-memory-audio.ts");
+  const css = src("src/styles.css");
+  const logic = src("src/lib/square-memory.ts");
+
+  assert.deepEqual(
+    ["a1", "b2", "c3", "d4", "e5", "f6", "g7", "h8"].map((square) => mod.rankHz(square)),
+    [...mod.RANK_HZ],
+  );
+  assert.deepEqual(mod.ROUND_TRIAD_HZ, [523.25, 659.25, 783.99]);
+  assert.equal(mod.rankHz("e2"), mod.RANK_HZ[1]);
+  assert.equal(mod.rankHz("e4"), mod.RANK_HZ[3]);
+  assert.match(logic, /Math\.min\(2, squares\.length\)/);
+  assert.match(logic, /length \+ 2/);
+  assert.match(audio, /bp\.type = "bandpass"/);
+  assert.match(audio, /osc\.type = "triangle"/);
+  assert.match(audio, /exponentialRampToValueAtTime\(42/);
+  assert.match(audio, /ROUND_TRIAD_HZ/);
+  assert.doesNotMatch(audio, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
+  assert.match(view, /playWatch\(next\.lit\)/);
+  assert.match(view, /playHit\(square\)/);
+  assert.match(view, /playWin\(\)/);
+  assert.match(view, /className="sqmem-trace"/);
+  assert.match(view, /className="sqmem-ripple"/);
+  assert.match(css, /\.sqmem-sq-dark\s*\{[^}]*#10131a/);
+  assert.match(css, /\.sqmem-sq\s*\{[^}]*rgba\(120, 210, 255, 0\.2\)/);
+  assert.match(css, /@keyframes sqmem-glitch/);
+  assert.match(css, /@keyframes sqmem-shake/);
+  assert.match(css, /@keyframes sqmem-particle/);
+  assert.match(css, /\.sqmem-trace-draw/);
+  assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
 });
 
 test("a perfect line brings Big Red in; a miss does not", () => {
@@ -464,7 +524,10 @@ test("Play preview is off until seven taps, and the website ignores it", async (
   const on = mod.nextSquareMemoryPreviewTaps(taps, 1_000 + 6 * 200);
   assert.equal(on.toggled, true);
   assert.deepEqual(on.taps, []);
-  const stale = mod.nextSquareMemoryPreviewTaps([1_000], 1_000 + mod.SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS);
+  const stale = mod.nextSquareMemoryPreviewTaps(
+    [1_000],
+    1_000 + mod.SQUARE_MEMORY_PREVIEW_TAP_WINDOW_MS,
+  );
   assert.equal(stale.toggled, false);
   assert.equal(stale.taps.length, 1);
   assert.equal(mod.toggleSquareMemoryPlayPreview(), true);
