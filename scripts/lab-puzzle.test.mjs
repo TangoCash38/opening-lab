@@ -81,5 +81,6 @@ test("website no longer links to or routes the daily puzzle", () => {
   assert.doesNotMatch(homeMenu, /Today's puzzle|Daily Puzzle|onOpenPuzzle|data-menu-puzzle/);
   assert.doesNotMatch(routes, /puzzle-view|Today's puzzle|Daily Puzzle/);
   assert.match(landing, /data-landing-square-memory/);
-  assert.match(landing, /data-landing-classic/);
+  assert.match(landing, /data-landing-recall/);
+  assert.doesNotMatch(landing, /data-landing-classic|Fischer vs Sherwin/);
 });

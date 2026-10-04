@@ -153,24 +153,21 @@ test("the Classic sample is free on the website and not a Play SKU", async (t) =
   assert.equal(packs.includes('id: "classic-fischer-sherwin-1957"'), false);
 });
 
-test("www shows the Classic card and the gym; Play wrap does not", () => {
+test("www gym still shows the Classic sample; the homepage card does not", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const list = src("src/components/opening-lab/pack-list.tsx");
   const shell = src("src/components/opening-lab/app-shell.tsx");
   const train = src("src/components/opening-lab/train-view.tsx");
   const hero = src("src/components/opening-lab/home-hero.tsx");
 
-  assert.match(landing, /data-landing-classic/);
-  assert.match(landing, /setShowClassic\(!isPlayApp\(\)\)/);
-  assert.match(landing, /showClassic \?/);
-  assert.match(landing, /t\("Classic GM — Fischer vs Sherwin, 1957"\)/);
-  assert.match(landing, /t\("King's Indian Attack vs Sicilian"\)/);
-  assert.match(landing, /onOpenPack\(WEBSITE_CLASSIC_SAMPLE_PACK_ID\)/);
+  assert.doesNotMatch(landing, /data-landing-classic|Fischer vs Sherwin|King's Indian Attack vs Sicilian/);
+  assert.match(landing, /Position Recall Training/);
+  assert.match(landing, /to="\/grandmaster-vision"/);
   const memory = landing.indexOf("data-landing-square-memory");
-  const classic = landing.indexOf("data-landing-classic");
+  const recall = landing.indexOf("data-landing-recall");
   const openNow = landing.indexOf('t("Open now")');
   assert.equal(landing.indexOf("data-landing-puzzle"), -1);
-  assert.ok(openNow >= 0 && classic > memory && classic < openNow);
+  assert.ok(openNow >= 0 && recall > memory && recall < openNow);
 
   assert.match(list, /setShowClassicSample\(!isPlayWrap\(\)\)/);
   assert.match(list, /showClassicSample \? classicSamplePack\(\)/);
@@ -196,8 +193,7 @@ test("www shows the Classic card and the gym; Play wrap does not", () => {
   assert.doesNotMatch(copy, /Coming soon|11\.e5/);
   assert.match(src("src/lib/i18n.ts"), /CLASSIC_COPY\[lang\]/);
 
-  assert.match(landing, /if \(!classicRunAlreadySeen\(\)\) beginClassicRunNarration\(\)/);
-  assert.match(landing, /onOpenPack\(WEBSITE_CLASSIC_SAMPLE_PACK_ID\)/);
+  assert.doesNotMatch(landing, /classicRunAlreadySeen|beginClassicRunNarration|WEBSITE_CLASSIC_SAMPLE_PACK_ID/);
   assert.match(hero, /if \(playApp \|\| !isClassicSamplePack\(pack\)\) return/);
   assert.match(hero, /if \(classicRunAlreadySeen\(\)\) return/);
   assert.match(hero, /markClassicRunSeen\(\)/);

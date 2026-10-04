@@ -15,15 +15,13 @@ const email = src("src/lib/email.server.ts");
 const route = src("src/routes/api/inbox.ts");
 const copy = src("src/lib/voice-copy.ts");
 
-test("Feedback sits next to Square Memory on the home bar; Support stays in the menu", () => {
+test("Feedback stays on the home bar; Support stays in the menu", () => {
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
   const menu = src("src/components/opening-lab/landing-menu.tsx");
   assert.match(nav, /data-landing-feedback/);
   assert.doesNotMatch(nav, /data-landing-support/);
-  assert.ok(
-    nav.indexOf("data-landing-feedback") < nav.indexOf("data-landing-memory-bar"),
-    "Feedback sits next to Square Memory game",
-  );
+  assert.match(nav, /data-landing-feedback/);
+  assert.doesNotMatch(nav, /Square Memory|data-landing-memory-bar/);
   assert.match(nav, /t\("Feedback"\)/);
   assert.match(menu, /data-menu-support/);
   assert.match(menu, /t\("Support"\)/);
