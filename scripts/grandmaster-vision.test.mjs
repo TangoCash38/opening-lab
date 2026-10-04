@@ -228,6 +228,14 @@ test("the score card is glass so the marked board stays readable", () => {
   assert.match(view, /phase === "rebuild" \? \([\s\S]*data-gmv-tray-box/);
   assert.doesNotMatch(view, /phase === "rebuild" \|\| phase === "feedback"/);
   assert.match(css, /\.gmv\[data-gmv-phase="feedback"\] \.gmv-bottom\s*\{[^}]*display:\s*none/);
+  assert.match(view, /setScoreOpen\(false\)/);
+  assert.match(view, /target\.closest\("button, a"\)/);
+  assert.match(view, />\s*Home\s*</);
+  assert.match(view, /to="\/"/);
+  assert.match(view, /className="gmv-next"/);
+  assert.match(css, /\.gmv-home\s*\{[^}]*background:\s*transparent/);
+  assert.match(css, /\.gmv-score-actions \.gmv-next\s*\{[^}]*background:\s*rgba\(15,\s*18,\s*22,\s*0\.46\)/);
+  assert.doesNotMatch(view, /data-gmv-next[\s\S]{0,80}gmv-gold|gmv-gold[\s\S]{0,80}data-gmv-next/);
 });
 
 test("the phone page is one Position Recall screen with level pills and a side dock", () => {

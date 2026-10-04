@@ -88,6 +88,7 @@ export function GrandmasterVision() {
   const roundLogRef = useRef<LevelRound[]>([]);
   const [progress, setProgress] = useState<VisionProgress>(emptyProgress);
   const [showIntro, setShowIntro] = useState(true);
+  const [scoreOpen, setScoreOpen] = useState(false);
   const [hideNext, setHideNext] = useState(false);
   const [selection, setSelection] = useState<Selection>(null);
   const selectionRef = useRef<Selection>(null);
@@ -426,6 +427,7 @@ export function GrandmasterVision() {
         return next;
       });
     }
+    setScoreOpen(true);
     setPhase("feedback");
     const heard = levelScore ? levelScore.accuracy : scored.accuracy;
     if (heard >= HIGH_ACCURACY) playVictoryChord();
@@ -453,8 +455,8 @@ export function GrandmasterVision() {
     >
       <h1 className="gmv-sr">Grandmaster Vision</h1>
       <header className="gmv-bar">
-        <Link to="/" className="gmv-home" data-gmv-home aria-label="Opening Lab">
-          Lab
+        <Link to="/" className="gmv-home" data-gmv-home aria-label="Home">
+          Home
         </Link>
         <div className="gmv-pills" ref={pillsRef} data-gmv-levels role="tablist" aria-label="Levels">
           {LEVEL_INFO.map((info) => {
@@ -631,8 +633,19 @@ export function GrandmasterVision() {
         </div>
       ) : null}
 
-      {phase === "feedback" && round && result ? (
-        <div className="gmv-modal" data-gmv-modal role="dialog" aria-modal="true" aria-label="Score">
+      {phase === "feedback" && scoreOpen && round && result ? (
+        <div
+          className="gmv-modal"
+          data-gmv-modal
+          role="dialog"
+          aria-modal="true"
+          aria-label="Score"
+          onClick={(event) => {
+            const target = event.target;
+            if (!(target instanceof Element) || target.closest("button, a")) return;
+            setScoreOpen(false);
+          }}
+        >
           <section className="gmv-modal-card" data-gmv-score>
             <div className="gmv-stars" data-gmv-stars={round.stars} aria-label={`${round.stars} stars`}>
               {[1, 2, 3].map((n) => (
@@ -674,7 +687,7 @@ export function GrandmasterVision() {
             <div className="gmv-score-actions">
               <button
                 type="button"
-                className="gmv-gold"
+                className="gmv-next"
                 data-gmv-next
                 disabled={levelDone && !canNext}
                 onClick={() => {
