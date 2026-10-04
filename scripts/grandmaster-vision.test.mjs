@@ -215,6 +215,18 @@ test("score and stars follow study time and accuracy", () => {
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
+test("the score card is glass so the marked board stays readable", () => {
+  assert.match(view, /data-gmv-modal/);
+  assert.match(css, /\.gmv-modal\s*\{[^}]*backdrop-filter:\s*blur\(10px\)/);
+  assert.match(css, /\.gmv-modal\[data-gmv-modal\]\s*\{[^}]*background:\s*transparent/);
+  assert.match(css, /\.gmv-modal\[data-gmv-modal\]\s*\{[^}]*backdrop-filter:\s*none/);
+  assert.match(
+    css,
+    /\.gmv-modal\[data-gmv-modal\] \.gmv-modal-card\s*\{[^}]*background:\s*rgba\(15,\s*18,\s*22,\s*0\.46\)/,
+  );
+  assert.doesNotMatch(css, /\.gmv-modal\[data-gmv-modal\][\s\S]{0,240}backdrop-filter:\s*blur/);
+});
+
 test("the phone page is one Position Recall screen with level pills and a side dock", () => {
   assert.match(view, /data-gmv-view="board"/);
   assert.match(view, /L\{info\.level\}/);
