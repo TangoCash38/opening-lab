@@ -10,12 +10,14 @@ import {
   loadProgress,
   onboardingDismissed,
   piecesFromFen,
-  pickPosition,
+  positionsForLevel,
   recordResult,
   saveProgress,
   scoreAttempt,
+  scoreLevel,
   scoreRound,
   type AttemptScore,
+  type LevelRound,
   type RoundScore,
   type VisionPosition,
   type VisionProgress,
@@ -82,6 +84,8 @@ export function GrandmasterVision() {
   const [studyMs, setStudyMs] = useState(0);
   const [result, setResult] = useState<AttemptScore | null>(null);
   const [round, setRound] = useState<RoundScore | null>(null);
+  const [roundLog, setRoundLog] = useState<LevelRound[]>([]);
+  const roundLogRef = useRef<LevelRound[]>([]);
   const [progress, setProgress] = useState<VisionProgress>(emptyProgress);
   const [showIntro, setShowIntro] = useState(true);
   const [hideNext, setHideNext] = useState(false);
@@ -118,10 +122,7 @@ export function GrandmasterVision() {
   useEffect(() => {
     if (booted.current) return;
     booted.current = true;
-    const next = pickPosition(1);
-    setLevel(1);
-    setPosition(next);
-    setPhase("study");
+    openLevel(1);
   }, []);
 
   useEffect(() => {
@@ -162,11 +163,13 @@ export function GrandmasterVision() {
     root.scrollTo({ left: Math.max(0, left) });
   }, [level, progress]);
 
-  function startLevel(nextLevel: number) {
-    if (!isLevelUnlocked(progress, nextLevel)) return;
-    unlockGrandmasterAudio();
-    const avoid = position && position.level === nextLevel ? position.id : undefined;
-    const next = pickPosition(nextLevel, avoid);
+  function openLevel(nextLevel: number, index = 0) {
+    const rounds = positionsForLevel(nextLevel);
+    const next = rounds[index] ?? rounds[0];
+    if (index === 0) {
+      roundLogRef.current = [];
+      setRoundLog([]);
+    }
     hideGhost();
     dragRef.current = null;
     setLevel(nextLevel);
@@ -180,6 +183,17 @@ export function GrandmasterVision() {
     studyFrozen.current = 0;
     setStudyMs(0);
     setPhase("study");
+  }
+
+  function startLevel(nextLevel: number) {
+    if (!isLevelUnlocked(progress, nextLevel)) return;
+    unlockGrandmasterAudio();
+    openLevel(nextLevel, 0);
+  }
+
+  function goNextRound() {
+    unlockGrandmasterAudio();
+    openLevel(level, roundLogRef.current.length);
   }
 
   function retryStudy() {
@@ -391,20 +405,36 @@ export function GrandmasterVision() {
     unlockGrandmasterAudio();
     const scored = scoreAttempt(original, attemptRef.current);
     const roundScore = scoreRound(scored.accuracy, studyFrozen.current);
-    setResult(scored);
-    setRound(roundScore);
+    const history = [...roundLogRef.current, { correct: scored.correct, total: scored.total, score: roundScore }];
+    roundLogRef.current = history;
+    setRoundLog(history);
+    const done = history.length >= positionsForLevel(level).length;
+    const levelScore = done ? scoreLevel(history) : null;
+    const correct = history.reduce((sum, entry) => sum + entry.correct, 0);
+    const total = history.reduce((sum, entry) => sum + entry.total, 0);
+    setResult(
+      done && levelScore
+        ? { ...scored, correct, total, accuracy: levelScore.accuracy }
+        : scored,
+    );
+    setRound(levelScore ?? roundScore);
     setSelection(null);
-    setProgress((prev) => {
-      const next = recordResult(prev, level, roundScore.stars, roundScore.total);
-      saveProgress(next);
-      return next;
-    });
+    if (done && levelScore) {
+      setProgress((prev) => {
+        const next = recordResult(prev, level, levelScore.stars, levelScore.total);
+        saveProgress(next);
+        return next;
+      });
+    }
     setPhase("feedback");
-    if (scored.accuracy >= HIGH_ACCURACY) playVictoryChord();
+    const heard = levelScore ? levelScore.accuracy : scored.accuracy;
+    if (heard >= HIGH_ACCURACY) playVictoryChord();
     else playErrorTone();
   }
 
   const showPieces = phase === "study" || phase === "clearing" || phase === "feedback" || phase === "rebuild";
+  const roundCount = positionsForLevel(level).length;
+  const levelDone = roundLog.length >= roundCount;
   const nextLevel = level + 1;
   const canNext = nextLevel <= 10 && isLevelUnlocked(progress, nextLevel);
   const trayLive = phase === "rebuild";
@@ -457,7 +487,7 @@ export function GrandmasterVision() {
         </p>
       </header>
       <p className="gmv-sr" data-gmv-status={phase} aria-live="polite">
-        {phase === "study" && `Level ${level}. Study the position.`}
+        {phase === "study" && `Level ${level}, round ${Math.min(roundCount, roundLog.length + 1)} of ${roundCount}. Study the position.`}
         {phase === "clearing" && "The board clears."}
         {phase === "rebuild" && "Rebuild the position from the dock."}
         {phase === "feedback" && position && `${position.title}. ${result?.accuracy ?? 0}% accurate.`}
@@ -637,11 +667,22 @@ export function GrandmasterVision() {
               </div>
             </dl>
             <p className="gmv-score-note">
-              {result.correct} of {result.total} pieces · studied {formatStudyTime(round.studyMs)}
+              {levelDone
+                ? `${result.correct} of ${result.total} pieces across ${roundCount} rounds · studied ${formatStudyTime(round.studyMs)}`
+                : `Round ${roundLog.length} of ${roundCount} · ${result.correct} of ${result.total} pieces · studied ${formatStudyTime(round.studyMs)}`}
             </p>
             <div className="gmv-score-actions">
-              <button type="button" className="gmv-gold" data-gmv-next disabled={!canNext} onClick={() => canNext && startLevel(nextLevel)}>
-                Next Level
+              <button
+                type="button"
+                className="gmv-gold"
+                data-gmv-next
+                disabled={levelDone && !canNext}
+                onClick={() => {
+                  if (!levelDone) goNextRound();
+                  else if (canNext) startLevel(nextLevel);
+                }}
+              >
+                {levelDone ? "Next Level" : "Next round"}
               </button>
               <button type="button" className="gmv-retry gmv-replay" data-gmv-again onClick={() => startLevel(level)}>
                 Replay

@@ -39,19 +39,19 @@ function positions() {
 test("every Grandmaster Vision diagram is a legal chess position in its level band", () => {
   const bounds = [
     null,
-    [3, 5],
-    [6, 10],
-    [12, 16],
-    [14, 18],
-    [16, 21],
-    [18, 23],
-    [20, 25],
-    [22, 27],
-    [24, 30],
-    [26, 32],
+    [3, 3],
+    [4, 4],
+    [5, 5],
+    [6, 6],
+    [7, 7],
+    [8, 8],
+    [9, 10],
+    [12, 13],
+    [14, 14],
+    [15, 16],
   ];
   const rows = positions();
-  assert.ok(rows.length >= 40);
+  assert.ok(rows.length >= 30);
   const ids = new Set();
   for (const row of rows) {
     assert.equal(ids.has(row.id), false, row.id);
@@ -79,11 +79,19 @@ test("every Grandmaster Vision diagram is a legal chess position in its level ba
     assert.ok(count >= min && count <= max, `${row.id} has ${count}, level ${row.level} wants ${min}-${max}`);
   }
   assert.ok(rows.filter((row) => row.level === 1).every((row) => row.kind === "endgame"));
-  assert.ok(rows.filter((row) => row.level === 2).every((row) => row.kind === "opening"));
-  assert.ok(rows.some((row) => row.level === 3 && row.kind === "endgame"));
-  assert.ok(rows.some((row) => row.level === 3 && row.kind === "middlegame"));
+  let previousMax = 0;
   for (let level = 1; level <= 10; level++) {
-    assert.ok(rows.filter((row) => row.level === level).length >= 4, `level ${level}`);
+    const band = rows.filter((row) => row.level === level);
+    assert.ok(band.length >= 3, `level ${level} rounds`);
+    const counts = band.map((row) => pieceCount(row.fen));
+    const min = Math.min(...counts);
+    const max = Math.max(...counts);
+    assert.ok(max - min <= 1, `level ${level} piece counts ${counts.join(",")}`);
+    if (level > 1) {
+      const step = min - previousMax;
+      assert.ok(step === 1 || step === 2, `level ${level} jumps by ${step} from ${previousMax} to ${min}`);
+    }
+    previousMax = max;
   }
 });
 
@@ -106,6 +114,10 @@ test("the page is a self-paced rebuild with a tray, a shutter, and a score", () 
   assert.match(lib, /gmv-onboarding-v1/);
   assert.match(view, /Retry/);
   assert.match(view, /Next Level/);
+  assert.match(view, /Next round/);
+  assert.match(lib, /function positionsForLevel/);
+  assert.match(lib, /function scoreLevel/);
+  assert.match(lib, /ROUNDS_PER_LEVEL = 3/);
   assert.match(view, /Replay/);
   assert.match(view, /data-gmv-accuracy/);
   assert.match(view, /data-gmv-time/);
@@ -151,7 +163,7 @@ test("the page is a self-paced rebuild with a tray, a shutter, and a score", () 
 
 test("score and stars follow study time and accuracy", () => {
   const script = `
-    import { scoreRound, starsForAccuracy, isLevelUnlocked, recordResult, progressTotals, emptyProgress } from "./src/lib/grandmaster-vision.ts";
+    import { scoreRound, scoreLevel, starsForAccuracy, isLevelUnlocked, recordResult, progressTotals, emptyProgress, positionsForLevel } from "./src/lib/grandmaster-vision.ts";
     const perfect = scoreRound(100, 3000);
     if (perfect.base !== 1000 || perfect.speed !== 375 || perfect.perfect !== 200 || perfect.total !== 1575 || perfect.stars !== 3) {
       throw new Error("perfect " + JSON.stringify(perfect));
@@ -174,6 +186,27 @@ test("score and stars follow study time and accuracy", () => {
     if (progress.levels["1"].best !== 500 || progress.levels["1"].stars !== 1) throw new Error("keeps best score and stars");
     const totals = progressTotals(progress);
     if (totals.score !== 500 || totals.stars !== 1) throw new Error("totals " + JSON.stringify(totals));
+    if (positionsForLevel(1).length < 3 || positionsForLevel(2).length < 3) throw new Error("rounds");
+    const weak = scoreLevel([
+      { correct: 1, total: 3, score: scoreRound(33, 1000) },
+      { correct: 1, total: 3, score: scoreRound(33, 1000) },
+      { correct: 1, total: 3, score: scoreRound(33, 1000) },
+    ]);
+    if (weak.stars !== 0) throw new Error("weak level " + JSON.stringify(weak));
+    const cleared = scoreLevel([
+      { correct: 2, total: 3, score: scoreRound(67, 20000) },
+      { correct: 2, total: 3, score: scoreRound(67, 20000) },
+      { correct: 2, total: 3, score: scoreRound(67, 20000) },
+    ]);
+    if (cleared.stars !== 1 || cleared.accuracy !== 67) throw new Error("cleared level " + JSON.stringify(cleared));
+    const perfectLevel = scoreLevel([
+      { correct: 3, total: 3, score: scoreRound(100, 3000) },
+      { correct: 3, total: 3, score: scoreRound(100, 3000) },
+      { correct: 3, total: 3, score: scoreRound(100, 3000) },
+    ]);
+    if (perfectLevel.stars !== 3 || perfectLevel.perfect !== 600 || perfectLevel.base !== 3000) {
+      throw new Error("perfect level " + JSON.stringify(perfectLevel));
+    }
   `;
   const run = spawnSync(process.execPath, ["--experimental-strip-types", "--input-type=module", "-e", script], {
     cwd: root,
