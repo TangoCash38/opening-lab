@@ -87,7 +87,8 @@ export const Route = createRootRoute({
       { title: APP_NAME },
       {
         name: "description",
-        content: "Strict chess opening lines · memory training",
+        content:
+          "Opening Lab also has great, effective free learning tools: Square Memory and Position Recall, plus chess opening drill packs.",
       },
       { name: "apple-mobile-web-app-title", content: APP_NAME },
       { name: "apple-mobile-web-app-capable", content: "yes" },
@@ -97,7 +98,8 @@ export const Route = createRootRoute({
       { property: "og:title", content: APP_NAME },
       {
         property: "og:description",
-        content: "Strict chess opening lines · memory training",
+        content:
+          "Opening Lab also has great, effective free learning tools: Square Memory and Position Recall, plus chess opening drill packs.",
       },
       ...(ogImage
         ? [
