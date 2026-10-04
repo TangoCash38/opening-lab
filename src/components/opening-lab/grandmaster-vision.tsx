@@ -534,15 +534,20 @@ export function GrandmasterVision() {
                 </button>
               </>
             ) : (
-              <button
-                type="button"
-                className="gmv-gold gmv-ready"
-                data-gmv-ready
-                disabled={phase !== "study"}
-                onClick={markReady}
-              >
-                I'm Ready!
-              </button>
+              <>
+                <p className="gmv-dock-time" aria-hidden="true">
+                  {formatStudyTime(studyMs)}
+                </p>
+                <button
+                  type="button"
+                  className="gmv-gold gmv-ready"
+                  data-gmv-ready
+                  disabled={phase !== "study"}
+                  onClick={markReady}
+                >
+                  I'm Ready!
+                </button>
+              </>
             )}
           </div>
         </div>
