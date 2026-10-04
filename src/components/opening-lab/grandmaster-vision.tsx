@@ -464,6 +464,7 @@ export function GrandmasterVision() {
       </p>
 
       <div className="gmv-arena">
+        <div className="gmv-stack">
         <div className="gmv-pair">
           <aside className="gmv-dock" data-gmv-tray-box data-live={trayLive ? "true" : "false"} aria-label="Piece dock">
             <TrayColumn
@@ -542,7 +543,6 @@ export function GrandmasterVision() {
             </div>
           </div>
         </div>
-      </div>
 
       <div className="gmv-bottom">
         <button type="button" className="gmv-retry" data-gmv-retry onClick={retryStudy}>
@@ -561,6 +561,8 @@ export function GrandmasterVision() {
         >
           {primaryReady ? "I'm Ready!" : "Submit Position"}
         </button>
+      </div>
+        </div>
       </div>
 
       {showIntro ? (
