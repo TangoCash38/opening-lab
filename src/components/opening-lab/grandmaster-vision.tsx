@@ -464,23 +464,6 @@ export function GrandmasterVision() {
       </p>
 
       <div className="gmv-arena">
-        <div className="gmv-stack">
-        <div className="gmv-pair">
-          <aside className="gmv-dock" data-gmv-tray-box data-live={trayLive ? "true" : "false"} aria-label="Piece dock">
-            <TrayColumn
-              label="White pieces"
-              codes={WHITE_TRAY}
-              selected={selection?.kind === "tray" ? selection.code : null}
-              live={trayLive}
-            />
-            <TrayColumn
-              label="Black pieces"
-              codes={BLACK_TRAY}
-              selected={selection?.kind === "tray" ? selection.code : null}
-              live={trayLive}
-            />
-          </aside>
-
           <div className="gmv-stage">
             <div className={`gmv-frame ${phase === "clearing" ? "is-wipe" : ""}`} data-gmv-board ref={boardRef}>
               <div className="gmv-grid" role="grid" aria-label="Chessboard">
@@ -542,14 +525,31 @@ export function GrandmasterVision() {
               </div>
             </div>
           </div>
-        </div>
 
-      <div className="gmv-bottom">
-        <div className="gmv-bottom-gap" aria-hidden="true" />
-        <div className="gmv-bottom-board">
+        {phase === "rebuild" || phase === "feedback" ? (
+          <aside className="gmv-dock" data-gmv-tray-box data-live="true" aria-label="Piece dock">
+            <TrayColumn
+              label="White pieces"
+              codes={WHITE_TRAY}
+              selected={selection?.kind === "tray" ? selection.code : null}
+              live={trayLive}
+            />
+            <TrayColumn
+              label="Black pieces"
+              codes={BLACK_TRAY}
+              selected={selection?.kind === "tray" ? selection.code : null}
+              live={trayLive}
+            />
+          </aside>
+        ) : null}
+
+        <div className="gmv-bottom">
+          <button type="button" className="gmv-retry" data-gmv-retry onClick={retryStudy}>
+            Retry
+          </button>
           <button
             type="button"
-            className="gmv-gold gmv-go"
+            className="gmv-gold"
             data-gmv-ready={primaryReady ? "true" : undefined}
             data-gmv-submit={!primaryReady ? "true" : undefined}
             disabled={showIntro || (phase !== "study" && phase !== "rebuild")}
@@ -560,11 +560,6 @@ export function GrandmasterVision() {
           >
             {primaryReady ? "I'm Ready!" : "Submit Position"}
           </button>
-          <button type="button" className="gmv-retry" data-gmv-retry onClick={retryStudy}>
-            Retry
-          </button>
-        </div>
-      </div>
         </div>
       </div>
 
