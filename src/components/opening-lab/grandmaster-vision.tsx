@@ -1,15 +1,23 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import {
-  formatRebuildTime,
+  emptyProgress,
+  formatStudyTime,
   HIGH_ACCURACY,
+  isLevelUnlocked,
   LEVEL_INFO,
+  loadProgress,
   piecesFromFen,
   pickPosition,
+  progressTotals,
+  recordResult,
+  saveProgress,
   scoreAttempt,
-  SNAPSHOT_MS,
+  scoreRound,
   type AttemptScore,
+  type RoundScore,
   type VisionPosition,
+  type VisionProgress,
 } from "@/lib/grandmaster-vision";
 import {
   playErrorTone,
@@ -44,7 +52,7 @@ const PIECE_SRC: Record<string, string> = {
   k: "/pieces/bK.svg",
 };
 
-type Phase = "menu" | "snapshot" | "clearing" | "rebuild" | "feedback";
+type Phase = "menu" | "study" | "clearing" | "rebuild" | "feedback";
 type Selection = { kind: "tray"; code: string } | { kind: "board"; sq: string } | null;
 type Drag = {
   kind: "tray" | "board" | "empty";
@@ -70,14 +78,17 @@ export function GrandmasterVision() {
   const [position, setPosition] = useState<VisionPosition | null>(null);
   const [phase, setPhase] = useState<Phase>("menu");
   const [attempt, setAttempt] = useState<Record<string, string>>({});
-  const [remain, setRemain] = useState(1);
-  const [elapsed, setElapsed] = useState(0);
+  const [studyMs, setStudyMs] = useState(0);
   const [result, setResult] = useState<AttemptScore | null>(null);
+  const [round, setRound] = useState<RoundScore | null>(null);
+  const [progress, setProgress] = useState<VisionProgress>(emptyProgress);
   const [selection, setSelection] = useState<Selection>(null);
   const selectionRef = useRef<Selection>(null);
   const attemptRef = useRef(attempt);
   const phaseRef = useRef(phase);
-  const rebuildStart = useRef(0);
+  const studyRef = useRef(0);
+  const studyFrozen = useRef(0);
+  const studying = useRef(false);
   const dragRef = useRef<Drag | null>(null);
   const ghostRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -94,28 +105,35 @@ export function GrandmasterVision() {
 
   const original = position ? piecesFromFen(position.fen) : {};
 
+  useLayoutEffect(() => {
+    setProgress(loadProgress());
+  }, []);
+
   useEffect(() => {
-    if (phase !== "snapshot" || !position) return;
+    if (phase !== "study" || !position) {
+      studying.current = false;
+      return;
+    }
+    studying.current = true;
     const started = performance.now();
     let frame = 0;
     const tick = (now: number) => {
-      const t = Math.min(1, (now - started) / SNAPSHOT_MS);
-      setRemain(1 - t);
-      if (t < 1) {
-        frame = requestAnimationFrame(tick);
-        return;
-      }
-      playShutter();
-      setPhase("clearing");
+      if (!studying.current) return;
+      const ms = now - started;
+      studyRef.current = ms;
+      setStudyMs(ms);
+      frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      studying.current = false;
+      cancelAnimationFrame(frame);
+    };
   }, [phase, position]);
 
   useEffect(() => {
     if (phase !== "clearing") return;
     const timer = window.setTimeout(() => {
-      rebuildStart.current = performance.now();
       setPhase("rebuild");
     }, wipeDelay());
     return () => window.clearTimeout(timer);
@@ -132,10 +150,39 @@ export function GrandmasterVision() {
     attemptRef.current = {};
     setAttempt({});
     setResult(null);
+    setRound(null);
     setSelection(null);
-    setRemain(1);
-    setElapsed(0);
-    setPhase("snapshot");
+    studyRef.current = 0;
+    studyFrozen.current = 0;
+    setStudyMs(0);
+    setPhase("study");
+  }
+
+  function retryStudy() {
+    if (!position) return;
+    unlockGrandmasterAudio();
+    hideGhost();
+    dragRef.current = null;
+    attemptRef.current = {};
+    setAttempt({});
+    setResult(null);
+    setRound(null);
+    setSelection(null);
+    studyRef.current = 0;
+    studyFrozen.current = 0;
+    setStudyMs(0);
+    setPhase("study");
+  }
+
+  function markReady() {
+    if (phaseRef.current !== "study") return;
+    studying.current = false;
+    const frozen = studyRef.current;
+    studyFrozen.current = frozen;
+    setStudyMs(frozen);
+    unlockGrandmasterAudio();
+    playShutter();
+    setPhase("clearing");
   }
 
   function leaveToLevels() {
@@ -317,20 +364,27 @@ export function GrandmasterVision() {
   }
 
   function submitBoard() {
-    if (phase !== "rebuild" || !position) return;
+    if (phase !== "rebuild" || !position || level == null) return;
     unlockGrandmasterAudio();
-    const ms = performance.now() - rebuildStart.current;
     const scored = scoreAttempt(original, attemptRef.current);
-    setElapsed(ms);
+    const roundScore = scoreRound(scored.accuracy, studyFrozen.current);
     setResult(scored);
+    setRound(roundScore);
     setSelection(null);
+    setProgress((prev) => {
+      const next = recordResult(prev, level, roundScore.stars, roundScore.total);
+      saveProgress(next);
+      return next;
+    });
     setPhase("feedback");
     if (scored.accuracy >= HIGH_ACCURACY) playVictoryChord();
     else playErrorTone();
   }
 
-  const showPieces = phase === "snapshot" || phase === "clearing" || phase === "feedback" || phase === "rebuild";
-  const levelInfo = LEVEL_INFO.find((info) => info.level === level);
+  const showPieces = phase === "study" || phase === "clearing" || phase === "feedback" || phase === "rebuild";
+  const totals = progressTotals(progress);
+  const nextLevel = (level ?? 1) + 1;
+  const canNext = level != null && nextLevel <= 10 && isLevelUnlocked(progress, nextLevel);
   const trayLive = phase === "rebuild";
 
   return (
@@ -349,6 +403,10 @@ export function GrandmasterVision() {
           Opening Lab
         </Link>
         <h1 className="gmv-title">Grandmaster Vision</h1>
+        <div className="gmv-totals" data-gmv-totals>
+          <span data-gmv-total-stars>★ {totals.stars}</span>
+          <span data-gmv-total-score>{totals.score}</span>
+        </div>
         {phase !== "menu" ? (
           <button type="button" className="gmv-back" data-gmv-back onClick={leaveToLevels}>
             Levels
@@ -357,24 +415,19 @@ export function GrandmasterVision() {
       </header>
 
       {phase === "menu" ? (
-        <LevelPicker onPick={startLevel} />
+        <LevelPicker progress={progress} onPick={startLevel} />
       ) : (
         <div className="gmv-play">
           <div className="gmv-readout">
             <p className="gmv-status" data-gmv-status={phase} aria-live="polite">
-              {phase === "snapshot" &&
-                `Level ${level} · ${levelInfo?.name ?? "Board"} · memorise the position`}
+              {phase === "study" && `Level ${level} · study the position`}
               {phase === "clearing" && "The board clears."}
-              {phase === "rebuild" && "Set the pieces from the tray. Drag one off the board to remove it."}
+              {phase === "rebuild" && "Rebuild the position from the tray."}
               {phase === "feedback" && position && `${position.title}. ${result?.accuracy ?? 0}% accurate.`}
             </p>
-            {phase === "snapshot" ? (
-              <div className="gmv-count" data-gmv-countdown aria-hidden>
-                <div className="gmv-count-fill" style={{ transform: `scaleX(${remain})` }} />
-              </div>
-            ) : (
-              <div className="gmv-count gmv-count-idle" aria-hidden />
-            )}
+            <p className="gmv-study-time" data-gmv-study-time data-gmv-time>
+              {formatStudyTime(studyMs)}
+            </p>
           </div>
 
           <div className="gmv-stage">
@@ -392,7 +445,7 @@ export function GrandmasterVision() {
                     const got = attempt[sq];
                     const mark = phase === "feedback" ? result?.marks[sq] : undefined;
                     const shown =
-                      phase === "snapshot" || phase === "clearing"
+                      phase === "study" || phase === "clearing"
                         ? want
                         : phase === "feedback"
                           ? mark === "miss"
@@ -445,76 +498,116 @@ export function GrandmasterVision() {
             </div>
           </div>
 
-          <div className="gmv-drawer">
-            <div className="gmv-drawer-inner">
-              {phase === "feedback" && result ? (
-                <section className="gmv-score" data-gmv-score aria-label="Score">
-                  <p className="gmv-accuracy" data-gmv-accuracy>
-                    {result.accuracy}%
-                  </p>
-                  <p className="gmv-score-note">
-                    {result.correct} of {result.total} pieces on the right square
-                  </p>
-                  <p className="gmv-time" data-gmv-time>
-                    Time to rebuild {formatRebuildTime(elapsed)}
-                  </p>
-                  <div className="gmv-score-actions">
-                    <button
-                      type="button"
-                      className="gmv-next"
-                      data-gmv-next
-                      onClick={() => startLevel(level === 10 ? 10 : (level ?? 1) + 1)}
-                    >
-                      Next Level
-                    </button>
-                    <button
-                      type="button"
-                      className="gmv-again"
-                      data-gmv-again
-                      onClick={() => level && startLevel(level)}
-                    >
-                      Try Again
-                    </button>
-                  </div>
-                </section>
-              ) : (
-                <>
-                  <div
-                    className="gmv-tray"
-                    data-gmv-tray-box
-                    data-live={trayLive ? "true" : "false"}
-                    aria-label="Piece tray"
-                  >
-                    <TrayRow
-                      label="White"
-                      codes={WHITE_TRAY}
-                      selected={selection?.kind === "tray" ? selection.code : null}
-                      live={trayLive}
-                    />
-                    <TrayRow
-                      label="Black"
-                      codes={BLACK_TRAY}
-                      selected={selection?.kind === "tray" ? selection.code : null}
-                      live={trayLive}
-                    />
-                  </div>
-                  <div className="gmv-actions">
-                    <button
-                      type="button"
-                      className="gmv-submit"
-                      data-gmv-submit
-                      disabled={!trayLive}
-                      onClick={submitBoard}
-                    >
-                      Submit Board
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+          <div className="gmv-dock">
+            {phase === "rebuild" || phase === "feedback" ? (
+              <>
+                <div
+                  className="gmv-tray"
+                  data-gmv-tray-box
+                  data-live={trayLive ? "true" : "false"}
+                  aria-label="Piece tray"
+                >
+                  <TrayRow
+                    label="White pieces"
+                    codes={WHITE_TRAY}
+                    selected={selection?.kind === "tray" ? selection.code : null}
+                    live={trayLive}
+                  />
+                  <TrayRow
+                    label="Black pieces"
+                    codes={BLACK_TRAY}
+                    selected={selection?.kind === "tray" ? selection.code : null}
+                    live={trayLive}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="gmv-gold"
+                  data-gmv-submit
+                  disabled={!trayLive}
+                  onClick={submitBoard}
+                >
+                  Submit Board
+                </button>
+                <button type="button" className="gmv-retry" data-gmv-retry onClick={retryStudy}>
+                  Retry
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                className="gmv-gold gmv-ready"
+                data-gmv-ready
+                disabled={phase !== "study"}
+                onClick={markReady}
+              >
+                I'm Ready!
+              </button>
+            )}
           </div>
         </div>
       )}
+
+      {phase === "feedback" && round && result ? (
+        <div className="gmv-modal" data-gmv-modal role="dialog" aria-modal="true" aria-label="Score">
+          <section className="gmv-modal-card" data-gmv-score>
+            <div className="gmv-stars" data-gmv-stars={round.stars} aria-label={`${round.stars} stars`}>
+              {[1, 2, 3].map((n) => (
+                <span key={n} className={n <= round.stars ? "gmv-star is-on" : "gmv-star"} aria-hidden="true">
+                  ★
+                </span>
+              ))}
+            </div>
+            <p className="gmv-round-score" data-gmv-round-score>
+              {round.total}
+            </p>
+            <dl className="gmv-breakdown">
+              <div>
+                <dt>Base</dt>
+                <dd data-gmv-base>{round.base}</dd>
+              </div>
+              <div>
+                <dt>Speed bonus</dt>
+                <dd data-gmv-speed>{round.speed}</dd>
+              </div>
+              {round.perfect > 0 ? (
+                <div>
+                  <dt>Perfect</dt>
+                  <dd data-gmv-perfect>{round.perfect}</dd>
+                </div>
+              ) : null}
+              <div>
+                <dt>Accuracy</dt>
+                <dd className="gmv-accuracy" data-gmv-accuracy>
+                  {result.accuracy}%
+                </dd>
+              </div>
+            </dl>
+            <p className="gmv-score-note">
+              {result.correct} of {result.total} pieces · studied {formatStudyTime(round.studyMs)}
+            </p>
+            <div className="gmv-score-actions">
+              <button
+                type="button"
+                className="gmv-gold"
+                data-gmv-next
+                disabled={!canNext}
+                onClick={() => canNext && startLevel(nextLevel)}
+              >
+                Next Level
+              </button>
+              <button
+                type="button"
+                className="gmv-retry"
+                data-gmv-again
+                onClick={() => level && startLevel(level)}
+              >
+                Replay
+              </button>
+            </div>
+          </section>
+        </div>
+      ) : null}
 
       <div className="gmv-float" ref={ghostRef} hidden>
         <img alt="" draggable={false} />
@@ -523,10 +616,16 @@ export function GrandmasterVision() {
   );
 }
 
-function LevelPicker({ onPick }: { onPick: (level: number) => void }) {
+function LevelPicker({
+  progress,
+  onPick,
+}: {
+  progress: VisionProgress;
+  onPick: (level: number) => void;
+}) {
   return (
     <section className="gmv-picker" data-gmv-levels aria-label="Choose a level">
-      <p className="gmv-picker-lead">Look for five seconds. Rebuild the position.</p>
+      <p className="gmv-picker-lead">Study the position. Tap I'm Ready when you can rebuild it.</p>
       <div className="gmv-picker-bands">
         {LEVEL_GROUPS.map((group) => (
           <div className="gmv-band" key={group.id} data-gmv-band={group.id}>
@@ -537,19 +636,23 @@ function LevelPicker({ onPick }: { onPick: (level: number) => void }) {
               </span>
             </h2>
             <div className="gmv-band-grid" role="group" aria-label={`${group.label} levels ${group.from} to ${group.to}`}>
-              {LEVEL_INFO.filter((info) => info.level >= group.from && info.level <= group.to).map((info) => (
-                <button
-                  key={info.level}
-                  type="button"
-                  data-gmv-level={info.level}
-                  aria-label={`Level ${info.level}, ${info.name}, ${info.range}`}
-                  onClick={() => onPick(info.level)}
-                >
-                  <span className="gmv-lv-num">{info.level}</span>
-                  <span className="gmv-lv-name">{info.name}</span>
-                  <span className="gmv-lv-range">{info.range.replace(" pieces", "")}</span>
-                </button>
-              ))}
+              {LEVEL_INFO.filter((info) => info.level >= group.from && info.level <= group.to).map((info) => {
+                const unlocked = isLevelUnlocked(progress, info.level);
+                return (
+                  <button
+                    key={info.level}
+                    type="button"
+                    data-gmv-level={info.level}
+                    data-gmv-locked={unlocked ? "false" : "true"}
+                    aria-label={`Level ${info.level}, ${info.name}, ${info.range}${unlocked ? "" : ", locked"}`}
+                    disabled={!unlocked}
+                    onClick={() => unlocked && onPick(info.level)}
+                  >
+                    <span className="gmv-lv-num">{info.level}</span>
+                    <span className="gmv-lv-range">{unlocked ? info.range : "Locked"}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -570,10 +673,8 @@ function TrayRow({
   live: boolean;
 }) {
   return (
-    <div className="gmv-tray-row">
-      <span className="gmv-tray-label">{label}</span>
-      <div className="gmv-tray-pieces">
-        {codes.map((code) => (
+    <div className="gmv-tray-row" role="group" aria-label={label}>
+      {codes.map((code) => (
           <button
             key={code}
             type="button"
@@ -586,7 +687,6 @@ function TrayRow({
             <ChessPiece code={code} />
           </button>
         ))}
-      </div>
     </div>
   );
 }
