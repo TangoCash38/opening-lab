@@ -556,7 +556,7 @@ export function GrandmasterVision() {
             </div>
           </div>
 
-        {phase === "rebuild" || phase === "feedback" ? (
+        {phase === "rebuild" ? (
           <aside className="gmv-dock" data-gmv-tray-box data-live="true" aria-label="Piece dock">
             <TrayColumn
               label="White pieces"

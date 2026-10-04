@@ -225,6 +225,9 @@ test("the score card is glass so the marked board stays readable", () => {
     /\.gmv-modal\[data-gmv-modal\] \.gmv-modal-card\s*\{[^}]*background:\s*rgba\(15,\s*18,\s*22,\s*0\.46\)/,
   );
   assert.doesNotMatch(css, /\.gmv-modal\[data-gmv-modal\][\s\S]{0,240}backdrop-filter:\s*blur/);
+  assert.match(view, /phase === "rebuild" \? \([\s\S]*data-gmv-tray-box/);
+  assert.doesNotMatch(view, /phase === "rebuild" \|\| phase === "feedback"/);
+  assert.match(css, /\.gmv\[data-gmv-phase="feedback"\] \.gmv-bottom\s*\{[^}]*display:\s*none/);
 });
 
 test("the phone page is one Position Recall screen with level pills and a side dock", () => {

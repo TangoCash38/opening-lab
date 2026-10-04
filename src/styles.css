@@ -6597,6 +6597,10 @@ body:has([data-grandmaster-vision-page]) {
   padding: 0 0 max(0.1rem, env(safe-area-inset-bottom, 0px));
 }
 
+.gmv[data-gmv-phase="feedback"] .gmv-bottom {
+  display: none;
+}
+
 .gmv-bottom .gmv-gold {
   width: max-content;
   max-width: calc(100% - 2.5rem);
@@ -6678,6 +6682,8 @@ body:has([data-grandmaster-vision-page]) {
   background: rgba(15, 18, 22, 0.46);
   border-color: rgba(255, 255, 255, 0.28);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  /* Clear the a-file so rank numbers are not sitting on the breakdown. */
+  padding-inline: 3.6rem;
 }
 
 .gmv-modal[data-gmv-modal] .gmv-stars,
@@ -6842,6 +6848,7 @@ body:has([data-grandmaster-vision-page]) {
   width: 100%;
   border: 1px solid #3E4756;
   border-radius: 999px;
+  background: rgba(15, 18, 22, 0.72);
   color: #f4efe6;
 }
 
