@@ -11,7 +11,7 @@ export const Route = createFileRoute("/grandmaster-vision")({
       { title: "Grandmaster Vision · Opening Lab" },
       {
         name: "description",
-        content: "Look for five seconds. Rebuild the position.",
+        content: "Study a chess position at your own pace, then rebuild it from the tray.",
       },
     ],
   }),

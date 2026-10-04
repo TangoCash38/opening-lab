@@ -6,9 +6,14 @@
  * and on up to a full board at level 10.
  */
 
-export const SNAPSHOT_MS = 5000;
 export const LEVEL_COUNT = 10;
 export const HIGH_ACCURACY = 80;
+export const BASE_POINTS = 1000;
+export const SPEED_WINDOW_MS = 12000;
+export const SPEED_BONUS_MAX = 500;
+export const PERFECT_BONUS = 200;
+const PROGRESS_KEY = "gmv-progress-v1";
+const ONBOARD_KEY = "gmv-onboarding-v1";
 
 export type VisionKind = "endgame" | "opening" | "middlegame";
 
@@ -502,4 +507,126 @@ export function pickPosition(
 export function formatRebuildTime(ms: number): string {
   const safe = Number.isFinite(ms) && ms > 0 ? ms : 0;
   return `${(safe / 1000).toFixed(1)}s`;
+}
+
+export function formatStudyTime(ms: number): string {
+  const safe = Number.isFinite(ms) && ms > 0 ? ms : 0;
+  return `${(safe / 1000).toFixed(1)}s`;
+}
+
+export function starsForAccuracy(accuracy: number): 0 | 1 | 2 | 3 {
+  const safe = Math.max(0, Math.min(100, Math.round(accuracy)));
+  if (safe >= 100) return 3;
+  if (safe >= 85) return 2;
+  if (safe >= 60) return 1;
+  return 0;
+}
+
+export type RoundScore = {
+  accuracy: number;
+  studyMs: number;
+  base: number;
+  speed: number;
+  perfect: number;
+  total: number;
+  stars: 0 | 1 | 2 | 3;
+};
+
+/** Score = (base × accuracy) + speed bonus + 200 when accuracy is perfect. */
+export function scoreRound(accuracy: number, studyMs: number): RoundScore {
+  const safeAcc = Math.max(0, Math.min(100, Math.round(accuracy)));
+  const fraction = safeAcc / 100;
+  const base = Math.round(BASE_POINTS * fraction);
+  const studySec = Math.max(0, Number.isFinite(studyMs) ? studyMs : 0) / 1000;
+  const windowSec = SPEED_WINDOW_MS / 1000;
+  const speedFactor = Math.max(0, (windowSec - studySec) / windowSec);
+  const speed = Math.round(fraction * speedFactor * SPEED_BONUS_MAX);
+  const perfect = safeAcc === 100 ? PERFECT_BONUS : 0;
+  const stars = starsForAccuracy(safeAcc);
+  return {
+    accuracy: safeAcc,
+    studyMs: Math.max(0, Number.isFinite(studyMs) ? studyMs : 0),
+    base,
+    speed,
+    perfect,
+    total: base + speed + perfect,
+    stars,
+  };
+}
+
+export type LevelProgress = { stars: number; best: number };
+
+export type VisionProgress = { levels: Record<string, LevelProgress> };
+
+export function emptyProgress(): VisionProgress {
+  return { levels: {} };
+}
+
+export function loadProgress(): VisionProgress {
+  if (typeof window === "undefined") return emptyProgress();
+  try {
+    const raw = window.localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return emptyProgress();
+    const parsed = JSON.parse(raw) as VisionProgress;
+    if (!parsed || typeof parsed !== "object" || !parsed.levels || typeof parsed.levels !== "object") {
+      return emptyProgress();
+    }
+    return { levels: parsed.levels };
+  } catch {
+    return emptyProgress();
+  }
+}
+
+export function saveProgress(progress: VisionProgress): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+}
+
+export function isLevelUnlocked(progress: VisionProgress, level: number): boolean {
+  if (level <= 1) return true;
+  const prev = progress.levels[String(level - 1)];
+  return (prev?.stars ?? 0) >= 1;
+}
+
+export function recordResult(
+  progress: VisionProgress,
+  level: number,
+  stars: number,
+  total: number,
+): VisionProgress {
+  const key = String(level);
+  const prev = progress.levels[key];
+  return {
+    levels: {
+      ...progress.levels,
+      [key]: {
+        stars: Math.max(prev?.stars ?? 0, stars),
+        best: Math.max(prev?.best ?? 0, total),
+      },
+    },
+  };
+}
+
+export function onboardingDismissed(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(ONBOARD_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function dismissOnboarding(): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(ONBOARD_KEY, "1");
+}
+
+export function progressTotals(progress: VisionProgress): { score: number; stars: number } {
+  let score = 0;
+  let stars = 0;
+  for (const row of Object.values(progress.levels)) {
+    score += row?.best || 0;
+    stars += row?.stars || 0;
+  }
+  return { score, stars };
 }

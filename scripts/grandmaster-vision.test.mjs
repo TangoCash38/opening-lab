@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -86,19 +87,40 @@ test("every Grandmaster Vision diagram is a legal chess position in its level ba
   }
 });
 
-test("the page is a five-second rebuild with a tray, a shutter, and a score", () => {
+test("the page is a self-paced rebuild with a tray, a shutter, and a score", () => {
   assert.match(page, /createFileRoute\("\/grandmaster-vision"\)/);
   assert.match(page, /Grandmaster Vision · Opening Lab/);
   assert.match(page, /data-surface="website"/);
-  assert.match(view, /SNAPSHOT_MS/);
-  assert.match(lib, /SNAPSHOT_MS = 5000/);
-  assert.match(view, /data-gmv-countdown/);
+  assert.doesNotMatch(view, /SNAPSHOT_MS/);
+  assert.match(view, /I'm Ready!/);
+  assert.match(view, /data-gmv-ready/);
+  assert.match(view, /data-gmv-study-time/);
   assert.match(view, /data-gmv-tray="\{code\}"|data-gmv-tray=\{code\}/);
-  assert.match(view, /Submit Board/);
+  assert.match(view, /Submit Position/);
+  assert.match(view, /Position Recall Training/);
+  assert.match(view, /Adriaan de Groot/);
+  assert.match(view, /Herbert Simon/);
+  assert.match(view, /Don't show again/);
+  assert.match(view, /Got It \/ Start/);
+  assert.match(view, /gmv-onboarding-v1|onboardingDismissed|dismissOnboarding/);
+  assert.match(lib, /gmv-onboarding-v1/);
+  assert.match(view, /Retry/);
   assert.match(view, /Next Level/);
-  assert.match(view, /Try Again/);
+  assert.match(view, /Replay/);
   assert.match(view, /data-gmv-accuracy/);
   assert.match(view, /data-gmv-time/);
+  assert.match(view, /data-gmv-base/);
+  assert.match(view, /data-gmv-speed/);
+  assert.match(view, /data-gmv-stars/);
+  assert.match(view, /localStorage|loadProgress/);
+  assert.match(lib, /localStorage/);
+  assert.match(lib, /gmv-progress-v1/);
+  assert.match(lib, /BASE_POINTS = 1000/);
+  assert.match(lib, /SPEED_WINDOW_MS = 12000/);
+  assert.match(lib, /SPEED_BONUS_MAX = 500/);
+  assert.match(lib, /PERFECT_BONUS = 200/);
+  assert.match(lib, /function scoreRound/);
+  assert.match(lib, /function starsForAccuracy/);
   assert.match(view, /is-ok/);
   assert.match(view, /is-bad/);
   assert.match(view, /gmv-ghost/);
@@ -120,22 +142,60 @@ test("the page is a five-second rebuild with a tray, a shutter, and a score", ()
   assert.match(css, /\.gmv-sq\.is-dark/);
   assert.match(css, /\.gmv-sq\.is-ok::after/);
   assert.match(css, /\.gmv-sq\.is-bad::after/);
+  assert.match(css, /#FFB800/);
+  assert.match(css, /#1B2028/);
+  assert.match(css, /#3E4756/);
+  assert.match(css, /#0F1216/);
+  assert.doesNotMatch(css, /data-gmv-band="intermediate"/);
 });
 
-test("the phone page is a level picker, then a board and tray that share the viewport", () => {
-  assert.match(view, /data-gmv-view=\{phase === "menu" \? "levels" : "board"\}/);
-  assert.match(view, /Beginner/);
-  assert.match(view, /Intermediate/);
-  assert.match(view, /Advanced/);
-  assert.match(view, /phase === "menu" \? \([\s\S]*<LevelPicker/);
+test("score and stars follow study time and accuracy", () => {
+  const script = `
+    import { scoreRound, starsForAccuracy, isLevelUnlocked, recordResult, progressTotals, emptyProgress } from "./src/lib/grandmaster-vision.ts";
+    const perfect = scoreRound(100, 3000);
+    if (perfect.base !== 1000 || perfect.speed !== 375 || perfect.perfect !== 200 || perfect.total !== 1575 || perfect.stars !== 3) {
+      throw new Error("perfect " + JSON.stringify(perfect));
+    }
+    const mid = scoreRound(70, 20000);
+    if (mid.base !== 700 || mid.speed !== 0 || mid.perfect !== 0 || mid.stars !== 1 || mid.total !== 700) {
+      throw new Error("mid " + JSON.stringify(mid));
+    }
+    const low = scoreRound(50, 1000);
+    if (low.stars !== 0 || low.base !== 500) throw new Error("low " + JSON.stringify(low));
+    if (starsForAccuracy(100) !== 3 || starsForAccuracy(85) !== 2 || starsForAccuracy(60) !== 1 || starsForAccuracy(59) !== 0) {
+      throw new Error("star bands");
+    }
+    let progress = emptyProgress();
+    if (!isLevelUnlocked(progress, 1) || isLevelUnlocked(progress, 2)) throw new Error("fresh locks");
+    progress = recordResult(progress, 1, 0, 500);
+    if (isLevelUnlocked(progress, 2)) throw new Error("zero stars must stay locked");
+    progress = recordResult(progress, 1, 1, 400);
+    if (!isLevelUnlocked(progress, 2) || isLevelUnlocked(progress, 3)) throw new Error("one star unlocks only the next");
+    if (progress.levels["1"].best !== 500 || progress.levels["1"].stars !== 1) throw new Error("keeps best score and stars");
+    const totals = progressTotals(progress);
+    if (totals.score !== 500 || totals.stars !== 1) throw new Error("totals " + JSON.stringify(totals));
+  `;
+  const run = spawnSync(process.execPath, ["--experimental-strip-types", "--input-type=module", "-e", script], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
+test("the phone page is one Position Recall screen with level pills and a side dock", () => {
+  assert.match(view, /data-gmv-view="board"/);
+  assert.match(view, /L\{info\.level\}/);
   assert.match(view, /data-gmv-board/);
   assert.match(view, /gmv-coord-rank/);
   assert.match(view, /gmv-coord-file/);
   assert.match(view, /data-gmv-tray-box/);
+  assert.match(view, /data-gmv-locked/);
+  assert.match(view, /data-gmv-intro/);
   assert.match(css, /\[data-grandmaster-vision-page\]/);
   assert.match(css, /overflow:\s*hidden/);
   assert.match(css, /\.gmv-coord-rank/);
-  assert.match(css, /\.gmv-drawer/);
+  assert.match(css, /\.gmv-dock/);
+  assert.match(css, /\.gmv-pills/);
   assert.doesNotMatch(css, /\.gmv-file-row/);
   assert.doesNotMatch(css, /\.gmv-frame\s*\{[^}]*padding:\s*0\.7rem/);
 });
