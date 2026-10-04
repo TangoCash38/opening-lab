@@ -13,6 +13,7 @@ export const SPEED_WINDOW_MS = 12000;
 export const SPEED_BONUS_MAX = 500;
 export const PERFECT_BONUS = 200;
 const PROGRESS_KEY = "gmv-progress-v1";
+const ONBOARD_KEY = "gmv-onboarding-v1";
 
 export type VisionKind = "endgame" | "opening" | "middlegame";
 
@@ -604,6 +605,20 @@ export function recordResult(
       },
     },
   };
+}
+
+export function onboardingDismissed(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(ONBOARD_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function dismissOnboarding(): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(ONBOARD_KEY, "1");
 }
 
 export function progressTotals(progress: VisionProgress): { score: number; stars: number } {

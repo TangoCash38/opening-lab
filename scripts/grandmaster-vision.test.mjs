@@ -96,7 +96,14 @@ test("the page is a self-paced rebuild with a tray, a shutter, and a score", () 
   assert.match(view, /data-gmv-ready/);
   assert.match(view, /data-gmv-study-time/);
   assert.match(view, /data-gmv-tray="\{code\}"|data-gmv-tray=\{code\}/);
-  assert.match(view, /Submit Board/);
+  assert.match(view, /Submit Position/);
+  assert.match(view, /Position Recall Training/);
+  assert.match(view, /Adriaan de Groot/);
+  assert.match(view, /Herbert Simon/);
+  assert.match(view, /Don't show again/);
+  assert.match(view, /Got It \/ Start/);
+  assert.match(view, /gmv-onboarding-v1|onboardingDismissed|dismissOnboarding/);
+  assert.match(lib, /gmv-onboarding-v1/);
   assert.match(view, /Retry/);
   assert.match(view, /Next Level/);
   assert.match(view, /Replay/);
@@ -138,9 +145,8 @@ test("the page is a self-paced rebuild with a tray, a shutter, and a score", () 
   assert.match(css, /#FFB800/);
   assert.match(css, /#1B2028/);
   assert.match(css, /#3E4756/);
-  assert.match(css, /rgba\(255, 248, 236, 0\.6\)/);
-  assert.match(css, /grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
-  assert.doesNotMatch(css, /data-gmv-band="intermediate"[\s\S]{0,180}repeat\(4/);
+  assert.match(css, /#0F1216/);
+  assert.doesNotMatch(css, /data-gmv-band="intermediate"/);
 });
 
 test("score and stars follow study time and accuracy", () => {
@@ -176,22 +182,20 @@ test("score and stars follow study time and accuracy", () => {
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
-test("the phone page is a level picker, then a board and tray that share the viewport", () => {
-  assert.match(view, /data-gmv-view=\{phase === "menu" \? "levels" : "board"\}/);
-  assert.match(view, /Beginner/);
-  assert.match(view, /Intermediate/);
-  assert.match(view, /Advanced/);
-  assert.match(view, /phase === "menu" \? \([\s\S]*<LevelPicker/);
+test("the phone page is one Position Recall screen with level pills and a side dock", () => {
+  assert.match(view, /data-gmv-view="board"/);
+  assert.match(view, /L\{info\.level\}/);
   assert.match(view, /data-gmv-board/);
   assert.match(view, /gmv-coord-rank/);
   assert.match(view, /gmv-coord-file/);
   assert.match(view, /data-gmv-tray-box/);
   assert.match(view, /data-gmv-locked/);
+  assert.match(view, /data-gmv-intro/);
   assert.match(css, /\[data-grandmaster-vision-page\]/);
   assert.match(css, /overflow:\s*hidden/);
   assert.match(css, /\.gmv-coord-rank/);
   assert.match(css, /\.gmv-dock/);
-  assert.match(css, /aspect-ratio:\s*1/);
+  assert.match(css, /\.gmv-pills/);
   assert.doesNotMatch(css, /\.gmv-file-row/);
   assert.doesNotMatch(css, /\.gmv-frame\s*\{[^}]*padding:\s*0\.7rem/);
 });
