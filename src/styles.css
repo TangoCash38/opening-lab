@@ -3389,79 +3389,7 @@ html[data-color-scheme="dark"] .app-shell--landing {
   width: auto;
   max-width: 100%;
   object-fit: contain;
-  object-position: center bottom;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-/* Pupils on coach-seated-v2.png (640×1071): left centre 265×199,
-   right centre 352×198. Lids are a percentage of that image box, so
-   phone and desktop share them. Cream matches the face (#fffbf8). */
-.landing-coach-lid {
-  position: absolute;
-  z-index: 2;
-  width: 2.15%;
-  height: 1.45%;
-  border-radius: 45%;
-  background: #fffbf8;
-  box-shadow: inset 0 -1px 0 rgba(90, 70, 48, 0.28);
-  transform: translate(-50%, 0) scaleY(0);
-  transform-origin: center top;
-  pointer-events: none;
-  opacity: 0;
-  animation: landing-coach-blink 5s linear infinite;
-}
-
-.landing-coach-lid--left {
-  left: 41.36%;
-  top: 18.11%;
-}
-
-.landing-coach-lid--right {
-  left: 54.94%;
-  top: 18.02%;
-}
-
-@keyframes landing-coach-blink {
-  0%,
-  92%,
-  98%,
-  100% {
-    transform: translate(-50%, 0) scaleY(0);
-    opacity: 0;
-  }
-
-  94.2%,
-  95.8% {
-    transform: translate(-50%, 0) scaleY(1);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .landing-coach-lid {
-    animation: none;
-    opacity: 0;
-  }
-}
-
-/* Cream oval on the mug face of coach-seated-v2.png (640×1071).
-   Measured centre of that oval is (308px, 801.5px) — 48.125% / 74.837%.
-   translate(-50%, -50%) puts the squircle's centre on that point.
-   15.5% width (~99px) sits inside the oval (≈243×149px) with cream around it.
-   Percentages are of the coach image box, so phone and desktop share them. */
-.landing-mug-logo {
-  position: absolute;
-  z-index: 2;
-  left: 48.125%;
-  top: 74.837%;
-  width: 15.5%;
-  height: auto;
-  aspect-ratio: 1;
-  max-width: none;
-  transform: translate(-50%, -50%);
-  object-fit: contain;
-  pointer-events: none;
+  object-position: center;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -6215,9 +6143,15 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-home {
+  position: relative;
+  z-index: 40;
   flex: 0 0 auto;
-  color: rgba(244, 239, 230, 0.72);
-  font-size: 0.75rem;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(244, 239, 230, 0.92);
+  font-size: 0.82rem;
   font-weight: 750;
   text-decoration: none;
 }
@@ -6597,6 +6531,10 @@ body:has([data-grandmaster-vision-page]) {
   padding: 0 0 max(0.1rem, env(safe-area-inset-bottom, 0px));
 }
 
+.gmv[data-gmv-phase="feedback"] .gmv-bottom {
+  display: none;
+}
+
 .gmv-bottom .gmv-gold {
   width: max-content;
   max-width: calc(100% - 2.5rem);
@@ -6665,6 +6603,28 @@ body:has([data-grandmaster-vision-page]) {
   overflow: hidden;
   background: rgba(15, 18, 22, 0.72);
   backdrop-filter: blur(10px);
+}
+
+/* Results only. The intro keeps the solid blur so its copy stays easy to read. */
+.gmv-modal[data-gmv-modal] {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.gmv-modal[data-gmv-modal] .gmv-modal-card {
+  background: rgba(15, 18, 22, 0.46);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  /* Clear the a-file so rank numbers are not sitting on the breakdown. */
+  padding-inline: 3.6rem;
+}
+
+.gmv-modal[data-gmv-modal] .gmv-stars,
+.gmv-modal[data-gmv-modal] .gmv-round-score,
+.gmv-modal[data-gmv-modal] .gmv-breakdown,
+.gmv-modal[data-gmv-modal] .gmv-score-note {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);
 }
 
 .gmv-intro {
@@ -6818,10 +6778,28 @@ body:has([data-grandmaster-vision-page]) {
   gap: 0.35rem;
 }
 
+.gmv-score-actions .gmv-next {
+  width: 100%;
+  min-height: 2.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(15, 18, 22, 0.46);
+  color: #f4efe6;
+  font-size: 1.02rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.gmv-score-actions .gmv-next:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
 .gmv-score-actions .gmv-replay {
   width: 100%;
   border: 1px solid #3E4756;
   border-radius: 999px;
+  background: rgba(15, 18, 22, 0.72);
   color: #f4efe6;
 }
 

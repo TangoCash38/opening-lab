@@ -161,21 +161,10 @@ export function LandingHome({
             <div className="landing-coach-wrap">
               <img
                 className="landing-coach"
-                src="/scotch-coach/coach-seated-v2.png"
-                width={640}
-                height={1071}
-                alt={t("Professor Potato Pie")}
-                decoding="async"
-                draggable={false}
-              />
-              <span className="landing-coach-lid landing-coach-lid--left" data-coach-blink aria-hidden />
-              <span className="landing-coach-lid landing-coach-lid--right" data-coach-blink aria-hidden />
-              <img
-                className="landing-mug-logo"
-                src="/brand/opening-lab-logo.png"
-                width={72}
-                height={72}
-                alt=""
+                src="/coach/sicilian-black/king-cedar-portrait.jpg"
+                width={832}
+                height={1248}
+                alt="King Cedar"
                 decoding="async"
                 draggable={false}
               />

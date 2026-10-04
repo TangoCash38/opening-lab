@@ -215,6 +215,29 @@ test("score and stars follow study time and accuracy", () => {
   assert.equal(run.status, 0, run.stderr || run.stdout);
 });
 
+test("the score card is glass so the marked board stays readable", () => {
+  assert.match(view, /data-gmv-modal/);
+  assert.match(css, /\.gmv-modal\s*\{[^}]*backdrop-filter:\s*blur\(10px\)/);
+  assert.match(css, /\.gmv-modal\[data-gmv-modal\]\s*\{[^}]*background:\s*transparent/);
+  assert.match(css, /\.gmv-modal\[data-gmv-modal\]\s*\{[^}]*backdrop-filter:\s*none/);
+  assert.match(
+    css,
+    /\.gmv-modal\[data-gmv-modal\] \.gmv-modal-card\s*\{[^}]*background:\s*rgba\(15,\s*18,\s*22,\s*0\.46\)/,
+  );
+  assert.doesNotMatch(css, /\.gmv-modal\[data-gmv-modal\][\s\S]{0,240}backdrop-filter:\s*blur/);
+  assert.match(view, /phase === "rebuild" \? \([\s\S]*data-gmv-tray-box/);
+  assert.doesNotMatch(view, /phase === "rebuild" \|\| phase === "feedback"/);
+  assert.match(css, /\.gmv\[data-gmv-phase="feedback"\] \.gmv-bottom\s*\{[^}]*display:\s*none/);
+  assert.match(view, /setScoreOpen\(false\)/);
+  assert.match(view, /target\.closest\("button, a"\)/);
+  assert.match(view, />\s*Home\s*</);
+  assert.match(view, /to="\/"/);
+  assert.match(view, /className="gmv-next"/);
+  assert.match(css, /\.gmv-home\s*\{[^}]*background:\s*transparent/);
+  assert.match(css, /\.gmv-score-actions \.gmv-next\s*\{[^}]*background:\s*rgba\(15,\s*18,\s*22,\s*0\.46\)/);
+  assert.doesNotMatch(view, /data-gmv-next[\s\S]{0,80}gmv-gold|gmv-gold[\s\S]{0,80}data-gmv-next/);
+});
+
 test("the phone page is one Position Recall screen with level pills and a side dock", () => {
   assert.match(view, /data-gmv-view="board"/);
   assert.match(view, /L\{info\.level\}/);
