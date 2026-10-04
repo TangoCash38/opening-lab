@@ -248,18 +248,18 @@ test("Square Memory game stays on the free card and opens the free game", () => 
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
 });
 
-test("website home shows Square Memory under the gym and Play does not", () => {
+test("home shows Square Memory under the board in the website and the Play app", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const page = src("src/routes/square-memory.tsx");
   const view = src("src/components/opening-lab/square-memory.tsx");
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const css = src("src/styles.css");
 
-  assert.match(landing, /setShowMemory\(!isPlayApp\(\) \|\| readSquareMemoryPlayPreview\(\)\)/);
+  assert.doesNotMatch(landing, /setShowMemory\(!isPlayApp\(\)/);
   assert.match(landing, /data-play-memory-preview/);
   assert.match(landing, /nextSquareMemoryPreviewTaps/);
   assert.doesNotMatch(landing, /Test mode|Preview Square Memory/);
-  assert.match(landing, /showMemory \?/);
+  assert.doesNotMatch(landing, /showMemory \?/);
   assert.match(landing, /data-landing-square-memory/);
   assert.match(landing, /to="\/square-memory"/);
   assert.match(landing, /Square Memory/);

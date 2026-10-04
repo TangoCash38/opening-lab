@@ -156,7 +156,7 @@ test("homepage board only plays Legal's Mate", () => {
   assert.match(landing, /data-landing-memory-new/);
   assert.match(landing, />\s*New\s*</);
   const demoAt = landing.indexOf("<LandingMateDemo />");
-  const cardGate = landing.indexOf("showMemory ?");
+  const cardGate = landing.indexOf("data-landing-square-memory");
   assert.ok(demoAt > 0 && cardGate > demoAt);
 });
 
