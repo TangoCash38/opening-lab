@@ -5,7 +5,6 @@ import { packPrice } from "@/data/pricing";
 import {
   FREE_SAMPLE_LINE_IDS,
   LIVE_PACK_IDS,
-  WEBSITE_CLASSIC_SAMPLE_PACK_ID,
   canPurchaseBuyAll,
   isPackComingSoon,
   isPackVisible,
@@ -15,15 +14,12 @@ import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
-import { classicSamplePack } from "@/lib/classic-sample";
-import { classicRunAlreadySeen } from "@/lib/classic-run";
 import {
   isPlayApp,
   nextSquareMemoryPreviewTaps,
   readSquareMemoryPlayPreview,
   toggleSquareMemoryPlayPreview,
 } from "@/lib/play-app";
-import { beginClassicRunNarration } from "./classic-run-the-game";
 import { BuyAllOffer } from "./buy-all-offer";
 import { ColorSchemeToggle } from "./color-scheme-toggle";
 import { LandingMateDemo } from "./landing-mate-demo";
@@ -91,12 +87,12 @@ export function LandingHome({
   const { subscribed } = useUnlocks();
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
-  const [showClassic, setShowClassic] = useState(false);
+  const [showRecall, setShowRecall] = useState(false);
   const [showMemory, setShowMemory] = useState(false);
   const previewTaps = useRef<number[]>([]);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
-    setShowClassic(!isPlayApp());
+    setShowRecall(!isPlayApp());
     setShowMemory(!isPlayApp() || readSquareMemoryPlayPreview());
   }, []);
   const onWordmarkClick = () => {
@@ -145,16 +141,6 @@ export function LandingHome({
             >
               {t("Feedback")}
             </button>
-            <Link
-              to="/square-memory"
-              className="landing-nav-link"
-              data-landing-memory-bar
-            >
-              Square Memory game
-              <span className="landing-nav-new" data-landing-memory-new>
-                New
-              </span>
-            </Link>
           </span>
         </nav>
         <div className="landing-tools">
@@ -196,7 +182,7 @@ export function LandingHome({
             </div>
             <LandingMateDemo />
           </div>
-          {showMemory || showClassic ? (
+          {showMemory || showRecall ? (
             <div className="landing-under-board" data-landing-under-board>
               {showMemory ? (
                 <section className="landing-square-memory" aria-label="Square Memory">
@@ -206,48 +192,46 @@ export function LandingHome({
                     data-landing-square-memory
                   >
                     <span className="landing-puzzle-kicker">{t("Free")}</span>
-                    <span className="landing-puzzle-title">Square Memory game</span>
+                    <span className="landing-puzzle-title">
+                      Square Memory game
+                      <span className="landing-nav-new" data-landing-memory-new>
+                        New
+                      </span>
+                    </span>
                   </Link>
                 </section>
               ) : null}
-              {showClassic ? (
-                <section className="landing-puzzle" aria-label={t("Classic GM — Fischer vs Sherwin, 1957")}>
-                  <button
-                    type="button"
+              {showRecall ? (
+                <section className="landing-recall" aria-label="Position Recall Training">
+                  <Link
+                    to="/grandmaster-vision"
                     className="landing-puzzle-card"
-                    data-landing-classic
-                    data-free-lines={
-                      packHasPlayableFreeLines(classicSamplePack()) ? "true" : "false"
-                    }
-                    onClick={() => {
-                      if (!classicRunAlreadySeen()) beginClassicRunNarration();
-                      onOpenPack(WEBSITE_CLASSIC_SAMPLE_PACK_ID);
-                    }}
+                    data-landing-recall
                   >
                     <span className="landing-puzzle-kicker">{t("Free")}</span>
                     <span className="landing-puzzle-title">
-                      {t("Classic GM — Fischer vs Sherwin, 1957")}
+                      Position Recall Training
+                      <span className="landing-nav-new" data-landing-recall-new>
+                        New
+                      </span>
                     </span>
-                    <span className="landing-puzzle-note">
-                      {t("King's Indian Attack vs Sicilian")}
-                    </span>
-                  </button>
+                  </Link>
                 </section>
               ) : null}
             </div>
           ) : null}
           </div>
           <div className="landing-copy">
-            <p id="landing-title" className="landing-sub">
-              {t("Practice with hints. Test with none.")}
-            </p>
             <section className="landing-open-here" aria-labelledby="landing-open-now">
               <div className="landing-section-head">
                 <h2 id="landing-open-now" className="landing-section-title">
                   {t("Open now")}
                 </h2>
-                <p className="landing-section-aside">{t("Chess opening drills available now")}</p>
+                <p className="landing-section-aside">{t("Chess opening packs available now")}</p>
               </div>
+              <p id="landing-title" className="landing-sub">
+                {t("Practice with hints. Test with none.")}
+              </p>
               {showBuyAll ? (
                 <section aria-labelledby="landing-buy-all">
                   <h2 id="landing-buy-all" className="sr-only">

@@ -218,26 +218,22 @@ test("the hidden line is the Ruy Lopez through Bb5", async (t) => {
   assert.equal(bishop?.color, "w");
 });
 
-test("Square Memory game stays on the top bar and opens the free game", () => {
+test("Square Memory game stays on the free card and opens the free game", () => {
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const css = src("src/styles.css");
   const page = src("src/routes/square-memory.tsx");
   const menu = src("src/components/opening-lab/landing-menu.tsx");
   const nav = landing.match(/<nav className="landing-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
-  const feedback = nav.indexOf("data-landing-feedback");
-  const memory = nav.indexOf("data-landing-memory-bar");
-  const chip = landing.slice(
-    landing.indexOf("data-landing-memory-bar") - 280,
-    landing.indexOf("data-landing-memory-bar") + 220,
+  const card = landing.slice(
+    landing.indexOf("data-landing-square-memory") - 280,
+    landing.indexOf("data-landing-square-memory") + 420,
   );
-  assert.ok(feedback > 0 && memory > feedback);
-  assert.doesNotMatch(nav, /data-landing-account|data-landing-support/);
-  assert.match(chip, /className="landing-nav-link"/);
-  assert.match(chip, /to="\/square-memory"/);
-  assert.match(chip, />\s*Square Memory game\s*</);
-  assert.match(chip, /data-landing-memory-new[\s\S]*?>\s*New\s*</);
+  assert.match(nav, /data-landing-feedback/);
+  assert.doesNotMatch(nav, /Square Memory|data-landing-memory-bar|data-landing-account|data-landing-support/);
+  assert.match(card, /to="\/square-memory"/);
+  assert.match(card, /Square Memory game/);
+  assert.match(card, /data-landing-memory-new[\s\S]*?>\s*New\s*</);
   assert.doesNotMatch(landing, /What's new|What&apos;s new/);
-  assert.doesNotMatch(chip, /isPlayApp|showMemory/);
   assert.doesNotMatch(
     css,
     /landing-memory-flash|landing-memory-chip|landing-memory-new|landing-nav-pair/,
@@ -455,9 +451,9 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.match(page, /Square Memory · Opening Lab/);
   assert.doesNotMatch(page, /London Memory/);
   const memory = landing.indexOf("data-landing-square-memory");
-  const classic = landing.indexOf("data-landing-classic");
+  const recall = landing.indexOf("data-landing-recall");
   assert.equal(landing.indexOf("data-landing-puzzle"), -1);
-  assert.ok(memory > 0 && classic > memory);
+  assert.ok(memory > 0 && recall > memory);
   assert.doesNotMatch(landing, /data-landing-london-memory|London Memory|landing-memory-row/);
   assert.match(ruyLine, /SQUARE_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bb5"\]/);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);

@@ -3840,8 +3840,19 @@ html[data-color-scheme="dark"] .landing-chip {
   width: 100%;
 }
 
-.landing-square-memory .landing-puzzle-card {
+.landing-square-memory .landing-puzzle-card,
+.landing-recall .landing-puzzle-card {
   text-decoration: none;
+}
+
+.landing-recall {
+  margin: 0;
+  width: 100%;
+}
+
+.landing-puzzle-title .landing-nav-new {
+  position: relative;
+  top: -0.08rem;
 }
 
 .landing-footer {
@@ -3915,6 +3926,10 @@ html[data-color-scheme="dark"] .landing-chip {
   }
 
   .landing-square-memory {
+    width: min(22rem, 100%);
+  }
+
+  .landing-recall {
     width: min(22rem, 100%);
   }
 }

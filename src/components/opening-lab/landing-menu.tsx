@@ -90,9 +90,9 @@ export function LandingMenu({ onCreateOwn, onReport, onSupport, onFeedback }: Pr
                   className="home-menu-item no-underline"
                   data-menu-vision
                   onClick={(event) => {
-                    // Closing the sheet calls history.back() for the overlay
-                    // entry and undoes a client navigation. Load the page
-                    // directly and leave the sheet mounted until unload.
+                    // Closing the sheet pops the overlay history entry and
+                    // undoes a client navigation. Load the page directly
+                    // and leave the sheet mounted until unload.
                     event.preventDefault();
                     window.location.assign("/grandmaster-vision");
                   }}

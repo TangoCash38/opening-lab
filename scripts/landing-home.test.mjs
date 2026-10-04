@@ -78,7 +78,7 @@ test("Home in the app header returns to the landing; landing links stay visible"
   assert.doesNotMatch(landing, /className="landing-cta-note"/);
   assert.match(
     landing,
-    /t\("Open now"\)[\s\S]{0,220}t\("Chess opening drills available now"\)/,
+    /t\("Open now"\)[\s\S]{0,280}t\("Chess opening packs available now"\)[\s\S]{0,220}t\("Practice with hints\. Test with none\."\)/,
   );
   assert.doesNotMatch(landing, /That was Legal/);
   assert.doesNotMatch(landing, /data-free-try-buy-all/);
@@ -118,7 +118,7 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"Enter the gym":').length - 1, 12);
   assert.equal(copy.split('"Drill packs":').length - 1, 12);
   assert.equal(copy.split('"Opening drill packs":').length - 1, 12);
-  assert.equal(copy.split('"Chess opening drills available now":').length - 1, 12);
+  assert.equal(copy.split('"Chess opening packs available now":').length - 1, 12);
   assert.equal(copy.split("\n    Site:").length - 1, 12);
   assert.equal(copy.split('"{n} free · {price}":').length - 1, 12);
   assert.equal(copy.split('"{price} unlocks the whole pack":').length - 1, 12);
@@ -193,7 +193,7 @@ test("only packs with playable free lines are marked green", () => {
   assert.match(catalog, /export function packHasPlayableFreeLines/);
   assert.match(landing, /packHasPlayableFreeLines\(pack\)/);
   assert.match(landing, /data-free-lines=\{packHasPlayableFreeLines\(pack\) \? "true" : "false"\}/);
-  assert.match(landing, /packHasPlayableFreeLines\(classicSamplePack\(\)\)/);
+  assert.doesNotMatch(landing, /classicSamplePack|data-landing-classic/);
   assert.match(list, /data-free-lines=\{packHasPlayableFreeLines\(pack\) \? "true" : "false"\}/);
   assert.match(css, /\.landing-pack-card\[data-free-lines="true"\]/);
   assert.match(css, /\.pack-card\[data-free-lines="true"\]/);
@@ -216,7 +216,8 @@ test("only packs with playable free lines are marked green", () => {
   }
   assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
   assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
-  const classic = landing.match(/data-landing-classic[\s\S]*?<\/button>/)?.[0] ?? "";
-  assert.match(classic, /t\("Free"\)/);
-  assert.doesNotMatch(classic, /\{n\} free/);
+  const recall = landing.match(/data-landing-recall[\s\S]*?<\/Link>/)?.[0] ?? "";
+  assert.match(recall, /t\("Free"\)/);
+  assert.match(recall, /Position Recall Training/);
+  assert.doesNotMatch(recall, /\{n\} free|Grandmaster Vision/);
 });
