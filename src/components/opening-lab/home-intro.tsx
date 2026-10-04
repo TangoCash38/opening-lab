@@ -17,7 +17,6 @@ import { LESSONS_ENABLED } from "@/lib/lesson-products";
 import {
   isPlayApp,
   nextSquareMemoryPreviewTaps,
-  readSquareMemoryPlayPreview,
   toggleSquareMemoryPlayPreview,
 } from "@/lib/play-app";
 import { BuyAllOffer } from "./buy-all-offer";
@@ -87,20 +86,16 @@ export function LandingHome({
   const { subscribed } = useUnlocks();
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
-  const [showRecall, setShowRecall] = useState(false);
-  const [showMemory, setShowMemory] = useState(false);
   const previewTaps = useRef<number[]>([]);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
-    setShowRecall(!isPlayApp());
-    setShowMemory(!isPlayApp() || readSquareMemoryPlayPreview());
   }, []);
   const onWordmarkClick = () => {
     if (!isPlayApp()) return;
     const next = nextSquareMemoryPreviewTaps(previewTaps.current, Date.now());
     previewTaps.current = next.taps;
     if (!next.toggled) return;
-    setShowMemory(toggleSquareMemoryPlayPreview());
+    toggleSquareMemoryPlayPreview();
   };
   const openPacks = LIVE_PACK_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack),
@@ -182,44 +177,38 @@ export function LandingHome({
             </div>
             <LandingMateDemo />
           </div>
-          {showMemory || showRecall ? (
-            <div className="landing-under-board" data-landing-under-board>
-              {showMemory ? (
-                <section className="landing-square-memory" aria-label="Square Memory">
-                  <Link
-                    to="/square-memory"
-                    className="landing-puzzle-card"
-                    data-landing-square-memory
-                  >
-                    <span className="landing-puzzle-kicker">{t("Free")}</span>
-                    <span className="landing-puzzle-title">
-                      Square Memory game
-                      <span className="landing-nav-new" data-landing-memory-new>
-                        New
-                      </span>
-                    </span>
-                  </Link>
-                </section>
-              ) : null}
-              {showRecall ? (
-                <section className="landing-recall" aria-label="Position Recall Training">
-                  <Link
-                    to="/grandmaster-vision"
-                    className="landing-puzzle-card"
-                    data-landing-recall
-                  >
-                    <span className="landing-puzzle-kicker">{t("Free")}</span>
-                    <span className="landing-puzzle-title">
-                      Position Recall Training
-                      <span className="landing-nav-new" data-landing-recall-new>
-                        New
-                      </span>
-                    </span>
-                  </Link>
-                </section>
-              ) : null}
-            </div>
-          ) : null}
+          <div className="landing-under-board" data-landing-under-board>
+            <section className="landing-square-memory" aria-label="Square Memory">
+              <Link
+                to="/square-memory"
+                className="landing-puzzle-card"
+                data-landing-square-memory
+              >
+                <span className="landing-puzzle-kicker">{t("Free")}</span>
+                <span className="landing-puzzle-title">
+                  Square Memory game
+                  <span className="landing-nav-new" data-landing-memory-new>
+                    New
+                  </span>
+                </span>
+              </Link>
+            </section>
+            <section className="landing-recall" aria-label="Position Recall Training">
+              <Link
+                to="/grandmaster-vision"
+                className="landing-puzzle-card"
+                data-landing-recall
+              >
+                <span className="landing-puzzle-kicker">{t("Free")}</span>
+                <span className="landing-puzzle-title">
+                  Position Recall Training
+                  <span className="landing-nav-new" data-landing-recall-new>
+                    New
+                  </span>
+                </span>
+              </Link>
+            </section>
+          </div>
           </div>
           <div className="landing-copy">
             <section className="landing-open-here" aria-labelledby="landing-open-now">
