@@ -21,23 +21,39 @@ const board = src("src/components/opening-lab/lesson-board.tsx");
 const cues = JSON.parse(src("src/data/lessons/scotch/BOARD_CUES.json"));
 const captions = src("src/data/lessons/scotch/CAPTIONS.txt");
 
-test("landing keeps the open packs, and parks Chess opening lessons", () => {
-  const openNow = landing.indexOf('t("Open now")');
+test("landing shows Scotch Gambit Lessons apart from the open drill packs", () => {
+  const art = landing.indexOf("landing-hero-art");
+  const memory = landing.indexOf("data-landing-square-memory");
+  const recall = landing.indexOf("data-landing-recall");
   const lessons = landing.indexOf("data-landing-lessons");
-  assert.ok(openNow >= 0 && lessons > openNow);
+  const openNow = landing.indexOf('t("Open now")');
+  assert.ok(art >= 0 && memory > art && recall > memory && lessons > recall);
+  assert.ok(openNow > lessons, "lessons card sits with the copy, after the hero games");
+  const heroArt = landing.slice(art, memory);
+  assert.doesNotMatch(heroArt, /data-landing-lessons/);
   assert.doesNotMatch(landing, /t\("Enter the gym"\)/);
   assert.match(landing, /t\("Chess opening lessons"\)/);
+  assert.match(landing, /t\("Scotch Gambit Lessons"\)/);
+  assert.match(landing, /PRICE_LESSON_SCOTCH/);
+  assert.match(landing, /\{n\} free · \{price\}/);
+  assert.match(landing, /data-lesson-product=\{LESSON_SCOTCH_PRODUCT_ID\}/);
+  assert.match(landing, /to="\/lessons\/\$courseId"/);
+  assert.match(landing, /params=\{\{ courseId: SCOTCH_LESSON_SLUG \}\}/);
+  assert.match(landing, /Separate from drill packs\. Buy all does not include lessons\./);
   assert.doesNotMatch(landing, /data-landing-drills/);
-  assert.match(landing, /navigate\(\{ to: "\/lessons" \}\)/);
+  const lessonCard = landing.slice(lessons, landing.indexOf("landing-open-here"));
+  assert.doesNotMatch(lessonCard, /data-free-lines|data-open-pack|BuyAllOffer/);
   assert.match(landing, /useState\(LESSONS_ENABLED\)/);
   assert.match(landing, /setShowLessons\(LESSONS_ENABLED && !isPlayApp\(\)\)/);
   assert.match(landing, /showLessons \?/);
-  assert.match(src("src/lib/lesson-products.ts"), /export const LESSONS_ENABLED: boolean = false/);
+  assert.match(src("src/lib/lesson-products.ts"), /export const LESSONS_ENABLED: boolean = true/);
   assert.doesNotMatch(landing, /Play on|versus the computer|vs computer/i);
   assert.doesNotMatch(landing, /human voice|recorded voice|voice actor|real person/i);
   assert.equal(copy.split('"Opening drill packs":').length - 1, 12);
   assert.equal(copy.split('"Chess opening lessons":').length - 1, 12);
   assert.equal(copy.split('"{n} lessons":').length - 1, 12);
+  assert.equal(copy.split('"Scotch Gambit Lessons":').length - 1, 12);
+  assert.equal(copy.split('"Lesson 1 is free":').length - 1, 12);
   assert.doesNotMatch(copy, /£/);
 });
 
@@ -107,6 +123,13 @@ test("lesson 1 player uses Potato Pie, captions, and the narration clock", () =>
   assert.match(player, /audio\.currentTime/);
   assert.match(player, /data-lesson-skip/);
   assert.match(player, /data-lesson-done/);
+  assert.match(player, /audio\?\.ended/);
+  assert.match(player, /data-lesson-offer/);
+  assert.match(player, /data-lesson-offer-buy/);
+  assert.match(player, /useLessonCheckout\(SCOTCH_LESSON_RETURN\)/);
+  assert.match(player, /PRICE_LESSON_SCOTCH/);
+  assert.match(player, /Unlock the remaining lessons/);
+  assert.match(player, /not included in Buy all/);
   assert.match(player, /LessonBoard/);
   assert.match(player, /data-lesson-note/);
   assert.match(board, /lessonSansAt/);

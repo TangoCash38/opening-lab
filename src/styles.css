@@ -3529,6 +3529,39 @@ html[data-color-scheme="dark"] .app-shell--landing {
   margin: 0.15rem 0 0.35rem;
 }
 
+.landing-lessons {
+  width: 100%;
+  margin: 0 0 0.15rem;
+}
+
+.landing-lessons-title {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.landing-lessons-card {
+  max-width: 28rem;
+  text-decoration: none;
+}
+
+.landing-lessons-count {
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.landing-lessons-note {
+  max-width: 28rem;
+  margin: 0.45rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.8rem;
+  font-weight: 550;
+  line-height: 1.35;
+}
+
 .landing-cta-stack {
   display: flex;
   flex-direction: column;
@@ -4724,6 +4757,68 @@ html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
   color: var(--color-fg-muted);
   font-size: 0.82rem;
   line-height: 1.4;
+}
+
+.lesson-offer {
+  grid-column: 1 / -1;
+  margin: 0.75rem 0.45rem 0.15rem;
+  padding: 0.9rem 1rem 0.75rem;
+  border: 1px solid color-mix(in srgb, #2f5d50 40%, var(--color-border));
+  border-radius: 1.05rem;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-card);
+  text-align: start;
+}
+
+.lesson-offer-kicker {
+  margin: 0;
+  color: #2f5d50;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lesson-offer-title {
+  margin: 0.25rem 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.lesson-offer-copy {
+  margin: 0;
+  color: var(--color-fg-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.lesson-offer-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.lesson-offer .lessons-unlock {
+  margin-top: 0;
+}
+
+.lesson-offer-later {
+  min-height: 2.5rem;
+  padding: 0.3rem 0.15rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-fg-muted);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+html[data-color-scheme="dark"] .lesson-offer-kicker {
+  color: #e7f3ec;
 }
 
 [data-voice] {
