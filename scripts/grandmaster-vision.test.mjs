@@ -269,3 +269,21 @@ test("Grandmaster Vision is a website menu item and stays off the Square Memory 
   assert.doesNotMatch(hero, /grandmaster-vision|Grandmaster Vision/);
   assert.match(landing, /Square Memory game/);
 });
+
+test("a finished Position Recall level points at free lines without restyling the score card", () => {
+  const cta = src("src/components/opening-lab/session-pack-cta.tsx");
+  assert.match(
+    view,
+    /phase === "feedback" && levelDone \? \([\s\S]*data-gmv-session-cta[\s\S]*SessionPackCta lead="Level clear\. Try a real opening\."/,
+  );
+  assert.match(cta, /href="\/#pack\/opening-traps"/);
+  assert.match(cta, /href="\/#pack\/caro-kann-black"/);
+  assert.match(cta, /href="\/#gym"/);
+  assert.match(cta, /PRICE_BUY_ALL/);
+  assert.doesNotMatch(view, /lifetime|forever/i);
+  assert.doesNotMatch(cta, /lifetime|forever/i);
+  const card = view.slice(view.indexOf("data-gmv-score"), view.indexOf("data-gmv-session-cta"));
+  assert.match(card, /data-gmv-next/);
+  assert.match(card, /data-gmv-again/);
+  assert.doesNotMatch(card, /session-pack-cta|SessionPackCta/);
+});
