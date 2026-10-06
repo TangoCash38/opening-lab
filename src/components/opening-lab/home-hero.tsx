@@ -386,6 +386,9 @@ export function HomeHero({
       } else if (pack.id === "sicilian-black") {
         // Paid lines stay locked. Unpaid visitors still hear King Cedar.
         line = pack.lines.find((l) => l.id === "sib1");
+      } else if (pack.id === "qgd-black") {
+        // Paid lines stay locked. Unpaid visitors still see the text-only intro.
+        line = pack.lines.find((l) => l.id === "qgdb1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -603,14 +606,17 @@ export function HomeHero({
                 className="home-coach-practice"
                 data-scotch-coach-dock
                 data-scotch-coach-talk={coach.talk}
+                data-coach-plain={coachPack(pack.id)?.plain ? "true" : undefined}
               >
                 <div className="scotch-coach-plate" data-scotch-coach-plate>
                   {/* Distinct keys so a talk change deletes the previous figure. */}
-                  <ScotchCoachFigure
-                    key={`figure-${coach.talk}-${coach.line.id}`}
-                    portrait={coachPack(pack.id)?.portrait}
-                    name={coachPack(pack.id)?.coachName}
-                  />
+                  {coachPack(pack.id)?.plain ? null : (
+                    <ScotchCoachFigure
+                      key={`figure-${coach.talk}-${coach.line.id}`}
+                      portrait={coachPack(pack.id)?.portrait}
+                      name={coachPack(pack.id)?.coachName}
+                    />
+                  )}
                   <ScotchCoachCard
                     key={`card-${coach.talk}-${coach.line.id}`}
                     talk={coach.talk}
@@ -748,7 +754,7 @@ export function HomeHero({
                             onComingSoon?.(pack);
                             return;
                           }
-                          // French frb1, Ruy Lopez rlw1, and Sicilian sib1: the first tap plays the
+                          // French frb1, Ruy Lopez rlw1, Sicilian sib1, and QGD qgdb1: the first tap plays the
                           // Line 1 talk even while the drill is locked. Later taps
                           // use the unlock or Practice path. A tap during the intro waits.
                           const hearsLineTalk =

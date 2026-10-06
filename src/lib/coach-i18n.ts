@@ -1,7 +1,10 @@
+import { QGD_BLACK_CAPTIONS } from "@/lib/qgd-coach-i18n";
+
 /**
  * On-screen copy for Professor Potato Pie.
  * Keys are the English words the audio says. Playback stays that English audio.
  * Chess notation and names stay as spoken. Other languages are captions only.
+ * Queen's Gambit Declined captions are text-only and merged in below.
  */
 export const COACH_UI: Record<string, Record<string, string>> = {
   en: {
@@ -218,7 +221,7 @@ export const COACH_UI: Record<string, Record<string, string>> = {
   },
 };
 
-export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
+const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
   es: {
     "Right — Scotch Gambit. It starts like a proper open game: e4, e5, knights out, then White hits the centre with d4.":
       "Bien — Scotch Gambit. Empieza como una apertura abierta de verdad: e4, e5, caballos fuera, y las Blancas golpean el centro con d4.",
@@ -4879,3 +4882,10 @@ export const COACH_CAPTIONS: Record<string, Record<string, string>> = {
       "Peki, hamleleri yakından izle, uyanık kal ve bu harika Sicilian hattının tadını çıkar.",
   },
 };
+
+export const COACH_CAPTIONS: Record<string, Record<string, string>> = Object.fromEntries(
+  Object.entries(COACH_CAPTION_BASE).map(([lang, dict]) => [
+    lang,
+    { ...dict, ...(QGD_BLACK_CAPTIONS[lang] ?? {}) },
+  ]),
+);

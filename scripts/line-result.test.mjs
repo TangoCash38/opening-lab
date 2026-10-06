@@ -273,10 +273,10 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
     "ckb2",
   );
   assert.equal(nextUnlockedLine(caro, "ckb10", "caro-kann-black", ["caro-kann-black"]), undefined);
-  const qgd = Array.from({ length: 18 }, (_, i) => `qgdb${i + 1}`);
+  const qgd = Array.from({ length: 10 }, (_, i) => `qgdb${i + 1}`);
   assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", []), undefined);
   assert.equal(nextUnlockedLine(qgd, "qgdb1", "qgd-black", ["qgd-black"]), "qgdb2");
-  assert.equal(nextUnlockedLine(qgd, "qgdb18", "qgd-black", ["qgd-black"]), undefined);
+  assert.equal(nextUnlockedLine(qgd, "qgdb10", "qgd-black", ["qgd-black"]), undefined);
   const nimzo = Array.from({ length: 18 }, (_, i) => `nl${i + 1}`);
   assert.equal(nextUnlockedLine(nimzo, "nl1", "nimzo-larsen-white", []), undefined);
   assert.equal(

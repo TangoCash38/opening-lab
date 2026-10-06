@@ -115,8 +115,14 @@ export type CoachPackConfig = {
    * Cream-plate name. Absent: Professor Potato Pie.
    * Big Red uses this so the Ruy Lopez dock is not Potato Pie.
    * King Cedar uses this for Sicilian for Black.
+   * A plain pack leaves this unset and sets `plain` so no character name shows.
    */
   coachName?: string;
+  /**
+   * Text-only professional pack. No cartoon portrait and no character name.
+   * Captions still use the silent TextOnlyCoachCard path.
+   */
+  plain?: boolean;
   /**
    * Practice-dock portrait. Absent: the seated Potato Pie
    * (`/scotch-coach/coach-seated-v2.png`).
@@ -1299,6 +1305,46 @@ const SICILIAN_LINE: readonly CoachLineBeat[] = [
   },
 ];
 
+const QGD_BLACK_PACK_ID = "qgd-black";
+
+/**
+ * Text-only Queen's Gambit Declined. No recording. Captions are the signed
+ * coaching notes plus a move-by-move walk of the Orthodox setup.
+ */
+const QGD_BLACK_INTRO = [
+  "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.",
+  "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.",
+  "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.",
+  "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.",
+] as const;
+
+const QGD_BLACK_LINE: readonly CoachLineBeat[] = [
+  {
+    caption:
+      "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.",
+  },
+  { caption: "White plays d4 and takes a share of the centre.", ply: "d4" },
+  { caption: "Black answers d5 and claims an equal share of the centre.", ply: "d5" },
+  { caption: "White plays c4. That wing-pawn offer is the Queen's Gambit.", ply: "c4" },
+  { caption: "Black declines with e6, so the pawn on d5 stays.", ply: "e6" },
+  { caption: "Nc3 adds pressure against d5.", ply: "Nc3" },
+  { caption: "Nf6 develops the king's knight and defends d5.", ply: "Nf6" },
+  { caption: "Bg5 pins the knight on f6.", ply: "Bg5" },
+  { caption: "Be7 steps out of the pin and prepares castling.", ply: "Be7" },
+  { caption: "e3 supports d4 and frees the light-squared bishop.", ply: "e3" },
+  { caption: "Black castles with O-O before the centre opens.", ply: "O-O" },
+  { caption: "Nf3 develops and guards d4.", ply: "Nf3" },
+  { caption: "Nbd7 supports the knight on f6 and leaves the c-pawn free.", ply: "Nbd7" },
+  { caption: "Rc1 places the rook on the file White hopes to open.", ply: "Rc1" },
+  { caption: "c6 reinforces d5. Black does not take on c4 yet.", ply: "c6" },
+  { caption: "Qc2 brings the queen behind that rook.", ply: "Qc2" },
+  { caption: "Re8 completes the Orthodox setup and supports a later central break.", ply: "Re8" },
+  {
+    caption:
+      "Support d5, develop both knights, castle, then meet Rc1 with ...c6 and ...Re8 against White's Qc2 setup — basic Orthodox framework without the early ...dxc4 release.",
+  },
+];
+
 export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
   [SCOTCH_PACK_ID]: {
     introTitle: SCOTCH_COACH_TITLE,
@@ -1436,6 +1482,15 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     firstLineBeats: SICILIAN_LINE,
     firstLineAudio: SICILIAN_LINE_MP3,
     firstLineAudioFallbackSec: SICILIAN_LINE_SEC,
+    lineTalkOnTapOnly: true,
+  },
+  [QGD_BLACK_PACK_ID]: {
+    plain: true,
+    introTitle: "Queen's Gambit Declined",
+    introBeats: QGD_BLACK_INTRO,
+    firstLineId: "qgdb1",
+    firstLineTitle: "Orthodox setup",
+    firstLineBeats: QGD_BLACK_LINE,
     lineTalkOnTapOnly: true,
   },
 };

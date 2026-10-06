@@ -4231,6 +4231,14 @@ html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
   [data-surface="website"] .home-coach-practice .scotch-coach-card {
     grid-area: copy;
   }
+
+  /* Text-only professional packs have no portrait, so the board uses the full row. */
+  [data-surface="website"] .home-coach-practice[data-coach-plain="true"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "wood"
+      "copy";
+  }
 }
 
 /*
