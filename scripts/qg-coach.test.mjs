@@ -63,7 +63,7 @@ test("Queen's Gambit Potato Pie intro hands off to the Line 1 talk on Skip and f
   const packs = src("src/data/packs.ts");
   const intro = src("src/lib/pack-intro.ts");
   const copy = src("src/lib/coach-packs.ts");
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"\]/);
   assert.match(packs, /id: "qg-white"[\s\S]{0,240}price: "£1\.99"/);
   assert.doesNotMatch(catalog, /"qg-white":\s*\[/);
   assert.match(hero, /pack\.id === "qg-white"/);

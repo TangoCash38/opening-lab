@@ -65,7 +65,7 @@ test("coach config is keyed by pack id and keeps the Scotch recordings", () => {
   assert.match(packs, /SCOTCH_CANAL_NARRATION_MP3/);
   assert.match(packs, /firstLineId: SCOTCH_CANAL_LINE_ID/);
   assert.match(packs, /firstLinePlaysPackLine: true/);
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"\]/);
   assert.doesNotMatch(packs, /Play on|vs-computer|playComputer/i);
   assert.match(packs, /RUY_LOPEZ_LINE_WAV = "\/coach\/ruy-lopez-white\/big-red-ruy-line1\.wav"/);
   assert.match(packs, /firstLineAudio: RUY_LOPEZ_LINE_WAV/);
@@ -278,7 +278,7 @@ test("opening traps mounts on ot1 by line id, with narration clips and per-pack 
 
       if (coachPackIntroApplies("scotch")) throw new Error("scotch intro uses its own gate");
       if (!coachPackIntroApplies("opening-traps")) throw new Error("traps intro");
-      if (coachPackIntroApplies("qgd-black")) throw new Error("uncoached pack");
+      if (coachPackIntroApplies("london-black")) throw new Error("uncoached pack");
       const line = { packId: "opening-traps", lineId: "ot1" };
       if (!coachPackLineApplies(line)) throw new Error("ot1 should mount");
       if (coachPackLineApplies({ ...line, lineId: "ot2" })) throw new Error("ot2 must not mount");

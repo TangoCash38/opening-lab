@@ -101,6 +101,8 @@ type FrameProps = {
   muted: boolean;
   /** Text-only talks have no recording, so they hide Mute. */
   textOnly?: boolean;
+  /** Professional text-only pack: no character name on the plate. */
+  plain?: boolean;
   /** Cream-plate name. Absent: Professor Potato Pie. */
   name?: string;
   onMute: () => void;
@@ -116,13 +118,14 @@ function CoachCardFrame({
   last,
   muted,
   textOnly = false,
+  plain = false,
   name,
   onMute,
   onSkip,
   onNext,
 }: FrameProps) {
   const { t, lang } = useI18n();
-  const plateName = name ?? SCOTCH_COACH_NAME;
+  const plateName = plain ? title : (name ?? SCOTCH_COACH_NAME);
   return (
     <div
       className="scotch-coach-card"
@@ -130,12 +133,15 @@ function CoachCardFrame({
       data-scotch-coach-talk={talk}
       data-scotch-coach-beat={beat}
       data-coach-text-only={textOnly ? "true" : undefined}
+      data-coach-plain={plain ? "true" : undefined}
       role="region"
       aria-label={t(plateName)}
     >
-      <p className="scotch-coach-name" id="scotch-coach-name" data-scotch-coach-name>
-        {t(plateName)}
-      </p>
+      {plain ? null : (
+        <p className="scotch-coach-name" id="scotch-coach-name" data-scotch-coach-name>
+          {t(plateName)}
+        </p>
+      )}
       {textOnly || lang === "en" ? null : (
         <p className="scotch-coach-voice" data-coach-voice-note>
           {t("Voice in English")}
@@ -179,6 +185,7 @@ function TextOnlyCoachCard({
   title,
   captions,
   name,
+  plain = false,
   onDone,
   onBeat,
 }: {
@@ -186,6 +193,7 @@ function TextOnlyCoachCard({
   title: string;
   captions: readonly string[];
   name?: string;
+  plain?: boolean;
   onDone: CoachDone;
   onBeat?: (beat: number) => void;
 }) {
@@ -220,6 +228,7 @@ function TextOnlyCoachCard({
       last={last}
       muted={false}
       textOnly
+      plain={plain}
       name={name}
       onMute={() => {}}
       onSkip={() => leave("skip")}
@@ -363,6 +372,7 @@ function PackCoachCard({
         title={title}
         captions={captions}
         name={config.coachName}
+        plain={config.plain === true}
         onDone={onDone}
         onBeat={onBeat}
       />
@@ -628,7 +638,9 @@ export function CoachPackReading({ packId }: { packId: string }) {
       </button>
       {open ? (
         <div className="scotch-coach-reading-body" data-scotch-coach-transcript>
-          <p className="scotch-coach-reading-name">{t(config.coachName ?? SCOTCH_COACH_NAME)}</p>
+          {config.plain ? null : (
+            <p className="scotch-coach-reading-name">{t(config.coachName ?? SCOTCH_COACH_NAME)}</p>
+          )}
           {lang === "en" ? null : (
             <p className="scotch-coach-voice" data-coach-voice-note>
               {t("Voice in English")}

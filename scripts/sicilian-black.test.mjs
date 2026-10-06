@@ -297,7 +297,7 @@ const NAMES = {
   "sib10": "Line 10"
 };
 
-const LIVE = '["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"]';
+const LIVE = '["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"]';
 
 test("Sicilian for Black is the signed sicilian-black pack: sib1–sib10 book, £1.99, locked until purchase", () => {
   const packs = src("src/data/packs.ts");

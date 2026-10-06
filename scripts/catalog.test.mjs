@@ -260,25 +260,27 @@ test("Caro-Kann for Black is a 3-line free sample; 10 lines titled Line 1 to Lin
   assert.doesNotMatch(ck, /id: "ckb1[1-8]"/);
 });
 
-test("Queen’s Gambit Declined for Black stays fully visible with chess names", () => {
+test("Queen's Gambit Declined for Black is the signed 10-line text pack", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "qgd-black"');
   assert.ok(start >= 0, "qgd-black pack missing");
   const next = packs.indexOf("\n  {\n    id: \"", start + 1);
   const qgd = next >= 0 ? packs.slice(start, next) : packs.slice(start);
 
-  assert.match(qgd, /name: "Queen\u2019s Gambit Declined for Black"/);
+  assert.match(qgd, /name: "Queen's Gambit Declined"/);
   assert.match(qgd, /side: "Black"/);
   assert.match(qgd, /section: "black"/);
   assert.match(qgd, /isFree: false/);
-  assert.match(qgd, /isPremium: false/);
-  assert.match(qgd, /price: null/);
-  assert.match(qgd, /blurb: "Black vs 1\.d4"/);
-  assert.match(qgd, /closedLabel: "Free · 18 lines"/);
-  assert.match(qgd, /solid answer to 1\.d4/);
-  assert.match(qgd, /Practice the main book moves with the green hint/);
+  assert.match(qgd, /isPremium: true/);
+  assert.match(qgd, /price: "£1\.99"/);
+  assert.match(qgd, /blurb: "10 lines from Opening Lab"/);
+  assert.match(qgd, /10 lines from Opening Lab/);
+  assert.match(qgd, /Practice the book moves with the green hint/);
   assert.match(qgd, /Then Test with none to prove you remember them/);
   assert.doesNotMatch(qgd, /Play on/);
+  assert.doesNotMatch(qgd, /5 book/);
+  assert.doesNotMatch(qgd, /punish/i);
+  assert.doesNotMatch(qgd, /closedLabel/);
   assert.match(qgd, /eco: "D30–D69"/);
   assert.doesNotMatch(qgd, /setups/);
   assert.doesNotMatch(qgd, /follow-ups/);
@@ -288,19 +290,20 @@ test("Queen’s Gambit Declined for Black stays fully visible with chess names",
   const lineIds = [...qgd.matchAll(/id: "(qgdb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 18 }, (_, i) => `qgdb${i + 1}`),
+    Array.from({ length: 10 }, (_, i) => `qgdb${i + 1}`),
   );
 
   const sides = [...qgd.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.ok(sides.length >= 18, "expected line sides");
+  assert.equal(sides.length, 10);
   assert.ok(sides.every((s) => s === "b"), "every line side must be b");
 
   const qgdb1Start = qgd.indexOf('id: "qgdb1"');
   assert.ok(qgdb1Start >= 0, "qgdb1 missing");
   const qgdb1Next = qgd.indexOf('id: "qgdb2"', qgdb1Start);
   const qgdb1 = qgd.slice(qgdb1Start, qgdb1Next >= 0 ? qgdb1Next : undefined);
-  assert.match(qgdb1, /plies: \["d4"/);
-  assert.match(qgdb1, /name: "Exchange, …Be7"/);
+  assert.match(qgdb1, /plies: \["d4", "d5", "c4", "e6"/);
+  assert.match(qgdb1, /name: "Orthodox setup"/);
+  assert.match(qgdb1, /Qc2", "Re8"/);
 });
 
 test("Fight the London is a visible Black pack: 18 alb lines, locked until purchase", () => {
@@ -616,7 +619,7 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
   assert.doesNotMatch(it, /Lab\+/);
   assert.doesNotMatch(it, /trap:\s*true/);
   assert.match(catalog, /"italian-white"/);
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"\]/);
   assert.match(skus, /"italian-white"/);
   assert.match(skus, /pack_italian_white/);
   const billing = readFileSync(
@@ -1725,7 +1728,7 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
   assert.doesNotMatch(qg, /trap:\s*true/);
   assert.match(catalog, /"qg-white"/);
   assert.doesNotMatch(catalog, /queens-gambit-white/);
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"\]/);
   assert.match(skus, /"qg-white"/);
   assert.match(skus, /pack_qg_white/);
   const sampleBlock = catalog.slice(
@@ -2992,7 +2995,8 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     src.indexOf("export function playableLines"),
   );
   assert.doesNotMatch(sampleBlock, /london-black/);
-  assert.doesNotMatch(sampleBlock, /qgd-black/);
+  assert.match(sampleBlock, /"qgd-black": \["qgdb1"\]/);
+  assert.doesNotMatch(sampleBlock, /qgdb2/);
   assert.doesNotMatch(sampleBlock, /d4-sidelines-black/);
   assert.doesNotMatch(sampleBlock, /anti-sicilian-black/);
   assert.doesNotMatch(sampleBlock, /nimzo-larsen-white/);
@@ -3312,6 +3316,21 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb10", ["caro-kann-black"]), true);
 
+  const qgdPack = {
+    id: "qgd-black",
+    lines: Array.from({ length: 10 }, (_, i) => ({ id: `qgdb${i + 1}` })),
+  };
+  assert.equal(isLineUnlocked(qgdPack, "qgdb1", []), true);
+  for (const line of qgdPack.lines.slice(1)) {
+    assert.equal(isLineUnlocked(qgdPack, line.id, []), false, line.id);
+  }
+  for (const line of qgdPack.lines) {
+    assert.equal(isLineUnlocked(qgdPack, line.id, ["qgd-black"]), true, line.id);
+  }
+  assert.deepEqual(playableLines(qgdPack).map((l) => l.id), ["qgdb1"]);
+  assert.equal(nextUnlockedLine(qgdPack, "qgdb1", [])?.id, undefined);
+  assert.equal(nextUnlockedLine(qgdPack, "qgdb1", ["qgd-black"])?.id, "qgdb2");
+
   assert.deepEqual(playableLines(nimzo), []);
   assert.deepEqual(playableLines(qgwPack), []);
   assert.deepEqual(playableLines(engwPack), []);
@@ -3392,7 +3411,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(sibPack, "sib1", ["sicilian-black"])?.id, "sib2");
 });
 
-test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1–10, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qg1–10, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–10, qgdb1–10, alb1–18, d4s1–18, as1–18, nl1–18, it1–10, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qg1–10, engw1–18, catw1–18, nib1–20, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -3455,7 +3474,7 @@ test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   const pw = packBlock("ponziani-white");
   const ab = packBlock("alekhine-black");
   assertIdeas(ck, "ckb", 10);
-  assertIdeas(qgd, "qgdb", 18);
+  assertIdeas(qgd, "qgdb", 10);
   assertIdeas(lon, "alb", 18);
   assertIdeas(d4s, "d4s", 18);
   assertIdeas(asb, "as", 18);
@@ -3498,7 +3517,7 @@ test("every ckb1–10, qgdb1–18, alb1–18, d4s1–18, as1–18, nl1–18, it1
   );
   assert.match(
     qgd,
-    /idea: "White chose the Exchange early\. Recapture with …exd5 and establish the standard Queen's Gambit Declined centre\."/,
+    /idea: "Support d5, develop both knights, castle, then meet Rc1 with \.\.\.c6 and \.\.\.Re8 against White's Qc2 setup/,
   );
 
   assert.match(train, /\{line\.idea\}/);

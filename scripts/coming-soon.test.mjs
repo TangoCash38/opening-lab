@@ -45,7 +45,7 @@ async function loadCatalog(t) {
   return import(pathToFileURL(tmp).href);
 }
 
-test("every visible pack except scotch, opening traps, caro-kann, london, italian-white, qg-white, and french-black is coming soon", async (t) => {
+test("every visible pack except the live drill packs is coming soon", async (t) => {
   const mod = await loadCatalog(t);
   if (!mod) return;
   const {
@@ -57,7 +57,7 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
     canPurchaseBuyAll,
   } = mod;
 
-  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"]);
+  assert.deepEqual([...LIVE_PACK_IDS], ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"]);
   assert.equal(isPackComingSoon("scotch"), false);
   assert.equal(isPackComingSoon("opening-traps"), false);
   assert.equal(isPackComingSoon("caro-kann-black"), false);
@@ -67,6 +67,7 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(isPackComingSoon("french-black"), false);
   assert.equal(isPackComingSoon("ruy-lopez-white"), false);
   assert.equal(isPackComingSoon("sicilian-black"), false);
+  assert.equal(isPackComingSoon("qgd-black"), false);
   assert.equal(isPackComingSoon("ruy-white"), true);
   assert.equal(canPurchasePack("scotch"), true);
   assert.equal(canPurchasePack("opening-traps"), true);
@@ -77,10 +78,11 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(canPurchasePack("french-black"), true);
   assert.equal(canPurchasePack("ruy-lopez-white"), true);
   assert.equal(canPurchasePack("sicilian-black"), true);
+  assert.equal(canPurchasePack("qgd-black"), true);
   assert.equal(canPurchasePack("ruy-white"), false);
   assert.equal(canPurchaseBuyAll(), true);
 
-  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"]);
+  const live = new Set(["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"]);
   const gated = [];
   for (const id of VISIBLE_PACK_IDS) {
     if (live.has(id)) {
@@ -104,8 +106,9 @@ test("every visible pack except scotch, opening traps, caro-kann, london, italia
   assert.equal(gated.includes("french-black"), false);
   assert.equal(gated.includes("ruy-lopez-white"), false);
   assert.equal(gated.includes("sicilian-black"), false);
+  assert.equal(gated.includes("qgd-black"), false);
   assert.equal(gated.includes("ruy-white"), false);
-  assert.equal(gated.includes("qgd-black"), true);
+  assert.equal(gated.includes("london-black"), true);
 });
 
 test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays purchasable", async (t) => {
@@ -124,9 +127,9 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     id: "caro-kann-black",
     lines: ["ckb1", "ckb2", "ckb3", "ckb5", "ckb10"].map((id) => ({ id })),
   };
-  const qgd = {
-    id: "qgd-black",
-    lines: ["qgdb1", "qgdb2"].map((id) => ({ id })),
+  const londonBlack = {
+    id: "london-black",
+    lines: ["alb1", "alb2"].map((id) => ({ id })),
   };
   const traps = {
     id: "opening-traps",
@@ -137,18 +140,18 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     lines: ["sg1", "sg2"].map((id) => ({ id })),
   };
 
-  assert.equal(isComingSoonClosed(qgd.id, []), true);
-  assert.equal(isComingSoonClosed(qgd.id, [], true), false);
+  assert.equal(isComingSoonClosed(londonBlack.id, []), true);
+  assert.equal(isComingSoonClosed(londonBlack.id, [], true), false);
   assert.equal(isComingSoonClosed(caro.id, []), false);
   assert.equal(isComingSoonClosed(scotch.id, []), false);
   assert.equal(isComingSoonClosed(traps.id, []), false);
-  assert.equal(canPurchasePack(qgd.id), false);
+  assert.equal(canPurchasePack(londonBlack.id), false);
   assert.equal(canPurchasePack(caro.id), true);
   assert.equal(canPurchasePack(traps.id), true);
   assert.equal(canPurchaseBuyAll(), true);
 
-  for (const line of qgd.lines) {
-    assert.equal(isLineUnlocked(qgd, line.id, []), false, line.id);
+  for (const line of londonBlack.lines) {
+    assert.equal(isLineUnlocked(londonBlack, line.id, []), false, line.id);
   }
   assert.equal(isLineUnlocked(caro, "ckb1", []), true);
   assert.equal(isLineUnlocked(caro, "ckb3", []), true);
@@ -158,7 +161,7 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
   assert.equal(isLineUnlocked(traps, "ot1", []), true);
   assert.equal(isLineUnlocked(traps, "ot6", []), true);
   assert.equal(isLineUnlocked(traps, "ot7", []), false);
-  assert.deepEqual(playableLines(qgd), []);
+  assert.deepEqual(playableLines(londonBlack), []);
   assert.deepEqual(
     playableLines(caro).map((line) => line.id),
     ["ckb1", "ckb3", "ckb5"],
@@ -167,18 +170,18 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     playableLines(traps).map((line) => line.id),
     ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
   );
-  assert.equal(nextUnlockedLine(qgd, "qgdb1", []), undefined);
+  assert.equal(nextUnlockedLine(londonBlack, "alb1", []), undefined);
   assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
 
-  for (const line of qgd.lines) {
-    assert.equal(isLineUnlocked(qgd, line.id, ["qgd-black"]), true, line.id);
+  for (const line of londonBlack.lines) {
+    assert.equal(isLineUnlocked(londonBlack, line.id, ["london-black"]), true, line.id);
   }
   for (const line of caro.lines) {
     assert.equal(isLineUnlocked(caro, line.id, ["caro-kann-black"]), true, line.id);
   }
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot7", ["opening-traps"]), true);
-  assert.equal(isComingSoonClosed(qgd.id, ["qgd-black"]), false);
+  assert.equal(isComingSoonClosed(londonBlack.id, ["london-black"]), false);
   assert.equal(isComingSoonClosed(caro.id, ["caro-kann-black"]), false);
   assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
 

@@ -91,7 +91,7 @@ test("French Defence for Black is the signed french-black pack: frb1–frb10 boo
   assert.match(catalog, /"french-black"/);
   assert.match(
     catalog,
-    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black"\]/,
+    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"\]/,
   );
   const sampleBlock = catalog.slice(
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),

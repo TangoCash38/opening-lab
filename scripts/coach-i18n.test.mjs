@@ -78,7 +78,11 @@ function compile(t) {
     .replaceAll("@/lib/london-intro-stem", "./london-intro-stem.mjs")
     .replaceAll("@/lib/qg-intro-stem", "./qg-intro-stem.mjs");
   writeFileSync(join(dir, "coach-packs.mjs"), packsJs);
-  const i18nJs = ts.transpileModule(src("src/lib/coach-i18n.ts"), options).outputText;
+  const qgdJs = ts.transpileModule(src("src/lib/qgd-coach-i18n.ts"), options).outputText;
+  writeFileSync(join(dir, "qgd-coach-i18n.mjs"), qgdJs);
+  const i18nJs = ts
+    .transpileModule(src("src/lib/coach-i18n.ts"), options)
+    .outputText.replaceAll("@/lib/qgd-coach-i18n", "./qgd-coach-i18n.mjs");
   writeFileSync(join(dir, "coach-i18n.mjs"), i18nJs);
   t.after(() => {
     rmSync(dir, { recursive: true, force: true });
@@ -133,6 +137,7 @@ test("every coach caption has a translation in every supported language", async 
     "london",
     "opening-traps",
     "qg-white",
+    "qgd-black",
     "ruy-lopez-white",
     "scotch",
     "sicilian-black",
@@ -145,7 +150,7 @@ test("every coach caption has a translation in every supported language", async 
       captions.push(beat.caption);
       if (beat.atSec != null) assert.equal(typeof beat.atSec, "number");
     }
-    assert.equal(typeof pack.introAudioFallbackSec, "number");
+    if (pack.introAudio) assert.equal(typeof pack.introAudioFallbackSec, "number");
   }
   assert.equal(new Set(captions).size, captions.length);
   assert.ok(captions.length >= 60, `expected the spoken segments, got ${captions.length}`);
