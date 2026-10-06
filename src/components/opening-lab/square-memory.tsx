@@ -20,6 +20,12 @@ import {
   type PlayedMemory,
 } from "@/lib/square-memory-line";
 import { LONDON_MEMORY_LINE, LONDON_MEMORY_PACK_ID } from "@/lib/square-memory-london";
+import {
+  ORTHODOX_MEMORY_LINE,
+  ORTHODOX_MEMORY_NAME,
+  ORTHODOX_MEMORY_ORIENTATION,
+  ORTHODOX_MEMORY_PACK_ID,
+} from "@/lib/square-memory-orthodox";
 import { QG_MEMORY_LINE, QG_MEMORY_NAME, QG_MEMORY_PACK_ID } from "@/lib/square-memory-qg";
 import {
   begin,
@@ -40,7 +46,7 @@ const BIG_RED_PORTRAIT = "/coach/ruy-lopez-white/big-red-portrait.png";
 const BOARD_BEFORE_CHEER_MS = 2000;
 
 type MemoryChoice = {
-  id: "ruy" | "london" | "qg";
+  id: "ruy" | "london" | "qg" | "orthodox";
   pick: string;
   name: string;
   packId: string;
@@ -52,6 +58,8 @@ type MemoryChoice = {
   cheer: string;
   portraitWidth: number;
   portraitHeight: number;
+  /** Black repertoire lines sit with Black at the bottom. */
+  orientation: "white" | "black";
 };
 
 const CHOICES: readonly MemoryChoice[] = [
@@ -69,6 +77,7 @@ const CHOICES: readonly MemoryChoice[] = [
       "You smashed it. That's the Ruy Lopez. Want to learn openings properly? Try the opening packs.",
     portraitWidth: 360,
     portraitHeight: 800,
+    orientation: "white",
   },
   {
     id: "london",
@@ -84,6 +93,7 @@ const CHOICES: readonly MemoryChoice[] = [
       "You smashed it. That's the London System. Want to learn openings properly? Try the opening packs.",
     portraitWidth: 640,
     portraitHeight: 1071,
+    orientation: "white",
   },
   {
     id: "qg",
@@ -99,11 +109,25 @@ const CHOICES: readonly MemoryChoice[] = [
       "You smashed it. That's the Queen's Gambit Declined. Want to learn openings properly? Try the opening packs.",
     portraitWidth: 640,
     portraitHeight: 1071,
+    orientation: "white",
+  },
+  {
+    id: "orthodox",
+    pick: "Orthodox",
+    name: ORTHODOX_MEMORY_NAME,
+    packId: ORTHODOX_MEMORY_PACK_ID,
+    packLabel: "Queen's Gambit Declined for Black",
+    line: ORTHODOX_MEMORY_LINE,
+    bestKey: "opening-lab:square-memory-orthodox-best",
+    portrait: "/scotch-coach/coach-seated-v2.png",
+    coach: "Professor Potato Pie",
+    cheer:
+      "You smashed it. That's the QGD Orthodox Exchange. Want to learn openings properly? Try the opening packs.",
+    portraitWidth: 640,
+    portraitHeight: 1071,
+    orientation: ORTHODOX_MEMORY_ORIENTATION,
   },
 ];
-const FILES = "abcdefgh";
-const RANKS = ["8", "7", "6", "5", "4", "3", "2", "1"];
-
 function readBest(key: string): number {
   try {
     const n = Number(localStorage.getItem(key));
@@ -143,6 +167,7 @@ export function SquareMemory() {
     ruy: [],
     london: [],
     qg: [],
+    orthodox: [],
   });
   const [boardNote, setBoardNote] = useState("");
   const [saving, setSaving] = useState(false);
@@ -351,7 +376,7 @@ export function SquareMemory() {
       }),
     )
       .then((pairs) => {
-        setBoards({ ruy: [], london: [], qg: [], ...Object.fromEntries(pairs) });
+        setBoards({ ruy: [], london: [], qg: [], orthodox: [], ...Object.fromEntries(pairs) });
         setBoardNote("");
       })
       .catch((err: unknown) => {
@@ -503,6 +528,7 @@ export function SquareMemory() {
                 position={position}
                 lastMove={last ? { from: last.from, to: last.to } : null}
                 found={partial ? partial.from : null}
+                orientation={choice.orientation}
                 onTap={onTap}
                 startLabel={snap.phase === "title" ? "Start" : revealing ? "Play again" : null}
                 onStart={start}
@@ -573,6 +599,11 @@ function LinePlaque({
   }
   if (id === "qg") {
     return <ScorePlaque lineId="qg" name={QG_MEMORY_NAME} rows={rows} selected={selected} />;
+  }
+  if (id === "orthodox") {
+    return (
+      <ScorePlaque lineId="orthodox" name={ORTHODOX_MEMORY_NAME} rows={rows} selected={selected} />
+    );
   }
   return <ScorePlaque lineId="ruy" name="Ruy Lopez" rows={rows} selected={selected} />;
 }
@@ -792,17 +823,29 @@ function moveRows(
   return rows;
 }
 
-function squareCenter(square: string): { x: number; y: number } | null {
+function squareCenter(
+  square: string,
+  orientation: MemoryChoice["orientation"],
+): { x: number; y: number } | null {
   if (square.length < 2) return null;
   const file = square.charCodeAt(0) - 97;
   const rank = Number(square[1]);
   if (file < 0 || file > 7 || rank < 1 || rank > 8) return null;
+  if (orientation === "black") {
+    return { x: ((7 - file + 0.5) / 8) * 100, y: ((rank - 0.5) / 8) * 100 };
+  }
   return { x: ((file + 0.5) / 8) * 100, y: ((8.5 - rank) / 8) * 100 };
 }
 
-function PathTrace({ squares }: { squares: readonly string[] }) {
+function PathTrace({
+  squares,
+  orientation,
+}: {
+  squares: readonly string[];
+  orientation: MemoryChoice["orientation"];
+}) {
   const points = squares
-    .map(squareCenter)
+    .map((square) => squareCenter(square, orientation))
     .filter((point): point is { x: number; y: number } => point !== null);
   if (points.length < 2) return null;
   const settled = points.slice(0, -1);
@@ -848,6 +891,25 @@ function HitRipple({ id }: { id: number }) {
   );
 }
 
+function boardAxes(orientation: MemoryChoice["orientation"]) {
+  if (orientation === "black") {
+    return {
+      files: ["h", "g", "f", "e", "d", "c", "b", "a"],
+      ranks: ["1", "2", "3", "4", "5", "6", "7", "8"],
+      rankEdge: "h",
+      fileEdge: "8",
+      label: "Chessboard, Black at the bottom",
+    };
+  }
+  return {
+    files: ["a", "b", "c", "d", "e", "f", "g", "h"],
+    ranks: ["8", "7", "6", "5", "4", "3", "2", "1"],
+    rankEdge: "a",
+    fileEdge: "1",
+    label: "Chessboard, White at the bottom",
+  };
+}
+
 function MemoryBoard({
   lit,
   trace,
@@ -856,6 +918,7 @@ function MemoryBoard({
   position,
   lastMove,
   found,
+  orientation,
   onTap,
   startLabel,
   onStart,
@@ -867,16 +930,23 @@ function MemoryBoard({
   position: MemoryBoard | null;
   lastMove: { from: string; to: string } | null;
   found: string | null;
+  orientation: MemoryChoice["orientation"];
   onTap: (square: string) => void;
   startLabel: string | null;
   onStart: () => void;
 }) {
+  const axes = boardAxes(orientation);
   return (
     <div className="board-frame">
       <div className="board-frame-inner">
-        <div className="sqmem-grid" role="group" aria-label="Chessboard, White at the bottom">
-          {RANKS.map((rank) =>
-            FILES.split("").map((file) => {
+        <div
+          className="sqmem-grid"
+          role="group"
+          aria-label={axes.label}
+          data-board-orientation={orientation}
+        >
+          {axes.ranks.map((rank) =>
+            axes.files.map((file) => {
               const name = `${file}${rank}`;
               const light = (file.charCodeAt(0) + Number(rank)) % 2 === 1;
               const kind = kindFor(name, lit, found, lastMove);
@@ -905,12 +975,12 @@ function MemoryBoard({
                 >
                   {burst?.square === name ? <HitRipple id={burst.id} /> : null}
                   {piece ? <ChessPiece code={pieceCode(piece)} /> : null}
-                  {file === "a" ? (
+                  {file === axes.rankEdge ? (
                     <span className="sqmem-coord sqmem-coord-rank" aria-hidden="true">
                       {rank}
                     </span>
                   ) : null}
-                  {rank === "1" ? (
+                  {rank === axes.fileEdge ? (
                     <span className="sqmem-coord sqmem-coord-file" aria-hidden="true">
                       {file}
                     </span>
@@ -920,7 +990,7 @@ function MemoryBoard({
             }),
           )}
         </div>
-        <PathTrace squares={trace} />
+        <PathTrace squares={trace} orientation={orientation} />
         {startLabel ? (
           <button type="button" className="sqmem-start" data-begin="" onClick={onStart}>
             {startLabel}

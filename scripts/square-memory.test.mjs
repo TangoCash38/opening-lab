@@ -229,7 +229,10 @@ test("Square Memory game stays on the free card and opens the free game", () => 
     landing.indexOf("data-landing-square-memory") + 420,
   );
   assert.match(nav, /data-landing-feedback/);
-  assert.doesNotMatch(nav, /Square Memory|data-landing-memory-bar|data-landing-account|data-landing-support/);
+  assert.doesNotMatch(
+    nav,
+    /Square Memory|data-landing-memory-bar|data-landing-account|data-landing-support/,
+  );
   assert.match(card, /to="\/square-memory"/);
   assert.match(card, /Square Memory game/);
   assert.match(card, /data-landing-memory-new[\s\S]*?>\s*New\s*</);
@@ -497,6 +500,113 @@ test("Queen's Gambit Declined is the third hidden line on the same page", () => 
   assert.match(api, /qg: QG_MEMORY_LINE\.squares\.length/);
   assert.match(migration, /line in \('ruy', 'london', 'qg'\)/);
   assert.doesNotMatch(migration, /delete from square_memory_scores/);
+});
+
+test("QGD Orthodox Exchange is a fourth line on the same page, from Black's side", () => {
+  const line = src("src/lib/square-memory-orthodox.ts");
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const api = src("src/routes/api/square-memory-scores.ts");
+  const migration = src("migrations/0009_square_memory_orthodox.sql");
+  const qg = src("src/lib/square-memory-qg.ts");
+  const moves = [
+    "d4",
+    "d5",
+    "c4",
+    "e6",
+    "Nc3",
+    "Nf6",
+    "Bg5",
+    "Be7",
+    "e3",
+    "O-O",
+    "Nf3",
+    "Nbd7",
+    "cxd5",
+    "exd5",
+    "Bd3",
+    "c6",
+    "Qc2",
+    "Re8",
+  ];
+  assert.match(
+    line.replace(/\s+/g, " "),
+    /ORTHODOX_MEMORY_MOVES = \[ "d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "Nbd7", "cxd5", "exd5", "Bd3", "c6", "Qc2", "Re8", \] as const/,
+  );
+  assert.match(line, /ORTHODOX_MEMORY_NAME = "QGD Orthodox Exchange"/);
+  assert.match(line, /ORTHODOX_MEMORY_PACK_ID = "qgd-black"/);
+  assert.match(line, /ORTHODOX_MEMORY_ORIENTATION = "black"/);
+  assert.match(qg, /QG_MEMORY_MOVES = \["d4", "d5", "c4", "e6", "Nc3"\]/);
+  const chess = new Chess();
+  const squares = [];
+  for (const san of moves) {
+    const played = chess.move(san);
+    assert.ok(played, san);
+    assert.equal(played.san, san);
+    squares.push(played.from, played.to);
+  }
+  assert.equal(squares.length, 36);
+  assert.deepEqual(squares, [
+    "d2",
+    "d4",
+    "d7",
+    "d5",
+    "c2",
+    "c4",
+    "e7",
+    "e6",
+    "b1",
+    "c3",
+    "g8",
+    "f6",
+    "c1",
+    "g5",
+    "f8",
+    "e7",
+    "e2",
+    "e3",
+    "e8",
+    "g8",
+    "g1",
+    "f3",
+    "b8",
+    "d7",
+    "c4",
+    "d5",
+    "e6",
+    "d5",
+    "f1",
+    "d3",
+    "c7",
+    "c6",
+    "d1",
+    "c2",
+    "f8",
+    "e8",
+  ]);
+  assert.equal(chess.fen(), "r1bqr1k1/pp1nbppp/2p2n2/3p2B1/3P4/2NBPN2/PPQ2PPP/R3K2R w KQ - 2 10");
+  assert.match(view, /id: "orthodox"/);
+  assert.match(view, /pick: "Orthodox"/);
+  assert.match(view, /name: ORTHODOX_MEMORY_NAME/);
+  assert.match(view, /name=\{ORTHODOX_MEMORY_NAME\}/);
+  assert.match(view, /orientation: ORTHODOX_MEMORY_ORIENTATION/);
+  assert.match(view, /orientation: "white"/);
+  assert.match(view, /orientation=\{choice\.orientation\}/);
+  assert.match(view, /data-board-orientation=\{orientation\}/);
+  assert.match(view, /Chessboard, Black at the bottom/);
+  assert.match(view, /Chessboard, White at the bottom/);
+  assert.match(
+    view,
+    /You smashed it\. That's the QGD Orthodox Exchange\. Want to learn openings properly\? Try the opening packs\./,
+  );
+  assert.match(view, /packLabel: "Queen's Gambit Declined for Black"/);
+  assert.doesNotMatch(`${line}\n${view}`, /5 book \+ 5 punish/);
+  assert.match(api, /value === "orthodox"/);
+  assert.match(api, /orthodox: ORTHODOX_MEMORY_LINE\.squares\.length/);
+  assert.match(migration, /line in \('ruy', 'london', 'qg', 'orthodox'\)/);
+  assert.doesNotMatch(migration, /delete from square_memory_scores/);
+  assert.match(view, /id: "ruy"/);
+  assert.match(view, /id: "london"/);
+  assert.match(view, /id: "qg"/);
 });
 
 test("a full clear is timed and only that time can join the shared board", () => {
