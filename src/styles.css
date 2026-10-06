@@ -5056,6 +5056,12 @@ body:has([data-square-memory-page]) {
   padding: 0.16rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--app-bg) 72%, transparent);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sqmem-pick::-webkit-scrollbar {
+  display: none;
 }
 
 .sqmem-pick-line {
@@ -5107,6 +5113,7 @@ body:has([data-square-memory-page]) {
   grid-template-areas:
     "focus side-a"
     "focus side-b"
+    "focus side-c"
     "all all";
   align-items: start;
   gap: 0.08rem 0.7rem;
@@ -5126,16 +5133,16 @@ body:has([data-square-memory-page]) {
   grid-area: focus;
 }
 
-.sqmem-boards[data-selected="ruy"] .sqmem-plaque[data-line="london"],
-.sqmem-boards[data-selected="london"] .sqmem-plaque[data-line="ruy"],
-.sqmem-boards[data-selected="qg"] .sqmem-plaque[data-line="ruy"] {
+.sqmem-plaque-pair > .sqmem-plaque:nth-child(1) {
   grid-area: side-a;
 }
 
-.sqmem-boards[data-selected="ruy"] .sqmem-plaque[data-line="qg"],
-.sqmem-boards[data-selected="london"] .sqmem-plaque[data-line="qg"],
-.sqmem-boards[data-selected="qg"] .sqmem-plaque[data-line="london"] {
+.sqmem-plaque-pair > .sqmem-plaque:nth-child(2) {
   grid-area: side-b;
+}
+
+.sqmem-plaque-pair > .sqmem-plaque:nth-child(3) {
+  grid-area: side-c;
 }
 
 .sqmem-plaque:not([data-selected="true"]) .sqmem-plaque-row:nth-child(n + 2) {
