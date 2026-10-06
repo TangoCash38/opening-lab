@@ -96,6 +96,7 @@ export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T
 export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> = {
   "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
   "opening-traps": ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
+  "qgd-black": ["qgdb1"],
 };
 
 /**

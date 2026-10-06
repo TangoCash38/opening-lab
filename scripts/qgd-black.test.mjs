@@ -58,7 +58,7 @@ const NAMES = {
   qgdb10: "Tartakower",
 };
 
-test("Queen's Gambit Declined is the signed qgd-black pack: 10 book lines, £1.99, locked until purchase", () => {
+test("Queen's Gambit Declined is the signed qgd-black pack: 10 book lines, £1.99, qgdb1 free", () => {
   const packs = src("src/data/packs.ts");
   const catalog = src("src/lib/catalog.ts");
   const skus = src("src/lib/play-skus.ts");
@@ -99,7 +99,8 @@ test("Queen's Gambit Declined is the signed qgd-black pack: 10 book lines, £1.9
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
     catalog.indexOf("export function playableLines"),
   );
-  assert.doesNotMatch(sampleBlock, /qgd-black/);
+  assert.match(sampleBlock, /"qgd-black": \["qgdb1"\]/);
+  assert.doesNotMatch(sampleBlock, /qgdb2/);
 
   const playList = skus.slice(
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),

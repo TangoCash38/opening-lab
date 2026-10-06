@@ -2995,7 +2995,8 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
     src.indexOf("export function playableLines"),
   );
   assert.doesNotMatch(sampleBlock, /london-black/);
-  assert.doesNotMatch(sampleBlock, /qgd-black/);
+  assert.match(sampleBlock, /"qgd-black": \["qgdb1"\]/);
+  assert.doesNotMatch(sampleBlock, /qgdb2/);
   assert.doesNotMatch(sampleBlock, /d4-sidelines-black/);
   assert.doesNotMatch(sampleBlock, /anti-sicilian-black/);
   assert.doesNotMatch(sampleBlock, /nimzo-larsen-white/);
@@ -3314,6 +3315,21 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb2", ["caro-kann-black"]), true);
   assert.equal(isLineUnlocked(caro, "ckb10", ["caro-kann-black"]), true);
+
+  const qgdPack = {
+    id: "qgd-black",
+    lines: Array.from({ length: 10 }, (_, i) => ({ id: `qgdb${i + 1}` })),
+  };
+  assert.equal(isLineUnlocked(qgdPack, "qgdb1", []), true);
+  for (const line of qgdPack.lines.slice(1)) {
+    assert.equal(isLineUnlocked(qgdPack, line.id, []), false, line.id);
+  }
+  for (const line of qgdPack.lines) {
+    assert.equal(isLineUnlocked(qgdPack, line.id, ["qgd-black"]), true, line.id);
+  }
+  assert.deepEqual(playableLines(qgdPack).map((l) => l.id), ["qgdb1"]);
+  assert.equal(nextUnlockedLine(qgdPack, "qgdb1", [])?.id, undefined);
+  assert.equal(nextUnlockedLine(qgdPack, "qgdb1", ["qgd-black"])?.id, "qgdb2");
 
   assert.deepEqual(playableLines(nimzo), []);
   assert.deepEqual(playableLines(qgwPack), []);

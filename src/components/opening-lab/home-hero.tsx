@@ -387,7 +387,7 @@ export function HomeHero({
         // Paid lines stay locked. Unpaid visitors still hear King Cedar.
         line = pack.lines.find((l) => l.id === "sib1");
       } else if (pack.id === "qgd-black") {
-        // Paid lines stay locked. Unpaid visitors still see the text-only intro.
+        // qgdb1 is free. qgdb2–qgdb10 stay locked. Unpaid visitors still see the text-only intro.
         line = pack.lines.find((l) => l.id === "qgdb1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
