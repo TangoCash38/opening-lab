@@ -1,8 +1,9 @@
 /**
- * Two-card study opener shared by the Slav preview and Queen's Gambit Declined.
- * The cards and board live in SlavPackNotice. This file only supplies the copy.
+ * Two-card study opener for every drill pack.
+ * The cards and board live in SlavPackNotice. This file supplies the copy.
  */
 
+import { STUDY_PACK_ROWS } from "@/lib/study-pack-copy";
 import {
   SLAV_ABOUT_TITLE,
   SLAV_FREE_LINE_ID,
@@ -66,13 +67,76 @@ export const QGD_STUDY_INTRO: StudyIntroCopy = {
   howTo: SLAV_HOW_TO,
 };
 
+const COUNT_WORD: Readonly<Record<number, string>> = {
+  9: "nine",
+  10: "ten",
+  18: "eighteen",
+  20: "twenty",
+};
+
+function formatStart(stem: readonly string[]): string {
+  const bits: string[] = [];
+  for (let i = 0; i < stem.length; i += 1) {
+    if (i % 2 === 0) bits.push(`${i / 2 + 1}.${stem[i]}`);
+    else bits.push(stem[i] ?? "");
+  }
+  return `Starting position: ${bits.join(" ")}`;
+}
+
+function studyHowTo(side: "w" | "b" | "mixed", line1Free: boolean): readonly string[] {
+  const you =
+    side === "w"
+      ? "You play White."
+      : side === "b"
+        ? "You play Black."
+        : "You play the trapping side.";
+  return [
+    you,
+    "Practice shows a green hint.",
+    "Test has no hints.",
+    line1Free ? "Line 1 is free." : "Unlock the pack to play the lines.",
+  ];
+}
+
+function rowToCopy(row: (typeof STUDY_PACK_ROWS)[number]): StudyIntroCopy {
+  const count = COUNT_WORD[row.lineCount];
+  if (!count) throw new Error(`missing count word for ${row.packId}`);
+  return {
+    packId: row.packId,
+    freeLineId: row.firstLineId,
+    stem: row.stem,
+    aboutTitle: "About the opening",
+    header: row.name.toUpperCase(),
+    subtitle: `An introduction and ${count} educational drills`,
+    start: formatStart(row.stem),
+    tagline: row.tagline,
+    lead: row.lead,
+    rest: row.rest,
+    welcomeTitle: `Welcome to the start of your ${row.name} learning pack`,
+    howTo: studyHowTo(row.side, row.line1Free),
+  };
+}
+
 const STUDY_INTROS: Record<string, StudyIntroCopy> = {
   [SLAV_PREVIEW_PACK_ID]: SLAV_STUDY_INTRO,
   [QGD_PACK_ID]: QGD_STUDY_INTRO,
 };
 
+for (const row of STUDY_PACK_ROWS) {
+  STUDY_INTROS[row.packId] = rowToCopy(row);
+}
+
 export function packStudyIntro(packId: string): StudyIntroCopy | null {
   return STUDY_INTROS[packId] ?? null;
+}
+
+/**
+ * New study cards replace the character opener.
+ * Slav and QGD keep the behaviour they already shipped.
+ */
+export function studyPackReplacesCoach(packId: string): boolean {
+  if (packId === QGD_PACK_ID || packId === SLAV_PREVIEW_PACK_ID) return false;
+  return packStudyIntro(packId) != null;
 }
 
 /** Slav keeps its original session key. Other packs get their own. */

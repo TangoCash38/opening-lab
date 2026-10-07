@@ -10,6 +10,7 @@ import {
   markPackStudyIntroSeen,
   packStudyIntro,
   packStudyIntroAlreadySeen,
+  studyPackReplacesCoach,
 } from "@/lib/pack-study-intro";
 import { classicRunAlreadySeen, markClassicRunSeen } from "@/lib/classic-run";
 import { beginClassicRunNarration } from "./classic-run-the-game";
@@ -217,6 +218,7 @@ export function HomeHero({
   ) => {
     // Pack Practice button only. Line taps, line switches, and Test pass false.
     if (
+      !studyPackReplacesCoach(pack.id) &&
       practiceEntry &&
       scotchCoachApplies({
         packId: pack.id,
@@ -242,6 +244,7 @@ export function HomeHero({
     }
     // Line 1 (sg1) only. Later Scotch lines, Test, and other packs fall through.
     if (
+      !studyPackReplacesCoach(pack.id) &&
       !practiceEntry &&
       scotchCanalCoachApplies({
         packId: pack.id,
@@ -271,6 +274,7 @@ export function HomeHero({
     // Test never reaches here with a coach: line switches and Test pass practiceEntry false
     // and are not the configured firstLineId, and this launch is always learn mode.
     if (
+      !studyPackReplacesCoach(pack.id) &&
       practiceEntry &&
       !packStudyIntro(pack.id) &&
       coachPackIntroApplies(pack.id) &&
@@ -301,6 +305,7 @@ export function HomeHero({
       return;
     }
     if (
+      !studyPackReplacesCoach(pack.id) &&
       !practiceEntry &&
       coachPackLineApplies({ packId: pack.id, lineId: line.id }) &&
       !coachLineAlreadySeen(pack.id, line.id)
@@ -545,6 +550,11 @@ export function HomeHero({
     const intro = packStudyIntro(pack.id);
     const line = pack.lines.find((item) => item.id === intro?.freeLineId) ?? pack.lines[0];
     if (!line) return;
+    const lineOpen = subscribed || isLineUnlocked(pack, line.id, purchased);
+    if (!lineOpen) {
+      onRequestUnlock?.(pack);
+      return;
+    }
     if (preferInFrame()) {
       openInFrame(line, undefined, "learn");
       return;
@@ -789,6 +799,7 @@ export function HomeHero({
                           // Line 1 talk even while the drill is locked. Later taps
                           // use the unlock or Practice path. A tap during the intro waits.
                           const hearsLineTalk =
+                            !studyPackReplacesCoach(pack.id) &&
                             coachPack(pack.id)?.lineTalkOnTapOnly === true &&
                             coachPackLineApplies({ packId: pack.id, lineId: item.id }) &&
                             !coachLineAlreadySeen(pack.id, item.id);
