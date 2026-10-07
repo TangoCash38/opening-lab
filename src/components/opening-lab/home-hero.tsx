@@ -7,11 +7,10 @@ import { useProgress } from "@/hooks/use-progress";
 import { FREE_SAMPLE_LINE_IDS, isComingSoonClosed, isLineUnlocked } from "@/lib/catalog";
 import { isClassicSamplePack } from "@/lib/classic-sample";
 import {
-  isSlavPreviewPack,
-  markSlavIntroSeen,
-  slavIntroAlreadySeen,
-  SLAV_FREE_LINE_ID,
-} from "@/lib/slav-preview";
+  markPackStudyIntroSeen,
+  packStudyIntro,
+  packStudyIntroAlreadySeen,
+} from "@/lib/pack-study-intro";
 import { classicRunAlreadySeen, markClassicRunSeen } from "@/lib/classic-run";
 import { beginClassicRunNarration } from "./classic-run-the-game";
 import { packShortLabel } from "@/lib/featured-pack";
@@ -24,6 +23,7 @@ import {
   coachPackLineApplies,
   coachLinePlyCues,
   coachPack,
+  coachPackWrittenIntro,
   coachTalkAfterPackIntro,
   coachTalkPlies,
   markCoachIntroSeen,
@@ -123,8 +123,8 @@ export function HomeHero({
   const [frame, setFrame] = useState<FrameSession | null>(null);
   const [coach, setCoach] = useState<CoachSession | null>(null);
   const [textBeat, setTextBeat] = useState(0);
-  const [slavStep, setSlavStep] = useState<"about" | "welcome" | "ready">(() =>
-    isSlavPreviewPack(pack.id) && !slavIntroAlreadySeen() ? "about" : "ready",
+  const [studyStep, setStudyStep] = useState<"about" | "welcome" | "ready">(() =>
+    packStudyIntro(pack.id) && !packStudyIntroAlreadySeen(pack.id) ? "about" : "ready",
   );
   const coachRef = useRef<CoachSession | null>(null);
   /** Line tap while the pack intro is up — run after intro (and Line 1 talk). */
@@ -173,7 +173,7 @@ export function HomeHero({
   }, []);
 
   useEffect(() => {
-    setSlavStep(isSlavPreviewPack(pack.id) && !slavIntroAlreadySeen() ? "about" : "ready");
+    setStudyStep(packStudyIntro(pack.id) && !packStudyIntroAlreadySeen(pack.id) ? "about" : "ready");
   }, [pack.id]);
 
   useEffect(() => {
@@ -272,6 +272,7 @@ export function HomeHero({
     // and are not the configured firstLineId, and this launch is always learn mode.
     if (
       practiceEntry &&
+      !packStudyIntro(pack.id) &&
       coachPackIntroApplies(pack.id) &&
       !coachIntroAlreadySeen(pack.id)
     ) {
@@ -372,6 +373,8 @@ export function HomeHero({
     // written once, on the mount that stays. An immediate mark is wiped
     // with the first mount and the intro never appears in dev.
     const id = window.setTimeout(() => {
+      // Slav and QGD open on the shared study cards. Do not auto-play a caption intro.
+      if (packStudyIntro(pack.id)) return;
       if (isComingSoonClosed(pack.id, purchased, subscribed)) return;
       const wantsScotch =
         scotchCoachApplies({ packId: pack.id, practiceEntry: true }) &&
@@ -400,9 +403,6 @@ export function HomeHero({
       } else if (pack.id === "sicilian-black") {
         // Paid lines stay locked. Unpaid visitors still hear King Cedar.
         line = pack.lines.find((l) => l.id === "sib1");
-      } else if (pack.id === "qgd-black") {
-        // qgdb1 is free. qgdb2–qgdb10 stay locked. Unpaid visitors still see the text-only intro.
-        line = pack.lines.find((l) => l.id === "qgdb1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
         if (samples?.length) {
@@ -505,8 +505,8 @@ export function HomeHero({
 
   const activeLineId = frame?.line.id ?? coach?.line.id ?? null;
   const game = useMemo(() => new Chess(), []);
-  const showLinesToggle = !embedded && slavStep === "ready";
-  const linesVisible = (embedded || linesOpen) && slavStep === "ready";
+  const showLinesToggle = !embedded && studyStep === "ready";
+  const linesVisible = (embedded || linesOpen) && studyStep === "ready";
 
   const pickPracticeLine = (): OpeningLine | undefined => {
     if (isComingSoonClosed(pack.id, purchased, subscribed)) return undefined;
@@ -539,10 +539,11 @@ export function HomeHero({
     else startAdvance();
   };
 
-  const beginSlavLine = () => {
-    markSlavIntroSeen();
-    setSlavStep("ready");
-    const line = pack.lines.find((item) => item.id === SLAV_FREE_LINE_ID) ?? pack.lines[0];
+  const beginStudyLine = () => {
+    markPackStudyIntroSeen(pack.id);
+    setStudyStep("ready");
+    const intro = packStudyIntro(pack.id);
+    const line = pack.lines.find((item) => item.id === intro?.freeLineId) ?? pack.lines[0];
     if (!line) return;
     if (preferInFrame()) {
       openInFrame(line, undefined, "learn");
@@ -550,6 +551,7 @@ export function HomeHero({
     }
     onStartLine(pack, line, "learn");
   };
+  const studyIntro = packStudyIntro(pack.id);
 
   return (
     <section
@@ -633,6 +635,9 @@ export function HomeHero({
                 data-scotch-coach-dock
                 data-scotch-coach-talk={coach.talk}
                 data-coach-plain={coachPack(pack.id)?.plain ? "true" : undefined}
+                data-written-intro={
+                  coach.talk === "intro" && coachPackWrittenIntro(pack.id) ? "true" : undefined
+                }
               >
                 <div className="scotch-coach-plate" data-scotch-coach-plate>
                   {/* Distinct keys so a talk change deletes the previous figure. */}
@@ -818,11 +823,12 @@ export function HomeHero({
         </div>
       </div>
 
-      {isSlavPreviewPack(pack.id) && slavStep !== "ready" ? (
+      {studyIntro && studyStep !== "ready" ? (
         <SlavPackNotice
-          step={slavStep === "welcome" ? "welcome" : "about"}
-          onNext={() => setSlavStep("welcome")}
-          onStart={beginSlavLine}
+          step={studyStep === "welcome" ? "welcome" : "about"}
+          copy={studyIntro}
+          onNext={() => setStudyStep("welcome")}
+          onStart={beginStudyLine}
         />
       ) : null}
 

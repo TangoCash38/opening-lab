@@ -115,10 +115,17 @@ test("Queen's Gambit Declined is the signed qgd-black pack: 10 book lines, £1.9
   assert.equal(liveSale.includes('"qgd-black"'), false);
 
   const opening = intro.slice(intro.indexOf('"qgd-black"'), intro.indexOf("london:"));
-  assert.match(opening, /10 lines from Opening Lab\. Practice with the green hint, then Test with none\./);
-  assert.doesNotMatch(opening, /punish/i);
+  assert.match(opening, /The Queen's Gambit Declined is 1\.d4 d5 2\.c4 e6/);
+  assert.match(opening, /Black keeps the pawn on d5 instead of taking on c4/);
+  assert.match(opening, /one of the oldest and most trusted replies to 1\.d4/);
+  assert.match(opening, /world championship staple/);
+  assert.match(opening, /The 10 lines in this pack are the Orthodox setup/);
+  assert.match(opening, /Early Exchange, Exchange development, Exchange with Nge2/);
+  assert.match(opening, /Lasker Defence, and the Tartakower/);
   assert.doesNotMatch(opening, /5 book/);
+  assert.doesNotMatch(opening, /punish/i);
   assert.doesNotMatch(opening, /Catalan/);
+  assert.doesNotMatch(qgd, /drill:/);
 
   const lineIds = [...qgd.matchAll(/id: "(qgdb\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(lineIds, Object.keys(EXPECTED));

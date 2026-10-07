@@ -5,14 +5,14 @@
  */
 export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   es: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "El Gambito de Dama Rehusado es 1.d4 d5 2.c4 e6. Las negras mantienen un peón en d5 en lugar de tomar en c4.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Estas diez líneas son la Orthodox, la Exchange, la Lasker Defence y la Tartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "Este paquete son 10 líneas de Opening Lab. Practica con la pista verde y luego Test sin ninguna.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Cada línea termina donde termina el libro. Aprende la jugada y su propósito, y luego reconoce la estructura en una partida.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Esto es el Gambito de Dama Rehusado con las negras. Después de 1.d4 d5 2.c4, las negras juegan e6 y el peón en d5 se queda.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Las 10 líneas de este paquete son el esquema Orthodox, el Orthodox con Nf3 primero, la liberación con ...dxc4 y ...Nd5, un Bd3 tranquilo con ...c5, la Lasker Defence y la Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "También cubren cuatro líneas Exchange: Early Exchange, el desarrollo de la Exchange, la Exchange con Nge2 y la Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Practica con la pista verde y luego Test sin ninguna.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Esquema Orthodox. Sostén d5, desarrolla ambos caballos, enroca y responde a Rc1 con c6 y Re8. No hay captura temprana en c4.",
     "White plays d4 and takes a share of the centre.":
@@ -47,14 +47,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "Sostén d5, desarrolla ambos caballos, enroca y responde a Rc1 con ...c6 y ...Re8 frente al esquema Qc2 de las blancas — marco Orthodox básico sin la liberación temprana ...dxc4.",
   },
   zh: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "后翼弃兵拒绝是 1.d4 d5 2.c4 e6。黑方把兵留在 d5，而不是在 c4 吃子。",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "这十条线路是 Orthodox、Exchange、Lasker Defence 和 Tartakower。",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "这个包是 Opening Lab 的 10 条线路。先用绿色提示 Practice，再在没有提示时 Test。",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "每条线路停在书谱结束处。学会这步棋和它的目的，然后在对局中认出这个结构。",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "这是后翼弃兵拒绝对黑方。在 1.d4 d5 2.c4 之后，黑方走 e6，d5 的兵留在原地。",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "这个包里的 10 条线路是 Orthodox 布局、先走 Nf3 的 Orthodox、用 ...dxc4 和 ...Nd5 解放、安静的 Bd3 配 ...c5、Lasker Defence 和 Tartakower。",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "它们还包括四条 Exchange 线路：Early Exchange、Exchange development、带 Nge2 的 Exchange，以及 Late Exchange。",
+    "Practice with the green hint, then Test with none.":
+      "先用绿色提示 Practice，再在没有提示时 Test。",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Orthodox 布局。支撑 d5，出动双马，王车易位，再用 c6 和 Re8 迎接 Rc1。不要过早在 c4 吃子。",
     "White plays d4 and takes a share of the centre.": "白方走 d4，占据中心的一份。",
@@ -79,14 +79,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "支撑 d5，出动双马，易位，再用 ...c6 和 ...Re8 迎接白方 Qc2 布局下的 Rc1 — 这是基本 Orthodox 框架，不要过早 ...dxc4 释放中心。",
   },
   fr: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "Le gambit dame refusé est 1.d4 d5 2.c4 e6. Les noirs gardent un pion en d5 au lieu de prendre en c4.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Ces dix lignes sont l'Orthodox, l'Exchange, la Lasker Defence et la Tartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "Ce pack compte 10 lignes d'Opening Lab. Practice avec l'indice vert, puis Test sans aucune aide.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Chaque ligne s'arrête là où le livre s'arrête. Apprends le coup et son but, puis reconnais la structure en partie.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Voici le gambit dame refusé pour les noirs. Après 1.d4 d5 2.c4, les noirs jouent e6 et le pion en d5 reste.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Les 10 lignes de ce pack sont le schéma Orthodox, l'Orthodox avec Nf3 d'abord, la libération par ...dxc4 et ...Nd5, un Bd3 calme avec ...c5, la Lasker Defence et la Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "Elles couvrent aussi quatre lignes Exchange : Early Exchange, le développement Exchange, l'Exchange avec Nge2 et la Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Practice avec l'indice vert, puis Test sans aucune aide.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Schéma Orthodox. Soutiens d5, développe les deux cavaliers, roque, puis réponds à Rc1 par c6 et Re8. Pas de prise précoce en c4.",
     "White plays d4 and takes a share of the centre.": "Les blancs jouent d4 et prennent une part du centre.",
@@ -118,14 +118,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "Soutiens d5, développe les deux cavaliers, roque, puis réponds à Rc1 par ...c6 et ...Re8 face au schéma Qc2 des blancs — cadre Orthodox de base, sans libération précoce ...dxc4.",
   },
   de: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "Das abgelehnte Damengambit ist 1.d4 d5 2.c4 e6. Schwarz lässt einen Bauern auf d5 stehen, statt auf c4 zu schlagen.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Diese zehn Linien sind Orthodox, Exchange, Lasker Defence und Tartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "Dieses Paket hat 10 Linien aus Opening Lab. Practice mit dem grünen Hinweis, danach Test ohne Hilfe.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Jede Linie endet dort, wo das Buch endet. Lerne den Zug und seinen Zweck, dann erkennst du die Struktur in der Partie.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Das ist das abgelehnte Damengambit für Schwarz. Nach 1.d4 d5 2.c4 spielt Schwarz e6, und der Bauer auf d5 bleibt.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Die 10 Linien in diesem Paket sind der Orthodox-Aufbau, Orthodox mit Nf3 zuerst, Befreiung mit ...dxc4 und ...Nd5, ein ruhiges Bd3 mit ...c5, die Lasker Defence und Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "Dazu kommen vier Exchange-Linien: Early Exchange, Exchange-Entwicklung, Exchange mit Nge2 und Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Practice mit dem grünen Hinweis, danach Test ohne Hilfe.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Orthodox-Aufbau. Stütze d5, entwickle beide Springer, rochiere und begegne Rc1 mit c6 und Re8. Kein früher Schlag auf c4.",
     "White plays d4 and takes a share of the centre.": "Weiß spielt d4 und nimmt Anteil am Zentrum.",
@@ -157,14 +157,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "Stütze d5, entwickle beide Springer, rochiere und begegne Rc1 mit ...c6 und ...Re8 gegen Weiß' Qc2-Aufbau — grundlegendes Orthodox-Gerüst ohne frühes ...dxc4.",
   },
   pt: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "O Gambito da Dama Recusado é 1.d4 d5 2.c4 e6. As negras mantêm um peão em d5 em vez de capturar em c4.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Estas dez linhas são a Orthodox, a Exchange, a Lasker Defence e a Tartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "Este pacote tem 10 linhas do Opening Lab. Practice com a dica verde e depois Test sem nenhuma.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Cada linha termina onde o livro termina. Aprende o lance e o seu propósito, depois reconhece a estrutura numa partida.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Isto é o Gambito da Dama Recusado para as negras. Depois de 1.d4 d5 2.c4, as negras jogam e6 e o peão em d5 fica.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "As 10 linhas deste pacote são o esquema Orthodox, o Orthodox com Nf3 primeiro, a libertação com ...dxc4 e ...Nd5, um Bd3 calmo com ...c5, a Lasker Defence e a Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "Também cobrem quatro linhas Exchange: Early Exchange, desenvolvimento da Exchange, Exchange com Nge2 e Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Practice com a dica verde e depois Test sem nenhuma.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Esquema Orthodox. Sustenta d5, desenvolve os dois cavalos, roca e responde a Rc1 com c6 e Re8. Não há captura cedo em c4.",
     "White plays d4 and takes a share of the centre.": "As brancas jogam d4 e tomam parte do centro.",
@@ -193,14 +193,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "Sustenta d5, desenvolve os dois cavalos, roca e responde a Rc1 com ...c6 e ...Re8 contra o esquema Qc2 das brancas — base Orthodox, sem a libertação cedo ...dxc4.",
   },
   ru: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "Отказанный ферзевый гамбит — это 1.d4 d5 2.c4 e6. Чёрные оставляют пешку на d5, а не берут на c4.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Эти десять линий — Orthodox, Exchange, Lasker Defence и Tartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "В этом пакете 10 линий Opening Lab. Сначала Practice с зелёной подсказкой, затем Test без неё.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Каждая линия кончается там, где кончается книга. Выучи ход и его смысл, затем узнавай структуру в партии.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Это отказанный ферзевый гамбит за чёрных. После 1.d4 d5 2.c4 чёрные играют e6, и пешка на d5 остаётся.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "10 линий в этом пакете — схема Orthodox, Orthodox с Nf3 вперёд, освобождение через ...dxc4 и ...Nd5, спокойный Bd3 с ...c5, Lasker Defence и Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "Ещё четыре линии Exchange: Early Exchange, развитие Exchange, Exchange с Nge2 и Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Сначала Practice с зелёной подсказкой, затем Test без неё.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Схема Orthodox. Поддержи d5, развивай обоих коней, рокируйся и встречай Rc1 ходами c6 и Re8. Раннего взятия на c4 нет.",
     "White plays d4 and takes a share of the centre.": "Белые играют d4 и берут долю центра.",
@@ -228,14 +228,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "Поддержи d5, развивай обоих коней, рокируйся и встречай Rc1 ходами ...c6 и ...Re8 против схемы Qc2 белых — базовая схема Orthodox без раннего ...dxc4.",
   },
   it: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "Il gambetto di donna rifiutato è 1.d4 d5 2.c4 e6. Il Nero tiene un pedone in d5 invece di prendere in c4.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Queste dieci linee sono Orthodox, Exchange, Lasker Defence e Tartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "Questo pacchetto ha 10 linee di Opening Lab. Practice con il suggerimento verde, poi Test senza aiuti.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Ogni linea finisce dove finisce il libro. Impara la mossa e il suo scopo, poi riconosci la struttura in partita.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Questo è il gambetto di donna rifiutato per il Nero. Dopo 1.d4 d5 2.c4 il Nero gioca e6 e il pedone in d5 resta.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Le 10 linee di questo pacchetto sono lo schema Orthodox, l'Orthodox con Nf3 per primo, la liberazione con ...dxc4 e ...Nd5, un Bd3 tranquillo con ...c5, la Lasker Defence e la Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "Coprono anche quattro linee Exchange: Early Exchange, lo sviluppo Exchange, l'Exchange con Nge2 e la Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Practice con il suggerimento verde, poi Test senza aiuti.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Schema Orthodox. Sostieni d5, sviluppa entrambi i cavalli, arrocca e rispondi a Rc1 con c6 e Re8. Nessuna presa precoce in c4.",
     "White plays d4 and takes a share of the centre.": "Il Bianco gioca d4 e prende una quota del centro.",
@@ -263,14 +263,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "Sostieni d5, sviluppa entrambi i cavalli, arrocca e rispondi a Rc1 con ...c6 e ...Re8 contro lo schema Qc2 del Bianco — schema Orthodox di base, senza il rilascio precoce ...dxc4.",
   },
   hi: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "क्वीन्स गैम्बिट रिफ्यूज्ड है 1.d4 d5 2.c4 e6। काला c4 पर लेने के बजाय d5 पर प्यादा रखता है।",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "ये दस लाइनें Orthodox, Exchange, Lasker Defence और Tartakower हैं।",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "यह पैक Opening Lab की 10 लाइनें है। हरे संकेत के साथ Practice करो, फिर बिना संकेत Test।",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "हर लाइन वहीं खत्म होती है जहाँ किताब खत्म होती है। चाल और उसका उद्देश्य सीखो, फिर खेल में संरचना पहचानो।",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "यह काले के लिए क्वीन्स गैम्बिट रिफ्यूज्ड है। 1.d4 d5 2.c4 के बाद काला e6 खेलता है और d5 का प्यादा रहता है।",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "इस पैक की 10 लाइनें हैं Orthodox व्यवस्था, पहले Nf3 वाला Orthodox, ...dxc4 और ...Nd5 से मुक्ति, शांत Bd3 के साथ ...c5, Lasker Defence और Tartakower।",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "इनमें चार Exchange लाइनें भी हैं: Early Exchange, Exchange development, Nge2 वाली Exchange, और Late Exchange।",
+    "Practice with the green hint, then Test with none.":
+      "हरे संकेत के साथ Practice करो, फिर बिना संकेत Test।",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Orthodox व्यवस्था। d5 को सहारा दो, दोनों घोड़े निकालो, कैसल करो, फिर Rc1 का जवाब c6 और Re8 से दो। c4 पर जल्दी कब्जा नहीं।",
     "White plays d4 and takes a share of the centre.": "सफेद d4 खेलता है और केंद्र का हिस्सा लेता है।",
@@ -296,14 +296,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "d5 को सहारा दो, दोनों घोड़े निकालो, कैसल करो, फिर सफेद के Qc2 ढाँचे के Rc1 का जवाब ...c6 और ...Re8 से दो — बुनियादी Orthodox ढाँचा, बिना जल्दी ...dxc4 के।",
   },
   ja: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "クイーンギャンビット・ディクラインドは 1.d4 d5 2.c4 e6 です。黒は c4 で取らず、ポーンを d5 に残します。",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "この10本は Orthodox、Exchange、Lasker Defence、Tartakower です。",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "このパックは Opening Lab の10ラインです。緑のヒントで Practice し、そのあとヒントなしで Test します。",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "各ラインは定跡の終わりで止まります。手とその目的を覚え、対局でその構造を見分けてください。",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "これは黒のクイーンギャンビット・ディクラインドです。1.d4 d5 2.c4 のあと、黒は e6 と指し、d5 のポーンは残ります。",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "このパックの10ラインは、Orthodox の形、Nf3 を先に出す Orthodox、...dxc4 と ...Nd5 の解放、静かな Bd3 と ...c5、Lasker Defence、Tartakower です。",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "さらに4つの Exchange ラインもあります。Early Exchange、Exchange development、Nge2 の Exchange、Late Exchange です。",
+    "Practice with the green hint, then Test with none.":
+      "緑のヒントで Practice し、そのあとヒントなしで Test します。",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Orthodox の形です。d5 を支え、両ナイトを出し、キャスリングして、Rc1 には c6 と Re8 で応えます。早く c4 では取りません。",
     "White plays d4 and takes a share of the centre.": "白は d4 と指し、センターの分け前を取ります。",
@@ -329,14 +329,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "d5 を支え、両ナイトを出し、キャスリングし、白の Qc2 配置に対する Rc1 には ...c6 と ...Re8 で応える — 早い ...dxc4 のない基本の Orthodox です。",
   },
   ar: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "غامبيت المؤخرة المرفوض هو 1.d4 d5 2.c4 e6. يُبقي الأسود بيدقًا على d5 بدل الأخذ على c4.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "هذه الخطوط العشرة هي Orthodox وExchange وLasker Defence وTartakower.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "هذه الحزمة 10 خطوط من Opening Lab. ابدأ Practice مع التلميح الأخضر ثم Test من دونه.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "ينتهي كل خط حيث ينتهي الكتاب. تعلّم النقلة وغايتها، ثم تعرّف على البنية في مباراة.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "هذا غامبيت المؤخرة المرفوض للأسود. بعد 1.d4 d5 2.c4 يلعب الأسود e6 ويبقى البيدق على d5.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "الخطوط العشرة في هذه الحزمة هي ترتيب Orthodox، وOrthodox مع Nf3 أولًا، والتحرير بـ ...dxc4 و...Nd5، وBd3 هادئ مع ...c5، وLasker Defence وTartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "وتغطي أيضًا أربعة خطوط Exchange: Early Exchange، وتطوير Exchange، وExchange مع Nge2، وLate Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "ابدأ Practice مع التلميح الأخضر ثم Test من دونه.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "ترتيب Orthodox. ادعم d5، وطوّر الحصانين، وقلعة، ثم واجه Rc1 بـ c6 وRe8. لا أسر مبكر على c4.",
     "White plays d4 and takes a share of the centre.": "يلعب الأبيض d4 ويأخذ نصيبًا من المركز.",
@@ -361,14 +361,14 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
       "ادعم d5، وطوّر الحصانين، وقلعة، ثم واجه Rc1 بـ ...c6 و...Re8 ضد ترتيب Qc2 للأبيض — إطار Orthodox أساسي من دون تحرير مبكر ...dxc4.",
   },
   tr: {
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.":
-      "Vezir gambiti reddi 1.d4 d5 2.c4 e6 ile başlar. Siyah, c4'te almak yerine piyonu d5'te tutar.",
-    "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.":
-      "Bu on hat Orthodox, Exchange, Lasker Defence ve Tartakower'dır.",
-    "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.":
-      "Bu paket Opening Lab'den 10 hattır. Yeşil ipucuyla Practice yap, sonra ipucusuz Test et.",
-    "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.":
-      "Her hat kitabın bittiği yerde biter. Hamleyi ve amacını öğren, sonra yapıyı oyunda tanı.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
+      "Bu, Siyah için vezir gambiti reddidir. 1.d4 d5 2.c4 ardından Siyah e6 oynar ve d5'teki piyon kalır.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Bu paketteki 10 hat Orthodox düzeni, önce Nf3 ile Orthodox, ...dxc4 ve ...Nd5 ile kurtulma, sakin Bd3 ile ...c5, Lasker Defence ve Tartakower'dır.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.":
+      "Dört Exchange hattını da kapsar: Early Exchange, Exchange development, Nge2 ile Exchange ve Late Exchange.",
+    "Practice with the green hint, then Test with none.":
+      "Yeşil ipucuyla Practice yap, sonra ipucusuz Test et.",
     "Orthodox setup. Support d5, develop both knights, castle, then meet Rc1 with c6 and Re8. There is no early capture on c4.":
       "Orthodox düzeni. d5'i destekle, iki atı da geliştir, rok at, sonra Rc1'e c6 ve Re8 ile karşılık ver. c4'te erken alma yoktur.",
     "White plays d4 and takes a share of the centre.": "Beyaz d4 oynar ve merkezden pay alır.",
