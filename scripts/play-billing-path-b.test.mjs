@@ -57,7 +57,7 @@ test("Android wrap is Billing 9.1.0 + versionCode 11 / 1.0.10 INAPP Path B", () 
   assert.doesNotMatch(androidManifest, /POST_NOTIFICATIONS/);
 });
 
-test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (35 packs, including opening-traps and london)", async (t) => {
+test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (36 packs, including opening-traps and london)", async (t) => {
   let ts;
   try {
     ts = require("typescript");
@@ -87,7 +87,8 @@ test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (35 packs, including opening-t
   } = await import(pathToFileURL(skusTmp).href);
 
   assert.equal(PLAY_SKU_BUY_ALL, "buy_all_packs");
-  assert.equal(PLAY_PATH_B_PACK_IDS.length, 35);
+  assert.equal(PLAY_PATH_B_PACK_IDS.length, 36);
+  assert.equal(playSkuForPackId("slav-defence"), "pack_slav_defence");
   assert.ok(PLAY_PATH_B_PACK_IDS.includes("london"));
   assert.equal(playSkuForPackId("london"), "pack_london");
   assert.ok(PLAY_PATH_B_PACK_IDS.includes("old-indian-black"));
@@ -102,7 +103,8 @@ test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (35 packs, including opening-t
   assert.equal(packIdFromPlaySku("buy_all_packs"), null);
 
   const map = playPackSkuMap(PLAY_PATH_B_PACK_IDS);
-  assert.equal(Object.keys(map).length, 35);
+  assert.equal(Object.keys(map).length, 36);
+  assert.equal(map["slav-defence"], "pack_slav_defence");
   assert.equal(map.london, "pack_london");
   assert.equal(map["old-indian-black"], "pack_old_indian_black");
   assert.equal(map["caro-kann-black"], "pack_caro_kann_black");

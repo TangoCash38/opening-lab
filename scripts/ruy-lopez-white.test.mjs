@@ -295,7 +295,7 @@ const NAMES = {
   "rlw10": "Line 10"
 };
 
-const LIVE = '["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"]';
+const LIVE = '["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence"]';
 
 test("Ruy Lopez for White is the signed ruy-lopez-white pack: rlw1–rlw10 book, £1.99, locked until purchase", () => {
   const packs = src("src/data/packs.ts");

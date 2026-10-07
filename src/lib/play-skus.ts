@@ -39,6 +39,7 @@ export const PLAY_SKU_PACK_PREFIX = "pack_";
 export const PLAY_PATH_B_PACK_IDS = [
   "caro-kann-black",
   "qgd-black",
+  "slav-defence",
   "london-black",
   "d4-sidelines-black",
   "anti-sicilian-black",
