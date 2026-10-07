@@ -6989,6 +6989,15 @@ html[data-slav-opening] .app-header-logo {
   pointer-events: none;
 }
 
+.slav-intro-caption {
+  margin: 0.1rem 0 0;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: var(--color-fg-muted);
+}
+
 .slav-notice-card {
   display: flex;
   min-height: 0;

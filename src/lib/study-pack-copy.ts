@@ -1,7 +1,8 @@
 /**
  * Two-card intro copy for every drill pack except Slav and QGD,
  * which keep their own cards in pack-study-intro.ts.
- * Stems are the defining moves the board plays by itself.
+ * Stems are the defining moves in the "Starting position:" sentence.
+ * The board plays the longer book prefix in study-intro-setup.ts.
  */
 
 export type StudyPackRow = {

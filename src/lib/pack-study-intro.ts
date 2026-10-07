@@ -4,6 +4,7 @@
  */
 
 import { STUDY_PACK_ROWS } from "@/lib/study-pack-copy";
+import { STUDY_INTRO_SETUPS } from "@/lib/study-intro-setup";
 import {
   SLAV_ABOUT_TITLE,
   SLAV_FREE_LINE_ID,
@@ -22,7 +23,10 @@ import {
 export type StudyIntroCopy = {
   packId: string;
   freeLineId: string;
+  /** Defining moves. This is the "Starting position:" sentence, not the board. */
   stem: readonly string[];
+  /** Book-line prefix the intro board plays once, then holds. */
+  setup: readonly string[];
   aboutTitle: string;
   header: string;
   subtitle: string;
@@ -36,10 +40,17 @@ export type StudyIntroCopy = {
 
 const QGD_PACK_ID = "qgd-black";
 
+function setupFor(packId: string): readonly string[] {
+  const found = STUDY_INTRO_SETUPS[packId];
+  if (!found) throw new Error(`missing intro setup for ${packId}`);
+  return found.plies;
+}
+
 const SLAV_STUDY_INTRO: StudyIntroCopy = {
   packId: SLAV_PREVIEW_PACK_ID,
   freeLineId: SLAV_FREE_LINE_ID,
   stem: SLAV_STEM,
+  setup: setupFor(SLAV_PREVIEW_PACK_ID),
   aboutTitle: SLAV_ABOUT_TITLE,
   header: SLAV_INTRO_HEADER,
   subtitle: SLAV_INTRO_SUBTITLE,
@@ -56,6 +67,7 @@ export const QGD_STUDY_INTRO: StudyIntroCopy = {
   packId: QGD_PACK_ID,
   freeLineId: "qgdb1",
   stem: ["d4", "d5", "c4", "e6"],
+  setup: setupFor(QGD_PACK_ID),
   aboutTitle: "About the opening",
   header: "QUEEN'S GAMBIT DECLINED FOR BLACK",
   subtitle: "An introduction and ten educational drills",
@@ -105,6 +117,7 @@ function rowToCopy(row: (typeof STUDY_PACK_ROWS)[number]): StudyIntroCopy {
     packId: row.packId,
     freeLineId: row.firstLineId,
     stem: row.stem,
+    setup: setupFor(row.packId),
     aboutTitle: "About the opening",
     header: row.name.toUpperCase(),
     subtitle: `An introduction and ${count} educational drills`,
