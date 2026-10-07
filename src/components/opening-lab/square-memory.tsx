@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 
 import { Link } from "@tanstack/react-router";
 import { Volume2, VolumeX } from "lucide-react";
 import { ChessPiece, pieceName } from "./chess-pieces";
+import { SessionPackCta } from "./session-pack-cta";
 import {
   isMuted,
   playHit,
@@ -538,6 +539,8 @@ export function SquareMemory() {
           </div>
         </div>
       </div>
+
+      {revealing ? <SessionPackCta lead="Those squares are a real opening." /> : null}
 
       <footer className="sqmem-dock">
         {revealing ? (

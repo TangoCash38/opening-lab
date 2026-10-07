@@ -682,3 +682,18 @@ test("Play preview is off until seven taps, and the website ignores it", async (
   assert.match(landing, /if \(!isPlayApp\(\)\) return/);
   assert.equal((landing.match(/data-landing-square-memory/g) || []).length, 1);
 });
+
+test("a finished Square Memory run points at free lines and the packs home", () => {
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const cta = src("src/components/opening-lab/session-pack-cta.tsx");
+  assert.match(view, /revealing \? <SessionPackCta lead="Those squares are a real opening\." \/> : null/);
+  assert.match(cta, /href="\/#pack\/opening-traps"/);
+  assert.match(cta, /Try Opening Traps/);
+  assert.match(cta, /href="\/#pack\/caro-kann-black"/);
+  assert.match(cta, /Caro-Kann/);
+  assert.match(cta, /href="\/#gym"/);
+  assert.match(cta, /Buy all · \$\{PRICE_BUY_ALL\}/);
+  assert.match(cta, /data-session-pack-primary/);
+  assert.doesNotMatch(`${view}\n${cta}`, /lifetime|forever/i);
+  assert.doesNotMatch(`${view}\n${cta}`, /stripe|play-billing|checkout|buyPack/i);
+});

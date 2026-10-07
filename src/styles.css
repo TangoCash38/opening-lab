@@ -6905,3 +6905,76 @@ body:has([data-grandmaster-vision-page]) {
   height: 100%;
   filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.45));
 }
+
+/* End-of-session pack path. Sits under the Square Memory board, and on
+   Position Recall it is pinned under the glass score card without moving it. */
+.session-pack-cta {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 0.28rem;
+  margin-top: 0.35rem;
+  padding: 0.45rem 0.55rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary, #f8fafc) 14%, transparent);
+  border-radius: 0.85rem;
+  background: var(--panel-bg, #1e232a);
+  color: var(--text-primary, #f8fafc);
+}
+
+.session-pack-cta-lead {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.session-pack-cta-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.45rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.75rem;
+  background: var(--glow-amber, #ffb800);
+  color: #0f1216;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.session-pack-cta-primary:active {
+  transform: scale(0.99);
+}
+
+.session-pack-cta-more {
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.session-pack-cta-more a {
+  color: inherit;
+  text-underline-offset: 0.16em;
+}
+
+.gmv-session-cta {
+  position: absolute;
+  left: max(0.55rem, env(safe-area-inset-left, 0px));
+  right: max(0.55rem, env(safe-area-inset-right, 0px));
+  bottom: max(0.45rem, env(safe-area-inset-bottom, 0px));
+  z-index: 35;
+}
+
+.gmv-session-cta .session-pack-cta {
+  margin-top: 0;
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(15, 18, 22, 0.92);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.gmv-session-cta .session-pack-cta-primary {
+  border-radius: 999px;
+}

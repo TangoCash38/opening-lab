@@ -30,6 +30,7 @@ import {
   unlockGrandmasterAudio,
 } from "@/lib/grandmaster-vision-audio";
 import { ChessPiece, pieceName } from "./chess-pieces";
+import { SessionPackCta } from "./session-pack-cta";
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
 const RANKS = [8, 7, 6, 5, 4, 3, 2, 1] as const;
@@ -702,6 +703,12 @@ export function GrandmasterVision() {
               </button>
             </div>
           </section>
+        </div>
+      ) : null}
+
+      {phase === "feedback" && levelDone ? (
+        <div className="gmv-session-cta" data-gmv-session-cta>
+          <SessionPackCta lead="Level clear. Try a real opening." />
         </div>
       ) : null}
 
