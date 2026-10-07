@@ -6925,21 +6925,28 @@ html[data-slav-opening] .app-header-logo {
 
 .slav-intro-board {
   flex: 0 0 auto;
-  width: min(100% - 1.5rem, 16.25rem);
-  margin: 0.35rem auto 0;
+  width: min(100% - 1.5rem, 14rem);
+  margin: 0.2rem auto 0;
   pointer-events: none;
 }
 
 .slav-notice-card {
+  display: flex;
   min-height: 0;
   flex: 1 1 auto;
-  overflow: auto;
-  margin: 0.45rem 0.75rem 0.85rem;
-  padding: 0.85rem 0.95rem 1rem;
+  flex-direction: column;
+  margin: 0.35rem 0.75rem 0.75rem;
+  padding: 0.75rem 0.9rem 0.8rem;
   border: 1px solid var(--color-border);
   border-radius: 1.05rem;
   background: var(--color-bg-elevated);
   box-shadow: var(--shadow-card);
+}
+
+.slav-notice-card-body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
 }
 
 .slav-notice-kicker {
@@ -7004,7 +7011,8 @@ html[data-slav-opening] .app-header-logo {
 }
 
 .slav-notice-primary {
-  margin-top: 0.9rem;
+  flex: 0 0 auto;
+  margin-top: 0.65rem;
   min-height: 3rem;
   width: 100%;
   border: 0;

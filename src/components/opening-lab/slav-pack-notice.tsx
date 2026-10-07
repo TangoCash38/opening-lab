@@ -125,46 +125,51 @@ export function SlavPackNotice({ step, onNext, onStart }: NoticeProps) {
     >
       <SlavStemBoard />
       <div className="slav-notice-card" data-slav-card>
+        <div className="slav-notice-card-body">
+          {step === "about" ? (
+            <>
+              <p className="slav-notice-kicker">{SLAV_ABOUT_TITLE}</p>
+              <h2 id="slav-intro-title" className="slav-notice-title">
+                {SLAV_INTRO_HEADER}
+              </h2>
+              <p className="slav-notice-subtitle">{SLAV_INTRO_SUBTITLE}</p>
+              <p className="slav-notice-start">{SLAV_INTRO_START}</p>
+              <p className="slav-notice-tagline">{SLAV_INTRO_TAGLINE}</p>
+              <div data-slav-intro-body data-expanded={expanded ? "true" : "false"}>
+                <p className="slav-notice-paragraph">{SLAV_INTRO_LEAD}</p>
+                {expanded ? <p className="slav-notice-paragraph">{SLAV_INTRO_REST}</p> : null}
+                <button
+                  type="button"
+                  className="slav-notice-expand"
+                  aria-expanded={expanded}
+                  data-slav-intro-expand
+                  onClick={() => setExpanded((open) => !open)}
+                >
+                  {expanded ? "Show less" : "Read the rest"}
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 id="slav-intro-title" className="slav-notice-title">
+                {SLAV_WELCOME_TITLE}
+              </h2>
+              <ol className="slav-notice-steps" data-slav-howto>
+                {SLAV_HOW_TO.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ol>
+            </>
+          )}
+        </div>
         {step === "about" ? (
-          <>
-            <p className="slav-notice-kicker">{SLAV_ABOUT_TITLE}</p>
-            <h2 id="slav-intro-title" className="slav-notice-title">
-              {SLAV_INTRO_HEADER}
-            </h2>
-            <p className="slav-notice-subtitle">{SLAV_INTRO_SUBTITLE}</p>
-            <p className="slav-notice-start">{SLAV_INTRO_START}</p>
-            <p className="slav-notice-tagline">{SLAV_INTRO_TAGLINE}</p>
-            <div data-slav-intro-body data-expanded={expanded ? "true" : "false"}>
-              <p className="slav-notice-paragraph">{SLAV_INTRO_LEAD}</p>
-              {expanded ? <p className="slav-notice-paragraph">{SLAV_INTRO_REST}</p> : null}
-              <button
-                type="button"
-                className="slav-notice-expand"
-                aria-expanded={expanded}
-                data-slav-intro-expand
-                onClick={() => setExpanded((open) => !open)}
-              >
-                {expanded ? "Show less" : "Read the rest"}
-              </button>
-            </div>
-            <button type="button" className="slav-notice-primary" data-slav-next onClick={onNext}>
-              Next
-            </button>
-          </>
+          <button type="button" className="slav-notice-primary" data-slav-next onClick={onNext}>
+            Next
+          </button>
         ) : (
-          <>
-            <h2 id="slav-intro-title" className="slav-notice-title">
-              {SLAV_WELCOME_TITLE}
-            </h2>
-            <ol className="slav-notice-steps" data-slav-howto>
-              {SLAV_HOW_TO.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ol>
-            <button type="button" className="slav-notice-primary" data-slav-start onClick={onStart}>
-              Start
-            </button>
-          </>
+          <button type="button" className="slav-notice-primary" data-slav-start onClick={onStart}>
+            Start
+          </button>
         )}
       </div>
     </div>
