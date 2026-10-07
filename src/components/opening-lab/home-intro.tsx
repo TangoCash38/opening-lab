@@ -56,7 +56,6 @@ const COMING_SOON_CHIP_IDS = [
   "anti-sicilian-black",
   "qg-white",
   "english-white",
-  "kings-indian-black",
   "catalan-white",
   "petroff-black",
   "berlin-black",

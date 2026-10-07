@@ -125,8 +125,8 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "You are not racing for a mate on move ten. Know which Berlin shell you are in, and practise the main Black moves before you mix plans.",
   ],
   "kings-indian-black": [
-    "The King’s Indian Defence is 1.d4 Nf6 2.c4 g6 with …Bg7 and …d6. Black fianchettoes, clamps the centre, then strikes with …e5 or …c5 against Classical, Sämisch, and Fianchetto structures.",
-    "You are not racing for a mate on move ten. Know which King’s Indian shell you are in, and practise the main Black moves before you mix plans.",
+    "The King's Indian Defence (KID) is one of Black's most combative replies to 1.d4, defined by the moves 1.d4 Nf6 2.c4 g6, followed by ...Bg7 and ...d6. Black lets White build a big centre, fianchettoes the bishop and castles, then strikes with ...e5 or ...c5.",
+    "These lines cover the Classical and Mar del Plata, the Bayonet, the Petrosian, the Gligoric, the Sämisch, the Four Pawns, the Fianchetto, the Averbakh, the Exchange, and a quieter positional main line. They are not forced sequences.",
   ],
   "old-indian-black": [
     "The Old Indian Defence is 1.d4 d6 2.c4 Nf6 3.Nc3 Nbd7 4.Qc2. Black holds a flexible centre and meets Classical …e5, the exchange, a closed d5, the Bg5 pin, and the …c6, …c5, and …e6 branches with their own book replies.",

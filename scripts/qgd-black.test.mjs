@@ -93,7 +93,7 @@ test("Queen's Gambit Declined is the signed qgd-black pack: 10 book lines, £1.9
   assert.match(catalog, /"qgd-black"/);
   assert.match(
     catalog,
-    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black"\]/,
+    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black", "kings-indian-black"\]/,
   );
   const sampleBlock = catalog.slice(
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),

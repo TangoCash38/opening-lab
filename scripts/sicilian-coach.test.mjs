@@ -71,7 +71,7 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
   const pricing = src("src/data/pricing.ts");
   assert.match(
     catalog,
-    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black"\]/,
+    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black", "kings-indian-black"\]/,
   );
   const sib = packs.slice(packs.indexOf('id: "sicilian-black"'), packs.indexOf('id: "sicilian-black"') + 900);
   assert.match(sib, /name: "Sicilian for Black"/);
