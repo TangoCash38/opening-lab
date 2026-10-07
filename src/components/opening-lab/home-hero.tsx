@@ -838,6 +838,7 @@ export function HomeHero({
         <SlavPackNotice
           step={studyStep === "welcome" ? "welcome" : "about"}
           copy={studyIntro}
+          flip={pack.side === "Black"}
           onNext={() => setStudyStep("welcome")}
           onStart={beginStudyLine}
         />

@@ -11,11 +11,13 @@ type NoticeStep = "about" | "welcome";
 type NoticeProps = {
   step: NoticeStep;
   copy: StudyIntroCopy;
+  /** White at the bottom unless the pack trains Black. */
+  flip: boolean;
   onNext: () => void;
   onStart: () => void;
 };
 
-function SlavStemBoard({ stem }: { stem: readonly string[] }) {
+function SlavStemBoard({ stem, flip }: { stem: readonly string[]; flip: boolean }) {
   const [game, setGame] = useState(() => new Chess());
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [slide, setSlide] = useState<SlideAnim | null>(null);
@@ -74,7 +76,7 @@ function SlavStemBoard({ stem }: { stem: readonly string[] }) {
     <div className="slav-intro-board" data-slav-stem-board>
       <ChessBoard
         game={game}
-        flip
+        flip={flip}
         selected={null}
         wrongUntil={null}
         expected={null}
@@ -93,7 +95,7 @@ function SlavStemBoard({ stem }: { stem: readonly string[] }) {
   );
 }
 
-export function SlavPackNotice({ step, copy, onNext, onStart }: NoticeProps) {
+export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -112,7 +114,7 @@ export function SlavPackNotice({ step, copy, onNext, onStart }: NoticeProps) {
       aria-labelledby="slav-intro-title"
       data-slav-notice={step}
     >
-      <SlavStemBoard stem={copy.stem} />
+      <SlavStemBoard stem={copy.stem} flip={flip} />
       <div className="slav-notice-card" data-slav-card>
         <div className="slav-notice-card-body">
           {step === "about" ? (

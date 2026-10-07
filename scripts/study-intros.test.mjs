@@ -48,11 +48,22 @@ test("every visible drill pack has a two-card study intro", async (t) => {
   assert.match(study, /howTo: SLAV_HOW_TO/);
   assert.match(hero, /studyPackReplacesCoach\(pack\.id\)/);
   assert.match(hero, /isLineUnlocked\(pack, line\.id, purchased\)/);
+  assert.match(hero, /<SlavPackNotice[\s\S]*flip=\{pack\.side === "Black"\}/);
+  const notice = src("src/components/opening-lab/slav-pack-notice.tsx");
+  assert.match(notice, /<ChessBoard[\s\S]*flip=\{flip\}/);
+  assert.doesNotMatch(notice, /<ChessBoard[\s\S]{0,240}\n\s+flip\n/);
+  assert.match(src("src/components/opening-lab/train-view.tsx"), /flip=\{line\.side === "b"\}/);
   assert.doesNotMatch(src("src/lib/study-pack-copy.ts"), /—|forever|lifetime|5 book|punish|Read the rest/i);
 
   for (const id of visible) {
     const pack = PACKS.find((item) => item.id === id);
     assert.ok(pack, id);
+    if (pack.side === "White") {
+      assert.ok(pack.lines.every((line) => line.side === "w"), id);
+    }
+    if (pack.side === "Black") {
+      assert.ok(pack.lines.every((line) => line.side === "b"), id);
+    }
     if (id === "slav-defence" || id === "qgd-black") {
       assert.equal(rows.has(id), false, id);
       continue;
