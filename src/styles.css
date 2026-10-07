@@ -6905,3 +6905,163 @@ body:has([data-grandmaster-vision-page]) {
   height: 100%;
   filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.45));
 }
+
+/* Slav preview: intro notice and line notes. The board stays visible. */
+.slav-notice {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.slav-intro-board {
+  flex: 0 0 auto;
+  width: min(100% - 1.5rem, 16.25rem);
+  margin: 0.35rem auto 0;
+  pointer-events: none;
+}
+
+.slav-notice-copy {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 0.75rem 1.05rem 1.2rem;
+}
+
+.slav-notice-kicker {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.slav-notice-title {
+  margin: 0.25rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.slav-notice-start,
+.slav-notice-paragraph {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--color-fg-muted);
+}
+
+.slav-notice-tagline {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.slav-notice-expand,
+.slav-line-notes-answer-toggle {
+  margin-top: 0.35rem;
+  border: 0;
+  background: transparent;
+  padding: 0.35rem 0;
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.slav-notice-primary {
+  margin-top: 0.9rem;
+  min-height: 3rem;
+  width: 100%;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.slav-line-notes {
+  margin: 0.2rem 0 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: var(--color-bg-elevated);
+}
+
+.slav-line-notes-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.5rem;
+  border: 0;
+  background: transparent;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-fg);
+}
+
+.slav-line-notes-chevron {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-fg-muted);
+}
+
+.slav-line-notes-body {
+  padding: 0 0.75rem 0.7rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-fg-muted);
+}
+
+.slav-line-notes-body p {
+  margin: 0.12rem 0 0.45rem;
+}
+
+.slav-line-notes-label {
+  display: block;
+  margin: 0.2rem 0 0;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+}
+
+.slav-line-notes-answer {
+  margin: 0.15rem 0 0;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.65rem;
+  background: var(--color-bg-subtle);
+}
+
+@media (max-width: 640px) {
+  .train-layout--notes {
+    max-height: calc(100dvh - 4.75rem - env(safe-area-inset-top, 0px));
+    overflow: hidden;
+  }
+
+  .train-layout--notes .train-board-band {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+  }
+
+  .train-layout--notes .slav-train-board {
+    width: min(100%, 15rem);
+    margin-inline: auto;
+  }
+
+  .train-layout--notes .train-below {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+  }
+}

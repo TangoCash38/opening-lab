@@ -40,6 +40,9 @@ export function isPackComingSoon(pack: Pick<Pack, "id"> | string): boolean {
   const id = typeof pack === "string" ? pack : pack.id;
   // Live on the website gym, but still absent from the visible catalog.
   if (isWebsiteClassicSample(id)) return false;
+  // Slav preview: trainable from ?pack=slav-defence, not listed on the live site.
+  // Line 1 is the free sample; line 2 onward uses the usual £1.99 lock.
+  if (id === "slav-defence") return false;
   return !(LIVE_PACK_IDS as readonly string[]).includes(id);
 }
 
@@ -97,6 +100,7 @@ export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> =
   "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
   "opening-traps": ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
   "qgd-black": ["qgdb1"],
+  "slav-defence": ["sd1"],
 };
 
 /**

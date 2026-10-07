@@ -1,0 +1,114 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+import { Chess } from "chess.js";
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+function src(rel) {
+  return readFileSync(join(root, rel), "utf8");
+}
+
+function packBlock(packs, id) {
+  const start = packs.indexOf(`id: "${id}"`);
+  assert.ok(start >= 0, `${id} missing`);
+  const next = packs.indexOf('\n  {\n    id: "', start + 1);
+  return next >= 0 ? packs.slice(start, next) : packs.slice(start);
+}
+
+const EXPECTED = {
+  sd1: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5"],
+  sd2: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "O-O"],
+  sd3: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Nbd7", "Nxc4", "Qc7"],
+  sd4: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "e3", "b5", "a4", "b4", "Na2", "e6", "Bxc4"],
+  sd5: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6"],
+  sd6: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6", "Nh4"],
+  sd7: ["d4", "d5", "c4", "c6", "cxd5", "cxd5", "Nf3", "Nf6", "Nc3", "Nc6", "Bf4", "Bf5"],
+  sd8: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "cxd5", "cxd5", "Qb3", "Qc7"],
+  sd9: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "a6", "c5", "Bf5", "Bf4", "Nbd7", "e3", "Nh5"],
+  sd10: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Nbd7", "Nxc4", "Qc7", "g3", "e5"],
+};
+
+test("Slav Defence preview replaces the old survey: 10 educational lines, hidden from the live catalog", () => {
+  const packs = src("src/data/packs.ts");
+  const catalog = src("src/lib/catalog.ts");
+  const notice = src("src/components/opening-lab/slav-pack-notice.tsx");
+  const intro = src("src/lib/slav-preview.ts");
+  const landing = src("src/components/opening-lab/home-intro.tsx");
+  const memory = src("src/components/opening-lab/square-memory.tsx");
+  const slav = packBlock(packs, "slav-defence");
+
+  assert.equal(packs.match(/id: "slav-defence"/g)?.length, 1);
+  assert.match(slav, /name: "Slav Defence for Black"/);
+  assert.match(slav, /side: "Black"/);
+  assert.match(slav, /price: "£1\.99"/);
+  assert.match(slav, /blurb: "10 lines from Opening Lab"/);
+  assert.match(slav, /isFree: false/);
+  assert.match(slav, /isPremium: true/);
+  assert.doesNotMatch(slav, /5 book/);
+  assert.doesNotMatch(slav, /punish/i);
+  assert.doesNotMatch(slav, /Play on/);
+  assert.doesNotMatch(slav, /Trap/);
+  assert.doesNotMatch(slav, /id: "sd11"/);
+  assert.doesNotMatch(slav, /3-line survey/);
+
+  const visible = catalog.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/)?.[1] ?? "";
+  const live = catalog.match(/LIVE_PACK_IDS = \[([^\]]+)\]/)?.[1] ?? "";
+  assert.equal(visible.includes("slav-defence"), false);
+  assert.equal(live.includes("slav-defence"), false);
+  assert.match(catalog, /"slav-defence": \["sd1"\]/);
+  assert.match(catalog, /id === "slav-defence"/);
+
+  const sampleBlock = catalog.slice(
+    catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
+    catalog.indexOf("export function packHasPlayableFreeLines"),
+  );
+  assert.match(sampleBlock, /"slav-defence": \["sd1"\]/);
+  assert.doesNotMatch(sampleBlock, /"sd2"/);
+
+  assert.match(intro, /SLAV DEFENCE FOR BLACK/);
+  assert.match(intro, /An introduction and ten educational drills/);
+  assert.match(intro, /Starting position: 1\.d4 d5 2\.c4 c6/);
+  assert.match(intro, /A solid centre\. An active bishop\. A clear plan\./);
+  assert.match(intro, /The Slav Defence begins with 1\.d4 d5 2\.c4 c6\./);
+  assert.match(notice, /Start first line/);
+  assert.match(intro, /You play Black\./);
+  assert.match(intro, /Practice shows a green hint\. Test has no hints\./);
+  assert.match(intro, /Each line has notes to read\./);
+  assert.match(notice, /What the moves teach/);
+  assert.match(notice, /Next plan/);
+  assert.match(notice, /Watch out/);
+  assert.match(notice, /Checkpoint/);
+  assert.match(notice, /Suggested answer/);
+  assert.match(notice, /interactive=\{false\}/);
+  assert.doesNotMatch(notice, /Play on/);
+  assert.doesNotMatch(`${intro}\n${notice}\n${slav}`, /5 book \+ 5 punish/);
+
+  assert.equal(landing.includes("slav-defence"), false);
+  assert.equal(memory.includes("slav-defence"), false);
+
+  const lineIds = [...slav.matchAll(/id: "(sd\d+)"/g)].map((m) => m[1]);
+  assert.deepEqual(lineIds, Object.keys(EXPECTED));
+
+  for (const id of lineIds) {
+    const from = slav.indexOf(`id: "${id}"`);
+    const to = slav.indexOf('id: "', from + 8);
+    const block = slav.slice(from, to >= 0 ? to : undefined);
+    const plies = [...block.matchAll(/plies: \[([^\]]+)\]/g)].flatMap((m) =>
+      [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]),
+    );
+    assert.deepEqual(plies, EXPECTED[id], id);
+    assert.match(block, /teach:/);
+    assert.match(block, /watch:/);
+    assert.match(block, /checkpoint:/);
+    assert.match(block, /answer:/);
+    assert.match(block, /side: "b"/);
+    const game = new Chess();
+    for (const san of plies) {
+      const moved = game.move(san);
+      assert.ok(moved, `${id} illegal SAN ${san} after ${game.fen()}`);
+    }
+  }
+});
