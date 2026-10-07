@@ -3,10 +3,13 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   SCOTCH_LESSON_AUDIO_SEC,
   SCOTCH_LESSON_INTRO_MP3,
+  SCOTCH_LESSON_RETURN,
   SCOTCH_LESSON_SLUG,
   scotchLessonCaptions,
   scotchLessonCues,
 } from "@/data/lessons/scotch-course";
+import { PRICE_LESSON_SCOTCH } from "@/data/pricing";
+import { useLessonCheckout } from "@/hooks/use-lesson-checkout";
 import { captionIndexAt } from "@/lib/lesson-sync";
 import { SCOTCH_COACH_NAME } from "@/lib/scotch-coach";
 import {
@@ -38,9 +41,11 @@ export function LessonPlayer({ title, note }: Props) {
   const t = useT();
   const { lang } = useI18n();
   const navigate = useNavigate();
+  const checkout = useLessonCheckout(SCOTCH_LESSON_RETURN);
   const [captionIndex, setCaptionIndex] = useState(0);
   const [listening, setListening] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [atEnd, setAtEnd] = useState(false);
   const caption = scotchLessonCaptions[captionIndex] ?? scotchLessonCaptions[0] ?? "";
 
   useEffect(() => {
@@ -56,6 +61,7 @@ export function LessonPlayer({ title, note }: Props) {
       setCaptionIndex((prev) => (prev === next ? prev : next));
       const playing = Boolean(audio && !audio.paused && !audio.ended);
       setListening((prev) => (prev === playing ? prev : playing));
+      if (audio?.ended) setAtEnd(true);
     };
     tick();
     const id = window.setInterval(tick, 70);
@@ -69,6 +75,17 @@ export function LessonPlayer({ title, note }: Props) {
     stopScotchCoachNarration();
     void navigate({ to: "/lessons/$courseId", params: { courseId: SCOTCH_LESSON_SLUG } });
   };
+
+  const finish = () => {
+    stopScotchCoachNarration();
+    if (checkout.owned) {
+      leave();
+      return;
+    }
+    setAtEnd(true);
+  };
+
+  const showOffer = atEnd && !checkout.owned;
 
   const listen = () => {
     const audio = startLessonAudio();
@@ -88,6 +105,7 @@ export function LessonPlayer({ title, note }: Props) {
       className="home-coach-practice lesson-player"
       data-lesson-player="sgl1"
       data-scotch-coach-dock
+      data-lesson-offer-open={showOffer ? "true" : "false"}
     >
       <div className="scotch-coach-plate" data-scotch-coach-plate>
         <ScotchCoachFigure />
@@ -121,7 +139,7 @@ export function LessonPlayer({ title, note }: Props) {
             >
               {muted ? t("Unmute") : t("Mute")}
             </button>
-            {listening ? null : (
+            {listening || showOffer ? null : (
               <button
                 type="button"
                 className="scotch-coach-next"
@@ -134,12 +152,47 @@ export function LessonPlayer({ title, note }: Props) {
             <button type="button" className="scotch-coach-skip" data-lesson-skip onClick={leave}>
               {t("Skip")}
             </button>
-            <button type="button" className="scotch-coach-next" data-lesson-done onClick={leave}>
-              {t("Done")}
-            </button>
+            {showOffer ? null : (
+              <button type="button" className="scotch-coach-next" data-lesson-done onClick={finish}>
+                {t("Done")}
+              </button>
+            )}
           </div>
         </div>
       </div>
+      {showOffer ? (
+        <aside className="lesson-offer" data-lesson-offer>
+          <p className="lesson-offer-kicker">{t("Lesson 1 is free")}</p>
+          <h2 className="lesson-offer-title">{t("Scotch Gambit Lessons")}</h2>
+          <p className="lesson-offer-copy">
+            {t(
+              "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.",
+              { price: PRICE_LESSON_SCOTCH },
+            )}
+          </p>
+          <div className="lesson-offer-actions">
+            <button
+              type="button"
+              className="lessons-unlock"
+              data-lesson-offer-buy
+              disabled={checkout.busy}
+              onClick={() => {
+                void checkout.pay();
+              }}
+            >
+              {t("Unlock the remaining lessons")} · {PRICE_LESSON_SCOTCH}
+            </button>
+            <button type="button" className="lesson-offer-later" data-lesson-offer-later onClick={leave}>
+              {t("Back to lessons")}
+            </button>
+          </div>
+          {checkout.error ? (
+            <p className="lessons-error" role="alert">
+              {checkout.error}
+            </p>
+          ) : null}
+        </aside>
+      ) : null}
       <div className="home-board">
         <LessonBoard cues={scotchLessonCues} />
       </div>

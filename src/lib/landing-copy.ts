@@ -24,6 +24,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} free · {price} unlocks the whole pack",
     "Chess opening lessons": "Chess opening lessons",
     "{n} lessons": "{n} lessons",
+    "Scotch Gambit Lessons": "Scotch Gambit Lessons",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "Separate from drill packs. Buy all does not include lessons.",
+    "Lesson 1 is free": "Lesson 1 is free",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.",
+    "Unlock the remaining lessons": "Unlock the remaining lessons",
+    "Back to lessons": "Back to lessons",
   },
   es: {
     "Practice with hints. Test with none.": "Practica con pistas. El test, sin ninguna.",
@@ -47,6 +55,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} gratis · {price} desbloquea el pack entero",
     "Chess opening lessons": "Lecciones de aperturas",
     "{n} lessons": "{n} lecciones",
+    "Scotch Gambit Lessons": "Lecciones del Scotch Gambit",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "Aparte de los packs de ejercicios. Comprar todo no incluye las lecciones.",
+    "Lesson 1 is free": "La lección 1 es gratis",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "Las lecciones 2 y 3 cuestan {price}. Una compra de lecciones aparte: no es un pack de ejercicios, y Comprar todo no las incluye.",
+    "Unlock the remaining lessons": "Desbloquear las lecciones restantes",
+    "Back to lessons": "Volver a las lecciones",
   },
   zh: {
     "Practice with hints. Test with none.": "练习有提示。测验没有。",
@@ -69,6 +85,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} 免费 · {price} 解锁整个棋包",
     "Chess opening lessons": "国际象棋开局课",
     "{n} lessons": "{n} 节课",
+    "Scotch Gambit Lessons": "Scotch Gambit 课程",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "与训练包分开。全部购买不含课程。",
+    "Lesson 1 is free": "第 1 课免费",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "第 2 课和第 3 课为 {price}。这是单独的课程购买，不属于训练包，全部购买也不包含。",
+    "Unlock the remaining lessons": "解锁其余课程",
+    "Back to lessons": "返回课程",
   },
   fr: {
     "Practice with hints. Test with none.": "Entraîne-toi avec des indices. Le test, sans aucun.",
@@ -92,6 +116,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} gratuit · {price} débloque le pack entier",
     "Chess opening lessons": "Leçons d'ouvertures",
     "{n} lessons": "{n} leçons",
+    "Scotch Gambit Lessons": "Leçons du Scotch Gambit",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "À part des packs d'exercices. Tout acheter n'inclut pas les leçons.",
+    "Lesson 1 is free": "La leçon 1 est gratuite",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "Les leçons 2 et 3 coûtent {price}. Un achat de leçons à part — pas un pack d'exercices, et pas inclus dans Tout acheter.",
+    "Unlock the remaining lessons": "Débloquer les leçons restantes",
+    "Back to lessons": "Retour aux leçons",
   },
   de: {
     "Practice with hints. Test with none.": "Üben mit Hinweisen. Testen ohne.",
@@ -115,6 +147,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} gratis · {price} schaltet das ganze Pack frei",
     "Chess opening lessons": "Schacheröffnungslektionen",
     "{n} lessons": "{n} Lektionen",
+    "Scotch Gambit Lessons": "Scotch-Gambit-Lektionen",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "Getrennt von den Übungspaketen. Alles kaufen enthält keine Lektionen.",
+    "Lesson 1 is free": "Lektion 1 ist kostenlos",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "Lektionen 2 und 3 kosten {price}. Ein eigener Lektionskauf — kein Übungspaket, und nicht in Alles kaufen enthalten.",
+    "Unlock the remaining lessons": "Die übrigen Lektionen freischalten",
+    "Back to lessons": "Zurück zu den Lektionen",
   },
   pt: {
     "Practice with hints. Test with none.": "Pratica com dicas. O teste, sem nenhuma.",
@@ -138,6 +178,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} grátis · {price} desbloqueia o pack inteiro",
     "Chess opening lessons": "Lições de aberturas",
     "{n} lessons": "{n} lições",
+    "Scotch Gambit Lessons": "Lições do Scotch Gambit",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "À parte dos packs de exercícios. Comprar tudo não inclui as lições.",
+    "Lesson 1 is free": "A lição 1 é grátis",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "As lições 2 e 3 custam {price}. Uma compra de lições à parte — não é um pack de exercícios, e Comprar tudo não as inclui.",
+    "Unlock the remaining lessons": "Desbloquear as lições restantes",
+    "Back to lessons": "Voltar às lições",
   },
   ru: {
     "Practice with hints. Test with none.": "Тренировка с подсказками. Тест без них.",
@@ -161,6 +209,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} бесплатно · {price} открывает весь пак",
     "Chess opening lessons": "Уроки дебютов",
     "{n} lessons": "{n} урока",
+    "Scotch Gambit Lessons": "Уроки Scotch Gambit",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "Отдельно от тренировочных паков. «Купить всё» не включает уроки.",
+    "Lesson 1 is free": "Урок 1 бесплатный",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "Уроки 2 и 3 стоят {price}. Отдельная покупка уроков — не тренировочный пак, и «Купить всё» их не включает.",
+    "Unlock the remaining lessons": "Открыть остальные уроки",
+    "Back to lessons": "Назад к урокам",
   },
   it: {
     "Practice with hints. Test with none.": "Allenati con i suggerimenti. Il test, senza.",
@@ -184,6 +240,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} gratis · {price} sblocca l'intero pack",
     "Chess opening lessons": "Lezioni di aperture",
     "{n} lessons": "{n} lezioni",
+    "Scotch Gambit Lessons": "Lezioni della Scotch Gambit",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "Separate dai pack di esercizi. Acquista tutto non include le lezioni.",
+    "Lesson 1 is free": "La lezione 1 è gratis",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "Le lezioni 2 e 3 costano {price}. Un acquisto di lezioni a parte — non un pack di esercizi, e non incluso in Acquista tutto.",
+    "Unlock the remaining lessons": "Sblocca le lezioni rimanenti",
+    "Back to lessons": "Torna alle lezioni",
   },
   hi: {
     "Practice with hints. Test with none.": "अभ्यास संकेतों के साथ। परीक्षा बिना।",
@@ -207,6 +271,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} मुफ़्त · {price} पूरा पैक खोलता है",
     "Chess opening lessons": "शतरंज ओपनिंग पाठ",
     "{n} lessons": "{n} पाठ",
+    "Scotch Gambit Lessons": "Scotch Gambit पाठ",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "ड्रिल पैक से अलग। सब खरीदें में पाठ शामिल नहीं।",
+    "Lesson 1 is free": "पाठ 1 मुफ़्त है",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "पाठ 2 और 3 की कीमत {price} है। यह अलग पाठ खरीद है — ड्रिल पैक का हिस्सा नहीं, और सब खरीदें में शामिल नहीं।",
+    "Unlock the remaining lessons": "बाकी पाठ खोलें",
+    "Back to lessons": "पाठों पर वापस",
   },
   ja: {
     "Practice with hints. Test with none.": "ヒントありで練習。テストはヒントなし。",
@@ -230,6 +302,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} 無料 · {price} でパック全体を解除",
     "Chess opening lessons": "チェスオープニング講座",
     "{n} lessons": "{n} レッスン",
+    "Scotch Gambit Lessons": "Scotch Gambit のレッスン",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "ドリルパックとは別です。全部購入にレッスンは含まれません。",
+    "Lesson 1 is free": "レッスン 1 は無料",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "レッスン 2 と 3 は {price} です。レッスンだけの購入で、ドリルパックではなく、全部購入にも含まれません。",
+    "Unlock the remaining lessons": "残りのレッスンを解除",
+    "Back to lessons": "レッスンに戻る",
   },
   ar: {
     "Practice with hints. Test with none.": "تدرّب مع تلميحات. الاختبار بلا تلميح.",
@@ -253,6 +333,14 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} مجانًا · {price} يفتح الحزمة كاملة",
     "Chess opening lessons": "دروس افتتاحيات الشطرنج",
     "{n} lessons": "{n} دروس",
+    "Scotch Gambit Lessons": "دروس Scotch Gambit",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "منفصلة عن حزم التمارين. شراء الكل لا يشمل الدروس.",
+    "Lesson 1 is free": "الدرس 1 مجاني",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "الدرسان 2 و3 بسعر {price}. شراء دروس منفصل — ليس جزءًا من حزمة تمارين، وشراء الكل لا يشملها.",
+    "Unlock the remaining lessons": "فتح بقية الدروس",
+    "Back to lessons": "العودة إلى الدروس",
   },
   tr: {
     "Practice with hints. Test with none.": "İpuçlarıyla çalış. Testte hiçbiri yok.",
@@ -276,5 +364,13 @@ export const LANDING_COPY: Record<Lang, Record<string, string>> = {
     "{n} free · {price} unlocks the whole pack": "{n} ücretsiz · {price} paketin tamamını açar",
     "Chess opening lessons": "Satranç açılış dersleri",
     "{n} lessons": "{n} ders",
+    "Scotch Gambit Lessons": "Scotch Gambit dersleri",
+    "Separate from drill packs. Buy all does not include lessons.":
+      "Alıştırma paketlerinden ayrı. Hepsini satın al dersleri içermez.",
+    "Lesson 1 is free": "Ders 1 ücretsiz",
+    "Lessons 2 and 3 are {price}. A separate lesson purchase — not part of a drill pack, and not included in Buy all.":
+      "2. ve 3. dersler {price}. Ayrı bir ders satın alımı — bir alıştırma paketi değil ve Hepsini satın al bunları içermez.",
+    "Unlock the remaining lessons": "Kalan derslerin kilidini aç",
+    "Back to lessons": "Derslere dön",
   },
 };

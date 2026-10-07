@@ -17,7 +17,7 @@ Strict chess opening memory training — Practice & Test modes, animated board, 
 | Paid drill packs | **£1.99** |
 | Opening Traps | 6 lines free, then **£1.99** |
 | Caro-Kann for Black | 3 lines free, then **£1.99** |
-| Scotch Gambit lessons | **£2.99** (parked, not on sale) |
+| Scotch Gambit lessons | Lesson 1 free, then **£2.99** for lessons 2–3 (`lesson-scotch`). Separate from drill packs and Buy all. |
 | **Opening Lab+** | **£4.99 / month** or **£29.99 / year** (not on sale) |
 | Pay as you go | **£1.99** per pack |
 | **Buy all** | **£10.99** one-time. Every drill pack now and any future drill packs. Not Lessons. Not a subscription. Not lifetime access. |

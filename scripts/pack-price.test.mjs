@@ -35,7 +35,7 @@ test("every paid drill pack lists at £1.99", () => {
   assert.doesNotMatch(packs, /price: "£2\.99"|price: "£1\.50"|price: "£3\.99"|price: "£1",/);
 
   const lessons = readFileSync(join(root, "src/lib/lesson-products.ts"), "utf8");
-  assert.match(lessons, /LESSONS_ENABLED: boolean = false/);
+  assert.match(lessons, /LESSONS_ENABLED: boolean = true/);
   const stripe = readFileSync(join(root, "src/lib/stripe.server.ts"), "utf8");
   assert.match(stripe, /const price = packPrice\(pack\)/);
   assert.match(stripe, /unit_amount: pence/);
@@ -223,7 +223,7 @@ test("Buy all packs is £10.99 one-time checkout kind", () => {
   assert.match(terms, /not a lifetime licence/);
   assert.doesNotMatch(terms, /forever/i);
   const lessons = readFileSync(join(root, "src/lib/lesson-products.ts"), "utf8");
-  assert.match(lessons, /LESSONS_ENABLED: boolean = false/);
+  assert.match(lessons, /LESSONS_ENABLED: boolean = true/);
 });
 
 test("£1.99 is the whole pack, not one line", () => {

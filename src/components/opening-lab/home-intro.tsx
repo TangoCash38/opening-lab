@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { SCOTCH_LESSON_SLUG, scotchLessons } from "@/data/lessons/scotch-course";
 import { PACKS, type Pack } from "@/data/packs";
-import { packPrice } from "@/data/pricing";
+import { PRICE_LESSON_SCOTCH, packPrice } from "@/data/pricing";
 import {
   FREE_SAMPLE_LINE_IDS,
   LIVE_PACK_IDS,
@@ -13,7 +14,7 @@ import {
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
-import { LESSONS_ENABLED } from "@/lib/lesson-products";
+import { LESSON_SCOTCH_PRODUCT_ID, LESSONS_ENABLED } from "@/lib/lesson-products";
 import {
   isPlayApp,
   nextSquareMemoryPreviewTaps,
@@ -82,7 +83,6 @@ export function LandingHome({
   onBuyAll,
 }: Props) {
   const t = useT();
-  const navigate = useNavigate();
   const { subscribed } = useUnlocks();
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
@@ -103,6 +103,8 @@ export function LandingHome({
   const chips = COMING_SOON_CHIP_IDS.map((id) => PACKS.find((pack) => pack.id === id)).filter(
     (pack): pack is Pack => !!pack && isPackVisible(pack) && isPackComingSoon(pack),
   );
+
+  const lessonFreeCount = scotchLessons.filter((lesson) => lesson.free).length;
 
   const priceLabel = (pack: Pack): string => {
     const freeCount = FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0;
@@ -211,6 +213,34 @@ export function LandingHome({
           </div>
           </div>
           <div className="landing-copy">
+            {showLessons ? (
+              <section className="landing-lessons" aria-labelledby="landing-lessons-title">
+                <h2 id="landing-lessons-title" className="landing-lessons-title">
+                  {t("Chess opening lessons")}
+                </h2>
+                <Link
+                  to="/lessons/$courseId"
+                  params={{ courseId: SCOTCH_LESSON_SLUG }}
+                  className="landing-pack-card landing-lessons-card"
+                  data-landing-lessons
+                  data-lesson-product={LESSON_SCOTCH_PRODUCT_ID}
+                >
+                  <span className="landing-pack-name">{t("Scotch Gambit Lessons")}</span>
+                  <span className="landing-pack-price" data-lesson-price>
+                    {t("{n} free · {price}", {
+                      n: lessonFreeCount,
+                      price: PRICE_LESSON_SCOTCH,
+                    })}
+                  </span>
+                  <span className="landing-lessons-count">
+                    {t("{n} lessons", { n: scotchLessons.length })}
+                  </span>
+                </Link>
+                <p className="landing-lessons-note">
+                  {t("Separate from drill packs. Buy all does not include lessons.")}
+                </p>
+              </section>
+            ) : null}
             <section className="landing-open-here" aria-labelledby="landing-open-now">
               <div className="landing-section-head">
                 <h2 id="landing-open-now" className="landing-section-title">
@@ -247,18 +277,6 @@ export function LandingHome({
                 ))}
               </div>
             </section>
-            <div className="landing-cta-stack">
-              {showLessons ? (
-                <button
-                  type="button"
-                  className="landing-cta-secondary"
-                  data-landing-lessons
-                  onClick={() => navigate({ to: "/lessons" })}
-                >
-                  {t("Chess opening lessons")}
-                </button>
-              ) : null}
-            </div>
           </div>
         </div>
 
