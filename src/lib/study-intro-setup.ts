@@ -1,5 +1,5 @@
 /**
- * Longer sequence the intro board plays, then holds.
+ * Book moves that reach the still position the intro board shows.
  * Each list is a prefix of one book line in that pack, stopped when the
  * characteristic setup is on the board. The short stem on the card stays
  * the "Starting position:" text. These moves are copied from the pack

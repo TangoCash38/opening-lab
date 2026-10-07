@@ -25,7 +25,7 @@ export type StudyIntroCopy = {
   freeLineId: string;
   /** Defining moves. This is the "Starting position:" sentence, not the board. */
   stem: readonly string[];
-  /** Book-line prefix the intro board plays once, then holds. */
+  /** Book-line prefix. The intro board shows the position after these moves. */
   setup: readonly string[];
   aboutTitle: string;
   header: string;

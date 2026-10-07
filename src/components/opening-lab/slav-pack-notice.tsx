@@ -1,15 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { Chess, type Square } from "chess.js";
+import { Chess } from "chess.js";
 import type { OpeningLine } from "@/data/packs";
 import type { StudyIntroCopy } from "@/lib/pack-study-intro";
-import { soundMove } from "@/lib/sounds";
-import { ChessBoard, SLIDE_MS, type SlideAnim } from "./chess-board";
+import { ChessBoard } from "./chess-board";
 
-/** Time from one intro move to the next, including the slide. */
-const MOVE_MS = 700;
-/** Brief look at the array, then the setup starts. The final position is held. */
-const FIRST_MOVE_MS = 240;
+/** Final position of a book-line prefix. The intro board shows this still. */
+function positionAfter(plies: readonly string[]): Chess {
+  const game = new Chess();
+  for (const san of plies) game.move(san);
+  return game;
+}
 
 type NoticeStep = "about" | "welcome";
 
@@ -23,65 +24,7 @@ type NoticeProps = {
 };
 
 function SlavStemBoard({ plies, flip }: { plies: readonly string[]; flip: boolean }) {
-  const [game, setGame] = useState(() => new Chess());
-  const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
-  const [slide, setSlide] = useState<SlideAnim | null>(null);
-  const gameRef = useRef(game);
-  const plyRef = useRef(0);
-  const aliveRef = useRef(true);
-  const timerRef = useRef(0);
-
-  const playNext = useCallback(() => {
-    if (!aliveRef.current || plyRef.current >= plies.length) return;
-    const san = plies[plyRef.current];
-    const current = gameRef.current;
-    const probe = new Chess(current.fen());
-    const move = probe.move(san);
-    if (!move) return;
-    const placed = current.get(move.from);
-    const piece = placed ? (placed.color === "w" ? placed.type.toUpperCase() : placed.type) : "P";
-    const next = new Chess(current.fen());
-    next.move(san);
-    gameRef.current = next;
-    plyRef.current += 1;
-    setGame(next);
-    setLastMove({ from: move.from, to: move.to });
-    setSlide({ from: move.from, to: move.to, piece });
-    soundMove();
-  }, [plies]);
-
-  useEffect(() => {
-    aliveRef.current = true;
-    plyRef.current = 0;
-    const start = new Chess();
-    gameRef.current = start;
-    setGame(start);
-    setLastMove(null);
-    setSlide(null);
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      const done = new Chess();
-      let last: { from: Square; to: Square } | null = null;
-      for (const san of plies) {
-        const move = done.move(san);
-        if (move) last = { from: move.from, to: move.to };
-      }
-      gameRef.current = done;
-      plyRef.current = plies.length;
-      setGame(done);
-      setLastMove(last);
-      return () => {
-        aliveRef.current = false;
-      };
-    }
-    timerRef.current = window.setTimeout(playNext, FIRST_MOVE_MS);
-    return () => {
-      aliveRef.current = false;
-      window.clearTimeout(timerRef.current);
-    };
-  }, [playNext, plies]);
+  const game = useMemo(() => positionAfter(plies), [plies]);
 
   return (
     <div className="slav-intro-board" data-slav-stem-board>
@@ -92,14 +35,9 @@ function SlavStemBoard({ plies, flip }: { plies: readonly string[]; flip: boolea
         wrongUntil={null}
         expected={null}
         showHints={false}
-        lastMove={lastMove}
-        slide={slide}
-        onSlideComplete={() => {
-          if (!aliveRef.current) return;
-          setSlide(null);
-          if (plyRef.current >= plies.length) return;
-          timerRef.current = window.setTimeout(playNext, Math.max(0, MOVE_MS - SLIDE_MS));
-        }}
+        lastMove={null}
+        slide={null}
+        onSlideComplete={() => {}}
         onSquare={() => {}}
         interactive={false}
       />
