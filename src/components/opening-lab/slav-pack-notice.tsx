@@ -94,7 +94,6 @@ function SlavStemBoard({ stem }: { stem: readonly string[] }) {
 }
 
 export function SlavPackNotice({ step, copy, onNext, onStart }: NoticeProps) {
-  const [expanded, setExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -125,18 +124,9 @@ export function SlavPackNotice({ step, copy, onNext, onStart }: NoticeProps) {
               <p className="slav-notice-subtitle">{copy.subtitle}</p>
               <p className="slav-notice-start">{copy.start}</p>
               <p className="slav-notice-tagline">{copy.tagline}</p>
-              <div data-slav-intro-body data-expanded={expanded ? "true" : "false"}>
+              <div data-slav-intro-body>
                 <p className="slav-notice-paragraph">{copy.lead}</p>
-                {expanded ? <p className="slav-notice-paragraph">{copy.rest}</p> : null}
-                <button
-                  type="button"
-                  className="slav-notice-expand"
-                  aria-expanded={expanded}
-                  data-slav-intro-expand
-                  onClick={() => setExpanded((open) => !open)}
-                >
-                  {expanded ? "Show less" : "Read the rest"}
-                </button>
+                <p className="slav-notice-paragraph">{copy.rest}</p>
               </div>
             </>
           ) : (
@@ -168,6 +158,10 @@ export function SlavPackNotice({ step, copy, onNext, onStart }: NoticeProps) {
   return createPortal(notice, document.body);
 }
 
+/**
+ * Parked. Line notes stay in each Slav line's `drill` fields so they can
+ * come back later. Nothing mounts this panel.
+ */
 export function SlavLineNotes({ line }: { line: OpeningLine }) {
   const notes = line.drill;
   const [open, setOpen] = useState(true);

@@ -22,7 +22,7 @@ export const SLAV_ABOUT_TITLE = "About the opening";
 export const SLAV_WELCOME_TITLE =
   "Welcome to the start of your Slav Defence for Black learning pack";
 
-/** First lines stay visible. The rest opens on tap. */
+/** Full write-up on card 1. The card scrolls if a short phone runs out of room. */
 export const SLAV_INTRO_LEAD =
   "The Slav Defence begins with 1.d4 d5 2.c4 c6. Black supports the d5-pawn with the c-pawn rather than immediately playing ...e6.";
 
@@ -33,7 +33,6 @@ export const SLAV_HOW_TO = [
   "You play Black.",
   "Practice shows a green hint.",
   "Test has no hints.",
-  "Read each line's notes.",
   "Line 1 is free.",
 ] as const;
 

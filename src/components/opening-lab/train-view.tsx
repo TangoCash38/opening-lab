@@ -35,7 +35,6 @@ import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
 import { beginClassicRunNarration, ClassicRunTheGame } from "./classic-run-the-game";
 import { FreeTryCard, FreeTryVoice } from "./free-try-card";
 import { ScotchCoachBoard } from "./scotch-coach-board";
-import { SlavLineNotes } from "./slav-pack-notice";
 
 type Mode = "learn" | "practice";
 
@@ -1092,7 +1091,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
   return (
     <div
-      className={`train-layout${embedded ? " train-embedded" : ""}${line.drill ? " train-layout--notes" : ""}`}
+      className={`train-layout${embedded ? " train-embedded" : ""}`}
       data-frame-practice={embedded ? "true" : undefined}
       data-free-try={freeTry ? "true" : undefined}
       data-free-try-test-flash={freeTry && nudgeTest ? "yellow" : undefined}
@@ -1328,7 +1327,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               }}
             />
           ) : (
-          <div className={line.drill && !boardExpanded ? "slav-train-board relative" : "relative"}>
+          <div className="relative">
             {freeTryDemo && !freeTryIntroDismissed ? (
               <ScotchCoachBoard
                 talk="line"
@@ -1425,7 +1424,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
       {runTheGame ? null : (
       <div className={`train-below${embedded ? " train-frame-below" : ""}`}>
-      {line.drill ? <SlavLineNotes line={line} /> : null}
       {/* Move history — single-row horizontal scroller (no wrap → no board jump) */}
       <div
         ref={notationStripRef}

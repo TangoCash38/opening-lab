@@ -65,6 +65,10 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
   assert.match(study, /QUEEN'S GAMBIT DECLINED FOR BLACK/);
   assert.match(study, /Welcome to the start of your Queen's Gambit Declined for Black learning pack/);
   assert.match(study, /howTo: SLAV_HOW_TO/);
+  const howTo = src("src/lib/slav-preview.ts");
+  assert.doesNotMatch(howTo, /Read each line's notes/);
+  assert.doesNotMatch(src("src/components/opening-lab/slav-pack-notice.tsx"), /Read the rest/);
+  assert.doesNotMatch(src("src/components/opening-lab/train-view.tsx"), /SlavLineNotes/);
   assert.doesNotMatch(study, /portrait|<img|Potato|Big Red|King Cedar/i);
   assert.match(hero, /data-written-intro=/);
   const written = intro.slice(
