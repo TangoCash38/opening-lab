@@ -66,7 +66,8 @@ test("French Defence Potato Pie intro stays on the line list; Line 1 is the Wina
     catalog,
     /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence"\]/,
   );
-  assert.doesNotMatch(catalog, /"french-black":\s*\[/);
+  assert.match(catalog, /"french-black": \["frb1"\]/);
+  assert.doesNotMatch(catalog, /"french-black": \["frb1", "frb2"/);
   assert.match(packs, /id: "french-black"[\s\S]{0,400}blurb: "10 lines from Opening Lab"/);
   assert.doesNotMatch(packs.slice(packs.indexOf('id: "french-black"'), packs.indexOf('id: "french-black"') + 1200), /5 book/);
   assert.doesNotMatch(packs.slice(packs.indexOf('id: "french-black"'), packs.indexOf('id: "french-black"') + 1200), /punish/i);

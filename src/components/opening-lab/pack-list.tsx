@@ -228,7 +228,7 @@ function PackCard({
               {comingSoonClosed ? null : free ? (
                 <span className="rounded-full bg-success-soft px-2 py-0.5 text-[0.65rem] font-semibold text-success">
                   {(FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0
-                    ? t("{n} free", { n: FREE_SAMPLE_LINE_IDS[pack.id].length })
+                    ? t("1 free line")
                     : t("Free")}
                 </span>
               ) : anyOpen ? (
@@ -303,8 +303,7 @@ function PackCard({
                 ? t("Coming soon")
                 : price
                   ? (FREE_SAMPLE_LINE_IDS[pack.id]?.length ?? 0) > 0
-                    ? t("{n} free · {price} unlocks the whole pack", {
-                        n: FREE_SAMPLE_LINE_IDS[pack.id].length,
+                    ? t("1 free line · {price} unlocks the whole pack", {
                         price,
                       })
                     : t("Whole pack · {price} — all {n} lines", {

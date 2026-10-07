@@ -93,11 +93,51 @@ export function visiblePacks<T extends Pick<Pack, "id">>(packs: readonly T[]): T
   return packs.filter((pack) => isPackVisible(pack));
 }
 
+/**
+ * Line 1 of every drill pack. Lines after line 1 stay locked until that pack
+ * is purchased. Buy all and an active subscription are the caller's
+ * `subscribed` flag (`subscribed || isLineUnlocked`). The website Classic
+ * sample and Scotch Lessons are not in this list.
+ */
 export const FREE_SAMPLE_LINE_IDS: Readonly<Record<string, readonly string[]>> = {
-  "caro-kann-black": ["ckb1", "ckb3", "ckb5"],
-  "opening-traps": ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
+  "caro-kann-black": ["ckb1"],
   "qgd-black": ["qgdb1"],
   "slav-defence": ["sd1"],
+  "london-black": ["alb1"],
+  "d4-sidelines-black": ["d4s1"],
+  "anti-sicilian-black": ["as1"],
+  "nimzo-larsen-white": ["nl1"],
+  "italian-white": ["it1"],
+  "french-white": ["fr1"],
+  "alapin-white": ["al1"],
+  "english-black": ["en1"],
+  "kg-black": ["kg1"],
+  "scandinavian-white": ["sc1"],
+  "pirc-150-white": ["pm1"],
+  "dutch-fianchetto-white": ["du1"],
+  "caro-advance-panov-white": ["ckw1"],
+  "evans-black": ["evb1"],
+  "englund-white": ["eg1"],
+  "budapest-white": ["bp1"],
+  "bdg-black": ["bdg1"],
+  "qg-white": ["qg1"],
+  "opening-traps": ["ot1"],
+  "scotch": ["sg1"],
+  "london": ["lon1"],
+  "english-white": ["engw1"],
+  "catalan-white": ["catw1"],
+  "nimzo-indian-black": ["nib1"],
+  "grunfeld-black": ["gfb1"],
+  "petroff-black": ["peb1"],
+  "berlin-black": ["berb1"],
+  "kings-indian-black": ["kidb1"],
+  "old-indian-black": ["oib1"],
+  "stafford-black": ["stb1"],
+  "ponziani-white": ["pw1"],
+  "alekhine-black": ["ab1"],
+  "french-black": ["frb1"],
+  "ruy-lopez-white": ["rlw1"],
+  "sicilian-black": ["sib1"],
 };
 
 /**
@@ -109,6 +149,8 @@ export function packHasPlayableFreeLines(
   pack: Pick<Pack, "id"> & { lines?: readonly Pick<OpeningLine, "id">[] },
 ): boolean {
   if (isWebsiteClassicSample(pack.id)) return true;
+  // Coming-soon packs stay closed. Their line 1 is listed above for when they open.
+  if (isPackComingSoon(pack.id)) return false;
   const ids = FREE_SAMPLE_LINE_IDS[pack.id];
   if (!ids?.length) return false;
   const present = new Set((pack.lines ?? []).map((line) => line.id));
@@ -125,8 +167,8 @@ export function playableLines(pack: Pack): OpeningLine[] {
 /**
  * Pack-purchase / free-sample gate only. Lab+ / active subscription is the
  * caller's job (use `subscribed || isLineUnlocked(...)`).
- * Sample ids stay free. Extra Caro lines need that pack in purchasedPackIds.
- * Packs with no sample list stay locked until purchasedPackIds includes pack.id.
+ * Line 1 stays free on a live pack. Later lines need that pack in purchasedPackIds.
+ * A coming-soon pack stays locked until the viewer owns it or is subscribed.
  * Never treat a missing sample list as unlocked, and do not use isPackFree
  * (Caro isFree but extras are paid).
  */
@@ -150,7 +192,7 @@ export function isLineUnlocked(
 /**
  * Later unlocked line in the same pack (pack-purchase / samples only).
  * Callers with Lab+ should pass the pack id in purchasedPackIds (or treat all
- * lines as unlocked). Skips locked extras (Caro free samples stay ckb1, ckb3, ckb5).
+ * lines as unlocked). Skips locked lines after the free line 1.
  */
 export function nextUnlockedLine(
   pack: Pack,

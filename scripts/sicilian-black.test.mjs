@@ -336,7 +336,8 @@ test("Sicilian for Black is the signed sicilian-black pack: sib1â€“sib10 book, Â
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
     catalog.indexOf("export function playableLines"),
   );
-  assert.doesNotMatch(sampleBlock, /sicilian-black/);
+  assert.match(sampleBlock, /"sicilian-black": \["sib1"\]/);
+  assert.doesNotMatch(sampleBlock, /sib2/);
 
   const playList = skus.slice(
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),

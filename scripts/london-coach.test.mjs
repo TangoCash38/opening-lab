@@ -63,7 +63,8 @@ test("London Potato Pie intro plays eight White moves and still shows when the p
   assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence"\]/);
   assert.match(packs, /id: "london"[\s\S]{0,240}price: "£1\.99"/);
   assert.match(lessons, /LESSONS_ENABLED: boolean = false/);
-  assert.doesNotMatch(catalog, /"london":\s*\[/);
+  assert.match(catalog, /"london": \["lon1"\]/);
+  assert.doesNotMatch(catalog, /"london": \["lon1", "lon2"/);
   assert.match(hero, /pack\.id === "london"/);
   assert.match(hero, /l\.id === "lon1"/);
   assert.match(hero, /Unpaid visitors still hear Potato Pie/);

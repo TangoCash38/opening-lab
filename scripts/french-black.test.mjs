@@ -97,7 +97,8 @@ test("French Defence for Black is the signed french-black pack: frb1–frb10 boo
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
     catalog.indexOf("export function playableLines"),
   );
-  assert.doesNotMatch(sampleBlock, /french-black/);
+  assert.match(sampleBlock, /"french-black": \["frb1"\]/);
+  assert.doesNotMatch(sampleBlock, /frb2/);
 
   const playList = skus.slice(
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),

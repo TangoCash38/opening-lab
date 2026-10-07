@@ -329,7 +329,8 @@ test("Ruy Lopez for White is the signed ruy-lopez-white pack: rlw1–rlw10 book,
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
     catalog.indexOf("export function playableLines"),
   );
-  assert.doesNotMatch(sampleBlock, /ruy-lopez-white/);
+  assert.match(sampleBlock, /"ruy-lopez-white": \["rlw1"\]/);
+  assert.doesNotMatch(sampleBlock, /rlw2/);
 
   const playList = skus.slice(
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),

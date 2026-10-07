@@ -60,7 +60,8 @@ test("Italian Potato Pie intro plays the stem with speech and arrows the replies
   const packs = src("src/data/packs.ts");
   const intro = src("src/lib/pack-intro.ts");
   assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence"\]/);
-  assert.doesNotMatch(catalog, /"italian-white":\s*\[/);
+  assert.match(catalog, /"italian-white": \["it1"\]/);
+  assert.doesNotMatch(catalog, /"italian-white": \["it1", "it2"/);
   assert.match(packs, /id: "italian-white"[\s\S]{0,280}price: "£1\.99"/);
   assert.match(packs, /blurb: "10 lines from Opening Lab"/);
   assert.doesNotMatch(packs, /5 book lines \+ 5 punish/);

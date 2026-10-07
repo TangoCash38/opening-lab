@@ -109,7 +109,7 @@ export function LandingHome({
     const price = packPrice(pack);
     if (!price) return t("Free");
     if (freeCount > 0) {
-      return t("{n} free · {price} unlocks the whole pack", { n: freeCount, price });
+      return t("1 free line · {price} unlocks the whole pack", { price });
     }
     return t("Whole pack · {price} — all {n} lines", {
       price,

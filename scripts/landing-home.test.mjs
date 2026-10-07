@@ -20,7 +20,7 @@ test("landing matches the signed-off home: live packs, real prices", () => {
   assert.match(landing, /LIVE_PACK_IDS/);
   assert.match(landing, /packPrice/);
   assert.match(landing, /FREE_SAMPLE_LINE_IDS/);
-  assert.match(landing, /\{n\} free · \{price\}/);
+  assert.match(landing, /1 free line · \{price\} unlocks the whole pack/);
   assert.match(landing, /Scotch Gambit/);
   assert.match(landing, /data-open-pack=\{pack\.id\}/);
   assert.match(landing, /data-coming-soon-chip/);
@@ -124,7 +124,7 @@ test("landing copy is in every language and does not invent prices", () => {
   assert.equal(copy.split('"{price} unlocks the whole pack":').length - 1, 12);
   assert.equal(copy.split('"Whole pack · {price} — all {n} lines":').length - 1, 12);
   assert.match(landing, /Whole pack · \{price\} — all \{n\} lines/);
-  assert.match(landing, /\{n\} free · \{price\} unlocks the whole pack/);
+  assert.match(landing, /1 free line · \{price\} unlocks the whole pack/);
   const sale = landing.indexOf("<BuyAllOffer");
   const grid = landing.indexOf("data-open-now");
   assert.ok(sale > -1 && grid > sale, "On sale sits above the pack grid");
@@ -214,8 +214,10 @@ test("only packs with playable free lines are marked green", () => {
   for (const id of ["ckb1", "ckb3", "ckb5", "ot1", "ot2", "ot3", "ot4", "ot5", "ot6"]) {
     assert.match(packs, new RegExp(`id: "${id}"`));
   }
-  assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
-  assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
+  assert.match(catalog, /"caro-kann-black": \["ckb1"\]/);
+  assert.match(catalog, /"opening-traps": \["ot1"\]/);
+  assert.doesNotMatch(catalog, /"caro-kann-black": \["ckb1", "ckb3"/);
+  assert.doesNotMatch(catalog, /"opening-traps": \["ot1", "ot2"/);
   const recall = landing.match(/data-landing-recall[\s\S]*?<\/Link>/)?.[0] ?? "";
   assert.match(recall, /t\("Free"\)/);
   assert.match(recall, /Position Recall Training/);
