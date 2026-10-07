@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
@@ -25,10 +26,15 @@ function loadRows(t) {
     join(dir, "packs.mjs"),
     ts.transpileModule(src("src/data/packs.ts"), options).outputText,
   );
+  writeFileSync(
+    join(dir, "study-intro-setup.mjs"),
+    ts.transpileModule(src("src/lib/study-intro-setup.ts"), options).outputText,
+  );
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   return {
     rows: import("./.generated-study/study-pack-copy.mjs"),
     packs: import("./.generated-study/packs.mjs"),
+    setups: import("./.generated-study/study-intro-setup.mjs"),
   };
 }
 
@@ -36,6 +42,7 @@ test("every visible drill pack has a two-card study intro", async (t) => {
   const loaded = loadRows(t);
   const { STUDY_PACK_ROWS } = await loaded.rows;
   const { PACKS } = await loaded.packs;
+  const { STUDY_INTRO_SETUPS } = await loaded.setups;
   const catalog = src("src/lib/catalog.ts");
   const visible = [...catalog.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/)[1].matchAll(/"([^"]+)"/g)].map(
     (m) => m[1],
@@ -52,6 +59,16 @@ test("every visible drill pack has a two-card study intro", async (t) => {
   const notice = src("src/components/opening-lab/slav-pack-notice.tsx");
   assert.match(notice, /<ChessBoard[\s\S]*flip=\{flip\}/);
   assert.doesNotMatch(notice, /<ChessBoard[\s\S]{0,240}\n\s+flip\n/);
+  assert.match(notice, /plies=\{copy\.setup\}/);
+  assert.match(notice, /const MOVE_MS = 700/);
+  assert.match(notice, /Typical setup/);
+  assert.match(notice, /plyRef\.current >= plies\.length\) return/);
+  assert.match(study, /formatStart\(row\.stem\)/);
+  assert.match(study, /setup: setupFor\(row\.packId\)/);
+  assert.deepEqual(
+    [...study.matchAll(/stem: SLAV_STEM|stem: \["d4", "d5", "c4", "e6"\]/g)].length,
+    2,
+  );
   assert.match(src("src/components/opening-lab/train-view.tsx"), /flip=\{line\.side === "b"\}/);
   assert.doesNotMatch(src("src/lib/study-pack-copy.ts"), /—|forever|lifetime|5 book|punish|Read the rest/i);
 
@@ -90,4 +107,44 @@ test("every visible drill pack has a two-card study intro", async (t) => {
     if (pack.side === "Mixed") assert.equal(row.side, "mixed", id);
   }
   assert.equal(rows.size, visible.length - 2);
+
+  const london = rows.get("london");
+  assert.deepEqual(london.stem, ["d4", "d5", "Bf4"]);
+  const checked = [];
+  for (const id of visible) {
+    const spec = STUDY_INTRO_SETUPS[id];
+    assert.ok(spec, `missing intro setup for ${id}`);
+    const pack = PACKS.find((item) => item.id === id);
+    const line = pack.lines.find((item) => item.id === spec.lineId);
+    assert.ok(line, `${id} missing line ${spec.lineId}`);
+    assert.deepEqual(line.plies.slice(0, spec.plies.length), [...spec.plies], id);
+    const game = new Chess();
+    for (const san of spec.plies) {
+      assert.ok(game.move(san), `${id} illegal setup ${san}`);
+    }
+    if (id === "london") {
+      assert.equal(spec.lineId, "lon1");
+      assert.equal(spec.plies.at(-1), "Bd3");
+      assert.ok(spec.plies.includes("Ngf3"));
+      assert.ok(spec.plies.includes("Nd2"));
+    }
+    if (id === "opening-traps") {
+      assert.equal(spec.plies.includes("Nxe5"), false);
+      assert.equal(spec.plies.some((san) => san.includes("#")), false);
+    }
+    checked.push({
+      packId: id,
+      lineId: spec.lineId,
+      plies: spec.plies,
+      linePlies: line.plies,
+    });
+  }
+  assert.equal(Object.keys(STUDY_INTRO_SETUPS).length, visible.length);
+  const payload = join(root, "scripts", ".generated-study", "intro-setups.json");
+  writeFileSync(payload, JSON.stringify(checked));
+  const py = spawnSync("python3", [join(root, "scripts", "validate-intro-setups.py"), payload], {
+    encoding: "utf8",
+  });
+  assert.equal(py.status, 0, `${py.stdout}\n${py.stderr}`);
+  assert.match(py.stdout, /python-chess ok/);
 });

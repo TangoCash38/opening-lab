@@ -4,7 +4,12 @@ import { Chess, type Square } from "chess.js";
 import type { OpeningLine } from "@/data/packs";
 import type { StudyIntroCopy } from "@/lib/pack-study-intro";
 import { soundMove } from "@/lib/sounds";
-import { ChessBoard, type SlideAnim } from "./chess-board";
+import { ChessBoard, SLIDE_MS, type SlideAnim } from "./chess-board";
+
+/** Time from one intro move to the next, including the slide. */
+const MOVE_MS = 700;
+/** Brief look at the array, then the setup starts. The final position is held. */
+const FIRST_MOVE_MS = 240;
 
 type NoticeStep = "about" | "welcome";
 
@@ -17,7 +22,7 @@ type NoticeProps = {
   onStart: () => void;
 };
 
-function SlavStemBoard({ stem, flip }: { stem: readonly string[]; flip: boolean }) {
+function SlavStemBoard({ plies, flip }: { plies: readonly string[]; flip: boolean }) {
   const [game, setGame] = useState(() => new Chess());
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [slide, setSlide] = useState<SlideAnim | null>(null);
@@ -27,8 +32,8 @@ function SlavStemBoard({ stem, flip }: { stem: readonly string[]; flip: boolean 
   const timerRef = useRef(0);
 
   const playNext = useCallback(() => {
-    if (!aliveRef.current || plyRef.current >= stem.length) return;
-    const san = stem[plyRef.current];
+    if (!aliveRef.current || plyRef.current >= plies.length) return;
+    const san = plies[plyRef.current];
     const current = gameRef.current;
     const probe = new Chess(current.fen());
     const move = probe.move(san);
@@ -43,34 +48,40 @@ function SlavStemBoard({ stem, flip }: { stem: readonly string[]; flip: boolean 
     setLastMove({ from: move.from, to: move.to });
     setSlide({ from: move.from, to: move.to, piece });
     soundMove();
-  }, [stem]);
+  }, [plies]);
 
   useEffect(() => {
     aliveRef.current = true;
+    plyRef.current = 0;
+    const start = new Chess();
+    gameRef.current = start;
+    setGame(start);
+    setLastMove(null);
+    setSlide(null);
     const reduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       const done = new Chess();
       let last: { from: Square; to: Square } | null = null;
-      for (const san of stem) {
+      for (const san of plies) {
         const move = done.move(san);
         if (move) last = { from: move.from, to: move.to };
       }
       gameRef.current = done;
-      plyRef.current = stem.length;
+      plyRef.current = plies.length;
       setGame(done);
       setLastMove(last);
       return () => {
         aliveRef.current = false;
       };
     }
-    timerRef.current = window.setTimeout(playNext, 420);
+    timerRef.current = window.setTimeout(playNext, FIRST_MOVE_MS);
     return () => {
       aliveRef.current = false;
       window.clearTimeout(timerRef.current);
     };
-  }, [playNext, stem]);
+  }, [playNext, plies]);
 
   return (
     <div className="slav-intro-board" data-slav-stem-board>
@@ -86,11 +97,15 @@ function SlavStemBoard({ stem, flip }: { stem: readonly string[]; flip: boolean 
         onSlideComplete={() => {
           if (!aliveRef.current) return;
           setSlide(null);
-          timerRef.current = window.setTimeout(playNext, 420);
+          if (plyRef.current >= plies.length) return;
+          timerRef.current = window.setTimeout(playNext, Math.max(0, MOVE_MS - SLIDE_MS));
         }}
         onSquare={() => {}}
         interactive={false}
       />
+      <p className="slav-intro-caption" data-slav-setup-caption>
+        Typical setup
+      </p>
     </div>
   );
 }
@@ -114,7 +129,7 @@ export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProp
       aria-labelledby="slav-intro-title"
       data-slav-notice={step}
     >
-      <SlavStemBoard stem={copy.stem} flip={flip} />
+      <SlavStemBoard plies={copy.setup} flip={flip} />
       <div className="slav-notice-card" data-slav-card>
         <div className="slav-notice-card-body">
           {step === "about" ? (
