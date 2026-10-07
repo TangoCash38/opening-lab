@@ -134,7 +134,7 @@ export const STUDY_INTRO_SETUPS: Readonly<Record<string, IntroSetup>> = {
   },
   "kings-indian-black": {
     lineId: "kidb1",
-    plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7"],
+    plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6"],
   },
   "old-indian-black": {
     lineId: "oib1",

@@ -64,7 +64,7 @@ test("caro-kann-black has 10 legal lines titled Line 1 to Line 10 and a Potato P
   const train = src("src/components/opening-lab/train-view.tsx");
   assert.match(catalog, /"caro-kann-black": \["ckb1"\]/);
   assert.doesNotMatch(catalog, /"caro-kann-black": \["ckb1", "ckb3"/);
-  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black"\]/);
+  assert.match(catalog, /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black", "kings-indian-black"\]/);
   assert.match(hero, /if \(current\.talk === "line"\) options\.startPly = SCOTCH_CANAL_PRACTICE_START_PLY/);
   assert.match(hero, /if \(current\.talk === "intro"\) options\.startPly = SCOTCH_CANAL_PRACTICE_START_PLY/);
   const introBoard = hero.slice(
