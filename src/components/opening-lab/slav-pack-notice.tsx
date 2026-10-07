@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { Chess, type Square } from "chess.js";
 import type { OpeningLine } from "@/data/packs";
 import {
+  SLAV_ABOUT_TITLE,
   SLAV_HOW_TO,
   SLAV_INTRO_HEADER,
   SLAV_INTRO_LEAD,
@@ -11,16 +12,17 @@ import {
   SLAV_INTRO_SUBTITLE,
   SLAV_INTRO_TAGLINE,
   SLAV_STEM,
+  SLAV_WELCOME_TITLE,
 } from "@/lib/slav-preview";
 import { soundMove } from "@/lib/sounds";
 import { ChessBoard, type SlideAnim } from "./chess-board";
 
-type NoticeStep = "intro" | "howto";
+type NoticeStep = "about" | "welcome";
 
 type NoticeProps = {
   step: NoticeStep;
-  onStartFirstLine: () => void;
-  onBeginLine: () => void;
+  onNext: () => void;
+  onStart: () => void;
 };
 
 function SlavStemBoard() {
@@ -101,12 +103,14 @@ function SlavStemBoard() {
   );
 }
 
-export function SlavPackNotice({ step, onStartFirstLine, onBeginLine }: NoticeProps) {
+export function SlavPackNotice({ step, onNext, onStart }: NoticeProps) {
   const [expanded, setExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    document.documentElement.setAttribute("data-slav-opening", "true");
+    return () => document.documentElement.removeAttribute("data-slav-opening");
   }, []);
 
   if (!mounted) return null;
@@ -120,13 +124,14 @@ export function SlavPackNotice({ step, onStartFirstLine, onBeginLine }: NoticePr
       data-slav-notice={step}
     >
       <SlavStemBoard />
-      <div className="slav-notice-copy">
-        <p className="slav-notice-kicker">{SLAV_INTRO_HEADER}</p>
-        <h2 id="slav-intro-title" className="slav-notice-title">
-          {step === "howto" ? "How to play" : SLAV_INTRO_SUBTITLE}
-        </h2>
-        {step === "intro" ? (
+      <div className="slav-notice-card" data-slav-card>
+        {step === "about" ? (
           <>
+            <p className="slav-notice-kicker">{SLAV_ABOUT_TITLE}</p>
+            <h2 id="slav-intro-title" className="slav-notice-title">
+              {SLAV_INTRO_HEADER}
+            </h2>
+            <p className="slav-notice-subtitle">{SLAV_INTRO_SUBTITLE}</p>
             <p className="slav-notice-start">{SLAV_INTRO_START}</p>
             <p className="slav-notice-tagline">{SLAV_INTRO_TAGLINE}</p>
             <div data-slav-intro-body data-expanded={expanded ? "true" : "false"}>
@@ -142,31 +147,22 @@ export function SlavPackNotice({ step, onStartFirstLine, onBeginLine }: NoticePr
                 {expanded ? "Show less" : "Read the rest"}
               </button>
             </div>
-            <button
-              type="button"
-              className="slav-notice-primary"
-              data-slav-start-first
-              onClick={onStartFirstLine}
-            >
-              Start first line
+            <button type="button" className="slav-notice-primary" data-slav-next onClick={onNext}>
+              Next
             </button>
           </>
         ) : (
           <>
-            <div data-slav-howto>
+            <h2 id="slav-intro-title" className="slav-notice-title">
+              {SLAV_WELCOME_TITLE}
+            </h2>
+            <ol className="slav-notice-steps" data-slav-howto>
               {SLAV_HOW_TO.map((line) => (
-                <p key={line} className="slav-notice-paragraph">
-                  {line}
-                </p>
+                <li key={line}>{line}</li>
               ))}
-            </div>
-            <button
-              type="button"
-              className="slav-notice-primary"
-              data-slav-begin-line
-              onClick={onBeginLine}
-            >
-              Begin line 1
+            </ol>
+            <button type="button" className="slav-notice-primary" data-slav-start onClick={onStart}>
+              Start
             </button>
           </>
         )}

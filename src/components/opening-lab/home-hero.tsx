@@ -123,8 +123,8 @@ export function HomeHero({
   const [frame, setFrame] = useState<FrameSession | null>(null);
   const [coach, setCoach] = useState<CoachSession | null>(null);
   const [textBeat, setTextBeat] = useState(0);
-  const [slavStep, setSlavStep] = useState<"intro" | "howto" | "ready">(() =>
-    isSlavPreviewPack(pack.id) && !slavIntroAlreadySeen() ? "intro" : "ready",
+  const [slavStep, setSlavStep] = useState<"about" | "welcome" | "ready">(() =>
+    isSlavPreviewPack(pack.id) && !slavIntroAlreadySeen() ? "about" : "ready",
   );
   const coachRef = useRef<CoachSession | null>(null);
   /** Line tap while the pack intro is up — run after intro (and Line 1 talk). */
@@ -173,7 +173,7 @@ export function HomeHero({
   }, []);
 
   useEffect(() => {
-    setSlavStep(isSlavPreviewPack(pack.id) && !slavIntroAlreadySeen() ? "intro" : "ready");
+    setSlavStep(isSlavPreviewPack(pack.id) && !slavIntroAlreadySeen() ? "about" : "ready");
   }, [pack.id]);
 
   useEffect(() => {
@@ -820,9 +820,9 @@ export function HomeHero({
 
       {isSlavPreviewPack(pack.id) && slavStep !== "ready" ? (
         <SlavPackNotice
-          step={slavStep}
-          onStartFirstLine={() => setSlavStep("howto")}
-          onBeginLine={beginSlavLine}
+          step={slavStep === "welcome" ? "welcome" : "about"}
+          onNext={() => setSlavStep("welcome")}
+          onStart={beginSlavLine}
         />
       ) : null}
 
