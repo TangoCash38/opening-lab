@@ -14,7 +14,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   "caro-kann-black": [
     "The Caro-Kann is Black's answer to 1.e4. After 1…c6 and 2…d5 you take a pawn centre, get the light-squared bishop out before …e6, and keep a solid pawn structure. White can go Advance (3.e5), Classical (Nc3), Exchange, Panov, Fantasy, or Two Knights.",
     "The idea is simple and strong: a solid centre and an easy bishop. Meet each White try with its own book reply instead of mixing plans.",
-    "Free sample: Advance, Classical, Exchange. Other Caro lines are in the full pack.",
+    "1 free line: the Advance. The other Caro lines unlock with the pack.",
   ],
   "qgd-black": [
     "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps the pawn on d5 instead of taking on c4.",

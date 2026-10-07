@@ -213,7 +213,7 @@ test("Play listing copy is Path B packs, not Lab+", () => {
   assert.doesNotMatch(playApp, /Lab\+ yearly is billed/);
 });
 
-test("Caro-Kann for Black is a 3-line free sample; 10 lines titled Line 1 to Line 10", () => {
+test("Caro-Kann for Black has 1 free line; 10 lines titled Line 1 to Line 10", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "caro-kann-black"');
   assert.ok(start >= 0, "caro-kann-black pack missing");
@@ -226,8 +226,8 @@ test("Caro-Kann for Black is a 3-line free sample; 10 lines titled Line 1 to Lin
   assert.match(ck, /isFree: true/);
   assert.match(ck, /isPremium: false/);
   assert.match(ck, /price: null/);
-  assert.match(ck, /blurb: "Advance, Classical, Exchange"/);
-  assert.match(ck, /closedLabel: "Free · 3 lines"/);
+  assert.match(ck, /blurb: "1 free line"/);
+  assert.match(ck, /closedLabel: "1 free line"/);
   assert.match(ck, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(ck, /Practice the main book moves with the green hint/);
   assert.match(ck, /Then Test with none to prove you remember them/);
@@ -1735,7 +1735,8 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
     catalog.indexOf("export function playableLines"),
   );
-  assert.doesNotMatch(sampleBlock, /qg-white/);
+  assert.match(sampleBlock, /"qg-white": \["qg1"\]/);
+  assert.doesNotMatch(sampleBlock, /qg2/);
   const billing = readFileSync(
     join(root, "android/app/src/main/java/uk/co/openinglab/PlayBilling.java"),
     "utf8",
@@ -2510,7 +2511,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.doesNotMatch(ot, /Trap · Grob/);
   assert.match(ot, /blurb: ""/);
   assert.doesNotMatch(ot, /punish-the-take/);
-  assert.match(ot, /closedLabel: "6 free · £1\.99"/);
+  assert.match(ot, /closedLabel: "1 free line · £1\.99"/);
   assert.match(ot, /price: "£1\.99"/);
   assert.match(ot, /Then Test with none/);
   assert.doesNotMatch(ot, /Play on/);
@@ -2987,48 +2988,57 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
   }
 });
 
-test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for Caro", () => {
+test("FREE_SAMPLE_LINE_IDS gives every drill pack exactly line 1", () => {
   assert.match(src, /export const FREE_SAMPLE_LINE_IDS/);
-  assert.match(src, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
   const sampleBlock = src.slice(
     src.indexOf("FREE_SAMPLE_LINE_IDS"),
     src.indexOf("export function playableLines"),
   );
-  assert.doesNotMatch(sampleBlock, /london-black/);
-  assert.match(sampleBlock, /"qgd-black": \["qgdb1"\]/);
-  assert.doesNotMatch(sampleBlock, /qgdb2/);
-  assert.doesNotMatch(sampleBlock, /d4-sidelines-black/);
-  assert.doesNotMatch(sampleBlock, /anti-sicilian-black/);
-  assert.doesNotMatch(sampleBlock, /nimzo-larsen-white/);
-  assert.doesNotMatch(sampleBlock, /italian-white/);
-  assert.doesNotMatch(sampleBlock, /ruy-white/);
-  assert.doesNotMatch(sampleBlock, /french-white/);
-  assert.doesNotMatch(sampleBlock, /alapin-white/);
-  assert.doesNotMatch(sampleBlock, /english-black/);
-  assert.doesNotMatch(sampleBlock, /kg-black/);
-  assert.doesNotMatch(sampleBlock, /scandinavian-white/);
-  assert.doesNotMatch(sampleBlock, /pirc-150-white/);
-  assert.doesNotMatch(sampleBlock, /dutch-fianchetto-white/);
-  assert.doesNotMatch(sampleBlock, /caro-advance-panov-white/);
-  assert.doesNotMatch(sampleBlock, /evans-black/);
-  assert.doesNotMatch(sampleBlock, /englund-white/);
-  assert.doesNotMatch(sampleBlock, /budapest-white/);
-  assert.doesNotMatch(sampleBlock, /bdg-black/);
-  assert.doesNotMatch(sampleBlock, /qg-white/);
-  assert.doesNotMatch(sampleBlock, /english-white/);
-  assert.doesNotMatch(sampleBlock, /catalan-white/);
-  assert.doesNotMatch(sampleBlock, /nimzo-indian-black/);
-  assert.doesNotMatch(sampleBlock, /grunfeld-black/);
-  assert.doesNotMatch(sampleBlock, /petroff-black/);
-  assert.doesNotMatch(sampleBlock, /berlin-black/);
-  assert.doesNotMatch(sampleBlock, /kings-indian-black/);
-  assert.doesNotMatch(sampleBlock, /old-indian-black/);
-  assert.doesNotMatch(sampleBlock, /stafford-black/);
-  assert.doesNotMatch(sampleBlock, /ponziani-white/);
-  assert.doesNotMatch(sampleBlock, /alekhine-black/);
-  assert.doesNotMatch(sampleBlock, /french-black/);
-  assert.doesNotMatch(sampleBlock, /ruy-lopez-white/);
-  assert.doesNotMatch(sampleBlock, /sicilian-black/);
+  const expectedFree = {
+    "caro-kann-black": "ckb1",
+    "qgd-black": "qgdb1",
+    "slav-defence": "sd1",
+    "london-black": "alb1",
+    "d4-sidelines-black": "d4s1",
+    "anti-sicilian-black": "as1",
+    "nimzo-larsen-white": "nl1",
+    "italian-white": "it1",
+    "french-white": "fr1",
+    "alapin-white": "al1",
+    "english-black": "en1",
+    "kg-black": "kg1",
+    "scandinavian-white": "sc1",
+    "pirc-150-white": "pm1",
+    "dutch-fianchetto-white": "du1",
+    "caro-advance-panov-white": "ckw1",
+    "evans-black": "evb1",
+    "englund-white": "eg1",
+    "budapest-white": "bp1",
+    "bdg-black": "bdg1",
+    "qg-white": "qg1",
+    "opening-traps": "ot1",
+    "scotch": "sg1",
+    "london": "lon1",
+    "english-white": "engw1",
+    "catalan-white": "catw1",
+    "nimzo-indian-black": "nib1",
+    "grunfeld-black": "gfb1",
+    "petroff-black": "peb1",
+    "berlin-black": "berb1",
+    "kings-indian-black": "kidb1",
+    "old-indian-black": "oib1",
+    "stafford-black": "stb1",
+    "ponziani-white": "pw1",
+    "alekhine-black": "ab1",
+    "french-black": "frb1",
+    "ruy-lopez-white": "rlw1",
+    "sicilian-black": "sib1",
+  };
+  for (const [id, line] of Object.entries(expectedFree)) {
+    assert.match(sampleBlock, new RegExp(`"${id}": \\["${line}"\\]`), id);
+  }
+  assert.doesNotMatch(sampleBlock, /ckb3|ckb5|"ot2"|"qgdb2"|"sd2"|"sg2"|"qg2"|"frb2"|"rlw2"|"sib2"/);
+  assert.doesNotMatch(sampleBlock, /classic-fischer|lesson-scotch/);
   assert.match(src, /export function playableLines\(pack: Pack\): OpeningLine\[\]/);
   assert.match(src, /if \(!ids\) return \[\];/);
   assert.doesNotMatch(src, /if \(!ids\) return pack\.lines;/);
@@ -3045,7 +3055,7 @@ test("FREE_SAMPLE_LINE_IDS / playableLines returns exactly ckb1, ckb3, ckb5 for 
   const next = packs.indexOf("\n  {\n    id: \"", start + 1);
   const ck = next >= 0 ? packs.slice(start, next) : packs.slice(start);
   const lineIds = [...ck.matchAll(/id: "(ckb\d+)"/g)].map((m) => m[1]);
-  const sample = ["ckb1", "ckb3", "ckb5"];
+  const sample = ["ckb1"];
   assert.deepEqual(
     lineIds.filter((id) => sample.includes(id)),
     sample,
@@ -3154,8 +3164,11 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
       line.id,
     );
   }
-  for (const line of qgwPack.lines) {
+  assert.equal(isLineUnlocked(qgwPack, "qg1", []), true);
+  for (const line of qgwPack.lines.slice(1)) {
     assert.equal(isLineUnlocked(qgwPack, line.id, []), false, line.id);
+  }
+  for (const line of qgwPack.lines) {
     assert.equal(
       isLineUnlocked(qgwPack, line.id, ["qg-white"]),
       true,
@@ -3298,8 +3311,11 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     id: "french-black",
     lines: Array.from({ length: 10 }, (_, i) => ({ id: `frb${i + 1}` })),
   };
-  for (const line of frbPack.lines) {
+  assert.equal(isLineUnlocked(frbPack, "frb1", []), true);
+  for (const line of frbPack.lines.slice(1)) {
     assert.equal(isLineUnlocked(frbPack, line.id, []), false, line.id);
+  }
+  for (const line of frbPack.lines) {
     assert.equal(
       isLineUnlocked(frbPack, line.id, ["french-black"]),
       true,
@@ -3307,8 +3323,8 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     );
   }
   assert.equal(isLineUnlocked(caro, "ckb1", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), false);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb4", []), false);
   assert.equal(isLineUnlocked(caro, "ckb10", []), false);
@@ -3332,7 +3348,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(qgdPack, "qgdb1", ["qgd-black"])?.id, "qgdb2");
 
   assert.deepEqual(playableLines(nimzo), []);
-  assert.deepEqual(playableLines(qgwPack), []);
+  assert.deepEqual(playableLines(qgwPack).map((l) => l.id), ["qg1"]);
   assert.deepEqual(playableLines(engwPack), []);
   assert.deepEqual(playableLines(catwPack), []);
   assert.deepEqual(playableLines(nibPack), []);
@@ -3344,11 +3360,11 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.deepEqual(playableLines(stbPack), []);
   assert.deepEqual(playableLines(pwPack), []);
   assert.deepEqual(playableLines(abPack), []);
-  assert.deepEqual(playableLines(frbPack), []);
-  assert.deepEqual(playableLines(caro).map((l) => l.id), ["ckb1", "ckb3", "ckb5"]);
+  assert.deepEqual(playableLines(frbPack).map((l) => l.id), ["frb1"]);
+  assert.deepEqual(playableLines(caro).map((l) => l.id), ["ckb1"]);
 
-  assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
-  assert.equal(nextUnlockedLine(caro, "ckb3", [])?.id, "ckb5");
+  assert.equal(nextUnlockedLine(caro, "ckb1", []), undefined);
+  assert.equal(nextUnlockedLine(caro, "ckb3", []), undefined);
   assert.equal(nextUnlockedLine(caro, "ckb5", []), undefined);
   assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
   assert.equal(nextUnlockedLine(nimzo, "nl1", []), undefined);
@@ -3383,30 +3399,36 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
     id: "ruy-lopez-white",
     lines: Array.from({ length: 10 }, (_, i) => ({ id: `rlw${i + 1}` })),
   };
-  for (const line of rlwPack.lines) {
+  assert.equal(isLineUnlocked(rlwPack, "rlw1", []), true);
+  for (const line of rlwPack.lines.slice(1)) {
     assert.equal(isLineUnlocked(rlwPack, line.id, []), false, line.id);
+  }
+  for (const line of rlwPack.lines) {
     assert.equal(
       isLineUnlocked(rlwPack, line.id, ["ruy-lopez-white"]),
       true,
       line.id,
     );
   }
-  assert.deepEqual(playableLines(rlwPack), []);
+  assert.deepEqual(playableLines(rlwPack).map((l) => l.id), ["rlw1"]);
   assert.equal(nextUnlockedLine(rlwPack, "rlw1", []), undefined);
   assert.equal(nextUnlockedLine(rlwPack, "rlw1", ["ruy-lopez-white"])?.id, "rlw2");
   const sibPack = {
     id: "sicilian-black",
     lines: Array.from({ length: 10 }, (_, i) => ({ id: `sib${i + 1}` })),
   };
-  for (const line of sibPack.lines) {
+  assert.equal(isLineUnlocked(sibPack, "sib1", []), true);
+  for (const line of sibPack.lines.slice(1)) {
     assert.equal(isLineUnlocked(sibPack, line.id, []), false, line.id);
+  }
+  for (const line of sibPack.lines) {
     assert.equal(
       isLineUnlocked(sibPack, line.id, ["sicilian-black"]),
       true,
       line.id,
     );
   }
-  assert.deepEqual(playableLines(sibPack), []);
+  assert.deepEqual(playableLines(sibPack).map((l) => l.id), ["sib1"]);
   assert.equal(nextUnlockedLine(sibPack, "sib1", []), undefined);
   assert.equal(nextUnlockedLine(sibPack, "sib1", ["sicilian-black"])?.id, "sib2");
 });

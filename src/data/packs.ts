@@ -914,9 +914,9 @@ export const PACKS: Pack[] = [
     isFree: true,
     isPremium: false,
     price: null,
-    blurb: "Advance, Classical, Exchange",
+    blurb: "1 free line",
     about: "The Caro-Kann is Black's answer to 1.e4. You take a pawn centre, get the light bishop out, and keep a solid structure.\n\nPractice the main book moves with the green hint. Then Test with none to prove you remember them.",
-    closedLabel: "Free · 3 lines",
+    closedLabel: "1 free line",
     lines: [
       {
         id: "ckb1",
@@ -6240,7 +6240,7 @@ export const PACKS: Pack[] = [
     price: "£1.99",
     blurb: "",
     about: "Practice traps where the opponent’s greedy take loses.\n\nPractice the trapper’s book moves with the hint. Then Test with none.",
-    closedLabel: "6 free · £1.99",
+    closedLabel: "1 free line · £1.99",
     lines: [
       {
         id: "ot1",

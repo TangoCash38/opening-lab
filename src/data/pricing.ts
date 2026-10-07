@@ -7,10 +7,10 @@ export const PRICE_YEARLY = "£29.99";
 export const PRICE_MONTHLY_NOTE = "a month · cancel anytime";
 export const PRICE_YEARLY_NOTE = "a year · best value";
 
-/** Rest of Caro-Kann for Black (3 sample lines stay free). */
+/** Rest of Caro-Kann for Black. Line 1 stays free. */
 export const PRICE_CARO_REST = "£1.99";
 /**
- * Full Opening Traps unlock. The first six lines stay free.
+ * Full Opening Traps unlock. Line 1 stays free.
  * Restored to the pre-#285 price (£1.99, previously PRICE_CARO_REST).
  */
 export const PRICE_OPENING_TRAPS = "£1.99";

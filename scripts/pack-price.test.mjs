@@ -31,7 +31,7 @@ test("every paid drill pack lists at £1.99", () => {
   assert.match(packs, /id: "old-indian-black"[\s\S]{0,500}price: "£1\.99"/);
   assert.match(packs, /id: "classic-games"[\s\S]{0,280}price: "£1\.99"/);
   assert.match(packs, /closedLabel: "£1\.99 · 9 lines"/);
-  assert.match(packs, /closedLabel: "6 free · £1\.99"/);
+  assert.match(packs, /closedLabel: "1 free line · £1\.99"/);
   assert.doesNotMatch(packs, /price: "£2\.99"|price: "£1\.50"|price: "£3\.99"|price: "£1",/);
 
   const lessons = readFileSync(join(root, "src/lib/lesson-products.ts"), "utf8");
@@ -102,8 +102,8 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   assert.equal(isLineUnlocked(nimzo, "nl7", []), false);
   assert.equal(isLineUnlocked(nimzo, "nl1", ["nimzo-larsen-white"]), true);
   assert.equal(isLineUnlocked(caro, "ckb1", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), false);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb10", []), false);
   assert.equal(isLineUnlocked(caro, "ckb1", ["caro-kann-black"]), true);
@@ -111,7 +111,7 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
   assert.equal(isLineUnlocked(caro, "ckb10", ["caro-kann-black"]), true);
   assert.deepEqual(
     playableLines(caro).map((line) => line.id),
-    ["ckb1", "ckb3", "ckb5"],
+    ["ckb1"],
   );
   assert.deepEqual(playableLines(nimzo), []);
 
@@ -119,24 +119,22 @@ test("isLineUnlocked(nimzo) is locked until Stripe purchase", async (t) => {
     id: "opening-traps",
     lines: ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7", "ot9", "ot10"].map((id) => ({ id })),
   };
-  for (const id of ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"]) {
-    assert.equal(isLineUnlocked(traps, id, []), true, id);
+  assert.equal(isLineUnlocked(traps, "ot1", []), true);
+  for (const id of ["ot2", "ot3", "ot4", "ot5", "ot6", "ot7", "ot9", "ot10"]) {
+    assert.equal(isLineUnlocked(traps, id, []), false, id);
   }
-  assert.equal(isLineUnlocked(traps, "ot7", []), false);
-  assert.equal(isLineUnlocked(traps, "ot10", []), false);
-  assert.equal(isLineUnlocked(traps, "ot9", []), false);
   assert.equal(isLineUnlocked(traps, "ot1", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot7", ["opening-traps"]), true);
   assert.equal(isLineUnlocked(traps, "ot10", ["opening-traps"]), true);
   assert.deepEqual(
     playableLines(traps).map((l) => l.id),
-    ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
+    ["ot1"],
   );
 });
 
-test("opening-traps free samples are ot1 through ot6 at £1.99", () => {
-  assert.match(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"\]/);
-  assert.doesNotMatch(catalog, /"opening-traps": \["ot1", "ot2", "ot3", "ot4", "ot5", "ot6", "ot7"/);
+test("opening-traps free sample is line 1 at £1.99", () => {
+  assert.match(catalog, /"opening-traps": \["ot1"\]/);
+  assert.doesNotMatch(catalog, /"opening-traps": \["ot1", "ot2"/);
   assert.match(pricing, /PRICE_OPENING_TRAPS = "£1\.99"/);
   assert.match(pricing, /isPayAsYouGoPack[\s\S]*opening-traps/);
   const modal = readFileSync(

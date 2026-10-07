@@ -238,7 +238,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   assert.match(catalog, /export function nextUnlockedLine/);
   assert.match(catalog, /slice\(idx \+ 1\)/);
   assert.match(catalog, /isLineUnlocked\(pack, l\.id, purchasedPackIds\)/);
-  assert.match(catalog, /"caro-kann-black": \["ckb1", "ckb3", "ckb5"\]/);
+  assert.match(catalog, /"caro-kann-black": \["ckb1"\]/);
   assert.match(train, /nextUnlockedLine\(pack, line\.id, unlockIds\)/);
   assert.match(train, /onPracticeNext\?\.\(nextLine\)/);
   assert.match(shell, /onPracticeNext=\{\(nextLine\) =>/);
@@ -248,7 +248,7 @@ test("practice next line skips locked Caro extras and starts Practice", () => {
   assert.match(hero, /setAboutOpen\(true\)/);
   assert.match(list, /onStartLine=\{onStartLine\}/);
 
-  const sample = ["ckb1", "ckb3", "ckb5"];
+  const sample = ["ckb1"];
   const caro = Array.from({ length: 10 }, (_, i) => `ckb${i + 1}`);
   function isLineUnlocked(packId, lineId, purchased) {
     if (packId !== "scotch" && !purchased.includes(packId)) return false;

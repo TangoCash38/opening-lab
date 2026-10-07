@@ -154,24 +154,24 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
     assert.equal(isLineUnlocked(londonBlack, line.id, []), false, line.id);
   }
   assert.equal(isLineUnlocked(caro, "ckb1", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb3", []), true);
-  assert.equal(isLineUnlocked(caro, "ckb5", []), true);
+  assert.equal(isLineUnlocked(caro, "ckb3", []), false);
+  assert.equal(isLineUnlocked(caro, "ckb5", []), false);
   assert.equal(isLineUnlocked(caro, "ckb2", []), false);
   assert.equal(isLineUnlocked(caro, "ckb10", []), false);
   assert.equal(isLineUnlocked(traps, "ot1", []), true);
-  assert.equal(isLineUnlocked(traps, "ot6", []), true);
+  assert.equal(isLineUnlocked(traps, "ot6", []), false);
   assert.equal(isLineUnlocked(traps, "ot7", []), false);
   assert.deepEqual(playableLines(londonBlack), []);
   assert.deepEqual(
     playableLines(caro).map((line) => line.id),
-    ["ckb1", "ckb3", "ckb5"],
+    ["ckb1"],
   );
   assert.deepEqual(
     playableLines(traps).map((line) => line.id),
-    ["ot1", "ot2", "ot3", "ot4", "ot5", "ot6"],
+    ["ot1"],
   );
   assert.equal(nextUnlockedLine(londonBlack, "alb1", []), undefined);
-  assert.equal(nextUnlockedLine(caro, "ckb1", [])?.id, "ckb3");
+  assert.equal(nextUnlockedLine(caro, "ckb1", []), undefined);
 
   for (const line of londonBlack.lines) {
     assert.equal(isLineUnlocked(londonBlack, line.id, ["london-black"]), true, line.id);
@@ -185,8 +185,10 @@ test("non-owner cannot open a coming-soon pack; an owner still can; scotch stays
   assert.equal(isComingSoonClosed(caro.id, ["caro-kann-black"]), false);
   assert.equal(nextUnlockedLine(caro, "ckb1", ["caro-kann-black"])?.id, "ckb2");
 
-  assert.equal(isLineUnlocked(scotch, "sg1", []), false);
+  assert.equal(isLineUnlocked(scotch, "sg1", []), true);
+  assert.equal(isLineUnlocked(scotch, "sg2", []), false);
   assert.equal(isLineUnlocked(scotch, "sg1", ["scotch"]), true);
+  assert.equal(isLineUnlocked(scotch, "sg2", ["scotch"]), true);
   assert.equal(canPurchasePack("scotch"), true);
 });
 
