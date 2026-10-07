@@ -12,7 +12,7 @@ export {
 } from "@/lib/play-skus";
 
 /** Only these packs appear in the catalog while we check the rest. */
-export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "qg-white", "opening-traps", "scotch", "london", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "old-indian-black", "stafford-black", "ponziani-white", "alekhine-black", "french-black", "ruy-lopez-white", "sicilian-black"] as const;
+export const VISIBLE_PACK_IDS = ["caro-kann-black", "qgd-black", "slav-defence", "london-black", "d4-sidelines-black", "anti-sicilian-black", "nimzo-larsen-white", "italian-white", "french-white", "alapin-white", "english-black", "kg-black", "scandinavian-white", "pirc-150-white", "dutch-fianchetto-white", "caro-advance-panov-white", "evans-black", "englund-white", "budapest-white", "bdg-black", "qg-white", "opening-traps", "scotch", "london", "english-white", "catalan-white", "nimzo-indian-black", "grunfeld-black", "petroff-black", "berlin-black", "kings-indian-black", "old-indian-black", "stafford-black", "ponziani-white", "alekhine-black", "french-black", "ruy-lopez-white", "sicilian-black"] as const;
 
 export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
 
@@ -21,7 +21,7 @@ export type VisiblePackId = (typeof VISIBLE_PACK_IDS)[number];
  * Every other pack id is coming soon.
  * Relaunch a pack by adding its id here — one line.
  */
-export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black"] as const;
+export const LIVE_PACK_IDS = ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence"] as const;
 
 export type LivePackId = (typeof LIVE_PACK_IDS)[number];
 
@@ -40,9 +40,6 @@ export function isPackComingSoon(pack: Pick<Pack, "id"> | string): boolean {
   const id = typeof pack === "string" ? pack : pack.id;
   // Live on the website gym, but still absent from the visible catalog.
   if (isWebsiteClassicSample(id)) return false;
-  // Slav preview: trainable from ?pack=slav-defence, not listed on the live site.
-  // Line 1 is the free sample; line 2 onward uses the usual £1.99 lock.
-  if (id === "slav-defence") return false;
   return !(LIVE_PACK_IDS as readonly string[]).includes(id);
 }
 
@@ -171,7 +168,7 @@ export function nextUnlockedLine(
 export const PLAY_BUY_ALL_SKU = PLAY_SKU_BUY_ALL;
 
 /**
- * Path B Play INAPP map — same 35 pack ids as PLAY_PATH_B_PACK_IDS
+ * Path B Play INAPP map — same pack ids as PLAY_PATH_B_PACK_IDS
  * (includes caro-kann-black extras and opening-traps).
  * Lab+ yearly is not a pack SKU path.
  */
