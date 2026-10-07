@@ -31,13 +31,17 @@ const EXPECTED = {
   sd10: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Nbd7", "Nxc4", "Qc7", "g3", "e5"],
 };
 
-test("Slav Defence preview replaces the old survey: 10 educational lines, hidden from the live catalog", () => {
+test("Slav Defence is a listed live pack: 10 educational lines, free sample sd1", () => {
   const packs = src("src/data/packs.ts");
   const catalog = src("src/lib/catalog.ts");
   const notice = src("src/components/opening-lab/slav-pack-notice.tsx");
   const intro = src("src/lib/slav-preview.ts");
   const landing = src("src/components/opening-lab/home-intro.tsx");
   const memory = src("src/components/opening-lab/square-memory.tsx");
+  const shell = src("src/components/opening-lab/app-shell.tsx");
+  const list = src("src/components/opening-lab/pack-list.tsx");
+  const skus = src("src/lib/play-skus.ts");
+  const billing = src("android/app/src/main/java/uk/co/openinglab/PlayBilling.java");
   const slav = packBlock(packs, "slav-defence");
 
   assert.equal(packs.match(/id: "slav-defence"/g)?.length, 1);
@@ -56,10 +60,10 @@ test("Slav Defence preview replaces the old survey: 10 educational lines, hidden
 
   const visible = catalog.match(/VISIBLE_PACK_IDS = \[([^\]]+)\]/)?.[1] ?? "";
   const live = catalog.match(/LIVE_PACK_IDS = \[([^\]]+)\]/)?.[1] ?? "";
-  assert.equal(visible.includes("slav-defence"), false);
-  assert.equal(live.includes("slav-defence"), false);
+  assert.equal(visible.includes("slav-defence"), true);
+  assert.equal(live.includes("slav-defence"), true);
   assert.match(catalog, /"slav-defence": \["sd1"\]/);
-  assert.match(catalog, /id === "slav-defence"/);
+  assert.doesNotMatch(catalog, /id === "slav-defence"/);
 
   const sampleBlock = catalog.slice(
     catalog.indexOf("FREE_SAMPLE_LINE_IDS"),
@@ -96,7 +100,18 @@ test("Slav Defence preview replaces the old survey: 10 educational lines, hidden
   assert.doesNotMatch(`${intro}\n${notice}\n${slav}`, /5 book \+ 5 punish/);
 
   assert.equal(landing.includes("slav-defence"), false);
+  assert.match(landing, /Square Memory/);
+  assert.match(landing, /Position Recall/);
   assert.equal(memory.includes("slav-defence"), false);
+  assert.doesNotMatch(shell, /isSlavPreviewPack/);
+  assert.doesNotMatch(list, /SLAV_PREVIEW_PACK_ID/);
+  assert.match(skus, /"slav-defence"/);
+  assert.match(billing, /"slav-defence"/);
+  const liveSale = billing.slice(
+    billing.indexOf("LIVE_SALE_PACK_IDS"),
+    billing.indexOf("private static final Set"),
+  );
+  assert.equal(liveSale.includes('"slav-defence"'), false);
 
   const lineIds = [...slav.matchAll(/id: "(sd\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(lineIds, Object.keys(EXPECTED));

@@ -9,7 +9,6 @@ import {
   readRequestedPackId,
 } from "@/lib/catalog";
 import { isClassicSamplePack } from "@/lib/classic-sample";
-import { isSlavPreviewPack } from "@/lib/slav-preview";
 import {
   gymPackFromLine,
   isGymPack,
@@ -97,7 +96,6 @@ function OpeningLabInner() {
     (pack: Pick<Pack, "id"> | string): boolean => {
       if (isGymPack(pack)) return true;
       if (isClassicSamplePack(pack)) return !isPlayWrap();
-      if (isSlavPreviewPack(pack)) return !isPlayWrap();
       if (!isPackVisible(pack)) return false;
       const id = typeof pack === "string" ? pack : pack.id;
       return !isComingSoonClosed(id, state.packs, subscribed);
@@ -173,11 +171,6 @@ function OpeningLabInner() {
   useEffect(() => {
     const packId = readRequestedPackId();
     if (packId) {
-      // Preview drill. Absent from the live catalog; the query opens it.
-      if (isSlavPreviewPack(packId)) {
-        if (!isPlayWrap()) goPacks(packId);
-        return;
-      }
       if (!isPackVisible(packId) && !isGymPack(packId)) {
         goHome();
         return;
