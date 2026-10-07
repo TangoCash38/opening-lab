@@ -64,7 +64,7 @@ test("French Defence Potato Pie intro stays on the line list; Line 1 is the Wina
   const skus = src("src/lib/play-skus.ts");
   assert.match(
     catalog,
-    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence"\]/,
+    /LIVE_PACK_IDS = \["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white", "french-black", "ruy-lopez-white", "sicilian-black", "qgd-black", "slav-defence", "nimzo-indian-black"\]/,
   );
   assert.match(catalog, /"french-black": \["frb1"\]/);
   assert.doesNotMatch(catalog, /"french-black": \["frb1", "frb2"/);

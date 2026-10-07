@@ -118,7 +118,7 @@ export const STUDY_INTRO_SETUPS: Readonly<Record<string, IntroSetup>> = {
   },
   "nimzo-indian-black": {
     lineId: "nib1",
-    plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "Qc2", "O-O", "a3", "Bxc3+", "Qxc3", "b6", "Nf3", "Bb7"],
+    plies: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Bd3", "d5", "Nf3", "c5", "O-O", "Nc6"],
   },
   "grunfeld-black": {
     lineId: "gfb1",

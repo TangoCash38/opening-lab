@@ -58,7 +58,6 @@ const COMING_SOON_CHIP_IDS = [
   "english-white",
   "kings-indian-black",
   "catalan-white",
-  "nimzo-indian-black",
   "petroff-black",
   "berlin-black",
 ] as const;
