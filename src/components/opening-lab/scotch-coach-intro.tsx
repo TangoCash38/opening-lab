@@ -177,8 +177,67 @@ function CoachCardFrame({
 type PackTalk = "intro" | "line";
 
 /**
- * Captions with no recording. Next moves on, and each beat also dwells for
+ * Pack intro with no recording. Every sentence stays on screen. Nothing
+ * advances on a timer. Start is the only way on.
+ */
+function WrittenPackIntro({
+  title,
+  paragraphs,
+  plain = false,
+  name,
+  onDone,
+}: {
+  title: string;
+  paragraphs: readonly string[];
+  plain?: boolean;
+  name?: string;
+  onDone: CoachDone;
+}) {
+  const { t } = useI18n();
+  const leave = useOnceCoachLeave(onDone);
+  const plateName = plain ? title : (name ?? SCOTCH_COACH_NAME);
+  return (
+    <div
+      className="scotch-coach-card written-pack-intro"
+      data-scotch-coach
+      data-scotch-coach-talk="intro"
+      data-written-intro="true"
+      data-coach-text-only="true"
+      data-coach-plain={plain ? "true" : undefined}
+      role="region"
+      aria-label={t(plateName)}
+    >
+      {plain ? null : (
+        <p className="scotch-coach-name" id="scotch-coach-name" data-scotch-coach-name>
+          {t(plateName)}
+        </p>
+      )}
+      <p className="written-pack-intro-title">{t(title)}</p>
+      <div className="written-pack-intro-body">
+        {paragraphs.map((paragraph) => (
+          <p key={paragraph} className="written-pack-intro-line" data-written-intro-line>
+            {t(paragraph)}
+          </p>
+        ))}
+      </div>
+      <div className="scotch-coach-actions">
+        <button
+          type="button"
+          className="scotch-coach-next"
+          data-written-intro-start
+          onClick={() => leave()}
+        >
+          {t("Start")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Line talk with no recording. Next moves on, and each beat also dwells for
  * COACH_TEXT_BEAT_SEC. There is no Mute control. The last beat starts Practice.
+ * Pack intros do not use this card.
  */
 function TextOnlyCoachCard({
   talk,
@@ -366,6 +425,17 @@ function PackCoachCard({
     (talk === "intro" ? config.introAudioFallbackSec : config.firstLineAudioFallbackSec) ??
     Math.max(1, captions.length) * COACH_TEXT_BEAT_SEC;
   if (!audio) {
+    if (talk === "intro") {
+      return (
+        <WrittenPackIntro
+          title={title}
+          paragraphs={captions}
+          plain={config.plain === true}
+          name={config.coachName}
+          onDone={onDone}
+        />
+      );
+    }
     return (
       <TextOnlyCoachCard
         talk={talk}

@@ -17,8 +17,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "Free sample: Advance, Classical, Exchange. Other Caro lines are in the full pack.",
   ],
   "qgd-black": [
-    "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4. The book replies are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.",
-    "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
+    "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.",
+    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.",
+    "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.",
+    "Practice with the green hint, then Test with none.",
   ],
   london: [
     "The London System is White’s classical 1.d4 with an early Bf4. The centre stays solid behind e3 and c3, the dark-squared bishop is out, and the same pyramid meets …d5, …c5, …Bf5, a King’s Indian, or an Indian move-order.",

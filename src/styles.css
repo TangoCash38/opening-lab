@@ -4530,6 +4530,65 @@ html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
   text-align: center;
 }
 
+/*
+ * Written pack intro. All sentences stay visible. The phone plate is a
+ * column so the copy is full width, not a caption squeezed beside a portrait.
+ */
+.home-coach-practice[data-written-intro="true"] .scotch-coach-plate,
+[data-surface="play"] .home-coach-practice[data-written-intro="true"] .scotch-coach-plate {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0.85rem 0.9rem 0.75rem;
+}
+
+.home-coach-practice[data-written-intro="true"] .written-pack-intro,
+[data-surface="play"] .home-coach-practice[data-written-intro="true"] .written-pack-intro {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.written-pack-intro-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #5c3b22;
+}
+
+.written-pack-intro-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.written-pack-intro-line {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #3a2a1c;
+  overflow-wrap: anywhere;
+}
+
+.home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-actions,
+[data-surface="play"] .home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-actions {
+  margin-top: 0.75rem;
+}
+
+.home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-next,
+[data-surface="play"] .home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-next {
+  flex: 1 1 100%;
+  width: 100%;
+  min-height: 2.75rem;
+  font-size: 0.95rem;
+}
+
 /* Optional transcript under the line blurb. In flow, never over the squares. */
 .scotch-coach-reading {
   position: static;

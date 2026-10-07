@@ -18,6 +18,7 @@ import {
   coachPackLineApplies,
   coachLinePlyCues,
   coachPack,
+  coachPackWrittenIntro,
   coachTalkAfterPackIntro,
   coachTalkPlies,
   markCoachIntroSeen,
@@ -387,7 +388,7 @@ export function HomeHero({
         // Paid lines stay locked. Unpaid visitors still hear King Cedar.
         line = pack.lines.find((l) => l.id === "sib1");
       } else if (pack.id === "qgd-black") {
-        // qgdb1 is free. qgdb2–qgdb10 stay locked. Unpaid visitors still see the text-only intro.
+        // qgdb1 is free. qgdb2–qgdb10 stay locked. Unpaid visitors still see the written intro.
         line = pack.lines.find((l) => l.id === "qgdb1");
       } else {
         const samples = FREE_SAMPLE_LINE_IDS[pack.id];
@@ -607,6 +608,9 @@ export function HomeHero({
                 data-scotch-coach-dock
                 data-scotch-coach-talk={coach.talk}
                 data-coach-plain={coachPack(pack.id)?.plain ? "true" : undefined}
+                data-written-intro={
+                  coach.talk === "intro" && coachPackWrittenIntro(pack.id) ? "true" : undefined
+                }
               >
                 <div className="scotch-coach-plate" data-scotch-coach-plate>
                   {/* Distinct keys so a talk change deletes the previous figure. */}

@@ -3,8 +3,9 @@
  *
  * Practice opens `introBeats`. The first book line (`firstLineId`, never the
  * line title) opens `firstLineBeats`. Optional `introAudio` / `firstLineAudio`
- * are mp3 paths. With no audio, captions advance on Next and a short timer,
- * and each first-line beat plays its `ply` on the board. An audio file uses
+ * are mp3 paths. With no audio, the pack intro is a written card the player
+ * reads, then starts. A first-line talk with no audio still advances on Next
+ * and a short timer, and each beat plays its `ply` on the board. An audio file uses
  * `atSec` for captions and `plyAtSec` for the moment each move is spoken.
  *
  * Scotch keeps the cuppa clip and the sg1 Canal clip, including the session
@@ -1308,14 +1309,16 @@ const SICILIAN_LINE: readonly CoachLineBeat[] = [
 const QGD_BLACK_PACK_ID = "qgd-black";
 
 /**
- * Text-only Queen's Gambit Declined. No recording. Captions are the signed
- * coaching notes plus a move-by-move walk of the Orthodox setup.
+ * Written Queen's Gambit Declined intro. No recording and no auto-advance.
+ * The player reads it, then presses Start. The sentences follow the ten
+ * signed lines: Orthodox, Nf3-first Orthodox, ...dxc4/...Nd5, quiet Bd3
+ * ...c5, four Exchange lines, Lasker Defence, and Tartakower.
  */
 const QGD_BLACK_INTRO = [
-  "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps a pawn on d5 instead of taking on c4.",
-  "These ten lines are the Orthodox, the Exchange, the Lasker Defence, and the Tartakower.",
-  "This pack is 10 lines from Opening Lab. Practice with the green hint, then Test with none.",
-  "Each line ends where the book ends. Learn the move and its purpose, then recognise the structure in a game.",
+  "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.",
+  "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.",
+  "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.",
+  "Practice with the green hint, then Test with none.",
 ] as const;
 
 const QGD_BLACK_LINE: readonly CoachLineBeat[] = [
@@ -1497,6 +1500,18 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
 
 export function coachPack(packId: string): CoachPackConfig | undefined {
   return COACH_PACKS[packId];
+}
+
+/**
+ * Packs whose intro has no recording. Those used to step through captions
+ * on a short timer. They now show the same sentences together, and wait.
+ * Audio intros (Scotch, Potato Pie, Big Red, King Cedar) stay on the clip.
+ */
+export function coachPackWrittenIntro(packId: string): boolean {
+  if (packId === SCOTCH_PACK_ID) return false;
+  const pack = COACH_PACKS[packId];
+  if (!pack || pack.introAudio) return false;
+  return pack.introBeats.length > 0;
 }
 
 /** Practice-button intro for a coached pack other than Scotch (Scotch has its own gate). */

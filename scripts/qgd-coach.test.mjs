@@ -58,7 +58,20 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
   assert.doesNotMatch(qgdCoach, /Potato|Big Red|King Cedar|kettle|my loves|mp3|wav/i);
   assert.match(hero, /pack\.id === "qgd-black"/);
   assert.match(hero, /l\.id === "qgdb1"/);
-  assert.match(hero, /text-only intro/);
+  assert.match(hero, /written intro/);
+  assert.match(hero, /data-written-intro=/);
+  const written = intro.slice(
+    intro.indexOf("function WrittenPackIntro"),
+    intro.indexOf("Line talk with no recording"),
+  );
+  assert.match(written, /data-written-intro="true"/);
+  assert.match(written, /data-written-intro-start/);
+  assert.match(written, /t\("Start"\)/);
+  assert.doesNotMatch(written, /setTimeout|COACH_TEXT_BEAT_SEC|Play on/);
+  assert.match(coachSrc, /export function coachPackWrittenIntro/);
+  assert.match(coachSrc, /This is the Queen's Gambit Declined for Black/);
+  assert.match(coachSrc, /The 10 lines in this pack/);
+  assert.doesNotMatch(qgdCoach, /setTimeout|5 book|punish|Play on|trap/i);
   assert.match(hero, /data-coach-plain=\{coachPack\(pack\.id\)\?\.plain \? "true" : undefined\}/);
   assert.match(hero, /coachPack\(pack\.id\)\?\.plain \? null/);
   assert.match(intro, /data-coach-plain=\{plain \? "true" : undefined\}/);
@@ -90,6 +103,7 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
         coachTalkPlies,
         coachTextPlayedSans,
         isCoachTextOnly,
+        coachPackWrittenIntro,
       } = await import(${JSON.stringify(compiled)});
       const pack = PACKS.find((item) => item.id === "qgd-black");
       if (!pack) throw new Error("qgd pack missing");
@@ -139,6 +153,21 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
       if (game.turn() !== "w") throw new Error("must end on Black");
       const why = coach.firstLineBeats.at(-1).caption;
       if (why !== qgdb1.idea) throw new Error("last caption is not the signed why");
+      if (!coachPackWrittenIntro("qgd-black")) throw new Error("written intro");
+      for (const id of Object.keys(COACH_PACKS)) {
+        if (id !== "qgd-black" && coachPackWrittenIntro(id)) {
+          throw new Error("unexpected written intro " + id);
+        }
+      }
+      const expectedIntro = [
+        "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.",
+        "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.",
+        "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.",
+        "Practice with the green hint, then Test with none.",
+      ];
+      if (coach.introBeats.join("\\n") !== expectedIntro.join("\\n")) {
+        throw new Error("intro\\n" + coach.introBeats.join("\\n"));
+      }
       const introPlies = coachTalkPlies("qgd-black", "intro");
       if (!introPlies || introPlies.some(Boolean)) throw new Error("intro should hold the start position");
       const joined = [...coach.introBeats, ...coach.firstLineBeats.map((beat) => beat.caption)].join("\\n");
