@@ -78,7 +78,7 @@ export function UnlockModal({
               </h2>
               <p className="m-0 mt-1 text-[0.85rem] text-fg-muted" data-whole-pack-price>
                 {caroRest
-                  ? t("Three lines stay free. This unlocks the rest of the pack.")
+                  ? t("1 free line. This unlocks the rest of the pack.")
                   : wholePackLines}
               </p>
             </div>

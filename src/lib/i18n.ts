@@ -188,8 +188,8 @@ const en: Dict = {
   "Payment not confirmed yet": "Payment not confirmed yet",
   "Could not confirm payment": "Could not confirm payment",
   "Unlock {packName}": "Unlock {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Three lines stay free. This unlocks the rest of the pack.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 free line. This unlocks the rest of the pack.",
   "One-time purchase. This pack only.": "One-time purchase. This pack only.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.",
@@ -426,8 +426,8 @@ const es: Dict = {
   "Payment not confirmed yet": "Pago aún no confirmado",
   "Could not confirm payment": "No se pudo confirmar el pago",
   "Unlock {packName}": "Desbloquear {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Tres líneas siguen gratis. Esto desbloquea el resto del pack.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 línea gratis. Esto desbloquea el resto del pack.",
   "One-time purchase. This pack only.": "Pago único. Solo este pack.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Algunos packs ya están disponibles. Hay más en camino con Professor Potato Pie. Las líneas de muestra gratis se siguen entrenando aquí.",
@@ -647,8 +647,8 @@ const zh: Dict = {
   "Payment not confirmed yet": "付款尚未确认",
   "Could not confirm payment": "无法确认付款",
   "Unlock {packName}": "解锁 {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "三条线路保持免费。此项解锁该棋包其余线路。",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 条免费线路。此项解锁该棋包其余线路。",
   "One-time purchase. This pack only.": "一次性购买。仅此棋包。",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "部分棋包现已可用。更多棋包将随 Professor Potato Pie 推出。免费试学线路仍可在此训练。",
@@ -868,8 +868,8 @@ const fr: Dict = {
   "Payment not confirmed yet": "Paiement pas encore confirmé",
   "Could not confirm payment": "Impossible de confirmer le paiement",
   "Unlock {packName}": "Débloquer {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Trois lignes restent gratuites. Ceci débloque le reste du pack.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 ligne gratuite. Ceci débloque le reste du pack.",
   "One-time purchase. This pack only.": "Achat unique. Ce pack seulement.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Certains packs sont disponibles. D'autres arrivent avec Professor Potato Pie. Les lignes d'essai gratuites s'entraînent toujours ici.",
@@ -1089,8 +1089,8 @@ const de: Dict = {
   "Payment not confirmed yet": "Zahlung noch nicht bestätigt",
   "Could not confirm payment": "Zahlung konnte nicht bestätigt werden",
   "Unlock {packName}": "{packName} freischalten",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Drei Linien bleiben kostenlos. Damit schaltest du den Rest des Packs frei.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 kostenlose Linie. Damit schaltest du den Rest des Packs frei.",
   "One-time purchase. This pack only.": "Einmalkauf. Nur dieses Pack.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Einige Packs sind jetzt da. Weitere kommen mit Professor Potato Pie. Kostenlose Probelinien trainierst du hier weiter.",
@@ -1310,8 +1310,8 @@ const pt: Dict = {
   "Payment not confirmed yet": "Pagamento ainda não confirmado",
   "Could not confirm payment": "Não foi possível confirmar o pagamento",
   "Unlock {packName}": "Desbloquear {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Três linhas continuam grátis. Isso desbloqueia o resto do pack.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 linha grátis. Isso desbloqueia o resto do pack.",
   "One-time purchase. This pack only.": "Compra única. Só este pack.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Alguns packs já estão disponíveis. Mais chegam com Professor Potato Pie. As linhas de amostra grátis ainda treinam aqui.",
@@ -1531,8 +1531,8 @@ const ru: Dict = {
   "Payment not confirmed yet": "Оплата ещё не подтверждена",
   "Could not confirm payment": "Не удалось подтвердить оплату",
   "Unlock {packName}": "Открыть {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Три линии остаются бесплатными. Это открывает остаток пака.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 бесплатная линия. Это открывает остаток пака.",
   "One-time purchase. This pack only.": "Разовая покупка. Только этот пак.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Некоторые паки уже доступны. Ещё будут с Professor Potato Pie. Бесплатные пробные линии здесь всё равно тренируются.",
@@ -1751,8 +1751,8 @@ const it: Dict = {
   "Payment not confirmed yet": "Pagamento non ancora confermato",
   "Could not confirm payment": "Impossibile confermare il pagamento",
   "Unlock {packName}": "Sblocca {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Tre linee restano gratis. Questo sblocca il resto del pack.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 linea gratis. Questo sblocca il resto del pack.",
   "One-time purchase. This pack only.": "Acquisto unico. Solo questo pack.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Alcuni pack sono disponibili ora. Altri arrivano con Professor Potato Pie. Le linee di prova gratis si allenano ancora qui.",
@@ -1972,8 +1972,8 @@ const hi: Dict = {
   "Payment not confirmed yet": "भुगतान की पुष्टि अभी नहीं हुई",
   "Could not confirm payment": "भुगतान की पुष्टि नहीं हो सकी",
   "Unlock {packName}": "{packName} खोलें",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "तीन लाइनें मुफ़्त रहती हैं। इससे पैक की बाकी लाइनें खुलती हैं।",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 मुफ़्त लाइन। इससे पैक की बाकी लाइनें खुलती हैं।",
   "One-time purchase. This pack only.": "एक बार की खरीद। केवल यही पैक।",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "कुछ पैक अभी उपलब्ध हैं। और Professor Potato Pie के साथ आ रहे हैं। मुफ़्त सैंपल लाइनें यहाँ ट्रेन होती रहेंगी।",
@@ -2193,7 +2193,7 @@ const ja: Dict = {
   "Payment not confirmed yet": "支払い未確認",
   "Could not confirm payment": "支払いを確認できません",
   "Unlock {packName}": "{packName} を解除",
-  "Three lines stay free. This unlocks the rest of the pack.": "3ラインは無料のまま。これでパックの残りを解除します。",
+  "1 free line. This unlocks the rest of the pack.": "無料ライン1本。これでパックの残りを解除します。",
   "One-time purchase. This pack only.": "買い切り。このパックのみ。",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "一部のパックは今使えます。さらに Professor Potato Pie と一緒に公開します。無料の見本ラインはここでトレーニングできます。",
@@ -2410,8 +2410,8 @@ const ar: Dict = {
   "Payment not confirmed yet": "لم يُؤكَّد الدفع بعد",
   "Could not confirm payment": "تعذّر تأكيد الدفع",
   "Unlock {packName}": "افتح {packName}",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "ثلاثة خطوط تبقى مجانية. هذا يفتح بقية الحزمة.",
+  "1 free line. This unlocks the rest of the pack.":
+    "خط واحد مجاني. هذا يفتح بقية الحزمة.",
   "One-time purchase. This pack only.": "شراء لمرة واحدة. هذه الحزمة فقط.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "بعض الحزم متاحة الآن. المزيد قادم مع Professor Potato Pie. خطوط العينة المجانية ما زالت تُدرَّب هنا.",
@@ -2631,8 +2631,8 @@ const tr: Dict = {
   "Payment not confirmed yet": "Ödeme henüz onaylanmadı",
   "Could not confirm payment": "Ödeme onaylanamadı",
   "Unlock {packName}": "{packName} paketini aç",
-  "Three lines stay free. This unlocks the rest of the pack.":
-    "Üç hat ücretsiz kalır. Bu, paketin geri kalanını açar.",
+  "1 free line. This unlocks the rest of the pack.":
+    "1 ücretsiz hat. Bu, paketin geri kalanını açar.",
   "One-time purchase. This pack only.": "Tek seferlik satın alma. Yalnızca bu paket.",
   "Some packs are available now. More are coming with Professor Potato Pie. Free sample lines still train here.":
     "Bazı paketler şimdi hazır. Daha fazlası Professor Potato Pie ile geliyor. Ücretsiz örnek hatlar burada çalışmaya devam eder.",
