@@ -31,6 +31,7 @@ import {
 import { isPlayWrap } from "@/lib/play-app";
 import { packCompletePercent } from "@/lib/progress";
 import { isClassicSamplePack, classicSamplePack } from "@/lib/classic-sample";
+import { isSlavPreviewPack, SLAV_PREVIEW_PACK_ID } from "@/lib/slav-preview";
 import { classicRunAlreadySeen } from "@/lib/classic-run";
 import { LONDON_PACK_ID, type TrainStartOptions } from "@/lib/london-warmup";
 import { beginClassicRunNarration } from "./classic-run-the-game";
@@ -379,6 +380,10 @@ export function PackList({
   }, []);
 
   const catalog = visiblePacks(PACKS);
+  const previewPack =
+    focusPackId && isSlavPreviewPack(focusPackId)
+      ? (PACKS.find((pack) => pack.id === SLAV_PREVIEW_PACK_ID) ?? null)
+      : null;
   const classicSample = showClassicSample ? classicSamplePack() : null;
   const isLead = (p: Pack) => (LEAD_PACK_IDS as readonly string[]).includes(p.id);
   const lead = LEAD_PACK_IDS.map((id) => catalog.find((p) => p.id === id)).filter(
@@ -662,6 +667,8 @@ export function PackList({
       ) : null}
 
       <div className="pack-list-grid">
+        {previewPack ? renderCard(previewPack) : null}
+
         {lead.map((pack) => renderCard(pack))}
 
         {classicSample ? renderCard(classicSample) : null}

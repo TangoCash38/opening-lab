@@ -15,6 +15,16 @@ export type OpeningLine = {
   idea?: string;
   /** What happens after the book. Optional; the end modal falls back to idea. */
   next?: string;
+  /**
+   * Educational notes shown while training. The Slav preview sets these.
+   * Other packs leave them unset.
+   */
+  drill?: {
+    teach: string;
+    watch: string;
+    checkpoint: string;
+    answer: string;
+  };
   /** Named model game — who sat each side */
   players?: ModelPlayers;
 };
@@ -5618,18 +5628,155 @@ export const PACKS: Pack[] = [
   },
   {
     id: "slav-defence",
-    name: "Slav Defence",
+    name: "Slav Defence for Black",
     eco: "D10–D19",
     side: "Black",
     section: "black",
     isFree: false,
     isPremium: true,
     price: "£1.99",
-    blurb: "3-line survey · Solid …c6 · main line, exchange & Chebanenko",
+    blurb: "10 lines from Opening Lab",
     lines: [
-      { id: "sd1", name: "Line 1 · Main line", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"], side: "b" },
-      { id: "sd2", name: "Line 2 · Exchange Variation", plies: ["d4", "d5", "c4", "c6", "cxd5", "cxd5", "Nc3", "Nf6", "Nf3", "Nc6", "Bf4", "Bf5", "e3", "e6", "Qb3", "Bb4", "Bb5", "O-O", "O-O", "Bxc3"], side: "b" },
-      { id: "sd3", name: "Line 3 · Chebanenko 4…a6", plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "a6", "e3", "b5", "b3", "Bg4", "Be2", "e6", "O-O", "Nbd7", "h3", "Bh5", "Bb2", "Be7"], side: "b" },
+      {
+        id: "sd1",
+        name: "Classical foundation",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5"],
+        idea: "Learn the core move order.",
+        next: "Complete development with ...e6, ...Bb4 and castling if White chooses e3.",
+        drill: {
+          teach: "White's a4 restrains ...b5. Black develops the bishop to f5, helping control e4. The pawn on c4 is normally temporary.",
+          watch: "Do not try to defend c4 at the expense of development.",
+          checkpoint: "Why does White play a4 before recovering the pawn?",
+          answer: "To discourage ...b5, which could support the extra pawn.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd2",
+        name: "Classical: safe development",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "O-O"],
+        idea: "Connect development with king safety.",
+        next: "Consider ...Nbd7 and improving your rooks; assess central breaks rather than playing one automatically.",
+        drill: {
+          teach: "Black plays ...e6 only after the c8 bishop has escaped. ...Bb4 develops with pressure on the c3-knight. Both sides castle.",
+          watch: "A pinned knight is not automatically a free piece. White can unpin or challenge your bishop.",
+          checkpoint: "What did Black gain by allowing Bxc4?",
+          answer: "Time for harmonious development and a safe king, rather than a permanent extra pawn.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd3",
+        name: "Classical: White jumps to e5",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Nbd7", "Nxc4", "Qc7"],
+        idea: "Respond to an active central knight.",
+        next: "Study drill 10 for the ...e5 continuation.",
+        drill: {
+          teach: "...Nbd7 challenges e5. White recovers c4 with the knight; ...Qc7 supports a possible ...e5 break.",
+          watch: "Do not assume a knight on e5 forces you to retreat your f6-knight.",
+          checkpoint: "What is Black preparing with Qc7?",
+          answer: "Central counterplay with ...e5, when the position permits it.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd4",
+        name: "White omits a4: queenside expansion",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "e3", "b5", "a4", "b4", "Na2", "e6", "Bxc4"],
+        idea: "Understand why the a-pawn matters.",
+        next: "Develop the bishops and arrange king safety. White has recovered the pawn, but Black has gained queenside space.",
+        drill: {
+          teach: "Without an earlier a4, Black has time for ...b5. After White challenges with a4, ...b4 gains space and attacks the c3-knight. This line is the Alekhine Variation.",
+          watch: "This is a specific move-order branch, not permission to play ...b5 in every Slav position.",
+          checkpoint: "Why does White play Na2?",
+          answer: "The c3-knight is attacked by the pawn on b4 and needs a safe retreat.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd5",
+        name: "Slow Slav: develop the bishop",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6"],
+        idea: "Recognise when ...Bf5 is practical.",
+        next: "Develop the f8 bishop, castle and monitor White's possible Nh4.",
+        drill: {
+          teach: "White's e3 supports the centre but closes the c1 bishop's diagonal. Black develops the light-squared bishop before playing ...e6.",
+          watch: "Do not confuse this with 4.Nc3 Bf5: White's move order changes the pressure on d5 and b7.",
+          checkpoint: "What has Black achieved before playing e6?",
+          answer: "The c8 bishop is outside the pawn chain.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd6",
+        name: "Slow Slav: the bishop is challenged",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6", "Nh4"],
+        idea: "Evaluate the bishop pair versus structure.",
+        next: "Compare ...Bg6, allowing an exchange and a possible ...hxg6 recapture, with ways to preserve the bishop. Keep development in view.",
+        drill: {
+          teach: "White threatens Nxf5, trying to gain the bishop pair. This is a genuine strategic decision, not a trick with one universally forced reply.",
+          watch: "Do not spend several tempi saving the bishop without checking whether the resulting position is worth it.",
+          checkpoint: "Is losing the bishop pair automatically losing the game?",
+          answer: "No. Pawn structure, activity and central control also matter.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd7",
+        name: "Exchange Slav: active symmetry",
+        plies: ["d4", "d5", "c4", "c6", "cxd5", "cxd5", "Nf3", "Nf6", "Nc3", "Nc6", "Bf4", "Bf5"],
+        idea: "Play a symmetrical position purposefully.",
+        next: "Prepare e3, bishop development and castling; later consider rooks on the open c-file.",
+        drill: {
+          teach: "The c-pawns have left the c-file. Both sides develop naturally; symmetry does not remove the need for concrete calculation.",
+          watch: "Copying White indefinitely is not a plan. Check every threat first.",
+          checkpoint: "Which file is already open?",
+          answer: "The c-file.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd8",
+        name: "Exchange Slav: queen pressure",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "cxd5", "cxd5", "Qb3", "Qc7"],
+        idea: "Meet pressure on b7 without panic.",
+        next: "Continue development while watching queen tactics and pressure on the centre.",
+        drill: {
+          teach: "The bishop has left c8, so White attacks b7 with Qb3. ...Qc7 defends b7 and keeps development manageable. This reaches an Exchange structure from the Slow Slav.",
+          watch: "Do not ignore Qb3 just because you recognise the pawn structure.",
+          checkpoint: "Why does Qc7 defend b7?",
+          answer: "The queen protects b7 along the seventh rank.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd9",
+        name: "Optional: Chebanenko space battle",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "a6", "c5", "Bf5", "Bf4", "Nbd7", "e3", "Nh5"],
+        idea: "Understand ...a6 and White's c5 response.",
+        next: "Study possible ...e5 or ...b6 breaks with preparation. These are options to assess, not automatic next moves.",
+        drill: {
+          teach: "...a6 prepares queenside expansion, often involving ...b5. White's c5 gains space; ...Nh5 challenges the f4 bishop, which controls important dark squares.",
+          watch: "This is an alternative fourth-move system, not something to insert into every Classical line.",
+          checkpoint: "What drawback comes with White's extra space?",
+          answer: "The advanced pawn chain can become a target for correctly timed pawn breaks.",
+        },
+        side: "b",
+      },
+      {
+        id: "sd10",
+        name: "Central counterplay: the e5 break",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Nbd7", "Nxc4", "Qc7", "g3", "e5"],
+        idea: "Turn a solid setup into active play.",
+        next: "Calculate captures on e5 and d4, then develop the f8 bishop and secure your king as the position allows.",
+        drill: {
+          teach: "This is a recognised continuation of the Ne5 branch, known as the Carlsbad Variation. ...e5 challenges White's centre instead of leaving Black passive.",
+          watch: "Do not copy ...e5 into another position without checking tactical support and king safety.",
+          checkpoint: "Why is this more than simply gaining space?",
+          answer: "It changes central tension and can open lines for Black's pieces.",
+        },
+        side: "b",
+      },
     ],
   },
   {
