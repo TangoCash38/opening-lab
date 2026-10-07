@@ -54,11 +54,18 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const intro = src("src/components/opening-lab/scotch-coach-intro.tsx");
   const coachSrc = src("src/lib/coach-packs.ts");
+  const study = src("src/lib/pack-study-intro.ts");
   const qgdCoach = coachSrc.slice(coachSrc.indexOf("const QGD_BLACK_INTRO"), coachSrc.indexOf("export const COACH_PACKS"));
   assert.doesNotMatch(qgdCoach, /Potato|Big Red|King Cedar|kettle|my loves|mp3|wav/i);
-  assert.match(hero, /pack\.id === "qgd-black"/);
-  assert.match(hero, /l\.id === "qgdb1"/);
-  assert.match(hero, /written intro/);
+  assert.match(hero, /if \(packStudyIntro\(pack\.id\)\) return/);
+  assert.match(hero, /SlavPackNotice/);
+  assert.match(hero, /beginStudyLine/);
+  assert.match(hero, /copy=\{studyIntro\}/);
+  assert.match(study, /freeLineId: "qgdb1"/);
+  assert.match(study, /QUEEN'S GAMBIT DECLINED FOR BLACK/);
+  assert.match(study, /Welcome to the start of your Queen's Gambit Declined for Black learning pack/);
+  assert.match(study, /howTo: SLAV_HOW_TO/);
+  assert.doesNotMatch(study, /portrait|<img|Potato|Big Red|King Cedar/i);
   assert.match(hero, /data-written-intro=/);
   const written = intro.slice(
     intro.indexOf("function WrittenPackIntro"),

@@ -2,18 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Chess, type Square } from "chess.js";
 import type { OpeningLine } from "@/data/packs";
-import {
-  SLAV_ABOUT_TITLE,
-  SLAV_HOW_TO,
-  SLAV_INTRO_HEADER,
-  SLAV_INTRO_LEAD,
-  SLAV_INTRO_REST,
-  SLAV_INTRO_START,
-  SLAV_INTRO_SUBTITLE,
-  SLAV_INTRO_TAGLINE,
-  SLAV_STEM,
-  SLAV_WELCOME_TITLE,
-} from "@/lib/slav-preview";
+import type { StudyIntroCopy } from "@/lib/pack-study-intro";
 import { soundMove } from "@/lib/sounds";
 import { ChessBoard, type SlideAnim } from "./chess-board";
 
@@ -21,11 +10,12 @@ type NoticeStep = "about" | "welcome";
 
 type NoticeProps = {
   step: NoticeStep;
+  copy: StudyIntroCopy;
   onNext: () => void;
   onStart: () => void;
 };
 
-function SlavStemBoard() {
+function SlavStemBoard({ stem }: { stem: readonly string[] }) {
   const [game, setGame] = useState(() => new Chess());
   const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
   const [slide, setSlide] = useState<SlideAnim | null>(null);
@@ -35,8 +25,8 @@ function SlavStemBoard() {
   const timerRef = useRef(0);
 
   const playNext = useCallback(() => {
-    if (!aliveRef.current || plyRef.current >= SLAV_STEM.length) return;
-    const san = SLAV_STEM[plyRef.current];
+    if (!aliveRef.current || plyRef.current >= stem.length) return;
+    const san = stem[plyRef.current];
     const current = gameRef.current;
     const probe = new Chess(current.fen());
     const move = probe.move(san);
@@ -51,7 +41,7 @@ function SlavStemBoard() {
     setLastMove({ from: move.from, to: move.to });
     setSlide({ from: move.from, to: move.to, piece });
     soundMove();
-  }, []);
+  }, [stem]);
 
   useEffect(() => {
     aliveRef.current = true;
@@ -61,12 +51,12 @@ function SlavStemBoard() {
     if (reduced) {
       const done = new Chess();
       let last: { from: Square; to: Square } | null = null;
-      for (const san of SLAV_STEM) {
+      for (const san of stem) {
         const move = done.move(san);
         if (move) last = { from: move.from, to: move.to };
       }
       gameRef.current = done;
-      plyRef.current = SLAV_STEM.length;
+      plyRef.current = stem.length;
       setGame(done);
       setLastMove(last);
       return () => {
@@ -78,7 +68,7 @@ function SlavStemBoard() {
       aliveRef.current = false;
       window.clearTimeout(timerRef.current);
     };
-  }, [playNext]);
+  }, [playNext, stem]);
 
   return (
     <div className="slav-intro-board" data-slav-stem-board>
@@ -103,7 +93,7 @@ function SlavStemBoard() {
   );
 }
 
-export function SlavPackNotice({ step, onNext, onStart }: NoticeProps) {
+export function SlavPackNotice({ step, copy, onNext, onStart }: NoticeProps) {
   const [expanded, setExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -123,21 +113,21 @@ export function SlavPackNotice({ step, onNext, onStart }: NoticeProps) {
       aria-labelledby="slav-intro-title"
       data-slav-notice={step}
     >
-      <SlavStemBoard />
+      <SlavStemBoard stem={copy.stem} />
       <div className="slav-notice-card" data-slav-card>
         <div className="slav-notice-card-body">
           {step === "about" ? (
             <>
-              <p className="slav-notice-kicker">{SLAV_ABOUT_TITLE}</p>
+              <p className="slav-notice-kicker">{copy.aboutTitle}</p>
               <h2 id="slav-intro-title" className="slav-notice-title">
-                {SLAV_INTRO_HEADER}
+                {copy.header}
               </h2>
-              <p className="slav-notice-subtitle">{SLAV_INTRO_SUBTITLE}</p>
-              <p className="slav-notice-start">{SLAV_INTRO_START}</p>
-              <p className="slav-notice-tagline">{SLAV_INTRO_TAGLINE}</p>
+              <p className="slav-notice-subtitle">{copy.subtitle}</p>
+              <p className="slav-notice-start">{copy.start}</p>
+              <p className="slav-notice-tagline">{copy.tagline}</p>
               <div data-slav-intro-body data-expanded={expanded ? "true" : "false"}>
-                <p className="slav-notice-paragraph">{SLAV_INTRO_LEAD}</p>
-                {expanded ? <p className="slav-notice-paragraph">{SLAV_INTRO_REST}</p> : null}
+                <p className="slav-notice-paragraph">{copy.lead}</p>
+                {expanded ? <p className="slav-notice-paragraph">{copy.rest}</p> : null}
                 <button
                   type="button"
                   className="slav-notice-expand"
@@ -152,10 +142,10 @@ export function SlavPackNotice({ step, onNext, onStart }: NoticeProps) {
           ) : (
             <>
               <h2 id="slav-intro-title" className="slav-notice-title">
-                {SLAV_WELCOME_TITLE}
+                {copy.welcomeTitle}
               </h2>
               <ol className="slav-notice-steps" data-slav-howto>
-                {SLAV_HOW_TO.map((line) => (
+                {copy.howTo.map((line) => (
                   <li key={line}>{line}</li>
                 ))}
               </ol>
