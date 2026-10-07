@@ -60,9 +60,10 @@ test("every visible drill pack has a two-card study intro", async (t) => {
   assert.match(notice, /<ChessBoard[\s\S]*flip=\{flip\}/);
   assert.doesNotMatch(notice, /<ChessBoard[\s\S]{0,240}\n\s+flip\n/);
   assert.match(notice, /plies=\{copy\.setup\}/);
-  assert.match(notice, /const MOVE_MS = 700/);
+  assert.match(notice, /lastMove=\{null\}/);
+  assert.match(notice, /slide=\{null\}/);
   assert.match(notice, /Typical setup/);
-  assert.match(notice, /plyRef\.current >= plies\.length\) return/);
+  assert.doesNotMatch(notice, /soundMove|setTimeout|MOVE_MS|lastMove=\{lastMove\}/);
   assert.match(study, /formatStart\(row\.stem\)/);
   assert.match(study, /setup: setupFor\(row\.packId\)/);
   assert.deepEqual(

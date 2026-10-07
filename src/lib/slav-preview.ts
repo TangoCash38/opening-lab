@@ -7,7 +7,7 @@
 export const SLAV_PREVIEW_PACK_ID = "slav-defence";
 export const SLAV_FREE_LINE_ID = "sd1";
 
-/** Defining moves in the "Starting position:" sentence. The board plays a longer book prefix. */
+/** Defining moves in the "Starting position:" sentence. The board shows the finished setup. */
 export const SLAV_STEM = ["d4", "d5", "c4", "c6"] as const;
 
 export const SLAV_INTRO_HEADER = "SLAV DEFENCE FOR BLACK";
