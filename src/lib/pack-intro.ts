@@ -109,8 +109,8 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "You are not racing for a mate on move ten. Know which Catalan shell you are in, and practise the main White moves before you mix plans.",
   ],
   "nimzo-indian-black": [
-    "The Nimzo-Indian Defence is 1.d4 Nf6 2.c4 e6 3.Nc3 Bb4. Black pins the knight, fights doubled c-pawns, and strikes with …c5 or …d5 against Classical, Rubinstein, and Sämisch structures.",
-    "You are not racing for a mate on move ten. Know which Nimzo shell you are in, and practise the main Black moves before you mix plans.",
+    "The Nimzo-Indian begins 1.d4 Nf6 2.c4 e6 3.Nc3 Bb4. Black pins the c3-knight, restricts White's e4 advance, and chooses when to exchange the bishop for the knight.",
+    "These lines cover the main White tries. They are not forced sequences. The Nimzo requires White to play Nc3. Against 3.Nf3, you need a separate response.",
   ],
   "grunfeld-black": [
     "The Grünfeld Defence is 1.d4 Nf6 2.c4 g6 with …d5. Black invites the big centre, then strikes it with …c5 or active pieces against Exchange, Russian, and Fianchetto structures.",
