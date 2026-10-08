@@ -2775,7 +2775,7 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
 
   const stem = ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2"];
   const expected = {
-    oib1: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "Nf3", "Be7", "e4", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
+    oib1: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "Nc5", "Be2", "a5", "O-O", "Bd7"],
     oib2: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "e4", "Be7", "Nf3", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
     oib3: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "dxe5", "dxe5", "Nf3", "Bd6", "e3", "O-O", "Be2", "Qe7", "O-O", "a5", "Rd1", "Nc5"],
     oib4: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "a5", "Be2", "Nc5", "O-O", "Bd7"],
@@ -2797,7 +2797,7 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
       m[2],
     ]),
   );
-  assert.equal(names.oib1, "Classical 路 鈥5 Nf3 Be7");
+  assert.equal(names.oib1, "Closed 路 鈥5 Nc5 Bd7");
   assert.equal(names.oib2, "Classical 路 鈥5 e4 Be7");
   assert.equal(names.oib3, "Exchange 路 5.dxe5");
   assert.equal(names.oib4, "Closed 路 5.d5 Be7");
@@ -2875,7 +2875,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1鈥搒g5 book, sg6 trap, sg7鈥
 
   const stem = ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"];
   const expected = {
-    sg1: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Nc3", "Be6", "Bxd5", "dxc3", "Bxe4", "Qxd1", "Rxd1", "cxb2", "Bxb2", "f6"],
+    sg1: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "O-O", "O-O"],
     sg2: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
     sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4", "Re1+", "Be6", "Ng5", "Qd5", "Nc3", "Qf5"],
     sg4: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],

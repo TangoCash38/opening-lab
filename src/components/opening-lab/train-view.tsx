@@ -5,6 +5,7 @@ import {
   type OpeningLine,
   type Pack,
 } from "@/data/packs";
+import { lineFinishNote } from "@/data/line-explains";
 import { nextUnlockedLine } from "@/lib/catalog";
 import {
   soundBad,
@@ -30,6 +31,7 @@ import { ChessBoard, type SlideAnim } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
+import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
 import { beginClassicRunNarration, ClassicRunTheGame } from "./classic-run-the-game";
@@ -325,6 +327,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     nextAction?: ResultNextAction;
     secondaryAction?: "practiceNext";
   } | null>(null);
+  const [finishNote, setFinishNote] = useState<string | null>(null);
+  const pendingFinishRef = useRef<{
+    card: {
+      kind: "end";
+      title: string;
+      caption: string;
+      body: string;
+      actionLabel: string;
+      primaryLabel?: string;
+      nextAction?: ResultNextAction;
+      secondaryAction?: "practiceNext";
+    };
+    nextGame: Chess;
+    immediate: boolean;
+  } | null>(null);
 
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrongTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -430,6 +447,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       completedRef.current = false;
       practiceMissedRef.current = false;
       pendingEndCardRef.current = null;
+      pendingFinishRef.current = null;
+      setFinishNote(null);
       setCelebratePiece(null);
       setMateBlast(null);
       setSession((s) => s + 1);
@@ -534,6 +553,43 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     },
     [],
   );
+
+  /** Full book lines with a note show that card before the usual finish sheet. */
+  const showLineFinish = useCallback(
+    (
+      card: {
+        kind: "end";
+        title: string;
+        caption: string;
+        body: string;
+        actionLabel: string;
+        primaryLabel?: string;
+        nextAction?: ResultNextAction;
+        secondaryAction?: "practiceNext";
+      },
+      nextGame: Chess,
+      immediate = false,
+    ) => {
+      const note = warmup || freeTry ? undefined : lineFinishNote(line, pack.id);
+      if (note) {
+        pendingFinishRef.current = { card, nextGame, immediate };
+        setFinishNote(note);
+        return;
+      }
+      if (immediate) setResultCard(card);
+      else openEndCard(card, nextGame);
+    },
+    [warmup, freeTry, line, pack.id, openEndCard],
+  );
+
+  const dismissFinishNote = useCallback(() => {
+    const pending = pendingFinishRef.current;
+    pendingFinishRef.current = null;
+    setFinishNote(null);
+    if (!pending) return;
+    if (pending.immediate) setResultCard(pending.card);
+    else openEndCard(pending.card, pending.nextGame);
+  }, [openEndCard]);
 
   const beginSlide = useCallback(
     (
@@ -644,7 +700,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           text: "Practice done — Test with no hints",
           cls: "done",
         });
-        openEndCard(
+        showLineFinish(
           endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
           pending.nextGame,
         );
@@ -660,7 +716,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           text: "Finished, but you missed a move — Test again to go green",
           cls: "done",
         });
-        openEndCard(
+        showLineFinish(
           endResultCard(line, pack, purchased, t("Finished, but you missed a move"), t, "practiceAgain", subscribed),
           pending.nextGame,
         );
@@ -672,7 +728,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         cls: "done",
       });
       soundWin();
-      setResultCard(
+      showLineFinish(
         endResultCard(
           line,
           pack,
@@ -682,6 +738,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           "practiceNext",
           subscribed,
         ),
+        pending.nextGame,
+        true,
       );
       if (!completedRef.current) {
         completedRef.current = true;
@@ -705,7 +763,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") scheduleHints();
       else setHintsReady(true);
     }
-  }, [line, pack, purchased, subscribed, t, mode, warmup, bookEndPly, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard, freeTry]);
+  }, [line, pack, purchased, subscribed, t, mode, warmup, bookEndPly, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard, freeTry, showLineFinish]);
 
   useEffect(() => {
     clearReplyTimer();
@@ -1549,6 +1607,15 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       {embedded ? null : <LineFeedback pack={pack} line={line} />}
       </div>
       )}
+      {finishNote ? (
+        <LineFinishNote
+          name={line.name}
+          plies={line.plies}
+          flip={line.side === "b"}
+          text={finishNote}
+          onDone={dismissFinishNote}
+        />
+      ) : null}
       {resultCard ? (
         <LineResultModal
           kind={resultCard.kind}

@@ -102,7 +102,7 @@ export const STUDY_INTRO_SETUPS: Readonly<Record<string, IntroSetup>> = {
   },
   scotch: {
     lineId: "sg1",
-    plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5"],
+    plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5"],
   },
   london: {
     lineId: "lon1",
@@ -138,7 +138,7 @@ export const STUDY_INTRO_SETUPS: Readonly<Record<string, IntroSetup>> = {
   },
   "old-indian-black": {
     lineId: "oib1",
-    plies: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "Nf3", "Be7", "e4", "O-O"],
+    plies: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "Nc5"],
   },
   "stafford-black": {
     lineId: "stb1",

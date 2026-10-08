@@ -269,7 +269,7 @@ export const STUDY_PACK_ROWS: readonly StudyPackRow[] = [
     stem: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4"],
     tagline: "Open the centre. Develop the bishop.",
     lead: "The Scotch Gambit is 1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Bc4. White opens the centre and develops the bishop instead of taking back on d4 at once.",
-    rest: "The Scotch Game is named after an Edinburgh versus London correspondence match in 1824. The gambit with 4.Bc4 is the sharp branch. It is worth learning because the open d-file rewards exact move order. The 10 lines cover the Canal, the Greco, the Max Lange, the Ghulam-Kassim, and ...Be7, including replies when Black takes too much.",
+    rest: "The Scotch Game is named after an Edinburgh versus London correspondence match in 1824. The gambit with 4.Bc4 is the sharp branch. It is worth learning because the open d-file rewards exact move order. The 10 lines cover the main 5.c3 gambit, the Qb3 line, the Max Lange, the Ghulam-Kassim, and ...Be7, including replies when Black takes too much.",
   },
   {
     packId: "london",
