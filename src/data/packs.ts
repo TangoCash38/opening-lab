@@ -16,6 +16,11 @@ export type OpeningLine = {
   /** What happens after the book. Optional; the end modal falls back to idea. */
   next?: string;
   /**
+   * End-of-line card. Optional. A blank or missing note shows no card.
+   * Drill-pack line 1 notes live in line-explains.ts. Later lines can set this.
+   */
+  explain?: string;
+  /**
    * Educational notes shown while training. The Slav preview sets these.
    * Other packs leave them unset.
    */
