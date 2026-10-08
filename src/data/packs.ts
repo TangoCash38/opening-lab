@@ -74,8 +74,8 @@ export const PACKS: Pack[] = [
       {
         id: "sg1",
         name: "Line 1",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Nc3", "Be6", "Bxd5", "dxc3", "Bxe4", "Qxd1", "Rxd1", "cxb2", "Bxb2", "f6"],
-        idea: "Canal: 5.O-O Nxe4 6.Re1 d5 7.Nc3 Be6; Bxd5 dxc3 Bxe4 Qxd1 and Black returns the piece into a pawn-up ending.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "O-O", "O-O"],
+        idea: "Main 5.c3 gambit: meet …Bb4+ with Bd2, win the pawn back by exd5, and castle. Chances are level, with Black’s knight on d5.",
         side: "w",
       },
       {
@@ -4700,9 +4700,9 @@ export const PACKS: Pack[] = [
     lines: [
       {
         id: "oib1",
-        name: "Classical · …e5 Nf3 Be7",
-        plies: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "Nf3", "Be7", "e4", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
-        idea: "After 4.Qc2 …e5, Black builds Be7, castles, then …c6, …Re8, …a5 and …Qc7 against Nf3–e4–Be2.",
+        name: "Closed · …d5 Nc5 Bd7",
+        plies: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "Nc5", "Be2", "a5", "O-O", "Bd7"],
+        idea: "White clamps with d5. Black plays …Be7, plants …Nc5, holds it with …a5, and develops the bishop to d7.",
         side: "b",
       },
       {
@@ -5132,9 +5132,9 @@ export const PACKS: Pack[] = [
       {
         id: "ab1",
         name: "Modern Variation · Flohr …Nd7",
-        idea: "Modern 4.Nf3 dxe5 Nxe5, then Flohr’s …Nd7 — ask the Ne5 to declare, then …e6/…Be7 and castle into a solid shell.",
-        next: "Typical plans: …Bb7, …c5 or …Nbd7–…Qc7. Watch c4–d5 space; don’t rush …c5 until developed.",
-        plies: ["e4", "Nf6", "e5", "Nd5", "d4", "d6", "Nf3", "dxe5", "Nxe5", "Nd7", "Nf3", "e6", "c4", "N5f6", "Nc3", "Be7", "Be2", "O-O", "O-O", "b6"],
+        idea: "Modern 4.Nf3 dxe5 Nxe5, then Flohr’s …Nd7. Castle, play …b6, and after Qc2 put the bishop on b7.",
+        next: "Prepare …c5 against the d4 pawn. White’s space is normal here. Do not open the centre just to make something happen.",
+        plies: ["e4", "Nf6", "e5", "Nd5", "d4", "d6", "Nf3", "dxe5", "Nxe5", "Nd7", "Nf3", "e6", "c4", "N5f6", "Nc3", "Be7", "Be2", "O-O", "O-O", "b6", "Qc2", "Bb7"],
         side: "b",
       },
       {

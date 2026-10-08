@@ -55,7 +55,13 @@ test("every visible drill pack line 1 has a short finish note", () => {
     assert.ok(text, `${key} missing finish note`);
     const count = sentences(text).length;
     assert.ok(count >= 3 && count <= 5, `${key} has ${count} sentences`);
-    assert.doesNotMatch(text, /—|–|forever|lifetime|blunder|trap/i);
+    assert.doesNotMatch(text, /—|–|forever|lifetime|blunder|engine/i);
+    if (key === "stafford-black:stb1") {
+      assert.match(text, /risky/i);
+      assert.match(text, /trap/i);
+    } else {
+      assert.doesNotMatch(text, /trap/i);
+    }
     assert.equal(text.includes("\u2014"), false);
   }
   assert.equal(Object.keys(notes).length, keys.size);
@@ -102,6 +108,12 @@ test("finish card matches the intro shell and sits in front of the end sheet", (
   const learnCall = train.slice(train.lastIndexOf("showLineFinish", learnAt), train.indexOf(");", learnAt) + 2);
   assert.match(learnCall, /"testYourself"/);
   assert.doesNotMatch(learnCall, /practiceNext/);
+
+  const progress = src("src/lib/progress.ts");
+  const warmup = src("src/lib/london-warmup.ts");
+  assert.match(progress, /Math\.min\(99/);
+  assert.match(warmup, /testBestPly < line\.plies\.length/);
+  assert.match(train, /Math\.min\(Math\.floor\(startPly\) \|\| 0, line\.plies\.length\)/);
 
   assert.match(train, /t\("Book solid"\),\n          t,\n          "practiceNext"/);
   const cleanAt = train.indexOf('t("Book solid"),\n          t,\n          "practiceNext"');
