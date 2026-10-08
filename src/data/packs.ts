@@ -4303,9 +4303,9 @@ export const PACKS: Pack[] = [
       {
         id: "peb2",
         name: "Classical 6…Bd6 c6 Re1",
-        idea: "Classical …Bd6 and …c6 build a solid centre. …Bf5 develops actively; …Na6–…Nc7 reroutes the knight toward e6 or b5.",
-        next: "White to move. Against Nc3 or c5, continue …Re8 and …Bg6. Meet Bxe4 with …dxe4 and keep the bishop pair. Do not leave Na6 stranded without …Nc7 or …Nb4.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "d4", "d5", "Bd3", "Bd6", "O-O", "O-O", "c4", "c6", "Re1", "Bf5", "Qc2", "Na6", "a3", "Nc7"],
+        idea: "Classical …Bd6 and …c6 build a solid centre. …Bf5 develops actively, and …Na6 starts the knight toward c7.",
+        next: "Bring the knight from a6 to c7. Keep the e4 knight secure. White is only a touch better, which is normal here.",
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "d4", "d5", "Bd3", "Bd6", "O-O", "O-O", "c4", "c6", "Re1", "Bf5", "Qc2", "Na6"],
         side: "b",
       },
       {
@@ -4622,8 +4622,8 @@ export const PACKS: Pack[] = [
       {
         id: "kidb2",
         name: "Classical: Bayonet Attack",
-        plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5", "a4", "b6", "Ba3", "Nd7"],
-        idea: "Against the Bayonet b4, take on a5 with the rook, then ...b6 and ...Nd7.",
+        plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5", "a4", "b6", "Ba3", "Nd7", "Re1", "f5"],
+        idea: "Against the Bayonet b4, take on a5 with the rook, then ...b6 and ...Nd7. Meet Re1 with ...f5.",
         side: "b",
       },
       {
