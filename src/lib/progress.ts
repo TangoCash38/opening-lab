@@ -20,7 +20,7 @@ export const CARO_LINE_PROGRESS_REVISION = 2;
  * indexes would resume in the wrong position, so those keys are dropped once.
  * Line ids stay. Lines 1 and 2 were left alone in that refresh.
  */
-export const BOOK_LINE_PROGRESS_REVISION = 2;
+export const BOOK_LINE_PROGRESS_REVISION = 3;
 
 export const RESET_BOOK_LINE_IDS = [
   "ckb6", "ckb8", "ckb9", "ckb10",
@@ -86,8 +86,24 @@ export const RESET_BOOK_LINE_IDS_V2 = [
   "ot2", "ot3", "ot5", "ot6", "ot7",
 ] as const;
 
+/**
+ * Second repair on the same preview: tails and trap lines whose SAN
+ * changed again after revision 2. A revision-2 save of those moves is
+ * dropped once. Text-only renames are not in this list.
+ */
+export const RESET_BOOK_LINE_IDS_V3 = [
+  "sg6",
+  "vl2",
+  "evb6", "evb7",
+  "stb2", "stb8",
+  "ab7",
+  "sd1",
+  "ot2", "ot5", "ot6", "ot7",
+] as const;
+
 const RESET_BOOK_LINE_ID_SET = new Set<string>(RESET_BOOK_LINE_IDS);
 const RESET_BOOK_LINE_ID_SET_V2 = new Set<string>(RESET_BOOK_LINE_IDS_V2);
+const RESET_BOOK_LINE_ID_SET_V3 = new Set<string>(RESET_BOOK_LINE_IDS_V3);
 
 export type Mastery = "new" | "learning" | "fresh" | "due" | "weak";
 
@@ -257,8 +273,15 @@ export function migrateBookLineProgress(
     nextRevision = 1;
     changed = true;
   }
-  if (nextRevision < BOOK_LINE_PROGRESS_REVISION) {
+  if (nextRevision < 2) {
     for (const id of RESET_BOOK_LINE_ID_SET_V2) {
+      if (next[id]) delete next[id];
+    }
+    nextRevision = 2;
+    changed = true;
+  }
+  if (nextRevision < BOOK_LINE_PROGRESS_REVISION) {
+    for (const id of RESET_BOOK_LINE_ID_SET_V3) {
       if (next[id]) delete next[id];
     }
     nextRevision = BOOK_LINE_PROGRESS_REVISION;

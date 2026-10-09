@@ -19,7 +19,7 @@ function packBlock(packs, id) {
 }
 
 const EXPECTED = {
-  sd1: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "a5"],
+  sd1: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Na6"],
   sd2: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "O-O"],
   sd3: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Nh4", "e6", "Nxf5", "exf5", "e3"],
   sd4: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "e3", "b5", "a4", "b4", "Na2", "e6", "Bxc4"],

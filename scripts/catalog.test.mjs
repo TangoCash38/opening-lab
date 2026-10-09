@@ -2502,7 +2502,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.match(stb, /After 5\.Nc3 Bc5, 6\.e5\?\? hangs the centre/);
   assert.match(stb, /5\.f3 is a slow try against the Stafford/);
   assert.match(stb, /Black is up a rook/);
-  assert.match(stb, /Pressure e4 and d4/);
+  assert.match(stb, /The queens are off and your king is on d8/);
   assert.doesNotMatch(names.stb14, /Punish the error/);
   assert.doesNotMatch(names.stb18, /Punish the error/);
 
@@ -2526,7 +2526,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.match(ot, /id: "ot6"/);
   assert.match(ot, /Trap 路 Stafford/);
   assert.match(ot, /Nxc6/);
-  assert.doesNotMatch(ot, /Bg4#/);
+  assert.match(ot, /Bg4#/);
   assert.doesNotMatch(ot, /id: "ot11"/);
   assert.doesNotMatch(ot, /id: "ot12"/);
   assert.doesNotMatch(ot, /Alien Gambit/);
@@ -2820,7 +2820,7 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 10 oib book 
     ]),
   );
   assert.equal(names.oib1, "Closed 路 鈥5 Nc5 Bd7");
-  assert.equal(names.oib2, "Classical 路 鈥5 e4 Be7");
+  assert.equal(names.oib2, "Classical 路 鈥5 Nf3 Be7");
   assert.equal(names.oib3, "Exchange 路 5.dxe5");
   assert.equal(names.oib4, "Old Indian: 4.Qxd4");
   assert.equal(names.oib5, "Old Indian: 5.Bg5");
@@ -2886,7 +2886,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1鈥搒g5 book, sg6 trap, sg7鈥
   assert.equal(names.sg3, "Line 3");
   assert.equal(names.sg4, "Line 4");
   assert.equal(names.sg5, "Line 5");
-  assert.equal(names.sg6, "4...d6 and castle");
+  assert.equal(names.sg6, "4...Bb4+ and castle");
   assert.equal(names.sg7, "Trap: taking on c3");
   assert.equal(names.sg8, "Canal: 4...Nf6");
   assert.equal(names.sg9, "Main line: 7.Nc3");
@@ -2903,7 +2903,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1鈥搒g5 book, sg6 trap, sg7鈥
     sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6"],
     sg4: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
     sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "O-O", "Nf6", "e5", "Ng4", "Re1", "d6", "exd6", "Qxd6"],
-    sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "O-O", "Nf6", "Nxd4", "Be7", "Nc3", "O-O", "a4", "Nxd4", "Qxd4"],
+    sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4"],
     sg7: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3"],
     sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5"],
     sg9: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "bxc3", "d5"],
