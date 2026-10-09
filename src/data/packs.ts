@@ -375,7 +375,7 @@ export const PACKS: Pack[] = [
       { id: "caw1", name: "Line 1 · Advance Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Bxd4", "dxc4", "Bxc4", "Nc6", "Bb5", "Be7", "Bxc6+", "bxc6"], side: "w" },
       { id: "caw2", name: "Line 2 · Advance Tal Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "h4", "h6", "g4", "Bd7", "h5", "e6", "f4", "c5", "c3", "Nc6", "Nf3", "Qb6", "Na3", "cxd4"], side: "w" },
       { id: "caw3", name: "Line 3 · Classical Variation", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6"], side: "w" },
-      { id: "caw4", name: "Line 4 · Two Knights Variation", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Ne2", "O-O", "c3", "Qc7"], side: "w" },
+      { id: "caw4", name: "Line 4 · Two Knights Variation", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Nxe4", "Nxe4", "dxe4", "Qxe4", "Nf6", "Qe3", "Bd6", "g3"], side: "w" },
       { id: "caw5", name: "Line 5 · Fantasy Variation", plies: ["e4", "c6", "d4", "d5", "f3", "dxe4", "fxe4", "e5", "Nf3", "Be6", "c3", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Be3", "O-O", "Nbd2", "Qc7"], side: "w" },
     ],
   },

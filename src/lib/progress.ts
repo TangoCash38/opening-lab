@@ -60,7 +60,7 @@ export const RESET_BOOK_LINE_IDS = [
  */
 export const RESET_BOOK_LINE_IDS_V2 = [
   "sg3", "sg6", "sg10",
-  "caw1",
+  "caw1", "caw4",
   "lon9",
   "vl2", "vl3",
   "frb3", "frb10",
