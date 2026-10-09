@@ -125,7 +125,15 @@ test("caro-kann-black has 10 legal lines titled Line 1 to Line 10 and a Potato P
       pack.lines.forEach((line, index) => {
         const n = index + 1;
         if (line.id !== "ckb" + n) throw new Error("id " + line.id);
-        if (line.name !== "Line " + n) throw new Error("title " + line.name);
+        const titled = {
+          ckb6: "Classical: 4...Nd7",
+          ckb7: "Fantasy: queen trap",
+          ckb8: "Classical: 4...Nf6",
+          ckb9: "Advance: 3...c5",
+          ckb10: "Panov: ...g6",
+        };
+        const expectedName = titled[line.id] || "Line " + n;
+        if (line.name !== expectedName) throw new Error("title " + line.name);
         if (line.side !== "b") throw new Error("side " + line.id);
         if (!line.idea || !line.next) throw new Error("copy " + line.id);
         if (line.name.includes("·")) throw new Error("variation name " + line.name);

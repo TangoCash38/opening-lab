@@ -18,7 +18,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   ],
   "qgd-black": [
     "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps the pawn on d5 instead of taking on c4.",
-    "It is one of the oldest and most trusted replies to 1.d4, and a world championship staple. It is worth learning because the same first moves meet the main ways White continues. The 10 lines in this pack are the Orthodox setup, freeing with ...dxc4 and ...Nd5, Early Exchange, Exchange development, Exchange with Nge2, the Nf3-first Orthodox, quiet Bd3 and ...c5, Late Exchange, the Lasker Defence, and the Tartakower.",
+    "It is one of the oldest and most trusted replies to 1.d4, and a world championship staple. It is worth learning because the same first moves meet the main ways White continues. The 10 lines in this pack are the Orthodox setup, freeing with ...dxc4 and ...Nd5, Early Exchange, Exchange development, Exchange with Nge2, the Nf3-first Orthodox, quiet Bd3 and ...c5, the Ragozin, the Lasker Defence, and the Tartakower.",
   ],
   london: [
     "The London System is White’s classical 1.d4 with an early Bf4. The centre stays solid behind e3 and c3, the dark-squared bishop is out, and the same pyramid meets …d5, …c5, …Bf5, a King’s Indian, or an Indian move-order.",
@@ -126,10 +126,10 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   ],
   "kings-indian-black": [
     "The King's Indian Defence (KID) is one of Black's most combative replies to 1.d4, defined by the moves 1.d4 Nf6 2.c4 g6, followed by ...Bg7 and ...d6. Black lets White build a big centre, fianchettoes the bishop and castles, then strikes with ...e5 or ...c5.",
-    "These lines cover the Classical and Mar del Plata, the Bayonet, the Petrosian, the Gligoric, the Sämisch, the Four Pawns, the Fianchetto, the Averbakh, the Exchange, and a quieter positional main line. They are not forced sequences.",
+    "These lines cover the Classical and Mar del Plata, the Bayonet, the Petrosian, a Classical ...exd4, the Samisch, the Four Pawns, the Fianchetto, the Averbakh, the Exchange, and a Classical ...Nbd7. They are not forced sequences.",
   ],
   "old-indian-black": [
-    "The Old Indian Defence is 1.d4 d6 2.c4 Nf6 3.Nc3 Nbd7 4.Qc2. Black holds a flexible centre and meets Classical …e5, the exchange, a closed d5, the Bg5 pin, and the …c6, …c5, and …e6 branches with their own book replies.",
+    "The Old Indian Defence is 1.d4 d6 2.c4 Nf6. The main lines use ...Nbd7 and ...e5, including Qc2. The pack also has a Modern Benoni, a classical King's Indian, and a fianchetto Old Indian.",
     "You are not racing for a mate on move ten. Know which Old Indian shell you are in, and practise the main Black moves before you mix plans.",
   ],
   "stafford-black": [

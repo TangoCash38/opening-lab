@@ -74,7 +74,7 @@ export const QGD_STUDY_INTRO: StudyIntroCopy = {
   start: "Starting position: 1.d4 d5 2.c4 e6",
   tagline: "A solid pawn on d5. A trusted reply to 1.d4.",
   lead: "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps the pawn on d5 instead of taking on c4.",
-  rest: "It is one of the oldest and most trusted replies to 1.d4, and a world championship staple. It is worth learning because the same first moves meet the main ways White continues. The 10 lines in this pack are the Orthodox setup, freeing with ...dxc4 and ...Nd5, Early Exchange, Exchange development, Exchange with Nge2, the Nf3-first Orthodox, quiet Bd3 and ...c5, Late Exchange, the Lasker Defence, and the Tartakower.",
+  rest: "It is one of the oldest and most trusted replies to 1.d4, and a world championship staple. It is worth learning because the same first moves meet the main ways White continues. The 10 lines in this pack are the Orthodox setup, freeing with ...dxc4 and ...Nd5, Early Exchange, Exchange development, Exchange with Nge2, the Nf3-first Orthodox, quiet Bd3 and ...c5, the Ragozin, the Lasker Defence, and the Tartakower.",
   welcomeTitle: "Welcome to the start of your Queen's Gambit Declined for Black learning pack",
   howTo: SLAV_HOW_TO,
 };

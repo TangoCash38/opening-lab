@@ -40,7 +40,7 @@ const EXPECTED = {
   qgdb5: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "cxd5", "exd5", "Bg5", "Be7", "e3", "O-O", "Bd3", "c6", "Qc2", "Nbd7", "Nge2", "Re8"],
   qgdb6: ["d4", "d5", "c4", "e6", "Nf3", "Nf6", "Nc3", "Be7", "Bg5", "O-O", "e3", "Nbd7", "Rc1", "c6"],
   qgdb7: ["d4", "d5", "c4", "e6", "Nf3", "Nf6", "Nc3", "Be7", "e3", "O-O", "Bd3", "c5", "O-O", "Nc6"],
-  qgdb8: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "Nbd7", "cxd5", "exd5", "Bd3", "c6", "O-O", "Re8"],
+  qgdb8: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Nf3", "Bb4", "Bg5", "h6", "Bxf6", "Qxf6", "e3", "O-O", "Rc1", "dxc4", "Bxc4", "c5", "O-O", "cxd4"],
   qgdb9: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "h6", "Bh4", "Ne4", "Bxe7", "Qxe7", "Bd3", "Nxc3"],
   qgdb10: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "h6", "Bh4", "b6", "Bd3", "Bb7", "O-O", "Nbd7"],
 };
@@ -53,7 +53,7 @@ const NAMES = {
   qgdb5: "Exchange with Nge2",
   qgdb6: "Nf3-first Orthodox",
   qgdb7: "Quiet Bd3 and ...c5",
-  qgdb8: "Late Exchange",
+  qgdb8: "Ragozin: 4...Bb4",
   qgdb9: "Lasker Defence",
   qgdb10: "Tartakower",
 };

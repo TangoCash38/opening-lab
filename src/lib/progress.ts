@@ -15,6 +15,45 @@ const EVENT = "opening-lab:progress";
  */
 export const CARO_LINE_PROGRESS_REVISION = 2;
 
+/**
+ * Lines 3 to 10 whose book moves changed. Saved ply indexes would resume
+ * in the wrong position, so those keys are dropped once. Line ids stay.
+ * Lines 1 and 2, and any line whose moves did not change, are left alone.
+ */
+export const BOOK_LINE_PROGRESS_REVISION = 1;
+
+export const RESET_BOOK_LINE_IDS = [
+  "ckb6", "ckb8", "ckb9", "ckb10",
+  "qgdb8",
+  "sd3", "sd6",
+  "alb3", "alb7", "alb10",
+  "nl4",
+  "it6", "it10",
+  "fr8",
+  "al8",
+  "en9", "en10",
+  "sc3", "sc10",
+  "pm3", "pm5", "pm7",
+  "du4", "du7", "du8",
+  "ckw7", "ckw8", "ckw9",
+  "evb3", "evb4", "evb5", "evb7", "evb8",
+  "eg3", "eg6", "eg8", "eg10",
+  "bp3", "bp4", "bp5", "bp7", "bp10",
+  "bdg7",
+  "qg6", "qg7", "qg8", "qg10",
+  "sg8", "sg9", "sg10",
+  "lon6", "lon7", "lon9",
+  "gfb6", "gfb7",
+  "peb10",
+  "kidb4", "kidb5", "kidb7", "kidb8", "kidb10",
+  "oib4", "oib5", "oib6", "oib7", "oib8", "oib10",
+  "stb10",
+  "ab4", "ab5", "ab9",
+  "frb7",
+] as const;
+
+const RESET_BOOK_LINE_ID_SET = new Set<string>(RESET_BOOK_LINE_IDS);
+
 export type Mastery = "new" | "learning" | "fresh" | "due" | "weak";
 
 export type LineProgress = {
@@ -41,6 +80,8 @@ export type ProgressStore = {
   lastGlobalDay: string | null;
   /** Book revision for caro-kann-black line ids. Missing means the old book. */
   caroLinesRevision?: number;
+  /** One-shot drop for lines 3 to 10 whose moves changed. Missing means not yet applied. */
+  bookLinesRevision?: number;
 };
 
 const EMPTY_LINE: LineProgress = {
@@ -162,6 +203,28 @@ export function migrateProgressLines(
   return { lines: next, revision: nextRevision, changed };
 }
 
+/**
+ * Drop saved progress for book lines whose move lists changed.
+ * A stored ply on the old list cannot be mapped onto the new one.
+ * Missing keys are ignored. The revision is stored so this runs once.
+ */
+export function migrateBookLineProgress(
+  lines: Record<string, LineProgress>,
+  revision: number,
+): { lines: Record<string, LineProgress>; revision: number; changed: boolean } {
+  const next: Record<string, LineProgress> = { ...lines };
+  let changed = false;
+  let nextRevision = Number.isFinite(revision) ? revision : 0;
+  if (nextRevision < BOOK_LINE_PROGRESS_REVISION) {
+    for (const id of RESET_BOOK_LINE_ID_SET) {
+      if (next[id]) delete next[id];
+    }
+    nextRevision = BOOK_LINE_PROGRESS_REVISION;
+    changed = true;
+  }
+  return { lines: next, revision: nextRevision, changed };
+}
+
 function read(): ProgressStore {
   if (typeof window === "undefined") return { ...EMPTY_STORE, lines: {} };
   try {
@@ -172,14 +235,19 @@ function read(): ProgressStore {
       normalizeLines(parsed.lines),
       Number(parsed.caroLinesRevision) || 0,
     );
+    const book = migrateBookLineProgress(
+      migrated.lines,
+      Number(parsed.bookLinesRevision) || 0,
+    );
     const store: ProgressStore = {
-      lines: migrated.lines,
+      lines: book.lines,
       globalStreak: Number(parsed.globalStreak) || 0,
       globalBestStreak: Number(parsed.globalBestStreak) || 0,
       lastGlobalDay: parsed.lastGlobalDay ?? null,
       caroLinesRevision: migrated.revision,
+      bookLinesRevision: book.revision,
     };
-    if (migrated.changed) write(store);
+    if (migrated.changed || book.changed) write(store);
     return store;
   } catch {
     return { ...EMPTY_STORE, lines: {} };

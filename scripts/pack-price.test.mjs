@@ -30,7 +30,7 @@ test("every paid drill pack lists at £1.99", () => {
   assert.match(packs, /id: "london"[\s\S]{0,240}price: "£1\.99"/);
   assert.match(packs, /id: "old-indian-black"[\s\S]{0,500}price: "£1\.99"/);
   assert.match(packs, /id: "classic-games"[\s\S]{0,280}price: "£1\.99"/);
-  assert.match(packs, /closedLabel: "£1\.99 · 9 lines"/);
+  assert.match(packs, /closedLabel: "£1\.99 · 10 lines"/);
   assert.match(packs, /closedLabel: "1 free line · £1\.99"/);
   assert.doesNotMatch(packs, /price: "£2\.99"|price: "£1\.50"|price: "£3\.99"|price: "£1",/);
 
