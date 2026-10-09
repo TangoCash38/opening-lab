@@ -8,7 +8,7 @@ import type { OpeningLine } from "@/data/packs";
  */
 export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "scotch:sg1":
-    "This is the Scotch Gambit you want: 5.c3, trade the dark-squared bishops, and win the pawn back with exd5. Both kings have castled and the chances are about level, with your knight still on d2 and Black's knight on d5. Next, bring that d2 knight to b3 or e4 and use the half-open e-file. You are not a pawn down. The gambit has done its job.",
+    "This is the Scotch Gambit you want: 5.c3, trade the dark-squared bishops, and win the pawn back with exd5. Both kings have castled and the chances are about level, with your knight still on d2 and Black's knight on d5. Next, bring that d2 knight to b3 or e4 and use the open e-file. You are not a pawn down. The gambit has done its job.",
   "scotch:sg2":
     "Line 1 castled after the pawn came back. This time the queen goes to b3, and Black's knight comes to a5, where it attacks that queen. Material is level and the chances are about level, with Black's other knight on d5. Next, move the queen, often to c2 or a4, and castle. The knight on a5 has done its job once the queen steps away.",
   "london:lon1":
@@ -94,7 +94,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "englund-white:eg1":
     "The black queen has grabbed on b2, and you have a large advantage. That is the point of meeting the Englund this way: the queen is a long way from home, and Nc3 develops without even attacking it. Both kings are still in the centre. Next, castle and keep developing. Do not spend every move chasing the queen.",
   "englund-white:eg2":
-    "Line 1 let the queen grab on b2. This time the queen went to c5 and then checked from b4, and Nbd2 met the check without giving up the b-pawn. You are a pawn up with a large advantage, which is the point of meeting the Englund this way. Next, it is Black to move, so castle and keep developing. Do not spend every move chasing the queen.",
+    "Line 1 let the queen grab on b2. This time the queen went to c5 and then checked from b4, and Nbd2 met the check without giving up the b-pawn. You are a pawn up with a large advantage, which is the point of meeting the Englund this way. Next, develop the light-squared bishop to c4. Do not spend every move chasing the queen.",
   "budapest-white:bp1":
     "You are a pawn up against the Budapest, with a small edge, so the gambit has not paid for Black. The bishop check on b4 was met by Nbd2, and both kings are still uncastled. Next, finish development and castle. Keep the extra pawn while Black's pieces stay under control.",
   "budapest-white:bp2":
@@ -130,7 +130,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "kings-indian-black:kidb1":
     "You met d5 with ...Ne7, rerouted a knight through d7, and started the kingside with ...f5. The centre is closed, both kings are castled, and White keeps a small edge, which is normal here before your attack gets going. Next, support the f5 pawn and bring the d7 knight toward the kingside. Leave the queenside closed.",
   "kings-indian-black:kidb2":
-    "Line 1 started ...f5 after Ne1 and f3. This time White plays the Bayonet with b4, you take on a5 with the rook, and after ...Nd7 and Re1 you still get ...f5 in. White keeps a small edge from the queenside space, which is normal before your attack gets going. Next, support the f5 pawn with ...fxe4 or ...Nf6, since the knight on e7 has no square on g6 while your pawn stands there.",
+    "Line 1 started ...f5 after Ne1 and f3. This time White plays the Bayonet with b4, you take on a5 with the rook, and after ...Nd7 and Re1 you still get ...f5 in. White keeps a small edge from the queenside space, which is normal before your attack gets going. Next, if White plays Bb4, bring the rook back to a8. The knight on e7 has no square on g6 while your pawn stands there.",
   "old-indian-black:oib1":
     "White closed the centre with d5, and you answered with ...Nc5, ...a5 and ...Bd7. That knight on c5 is the piece to build around, and the light-squared bishop is already off the back rank. White keeps a small space edge, which is normal while the centre stays closed. Next, put a rook on e8 and keep the centre shut until a pawn break does a clear job.",
   "old-indian-black:oib2":
@@ -146,7 +146,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "alekhine-black:ab1":
     "You nudged the knight off e5 with ...Nd7, castled, and developed the bishop to b7. That bishop is the point of ...b6: it sits on the long diagonal against White's centre. White keeps a space edge, which is normal in the Alekhine, so you are playing for a break rather than a quick attack. Next, prepare ...c5, and do not open the centre just to make something happen.",
   "alekhine-black:ab2":
-    "Line 1 nudged the knight away with ...Nd7 and put a bishop on b7. This time you play ...c6 and ...Bf5, then park the dark-squared bishop on d6. White keeps a space edge, which is normal in the Alekhine, and your king is still on e8. Next, castle, then ...Qc7. The bishop on f5 is a piece to keep, so do not trade it without a reason.",
+    "Line 1 nudged the knight away with ...Nd7 and put a bishop on b7. This time you play ...c6 and ...Bf5, then park the dark-squared bishop on d6. White keeps a space edge, which is normal in the Alekhine, and your king is still on e8. Next, if White plays c5, drop that bishop to c7. The bishop on f5 is a piece to keep, so do not trade it without a reason.",
   "bdg-black:bdg1":
     "You took the offered pawn and traded the light-squared bishops on d3, so you are a pawn up with a small edge. Both kings are still in the centre, and White's queen sits on d3. Next, develop and castle before you try to attack. The extra pawn matters once the king is safe.",
   "bdg-black:bdg2":

@@ -2310,7 +2310,7 @@ test("Berlin Defence for Black is a twenty-ninth visible Black pack: 18 berb lin
       m[2],
     ]),
   );
-  assert.equal(names.berb1, "Berlin Endgame …Ke8 Be7 Rd1");
+  assert.equal(names.berb1, "Berlin Endgame …Ke8 …Be7 and Rd1");
   assert.equal(names.berb7, "Rio 5.Re1 Nd6 Be7");
   assert.equal(names.berb18, "Berlin Endgame …Bd7 Kc8 h5");
 
