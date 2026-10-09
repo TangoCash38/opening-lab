@@ -82,7 +82,7 @@ export const STUDY_INTRO_SETUPS: Readonly<Record<string, IntroSetup>> = {
   },
   "englund-white": {
     lineId: "eg3",
-    plies: ["d4", "e5", "dxe5", "Nc6", "Nf3", "Qe7", "Bf4", "d6", "exd6", "cxd6", "e3"],
+    plies: ["d4", "e5", "dxe5", "Nc6", "Nf3", "Qe7", "Nc3", "Nxe5"],
   },
   "budapest-white": {
     lineId: "bp1",

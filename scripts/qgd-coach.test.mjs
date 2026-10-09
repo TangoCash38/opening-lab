@@ -173,7 +173,7 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
       const expectedIntro = [
         "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.",
         "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.",
-        "They also cover four Exchange lines: Early Exchange, Exchange development, Exchange with Nge2, and Late Exchange.",
+        "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.",
         "Practice with the green hint, then Test with none.",
       ];
       if (coach.introBeats.join("\\n") !== expectedIntro.join("\\n")) {

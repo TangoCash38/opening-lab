@@ -254,8 +254,16 @@ test("Caro-Kann for Black has 1 free line; 10 lines titled Line 1 to Line 10", (
       m[2],
     ]),
   );
+  const ckbTitles = {
+    ckb6: "Classical: 4...Nd7",
+    ckb7: "Fantasy: queen trap",
+    ckb8: "Classical: 4...Nf6",
+    ckb9: "Advance: 3...c5",
+    ckb10: "Panov: ...g6",
+  };
   for (let i = 1; i <= 10; i += 1) {
-    assert.equal(names[`ckb${i}`], `Line ${i}`);
+    const id = `ckb${i}`;
+    assert.equal(names[id], ckbTitles[id] ?? `Line ${i}`);
   }
   assert.doesNotMatch(ck, /id: "ckb1[1-8]"/);
 });
@@ -657,9 +665,14 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
   const names = Object.fromEntries(
     [...it.matchAll(/id: "(it\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
   );
+  const itTitles = {
+    it6: "Two Knights: 4.d3",
+    it7: "Greco: ...Bxc3 trap",
+    it10: "Two Knights: 4.d4",
+  };
   for (const id of lineIds) {
-    assert.equal(names[id], `Line ${Number(id.slice(2))}`);
-    assert.doesNotMatch(names[id], /Rousseau|Greco|Evans|Giuoco|Hungarian|Two Knights|Trap ·|Punish the error/);
+    assert.equal(names[id], itTitles[id] ?? `Line ${Number(id.slice(2))}`);
+    assert.doesNotMatch(names[id], /Rousseau|Evans|Giuoco|Hungarian|Trap ·|Punish the error/);
   }
 
   const stem = ["e4", "e5", "Nf3", "Nc6", "Bc4"];
@@ -669,11 +682,11 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
     it3: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Be7", "d4", "exd4", "Nxd4", "Nf6", "Nc3", "O-O", "O-O", "d6", "h3", "Nxd4", "Qxd4", "c6", "Bf4", "Be6"],
     it4: ["e4", "e5", "Nf3", "Nc6", "Bc4", "d6", "c3", "Be7", "Qb3", "Nh6", "d4", "O-O", "Bxh6", "gxh6", "O-O", "Bg5", "Na3", "Kh8", "Rfe1", "a5"],
     it5: ["e4", "e5", "Nf3", "Nc6", "Bc4", "g6", "d3", "Bg7", "Ng5", "Nh6", "a4", "f6", "Nf3", "Nf7", "Nc3", "d6", "Be3", "O-O"],
-    it6: ["e4", "e5", "Nf3", "Nc6", "Bc4", "f5", "d4", "fxe4", "Nxe5", "d5", "Bb5", "Qd6", "O-O", "Bd7", "c4", "Nxe5", "dxe5"],
+    it6: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "c3", "Na5", "Bb3", "Nxb3", "axb3"],
     it7: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Nxc3", "bxc3", "Bxc3", "Ba3", "d5", "Bb5"],
     it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
     it9: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6"],
-    it10: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d3", "Ng4", "d4", "Bd6", "O-O"],
+    it10: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O"],
   };
   for (const id of lineIds) {
     const plies = linePlies(id);
@@ -682,11 +695,11 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
     assert.equal(lineBlock(id).match(/side: "w"/)?.[0], 'side: "w"');
   }
 
-  assert.match(lineBlock("it6"), /Punish the error · …f5 \(Rousseau Gambit\)/);
-  assert.match(lineBlock("it7"), /Punish the error · …Bxc3 \(Greco gift\)/);
+  assert.match(lineBlock("it6"), /Quiet Two Knights/);
+  assert.match(lineBlock("it7"), /greedy \.\.\.Bxc3 walks into Ba3/);
   assert.match(lineBlock("it8"), /BOOK · Fried Liver/);
   assert.match(lineBlock("it9"), /BOOK · Classical Center Attack/);
-  assert.match(lineBlock("it10"), /Punish the error · …Ng4\?/);
+  assert.match(lineBlock("it10"), /Two Knights with 4\.d4/);
   assert.doesNotMatch(lineBlock("it8"), /Punish the error/);
   assert.doesNotMatch(lineBlock("it9"), /Punish the error/);
   assert.ok(!linePlies("it8").includes("Na5"), "it8 must not be the Line 2 …Na5 line");
@@ -1449,10 +1462,8 @@ test("How to Defend Against the Evans Gambit for Black is a seventeenth visible 
   }
 
   const evb5 = linePlies("evb5");
-  const evb18 = linePlies("evb18");
-  assert.deepEqual(evb5, evb18, "evb5 plies must equal evb18 plies");
-  assert.ok(evb5.includes("Bxc3"), "evb5 needs Bxc3");
-  assert.ok(evb5.includes("Nxc3"), "evb5 needs Nxc3");
+  assert.deepEqual(evb5, ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxb4", "c3", "Ba5", "d4", "exd4", "O-O", "Nge7", "cxd4", "d5"]);
+  assert.notDeepEqual(evb5, linePlies("evb18"), "evb5 is no longer a copy of evb18");
 
   const names = Object.fromEntries(
     [...evb.matchAll(/id: "(evb\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
@@ -1523,8 +1534,7 @@ test("How to Meet the Englund Gambit: White’s Safe Route is an eighteenth visi
 
   assert.deepEqual(linePlies("eg1"), linePlies("eg15"));
   const eg10 = linePlies("eg10");
-  assert.ok(eg10.includes("Nxf7+"), "eg10 needs Nxf7+");
-  assert.ok(eg10.includes("Nxh8"), "eg10 needs Nxh8");
+  assert.deepEqual(eg10, ["d4", "e5", "dxe5", "Nc6", "Nf3", "Nge7", "Bf4", "Ng6", "Bg3", "Bb4+", "Nbd2", "O-O"]);
   const eg2 = linePlies("eg2");
   assert.ok(eg2.includes("Nbd2"), "eg2 needs Nbd2");
 
@@ -1535,7 +1545,7 @@ test("How to Meet the Englund Gambit: White’s Safe Route is an eighteenth visi
     ]),
   );
   assert.equal(names.eg1, "Englund: develop after …Qe7");
-  assert.equal(names.eg10, "Englund: Black returns the pawn");
+  assert.equal(names.eg10, "Englund: ...Nge7 ...Ng6");
   assert.equal(names.eg18, "Englund: e4 and quiet development");
 });
 
@@ -1595,7 +1605,8 @@ test("How to Meet the Budapest Gambit: White’s Safe Route is a nineteenth visi
     assert.deepEqual(plies.slice(0, 4), ["d4", "Nf6", "c4", "e5"], `bp${i} must start d4 Nf6 c4 e5`);
   }
 
-  assert.deepEqual(linePlies("bp2"), linePlies("bp7"));
+  assert.notDeepEqual(linePlies("bp2"), linePlies("bp7"));
+  assert.deepEqual(linePlies("bp7"), ["d4", "Nf6", "c4", "e5", "dxe5", "Ng4", "e3", "Nxe5", "f4", "Nec6", "Nf3", "Bb4+", "Nbd2", "d6"]);
   assert.ok(linePlies("bp1").includes("Nbd2"), "bp1 needs Nbd2");
   assert.ok(linePlies("bp9").includes("Nbxd2"), "bp9 needs Nbxd2");
   assert.ok(linePlies("bp16").includes("Ngxe5"), "bp16 needs Ngxe5");
@@ -1772,8 +1783,14 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
   const names = Object.fromEntries(
     [...qg.matchAll(/id: "(qg\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
   );
+  const qgTitles = {
+    qg6: "Tartakower: ...b6",
+    qg7: "Tarrasch: 3...c5",
+    qg8: "Cambridge Springs",
+    qg10: "Moscow: ...h6 ...g6",
+  };
   for (const id of lineIds) {
-    assert.equal(names[id], `Line ${Number(id.slice(2))}`);
+    assert.equal(names[id], qgTitles[id] ?? `Line ${Number(id.slice(2))}`);
     assert.doesNotMatch(names[id], /Orthodox|QGA|Slav|Meran|Chigorin|Albin|Trap ·|Punish/);
   }
 
@@ -1783,11 +1800,11 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
     qg3: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"],
     qg4: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "e3", "Nbd7", "Bd3", "dxc4", "Bxc4", "b5", "Bd3", "Bb7", "O-O", "a6", "e4", "c5"],
     qg5: ["d4", "d5", "c4", "Nc6", "Nf3", "Bg4", "cxd5", "Bxf3", "gxf3", "Qxd5", "e3", "e5", "Nc3", "Bb4", "Bd2", "Bxc3", "bxc3", "exd4", "cxd4", "Nge7", "Bg2", "Qe6"],
-    qg6: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "Nbd7", "Rc1", "e5", "dxe5", "Ne4", "Bxe7", "Qxe7", "Nxd5", "Qd8", "Qc2", "Nec5", "b4", "Na6"],
-    qg7: ["d4", "d5", "c4", "Nc6", "Nf3", "Nb4", "Qa4+", "Nc6", "cxd5", "Qxd5", "Nc3", "Qd7", "e4", "a6", "d5", "Nd8"],
-    qg8: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e5", "dxe5", "Ne4", "Nxe4", "dxe4", "Qxd8+", "Kxd8", "Ng5", "Be6", "Nxe6+", "fxe6"],
+    qg6: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "h6", "Bh4", "b6", "cxd5", "Nxd5", "Bxe7", "Qxe7", "Nxd5", "exd5", "Rc1", "Be6"],
+    qg7: ["d4", "d5", "c4", "e6", "Nc3", "c5", "cxd5", "exd5", "Nf3", "Nc6", "g3", "Nf6", "Bg2", "Be7", "O-O", "O-O", "Bg5", "Be6"],
+    qg8: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Nbd7", "e3", "c6", "Nf3", "Qa5", "Nd2", "Bb4", "Qc2", "O-O", "Be2"],
     qg9: ["d4", "d5", "c4", "e5", "dxe5", "d4", "Nf3", "Nc6", "g3", "Nge7", "Bg2", "Ng6", "O-O", "Ngxe5", "Nxe5", "Nxe5", "Na3", "Be7"],
-    qg10: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "e3", "Nbd7", "Bd3", "dxc4", "Bxc4", "b5", "Bd3", "e5", "dxe5", "Ng4", "e6", "fxe6", "Qc2", "Nge5", "Nxe5", "Nxe5"],
+    qg10: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "Bg5", "h6", "Bxf6", "Qxf6", "e3", "Nd7", "Bd3", "dxc4", "Bxc4", "g6"],
   };
   const { Chess } = await import("chess.js");
   for (const id of lineIds) {
@@ -1802,11 +1819,11 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
   }
 
   assert.match(lineBlock("qg1"), /Queen's Gambit Declined Orthodox/);
-  assert.match(lineBlock("qg6"), /Punish the error · …e5\?/);
-  assert.match(lineBlock("qg7"), /Punish the error · …Nb4\?/);
-  assert.match(lineBlock("qg8"), /Punish the error · …e5\?/);
+  assert.match(lineBlock("qg6"), /Tartakower/);
+  assert.match(lineBlock("qg7"), /Tarrasch Defence/);
+  assert.match(lineBlock("qg8"), /Cambridge Springs/);
   assert.match(lineBlock("qg9"), /BOOK · Albin Counter-Gambit/);
-  assert.match(lineBlock("qg10"), /Punish the error · …e5\?/);
+  assert.match(lineBlock("qg10"), /Moscow variation/);
   for (const id of ["qg1", "qg2", "qg3", "qg4", "qg5", "qg9"]) {
     assert.doesNotMatch(lineBlock(id), /Punish the error/);
   }
@@ -2133,7 +2150,7 @@ test("Grünfeld Defence for Black is a twenty-seventh visible Black pack: 18 gfb
     ]),
   );
   assert.equal(names.gfb1, "Exchange main Bc4 c5 Ne2 O-O");
-  assert.equal(names.gfb7, "Smyslov …Bg4 vs Russian");
+  assert.equal(names.gfb7, "Smyslov: ...Bg4");
   assert.equal(names.gfb18, "Prins 5.Qa4+ Bd7");
 
   // Old thin 8-line survey pack stays invisible and separate.
@@ -2362,13 +2379,13 @@ test("King's Indian Defence for Black is Sean's ten learning lines, line 1 free"
     kidb1: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "Ne1", "Nd7", "f3", "f5"],
     kidb2: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5", "a4", "b6", "Ba3", "Nd7", "Re1", "f5"],
     kidb3: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "d5", "a5", "Bg5", "h6", "Bh4", "g5", "Bg3", "Nh5"],
-    kidb4: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "Be3", "Ng4", "Bg5", "f6", "Bh4", "Nc6", "d5", "Ne7"],
-    kidb5: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f3", "O-O", "Be3", "e5", "Nge2", "Nc6", "d5", "Ne7", "Qd2", "a6", "g4", "b5"],
+    kidb4: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "Be3", "exd4", "Nxd4", "Re8", "f3", "c6"],
+    kidb5: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f3", "O-O", "Be3", "Nc6", "Qd2", "a6", "Nge2", "Rb8"],
     kidb6: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f4", "O-O", "Nf3", "c5", "d5", "e6", "Be2", "exd5", "cxd5", "Re8", "e5", "dxe5"],
-    kidb7: ["d4", "Nf6", "c4", "g6", "Nf3", "Bg7", "g3", "O-O", "Bg2", "d6", "O-O", "Nbd7", "Nc3", "e5", "e4", "Re8", "Re1", "c6", "h3", "a6"],
-    kidb8: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Be2", "O-O", "Bg5", "h6", "Be3", "e5", "d5", "a5", "Qd2", "Na6", "h4", "h5"],
+    kidb7: ["d4", "Nf6", "c4", "g6", "g3", "Bg7", "Bg2", "O-O", "Nf3", "d6", "O-O", "Nbd7", "Nc3", "e5", "e4", "c6", "h3", "Re8", "Re1", "exd4", "Nxd4"],
+    kidb8: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Be2", "O-O", "Bg5", "c5", "d5", "h6", "Bf4", "e6"],
     kidb9: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "dxe5", "dxe5", "Qxd8", "Rxd8", "O-O", "c6", "Be3", "Nbd7"],
-    kidb10: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8"],
+    kidb10: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Nxd4"],
   };
   for (const [id, plies] of Object.entries(expected)) {
     assert.deepEqual(linePlies(id), plies, id);
@@ -2379,9 +2396,9 @@ test("King's Indian Defence for Black is Sean's ten learning lines, line 1 free"
     [...kidb.matchAll(/id: "(kidb\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
   );
   assert.equal(names.kidb1, "Classical main line (Mar del Plata base)");
-  assert.equal(names.kidb4, "Classical: Gligoric system");
-  assert.equal(names.kidb5, "Sämisch Variation: queenside castling ideas");
-  assert.equal(names.kidb10, "Positional Defence main line");
+  assert.equal(names.kidb4, "Classical: ...exd4");
+  assert.equal(names.kidb5, "Samisch: ...a6 ...Rb8");
+  assert.equal(names.kidb10, "Classical: ...Nbd7 ...a5");
 
   const allPlies = lineIds.map((id) => linePlies(id));
   for (let i = 0; i < allPlies.length; i++) {
@@ -2685,8 +2702,8 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   assert.ok(linePlies("ab1").includes("Nd7"), "ab1 Flohr needs …Nd7");
   assert.ok(linePlies("ab6").includes("g6"), "ab6 Alburt needs …g6");
   assert.ok(!linePlies("ab6").includes("a4"), "ab6 is 7.O-O, not a4");
-  assert.ok(linePlies("ab9").includes("exd6"), "ab9 Exchange needs exd6");
-  assert.equal(linePlies("ab9")[9], "exd6", "ab9 is 5…exd6");
+  assert.ok(linePlies("ab9").includes("c5"), "ab9 Chase needs c5");
+  assert.equal(linePlies("ab9")[5], "Nb6", "ab9 is the Chase");
   assert.equal(linePlies("ab10")[9], "cxd6", "ab10 is 5…cxd6");
   assert.ok(linePlies("ab12").includes("f4"), "ab12 Four Pawns needs f4");
   assert.ok(linePlies("ab12").includes("Be7"), "ab12 needs …Be7");
@@ -2701,7 +2718,7 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
     ]),
   );
   assert.equal(names.ab1, "Modern Variation · Flohr …Nd7");
-  assert.equal(names.ab9, "Exchange · 5…exd6");
+  assert.equal(names.ab9, "Chase variation");
   assert.equal(names.ab12, "Four Pawns · main …Be7");
   assert.equal(names.ab16, "Two Pawns · Lasker");
   assert.equal(names.ab18, "Scandinavian · 2.Nc3 d5");
@@ -2724,7 +2741,7 @@ test("Alekhine Defence for Black is a thirty-third visible Black pack: 18 ab lin
   assert.doesNotMatch(packs, /id: "ak8"/);
 });
 
-test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book lines, £1.99, locked until purchase", () => {
+test("Old Indian Defence for Black is a thirty-fourth visible pack: 10 oib book lines, £1.99, locked until purchase", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const start = packs.indexOf('id: "old-indian-black"');
   assert.ok(start >= 0, "old-indian-black pack missing");
@@ -2737,8 +2754,8 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
   assert.match(oib, /isFree: false/);
   assert.match(oib, /isPremium: true/);
   assert.match(oib, /price: "£1\.99"/);
-  assert.match(oib, /blurb: "9-line basics · 1\.d4 d6 …Nbd7 Qc2"/);
-  assert.match(oib, /closedLabel: "£1\.99 · 9 lines"/);
+  assert.match(oib, /blurb: "10 lines · 1\.d4 d6"/);
+  assert.match(oib, /closedLabel: "£1\.99 · 10 lines"/);
   assert.match(oib, /Meet the Old Indian Defence for Black/);
   assert.match(oib, /Practice the main Black moves with the hint/);
   assert.match(oib, /Then Test with none/);
@@ -2751,16 +2768,16 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
   assert.doesNotMatch(oib, /trap:\s*true/);
   assert.doesNotMatch(oib, /Trap ·/);
   assert.doesNotMatch(oib, /Punish the error/);
-  assert.doesNotMatch(oib, /id: "oib10"/);
+  assert.match(oib, /id: "oib10"/);
 
   const lineIds = [...oib.matchAll(/id: "(oib\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(
     lineIds,
-    Array.from({ length: 9 }, (_, i) => `oib${i + 1}`),
+    Array.from({ length: 10 }, (_, i) => `oib${i + 1}`),
   );
 
   const sides = [...oib.matchAll(/side: "([wb])"/g)].map((m) => m[1]);
-  assert.equal(sides.length, 9);
+  assert.equal(sides.length, 10);
   assert.ok(sides.every((s) => s === "b"), "every line side must be b");
 
   function linePlies(id) {
@@ -2773,21 +2790,24 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
     return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]);
   }
 
-  const stem = ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2"];
+  const qc2Stem = ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2"];
   const expected = {
     oib1: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "Nc5", "Be2", "a5", "O-O", "Bd7"],
     oib2: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "e4", "Be7", "Nf3", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
     oib3: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "dxe5", "dxe5", "Nf3", "Bd6", "e3", "O-O", "Be2", "Qe7", "O-O", "a5", "Rd1", "Nc5"],
-    oib4: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "a5", "Be2", "Nc5", "O-O", "Bd7"],
-    oib5: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "Bg5", "Be7", "e3", "c6", "Nf3", "O-O", "Be2", "h6", "Bh4", "a5", "O-O", "Qc7"],
-    oib6: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "c6", "e4", "e5", "Nf3", "Be7", "Be2", "O-O", "O-O", "Re8", "h3", "Qc7", "Be3", "Nf8"],
-    oib7: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "c5", "dxc5", "Nxc5", "e4", "e5", "Nf3", "Be7", "Be2", "O-O", "O-O", "a5", "Rd1", "Qc7"],
-    oib8: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "c5", "Nf3", "cxd4", "Nxd4", "g6", "e4", "Bg7", "Be2", "O-O", "O-O", "a6", "Be3", "Qc7"],
+    oib4: ["d4", "d6", "c4", "e5", "Nc3", "exd4", "Qxd4", "Nc6", "Qd2", "Nf6", "g3", "Be7", "Bg2", "O-O", "Nh3"],
+    oib5: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Nf3", "e5", "Bg5", "Be7", "e3", "O-O", "Qc2", "c6", "Be2", "h6", "Bh4", "Re8"],
+    oib6: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Nf3", "e5", "e4", "Be7", "Be2", "O-O", "O-O", "Re8", "Re1", "Nf8", "Bf1"],
+    oib7: ["d4", "Nf6", "c4", "c5", "d5", "e6", "Nc3", "exd5", "cxd5", "d6", "Nf3", "g6", "g3", "Bg7", "Bg2", "O-O", "O-O", "Re8"],
+    oib8: ["d4", "Nf6", "c4", "d6", "Nc3", "g6", "Nf3", "Bg7", "e4", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "Ne1", "Nd7"],
     oib9: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e6", "Nf3", "Be7", "e4", "O-O", "Be2", "e5", "dxe5", "dxe5", "O-O", "c6", "Rd1", "Qc7"],
+    oib10: ["d4", "Nf6", "c4", "d6", "Nc3", "g6", "Nf3", "Bg7", "g3", "O-O", "Bg2", "Nbd7", "O-O", "e5"],
   };
   for (const id of lineIds) {
     const plies = linePlies(id);
-    assert.deepEqual(plies.slice(0, 7), stem, `${id} stem`);
+    if (["oib1", "oib2", "oib3", "oib9"].includes(id)) {
+      assert.deepEqual(plies.slice(0, 7), qc2Stem, `${id} stem`);
+    }
     assert.deepEqual(plies, expected[id], id);
   }
 
@@ -2800,12 +2820,13 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 9 oib book l
   assert.equal(names.oib1, "Closed · …d5 Nc5 Bd7");
   assert.equal(names.oib2, "Classical · …e5 e4 Be7");
   assert.equal(names.oib3, "Exchange · 5.dxe5");
-  assert.equal(names.oib4, "Closed · 5.d5 Be7");
-  assert.equal(names.oib5, "Ukrainian · 5.Bg5 Be7");
-  assert.equal(names.oib6, "…c6 then …e5");
-  assert.equal(names.oib7, "…c5 dxc5 Nxc5");
-  assert.equal(names.oib8, "…c5 Nf3 cxd4");
+  assert.equal(names.oib4, "Old Indian: 4.Qxd4");
+  assert.equal(names.oib5, "Old Indian: 5.Bg5");
+  assert.equal(names.oib6, "Old Indian: 4.Nf3 ...e5");
+  assert.equal(names.oib7, "Modern Benoni: g3");
+  assert.equal(names.oib8, "Classical King's Indian");
   assert.equal(names.oib9, "…e6 solid then …e5");
+  assert.equal(names.oib10, "Fianchetto Old Indian");
 
   const allPlies = lineIds.map((id) => linePlies(id));
   for (let i = 0; i < allPlies.length; i++) {
@@ -2863,12 +2884,12 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   assert.equal(names.sg3, "Line 3");
   assert.equal(names.sg4, "Line 4");
   assert.equal(names.sg5, "Line 5");
-  assert.equal(names.sg6, "Line 6");
-  assert.equal(names.sg7, "Line 7");
-  assert.equal(names.sg8, "Line 8");
-  assert.equal(names.sg9, "Line 9");
-  assert.equal(names.sg10, "Line 10");
-  for (const id of lineIds) {
+  assert.equal(names.sg6, "Sea-Cadet mate");
+  assert.equal(names.sg7, "Trap: taking on c3");
+  assert.equal(names.sg8, "Canal: 4...Nf6");
+  assert.equal(names.sg9, "Main line: 7.Nc3");
+  assert.equal(names.sg10, "4...Bb4+");
+  for (const id of ["sg1", "sg2", "sg3", "sg4", "sg5"]) {
     assert.equal(names[id], `Line ${Number(id.slice(2))}`);
     assert.doesNotMatch(names[id], /Canal|Greco|Haxo|Lange|Ghulam|Sea-Cadet|Trap ·|Punish the error/);
   }
@@ -2882,9 +2903,9 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
     sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "O-O", "Nf6", "e5", "Ng4", "Re1", "d6", "exd6", "Qxd6"],
     sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
     sg7: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3"],
-    sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Ne5", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5"],
-    sg9: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "Qe7", "O-O", "Nxe5", "Nxe5", "Qxe5", "Re1"],
-    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "f6", "Nxd4", "Nxd4", "Qxd4", "Ne7", "Nc3", "Nc6", "Qe3", "Bb4", "O-O", "Bxc3", "Qxc3"],
+    sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5"],
+    sg9: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "bxc3", "d5"],
+    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "Nxc3", "Nf6", "O-O", "O-O", "e5", "d5", "exd6", "Qxd6"],
   };
   for (const id of lineIds) {
     const plies = linePlies(id);
@@ -2920,7 +2941,6 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
   assert.match(lon, /price: "£1\.99"/);
   assert.doesNotMatch(lon, /price: "£1",/);
   assert.match(lon, /blurb: "10 lines from Opening Lab"/);
-  assert.doesNotMatch(lon, /Jobava/);
   assert.doesNotMatch(lon, /Dutch/);
   assert.doesNotMatch(lon, /Play on/);
 
@@ -2948,14 +2968,19 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
   const names = Object.fromEntries(
     [...lon.matchAll(/id: "(lon\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [m[1], m[2]]),
   );
+  const lonTitles = {
+    lon6: "Jobava: 2.Nc3",
+    lon7: "London: ...Bf5 ...Qb6",
+    lon9: "London: ...g6",
+  };
   for (const id of lineIds) {
-    assert.equal(names[id], `Line ${Number(id.slice(3))}`);
-    assert.doesNotMatch(names[id], /Trap ·|Punish|Pyramid|Jobava/);
+    assert.equal(names[id], lonTitles[id] ?? `Line ${Number(id.slice(3))}`);
+    if (!lonTitles[id]) assert.doesNotMatch(names[id], /Trap ·|Punish|Pyramid|Jobava/);
   }
-  assert.match(lineBlock("lon6"), /Punish the error · \.\.\.e5\?/);
-  assert.match(lineBlock("lon7"), /Punish the error · …Ne4\?/);
+  assert.match(lineBlock("lon6"), /Jobava London/);
+  assert.match(lineBlock("lon7"), /London with \.\.\.Bf5/);
   assert.match(lineBlock("lon8"), /BOOK · …Qb6/);
-  assert.match(lineBlock("lon9"), /Punish the error · …e5\?/);
+  assert.match(lineBlock("lon9"), /London against \.\.\.g6/);
   assert.match(lineBlock("lon10"), /BOOK · Chigorin-ish/);
   assert.doesNotMatch(lineBlock("lon6"), /Trap · …Bf5/);
   assert.doesNotMatch(lineBlock("lon8"), /…g5\?/);
@@ -2967,10 +2992,10 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
     lon3: ["d4", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "d5", "c3", "Nc6", "Nd2", "Bf5", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Qc7"],
     lon4: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Qe7", "Nbd2", "Re8"],
     lon5: ["d4", "Nf6", "Bf4", "e6", "e3", "c5", "c3", "Nc6", "Nd2", "d5", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "O-O", "Bb7", "Qe2", "Qc7"],
-    lon6: ["d4", "d5", "Bf4", "Nf6", "e3", "e6", "Nd2", "c5", "c3", "Nc6", "Ngf3", "Bd6", "Bg3", "e5", "dxe5", "Nxe5", "Bxe5", "Bxe5", "Nxe5", "O-O", "Be2", "Re8", "Nd3"],
-    lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Ne4", "Nxe4", "dxe4", "d5", "Na5", "Qa4+", "Bd7", "Qxe4", "f6", "O-O-O", "Qb6", "Bd3", "e5", "dxe6", "Qxe6"],
+    lon6: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "a6", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6"],
+    lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "Bf5", "c4", "e6", "Nc3", "c6", "Nf3", "Nbd7", "Qb3", "Qb6", "c5"],
     lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Qb6", "Qb3", "c4", "Qc2", "Nc6", "Nbd2", "Bg4", "Ngf3", "e6"],
-    lon9: ["d4", "d5", "Bf4", "c5", "e3", "Nc6", "c3", "Nf6", "Nd2", "e5", "dxe5", "Nd7", "Ngf3", "Be7", "e4", "d4", "Bb5", "O-O", "O-O", "dxc3", "bxc3", "Nb6", "Bxc6", "bxc6"],
+    lon9: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "d5", "c3", "O-O", "Nbd2", "c5", "Be2", "Nc6", "O-O", "Bf5"],
     lon10: ["d4", "d5", "Bf4", "Nf6", "e3", "Nc6", "Nd2", "Bf5", "c3", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Be2", "Ne7", "O-O", "c6", "Nh4", "Bg6"],
   };
   for (const id of lineIds) {

@@ -21,10 +21,10 @@ function packBlock(packs, id) {
 const EXPECTED = {
   sd1: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5"],
   sd2: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "O-O"],
-  sd3: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Ne5", "Nbd7", "Nxc4", "Qc7"],
+  sd3: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "Nh4", "e6", "Nxf5", "exf5", "e3"],
   sd4: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "e3", "b5", "a4", "b4", "Na2", "e6", "Bxc4"],
   sd5: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6"],
-  sd6: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6", "Nh4"],
+  sd6: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6", "Nh4", "Bg6", "Nxg6", "hxg6", "g3", "Nbd7", "Bg2", "Bd6"],
   sd7: ["d4", "d5", "c4", "c6", "cxd5", "cxd5", "Nf3", "Nf6", "Nc3", "Nc6", "Bf4", "Bf5"],
   sd8: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "cxd5", "cxd5", "Qb3", "Qc7"],
   sd9: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "a6", "c5", "Bf5", "Bf4", "Nbd7", "e3", "Nh5"],
