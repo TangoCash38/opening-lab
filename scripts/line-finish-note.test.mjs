@@ -40,32 +40,48 @@ const notes = Object.fromEntries(
   [...block.matchAll(/"([^"]+)":\s*\n\s*"([^"]+)"/g)].map((match) => [match[1], match[2]]),
 );
 
+function lineIds(packId) {
+  const body = packBlock(packs, packId);
+  const linesAt = body.indexOf("lines:");
+  assert.ok(linesAt >= 0, `${packId} lines missing`);
+  return [...body.slice(linesAt).matchAll(/id: "([^"]+)"/g)].map((match) => match[1]);
+}
+
+function assertCoachNote(key, text) {
+  assert.ok(text, `${key} missing finish note`);
+  const count = sentences(text).length;
+  assert.ok(count >= 3 && count <= 5, `${key} has ${count} sentences`);
+  assert.doesNotMatch(text, /—|–|forever|lifetime|blunder|engine|Play on/i);
+  const trapOk = key.startsWith("stafford-black:") || key.startsWith("opening-traps:");
+  if (key === "stafford-black:stb1") {
+    assert.match(text, /risky/i);
+    assert.match(text, /trap/i);
+  } else if (key === "stafford-black:stb2") {
+    assert.match(text, /risky/i);
+  } else if (!trapOk) {
+    assert.doesNotMatch(text, /trap/i);
+  }
+  assert.equal(text.includes("\u2014"), false);
+}
+
 test("every visible drill pack line 1 has a short finish note", () => {
   assert.equal(visible.length, 38);
+  for (const packId of visible) {
+    const lineId = lineIds(packId)[0];
+    assertCoachNote(`${packId}:${lineId}`, notes[`${packId}:${lineId}`]);
+  }
+});
+
+test("every visible drill pack line 2 has a short finish note", () => {
   const keys = new Set();
   for (const packId of visible) {
-    const body = packBlock(packs, packId);
-    const linesAt = body.indexOf("lines:");
-    assert.ok(linesAt >= 0, `${packId} lines missing`);
-    const lineBody = body.slice(linesAt);
-    const lineId = lineBody.match(/id: "([^"]+)"/)[1];
-    const key = `${packId}:${lineId}`;
-    keys.add(key);
-    const text = notes[key];
-    assert.ok(text, `${key} missing finish note`);
-    const count = sentences(text).length;
-    assert.ok(count >= 3 && count <= 5, `${key} has ${count} sentences`);
-    assert.doesNotMatch(text, /—|–|forever|lifetime|blunder|engine/i);
-    if (key === "stafford-black:stb1") {
-      assert.match(text, /risky/i);
-      assert.match(text, /trap/i);
-    } else {
-      assert.doesNotMatch(text, /trap/i);
-    }
-    assert.equal(text.includes("\u2014"), false);
+    const ids = lineIds(packId);
+    assert.ok(ids.length >= 2, `${packId} needs a line 2`);
+    for (const index of [0, 1]) keys.add(`${packId}:${ids[index]}`);
+    assertCoachNote(`${packId}:${ids[1]}`, notes[`${packId}:${ids[1]}`]);
   }
   assert.equal(Object.keys(notes).length, keys.size);
-  for (const key of Object.keys(notes)) assert.ok(keys.has(key), `${key} is not a visible line 1`);
+  for (const key of Object.keys(notes)) assert.ok(keys.has(key), `${key} is not line 1 or 2`);
 });
 
 test("a line with no note shows no card, and later lines only need text", () => {

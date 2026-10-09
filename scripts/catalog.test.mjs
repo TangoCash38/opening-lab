@@ -2360,7 +2360,7 @@ test("King's Indian Defence for Black is Sean's ten learning lines, line 1 free"
 
   const expected = {
     kidb1: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "Ne1", "Nd7", "f3", "f5"],
-    kidb2: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5", "a4", "b6", "Ba3", "Nd7"],
+    kidb2: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nc6", "d5", "Ne7", "b4", "a5", "bxa5", "Rxa5", "a4", "b6", "Ba3", "Nd7", "Re1", "f5"],
     kidb3: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "d5", "a5", "Bg5", "h6", "Bh4", "g5", "Bg3", "Nh5"],
     kidb4: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "Be3", "Ng4", "Bg5", "f6", "Bh4", "Nc6", "d5", "Ne7"],
     kidb5: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f3", "O-O", "Be3", "e5", "Nge2", "Nc6", "d5", "Ne7", "Qd2", "a6", "g4", "b5"],
