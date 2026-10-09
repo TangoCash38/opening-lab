@@ -78,7 +78,7 @@ test("catalogue source wires free sgl1 and locked sgl2/sgl3", () => {
   assert.equal(byId.sgl1.title, "Lesson 1 · Intro · Scotch Game vs Scotch Gambit");
   assert.equal(
     byId.sgl1.blurb,
-    "The Bxf7+/Qd5+/Qxc5+ demo does not refute 4…Bc5; Black is fine, White still a pawn down.",
+    "The Bxf7+/Qd5+/Qxc5+ demo does not refute 4…Bc5. White is better there, and White is still a pawn down.",
   );
   assert.equal(byId.sgl2.free, false);
   assert.equal(byId.sgl2.title, "Lesson 2 · Meeting …Nf6");

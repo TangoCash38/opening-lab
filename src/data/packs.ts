@@ -88,8 +88,8 @@ export const PACKS: Pack[] = [
       {
         id: "sg3",
         name: "Line 3",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4", "Re1+", "Be6", "Ng5", "Qd5", "Nc3", "Qf5"],
-        idea: "Max Lange tabiya via 5.O-O: e5 d5 exf6 dxc4 Re1+ Be6 Ng5, meeting …Qd5 with Nc3.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6"],
+        idea: "5.Ng5 hits f7. The knight goes in, and Qh5+ follows the king to f7.",
         side: "w",
       },
       {
@@ -108,9 +108,9 @@ export const PACKS: Pack[] = [
       },
       {
         id: "sg6",
-        name: "Sea-Cadet mate",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
-        idea: "Sea-Cadet mate. After 4.Bc4 d6 5.c3 dxc3 Nxc3 Bg4 O-O, ...Ne5 loses. Nxe5 Bxd1 Bxf7+ Ke7 Nd5 is checkmate.",
+        name: "4...d6 and castle",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "O-O", "Nf6", "Nxd4", "Be7", "Nc3", "O-O", "a4", "Nxd4", "Qxd4"],
+        idea: "After 4...d6 castle, then Nxd4 and Nc3. This is the calm answer to ...d6.",
         side: "w",
       },
       {
@@ -137,8 +137,8 @@ export const PACKS: Pack[] = [
       {
         id: "sg10",
         name: "4...Bb4+",
-        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "Nxc3", "Nf6", "O-O", "O-O", "e5", "d5", "exd6", "Qxd6"],
-        idea: "4...Bb4+ check. c3 dxc3 Nxc3, then ...Nf6, castle, e5 d5 and the queen recaptures on d6.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "Nxc3", "Nf6", "O-O", "O-O", "e5", "d5", "Nxd5", "Nxd5", "Bxd5", "Ne7", "Bb3", "Qxd1", "Rxd1", "Be6"],
+        idea: "4...Bb4+ and c3. After ...Nf6 and castling, meet ...d5 with Nxd5 and trade into a normal centre.",
         side: "w",
       },
     ],
@@ -372,7 +372,7 @@ export const PACKS: Pack[] = [
     price: "£1.99",
     blurb: "5-line White survey · Advance, Tal, Classical, Two Knights & Fantasy",
     lines: [
-      { id: "caw1", name: "Line 1 · Advance Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Qxd4", "Nc6"], side: "w" },
+      { id: "caw1", name: "Line 1 · Advance Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "Nf3", "e6", "Be2", "c5", "Be3", "cxd4", "Nxd4", "Ne7", "c4", "Nbc6", "Nc3", "Nxd4", "Bxd4", "dxc4", "Bxc4", "Nc6", "Bb5", "Be7", "Bxc6+", "bxc6"], side: "w" },
       { id: "caw2", name: "Line 2 · Advance Tal Variation", plies: ["e4", "c6", "d4", "d5", "e5", "Bf5", "h4", "h6", "g4", "Bd7", "h5", "e6", "f4", "c5", "c3", "Nc6", "Nf3", "Qb6", "Na3", "cxd4"], side: "w" },
       { id: "caw3", name: "Line 3 · Classical Variation", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6"], side: "w" },
       { id: "caw4", name: "Line 4 · Two Knights Variation", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Ne2", "O-O", "c3", "Qc7"], side: "w" },
@@ -477,9 +477,9 @@ export const PACKS: Pack[] = [
       {
         id: "lon9",
         name: "London: ...g6",
-        plies: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "d5", "c3", "O-O", "Nbd2", "c5", "Be2", "Nc6", "O-O", "Bf5"],
-        idea: "London against ...g6. Both sides castle, ...c5 and ...Nc6 challenge d4, and ...Bf5 develops.",
-        next: "h3 or Ne5. The dark-squared bishops are on f4 and g7.",
+        plies: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "d5", "c3", "O-O", "Nbd2", "c5", "Be2", "Nc6", "dxc5", "a5", "a4", "Nh5", "Bg5", "f6", "Bh4", "e5"],
+        idea: "London against ...g6. Meet ...c5 with dxc5 and keep the dark-squared bishop.",
+        next: "The c-file is open. Develop the queen and do not rush the king while the bishop on f4 is still doing a job.",
         side: "w",
       },
       {
@@ -731,8 +731,8 @@ export const PACKS: Pack[] = [
     badge: "Search pack",
     lines: [
       { id: "vl1", name: "Line 1 · …c5 …Qb6, they trade queens", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qxb6", "axb6", "Ngf3", "Bf5", "Be2", "e6", "O-O", "Be7"], side: "b" },
-      { id: "vl2", name: "Line 2 · If they keep queens (7.Qc2)", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "e5", "dxe5", "Nd7", "Ngf3", "Ndxe5", "Nxe5", "Nxe5", "Bxe5", "Qg6"], side: "b" },
-      { id: "vl3", name: "Line 3 · If 6.dxc5", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "dxc5", "Qxc5", "Ngf3", "e6", "Be2", "Be7", "O-O", "O-O", "a3", "Bd6"], side: "b" },
+      { id: "vl2", name: "Line 2 · If they keep queens (7.Qc2)", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "e5", "dxe5", "Nd7", "Ngf3", "g5", "Bxg5", "Ncxe5", "Be2", "Bg7", "O-O", "O-O", "Rfd1"], side: "b" },
+      { id: "vl3", name: "Line 3 · If 6.dxc5", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "dxc5", "Qxc5", "Ngf3", "e6", "Be2", "Be7", "O-O", "O-O", "a3", "Nh5", "Bg5", "Bxg5", "Nxg5", "Nf6", "Qc2", "Ne5", "Ngf3"], side: "b" },
       { id: "vl4", name: "Line 4 · Bf5 mirror", plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Bf5", "Nf3", "e6", "Nbd2", "Nc6", "Be2", "Be7", "O-O", "O-O", "Ne5", "Nxe5", "Bxe5", "Nd7"], side: "b" },
       { id: "vl5", name: "Line 5 · Bd6, trade their bishop", plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "e6", "e3", "c5", "c3", "Bd6", "Bg3", "O-O", "Nbd2", "Qc7", "Bd3", "Nbd7", "O-O", "e5", "dxe5", "Nxe5"], side: "b" },
       { id: "vl6", name: "Line 6 · Early 2…c5", plies: ["d4", "d5", "Bf4", "c5", "e3", "Nc6", "c3", "Nf6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "e6", "Ngf3", "Be7", "Be2", "O-O", "O-O", "h6"], side: "b" },
@@ -855,8 +855,8 @@ export const PACKS: Pack[] = [
       {
         id: "frb3",
         name: "Line 3 · Advance · …Bd7",
-        plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Bd7", "Be2", "Nge7", "O-O", "Ng6", "g3", "Be7", "h4", "O-O", "h5", "Nh8", "Bf4", "f5", "exf6", "Bxf6"],
-        idea: "Advance with …Bd7 and …Nge7–g6. Meet White’s h-pawn rush by parking the knight on h8, then …f5 to chip at e5.",
+        plies: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Bd7", "Be2", "Nge7", "O-O", "Ng6", "g3", "Be7", "h4", "O-O", "h5", "Nh8", "Bf4", "cxd4", "cxd4", "Be8", "Kg2", "f6", "Rh1", "fxe5"],
+        idea: "Advance with ...Bd7 and ...Nge7-g6. After the h-pawn rush and ...Nh8, take on d4 and keep the centre solid.",
         side: "b",
       },
       {
@@ -904,8 +904,8 @@ export const PACKS: Pack[] = [
       {
         id: "frb10",
         name: "Line 10 · King’s Indian Attack",
-        plies: ["e4", "e6", "d3", "d5", "Nd2", "Nf6", "Ngf3", "c5", "g3", "Nc6", "Bg2", "Be7", "O-O", "O-O", "Re1", "b5", "e5", "Nd7", "Nf1", "a5", "Bf4", "b4"],
-        idea: "KIA vs French (2.d3). White fianchettos; Black castles, expands …b5/…a5/…b4, and meets e5 with …Nd7 — a complete KIA plan for Black.",
+        plies: ["e4", "e6", "d3", "d5", "Nd2", "Nf6", "Ngf3", "c5", "g3", "Nc6", "Bg2", "Be7", "O-O", "O-O", "Re1", "b5", "e5", "Nd7", "Nf1", "a5", "Bf4", "g5", "Be3", "g4", "N3d2", "Ncxe5", "Nb3", "f5"],
+        idea: "King's Indian Attack against the French. Castle, expand with ...b5 and ...a5, then ...g5 against the bishop on f4.",
         side: "b",
       },
     ],
@@ -1146,9 +1146,9 @@ export const PACKS: Pack[] = [
       {
         id: "alb6",
         name: "Carlsen …Bd6 …Qc7 vs Ne5",
-        idea: "Carlsen …Bd6, castle, then …c5 and …Qc7. Meet Ne5 with …Nbd7 and …Re8 — keep the e-file and do not rush the bishop trade.",
+        idea: "Carlsen ...Bd6 and ...Qc7. After Ne5 and ...Nbd7, White plays Ndf3 and keeps the centre. Do not leave the e5 knight to take on d7 for free.",
         next: "White to move. Against f4 or Ndf3, keep …Nxe5 or …cxd4. Meet Bg3 with …Bxg3. Do not take on e5 if it opens f4 onto your queen.",
-        plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "e6", "e3", "Bd6", "Nbd2", "O-O", "Bd3", "c5", "c3", "Qc7", "Ne5", "Nbd7", "O-O", "Re8"],
+        plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "e6", "e3", "Bd6", "Nbd2", "O-O", "Bd3", "c5", "c3", "Qc7", "Ne5", "Nbd7", "Ndf3", "c4", "Bc2", "Ne4", "Nxd7", "Bxd7", "Bxe4", "dxe4"],
         side: "b",
       },
       {
@@ -1169,18 +1169,18 @@ export const PACKS: Pack[] = [
       },
       {
         id: "alb9",
-        name: "Classical 5…Bg4 Ne5",
-        idea: "Classical …c5 with an early …Bg4 pin. …Bd6 meets Qa4; when Ne5 comes, take it, recapture is forced, and castle.",
-        next: "White to move. Against Bxf6 or Ndf3, keep …gxf6 or …Be7. Meet h3 with …Bh5. Do not leave the e5 bishop hanging to …Nxe5 without a recapture.",
-        plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "Nbd2", "Bg4", "c3", "e6", "Qa4", "Bd6", "Ne5", "Bxe5", "Bxe5", "O-O"],
+        name: "Classical 5...Bg4 ...Nd7",
+        idea: "Classical London with ...c5 and ...Bg4. Meet the pin with ...Nd7, then ...Qc8 and keep the bishop.",
+        next: "The bishop is on g6 and White has Nh4. Decide whether to trade or drop back. Castle when the king has a square.",
+        plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "Nbd2", "Bg4", "c3", "e6", "Qa4", "Nd7", "Bb5", "Qc8", "h3", "Bh5", "g4", "Bg6", "Nh4"],
         side: "b",
       },
       {
         id: "alb10",
         name: "London: ...Qb6 ...c4",
-        idea: "...Qb6 attacks b2. After Qb3, ...c4 gains space and ...Bf5 develops before ...e6.",
+        idea: "...Qb6 and ...c4. ...Bg4 asks the queen. White can break with b3. Keep the rook on the c-file.",
         next: "Castle and bring the knight to d7 or e4. The c4 pawn cramps White's queenside.",
-        plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "Bf5", "Ngf3", "e6"],
+        plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "Qb6", "Qb3", "c4", "Qc2", "Bg4", "b3", "cxb3", "axb3", "Rc8", "Qa2", "Bf5", "Ngf3"],
         side: "b",
       },
       {
@@ -1196,7 +1196,7 @@ export const PACKS: Pack[] = [
         name: "…Qb6 Qb3 c4 Qc2 Bf5",
         idea: "…Qb6, then …c4 when White offers Qb3. After Qc2, …Bf5 hits the queen; finish with …e6, …Be7, and castle.",
         next: "White to move. Against Nh4 or e4, keep …Bg6 or …Nxe4. Meet b3 with …b5. Do not take on b2 after Qb3 — the queen already covers it.",
-        plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "c3", "Qb6", "Qb3", "c4", "Qc2", "Bf5", "Nbd2", "e6", "Be2", "Be7", "O-O", "O-O"],
+        plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "c3", "Qb6", "Qb3", "c4", "Qc2", "Bf5", "Qc1", "Nh5", "Bg3", "g6", "Nbd2", "Nxg3", "hxg3", "Bg7"],
         side: "b",
       },
       {
@@ -1212,7 +1212,7 @@ export const PACKS: Pack[] = [
         name: "KID …g6 …d6 …e5",
         idea: "King’s Indian vs Bf4: …g6, castle, …d6, then …Qe8 and …e5. …c6 keeps d5 closed — this is the …e5 break, not a Grünfeld …d5.",
         next: "White to move. Against dxe5 or Bh2, keep …Nxe5 or …Qe7. Meet Nb5 with …Qd8. Do not take on d4 if it opens the e-file onto the queen.",
-        plies: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "h3", "d6", "Be2", "Nbd7", "O-O", "Qe8", "c4", "e5", "Nc3", "c6"],
+        plies: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "h3", "d6", "Be2", "Nbd7", "O-O", "Qe8", "c4", "e5", "Bh2", "Ne4", "a4", "f5", "a5", "Kh8", "Nbd2", "exd4"],
         side: "b",
       },
       {
@@ -1226,9 +1226,9 @@ export const PACKS: Pack[] = [
       {
         id: "alb16",
         name: "Jobava …c5 …Bg4",
-        idea: "Jobava (Nc3/Bf4): hit with …c5 and pin …Bg4. After …e6 and …Nc6, take on d4, trade bishops, and plant …Bd6.",
-        next: "White to move. Against c3 or Nb5, keep …O-O or …Bxf4. Meet Ng3 with …O-O. Do not leave the d4 knight hanging if you skip …Nxd4.",
-        plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "Bg4", "Be2", "e6", "Nf3", "Nc6", "O-O", "cxd4", "Nxd4", "Bxe2", "Ncxe2", "Bd6"],
+        idea: "Jobava (Nc3/Bf4): hit with ...c5 and pin ...Bg4. Trade the bishops on e2, take on d4, and meet Nf3 with ...Nc6.",
+        next: "White has played Nd1. Castle and bring that knight back toward the centre. Do not grab a pawn if it hangs a piece.",
+        plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "Bg4", "Be2", "Bxe2", "Qxe2", "cxd4", "exd4", "a6", "Nf3", "Nc6", "Nd1"],
         side: "b",
       },
       {
@@ -1744,10 +1744,10 @@ export const PACKS: Pack[] = [
       },
       {
         id: "it8",
-        name: "Line 8",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
-        idea: "BOOK · Fried Liver. Two Knights with …Nxd5, distinct from Line 2. White plays Nxf7, then Qf3+ Ke6 Nc3 Nb4 O-O c6 d4, and Black answers …Qf6.",
-        next: "Attack against the king on e6. Keep the d4 centre and develop. This is the Fried Liver, not Line 2.",
+        name: "Two Knights: ...b5",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "b5", "Bf1", "Qxd5", "Nc3", "Qc5", "Bxb5", "Be7", "d3", "O-O"],
+        idea: "Two Knights. After Ng5 d5 exd5, ...b5 hits the bishop. Drop the bishop to f1, then take on b5 once the queen has moved.",
+        next: "Black has castled. Develop the dark-squared bishop and castle. This is not the Fried Liver.",
         side: "w",
       },
       {
@@ -1841,8 +1841,8 @@ export const PACKS: Pack[] = [
       {
         id: "rlw9",
         name: "Line 9",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "c6", "Bc4", "Nf6", "Re1", "d6", "c3", "Be7", "cxd4", "O-O", "Nc3"],
-        idea: "Bird Defence 3…Nd4: White takes, castles, meets …c6 with Bc4–Re1–c3 and develops Nc3 after the d-file opens.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nd4", "Nxd4", "exd4", "O-O", "c6", "Bc4", "Nf6", "Re1", "d6", "c3", "Be7", "cxd4", "O-O", "d3"],
+        idea: "Bird Defence 3...Nd4. Take, castle, meet ...c6 with Bc4, and play d3 once the centre is open.",
         side: "w",
       },
       {
@@ -2275,8 +2275,8 @@ export const PACKS: Pack[] = [
       {
         id: "al18",
         name: "Alapin: greedy …g6 knight-space",
-        idea: "If Black fianchettoes too slowly after allowing the full centre, d5 and f4 can leave the e5 knight short of safe squares. Awareness drill, not a trap card.",
-        plies: ["e4", "c5", "c3", "Nc6", "d4", "cxd4", "cxd4", "g6", "d5", "Ne5", "f4"],
+        idea: "After ...g6, d5 sends the knight to b8. Qd4, e5 and e6 chase it again, and exf7+ opens the king. Awareness drill, not a trap card.",
+        plies: ["e4", "c5", "c3", "Nc6", "d4", "cxd4", "cxd4", "g6", "d5", "Nb8", "Qd4", "Nf6", "e5", "Ng8", "e6", "Nf6", "exf7+"],
         side: "w",
       },
     ],
@@ -2523,9 +2523,9 @@ export const PACKS: Pack[] = [
       },
       {
         id: "kg13",
-        name: "Fischer Defence: meet Ne6",
-        idea: "The knight jump to e6 can be met by the prepared bishop capture, but calculate before assuming the centre is safe. Awareness drill, not a trap.",
-        plies: ["e4", "e5", "f4", "exf4", "Nf3", "d6", "d4", "g5", "h4", "g4", "Ng5", "h6", "Ne6", "Bxe6"],
+        name: "Fischer Defence: Nxf7",
+        idea: "After ...h6, Nxf7 takes on f7 and the king steps out. Bxf4, ...Kg7, Nc3 and Bc4 keep the pieces coming. Awareness drill, not a trap.",
+        plies: ["e4", "e5", "f4", "exf4", "Nf3", "d6", "d4", "g5", "h4", "g4", "Ng5", "h6", "Nxf7", "Kxf7", "Bxf4", "Kg7", "Nc3", "Rh7", "Bc4", "Kh8"],
         side: "b",
       },
       {
@@ -3191,9 +3191,9 @@ export const PACKS: Pack[] = [
       },
       {
         id: "evb7",
-        name: "Evans declined: ...a5",
-        idea: "Evans declined with ...a5. After b5 Nd4, the bishop lands on d4 and drops to b6 once c3 arrives.",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "a5", "b5", "Nd4", "Nxd4", "Bxd4", "c3", "Bb6", "d4", "d6"],
+        name: "Evans accepted: ...Be7",
+        idea: "4.b4 is met by ...Bxb4. Drop the bishop to e7, then meet d4. Do not play ...a5 while the bishop on c5 is loose.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "b4", "Bxb4", "c3", "Be7", "d4", "exd4", "cxd4", "Nf6", "d5"],
         side: "b",
       },
       {
@@ -3342,7 +3342,7 @@ export const PACKS: Pack[] = [
         id: "eg8",
         name: "Englund: 3.Nc3",
         idea: "3.Nc3. Black takes the pawn back, White plays e4, and ...Bb4 Bd2 O-O is normal development. White stands better.",
-        plies: ["d4", "e5", "dxe5", "Nc6", "Nc3", "Nxe5", "e4", "Nf6", "Nf3", "Bb4", "Bd2", "O-O"],
+        plies: ["d4", "e5", "dxe5", "Nc6", "Nc3", "Nxe5", "e4", "Nf6", "Nf3", "d6", "Bf4", "Ng6", "Bg3", "Be7", "Qd2", "Nh5", "O-O-O"],
         side: "w",
       },
       {
@@ -3363,7 +3363,7 @@ export const PACKS: Pack[] = [
         id: "eg11",
         name: "Englund: …f6",
         idea: "Keep the extra pawn only while safe; meet the open lines with calm development.",
-        plies: ["d4", "e5", "dxe5", "f6", "exf6", "gxf6", "Nc3", "Bb4", "Bd2", "d6", "e3"],
+        plies: ["d4", "e5", "dxe5", "f6", "exf6", "Nxf6", "Bg5", "d5", "e3", "Nc6", "Nc3", "Be6", "Nf3"],
         side: "w",
       },
       {
@@ -3377,14 +3377,14 @@ export const PACKS: Pack[] = [
         id: "eg13",
         name: "Englund: …Bb4+ and …Nf6",
         idea: "Block the check, then take the loose knight before finishing the centre.",
-        plies: ["d4", "e5", "dxe5", "Bb4+", "c3", "Be7", "Nf3", "Nc6", "e4", "Nf6", "exf6", "gxf6"],
+        plies: ["d4", "e5", "dxe5", "Bb4+", "c3", "Be7", "Nf3", "Nc6", "e4", "d6", "Bf4", "Be6", "Bb5", "dxe5", "Qxd8+", "Kxd8", "Nxe5"],
         side: "w",
       },
       {
         id: "eg14",
         name: "Englund: …Bc5 and …Nf6",
         idea: "Develop against the attack, then remove the loose knight on f6.",
-        plies: ["d4", "e5", "dxe5", "Bc5", "Nf3", "Nc6", "e3", "Qe7", "Bd2", "Nf6", "exf6", "gxf6"],
+        plies: ["d4", "e5", "dxe5", "Bc5", "Nf3", "Nc6", "e3", "Qe7", "Bd2", "d6", "exd6", "Bxd6", "Nc3", "Nf6", "Bd3", "Be6", "Qe2"],
         side: "w",
       },
       {
@@ -3405,7 +3405,7 @@ export const PACKS: Pack[] = [
         id: "eg17",
         name: "Englund: 3.e4 and …d6",
         idea: "Build space only while keeping the king safe and development moving.",
-        plies: ["d4", "e5", "dxe5", "Nc6", "e4", "Nxe5", "Nc3", "d6", "f4", "Nf6", "fxe5"],
+        plies: ["d4", "e5", "dxe5", "Nc6", "e4", "Nxe5", "Nc3", "d6", "f4", "Nc6", "Be3", "g6", "Qd2", "Bg7", "O-O-O", "Nf6", "h3"],
         side: "w",
       },
       {
@@ -3462,7 +3462,7 @@ export const PACKS: Pack[] = [
         id: "bp5",
         name: "Budapest declined: 3.d5",
         idea: "Decline the Budapest with d5. ...Bc5, ...d6 and ...a6, then Be2 meets ...Bg4.",
-        plies: ["d4", "Nf6", "c4", "e5", "d5", "Bc5", "Nc3", "d6", "e4", "a6", "Nf3", "Bg4", "Be2"],
+        plies: ["d4", "Nf6", "c4", "e5", "d5", "Bc5", "Nc3", "d6", "e4", "a6", "h3", "c6", "Bd3", "cxd5", "cxd5", "Nbd7", "Nf3", "h6"],
         side: "w",
       },
       {
@@ -3497,7 +3497,7 @@ export const PACKS: Pack[] = [
         id: "bp10",
         name: "Fajarowicz: 4.Qc2",
         idea: "Fajarowicz 3...Ne4. Qc2 attacks the knight, ...d5 exd6 Bf5, and ...Nxd6 ...Nc6 develops.",
-        plies: ["d4", "Nf6", "c4", "e5", "dxe5", "Ne4", "Qc2", "d5", "exd6", "Bf5", "Nc3", "Nxd6", "Nf3", "Nc6"],
+        plies: ["d4", "Nf6", "c4", "e5", "dxe5", "Ne4", "Qc2", "d5", "exd6", "Bf5", "Nc3", "Nxd6", "e4", "Bg6", "Bd3", "Nd7", "Be3", "Nc8", "h4", "Bh5"],
         side: "w",
       },
       {
@@ -4401,7 +4401,7 @@ export const PACKS: Pack[] = [
         name: "Classical …c6 Qc2 Be6",
         idea: "Classical …c6 system: castle, then drop the knight to f6 and develop …Be6. The exchange on d5 leaves a solid isolated-pawn fight.",
         next: "White to move. Against Nc3 or Bg5, continue …Nc6 and …Rc8. Meet Bf4 with …Bd6. Do not push …d4 while pieces are still undeveloped on the queenside.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "d4", "d5", "Bd3", "Be7", "O-O", "O-O", "c4", "c6", "Qc2", "Nf6", "Re1", "Be6", "cxd5", "cxd5"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "d4", "d5", "Bd3", "Be7", "O-O", "O-O", "c4", "c6", "Qc2", "Nf6", "Re1", "Na6", "a3", "dxc4", "Bxc4", "Nc7", "Bf4", "Nfd5", "Bg3"],
         side: "b",
       },
       {
@@ -4678,8 +4678,8 @@ export const PACKS: Pack[] = [
       {
         id: "kidb10",
         name: "Classical: ...Nbd7 ...a5",
-        plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Nxd4"],
-        idea: "Classical with ...Nbd7. ...c6, ...a5 and ...Re8, then ...exd4 once Be3 arrives.",
+        plies: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Bxd4"],
+        idea: "Classical with ...Nbd7. ...c6, ...a5 and ...Re8, then ...exd4. White recaptures with the bishop.",
         side: "b",
       },
     ],
@@ -4708,8 +4708,8 @@ export const PACKS: Pack[] = [
       {
         id: "oib2",
         name: "Classical · …e5 e4 Be7",
-        plies: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "e4", "Be7", "Nf3", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
-        idea: "Same Classical shell when White plays e4 before Nf3; …Re8, …a5 and …Qc7 stay book-solid.",
+        plies: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "Nf3", "Be7", "e4", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
+        idea: "Classical Old Indian. Nf3 comes before e4, so the e-pawn is defended. Then ...Be7, ...c6, ...Re8, ...a5 and ...Qc7.",
         side: "b",
       },
       {
@@ -4789,17 +4789,17 @@ export const PACKS: Pack[] = [
       {
         id: "stb1",
         name: "Main 5.d3 Bc5 Be2 h5 shell",
-        idea: "Main Stafford: after 5.d3 Bc5 and Be2, push …h5. …Qe7, …a5 and …Bg4, then castle long into the classic h-pawn storm shell.",
+        idea: "Main Stafford after 5.d3 and ...h5. White plays c3 before the knight comes to d2. ...Bg4 and castle long. You are a pawn down, and White is much better if they stay calm.",
         next: "White to move. Against h3 or a4, keep …Kb8 and …g5 ideas. Meet b4 with …Bb6. Do not open the queenside while your king still sits on c8 without a pawn screen.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Be2", "h5", "Nd2", "Qe7", "c3", "a5", "Nf3", "Bg4", "O-O", "O-O-O"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Be2", "h5", "c3", "Qe7", "Nbd2", "a5", "Nf3", "Bg4", "O-O", "O-O-O"],
         side: "b",
       },
       {
         id: "stb2",
         name: "5.Nc3 Bc5 Be2 O-O",
-        idea: "Against 5.Nc3, plant …Bc5, castle, and lift …Re8. …Ng4 asks the bishop; after Bxg4, …Qh4 and …Qxg4 recover with an open kingside.",
-        next: "White to move. Against Bf4 or Qd2, keep …Bf5 and …Rad8. Meet h3 with …Qe6. Do not leave the g4 queen hanging to discoveries on the e-file without an escape.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Nc3", "Bc5", "Be2", "O-O", "O-O", "Re8", "d3", "Ng4", "Bxg4", "Qh4", "g3", "Qxg4"],
+        idea: "Against 5.Nc3, ...Qd4 hits the centre instead of castling into the bishop. White castles, you trade on c3, and the material is level.",
+        next: "The queen is on f6 and White has d4. Develop the light-squared bishop and castle. Do not treat the gambit as a sound equal position.",
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Nc3", "Bc5", "Be2", "Qd4", "O-O", "Nxe4", "Bf3", "Nxc3", "bxc3", "Qf6", "d4"],
         side: "b",
       },
       {
@@ -4807,7 +4807,7 @@ export const PACKS: Pack[] = [
         name: "5.Bc4 Bc5 d3 O-O",
         idea: "Vs 5.Bc4: …Bc5, castle, and pin with …Bg4. …Qd7 and …Bd4 ask the e3 bishop; …Rae8 completes a developed Stafford shell.",
         next: "White to move. Against Bxd4 or h3, keep …Qf5 or …Bh5. Meet Nf3 with …Bxf3. Do not leave the d4 bishop hanging to c3 without a recapture or retreat.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Bc4", "Bc5", "d3", "O-O", "O-O", "Bg4", "Qe2", "Qd7", "Be3", "Bd4", "Nd2", "Rae8"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Bc4", "Bc5", "d3", "O-O", "O-O", "Bg4", "Qe1", "b5", "Bb3", "a5", "a4", "Be6", "Nd2", "Nd7"],
         side: "b",
       },
       {
@@ -4815,7 +4815,7 @@ export const PACKS: Pack[] = [
         name: "5.e5 Ne4 d4 Be7",
         idea: "Against 5.e5, jump …Ne4 then …Be7. …Nc5 takes the d3 bishop; castle and …f6 undermine the e5 wedge in a solid Stafford decline of the pawn.",
         next: "White to move. Against Re1 or Bf4, continue …fxe5 and …Bf5. Meet Qe2 with …Qd7. Do not leave the e5 pawn hanging without calculating the open f-file.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "e5", "Ne4", "d4", "Be7", "Bd3", "Nc5", "O-O", "Nxd3", "Qxd3", "O-O", "Nc3", "f6"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "e5", "Ne4", "d4", "Be7", "Be3", "O-O", "Bd3", "f5", "Nd2", "Nxd2", "Qxd2", "Be6"],
         side: "b",
       },
       {
@@ -4831,7 +4831,7 @@ export const PACKS: Pack[] = [
         name: "Decline 4.d4 Nxe4 Nxc6",
         idea: "White’s 4.d4 still meets …Nxe4. After Nxc6 dxc6, retreat …Nf6, develop …Be7, castle, then …Be6 and …Qd7 finish a calm Petroff-style shell.",
         next: "White to move. Against Bg5 or h3, keep …Rad8 and …Bf5 ideas. Meet d5 with …cxd5. Do not leave Be6 hanging to d5 without a retreat square.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "d4", "Nxe4", "Nxc6", "dxc6", "Bd3", "Nf6", "O-O", "Be7", "c4", "O-O", "Nc3", "Be6", "Re1", "Qd7"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "d4", "Nxe4", "Nxc6", "dxc6", "Bd3", "Nf6", "O-O", "Be7", "c3", "O-O", "Nd2", "c5", "Nb3", "cxd4", "Nxd4", "Bg4"],
         side: "b",
       },
       {
@@ -4847,7 +4847,7 @@ export const PACKS: Pack[] = [
         name: "5.d4 Nxe4 Bd3",
         idea: "Against 5.d4, take on e4 then retreat …Nf6. …Be7, castle, and …Bg4 pin the knight; …Qd7 completes a developed IQP-style Stafford shell.",
         next: "White to move. Against h3 or Qc2, keep …Bxf3 or …Bh5. Meet c5 with …b6 ideas. Do not leave the g4 bishop hanging to h3 without a plan.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d4", "Nxe4", "Bd3", "Nf6", "O-O", "Be7", "c4", "O-O", "Nc3", "Bg4", "Be3", "Qd7"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d4", "Nxe4", "Bd3", "Nf6", "O-O", "Be7", "c4", "O-O", "Nc3", "Bg4", "Ne2", "Re8", "Be3", "Qd7", "Qc2", "Bxe2", "Bf5", "Qd6"],
         side: "b",
       },
       {
@@ -4943,7 +4943,7 @@ export const PACKS: Pack[] = [
         name: "5.f3 Bc5 shell",
         idea: "5.f3 is a slow try against the Stafford. Develop …Bc5–…Bb6, castle, and break with …c5 before White clamps the centre.",
         next: "Pressure e4 and d4. Typical plans: …cxd4, …Be6, and …Nd7–…Nc5 if the knight reroutes.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "f3", "Bc5", "d4", "Bb6", "c3", "O-O", "Bd3", "Re8", "O-O", "c5"],
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "f3", "Bc5", "c3", "Bb6", "d4", "c5", "dxc5", "Bxc5", "Qxd8+", "Kxd8"],
         side: "b",
       },
     ],
@@ -5188,10 +5188,10 @@ export const PACKS: Pack[] = [
       },
       {
         id: "ab7",
-        name: "Alburt–Keres · a4 O-O",
-        idea: "Alburt–Keres: White’s a4–a5 kicks the knight; drop to d7, castle, develop …Nc6, then break …dxe5 against the e5 wedge.",
-        next: "After White recaptures, …Nf6 or …Bg4. Don’t leave the king soft if the centre opens — …Re8 and …c6 are useful.",
-        plies: ["e4", "Nf6", "e5", "Nd5", "d4", "d6", "Nf3", "g6", "Bc4", "Nb6", "Bb3", "Bg7", "a4", "O-O", "a5", "N6d7", "O-O", "Nc6", "Re1", "dxe5"],
+        name: "Alburt: a4 and e6",
+        idea: "Alburt with ...g6. After a4 and ...N6d7, White plays e6 before castling. Meet it with ...fxe6 and ...Nf6.",
+        next: "The bishop is on e6 and the king is on h8. Castle if you have not, and challenge the e6 bishop.",
+        plies: ["e4", "Nf6", "e5", "Nd5", "d4", "d6", "Nf3", "g6", "Bc4", "Nb6", "Bb3", "Bg7", "a4", "O-O", "a5", "N6d7", "e6", "fxe6", "Ng5", "Nf6", "Bxe6+", "Kh8", "Ra3", "Qe8"],
         side: "b",
       },
       {
@@ -5442,9 +5442,9 @@ export const PACKS: Pack[] = [
       { id: "ck3", name: "Line 3 · Panov-Botvinnik", plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "c4", "Nf6", "Nc3", "e6", "Nf3", "Be7", "cxd5", "Nxd5", "Bd3", "O-O", "O-O", "Nc6", "Re1", "Bf6"], side: "b" },
       { id: "ck4", name: "Line 4 · 4…Nd7 system", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nd7", "Ng5", "Ngf6", "Bd3", "e6", "N1f3", "Bd6", "Qe2", "h6", "Ne4", "Nxe4", "Qxe4", "Nf6"], side: "b" },
       { id: "ck5", name: "Line 5 · Exchange 3.exd5", plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "Bd3", "Nc6", "c3", "Nf6", "Bf4", "Bg4", "Nf3", "e6", "Nbd2", "Bd6", "Bxd6", "Qxd6", "O-O", "O-O"], side: "b" },
-      { id: "ck6", name: "Line 6 · Two Knights …Bg4", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Bd6", "Ne2", "O-O", "c3", "Qc7"], side: "b" },
+      { id: "ck6", name: "Line 6 · Two Knights …Bg4", plies: ["e4", "c6", "Nc3", "d5", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6", "d4", "Nf6", "Bd3", "Nbd7", "O-O", "Nxe4", "Nxe4", "dxe4", "Qxe4", "Nf6", "Qe3", "Bd6", "Rd1"], side: "b" },
       { id: "ck7", name: "Line 7 · Advance …c5", plies: ["e4", "c6", "d4", "d5", "e5", "c5", "dxc5", "e6", "Nf3", "Bxc5", "Bd3", "Nc6", "O-O", "Nge7", "Bf4", "Ng6", "Bg3", "O-O", "Nbd2", "f6"], side: "b" },
-      { id: "ck8", name: "Line 8 · Classical 5.Bc4", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Bc4", "e6", "Nf3", "Nd7", "Ng3", "Bg6", "h4", "h6", "h5", "Bh7", "Qe2", "Ngf6"], side: "b" },
+      { id: "ck8", name: "Line 8 · Classical 5.Bc4", plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "Nf3", "Nd7", "h4", "h6", "h5", "Bh7"], side: "b" },
     ],
   },
   {
@@ -5551,7 +5551,7 @@ export const PACKS: Pack[] = [
       {
         id: "sd1",
         name: "Classical foundation",
-        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5"],
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "a5"],
         idea: "Learn the core move order.",
         next: "Complete development with ...e6, ...Bb4 and castling if White chooses e3.",
         drill: {
@@ -5607,9 +5607,9 @@ export const PACKS: Pack[] = [
       {
         id: "sd5",
         name: "Slow Slav: develop the bishop",
-        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6"],
-        idea: "Recognise when ...Bf5 is practical.",
-        next: "Develop the f8 bishop, castle and monitor White's possible Nh4.",
+        plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "e3", "Bf5", "Nc3", "e6", "Bd3"],
+        idea: "Slow Slav. ...Bf5 and ...e6, then White plays Bd3. Develop the dark-squared bishop and castle.",
+        next: "The bishop is on d3. Castle and choose whether to trade bishops. Keep an eye on Nh4 if the bishop stays on f5.",
         drill: {
           teach: "White's e3 supports the centre but closes the c1 bishop's diagonal. Black develops the light-squared bishop before playing ...e6.",
           watch: "Do not confuse this with 4.Nc3 Bf5: White's move order changes the pressure on d5 and b7.",
@@ -5739,7 +5739,7 @@ export const PACKS: Pack[] = [
     blurb: "3-line survey · …g6 without early …Nf6",
     lines: [
       { id: "md1", name: "Line 1 · Modern main", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "d6", "Be3", "a6", "Qd2", "b5", "O-O-O", "Nd7", "h4", "h5", "Nh3", "Bb7", "f3", "c5", "dxc5", "Nxc5"], side: "b" },
-      { id: "md2", name: "Line 2 · Averbakh 3.c4 …e5", plies: ["e4", "g6", "d4", "Bg7", "c4", "d6", "Nc3", "e5", "Nge2", "Nc6", "Be3", "Nge7", "d5", "Nd4", "Nxd4", "exd4", "Bxd4", "Bxd4", "Qxd4", "O-O"], side: "b" },
+      { id: "md2", name: "Line 2 · Averbakh 3.c4 …e5", plies: ["e4", "g6", "d4", "Bg7", "c4", "d6", "Nc3", "e5", "Nge2", "Nc6", "Be3", "Nge7", "d5", "Na5", "h4", "h5", "Qa4+", "c6", "Ng3", "Bd7"], side: "b" },
       { id: "md3", name: "Line 3 · …c6 & …d5 ideas", plies: ["e4", "g6", "d4", "Bg7", "Nc3", "c6", "f4", "d5", "e5", "h5", "Nf3", "Nh6", "Be3", "Bg4", "Be2", "e6", "Qd2", "Nf5", "Bf2", "h4"], side: "b" },
     ],
   },
@@ -5758,9 +5758,9 @@ export const PACKS: Pack[] = [
       { id: "pe2", name: "Line 2 · Classical 6…Bd6", plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "d4", "d5", "Bd3", "Bd6", "O-O", "O-O", "c4", "c6", "cxd5", "cxd5", "Nc3", "Nxc3"], side: "b" },
       { id: "pe3", name: "Line 3 · Steinitz 3.d4 Nxe4", plies: ["e4", "e5", "Nf3", "Nf6", "d4", "Nxe4", "Bd3", "d5", "Nxe5", "Nd7", "Nxd7", "Bxd7", "O-O", "Bd6", "c4", "c6", "cxd5", "cxd5", "Nc3", "Nxc3"], side: "b" },
       { id: "pe4", name: "Line 4 · Nimzowitsch 5.Nc3", plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "Nc3", "Nxc3", "dxc3", "Be7", "Bf4", "O-O", "Qd2", "Nd7", "O-O-O", "Nc5", "Bd3", "Be6"], side: "b" },
-      { id: "pe5", name: "Line 5 · Three Knights 3.Nc3", plies: ["e4", "e5", "Nf3", "Nf6", "Nc3", "Bb4", "Nxe5", "O-O", "Be2", "Re8", "Nd3", "Bxc3", "dxc3", "Nxe4", "O-O", "d5", "Nf4", "c6", "c4", "Nd7"], side: "b" },
+      { id: "pe5", name: "Line 5 · Three Knights 3.Nc3", plies: ["e4", "e5", "Nf3", "Nf6", "Nc3", "Bb4", "Nxe5", "O-O", "Be2", "Re8", "Nd3", "Bxc3", "dxc3", "Nxe4", "O-O", "d5", "Nf4", "c6", "c4", "dxc4"], side: "b" },
       { id: "pe6", name: "Line 6 · 5.Qe2", plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "d6", "Nf3", "Nxe4", "Qe2", "Qe7", "d3", "Nf6", "Bg5", "Qxe2+", "Bxe2", "Be7", "Nc3", "c6", "O-O-O", "Na6"], side: "b" },
-      { id: "pe7", name: "Line 7 · Steinitz 3.d4 exd4", plies: ["e4", "e5", "Nf3", "Nf6", "d4", "exd4", "e5", "Ne4", "Qxd4", "d5", "exd6", "Nxd6", "Nc3", "Nc6", "Qf4", "Bf5", "Bb5", "Qe7+", "Be3", "O-O-O"], side: "b" },
+      { id: "pe7", name: "Line 7 · Steinitz 3.d4 exd4", plies: ["e4", "e5", "Nf3", "Nf6", "d4", "exd4", "e5", "Ne4", "Qxd4", "d5", "exd6", "Nxd6", "Nc3", "Nc6", "Qf4", "Bf5", "Bb5", "Qe7+", "Be3", "Nxb5", "Nxb5", "Qb4+", "Qxb4", "Bxb4+", "c3", "Bd6", "Nxd6+"], side: "b" },
       { id: "pe8", name: "Line 8 · 3.d4 Nxe4 5…Bd6", plies: ["e4", "e5", "Nf3", "Nf6", "d4", "Nxe4", "Bd3", "d5", "Nxe5", "Bd6", "O-O", "O-O", "c4", "Bxe5", "dxe5", "Nc6", "cxd5", "Qxd5", "Qc2", "Nb4"], side: "b" },
     ],
   },
@@ -5822,7 +5822,7 @@ export const PACKS: Pack[] = [
       { id: "ph2", name: "Line 2 · Lion …b6 …Bb7", plies: ["e4", "e5", "Nf3", "d6", "d4", "Nf6", "Nc3", "Nbd7", "Bc4", "Be7", "O-O", "O-O", "Re1", "c6", "a4", "b6", "h3", "a6", "Ba2", "Bb7"], side: "b" },
       { id: "ph3", name: "Line 3 · Antoshin …Be7", plies: ["e4", "e5", "Nf3", "d6", "d4", "Nf6", "Nc3", "Be7", "Be2", "O-O", "O-O", "c6", "a4", "Nbd7", "h3", "Qc7", "Be3", "Re8", "Qd2", "Bf8"], side: "b" },
       { id: "ph4", name: "Line 4 · Exchange 3…exd4", plies: ["e4", "e5", "Nf3", "d6", "d4", "exd4", "Nxd4", "Nf6", "Nc3", "Be7", "Be2", "O-O", "O-O", "Re8", "f4", "Bf8", "Bf3", "c6", "Re1", "Nbd7"], side: "b" },
-      { id: "ph5", name: "Line 5 · 4.dxe5", plies: ["e4", "e5", "Nf3", "d6", "d4", "Nf6", "dxe5", "Nxe4", "Qd5", "Nc5", "Bg5", "Be7", "exd6", "Qxd6", "Nc3", "c6", "Qxd6", "Bxd6", "O-O-O", "Be7"], side: "b" },
+      { id: "ph5", name: "Line 5 · 4.dxe5", plies: ["e4", "e5", "Nf3", "d6", "d4", "Nf6", "dxe5", "Nxe4", "Qd5", "Nc5", "Bg5", "Be7", "exd6", "Qxd6", "Nc3", "c6", "Qxd6", "Bxd6", "O-O-O", "Bc7"], side: "b" },
       { id: "ph6", name: "Line 6 · vs 3.Bc4", plies: ["e4", "e5", "Nf3", "d6", "Bc4", "Be7", "d3", "Nf6", "O-O", "O-O", "Re1", "c6", "a4", "Nbd7", "c3", "Qc7", "Nbd2", "h6", "Nf1", "Re8"], side: "b" },
       { id: "ph7", name: "Line 7 · 5.g3", plies: ["e4", "e5", "Nf3", "d6", "d4", "Nf6", "Nc3", "Nbd7", "g3", "Be7", "Bg2", "O-O", "O-O", "c6", "a4", "Re8", "h3", "Qc7", "Be3", "b6"], side: "b" },
       { id: "ph8", name: "Line 8 · vs 3.Nc3", plies: ["e4", "e5", "Nf3", "d6", "Nc3", "Nf6", "d4", "Nbd7", "Bc4", "Be7", "O-O", "O-O", "a4", "c6", "Re1", "Qc7", "h3", "h6", "Ba2", "Re8"], side: "b" },
@@ -5840,7 +5840,7 @@ export const PACKS: Pack[] = [
     blurb: "10 club tasters · some have a full pack",
     lines: [
       { id: "cw1", name: "Line 1 · London System", plies: ["d4", "d5", "Nf3", "Nf6", "Bf4", "c5", "e3", "Nc6", "c3", "e6", "Nbd2", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "f4", "Qc7"], side: "w" },
-      { id: "cw2", name: "Line 2 · Jobava London", plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "Nc6", "Nf3", "cxd4", "exd4", "a6", "a3", "Bf5", "Be2", "e6", "O-O", "Be7", "Ne5", "O-O"], side: "w" },
+      { id: "cw2", name: "Line 2 · Jobava London", plies: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "Nc6", "Nb5", "e5", "dxe5", "Qa5+", "Qd2", "Qxd2+", "Kxd2", "Ne4+"], side: "w" },
       { id: "cw3", name: "Line 3 · Grand Prix Attack", plies: ["e4", "c5", "Nc3", "Nc6", "f4", "g6", "Nf3", "Bg7", "Bb5", "Nd4", "O-O", "Nxb5", "Nxb5", "a6", "Nc3", "d6", "d3", "Nf6", "Qe1", "O-O"], side: "w" },
       { id: "cw4", name: "Line 4 · Danish Gambit", plies: ["e4", "e5", "d4", "exd4", "c3", "dxc3", "Bc4", "cxb2", "Bxb2", "Nf6", "e5", "d5", "exf6", "dxc4", "Qxd8+", "Kxd8", "fxg7", "Bb4+", "Nc3", "Rg8"], side: "w" },
       { id: "cw5", name: "Line 5 · Blackmar-Diemer", plies: ["d4", "d5", "e4", "dxe4", "Nc3", "Nf6", "f3", "exf3", "Nxf3", "Bg4", "h3", "Bxf3", "Qxf3", "c6", "Be3", "e6", "O-O-O", "Bb4", "Ne2", "Nbd7"], side: "w" },
@@ -6164,17 +6164,17 @@ export const PACKS: Pack[] = [
       {
         id: "ot2",
         name: "Trap · Fishing Pole",
-        idea: "…Ng4 and …h5 bait hxg4. Taking the knight opens the h-file; after …gxf3 and …Qh4 the Fishing Pole punish is on the board.",
-        next: "White to move with the queen on h4 and the h-file open. Against Qh3 trade or keep pressing with …d6 and …Bxh3; against quiet moves look for …Bc5 and …Nd4. Do not close the file or leave the queen hanging to a discovery. The risk is letting White consolidate while your king stays central.",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Ng4", "h3", "h5", "hxg4", "hxg4", "c3", "a6", "Ba4", "gxf3", "Qxf3", "Qh4"],
-        side: "b",
+        idea: "...Ng4 is the Fishing Pole bait. Answer h3 and play d4. Do not take on g4: that opens the h-file.",
+        next: "You are better. Meet ...Bc5 with development. Leave the knight on g4 unless a capture actually wins it.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bb5", "Nf6", "O-O", "Ng4", "h3", "h5", "d4", "exd4", "Bf4", "a6", "Ba4", "Bc5"],
+        side: "w",
       },
       {
         id: "ot3",
         name: "Trap · Elephant (Cambridge Springs)",
-        idea: "White’s Nxd5 takes the d5 pawn and hangs the queen. …Nxd5, …Bb4+, and …Bxd2+ then …Kxd8 finish the Elephant trap with an extra piece.",
-        next: "Black is a piece up and the king sits on d8. Castle by hand with …c6, …Kc7, and develop …Re8 when the centre opens. Meet e4 with calm development. Do not give the piece back for a random pawn grab.",
-        plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Nbd7", "cxd5", "exd5", "Nxd5", "Nxd5", "Bxd8", "Bb4+", "Qd2", "Bxd2+", "Kxd2", "Kxd8"],
+        idea: "White's Nxd5 hangs the queen. ...Nxd5, ...Bb4+, and ...Kxd8 take the queen. The king on d8 has the extra piece.",
+        next: "You are a piece up with the king on d8. Play ...c6 and ...Kc7, then develop. Do not give the piece back.",
+        plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Nbd7", "cxd5", "exd5", "Nxd5", "Nxd5", "Bxd8", "Bb4+", "Qd2", "Kxd8"],
         side: "b",
       },
       {
@@ -6188,26 +6188,26 @@ export const PACKS: Pack[] = [
       {
         id: "ot5",
         name: "Trap · Blackburne Shilling",
-        idea: "After …Qg5, Nxf7 is the second greedy take. …Qxg2, …Qxh1+, and …Qxd1+ cash the rook and queen to finish the Blackburne punish.",
-        next: "Black has won the queen and the h1-rook; White’s king sits on d1. Play …d5, develop with …Bg4+ or …Nf6, and castle when safe. Do not hunt the knight on f7 before your pieces are out.",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nd4", "Nxe5", "Qg5", "Nxf7", "Qxg2", "d3", "Qxh1+", "Kd2", "Qxd1+", "Kxd1"],
-        side: "b",
+        idea: "...Nd4 is the Blackburne bait. Take it with Nxd4 and castle. Do not grab on e5 and then on f7.",
+        next: "Knights are off and you have a clear edge. Develop the queenside knight and keep the d4 pawn under control.",
+        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nd4", "Nxd4", "exd4", "O-O", "c6", "d3", "Nf6", "Nd2", "d5"],
+        side: "w",
       },
       {
         id: "ot6",
         name: "Trap · Stafford",
-        idea: "After …Nxe4, Bxd8 takes the queen and is the bait. …Bxf2+ and …Bg4# are the Stafford mate trap.",
-        next: "Checkmate on g4. White has no legal reply. Reset and drill …Nxe4, then …Bxf2+ and …Bg4 after the queen take.",
-        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Bg5", "Nxe4", "Bxd8", "Bxf2+", "Ke2", "Bg4#"],
-        side: "b",
+        idea: "...Nc6 is the Stafford bait. Take on c6 and develop with Nc3 and Qe2. Do not drop the light-squared bishop to ...Qh4.",
+        next: "You are a pawn up. Castle and bring the dark-squared bishop out. Meet ...Qe7 with calm development.",
+        plies: ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "bxc6", "Nc3", "Bb4", "e5", "Qe7", "Qe2", "Nd5"],
+        side: "w",
       },
       {
         id: "ot7",
         name: "Trap · Englund",
-        idea: "After …Bb4, Bxb4 takes the bishop and drops into the Englund queen-raid trap. …Nxb4 and …Qxa3 finish with an extra piece.",
-        next: "Black’s queen sits on a3 with a clear material plus. Against Rb1 tuck with …Qc5 or …Qc3+; develop …Nge7, then castle. Do not leave the queen with no exit while White’s rook comes to the b-file.",
-        plies: ["d4", "e5", "dxe5", "Nc6", "Nf3", "Qe7", "Bf4", "Qb4+", "Bd2", "Qxb2", "Bc3", "Bb4", "Bxb4", "Nxb4", "Na3", "Qxa3"],
-        side: "b",
+        idea: "...e5 is the Englund offer. Take it with dxe5 and develop. Do not hand the extra pawn back to the queen raid.",
+        next: "You are a pawn up with bishops developed. Castle and meet ...Ng6 with the centre. Keep the extra pawn.",
+        plies: ["d4", "e5", "dxe5", "Nc6", "Nf3", "d5", "Bf4", "Bc5", "e3", "Nge7"],
+        side: "w",
       },
       {
         id: "ot8",

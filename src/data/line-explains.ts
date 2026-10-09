@@ -138,7 +138,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "stafford-black:stb1":
     "The Stafford is a sharp gambit, and it is objectively risky: you are a pawn down, and White is much better if they stay calm. People still play it for the traps and the practical chances, because the h-pawn and the bishop on g4 can bother a player who does not know them. Your king is castled long. Next, use those two ideas and calculate before you push. Do not treat this as a sound equal position.",
   "stafford-black:stb2":
-    "This is a different Stafford from the long-castle line. White played Nc3, you castled short, and ...Ng4 plus ...Qh4 won the light-squared bishop, so the queen now sits on g4 with a rook on e8. It is still objectively risky: you are a pawn down, and White is much better if they stay calm. People play it for the practical chances against a king that has just played g3. Next, use the e-file and calculate before you push, and do not treat this as a sound equal position.",
+    "Line 1 castled long with the bishop on g4. This time you put the queen on d4, White castled, and you traded on c3. Your queen is on f6, the light-squared bishop is on f3, and your king is still on e8. Material is level and the position is about equal. Next, develop the light-squared bishop and castle, because the gambit stays risky if you fall behind in development.",
   "ponziani-white:pw1":
     "The dark-squared bishops are off and a black knight sits on b4, with the position about level. Your king is still on e1 and Black has castled. Next, castle and meet that knight, either with a3 or by developing the knight on b1.",
   "ponziani-white:pw2":
@@ -158,7 +158,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "opening-traps:ot1":
     "This line ends in checkmate, which is why the queen was not free. Black took the queen on d1 with the bishop, and Bxf7+ followed by Nd5 mates the king on e7. Next time you see this pin, look for the knight jump before you assume the queen can be taken.",
   "opening-traps:ot2":
-    "Line 1 was Legal's Mate for White. This Fishing Pole is yours, as Black. White's mistake was taking the knight on g4, which opened the h-file, and after ...gxf3 your queen arrived on h4. You are much better, with that queen in front of the white king. Next, keep the queen safe and look for ...Bc5, because this attack appears only when White takes the knight.",
+    "Line 1 was Legal's Mate for White. This time you are White against the Fishing Pole. Black put a knight on g4 and a pawn on h5, and you answered with h3 and d4 without taking. Your king is castled, you are a pawn down, and you are much better. Next, develop the knight on b1, and do not take on g4.",
 };
 
 /** Note for the finish card, or undefined when this line should show none. */

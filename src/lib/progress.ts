@@ -16,11 +16,11 @@ const EVENT = "opening-lab:progress";
 export const CARO_LINE_PROGRESS_REVISION = 2;
 
 /**
- * Lines 3 to 10 whose book moves changed. Saved ply indexes would resume
- * in the wrong position, so those keys are dropped once. Line ids stay.
- * Lines 1 and 2, and any line whose moves did not change, are left alone.
+ * Lines 3 to 10 whose book moves changed in the first refresh. Saved ply
+ * indexes would resume in the wrong position, so those keys are dropped once.
+ * Line ids stay. Lines 1 and 2 were left alone in that refresh.
  */
-export const BOOK_LINE_PROGRESS_REVISION = 1;
+export const BOOK_LINE_PROGRESS_REVISION = 2;
 
 export const RESET_BOOK_LINE_IDS = [
   "ckb6", "ckb8", "ckb9", "ckb10",
@@ -52,7 +52,42 @@ export const RESET_BOOK_LINE_IDS = [
   "frb7",
 ] as const;
 
+/**
+ * Moves that changed after revision 1: critical fixes in every pack, and
+ * the majors in the purchasable packs. Includes lines 1 and 2 whose SAN
+ * changed (stb1, stb2, sd1, ot2). Ids already in the first list are repeated
+ * so a revision-1 save of the old moves is dropped too.
+ */
+export const RESET_BOOK_LINE_IDS_V2 = [
+  "sg3", "sg6", "sg10",
+  "caw1",
+  "lon9",
+  "vl2", "vl3",
+  "frb3", "frb10",
+  "alb6", "alb9", "alb10", "alb12", "alb14", "alb16",
+  "it8",
+  "rlw9",
+  "al18",
+  "kg13",
+  "evb7",
+  "eg8", "eg11", "eg13", "eg14", "eg17",
+  "bp5", "bp10",
+  "peb14",
+  "kidb10",
+  "oib2",
+  "stb1", "stb2", "stb3", "stb4", "stb6", "stb8", "stb20",
+  "ab7",
+  "ck6", "ck8",
+  "sd1", "sd5",
+  "md2",
+  "pe5", "pe7",
+  "ph5",
+  "cw2",
+  "ot2", "ot3", "ot5", "ot6", "ot7",
+] as const;
+
 const RESET_BOOK_LINE_ID_SET = new Set<string>(RESET_BOOK_LINE_IDS);
+const RESET_BOOK_LINE_ID_SET_V2 = new Set<string>(RESET_BOOK_LINE_IDS_V2);
 
 export type Mastery = "new" | "learning" | "fresh" | "due" | "weak";
 
@@ -215,8 +250,15 @@ export function migrateBookLineProgress(
   const next: Record<string, LineProgress> = { ...lines };
   let changed = false;
   let nextRevision = Number.isFinite(revision) ? revision : 0;
-  if (nextRevision < BOOK_LINE_PROGRESS_REVISION) {
+  if (nextRevision < 1) {
     for (const id of RESET_BOOK_LINE_ID_SET) {
+      if (next[id]) delete next[id];
+    }
+    nextRevision = 1;
+    changed = true;
+  }
+  if (nextRevision < BOOK_LINE_PROGRESS_REVISION) {
+    for (const id of RESET_BOOK_LINE_ID_SET_V2) {
       if (next[id]) delete next[id];
     }
     nextRevision = BOOK_LINE_PROGRESS_REVISION;

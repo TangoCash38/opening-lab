@@ -35,14 +35,14 @@ function linePlies(pack, id) {
 const EXPECTED = {
   frb1: ["e4", "e6", "d4", "d5", "Nc3", "Bb4", "e5", "c5", "a3", "Bxc3+", "bxc3", "Ne7", "Nf3", "Bd7", "a4", "Qa5", "Bd2", "Nbc6", "Bd3", "c4", "Be2", "f6", "O-O", "O-O-O"],
   frb2: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Qb6", "Be2", "cxd4", "cxd4", "Nh6", "Bd3", "Bd7", "Bc2", "Nf5", "Bxf5", "exf5", "O-O", "Be6"],
-  frb3: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Bd7", "Be2", "Nge7", "O-O", "Ng6", "g3", "Be7", "h4", "O-O", "h5", "Nh8", "Bf4", "f5", "exf6", "Bxf6"],
+  frb3: ["e4", "e6", "d4", "d5", "e5", "c5", "c3", "Nc6", "Nf3", "Bd7", "Be2", "Nge7", "O-O", "Ng6", "g3", "Be7", "h4", "O-O", "h5", "Nh8", "Bf4", "cxd4", "cxd4", "Be8", "Kg2", "f6", "Rh1", "fxe5"],
   frb4: ["e4", "e6", "d4", "d5", "Nd2", "c5", "exd5", "exd5", "Ngf3", "Nc6", "Bb5", "Bd6", "dxc5", "Bxc5", "O-O", "Ne7", "Nb3", "Bd6", "Re1", "O-O", "Bg5", "Bg4"],
   frb5: ["e4", "e6", "d4", "d5", "Nd2", "Nf6", "e5", "Nfd7", "Bd3", "c5", "c3", "Nc6", "Ne2", "cxd4", "cxd4", "f6", "exf6", "Nxf6", "Nf3", "Bd6", "O-O", "O-O", "Bf4", "Bxf4", "Nxf4", "Ne4"],
   frb6: ["e4", "e6", "d4", "d5", "Nc3", "Nf6", "Bg5", "Be7", "e5", "Nfd7", "Bxe7", "Qxe7", "f4", "a6", "Nf3", "c5", "Qd2", "Nc6", "dxc5", "Nxc5", "Bd3", "b5", "O-O", "Bb7"],
   frb7: ["e4", "e6", "d4", "d5", "Nc3", "Nf6", "e5", "Nfd7", "f4", "c5", "Nf3", "Nc6", "Be3", "Qb6", "a3", "Be7"],
   frb8: ["e4", "e6", "d4", "d5", "exd5", "exd5", "Bd3", "Nc6", "c3", "Bd6", "Nf3", "Nge7", "O-O", "Bg4", "h3", "Bf5", "Bxf5", "Nxf5", "Re1+", "Nfe7", "a4", "O-O"],
   frb9: ["e4", "e6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Nd7", "Nf3", "Ngf6", "Nxf6+", "Nxf6", "Bd3", "c5", "dxc5", "Bxc5", "Qe2", "O-O", "Bg5", "h6", "Bh4", "Qa5+"],
-  frb10: ["e4", "e6", "d3", "d5", "Nd2", "Nf6", "Ngf3", "c5", "g3", "Nc6", "Bg2", "Be7", "O-O", "O-O", "Re1", "b5", "e5", "Nd7", "Nf1", "a5", "Bf4", "b4"],
+  frb10: ["e4", "e6", "d3", "d5", "Nd2", "Nf6", "Ngf3", "c5", "g3", "Nc6", "Bg2", "Be7", "O-O", "O-O", "Re1", "b5", "e5", "Nd7", "Nf1", "a5", "Bf4", "g5", "Be3", "g4", "N3d2", "Ncxe5", "Nb3", "f5"],
 };
 
 const NAMES = {
