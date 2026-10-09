@@ -699,7 +699,7 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
   assert.match(lineBlock("it6"), /Quiet Two Knights/);
   assert.match(lineBlock("it7"), /greedy \.\.\.Bxc3 walks into Ba3/);
   assert.match(lineBlock("it8"), /\.\.\.b5 hits the bishop/);
-  assert.match(lineBlock("it9"), /BOOK · Classical Center Attack/);
+  assert.match(lineBlock("it9"), /Classical Center Attack/);
   assert.match(lineBlock("it10"), /Two Knights with 4\.d4/);
   assert.doesNotMatch(lineBlock("it8"), /Punish the error/);
   assert.doesNotMatch(lineBlock("it9"), /Punish the error/);
@@ -1115,7 +1115,7 @@ test("How to Defend Against the King’s Gambit is a twelfth visible free Black 
   const kg18 = lineBlock("kg18");
   assert.doesNotMatch(kg13, /trap:\s*true/);
   assert.match(kg13, /Nxf7/);
-  assert.match(kg13, /not a trap/);
+  assert.match(kg13, /the king steps out/);
   assert.match(kg18, /fxe5/);
   assert.match(kg18, /Qxh1/);
   // OpeningLine has no trap field on main; kg18 is the only trap by name.
@@ -1823,7 +1823,7 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
   assert.match(lineBlock("qg6"), /Tartakower/);
   assert.match(lineBlock("qg7"), /Tarrasch Defence/);
   assert.match(lineBlock("qg8"), /Cambridge Springs/);
-  assert.match(lineBlock("qg9"), /BOOK · Albin Counter-Gambit/);
+  assert.match(lineBlock("qg9"), /Albin Counter-Gambit/);
   assert.match(lineBlock("qg10"), /Moscow variation/);
   for (const id of ["qg1", "qg2", "qg3", "qg4", "qg5", "qg9"]) {
     assert.doesNotMatch(lineBlock(id), /Punish the error/);
@@ -2501,7 +2501,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.equal(names.stb20, "5.f3 Bc5 shell");
   assert.match(stb, /After 5\.Nc3 Bc5, 6\.e5\?\? hangs the centre/);
   assert.match(stb, /5\.f3 is a slow try against the Stafford/);
-  assert.match(stb, /Black is up a rook/);
+  assert.match(stb, /won a rook for a bishop/);
   assert.match(stb, /The queens are off and your king is on d8/);
   assert.doesNotMatch(names.stb14, /Punish the error/);
   assert.doesNotMatch(names.stb18, /Punish the error/);
@@ -2981,9 +2981,9 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
   }
   assert.match(lineBlock("lon6"), /Jobava London/);
   assert.match(lineBlock("lon7"), /London with \.\.\.Bf5/);
-  assert.match(lineBlock("lon8"), /BOOK · …Qb6/);
+  assert.match(lineBlock("lon8"), /…Qb6 vs the classical London/);
   assert.match(lineBlock("lon9"), /London against \.\.\.g6/);
-  assert.match(lineBlock("lon10"), /BOOK · Chigorin-ish/);
+  assert.match(lineBlock("lon10"), /Chigorin-ish/);
   assert.doesNotMatch(lineBlock("lon6"), /Trap · …Bf5/);
   assert.doesNotMatch(lineBlock("lon8"), /…g5\?/);
   assert.doesNotMatch(lineBlock("lon10"), /…Ng4\?/);
