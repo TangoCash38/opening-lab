@@ -14,7 +14,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "london:lon1":
     "Both kings are castled, your knight is on e5, and f4 is already in, with the dark-squared bishop on g3 facing the bishop on d6. The position is about equal, and that knight is the piece this London is built around. Next, keep the knight supported. Do not throw more pawns at the king just to make something happen.",
   "london:lon2":
-    "Line 1 kept the centre closed and put a knight on e5. This time Black took on d4, you recaptured with the pawn, and the bishop came to b5 against the bishop on d6. The position is about equal, with Black's other bishop on f5. Next, castle, then choose Bg3 or Ne5. Do not leave the d4 pawn without support.",
+    "Line 1 kept the centre closed and put a knight on e5. This time Black took on d4, you recaptured with the pawn, and the bishop came to b5 against the bishop on d6. The position is about equal, with Black's other bishop on f5. Next, take on d6 with the bishop from f4. Do not leave the d4 pawn without support.",
   "sicilian-black:sib1":
     "White has castled queenside and you have castled kingside, so ...b5 is the start of your play against that king. White keeps a small edge, which is normal in this attack while your queenside pawns are still rolling. Your pieces are already on e6, e7, d7 and f6. Next, keep expanding on the queenside, and do not start a pawn storm in front of your own king.",
   "sicilian-black:sib2":
@@ -24,7 +24,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "french-black:frb2":
     "Line 1 was the Winawer, with long castling and ...f6. This time it is the Advance: ...Qb6, the knight comes via h6 to f5, and you take on f5 with the pawn before ...Be6. The position is about level. White has castled and your king is still on e8. Next, decide where that king belongs, and keep the pressure on d4.",
   "caro-kann-black:ckb1":
-    "The Caro has done its job: the light-squared bishops are off and your knight stands on f5, pressing d4. The position is about equal. Your king is still on e8. Next, castle, then decide whether to keep the knight on f5 or turn your attention to d4.",
+    "The Caro has done its job: the light-squared bishops are off and your knight stands on f5, pressing d4. The position is about equal. Your king is still on e8. Next, if White plays Ng3 or f4, take the bishop on e3 with that knight.",
   "caro-kann-black:ckb2":
     "This is the Classical Caro, not the Advance from line 1. The knight on c3 took on e4, and your light-squared bishop dropped back before the trade on d3. White has castled long, your king is still on e8, and White keeps a small edge, which is normal here. Next, castle short, then look at ...c5 or ...b5 against that king. Leave the pawn on h6 where it is.",
   "qgd-black:qgdb1":
@@ -50,7 +50,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "italian-white:it1":
     "Both kings are castled in a quiet Italian, and the position is about equal. Black's knight has come to g6, your rook is on e1, and the other knight sits on d2. Next, prepare d4 only when those pieces can support it. There is no need to force the centre open on the next move.",
   "italian-white:it2":
-    "This is the Two Knights, not the quiet ...Bc5 Italian from line 1. You are a pawn up, and the chances are about level because Black's pawn on e4 and the bishop on d6 give real activity. Your knight is on e5, and that bishop looks straight at it. Next, castle and decide whether to challenge e4 with d3 or d4. Do not grab on f7 in this book position.",
+    "This is the Two Knights, not the quiet ...Bc5 Italian from line 1. You are a pawn up, and the chances are about level because Black's pawn on e4 and the bishop on d6 give real activity. Your knight is on e5, and that bishop looks straight at it. Next, play d4. Do not grab on f7 in this book position.",
   "ruy-lopez-white:rlw1":
     "This is the closed Spanish: the knight has arrived on f1, both kings are castled, and you have a small edge. From f1 that knight usually wants e3 or g3. Next, choose one of those and keep the centre under control with the bishop on c2.",
   "ruy-lopez-white:rlw2":
