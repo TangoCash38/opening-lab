@@ -668,6 +668,7 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
   const itTitles = {
     it6: "Two Knights: 4.d3",
     it7: "Greco: ...Bxc3 trap",
+    it8: "Two Knights: ...b5",
     it10: "Two Knights: 4.d4",
   };
   for (const id of lineIds) {
@@ -684,7 +685,7 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
     it5: ["e4", "e5", "Nf3", "Nc6", "Bc4", "g6", "d3", "Bg7", "Ng5", "Nh6", "a4", "f6", "Nf3", "Nf7", "Nc3", "d6", "Be3", "O-O"],
     it6: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "c3", "Na5", "Bb3", "Nxb3", "axb3"],
     it7: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Nxc3", "bxc3", "Bxc3", "Ba3", "d5", "Bb5"],
-    it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
+    it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "b5", "Bf1", "Qxd5", "Nc3", "Qc5", "Bxb5", "Be7", "d3", "O-O"],
     it9: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "cxd4", "Bb6"],
     it10: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d4", "exd4", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O"],
   };
@@ -697,8 +698,8 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
 
   assert.match(lineBlock("it6"), /Quiet Two Knights/);
   assert.match(lineBlock("it7"), /greedy \.\.\.Bxc3 walks into Ba3/);
-  assert.match(lineBlock("it8"), /BOOK · Fried Liver/);
-  assert.match(lineBlock("it9"), /BOOK · Classical Center Attack/);
+  assert.match(lineBlock("it8"), /\.\.\.b5 hits the bishop/);
+  assert.match(lineBlock("it9"), /Classical Center Attack/);
   assert.match(lineBlock("it10"), /Two Knights with 4\.d4/);
   assert.doesNotMatch(lineBlock("it8"), /Punish the error/);
   assert.doesNotMatch(lineBlock("it9"), /Punish the error/);
@@ -940,7 +941,7 @@ test("How to Meet the Sicilian: The Alapin for White is a tenth visible free Whi
   }
 
   assert.deepEqual(linePlies("al1"), ["e4", "c5", "c3", "Nc6", "d4", "cxd4", "cxd4", "d5", "exd5", "Qxd5", "Nf3"]);
-  assert.deepEqual(linePlies("al18"), ["e4", "c5", "c3", "Nc6", "d4", "cxd4", "cxd4", "g6", "d5", "Ne5", "f4"]);
+  assert.deepEqual(linePlies("al18"), ["e4", "c5", "c3", "Nc6", "d4", "cxd4", "cxd4", "g6", "d5", "Nb8", "Qd4", "Nf6", "e5", "Ng8", "e6", "Nf6", "exf7+"]);
 
   const names = Object.fromEntries(
     [...al.matchAll(/id: "(al\d+)",\s*\n\s*name: "([^"]+)"/g)].map((m) => [
@@ -1101,7 +1102,7 @@ test("How to Defend Against the King’s Gambit is a twelfth visible free Black 
     ]),
   );
   assert.equal(names.kg1, "Knight’s Gambit: recapture with development");
-  assert.equal(names.kg13, "Fischer Defence: meet Ne6");
+  assert.equal(names.kg13, "Fischer Defence: Nxf7");
   assert.equal(names.kg18, "Trap · Falkbeer 3.fxe5");
 
   function lineBlock(id) {
@@ -1113,8 +1114,8 @@ test("How to Defend Against the King’s Gambit is a twelfth visible free Black 
   const kg13 = lineBlock("kg13");
   const kg18 = lineBlock("kg18");
   assert.doesNotMatch(kg13, /trap:\s*true/);
-  assert.match(kg13, /Bxe6/);
-  assert.match(kg13, /not a trap/);
+  assert.match(kg13, /Nxf7/);
+  assert.match(kg13, /the king steps out/);
   assert.match(kg18, /fxe5/);
   assert.match(kg18, /Qxh1/);
   // OpeningLine has no trap field on main; kg18 is the only trap by name.
@@ -1822,7 +1823,7 @@ test("Queen’s Gambit for White is the signed qg-white pack: qg1–qg10, £1.99
   assert.match(lineBlock("qg6"), /Tartakower/);
   assert.match(lineBlock("qg7"), /Tarrasch Defence/);
   assert.match(lineBlock("qg8"), /Cambridge Springs/);
-  assert.match(lineBlock("qg9"), /BOOK · Albin Counter-Gambit/);
+  assert.match(lineBlock("qg9"), /Albin Counter-Gambit/);
   assert.match(lineBlock("qg10"), /Moscow variation/);
   for (const id of ["qg1", "qg2", "qg3", "qg4", "qg5", "qg9"]) {
     assert.doesNotMatch(lineBlock(id), /Punish the error/);
@@ -2309,7 +2310,7 @@ test("Berlin Defence for Black is a twenty-ninth visible Black pack: 18 berb lin
       m[2],
     ]),
   );
-  assert.equal(names.berb1, "Berlin Endgame …Ke8 Be7 Rd1");
+  assert.equal(names.berb1, "Berlin Endgame …Ke8 …Be7 and Rd1");
   assert.equal(names.berb7, "Rio 5.Re1 Nd6 Be7");
   assert.equal(names.berb18, "Berlin Endgame …Bd7 Kc8 h5");
 
@@ -2385,7 +2386,7 @@ test("King's Indian Defence for Black is Sean's ten learning lines, line 1 free"
     kidb7: ["d4", "Nf6", "c4", "g6", "g3", "Bg7", "Bg2", "O-O", "Nf3", "d6", "O-O", "Nbd7", "Nc3", "e5", "e4", "c6", "h3", "Re8", "Re1", "exd4", "Nxd4"],
     kidb8: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Be2", "O-O", "Bg5", "c5", "d5", "h6", "Bf4", "e6"],
     kidb9: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "dxe5", "dxe5", "Qxd8", "Rxd8", "O-O", "c6", "Be3", "Nbd7"],
-    kidb10: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Nxd4"],
+    kidb10: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Bxd4"],
   };
   for (const [id, plies] of Object.entries(expected)) {
     assert.deepEqual(linePlies(id), plies, id);
@@ -2482,7 +2483,7 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.deepEqual(linePlies("stb14").slice(0, 8), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6"]);
   assert.deepEqual(linePlies("stb14"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "d3", "Bc5", "Bg5", "Nxe4", "Bxd8", "Bxf2+", "Ke2", "Bg4#"]);
   assert.deepEqual(linePlies("stb19"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "Nc3", "Bc5", "e5", "Ng4", "f4", "Qh4+", "g3", "Bf2+", "Ke2", "Bxg3", "hxg3", "Qxh1"]);
-  assert.deepEqual(linePlies("stb20"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "f3", "Bc5", "d4", "Bb6", "c3", "O-O", "Bd3", "Re8", "O-O", "c5"]);
+  assert.deepEqual(linePlies("stb20"), ["e4", "e5", "Nf3", "Nf6", "Nxe5", "Nc6", "Nxc6", "dxc6", "f3", "Bc5", "c3", "Bb6", "d4", "c5", "dxc5", "Bxc5", "Qxd8+", "Kxd8"]);
   assert.ok(linePlies("stb19").includes("Qxh1"), "stb19 needs Qxh1");
   assert.equal(linePlies("stb19")[10], "e5", "stb19 is 6.e5");
   assert.equal(linePlies("stb20")[8], "f3", "stb20 is 5.f3");
@@ -2500,8 +2501,8 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
   assert.equal(names.stb20, "5.f3 Bc5 shell");
   assert.match(stb, /After 5\.Nc3 Bc5, 6\.e5\?\? hangs the centre/);
   assert.match(stb, /5\.f3 is a slow try against the Stafford/);
-  assert.match(stb, /Black is up a rook/);
-  assert.match(stb, /Pressure e4 and d4/);
+  assert.match(stb, /won a rook for a bishop/);
+  assert.match(stb, /The queens are off and your king is on d8/);
   assert.doesNotMatch(names.stb14, /Punish the error/);
   assert.doesNotMatch(names.stb18, /Punish the error/);
 
@@ -2517,13 +2518,14 @@ test("Stafford Gambit for Black is a thirty-first visible Black pack: 20 stb lin
     }
   }
 
-  // opening-traps Stafford mate stays as its own ot6 line.
+  // opening-traps Stafford stays as its own ot6 line: White takes on c6.
   const otStart = packs.indexOf('id: "opening-traps"');
   assert.ok(otStart >= 0, "opening-traps pack must remain");
   const otNext = packs.indexOf("\n  {\n    id: \"", otStart + 1);
   const ot = packs.slice(otStart, otNext >= 0 ? otNext : undefined);
   assert.match(ot, /id: "ot6"/);
   assert.match(ot, /Trap · Stafford/);
+  assert.match(ot, /Nxc6/);
   assert.match(ot, /Bg4#/);
   assert.doesNotMatch(ot, /id: "ot11"/);
   assert.doesNotMatch(ot, /id: "ot12"/);
@@ -2793,7 +2795,7 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 10 oib book 
   const qc2Stem = ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2"];
   const expected = {
     oib1: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "d5", "Be7", "e4", "O-O", "Nf3", "Nc5", "Be2", "a5", "O-O", "Bd7"],
-    oib2: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "e4", "Be7", "Nf3", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
+    oib2: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "Nf3", "Be7", "e4", "O-O", "Be2", "c6", "O-O", "Re8", "h3", "a5", "Be3", "Qc7"],
     oib3: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Qc2", "e5", "dxe5", "dxe5", "Nf3", "Bd6", "e3", "O-O", "Be2", "Qe7", "O-O", "a5", "Rd1", "Nc5"],
     oib4: ["d4", "d6", "c4", "e5", "Nc3", "exd4", "Qxd4", "Nc6", "Qd2", "Nf6", "g3", "Be7", "Bg2", "O-O", "Nh3"],
     oib5: ["d4", "d6", "c4", "Nf6", "Nc3", "Nbd7", "Nf3", "e5", "Bg5", "Be7", "e3", "O-O", "Qc2", "c6", "Be2", "h6", "Bh4", "Re8"],
@@ -2818,7 +2820,7 @@ test("Old Indian Defence for Black is a thirty-fourth visible pack: 10 oib book 
     ]),
   );
   assert.equal(names.oib1, "Closed · …d5 Nc5 Bd7");
-  assert.equal(names.oib2, "Classical · …e5 e4 Be7");
+  assert.equal(names.oib2, "Classical · …e5 Nf3 Be7");
   assert.equal(names.oib3, "Exchange · 5.dxe5");
   assert.equal(names.oib4, "Old Indian: 4.Qxd4");
   assert.equal(names.oib5, "Old Indian: 5.Bg5");
@@ -2884,7 +2886,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   assert.equal(names.sg3, "Line 3");
   assert.equal(names.sg4, "Line 4");
   assert.equal(names.sg5, "Line 5");
-  assert.equal(names.sg6, "Sea-Cadet mate");
+  assert.equal(names.sg6, "4...Bb4+ and castle");
   assert.equal(names.sg7, "Trap: taking on c3");
   assert.equal(names.sg8, "Canal: 4...Nf6");
   assert.equal(names.sg9, "Main line: 7.Nc3");
@@ -2898,14 +2900,14 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   const expected = {
     sg1: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "O-O", "O-O"],
     sg2: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
-    sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4", "Re1+", "Be6", "Ng5", "Qd5", "Nc3", "Qf5"],
+    sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6"],
     sg4: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
     sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "O-O", "Nf6", "e5", "Ng4", "Re1", "d6", "exd6", "Qxd6"],
-    sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "d6", "c3", "dxc3", "Nxc3", "Bg4", "O-O", "Ne5", "Nxe5", "Bxd1", "Bxf7+", "Ke7", "Nd5#"],
+    sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4"],
     sg7: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "dxc3", "Bxf7+", "Kxf7", "Qd5+", "Ke8", "Qh5+", "g6", "Qxc5", "d6", "Qe3"],
     sg8: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "e5", "d5", "Bb5", "Ne4", "Nxd4", "Bd7", "Bxc6", "bxc6", "O-O", "Bc5"],
     sg9: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Bxc3", "bxc3", "d5"],
-    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "Nxc3", "Nf6", "O-O", "O-O", "e5", "d5", "exd6", "Qxd6"],
+    sg10: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "Nxc3", "Nf6", "O-O", "O-O", "e5", "d5", "Nxd5", "Nxd5", "Bxd5", "Ne7", "Bb3", "Qxd1", "Rxd1", "Be6"],
   };
   for (const id of lineIds) {
     const plies = linePlies(id);
@@ -2979,9 +2981,9 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
   }
   assert.match(lineBlock("lon6"), /Jobava London/);
   assert.match(lineBlock("lon7"), /London with \.\.\.Bf5/);
-  assert.match(lineBlock("lon8"), /BOOK · …Qb6/);
+  assert.match(lineBlock("lon8"), /…Qb6 vs the classical London/);
   assert.match(lineBlock("lon9"), /London against \.\.\.g6/);
-  assert.match(lineBlock("lon10"), /BOOK · Chigorin-ish/);
+  assert.match(lineBlock("lon10"), /Chigorin-ish/);
   assert.doesNotMatch(lineBlock("lon6"), /Trap · …Bf5/);
   assert.doesNotMatch(lineBlock("lon8"), /…g5\?/);
   assert.doesNotMatch(lineBlock("lon10"), /…Ng4\?/);
@@ -2995,7 +2997,7 @@ test("London System for White is the signed 10 lines: lon1–lon5 book, lon6/lon
     lon6: ["d4", "d5", "Nc3", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "a6", "Nf3", "Bg4", "h3", "Bxf3", "Qxf3", "e6"],
     lon7: ["d4", "d5", "Bf4", "Nf6", "e3", "Bf5", "c4", "e6", "Nc3", "c6", "Nf3", "Nbd7", "Qb3", "Qb6", "c5"],
     lon8: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Qb6", "Qb3", "c4", "Qc2", "Nc6", "Nbd2", "Bg4", "Ngf3", "e6"],
-    lon9: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "d5", "c3", "O-O", "Nbd2", "c5", "Be2", "Nc6", "O-O", "Bf5"],
+    lon9: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "d5", "c3", "O-O", "Nbd2", "c5", "Be2", "Nc6", "dxc5", "a5", "a4", "Nh5", "Bg5", "f6", "Bh4", "e5"],
     lon10: ["d4", "d5", "Bf4", "Nf6", "e3", "Nc6", "Nd2", "Bf5", "c3", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Be2", "Ne7", "O-O", "c6", "Nh4", "Bg6"],
   };
   for (const id of lineIds) {

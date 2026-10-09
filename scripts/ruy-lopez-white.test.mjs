@@ -243,7 +243,7 @@ const EXPECTED = {
     "Be7",
     "cxd4",
     "O-O",
-    "Nc3"
+    "d3"
   ],
   "rlw10": [
     "e4",

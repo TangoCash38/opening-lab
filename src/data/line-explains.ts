@@ -8,13 +8,13 @@ import type { OpeningLine } from "@/data/packs";
  */
 export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "scotch:sg1":
-    "This is the Scotch Gambit you want: 5.c3, trade the dark-squared bishops, and win the pawn back with exd5. Both kings have castled and the chances are about level, with your knight still on d2 and Black's knight on d5. Next, bring that d2 knight to b3 or e4 and use the half-open e-file. You are not a pawn down. The gambit has done its job.",
+    "This is the Scotch Gambit you want: 5.c3, trade the dark-squared bishops, and win the pawn back with exd5. Both kings have castled and the chances are about level, with your knight still on d2 and Black's knight on d5. Next, bring that d2 knight to b3 or e4 and use the open e-file. You are not a pawn down. The gambit has done its job.",
   "scotch:sg2":
     "Line 1 castled after the pawn came back. This time the queen goes to b3, and Black's knight comes to a5, where it attacks that queen. Material is level and the chances are about level, with Black's other knight on d5. Next, move the queen, often to c2 or a4, and castle. The knight on a5 has done its job once the queen steps away.",
   "london:lon1":
     "Both kings are castled, your knight is on e5, and f4 is already in, with the dark-squared bishop on g3 facing the bishop on d6. The position is about equal, and that knight is the piece this London is built around. Next, keep the knight supported. Do not throw more pawns at the king just to make something happen.",
   "london:lon2":
-    "Line 1 kept the centre closed and put a knight on e5. This time Black took on d4, you recaptured with the pawn, and the bishop came to b5 against the bishop on d6. The position is about equal, with Black's other bishop on f5. Next, castle, then choose Bg3 or Ne5. Do not leave the d4 pawn without support.",
+    "Line 1 kept the centre closed and put a knight on e5. This time Black took on d4, you recaptured with the pawn, and the bishop came to b5 against the bishop on d6. The position is about equal, with Black's other bishop on f5. Next, take on d6 with the bishop from f4. Do not leave the d4 pawn without support.",
   "sicilian-black:sib1":
     "White has castled queenside and you have castled kingside, so ...b5 is the start of your play against that king. White keeps a small edge, which is normal in this attack while your queenside pawns are still rolling. Your pieces are already on e6, e7, d7 and f6. Next, keep expanding on the queenside, and do not start a pawn storm in front of your own king.",
   "sicilian-black:sib2":
@@ -24,7 +24,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "french-black:frb2":
     "Line 1 was the Winawer, with long castling and ...f6. This time it is the Advance: ...Qb6, the knight comes via h6 to f5, and you take on f5 with the pawn before ...Be6. The position is about level. White has castled and your king is still on e8. Next, decide where that king belongs, and keep the pressure on d4.",
   "caro-kann-black:ckb1":
-    "The Caro has done its job: the light-squared bishops are off and your knight stands on f5, pressing d4. The position is about equal. Your king is still on e8. Next, castle, then decide whether to keep the knight on f5 or turn your attention to d4.",
+    "The Caro has done its job: the light-squared bishops are off and your knight stands on f5, pressing d4. The position is about equal. Your king is still on e8. Next, if White plays Ng3 or f4, take the bishop on e3 with that knight.",
   "caro-kann-black:ckb2":
     "This is the Classical Caro, not the Advance from line 1. The knight on c3 took on e4, and your light-squared bishop dropped back before the trade on d3. White has castled long, your king is still on e8, and White keeps a small edge, which is normal here. Next, castle short, then look at ...c5 or ...b5 against that king. Leave the pawn on h6 where it is.",
   "qgd-black:qgdb1":
@@ -50,7 +50,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "italian-white:it1":
     "Both kings are castled in a quiet Italian, and the position is about equal. Black's knight has come to g6, your rook is on e1, and the other knight sits on d2. Next, prepare d4 only when those pieces can support it. There is no need to force the centre open on the next move.",
   "italian-white:it2":
-    "This is the Two Knights, not the quiet ...Bc5 Italian from line 1. You are a pawn up, and the chances are about level because Black's pawn on e4 and the bishop on d6 give real activity. Your knight is on e5, and that bishop looks straight at it. Next, castle and decide whether to challenge e4 with d3 or d4. Do not grab on f7 in this book position.",
+    "This is the Two Knights, not the quiet ...Bc5 Italian from line 1. You are a pawn up, and the chances are about level because Black's pawn on e4 and the bishop on d6 give real activity. Your knight is on e5, and that bishop looks straight at it. Next, play d4. Do not grab on f7 in this book position.",
   "ruy-lopez-white:rlw1":
     "This is the closed Spanish: the knight has arrived on f1, both kings are castled, and you have a small edge. From f1 that knight usually wants e3 or g3. Next, choose one of those and keep the centre under control with the bishop on c2.",
   "ruy-lopez-white:rlw2":
@@ -94,7 +94,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "englund-white:eg1":
     "The black queen has grabbed on b2, and you have a large advantage. That is the point of meeting the Englund this way: the queen is a long way from home, and Nc3 develops without even attacking it. Both kings are still in the centre. Next, castle and keep developing. Do not spend every move chasing the queen.",
   "englund-white:eg2":
-    "Line 1 let the queen grab on b2. This time the queen went to c5 and then checked from b4, and Nbd2 met the check without giving up the b-pawn. You are a pawn up with a large advantage, which is the point of meeting the Englund this way. Next, it is Black to move, so castle and keep developing. Do not spend every move chasing the queen.",
+    "Line 1 let the queen grab on b2. This time the queen went to c5 and then checked from b4, and Nbd2 met the check without giving up the b-pawn. You are a pawn up with a large advantage, which is the point of meeting the Englund this way. Next, develop the light-squared bishop to c4. Do not spend every move chasing the queen.",
   "budapest-white:bp1":
     "You are a pawn up against the Budapest, with a small edge, so the gambit has not paid for Black. The bishop check on b4 was met by Nbd2, and both kings are still uncastled. Next, finish development and castle. Keep the extra pawn while Black's pieces stay under control.",
   "budapest-white:bp2":
@@ -130,7 +130,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "kings-indian-black:kidb1":
     "You met d5 with ...Ne7, rerouted a knight through d7, and started the kingside with ...f5. The centre is closed, both kings are castled, and White keeps a small edge, which is normal here before your attack gets going. Next, support the f5 pawn and bring the d7 knight toward the kingside. Leave the queenside closed.",
   "kings-indian-black:kidb2":
-    "Line 1 started ...f5 after Ne1 and f3. This time White plays the Bayonet with b4, you take on a5 with the rook, and after ...Nd7 and Re1 you still get ...f5 in. White keeps a small edge from the queenside space, which is normal before your attack gets going. Next, support the f5 pawn and look at ...Ng6 for the knight on e7.",
+    "Line 1 started ...f5 after Ne1 and f3. This time White plays the Bayonet with b4, you take on a5 with the rook, and after ...Nd7 and Re1 you still get ...f5 in. White keeps a small edge from the queenside space, which is normal before your attack gets going. Next, if White plays Bb4, bring the rook back to a8. The knight on e7 has no square on g6 while your pawn stands there.",
   "old-indian-black:oib1":
     "White closed the centre with d5, and you answered with ...Nc5, ...a5 and ...Bd7. That knight on c5 is the piece to build around, and the light-squared bishop is already off the back rank. White keeps a small space edge, which is normal while the centre stays closed. Next, put a rook on e8 and keep the centre shut until a pawn break does a clear job.",
   "old-indian-black:oib2":
@@ -138,7 +138,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "stafford-black:stb1":
     "The Stafford is a sharp gambit, and it is objectively risky: you are a pawn down, and White is much better if they stay calm. People still play it for the traps and the practical chances, because the h-pawn and the bishop on g4 can bother a player who does not know them. Your king is castled long. Next, use those two ideas and calculate before you push. Do not treat this as a sound equal position.",
   "stafford-black:stb2":
-    "This is a different Stafford from the long-castle line. White played Nc3, you castled short, and ...Ng4 plus ...Qh4 won the light-squared bishop, so the queen now sits on g4 with a rook on e8. It is still objectively risky: you are a pawn down, and White is much better if they stay calm. People play it for the practical chances against a king that has just played g3. Next, use the e-file and calculate before you push, and do not treat this as a sound equal position.",
+    "Line 1 castled long with the bishop on g4. This time the queen went to d4, you traded on c3, and the bishop stepped from c5 to d6 before anything else. Your queen is on f6, White's light-squared bishop is on f3, and your king is still on e8. Material is level and the position is about equal. Next, develop the bishop on c8 and castle, and after 11.c4 castle first, because the gambit stays risky if you fall behind in development.",
   "ponziani-white:pw1":
     "The dark-squared bishops are off and a black knight sits on b4, with the position about level. Your king is still on e1 and Black has castled. Next, castle and meet that knight, either with a3 or by developing the knight on b1.",
   "ponziani-white:pw2":
@@ -146,19 +146,19 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "alekhine-black:ab1":
     "You nudged the knight off e5 with ...Nd7, castled, and developed the bishop to b7. That bishop is the point of ...b6: it sits on the long diagonal against White's centre. White keeps a space edge, which is normal in the Alekhine, so you are playing for a break rather than a quick attack. Next, prepare ...c5, and do not open the centre just to make something happen.",
   "alekhine-black:ab2":
-    "Line 1 nudged the knight away with ...Nd7 and put a bishop on b7. This time you play ...c6 and ...Bf5, then park the dark-squared bishop on d6. White keeps a space edge, which is normal in the Alekhine, and your king is still on e8. Next, castle, then ...Qc7. The bishop on f5 is a piece to keep, so do not trade it without a reason.",
+    "Line 1 nudged the knight away with ...Nd7 and put a bishop on b7. This time you play ...c6 and ...Bf5, then park the dark-squared bishop on d6. White keeps a space edge, which is normal in the Alekhine, and your king is still on e8. Next, if White plays c5, drop that bishop to c7. The bishop on f5 is a piece to keep, so do not trade it without a reason.",
   "bdg-black:bdg1":
     "You took the offered pawn and traded the light-squared bishops on d3, so you are a pawn up with a small edge. Both kings are still in the centre, and White's queen sits on d3. Next, develop and castle before you try to attack. The extra pawn matters once the king is safe.",
   "bdg-black:bdg2":
     "Line 1 traded the light-squared bishops on d3. This time the bishop goes to g4, you play ...e6, and White has castled. You are a pawn up with a clear edge, and the bishop on g4 attacks the knight on f3. Next, it is your move. Develop the dark-squared bishop and castle before you try to attack.",
   "slav-defence:sd1":
-    "White's a4 stops ...b5, so you developed the bishop to f5, where it helps control e4. You are a pawn up on c4 for the moment, and the position is about equal because that pawn usually comes back. Your king is still on e8. Next, play ...e6 now that the bishop is out, then ...Bb4 and castle. Do not cling to the c4 pawn.",
+    "White's a4 stops ...b5, so you developed the bishop to f5, White answered with Ne5, and you brought the knight to a6. You are a pawn up on c4 for the moment, and White keeps a small edge because that pawn usually comes back. Your king is still on e8. Next, play ...e6 and castle, but after 7.e4 move the bishop first, because ...e6 then loses it. Do not cling to the c4 pawn.",
   "slav-defence:sd2":
-    "Line 1 stopped once the bishop reached f5, with you a pawn up for the moment. This line plays on: ...e6, White takes the pawn back on c4, then ...Bb4 and both sides castle. The bishop on b4 eyes the knight on c3, and White keeps a small edge, which is normal once the pawn has come home. Next, develop the knight from b8, usually to d7.",
+    "Line 1 met the bishop on f5 with Ne5, with you a pawn up for the moment. This line plays on without that knight jump: ...e6, White takes the pawn back on c4, then ...Bb4 and both sides castle. The bishop on b4 eyes the knight on c3, and White keeps a small edge, which is normal once the pawn has come home. Next, develop the knight from b8, usually to d7.",
   "opening-traps:ot1":
     "This line ends in checkmate, which is why the queen was not free. Black took the queen on d1 with the bishop, and Bxf7+ followed by Nd5 mates the king on e7. Next time you see this pin, look for the knight jump before you assume the queen can be taken.",
   "opening-traps:ot2":
-    "Line 1 was Legal's Mate for White. This Fishing Pole is yours, as Black. White's mistake was taking the knight on g4, which opened the h-file, and after ...gxf3 your queen arrived on h4. You are much better, with that queen in front of the white king. Next, keep the queen safe and look for ...Bc5, because this attack appears only when White takes the knight.",
+    "Line 1 was Legal's Mate for White. This Fishing Pole is yours, as Black. White's mistake was taking the knight on g4, which opened the h-file, and after ...gxf3 your queen arrived on h4. You are much better, with that queen in front of the white king. Next, keep the queen safe and look for ...Bc5, and after 10.d3 there is mate in one.",
 };
 
 /** Note for the finish card, or undefined when this line should show none. */
