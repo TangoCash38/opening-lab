@@ -7,6 +7,7 @@
 # Play Billing Library + JS bridge (minify is on for release)
 -keep class com.android.billingclient.** { *; }
 -keep interface com.android.billingclient.** { *; }
+-keep class com.google.android.play.core.review.** { *; }
 -keepclassmembers class uk.co.openinglab.PlayBilling$Bridge {
     @android.webkit.JavascriptInterface <methods>;
 }

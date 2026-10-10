@@ -7,7 +7,13 @@ import {
   isPackVisible,
   readRequestedGym,
   readRequestedPackId,
+  VISIBLE_PACK_IDS,
 } from "@/lib/catalog";
+import {
+  considerPlayReview,
+  loadPlayReviewState,
+  savePlayReviewState,
+} from "@/lib/play-review";
 import { isClassicSamplePack } from "@/lib/classic-sample";
 import {
   gymPackFromLine,
@@ -18,7 +24,7 @@ import {
 import { soundSelect } from "@/lib/sounds";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { Link } from "@tanstack/react-router";
-import { hasSeenOnboarding, markOnboardingSeen } from "@/lib/progress";
+import { getProgressStore, hasSeenOnboarding, isLineComplete, markOnboardingSeen } from "@/lib/progress";
 import { useProgress } from "@/hooks/use-progress";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import {
@@ -27,7 +33,7 @@ import {
 } from "@/lib/i18n";
 import { initBoardTheme } from "@/lib/board-theme";
 import { initColorScheme } from "@/lib/color-scheme";
-import { isPlayWrap } from "@/lib/play-app";
+import { isPlayApp, isPlayWrap } from "@/lib/play-app";
 import type { TrainStartOptions } from "@/lib/london-warmup";
 import { FeedbackView } from "./feedback-view";
 import { GuideView } from "./guide-view";
@@ -440,7 +446,10 @@ function OpeningLabInner() {
                   }
                 : () => goPacks(active.pack.id)
             }
-            onLineComplete={() => complete(active.line.id)}
+            onLineComplete={() => {
+              complete(active.line.id);
+              maybeAskForPlayReview(active.pack);
+            }}
             onLearnDone={() => markLearned(active.line.id)}
             onPracticeFail={() => failPractice(active.line.id)}
             onTestPly={(plyIndex) => markTest(active.line.id, plyIndex)}
@@ -472,6 +481,38 @@ function OpeningLabInner() {
       )}
     </div>
   );
+}
+
+type PlayReviewBridge = {
+  requestReview?: () => void;
+};
+
+/** Play only. The website has no rating sheet. Google decides if the sheet shows. */
+function maybeAskForPlayReview(pack: Pack) {
+  if (typeof window === "undefined" || !isPlayApp()) return;
+  const bridge = (window as Window & { OpeningLabPlay?: PlayReviewBridge }).OpeningLabPlay;
+  const store = getProgressStore();
+  const completedLineCount = Object.values(store.lines).filter((line) => isLineComplete(line)).length;
+  const packReviewable = (VISIBLE_PACK_IDS as readonly string[]).includes(pack.id);
+  const packLinesComplete = packReviewable
+    ? pack.lines.filter((line) => {
+        const saved = store.lines[line.id];
+        return saved ? isLineComplete(saved) : false;
+      }).length
+    : 0;
+  const decision = considerPlayReview({
+    playApp: true,
+    hasBridge: typeof bridge?.requestReview === "function",
+    now: Date.now(),
+    state: loadPlayReviewState(),
+    completedLineCount,
+    packReviewable,
+    packLineCount: packReviewable ? pack.lines.length : 0,
+    packLinesComplete,
+  });
+  if (!decision.ask || !bridge?.requestReview) return;
+  bridge.requestReview();
+  savePlayReviewState(decision.next);
 }
 
 function AccountButton() {

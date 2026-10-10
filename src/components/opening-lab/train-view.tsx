@@ -6,7 +6,8 @@ import {
   type Pack,
 } from "@/data/packs";
 import { lineFinishNote } from "@/data/line-explains";
-import { nextUnlockedLine } from "@/lib/catalog";
+import { canPurchasePack, FREE_SAMPLE_LINE_IDS, nextUnlockedLine } from "@/lib/catalog";
+import { getLineProgress, lineTestPercent } from "@/lib/progress";
 import {
   soundBad,
   soundCapture,
@@ -33,6 +34,7 @@ import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
+import { NearlyThere } from "./nearly-there";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
 import { beginClassicRunNarration, ClassicRunTheGame } from "./classic-run-the-game";
 import { FreeTryCard, FreeTryVoice } from "./free-try-card";
@@ -267,7 +269,24 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const unlockIds = subscribed ? [pack.id] : purchased;
+  const [nearlyThere, setNearlyThere] = useState<{
+    caption: string;
+    percent: number | null;
+  } | null>(null);
+
+  useEffect(() => {
+    if (subscribed || purchased.includes(pack.id)) setNearlyThere(null);
+  }, [subscribed, purchased, pack.id]);
   const warmup = plyLimit != null;
+  const visitorOnFreeLine =
+    !gym &&
+    !freeTry &&
+    !warmup &&
+    !subscribed &&
+    !purchased.includes(pack.id) &&
+    canPurchasePack(pack.id) &&
+    pack.lines[0]?.id === line.id &&
+    (FREE_SAMPLE_LINE_IDS[pack.id]?.includes(line.id) ?? false);
   const lockTest = testLocked || warmup;
   const bookStartPly = Math.max(0, Math.min(Math.floor(startPly) || 0, line.plies.length));
   const bookEndPly = warmup
@@ -1616,6 +1635,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           onDone={dismissFinishNote}
         />
       ) : null}
+      {nearlyThere ? (
+        <NearlyThere
+          pack={pack}
+          plies={line.plies}
+          flip={line.side === "b"}
+          caption={nearlyThere.caption}
+          percent={nearlyThere.percent}
+          onDone={() => setNearlyThere(null)}
+        />
+      ) : null}
       {resultCard ? (
         <LineResultModal
           kind={resultCard.kind}
@@ -1626,8 +1655,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           primaryLabel={resultCard.primaryLabel}
           boardExpanded={boardExpanded}
           onClose={() => {
+            const card = resultCard;
             setResultCard(null);
-            if (warmup && resultCard.kind === "end") onBack();
+            if (card.kind === "end" && visitorOnFreeLine) {
+              setNearlyThere({
+                caption: card.caption ?? "",
+                percent: lineTestPercent(getLineProgress(line.id), line.plies.length),
+              });
+              return;
+            }
+            if (warmup && card.kind === "end") onBack();
           }}
           onAction={
             resultCard.kind === "wrong"
@@ -1642,6 +1679,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                     setResultCard(null);
                     if (nextLine) onPracticeNext?.(nextLine);
                   }
+                : resultCard.kind === "end" &&
+                    resultCard.nextAction === "learn" &&
+                    visitorOnFreeLine
+                  ? () => {
+                      setResultCard(null);
+                      setNearlyThere({
+                        caption: resultCard.caption ?? "",
+                        percent: lineTestPercent(getLineProgress(line.id), line.plies.length),
+                      });
+                    }
                 : resultCard.nextAction === "learn"
                 ? () => changeMode("learn")
                 : undefined

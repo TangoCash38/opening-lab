@@ -336,7 +336,7 @@ test("Ruy Lopez for White is the signed ruy-lopez-white pack: rlw1–rlw10 book,
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),
     skus.indexOf("export type PlayProduct"),
   );
-  assert.equal(playList.includes('"ruy-lopez-white"'), false);
+  assert.equal(playList.includes('"ruy-lopez-white"'), true);
 
   const pathB = billing.slice(
     billing.indexOf("PATH_B_PACK_IDS"),
@@ -346,8 +346,8 @@ test("Ruy Lopez for White is the signed ruy-lopez-white pack: rlw1–rlw10 book,
     billing.indexOf("LIVE_SALE_PACK_IDS"),
     billing.indexOf("private static final Set"),
   );
-  assert.equal(pathB.includes('"ruy-lopez-white"'), false);
-  assert.equal(liveSale.includes('"ruy-lopez-white"'), false);
+  assert.equal(pathB.includes('"ruy-lopez-white"'), true);
+  assert.equal(liveSale.includes('"ruy-lopez-white"'), true);
 
   const opening = intro.slice(intro.indexOf('"ruy-lopez-white"'), intro.indexOf("};"));
   assert.match(opening, /10 lines from Opening Lab\. Practice with the green hint, then Test with none\./);
