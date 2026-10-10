@@ -118,7 +118,7 @@ test("Slav Defence is a listed live pack: 10 educational lines, free sample sd1"
     billing.indexOf("LIVE_SALE_PACK_IDS"),
     billing.indexOf("private static final Set"),
   );
-  assert.equal(liveSale.includes('"slav-defence"'), false);
+  assert.equal(liveSale.includes('"slav-defence"'), true);
 
   const lineIds = [...slav.matchAll(/id: "(sd\d+)"/g)].map((m) => m[1]);
   assert.deepEqual(lineIds, Object.keys(EXPECTED));

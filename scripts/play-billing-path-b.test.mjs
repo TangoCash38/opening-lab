@@ -12,17 +12,18 @@ function src(rel) {
   return readFileSync(join(root, rel), "utf8");
 }
 
-test("Android wrap is Billing 9.1.0 + versionCode 11 / 1.0.10 INAPP Path B", () => {
+test("Android wrap is Billing 9.1.0 + versionCode 12 / 1.0.11 INAPP Path B", () => {
   const gradle = src("android/app/build.gradle");
   const manifest = src("android/twa-manifest.json");
   const billing = src("android/app/src/main/java/uk/co/openinglab/PlayBilling.java");
   const androidManifest = src("android/app/src/main/AndroidManifest.xml");
 
   assert.match(gradle, /com\.android\.billingclient:billing:9\.1\.0/);
-  assert.match(gradle, /versionCode 11/);
-  assert.match(gradle, /versionName "1\.0\.10"/);
-  assert.match(manifest, /"appVersionCode": 11/);
-  assert.match(manifest, /"appVersion": "1\.0\.10"/);
+  assert.match(gradle, /versionCode 12/);
+  assert.match(gradle, /versionName "1\.0\.11"/);
+  assert.match(gradle, /com\.google\.android\.play:review:2\.0\.2/);
+  assert.match(manifest, /"appVersionCode": 12/);
+  assert.match(manifest, /"appVersion": "1\.0\.11"/);
   assert.match(manifest, /"enableNotifications": false/);
 
   assert.match(billing, /ProductType\.INAPP/);
@@ -44,6 +45,14 @@ test("Android wrap is Billing 9.1.0 + versionCode 11 / 1.0.10 INAPP Path B", () 
   assert.match(billing, /"london"/);
   assert.match(billing, /"italian-white"/);
   assert.match(billing, /"qg-white"/);
+  assert.match(billing, /"french-black"/);
+  assert.match(billing, /"ruy-lopez-white"/);
+  assert.match(billing, /"sicilian-black"/);
+  assert.match(billing, /"qgd-black"/);
+  assert.match(billing, /"slav-defence"/);
+  assert.match(billing, /"nimzo-indian-black"/);
+  assert.match(billing, /"kings-indian-black"/);
+  assert.match(billing, /requestReview\(\)/);
   assert.match(billing, /Set its Play Console price to £1\.99/);
   assert.doesNotMatch(billing, /£0\.99/);
   assert.match(billing, /!BUY_ALL_SKU\.equals\(productId\) && !isLiveSaleSku\(productId\)/);
@@ -57,7 +66,7 @@ test("Android wrap is Billing 9.1.0 + versionCode 11 / 1.0.10 INAPP Path B", () 
   assert.doesNotMatch(androidManifest, /POST_NOTIFICATIONS/);
 });
 
-test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (36 packs, including opening-traps and london)", async (t) => {
+test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (39 packs, including the 13 live packs)", async (t) => {
   let ts;
   try {
     ts = require("typescript");
@@ -87,7 +96,7 @@ test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (36 packs, including opening-t
   } = await import(pathToFileURL(skusTmp).href);
 
   assert.equal(PLAY_SKU_BUY_ALL, "buy_all_packs");
-  assert.equal(PLAY_PATH_B_PACK_IDS.length, 36);
+  assert.equal(PLAY_PATH_B_PACK_IDS.length, 39);
   assert.equal(playSkuForPackId("slav-defence"), "pack_slav_defence");
   assert.ok(PLAY_PATH_B_PACK_IDS.includes("london"));
   assert.equal(playSkuForPackId("london"), "pack_london");
@@ -103,7 +112,12 @@ test("PLAY_PACK_SKUS follows PLAY_PATH_B_PACK_IDS (36 packs, including opening-t
   assert.equal(packIdFromPlaySku("buy_all_packs"), null);
 
   const map = playPackSkuMap(PLAY_PATH_B_PACK_IDS);
-  assert.equal(Object.keys(map).length, 36);
+  assert.equal(Object.keys(map).length, 39);
+  assert.equal(map["french-black"], "pack_french_black");
+  assert.equal(map["ruy-lopez-white"], "pack_ruy_lopez_white");
+  assert.equal(map["sicilian-black"], "pack_sicilian_black");
+  assert.equal(map["nimzo-indian-black"], "pack_nimzo_indian_black");
+  assert.equal(map["kings-indian-black"], "pack_kings_indian_black");
   assert.equal(map["slav-defence"], "pack_slav_defence");
   assert.equal(map.london, "pack_london");
   assert.equal(map["old-indian-black"], "pack_old_indian_black");
