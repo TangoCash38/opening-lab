@@ -1234,10 +1234,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       ) : coachLesson && !gym ? (
       <div className="train-top-chrome train-coach-bar">
         <div className="train-coach-title-row">
+          {/* Stay in the app. Going back in history is webView.goBack() and can leave Play. */}
           <button
             type="button"
             onClick={onBack}
             className="train-coach-back"
+            data-train-back
             aria-label={t("Packs")}
           >
             ←

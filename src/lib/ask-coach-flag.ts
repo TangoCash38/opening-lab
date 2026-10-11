@@ -1,9 +1,7 @@
-import { isPlayUserAgent, isPlayWrap } from "@/lib/play-app";
 import { SCOTCH_PACK_ID } from "@/lib/scotch-coach";
 
 /**
- * Scotch on the website only.
- * The Play app (user agent contains OpeningLabPlay) keeps the old trainer.
+ * Scotch Gambit only, on the website and in the Play app.
  * Other packs never pass. Set VITE_ASK_THE_COACH=0 in the client build and
  * ASK_THE_COACH=0 on the server to hide it. Unset means on.
  */
@@ -14,13 +12,12 @@ export function askTheCoachEnabled(packId: string, flag: string | undefined): bo
 }
 
 export function askTheCoachClientEnabled(packId: string): boolean {
-  if (typeof window !== "undefined" && isPlayWrap()) return false;
   const flag = import.meta.env.VITE_ASK_THE_COACH;
   return askTheCoachEnabled(packId, typeof flag === "string" ? flag : undefined);
 }
 
-export function askTheCoachServerEnabled(userAgent?: string | null): boolean {
-  if (isPlayUserAgent(userAgent ?? "")) return false;
+/** User agent is ignored. Play and the website share this switch. */
+export function askTheCoachServerEnabled(_userAgent?: string | null): boolean {
   const flag = process.env.ASK_THE_COACH ?? process.env.VITE_ASK_THE_COACH;
   return askTheCoachEnabled(SCOTCH_PACK_ID, flag);
 }
