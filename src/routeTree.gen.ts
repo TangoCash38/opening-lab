@@ -19,6 +19,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SquareMemoryRouteImport } from './routes/square-memory'
 import { Route as SquareMemoryLondonRouteImport } from './routes/square-memory-london'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiAskCoachRouteImport } from './routes/api/ask-coach'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as ApiFeedbackRouteImport } from './routes/api/feedback'
 import { Route as ApiInboxRouteImport } from './routes/api/inbox'
@@ -84,6 +85,11 @@ const SquareMemoryLondonRoute = SquareMemoryLondonRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAskCoachRoute = ApiAskCoachRouteImport.update({
+  id: '/api/ask-coach',
+  path: '/api/ask-coach',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/square-memory': typeof SquareMemoryRoute
   '/square-memory-london': typeof SquareMemoryLondonRoute
   '/terms': typeof TermsRoute
+  '/api/ask-coach': typeof ApiAskCoachRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/inbox': typeof ApiInboxRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/square-memory': typeof SquareMemoryRoute
   '/square-memory-london': typeof SquareMemoryLondonRoute
   '/terms': typeof TermsRoute
+  '/api/ask-coach': typeof ApiAskCoachRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/inbox': typeof ApiInboxRoute
@@ -234,6 +242,7 @@ export interface FileRoutesById {
   '/square-memory': typeof SquareMemoryRoute
   '/square-memory-london': typeof SquareMemoryLondonRoute
   '/terms': typeof TermsRoute
+  '/api/ask-coach': typeof ApiAskCoachRoute
   '/api/checkout': typeof ApiCheckoutRouteWithChildren
   '/api/feedback': typeof ApiFeedbackRoute
   '/api/inbox': typeof ApiInboxRoute
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
     | '/square-memory'
     | '/square-memory-london'
     | '/terms'
+    | '/api/ask-coach'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/inbox'
@@ -292,6 +302,7 @@ export interface FileRouteTypes {
     | '/square-memory'
     | '/square-memory-london'
     | '/terms'
+    | '/api/ask-coach'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/inbox'
@@ -319,6 +330,7 @@ export interface FileRouteTypes {
     | '/square-memory'
     | '/square-memory-london'
     | '/terms'
+    | '/api/ask-coach'
     | '/api/checkout'
     | '/api/feedback'
     | '/api/inbox'
@@ -348,6 +360,7 @@ export interface RootRouteChildren {
   SquareMemoryRoute: typeof SquareMemoryRoute
   SquareMemoryLondonRoute: typeof SquareMemoryLondonRoute
   TermsRoute: typeof TermsRoute
+  ApiAskCoachRoute: typeof ApiAskCoachRoute
   ApiCheckoutRoute: typeof ApiCheckoutRouteWithChildren
   ApiFeedbackRoute: typeof ApiFeedbackRoute
   ApiInboxRoute: typeof ApiInboxRoute
@@ -432,6 +445,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ask-coach': {
+      id: '/api/ask-coach'
+      path: '/api/ask-coach'
+      fullPath: '/api/ask-coach'
+      preLoaderRoute: typeof ApiAskCoachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/checkout': {
@@ -598,6 +618,7 @@ const rootRouteChildren: RootRouteChildren = {
   SquareMemoryRoute: SquareMemoryRoute,
   SquareMemoryLondonRoute: SquareMemoryLondonRoute,
   TermsRoute: TermsRoute,
+  ApiAskCoachRoute: ApiAskCoachRoute,
   ApiCheckoutRoute: ApiCheckoutRouteWithChildren,
   ApiFeedbackRoute: ApiFeedbackRoute,
   ApiInboxRoute: ApiInboxRoute,

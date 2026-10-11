@@ -7169,3 +7169,154 @@ html[data-slav-opening] .app-header-logo {
     overflow: auto;
   }
 }
+
+/* Ask the coach. Scotch only. Bottom sheet, same card voice as the pack intro. */
+.ask-coach-btn {
+  min-height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 750;
+  color: var(--color-fg);
+}
+
+.ask-coach-btn--block {
+  width: 100%;
+  min-height: 2.75rem;
+  border-radius: 1rem;
+}
+
+.ask-coach-slot {
+  margin-top: 0.65rem;
+}
+
+.ask-coach-slot--dock {
+  margin: 0.35rem 0.75rem 0;
+}
+
+.ask-coach-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.75rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  background: transparent;
+}
+
+.ask-coach-sheet {
+  display: flex;
+  width: 100%;
+  max-width: 32rem;
+  max-height: min(78dvh, 36rem);
+  flex-direction: column;
+  gap: 0.45rem;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 1.05rem;
+  background: var(--color-bg-elevated);
+  padding: 0.8rem 0.9rem 0.85rem;
+  box-shadow: var(--shadow-card), 0 -8px 28px rgba(28, 25, 21, 0.12);
+}
+
+.ask-coach-sheet-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ask-coach-close,
+.ask-coach-show,
+.ask-coach-chip,
+.ask-coach-send {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  color: var(--color-fg);
+  font-weight: 750;
+}
+
+.ask-coach-close {
+  min-height: 2.25rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.78rem;
+}
+
+.ask-coach-note,
+.ask-coach-remaining,
+.ask-coach-book {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--color-fg-muted);
+}
+
+.ask-coach-answer {
+  min-height: 0;
+}
+
+.ask-coach-error {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--color-danger, #9b2c2c);
+}
+
+.ask-coach-show {
+  min-height: 2.5rem;
+  width: 100%;
+  border-radius: 0.9rem;
+  font-size: 0.88rem;
+}
+
+.ask-coach-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ask-coach-chip {
+  min-height: 2.25rem;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.ask-coach-chip:disabled,
+.ask-coach-send:disabled {
+  opacity: 0.45;
+}
+
+.ask-coach-form {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.ask-coach-input {
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: var(--color-bg);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.92rem;
+  color: var(--color-fg);
+}
+
+.ask-coach-send {
+  min-height: 2.75rem;
+  flex: 0 0 auto;
+  border-radius: 0.9rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  border-color: transparent;
+}

@@ -31,6 +31,7 @@ import { ChessBoard, type SlideAnim } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
+import { AskCoachButton } from "./ask-coach-sheet";
 import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
@@ -1145,6 +1146,21 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       Boolean(nearMissSan) ||
       viewPly > 0);
   const canForward = !busy && !slide && viewPly < livePly;
+  const showAskCoach =
+    pack.id === "scotch" && !runTheGame && !(freeTryDemo && !freeTryIntroDismissed);
+  const askCoach = (surface: "line" | "finish", coachPly: number, block = false) =>
+    showAskCoach ? (
+      <AskCoachButton
+        packId={pack.id}
+        lineId={line.id}
+        lineName={line.name}
+        plies={line.plies}
+        ply={coachPly}
+        mode={mode === "learn" ? "practice" : "test"}
+        surface={surface}
+        block={block}
+      />
+    ) : null;
   const gymOpening = gym ? lookupOpeningIdentityPrefix(line.plies) : null;
 
   return (
@@ -1548,6 +1564,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       ) : null}
       <div className="trainer-actions">
         <div className="trainer-secondaries">
+          {askCoach("line", viewPly)}
           <button
             type="button"
             onClick={() => resetLine()}
@@ -1614,6 +1631,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           flip={line.side === "b"}
           text={finishNote}
           onDone={dismissFinishNote}
+          extra={askCoach("finish", line.plies.length, true)}
         />
       ) : null}
       {resultCard ? (
@@ -1645,6 +1663,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 : resultCard.nextAction === "learn"
                 ? () => changeMode("learn")
                 : undefined
+          }
+          askCoach={
+            resultCard.kind === "end" ? askCoach("finish", line.plies.length, true) : null
           }
           onPrimary={
             resultCard.kind === "wrong"

@@ -405,3 +405,27 @@ export async function unlocksClaimResponse(request: Request): Promise<Response> 
     return json({ error: "Could not save unlocks" }, 500);
   }
 }
+
+/**
+ * Signed-in Scotch (or other pack) ownership for server features.
+ * Review full-access email counts as owning every pack. No client claim is trusted.
+ * The user id is for a hashed rate-limit bucket, not for logs.
+ */
+export async function signedInOwnsPack(
+  request: Request,
+  packId: string,
+): Promise<{ owns: boolean; userId: string | null }> {
+  const user = await signedInUser(request);
+  if (!user) return { owns: false, userId: null };
+  try {
+    const unlocks = emailMatchesReviewFullAccess(user.email)
+      ? reviewFullAccessUnlocks()
+      : await getUnlocksForUser(user.id);
+    const activePlan =
+      unlocks.plan === "buy_all" ||
+      (!!unlocks.plan && typeof unlocks.expiresAt === "number" && unlocks.expiresAt > Date.now());
+    return { owns: unlocks.packs.includes(packId) || activePlan, userId: user.id };
+  } catch {
+    return { owns: false, userId: user.id };
+  }
+}
