@@ -19,6 +19,9 @@ const flag = await vite.ssrLoadModule("/src/lib/ask-coach-flag.ts");
 const context = await vite.ssrLoadModule("/src/lib/ask-coach-context.ts");
 const validate = await vite.ssrLoadModule("/src/lib/ask-coach-validate.ts");
 const mock = await vite.ssrLoadModule("/src/lib/ask-coach-mock.ts");
+const prompt = await vite.ssrLoadModule("/src/lib/ask-coach-prompt.ts");
+const notes = await vite.ssrLoadModule("/src/data/scotch-coach-notes.ts");
+const packs = await vite.ssrLoadModule("/src/data/packs.ts");
 const rate = await vite.ssrLoadModule("/src/lib/ask-coach-rate.ts");
 
 function req(over = {}) {
@@ -101,6 +104,7 @@ test("mock answers stay short and inside the facts", () => {
       const n = validate.sentencesOf(fin.text).length;
       assert.ok(n >= 2 && n <= 4, `${spot.lineId} ${question} sentences ${n}: ${fin.text}`);
       assert.doesNotMatch(fin.text, /—|–|\bforever\b|\blifetime\b|\bPlay on\b/i);
+      assert.equal(validate.leaksEngineTalk(fin.text), false, fin.text);
       if (spot.mode === "test" && ctx.nextBookSan) {
         const token = ctx.nextBookSan.replace(/[+#!?]/g, "");
         assert.equal(fin.text.includes(ctx.nextBookSan), false, fin.text);
@@ -146,11 +150,58 @@ test("intro and move notes stay on the line", () => {
   assert.doesNotMatch(note.text, /\bBc5\b/);
   const n = validate.sentencesOf(note.text).length;
   assert.ok(n >= 1 && n <= 2, note.text);
+  assert.equal(note.text, testCtx.coachNote);
+  assert.equal(validate.leaksEngineTalk(note.text), false);
 
   const practice = context.buildCoachContext(req());
-  const played = validate.finalizeCoachAnswer(mock.mockCoachAnswer(practice, "move", ""), practice);
-  assert.match(played.text, /Bc4/);
-  assert.doesNotMatch(played.text, /—|–|\bPlay on\b|\bforever\b/);
+  const played = validate.finalizeCoachAnswer(mock.mockCoachAnswer(practice, "move", ""), practice, 1);
+  assert.equal(played.text, "Bc4 aims at f7, Black's weak spot.");
+  assert.doesNotMatch(played.text, /—|–|\bPlay on\b|\bforever\b|engine|ahead by/);
+});
+
+test("engine talk is replaced with the coach note", () => {
+  const ctx = context.buildCoachContext(req());
+  const dirty = "White played Bc4 with the bishop. The engine's main line is White ahead by 0.3.";
+  assert.equal(validate.leaksEngineTalk(dirty), true);
+  assert.equal(validate.leaksEngineTalk("Stockfish says 12 centipawns."), true);
+  assert.equal(validate.leaksEngineTalk("The main 5.c3 gambit meets Bb4+ with Bd2."), false);
+  const clean = validate.withoutEngineTalk(dirty, ctx);
+  assert.equal(clean, ctx.coachNote);
+  assert.equal(validate.leaksEngineTalk(clean), false);
+
+  const instructions = prompt.coachInstructions();
+  assert.doesNotMatch(instructions, /Call the evaluation the engine/);
+  assert.match(instructions, /Never mention the engine/);
+  const body = prompt.coachPrompt(ctx, "move", "");
+  assert.match(body, /Bc4 aims at f7/);
+  assert.match(body, /PRIVATE/);
+  assert.doesNotMatch(body, /ahead by|Stockfish|main line is|centipawn/i);
+
+  const intro = mock.coachIntroText("Line 1", notes.scotchCoachIntro("sg1"));
+  assert.match(intro, /10 lines from Opening Lab/);
+  assert.match(intro, /Bd2/);
+  assert.doesNotMatch(intro, /level|engine|ahead|—|–/);
+});
+
+test("every Scotch ply has a verified coach note", () => {
+  const pack = packs.PACKS.find((p) => p.id === "scotch");
+  assert.ok(pack);
+  for (const line of pack.lines) {
+    assert.equal(notes.scotchCoachNote(line.id, 0), null);
+    assert.ok(notes.scotchCoachIntro(line.id));
+    for (let ply = 1; ply <= line.plies.length; ply += 1) {
+      const ctx = context.buildCoachContext(req({ lineId: line.id, ply, mode: "test", showBook: false }));
+      const note = notes.scotchCoachNote(line.id, ply);
+      assert.equal(ctx.coachNote, note, `${line.id} ${ply}`);
+      assert.equal(validate.leaksEngineTalk(note), false, note);
+      const fin = validate.finalizeCoachAnswer(mock.mockCoachAnswer(ctx, "move", ""), ctx, 1);
+      assert.equal(fin.removed.length, 0, `${line.id} ${ply} removed ${fin.removed}`);
+      assert.equal(fin.text, note);
+      const next = ctx.nextBookSan;
+      const played = line.plies[ply - 1];
+      if (next && next !== played) assert.equal(fin.text.includes(next), false, `${line.id} ${ply} ${fin.text}`);
+    }
+  }
 });
 
 test("off topic mock refuses", () => {

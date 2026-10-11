@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { scotchCoachIntro } from "@/data/scotch-coach-notes";
 import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
 import { coachIntroText } from "@/lib/ask-coach-mock";
 import { useT } from "@/lib/i18n";
@@ -146,7 +147,7 @@ export function AskCoachPanel({
 
   if (!askTheCoachClientEnabled(packId)) return null;
 
-  const intro = coachIntroText(lineName, idea);
+  const intro = coachIntroText(lineName, scotchCoachIntro(lineId) ?? idea);
   const nextBook = ply >= 0 && ply < plies.length ? plies[ply] : null;
   const visible = Object.keys(notes)
     .map((n) => Number(n))

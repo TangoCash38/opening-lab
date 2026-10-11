@@ -1,9 +1,8 @@
 /**
  * Deterministic coach used when the AI Gateway is not configured.
- * Every sentence is assembled from the context. It does not call a model.
+ * Move notes are the hand-written Scotch notes. Nothing here quotes a score.
  */
 import type { AskQuestion, CoachContext } from "@/lib/ask-coach-context";
-import { formatWhiteEval } from "@/lib/ask-coach-prompt";
 import { capSentences, sanTokens, sentencesOf, withheldSans } from "@/lib/ask-coach-validate";
 
 function one(text: string | null | undefined): string | null {
@@ -11,31 +10,8 @@ function one(text: string | null | undefined): string | null {
   return first ? (/[.!?]$/.test(first) ? first : `${first}.`) : null;
 }
 
-function engineSentence(ctx: CoachContext): string | null {
-  if (!ctx.engine) return null;
-  const score = formatWhiteEval(ctx.engine.whiteEvalCp, ctx.engine.whiteMate);
-  const denied = withheldSans(ctx);
-  const names = ctx.engine.moves.map((m) => m.san).filter((san) => !denied.has(san));
-  if (names.length === 0) return `The engine's main line is ${score}.`;
-  const shown = names.slice(0, 3);
-  const list =
-    shown.length === 1
-      ? shown[0]
-      : shown.length === 2
-        ? `${shown[0]} and ${shown[1]}`
-        : `${shown[0]}, ${shown[1]} and ${shown[2]}`;
-  return `The engine's main line is ${score}, and its top moves here include ${list}.`;
-}
-
-function materialSentence(ctx: CoachContext): string {
-  if (ctx.material.whitePoints === ctx.material.blackPoints) {
-    return `Material is level, ${ctx.material.whitePoints} points each.`;
-  }
-  return `Material is ${ctx.material.whitePoints} for White and ${ctx.material.blackPoints} for Black.`;
-}
-
 function aimSentence(ctx: CoachContext): string {
-  const idea = one(ctx.idea);
+  const idea = one(ctx.coachIntro ?? ctx.idea);
   const plain = `This line is ${ctx.lineName} in the Scotch Gambit, one of 10 lines from Opening Lab.`;
   if (!idea) return plain;
   const denied = withheldSans(ctx);
@@ -59,45 +35,16 @@ export function coachIntroText(lineName: string, idea: string | null | undefined
   return `${about} ${tidy} ${ready}`;
 }
 
-function ideaAboutThisMove(ctx: CoachContext): string | null {
-  if (!ctx.idea || !ctx.lastMove) return null;
-  const played = ctx.lastMove.san.replace(/[+#!?]/g, "");
-  const denied = withheldSans(ctx);
-  for (const sentence of sentencesOf(ctx.idea)) {
-    const tokens = sanTokens(sentence);
-    const mentions = tokens.some((san) => san === ctx.lastMove?.san || san.replace(/[+#!?]/g, "") === played);
-    if (!mentions) continue;
-    if (tokens.some((san) => denied.has(san))) return null;
-    return /[.!?]$/.test(sentence) ? sentence : `${sentence}.`;
-  }
-  return null;
-}
-
-function scoreSentence(ctx: CoachContext): string | null {
-  if (!ctx.engine) return null;
-  return `The engine's main line is ${formatWhiteEval(ctx.engine.whiteEvalCp, ctx.engine.whiteMate)}.`;
-}
-
 function moveNote(ctx: CoachContext): string {
-  if (!ctx.lastMove) {
-    return capSentences(`${ctx.sideToMove} to move. ${aimSentence(ctx)}`, 2);
-  }
-  const bits = sentencesOf(ctx.lastMove.sentence);
-  const played = bits[0] ?? ctx.lastMove.sentence;
-  const capture = bits.find((s) => /captures/i.test(s));
-  const check = bits.find((s) => /check/i.test(s));
-  if (capture && check) {
-    return capSentences(`${played} It captures a pawn and gives check.`, 2);
-  }
-  if (capture || check) return capSentences(`${played} ${capture ?? check}`, 2);
-  const why = ideaAboutThisMove(ctx) ?? scoreSentence(ctx) ?? materialSentence(ctx);
-  return capSentences(`${played} ${why}`, 2);
+  if (ctx.coachNote) return ctx.coachNote;
+  if (!ctx.lastMove) return capSentences(`${ctx.sideToMove} to move. ${aimSentence(ctx)}`, 2);
+  return capSentences(`${ctx.lastMove.san} is the move just played. ${aimSentence(ctx)}`, 2);
 }
 
 function lookNext(ctx: CoachContext): string {
   if (ctx.ply === ctx.plyCount) {
     const note = ctx.finishNote ?? "";
-    const next = sentencesOf(note).find((s) => /^Next\b/i.test(s));
+    const next = sentencesOf(note).find((s) => /^Next\b/i.test(s) && !/\b(engine|ahead by|about level)\b/i.test(s));
     if (next) return /[.!?]$/.test(next) ? next : `${next}.`;
     return "You are at the end of the book line.";
   }
@@ -115,12 +62,7 @@ function offTopic(text: string): boolean {
 }
 
 export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: string): string {
-  const happened =
-    ctx.lastMove?.sentence ??
-    `This is the start of ${ctx.lineName}, before any book move has been played.`;
   const aim = aimSentence(ctx);
-  const engine = engineSentence(ctx);
-  const material = materialSentence(ctx);
 
   let parts: Array<string | null>;
   if (question === "move") {
@@ -141,11 +83,9 @@ export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: 
       bookNextSentence(ctx) ?? "Stay with the book move you are drilling in this line.",
     ];
   } else if (question === "why") {
-    parts = ctx.lastMove
-      ? [happened, aim, engine ?? material]
-      : [happened, `${ctx.sideToMove} to move.`, aim];
+    parts = ctx.coachNote ? [ctx.coachNote, aim] : [`${ctx.sideToMove} to move.`, aim];
   } else if (question === "plan") {
-    parts = [aim, lookNext(ctx), engine ?? material];
+    parts = [aim, lookNext(ctx)];
   } else if (question === "alternative") {
     const steer =
       bookNextSentence(ctx) ??
@@ -157,7 +97,7 @@ export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: 
       steer,
     ];
   } else {
-    parts = [happened, aim, engine, lookNext(ctx)];
+    parts = [ctx.coachNote, aim, lookNext(ctx)];
   }
 
   return capSentences(parts.filter((p): p is string => Boolean(p)).join(" "));

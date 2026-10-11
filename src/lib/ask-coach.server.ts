@@ -34,7 +34,7 @@ import {
   type CountStore,
   type CoachTier,
 } from "@/lib/ask-coach-rate";
-import { fallbackAnswer, finalizeCoachAnswer } from "@/lib/ask-coach-validate";
+import { fallbackAnswer, finalizeCoachAnswer, leaksEngineTalk, withoutEngineTalk } from "@/lib/ask-coach-validate";
 
 function json(data: unknown, status = 200): Response {
   return Response.json(data, { status, headers: { "cache-control": "no-store" } });
@@ -97,27 +97,39 @@ async function gatewayText(instructions: string, prompt: string): Promise<string
   return text;
 }
 
+function publish(raw: string, ctx: CoachContext, minSentences: number): string {
+  const fin = finalizeCoachAnswer(raw, ctx, minSentences);
+  const clean = withoutEngineTalk(fin.text, ctx);
+  if (clean.trim() && !leaksEngineTalk(clean)) return clean;
+  return fallbackAnswer(ctx);
+}
+
 async function composeAnswer(
   ctx: CoachContext,
   req: AskRequest,
 ): Promise<{ text: string; source: "gateway" | "mock" }> {
-  const mock = () => finalizeCoachAnswer(mockCoachAnswer(ctx, req.question, req.text), ctx).text;
+  const minSentences = req.question === "move" ? 1 : 2;
+  const mock = () => publish(mockCoachAnswer(ctx, req.question, req.text), ctx, minSentences);
   if (!gatewayConfigured()) return { text: mock(), source: "mock" };
 
   const instructions = coachInstructions();
   const prompt = coachPrompt(ctx, req.question, req.text);
   try {
     let raw = await gatewayText(instructions, prompt);
-    let fin = finalizeCoachAnswer(raw, ctx);
-    if (fin.removed.length > 0) {
+    let fin = finalizeCoachAnswer(raw, ctx, minSentences);
+    if (fin.removed.length > 0 || leaksEngineTalk(fin.text)) {
+      const banned = fin.removed.length ? ` Do not use these moves: ${fin.removed.join(", ")}.` : "";
       raw = await gatewayText(
         instructions,
-        `${prompt}\n\nYour previous answer used moves that are not allowed (${fin.removed.join(", ")}). Rewrite it without those moves. 2 to 4 sentences. Do not use an em dash. Do not say forever, lifetime, or Play on.`,
+        `${prompt}\n\nYour previous answer is not allowed.${banned} Rewrite it in plain UK English. Do not mention the engine, Stockfish, Lichess, an evaluation, or centipawns. Do not quote a decimal. Do not say ahead by, about level, chances are level, or main line is. Do not say who is better or who is ahead. Do not use an em dash. Do not say forever, lifetime, or Play on. ${
+          req.question === "move"
+            ? "In 1 or 2 sentences, give the idea in the coach note."
+            : "Write 2 to 4 sentences."
+        }`,
       );
-      fin = finalizeCoachAnswer(raw, ctx);
+      fin = finalizeCoachAnswer(raw, ctx, minSentences);
     }
-    const text = fin.text.trim() ? fin.text : fallbackAnswer(ctx);
-    return { text, source: "gateway" };
+    return { text: publish(fin.text, ctx, minSentences), source: "gateway" };
   } catch (err) {
     console.info(
       JSON.stringify({

@@ -81,7 +81,9 @@ export function allowedSans(ctx: CoachContext): Set<string> {
       for (const san of move.pv) set.add(san);
     }
   }
-  const prose = [ctx.idea, ctx.finishNote, ctx.nextText, ctx.intro].filter(Boolean).join(" ");
+  const prose = [ctx.idea, ctx.coachNote, ctx.coachIntro, ctx.finishNote, ctx.nextText, ctx.intro]
+    .filter(Boolean)
+    .join(" ");
   for (const san of sanTokens(prose)) set.add(san);
   return set;
 }
@@ -110,19 +112,44 @@ export function stripDisallowedMoves(
   return { text: cleaned, removed };
 }
 
+const ENGINE_TALK =
+  /\b(engine|stockfish|lichess|centipawns?|evaluation)\b/i;
+const SCORE_TALK =
+  /\b(ahead by|main line is|about level|about equal|roughly balanced)\b|\bchances are(?: about)? level\b|\b(?:is|are) (?:a little |clearly |much )?(?:better|worse|ahead|winning)\b/i;
+const DECIMAL = /\b\d+\.\d+\b/;
+
+/** Player-facing text must not quote a score or mention the computer. */
+export function leaksEngineTalk(text: string): boolean {
+  return ENGINE_TALK.test(text) || SCORE_TALK.test(text) || DECIMAL.test(text);
+}
+
 export function fallbackAnswer(ctx: CoachContext): string {
-  return capSentences(
-    `${ctx.sideToMove} to move. Material is ${ctx.material.whitePoints} for White and ${ctx.material.blackPoints} for Black.`,
+  if (ctx.coachNote && !leaksEngineTalk(ctx.coachNote)) return ctx.coachNote;
+  return capSentences(`${ctx.sideToMove} to move. Stick to this Scotch Gambit line.`);
+}
+
+const PIECE_PLAYED = /\bplayed\b.+\bwith the (?:pawn|knight|bishop|rook|queen|king|piece)\b/i;
+
+/** Drop sentences that leak a score or say "played with the pawn". If nothing remains, use the note. */
+export function withoutEngineTalk(text: string, ctx: CoachContext): string {
+  const kept = sentencesOf(text).filter(
+    (sentence) => !leaksEngineTalk(sentence) && !PIECE_PLAYED.test(sentence),
   );
+  const joined = capSentences(kept.join(" "));
+  if (joined && !leaksEngineTalk(joined)) return joined;
+  return fallbackAnswer(ctx);
 }
 
 export function finalizeCoachAnswer(
   raw: string,
   ctx: CoachContext,
+  minSentences = 2,
 ): { text: string; removed: string[] } {
   const stripped = stripDisallowedMoves(raw, ctx);
-  if (sentencesOf(stripped.text).length >= 2) return stripped;
-  const extra = fallbackAnswer(ctx);
-  const text = capSentences(`${stripped.text} ${extra}`.trim());
+  const count = sentencesOf(stripped.text).length;
+  if (ctx.coachNote && stripped.text === ctx.coachNote) return stripped;
+  if (count >= minSentences) return stripped;
+  if (count === 0) return { text: fallbackAnswer(ctx), removed: stripped.removed };
+  const text = capSentences(`${stripped.text} ${fallbackAnswer(ctx)}`.trim());
   return { text, removed: stripped.removed };
 }
