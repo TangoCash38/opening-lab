@@ -66,6 +66,9 @@ test("Play coach stays inside the WebView", () => {
   assert.match(css, /--coach-keyboard/);
   assert.match(css, /\[data-surface="play"\] \.train-layout--coach:not\(\.train-embedded\)/);
   assert.match(css, /\[data-surface="website"\] \.train-layout--coach:not\(\.train-embedded\)/);
+  assert.match(css, /\.train-layout--coach \.train-board-anchor \{\s*width: 100%;/);
+  assert.equal(css.includes("min(100%, 20rem)"), false);
+  assert.equal(css.includes("min(100%, 9.5rem)"), false);
 });
 
 test("context replays the book and matches chess.js", () => {

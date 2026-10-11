@@ -162,6 +162,14 @@ export function AskCoachPanel({
       if (hidden > 0) panel.scrollTop += hidden;
     };
 
+    const place = () => {
+      lift();
+      const px = focused ? overlap() : 0;
+      const rect = input.getBoundingClientRect();
+      const limit = window.innerHeight - px - 12;
+      if (rect.bottom > limit) window.scrollBy(0, rect.bottom - limit);
+    };
+
     const apply = () => {
       const px = focused ? overlap() : 0;
       if (px > 0) {
@@ -171,16 +179,12 @@ export function AskCoachPanel({
         root.style.removeProperty("--coach-keyboard");
         delete root.dataset.coachKeyboard;
       }
-      if (focused) requestAnimationFrame(lift);
+      if (focused) requestAnimationFrame(place);
     };
 
     const onFocus = () => {
       focused = true;
-      const y = window.scrollY;
-      requestAnimationFrame(() => {
-        apply();
-        if (window.scrollY !== y) window.scrollTo(0, y);
-      });
+      requestAnimationFrame(apply);
     };
     const onBlur = () => {
       focused = false;

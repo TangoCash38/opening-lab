@@ -7183,29 +7183,40 @@ html[data-slav-opening] .app-header-logo {
   overflow: hidden;
 }
 
-/* Keyboard open: keep the question box on screen. The board gives up space; the move list waits. */
-html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) .train-board-anchor {
-  width: min(100%, 9.5rem);
+/* Keyboard open: the board stays full size. Extra padding lets the question box scroll above the keys. */
+html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) {
+  max-height: none;
+  overflow: visible;
+  padding-bottom: var(--coach-keyboard, 0px);
 }
 
-html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) .train-below {
-  display: none;
+/* Play and phones: full-size board, then a fixed notes pane. The page scrolls if the buttons need it. */
+@media (max-width: 959px) {
+  .train-layout--coach:not(.train-embedded) {
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .train-layout--coach:not(.train-embedded) .ask-coach-panel {
+    flex: 0 0 auto;
+    height: 11rem;
+    min-height: 0;
+    max-height: 11rem;
+  }
 }
 
-html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) .ask-coach-panel {
-  min-height: 7.5rem;
-}
-
-/* Play WebView may report a gesture-bar inset. Zero insets leave this equal to the rule above. */
 [data-surface="play"] .train-layout--coach:not(.train-embedded) {
-  min-height: calc(
-    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
-      var(--coach-keyboard, 0px)
-  );
-  max-height: calc(
-    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
-      var(--coach-keyboard, 0px)
-  );
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+[data-surface="play"] .train-layout--coach:not(.train-embedded) .ask-coach-panel {
+  flex: 0 0 auto;
+  height: 11rem;
+  min-height: 0;
+  max-height: 11rem;
 }
 
 /* Phone and Play: icon bar, then the board. Website desktop keeps the full header. */
@@ -7420,8 +7431,12 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 }
 
 .train-layout--coach .train-board-anchor {
-  width: min(100%, 20rem);
+  width: 100%;
   margin-inline: auto;
+}
+
+.train-layout--coach .train-board-anchor > .relative {
+  margin-bottom: 0.4rem;
 }
 
 .train-layout--coach .train-below {
