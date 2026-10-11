@@ -41,6 +41,8 @@ test("flag is Scotch only and can be switched off", () => {
   assert.equal(flag.askTheCoachEnabled("london", "1"), false);
   assert.equal(flag.askTheCoachEnabled("scotch", "0"), false);
   assert.equal(flag.askTheCoachEnabled("scotch", "false"), false);
+  assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 Chrome"), true);
+  assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 OpeningLabPlay"), false);
 });
 
 test("context replays the book and matches chess.js", () => {

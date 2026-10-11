@@ -1254,6 +1254,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           >
             <span style={{ width: `${pct}%` }} />
           </div>
+          {!boardExpanded ? (
+            <button
+              type="button"
+              className="train-coach-expand"
+              data-train-expand
+              onClick={() => setBoardExpanded(true)}
+              aria-label={t("Expand")}
+            >
+              <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
+            </button>
+          ) : null}
         </div>
         <div className="train-coach-modes" role="group" aria-label={t("Mode")}>
           <ModeTab compact active={mode === "learn"} onClick={() => changeMode("learn")}>
@@ -1497,16 +1508,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               interactive={!busy && !slide && !viewingHistory && (!coachLesson || coachStarted || mode === "practice")}
             />
             )}
-            {coachLesson && !embedded && !boardExpanded && !runTheGame ? (
-              <button
-                type="button"
-                className="train-board-expand"
-                onClick={() => setBoardExpanded(true)}
-                aria-label={t("Expand")}
-              >
-                <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
-              </button>
-            ) : null}
             {celebratePiece ? (
               <LineCompleteBurst
                 pieceCode={celebratePiece}

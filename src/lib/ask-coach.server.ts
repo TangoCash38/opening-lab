@@ -154,7 +154,9 @@ function streamAnswer(text: string, source: string, remaining: number, tier: Coa
 }
 
 export async function askCoachPost({ request }: { request: Request }): Promise<Response> {
-  if (!askTheCoachServerEnabled()) return json({ error: "Ask the coach is off" }, 404);
+  if (!askTheCoachServerEnabled(request.headers.get("user-agent"))) {
+    return json({ error: "Ask the coach is off" }, 404);
+  }
 
   let body: unknown;
   try {
