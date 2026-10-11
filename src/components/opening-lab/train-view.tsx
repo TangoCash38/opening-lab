@@ -1244,7 +1244,12 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           >
             ←
           </button>
-          <h2 className="train-coach-title">{coachTitle}</h2>
+          <h2 className="train-coach-title" data-coach-title={coachTitle}>
+            <span className="train-coach-pack">{shortPack}</span>
+            <span className="train-coach-line">
+              {t("Line {n}/{total}", { n, total: pack.lines.length })}
+            </span>
+          </h2>
           <span className="train-coach-side">{line.side === "b" ? t("Black") : t("White")}</span>
           <div
             className="train-coach-meter"
