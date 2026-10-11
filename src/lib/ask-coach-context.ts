@@ -6,6 +6,7 @@
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine } from "@/data/packs";
 import { lineFinishNote } from "@/data/line-explains";
+import { scotchCoachIntro, scotchCoachNote } from "@/data/scotch-coach-notes";
 import engineFile from "@/data/scotch-coach-engine.json";
 import { SCOTCH_CANAL_BEATS, SCOTCH_COACH_BEATS, SCOTCH_PACK_ID } from "@/lib/scotch-coach";
 import { STUDY_PACK_ROWS } from "@/lib/study-pack-copy";
@@ -65,7 +66,11 @@ export type CoachContext = {
   futureBookSans: string[];
   nextBookSan: string | null;
   lastMove: CoachLastMove | null;
+  /** Hand-written plan for this line. Not the pack blurb. */
   idea: string | null;
+  /** Hand-written note for the move just played. Null before ply 1. */
+  coachNote: string | null;
+  coachIntro: string | null;
   finishNote: string | null;
   nextText: string | null;
   intro: string;
@@ -243,7 +248,9 @@ export function buildCoachContext(req: AskRequest): CoachContext {
     futureBookSans: line.plies.slice(req.ply),
     nextBookSan: line.plies[req.ply] ?? null,
     lastMove: last,
-    idea: line.idea?.trim() || null,
+    idea: scotchCoachIntro(line.id),
+    coachNote: scotchCoachNote(line.id, req.ply),
+    coachIntro: scotchCoachIntro(line.id),
     finishNote: lineFinishNote(line, pack.id) ?? null,
     nextText: line.next?.trim() || null,
     intro: packIntro(),
