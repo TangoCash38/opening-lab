@@ -342,6 +342,22 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   useEffect(() => {
     setCoachStarted(initialMode === "practice");
   }, [line.id, initialMode]);
+  useEffect(() => {
+    if (!coachLesson || embedded) return;
+    const root = document.documentElement;
+    const play = document.querySelector("[data-surface='play']") != null;
+    const mq = window.matchMedia("(max-width: 959px)");
+    const apply = () => {
+      if (play || mq.matches) root.dataset.coachCompact = "true";
+      else delete root.dataset.coachCompact;
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      delete root.dataset.coachCompact;
+    };
+  }, [coachLesson, embedded]);
   const pendingFinishRef = useRef<{
     card: {
       kind: "end";
@@ -1059,6 +1075,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const historyCount = livePly;
   const notationPairs = buildNotationPairs(historySans, historyCount, viewPly);
   const n = pack.lines.findIndex((l) => l.id === line.id) + 1;
+  const shortPack = pack.name.replace(/\s*\((?:White|Black)\)\s*$/i, "");
+  const coachTitle = `${shortPack} · Line ${n}/${pack.lines.length}`;
   const bookLen = bookEndPly - bookStartPly;
   const pct = bookLen <= 0
     ? 0
@@ -1213,6 +1231,51 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             {hint || "\u00a0"}
           </div>
         </div>
+      ) : coachLesson && !gym ? (
+      <div className="train-top-chrome train-coach-bar">
+        <div className="train-coach-title-row">
+          <button
+            type="button"
+            onClick={onBack}
+            className="train-coach-back"
+            aria-label={t("Packs")}
+          >
+            ←
+          </button>
+          <h2 className="train-coach-title">{coachTitle}</h2>
+          <span className="train-coach-side">{line.side === "b" ? t("Black") : t("White")}</span>
+          <div
+            className="train-coach-meter"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={pct}
+            aria-label={t("{pct}% complete", { pct })}
+          >
+            <span style={{ width: `${pct}%` }} />
+          </div>
+        </div>
+        <div className="train-coach-modes" role="group" aria-label={t("Mode")}>
+          <ModeTab compact active={mode === "learn"} onClick={() => changeMode("learn")}>
+            Practice
+          </ModeTab>
+          <ModeTab
+            compact
+            active={mode === "practice"}
+            onClick={() => changeMode("practice")}
+            nudge={nudgeTest && !freeTry}
+            flashYellow={freeTry && nudgeTest}
+            disabled={lockTest}
+            title={lockTest ? t("Test unlocks after a clean Practice.") : undefined}
+          >
+            Test
+          </ModeTab>
+          {parkRunTheGame ? (
+            <RunTheGameTab compact label={t("Run the game")} active={runTheGame} onClick={openRunTheGame} />
+          ) : null}
+        </div>
+        {pack.id === SCOTCH_PACK_ID ? <ScotchCoachReading /> : <CoachPackReading packId={pack.id} />}
+      </div>
       ) : (
       <div className="train-top-chrome">
       {gym ? (
@@ -1325,7 +1388,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       {freeTry && mode === "learn" && !freeTryIntroDismissed && !freeTryOffer ? (
         <FreeTryVoice onDemoEnd={() => setFreeTryDemo(false)} />
       ) : null}
-      {!boardExpanded && !embedded ? (
+      {!boardExpanded && !embedded && !(coachLesson && !gym) ? (
         <div className="mb-1 flex min-h-11 items-center gap-2">
           {freeTry ? (
             <p
@@ -1434,6 +1497,16 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               interactive={!busy && !slide && !viewingHistory && (!coachLesson || coachStarted || mode === "practice")}
             />
             )}
+            {coachLesson && !embedded && !boardExpanded && !runTheGame ? (
+              <button
+                type="button"
+                className="train-board-expand"
+                onClick={() => setBoardExpanded(true)}
+                aria-label={t("Expand")}
+              >
+                <Maximize2 className="size-4" strokeWidth={2.25} aria-hidden />
+              </button>
+            ) : null}
             {celebratePiece ? (
               <LineCompleteBurst
                 pieceCode={celebratePiece}
@@ -1509,6 +1582,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           uiMode={mode}
           started={coachStarted}
           finished={bookDone && mode === "learn"}
+          prompt={coachStarted && mode === "learn" ? hint : ""}
           onPractice={() => {
             setCoachStarted(true);
             if (mode !== "learn") changeMode("learn");
@@ -1762,13 +1836,15 @@ function RunTheGameTab({
   label,
   active,
   onClick,
+  compact = false,
 }: {
   label: string;
   active: boolean;
   onClick: () => void;
+  compact?: boolean;
 }) {
   return (
-    <ModeTab active={active} onClick={onClick} runTheGame>
+    <ModeTab compact={compact} active={active} onClick={onClick} runTheGame>
       {label}
     </ModeTab>
   );
@@ -1782,6 +1858,7 @@ function ModeTab({
   flashYellow,
   disabled,
   title,
+  compact = false,
   runTheGame = false,
 }: {
   active: boolean;
@@ -1791,6 +1868,7 @@ function ModeTab({
   flashYellow?: boolean;
   disabled?: boolean;
   title?: string;
+  compact?: boolean;
   runTheGame?: boolean;
 }) {
   return (
@@ -1802,7 +1880,7 @@ function ModeTab({
       aria-disabled={disabled || undefined}
       data-run-the-game={runTheGame ? "live" : undefined}
       data-test-flash={flashYellow ? "yellow" : undefined}
-      className={`flex-1 rounded-full py-2.5 text-[0.82rem] font-semibold ${
+      className={`flex-1 rounded-full font-semibold ${compact ? "py-1 text-[0.75rem]" : "py-2.5 text-[0.82rem]"} ${
         active
           ? "bg-bg-elevated text-fg shadow-sm"
           : "bg-transparent text-fg-muted"

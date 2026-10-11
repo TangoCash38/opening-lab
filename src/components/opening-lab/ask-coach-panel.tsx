@@ -16,6 +16,8 @@ type Props = {
   uiMode: UiMode;
   started: boolean;
   finished: boolean;
+  /** Book prompt such as "Play: Nf3". Empty while the intro is on screen. */
+  prompt?: string;
   onPractice: () => void;
   onTest: () => void;
 };
@@ -42,6 +44,7 @@ export function AskCoachPanel({
   uiMode,
   started,
   finished,
+  prompt = "",
   onPractice,
   onTest,
 }: Props) {
@@ -191,6 +194,11 @@ export function AskCoachPanel({
       aria-label={t("Ask the coach")}
     >
       <p className="slav-notice-kicker">{t("Ask the coach")}</p>
+      {prompt ? (
+        <p className="ask-coach-prompt" data-ask-coach-prompt>
+          {prompt}
+        </p>
+      ) : null}
       {phase === "intro" ? (
         <>
           <p className="slav-notice-paragraph" data-ask-coach-intro>
