@@ -7270,8 +7270,9 @@ html[data-coach-compact] .app-main {
 .train-coach-title-row {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.28rem;
   min-height: 2rem;
+  max-height: 2rem;
 }
 
 .train-coach-back {
@@ -7292,32 +7293,48 @@ html[data-coach-compact] .app-main {
 }
 
 .train-coach-title {
-  margin: 0;
-  min-width: 0;
+  display: flex;
   flex: 1 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  max-height: 2rem;
+  margin: 0;
+  overflow: visible;
   font-family: var(--font-display), Georgia, serif;
-  font-size: 0.92rem;
+  line-height: 1.05;
+}
+
+.train-coach-pack {
+  overflow: visible;
+  font-size: 0.82rem;
   font-weight: 750;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.train-coach-line {
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--color-fg-muted);
 }
 
 .train-coach-side {
   flex: 0 0 auto;
   border-radius: 999px;
   background: var(--color-bg-subtle);
-  padding: 0.08rem 0.38rem;
-  font-size: 0.62rem;
+  padding: 0.02rem 0.28rem;
+  font-size: 0.56rem;
   font-weight: 750;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--color-fg-muted);
 }
 
 .train-coach-meter {
-  flex: 0 0 2.6rem;
+  flex: 0 0 1.65rem;
   height: 0.28rem;
   overflow: hidden;
   border-radius: 999px;
