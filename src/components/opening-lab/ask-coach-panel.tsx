@@ -145,6 +145,63 @@ export function AskCoachPanel({
     el.scrollTop = el.scrollHeight;
   }, [notes, ply, phase, askText, revealed]);
 
+  useEffect(() => {
+    const panel = panelRef.current;
+    const input = panel?.querySelector<HTMLInputElement>("[data-ask-coach-input]");
+    const vv = window.visualViewport;
+    if (!panel || !input || !vv) return;
+    const root = document.documentElement;
+    let focused = false;
+
+    const overlap = () => Math.max(0, Math.round(window.innerHeight - vv.offsetTop - vv.height));
+
+    const lift = () => {
+      const panelRect = panel.getBoundingClientRect();
+      const inputRect = input.getBoundingClientRect();
+      const hidden = inputRect.bottom - panelRect.bottom + 12;
+      if (hidden > 0) panel.scrollTop += hidden;
+    };
+
+    const apply = () => {
+      const px = focused ? overlap() : 0;
+      if (px > 0) {
+        root.style.setProperty("--coach-keyboard", `${px}px`);
+        root.dataset.coachKeyboard = "open";
+      } else {
+        root.style.removeProperty("--coach-keyboard");
+        delete root.dataset.coachKeyboard;
+      }
+      if (focused) requestAnimationFrame(lift);
+    };
+
+    const onFocus = () => {
+      focused = true;
+      const y = window.scrollY;
+      requestAnimationFrame(() => {
+        apply();
+        if (window.scrollY !== y) window.scrollTo(0, y);
+      });
+    };
+    const onBlur = () => {
+      focused = false;
+      root.style.removeProperty("--coach-keyboard");
+      delete root.dataset.coachKeyboard;
+    };
+
+    input.addEventListener("focus", onFocus);
+    input.addEventListener("blur", onBlur);
+    vv.addEventListener("resize", apply);
+    vv.addEventListener("scroll", apply);
+    return () => {
+      input.removeEventListener("focus", onFocus);
+      input.removeEventListener("blur", onBlur);
+      vv.removeEventListener("resize", apply);
+      vv.removeEventListener("scroll", apply);
+      root.style.removeProperty("--coach-keyboard");
+      delete root.dataset.coachKeyboard;
+    };
+  }, [phase]);
+
   if (!askTheCoachClientEnabled(packId)) return null;
 
   const intro = coachIntroText(lineName, scotchCoachIntro(lineId) ?? idea);

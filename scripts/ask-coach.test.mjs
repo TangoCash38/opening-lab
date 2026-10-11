@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { createServer } from "vite";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -45,7 +46,26 @@ test("flag is Scotch only and can be switched off", () => {
   assert.equal(flag.askTheCoachEnabled("scotch", "0"), false);
   assert.equal(flag.askTheCoachEnabled("scotch", "false"), false);
   assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 Chrome"), true);
-  assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 OpeningLabPlay"), false);
+  assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 OpeningLabPlay"), true);
+  const src = readFileSync(join(root, "src/lib/ask-coach-flag.ts"), "utf8");
+  assert.equal(src.includes("isPlayUserAgent"), false);
+  assert.equal(src.includes("isPlayWrap"), false);
+});
+
+test("Play coach stays inside the WebView", () => {
+  const train = readFileSync(join(root, "src/components/opening-lab/train-view.tsx"), "utf8");
+  const at = train.indexOf('className="train-coach-back"');
+  const back = train.slice(at - 180, at + 160);
+  assert.match(back, /onClick=\{onBack\}/);
+  assert.match(back, /data-train-back/);
+  assert.doesNotMatch(back, /history\.back/);
+  const panel = readFileSync(join(root, "src/components/opening-lab/ask-coach-panel.tsx"), "utf8");
+  assert.match(panel, /visualViewport/);
+  assert.doesNotMatch(panel, /virtualKeyboard/);
+  const css = readFileSync(join(root, "src/styles.css"), "utf8");
+  assert.match(css, /--coach-keyboard/);
+  assert.match(css, /\[data-surface="play"\] \.train-layout--coach:not\(\.train-embedded\)/);
+  assert.match(css, /\[data-surface="website"\] \.train-layout--coach:not\(\.train-embedded\)/);
 });
 
 test("context replays the book and matches chess.js", () => {

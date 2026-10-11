@@ -7174,9 +7174,38 @@ html[data-slav-opening] .app-header-logo {
 .train-layout--coach {
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px));
-  max-height: calc(100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px));
+  min-height: calc(
+    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - var(--coach-keyboard, 0px)
+  );
+  max-height: calc(
+    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - var(--coach-keyboard, 0px)
+  );
   overflow: hidden;
+}
+
+/* Keyboard open: keep the question box on screen. The board gives up space; the move list waits. */
+html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) .train-board-anchor {
+  width: min(100%, 9.5rem);
+}
+
+html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) .train-below {
+  display: none;
+}
+
+html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) .ask-coach-panel {
+  min-height: 7.5rem;
+}
+
+/* Play WebView may report a gesture-bar inset. Zero insets leave this equal to the rule above. */
+[data-surface="play"] .train-layout--coach:not(.train-embedded) {
+  min-height: calc(
+    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
+      var(--coach-keyboard, 0px)
+  );
+  max-height: calc(
+    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
+      var(--coach-keyboard, 0px)
+  );
 }
 
 /* Phone and Play: icon bar, then the board. Website desktop keeps the full header. */
@@ -7248,6 +7277,7 @@ html[data-coach-compact] .app-main {
   font-size: 1rem;
   font-weight: 700;
   line-height: 1;
+  touch-action: manipulation;
 }
 
 .train-coach-title {
@@ -7319,6 +7349,7 @@ html[data-coach-compact] .app-main {
   border-radius: 999px;
   background: var(--color-bg-elevated);
   color: var(--color-fg-muted);
+  touch-action: manipulation;
 }
 
 .train-layout--coach:not(.train-embedded) .train-frame-notation {
@@ -7465,6 +7496,7 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   background: var(--color-accent);
   color: var(--color-accent-fg);
   font-weight: 750;
+  touch-action: manipulation;
 }
 
 .ask-coach-primary,
@@ -7511,6 +7543,7 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   padding: 0.4rem 0.7rem;
   font-size: 0.92rem;
   color: var(--color-fg);
+  touch-action: manipulation;
 }
 
 .ask-coach-send {
