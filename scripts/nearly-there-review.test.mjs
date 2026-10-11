@@ -33,7 +33,10 @@ test("nearly there follows the free line for a visitor and stays off for a buyer
   assert.match(screen, /\{price\} unlocks the whole pack/);
   assert.match(screen, /Not now/);
   assert.match(screen, /startPlayPackBuy/);
+  assert.match(screen, /startPlayBuyAll/);
+  assert.match(screen, /currentPlayAppSellsPack/);
   assert.match(screen, /startCheckout/);
+  assert.match(screen, /!hasPlayBillingBridge\(\)/);
   assert.match(screen, /slav-notice/);
   assert.doesNotMatch(screen, /forever|lifetime|Play on/i);
   assert.doesNotMatch(train, /forever|lifetime/);
@@ -102,9 +105,29 @@ test("Play review asks once per 30 days, at most 3 times, and never on the web",
 
   const shell = src("src/components/opening-lab/app-shell.tsx");
   const billing = src("android/app/src/main/java/uk/co/openinglab/PlayBilling.java");
+  const skus = src("src/lib/play-skus.ts");
   assert.match(shell, /maybeAskForPlayReview/);
   assert.match(shell, /if \(typeof window === "undefined" \|\| !isPlayApp\(\)\) return/);
+  assert.match(shell, /typeof bridge\?\.requestReview !== "function"/);
+  assert.match(shell, /catch \{\s*return;\s*\}/);
   assert.match(billing, /void requestReview\(\)/);
+  const held = [
+    "french-black",
+    "ruy-lopez-white",
+    "sicilian-black",
+    "qgd-black",
+    "slav-defence",
+    "nimzo-indian-black",
+    "kings-indian-black",
+  ];
+  const list = skus.slice(
+    skus.indexOf("PLAY_CURRENT_APP_LIVE_SALE_PACK_IDS"),
+    skus.indexOf("export function currentPlayAppSellsPack"),
+  );
+  for (const id of held) assert.equal(list.includes(`"${id}"`), false);
+  for (const id of ["scotch", "opening-traps", "caro-kann-black", "london", "italian-white", "qg-white"]) {
+    assert.equal(list.includes(`"${id}"`), true);
+  }
   assert.match(billing, /ReviewManagerFactory/);
   assert.doesNotMatch(shell, /do you like/i);
   assert.doesNotMatch(billing, /reward/i);

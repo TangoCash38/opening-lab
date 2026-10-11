@@ -510,8 +510,12 @@ function maybeAskForPlayReview(pack: Pack) {
     packLineCount: packReviewable ? pack.lines.length : 0,
     packLinesComplete,
   });
-  if (!decision.ask || !bridge?.requestReview) return;
-  bridge.requestReview();
+  if (!decision.ask || typeof bridge?.requestReview !== "function") return;
+  try {
+    bridge.requestReview();
+  } catch {
+    return;
+  }
   savePlayReviewState(decision.next);
 }
 

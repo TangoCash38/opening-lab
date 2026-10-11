@@ -3,13 +3,14 @@ import { createPortal } from "react-dom";
 import { Chess } from "chess.js";
 import { Lock } from "lucide-react";
 import type { Pack } from "@/data/packs";
-import { packPrice } from "@/data/pricing";
+import { packPrice, PRICE_BUY_ALL } from "@/data/pricing";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { fetchPaymentsEnabled, savePendingCheckout, startCheckout } from "@/lib/checkout";
-import { canPurchasePack, hasPaidPlaySkuPath } from "@/lib/catalog";
+import { canPurchaseBuyAll, canPurchasePack, hasPaidPlaySkuPath } from "@/lib/catalog";
 import { useT } from "@/lib/i18n";
-import { hasPlayBillingBridge, startPlayPackBuy } from "@/lib/play-billing";
-import { isPlayWrap } from "@/lib/play-app";
+import { hasPlayBillingBridge, startPlayBuyAll, startPlayPackBuy } from "@/lib/play-billing";
+import { PLAY_SKU_NOT_ON_SALE, isPlayWrap } from "@/lib/play-app";
+import { currentPlayAppSellsPack } from "@/lib/play-skus";
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { ChessBoard } from "./chess-board";
 
@@ -40,6 +41,11 @@ export function NearlyThere({ pack, plies, flip, caption, percent, onDone }: Pro
   const game = useMemo(() => positionAfter(plies), [plies]);
   const price = packPrice(pack);
   const locked = pack.lines.slice(1, 10);
+  const playWrap = mounted && isPlayWrap();
+  const soldInCurrentPlayApp =
+    currentPlayAppSellsPack(pack.id) && hasPaidPlaySkuPath({ id: pack.id, isFree: false });
+  const playPackHeld = playWrap && !soldInCurrentPlayApp;
+  const offerBuyAll = playPackHeld && canPurchaseBuyAll();
   const result =
     percent != null ? t("{pct}%", { pct: percent }) : caption.trim() || t("Practice done");
 
@@ -68,8 +74,17 @@ export function NearlyThere({ pack, plies, flip, caption, percent, onDone }: Pro
           goSignIn();
           return;
         }
-        if (!hasPlayBillingBridge() || !hasPaidPlaySkuPath({ id: pack.id, isFree: false })) {
-          setError(t("This pack isn’t on sale in the store yet"));
+        if (!hasPlayBillingBridge()) {
+          setError(t(PLAY_SKU_NOT_ON_SALE));
+          return;
+        }
+        if (!currentPlayAppSellsPack(pack.id) || !hasPaidPlaySkuPath({ id: pack.id, isFree: false })) {
+          if (!canPurchaseBuyAll()) {
+            setError(t(PLAY_SKU_NOT_ON_SALE));
+            return;
+          }
+          const unlocks = await startPlayBuyAll();
+          if (unlocks) onDone();
           return;
         }
         const unlocks = await startPlayPackBuy(pack.id);
@@ -161,6 +176,11 @@ export function NearlyThere({ pack, plies, flip, caption, percent, onDone }: Pro
             ))}
           </ul>
         </div>
+        {playPackHeld ? (
+          <p className="slav-notice-paragraph" data-nearly-play-hold>
+            {t(PLAY_SKU_NOT_ON_SALE)}
+          </p>
+        ) : null}
         <button
           type="button"
           className="slav-notice-primary"
@@ -170,7 +190,9 @@ export function NearlyThere({ pack, plies, flip, caption, percent, onDone }: Pro
             void unlock();
           }}
         >
-          {t("{price} unlocks the whole pack", { price })}
+          {offerBuyAll
+            ? t("Buy all · {price}", { price: PRICE_BUY_ALL })
+            : t("{price} unlocks the whole pack", { price })}
         </button>
         {error ? (
           <p className="nearly-error" data-nearly-error role="alert">

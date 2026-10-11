@@ -28,7 +28,8 @@ import {
   startCheckout,
   type CheckoutKind,
 } from "@/lib/checkout";
-import { isPlayWrap } from "@/lib/play-app";
+import { PLAY_SKU_NOT_ON_SALE, isPlayWrap } from "@/lib/play-app";
+import { currentPlayAppSellsPack } from "@/lib/play-skus";
 import { packCompletePercent } from "@/lib/progress";
 import { isClassicSamplePack, classicSamplePack } from "@/lib/classic-sample";
 import { classicRunAlreadySeen } from "@/lib/classic-run";
@@ -520,8 +521,12 @@ export function PackList({
           return;
         }
         if (kind === "pack") {
-          if (!packId || !hasPaidPlaySkuPath({ id: packId, isFree: false })) {
-            setPayError("This pack isn’t on sale in the store yet");
+          if (
+            !packId ||
+            !hasPaidPlaySkuPath({ id: packId, isFree: false }) ||
+            !currentPlayAppSellsPack(packId)
+          ) {
+            setPayError(PLAY_SKU_NOT_ON_SALE);
             return;
           }
           const unlocks = await startPlayPackBuy(packId);
@@ -705,7 +710,11 @@ export function PackList({
           packName={modal.pack.name}
           price={modal.price}
           lineCount={modal.pack.lines.length}
-          playSku={hasPaidPlaySkuPath(modal.pack) && canPurchasePack(modal.pack.id)}
+          playSku={
+            hasPaidPlaySkuPath(modal.pack) &&
+            canPurchasePack(modal.pack.id) &&
+            currentPlayAppSellsPack(modal.pack.id)
+          }
           onClose={() => {
             if (!payBusy) setModal(null);
           }}
