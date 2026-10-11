@@ -131,6 +131,26 @@ test("visitor cap is 5 and the buyer cap is 50", async () => {
   assert.equal(soft.cap, 50);
 });
 
+test("intro and move notes stay on the line", () => {
+  const intro = mock.coachIntroText("Line 1", "Main 5.c3 gambit: meet Bb4+ with Bd2, and castle.");
+  assert.match(intro, /10 lines from Opening Lab/);
+  assert.match(intro, /Practice/);
+  assert.doesNotMatch(intro, /—|–|\bforever\b|\blifetime\b|\bPlay on\b/);
+
+  const testCtx = context.buildCoachContext(req({ mode: "test", showBook: false }));
+  const note = validate.finalizeCoachAnswer(mock.mockCoachAnswer(testCtx, "move", ""), testCtx);
+  assert.equal(note.removed.length, 0, note.removed.join(","));
+  assert.match(note.text, /Bc4/);
+  assert.doesNotMatch(note.text, /\bBc5\b/);
+  const n = validate.sentencesOf(note.text).length;
+  assert.ok(n >= 1 && n <= 2, note.text);
+
+  const practice = context.buildCoachContext(req());
+  const played = validate.finalizeCoachAnswer(mock.mockCoachAnswer(practice, "move", ""), practice);
+  assert.match(played.text, /Bc4/);
+  assert.doesNotMatch(played.text, /—|–|\bPlay on\b|\bforever\b/);
+});
+
 test("off topic mock refuses", () => {
   const ctx = context.buildCoachContext(req());
   const text = mock.mockCoachAnswer(ctx, "free", "Write a poem about the weather");

@@ -50,6 +50,50 @@ function bookNextSentence(ctx: CoachContext): string | null {
   return `The book move from here is ${ctx.nextBookSan}.`;
 }
 
+export function coachIntroText(lineName: string, idea: string | null | undefined): string {
+  const about = `This is ${lineName}, one of 10 lines from Opening Lab.`;
+  const plan = idea?.trim();
+  const ready = "Tap Practice when you want to play the moves.";
+  if (!plan) return `${about} ${ready}`;
+  const tidy = /[.!?]$/.test(plan) ? plan : `${plan}.`;
+  return `${about} ${tidy} ${ready}`;
+}
+
+function ideaAboutThisMove(ctx: CoachContext): string | null {
+  if (!ctx.idea || !ctx.lastMove) return null;
+  const played = ctx.lastMove.san.replace(/[+#!?]/g, "");
+  const denied = withheldSans(ctx);
+  for (const sentence of sentencesOf(ctx.idea)) {
+    const tokens = sanTokens(sentence);
+    const mentions = tokens.some((san) => san === ctx.lastMove?.san || san.replace(/[+#!?]/g, "") === played);
+    if (!mentions) continue;
+    if (tokens.some((san) => denied.has(san))) return null;
+    return /[.!?]$/.test(sentence) ? sentence : `${sentence}.`;
+  }
+  return null;
+}
+
+function scoreSentence(ctx: CoachContext): string | null {
+  if (!ctx.engine) return null;
+  return `The engine's main line is ${formatWhiteEval(ctx.engine.whiteEvalCp, ctx.engine.whiteMate)}.`;
+}
+
+function moveNote(ctx: CoachContext): string {
+  if (!ctx.lastMove) {
+    return capSentences(`${ctx.sideToMove} to move. ${aimSentence(ctx)}`, 2);
+  }
+  const bits = sentencesOf(ctx.lastMove.sentence);
+  const played = bits[0] ?? ctx.lastMove.sentence;
+  const capture = bits.find((s) => /captures/i.test(s));
+  const check = bits.find((s) => /check/i.test(s));
+  if (capture && check) {
+    return capSentences(`${played} It captures a pawn and gives check.`, 2);
+  }
+  if (capture || check) return capSentences(`${played} ${capture ?? check}`, 2);
+  const why = ideaAboutThisMove(ctx) ?? scoreSentence(ctx) ?? materialSentence(ctx);
+  return capSentences(`${played} ${why}`, 2);
+}
+
 function lookNext(ctx: CoachContext): string {
   if (ctx.ply === ctx.plyCount) {
     const note = ctx.finishNote ?? "";
@@ -79,10 +123,22 @@ export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: 
   const material = materialSentence(ctx);
 
   let parts: Array<string | null>;
+  if (question === "move") {
+    return moveNote(ctx);
+  }
   if (question === "free" && offTopic(text)) {
     parts = [
       "I can only help with this Scotch Gambit position.",
       "Ask me about the plan, this move, or what happens if they play something else.",
+    ];
+  } else if (
+    question === "free" &&
+    /\b(what if|instead|another|alternative|something else|other move)\b/i.test(text)
+  ) {
+    parts = [
+      "There are many moves here, but you're learning this line.",
+      "These 10 lines from Opening Lab give a strong grip on the Scotch.",
+      bookNextSentence(ctx) ?? "Stay with the book move you are drilling in this line.",
     ];
   } else if (question === "why") {
     parts = ctx.lastMove

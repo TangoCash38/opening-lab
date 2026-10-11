@@ -81,6 +81,8 @@ function questionLine(question: AskQuestion, text: string): string {
       return "Question: What if they play something else? Acknowledge that there are many moves, say that these 10 lines from Opening Lab give a strong grip on the Scotch, and steer back to this line.";
     case "free":
       return `Question from the student: ${text}`;
+    case "move":
+      return "Question: in 1 or 2 sentences, explain the move that was just played. What it did, and why, using only the CONTEXT. Do not name the next book move in Test unless SHOW BOOK is yes.";
     default:
       return "Question: give a short rundown of the current position.";
   }

@@ -10,7 +10,7 @@ import engineFile from "@/data/scotch-coach-engine.json";
 import { SCOTCH_CANAL_BEATS, SCOTCH_COACH_BEATS, SCOTCH_PACK_ID } from "@/lib/scotch-coach";
 import { STUDY_PACK_ROWS } from "@/lib/study-pack-copy";
 
-export const ASK_QUESTIONS = ["rundown", "plan", "why", "alternative", "free"] as const;
+export const ASK_QUESTIONS = ["rundown", "plan", "why", "alternative", "free", "move"] as const;
 export type AskQuestion = (typeof ASK_QUESTIONS)[number];
 export type AskMode = "practice" | "test";
 export type AskSurface = "line" | "finish";

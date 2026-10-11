@@ -175,6 +175,20 @@ export async function askCoachPost({ request }: { request: Request }): Promise<R
   }
 
   const who = await tierFor(request);
+  // Move notes are the lesson feed. They do not use the daily question cap.
+  // The text box at the end of the line does.
+  if (parsed.value.question === "move") {
+    console.info(
+      JSON.stringify({
+        event: "ask-coach-note",
+        day: utcDay(),
+        tier: who.tier,
+      }),
+    );
+    const answer = await composeAnswer(ctx, parsed.value);
+    return streamAnswer(answer.text, answer.source, who.tier === "buyer" ? 50 : 5, who.tier);
+  }
+
   const identity = clientIdentity(request, who.userId);
   const slot = await takeQuestionSlot(await countStore(), {
     day: utcDay(),

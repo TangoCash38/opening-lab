@@ -31,7 +31,8 @@ import { ChessBoard, type SlideAnim } from "./chess-board";
 import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
-import { AskCoachButton } from "./ask-coach-sheet";
+import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
+import { AskCoachPanel } from "./ask-coach-panel";
 import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
 import { CoachPackReading, ScotchCoachReading } from "./scotch-coach-intro";
@@ -329,6 +330,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     secondaryAction?: "practiceNext";
   } | null>(null);
   const [finishNote, setFinishNote] = useState<string | null>(null);
+  const [coachStarted, setCoachStarted] = useState(initialMode === "practice");
+  const coachLesson =
+    pack.id === "scotch" &&
+    !runTheGame &&
+    !freeTry &&
+    !warmup &&
+    askTheCoachClientEnabled(pack.id);
+  const coachLessonRef = useRef(coachLesson);
+  coachLessonRef.current = coachLesson;
+  useEffect(() => {
+    setCoachStarted(initialMode === "practice");
+  }, [line.id, initialMode]);
   const pendingFinishRef = useRef<{
     card: {
       kind: "end";
@@ -698,13 +711,17 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
-          text: "Practice done — Test with no hints",
+          text: coachLessonRef.current
+            ? "Practice done. Test with no hints."
+            : "Practice done — Test with no hints",
           cls: "done",
         });
-        showLineFinish(
-          endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
-          pending.nextGame,
-        );
+        if (!coachLessonRef.current) {
+          showLineFinish(
+            endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
+            pending.nextGame,
+          );
+        }
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -1146,26 +1163,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       Boolean(nearMissSan) ||
       viewPly > 0);
   const canForward = !busy && !slide && viewPly < livePly;
-  const showAskCoach =
-    pack.id === "scotch" && !runTheGame && !(freeTryDemo && !freeTryIntroDismissed);
-  const askCoach = (surface: "line" | "finish", coachPly: number, block = false) =>
-    showAskCoach ? (
-      <AskCoachButton
-        packId={pack.id}
-        lineId={line.id}
-        lineName={line.name}
-        plies={line.plies}
-        ply={coachPly}
-        mode={mode === "learn" ? "practice" : "test"}
-        surface={surface}
-        block={block}
-      />
-    ) : null;
   const gymOpening = gym ? lookupOpeningIdentityPrefix(line.plies) : null;
 
   return (
     <div
-      className={`train-layout${embedded ? " train-embedded" : ""}`}
+      className={`train-layout${embedded ? " train-embedded" : ""}${coachLesson ? " train-layout--coach" : ""}`}
       data-frame-practice={embedded ? "true" : undefined}
       data-free-try={freeTry ? "true" : undefined}
       data-free-try-test-flash={freeTry && nudgeTest ? "yellow" : undefined}
@@ -1250,7 +1252,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
         </>
       )}
-      {!gym && line.idea ? (
+      {!gym && line.idea && !coachLesson ? (
         <p className="train-idea mt-1 text-[0.88rem] text-fg-muted">{line.idea}</p>
       ) : null}
       {!gym ? (
@@ -1419,7 +1421,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               selected={viewingHistory ? null : selected}
               wrongUntil={viewingHistory ? null : wrongUntil}
               expected={exp}
-              showHints={showHints}
+              showHints={showHints && (!coachLesson || coachStarted)}
               lastMove={displayLastMove}
               slide={slide}
               onSlideComplete={onSlideComplete}
@@ -1429,7 +1431,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               frameCoords={frameCoords && !boardExpanded}
               mateBlast={mateBlast}
               onMateBlastDone={stopMateBlast}
-              interactive={!busy && !slide && !viewingHistory}
+              interactive={!busy && !slide && !viewingHistory && (!coachLesson || coachStarted || mode === "practice")}
             />
             )}
             {celebratePiece ? (
@@ -1495,6 +1497,28 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         ) : null}
       </div>
       </div>
+
+      {coachLesson && !boardExpanded && !runTheGame ? (
+        <AskCoachPanel
+          packId={pack.id}
+          lineId={line.id}
+          lineName={line.name}
+          idea={line.idea ?? null}
+          plies={line.plies}
+          ply={viewPly}
+          uiMode={mode}
+          started={coachStarted}
+          finished={bookDone && mode === "learn"}
+          onPractice={() => {
+            setCoachStarted(true);
+            if (mode !== "learn") changeMode("learn");
+          }}
+          onTest={() => {
+            setCoachStarted(true);
+            changeMode("practice");
+          }}
+        />
+      ) : null}
 
       {runTheGame ? null : (
       <div className={`train-below${embedded ? " train-frame-below" : ""}`}>
@@ -1564,7 +1588,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       ) : null}
       <div className="trainer-actions">
         <div className="trainer-secondaries">
-          {askCoach("line", viewPly)}
           <button
             type="button"
             onClick={() => resetLine()}
@@ -1631,7 +1654,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           flip={line.side === "b"}
           text={finishNote}
           onDone={dismissFinishNote}
-          extra={askCoach("finish", line.plies.length, true)}
         />
       ) : null}
       {resultCard ? (
@@ -1663,9 +1685,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
                 : resultCard.nextAction === "learn"
                 ? () => changeMode("learn")
                 : undefined
-          }
-          askCoach={
-            resultCard.kind === "end" ? askCoach("finish", line.plies.length, true) : null
           }
           onPrimary={
             resultCard.kind === "wrong"

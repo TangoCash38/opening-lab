@@ -7170,85 +7170,112 @@ html[data-slav-opening] .app-header-logo {
   }
 }
 
-/* Ask the coach. Scotch only. Bottom sheet, same card voice as the pack intro. */
-.ask-coach-btn {
-  min-height: 2.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-elevated);
-  padding: 0.35rem 0.85rem;
-  font-size: 0.82rem;
-  font-weight: 750;
-  color: var(--color-fg);
-}
-
-.ask-coach-btn--block {
-  width: 100%;
-  min-height: 2.75rem;
-  border-radius: 1rem;
-}
-
-.ask-coach-slot {
-  margin-top: 0.65rem;
-}
-
-.ask-coach-slot--dock {
-  margin: 0.35rem 0.75rem 0;
-}
-
-.ask-coach-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 95;
+/* Ask the coach. Scotch only. Board on top, panel underneath, like a phone analysis pane. */
+.train-layout--coach {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 0.75rem;
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
-  background: transparent;
+  flex-direction: column;
+  min-height: calc(100dvh - 4.75rem - env(safe-area-inset-top, 0px));
+  max-height: calc(100dvh - 4.75rem - env(safe-area-inset-top, 0px));
+  overflow: hidden;
 }
 
-.ask-coach-sheet {
+.train-layout--coach .train-top-chrome {
+  flex: 0 0 auto;
+}
+
+.train-layout--coach .train-board-band {
+  flex: 0 0 auto;
   display: flex;
-  width: 100%;
-  max-width: 32rem;
-  max-height: min(78dvh, 36rem);
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+}
+
+.train-layout--coach .train-board-anchor {
+  width: min(100%, 20rem);
+  margin-inline: auto;
+}
+
+.train-layout--coach .train-below {
+  flex: 0 0 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.train-layout--coach .train-frame-status {
+  min-height: 1.35em;
+  margin-bottom: 0.35rem;
+}
+
+.train-embedded.train-layout--coach {
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  scroll-margin-top: 4.75rem;
+}
+
+.ask-coach-panel {
+  display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 0.45rem;
+  min-height: 8.5rem;
+  margin-top: 0.35rem;
   overflow: auto;
   border: 1px solid var(--color-border);
   border-radius: 1.05rem;
   background: var(--color-bg-elevated);
-  padding: 0.8rem 0.9rem 0.85rem;
-  box-shadow: var(--shadow-card), 0 -8px 28px rgba(28, 25, 21, 0.12);
+  padding: 0.7rem 0.8rem 0.75rem;
+  box-shadow: var(--shadow-card);
 }
 
-.ask-coach-sheet-head {
+.ask-coach-feed {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
-.ask-coach-close,
-.ask-coach-show,
-.ask-coach-chip,
-.ask-coach-send {
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-subtle);
+.ask-coach-note-line {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
   color: var(--color-fg);
+}
+
+.ask-coach-ply {
+  display: inline-block;
+  margin-right: 0.4rem;
+  border-radius: 999px;
+  background: var(--color-bg-subtle);
+  padding: 0.05rem 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 750;
+  color: var(--color-fg-muted);
+}
+
+.ask-coach-primary,
+.ask-coach-show,
+.ask-coach-send {
+  border: 1px solid transparent;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
   font-weight: 750;
 }
 
-.ask-coach-close {
-  min-height: 2.25rem;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.78rem;
+.ask-coach-primary,
+.ask-coach-show {
+  min-height: 2.75rem;
+  width: 100%;
+  border-radius: 0.9rem;
+  font-size: 0.95rem;
 }
 
-.ask-coach-note,
+.ask-coach-done {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
 .ask-coach-remaining,
 .ask-coach-book {
   margin: 0;
@@ -7257,41 +7284,11 @@ html[data-slav-opening] .app-header-logo {
   color: var(--color-fg-muted);
 }
 
-.ask-coach-answer {
-  min-height: 0;
-}
-
 .ask-coach-error {
-  margin: 0.35rem 0 0;
+  margin: 0;
   font-size: 0.9rem;
   line-height: 1.4;
   color: var(--color-danger, #9b2c2c);
-}
-
-.ask-coach-show {
-  min-height: 2.5rem;
-  width: 100%;
-  border-radius: 0.9rem;
-  font-size: 0.88rem;
-}
-
-.ask-coach-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.ask-coach-chip {
-  min-height: 2.25rem;
-  border-radius: 999px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.78rem;
-  text-align: left;
-}
-
-.ask-coach-chip:disabled,
-.ask-coach-send:disabled {
-  opacity: 0.45;
 }
 
 .ask-coach-form {
@@ -7316,7 +7313,47 @@ html[data-slav-opening] .app-header-logo {
   flex: 0 0 auto;
   border-radius: 0.9rem;
   padding: 0.35rem 0.85rem;
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
-  border-color: transparent;
+}
+
+.ask-coach-send:disabled {
+  opacity: 0.45;
+}
+
+@media (min-width: 960px) {
+  /* Full-page website only. Play stays a 520px column, so the panel stays under the board. */
+  [data-surface="website"] .train-layout--coach:not(.train-embedded) {
+    display: grid;
+    grid-template-columns: minmax(16rem, 1fr) minmax(14rem, 18rem);
+    grid-template-areas:
+      "chrome chrome"
+      "board panel"
+      "below panel";
+    column-gap: 1rem;
+    align-items: start;
+    max-height: none;
+    overflow: visible;
+    min-height: 0;
+  }
+
+  [data-surface="website"] .train-layout--coach:not(.train-embedded) .train-top-chrome {
+    grid-area: chrome;
+  }
+
+  [data-surface="website"] .train-layout--coach:not(.train-embedded) .train-board-band {
+    grid-area: board;
+  }
+
+  [data-surface="website"] .train-layout--coach:not(.train-embedded) .train-board-anchor {
+    width: min(100%, 32rem);
+  }
+
+  [data-surface="website"] .train-layout--coach:not(.train-embedded) .ask-coach-panel {
+    grid-area: panel;
+    max-height: min(70dvh, 40rem);
+    margin-top: 0;
+  }
+
+  [data-surface="website"] .train-layout--coach:not(.train-embedded) .train-below {
+    grid-area: below;
+  }
 }
