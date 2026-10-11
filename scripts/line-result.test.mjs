@@ -380,9 +380,9 @@ test("TrainView remounts on line change only; Practice↔Test stays in place", (
   assert.match(changeMode[0], /setMode\(m\)/);
   assert.match(changeMode[0], /onModeChange\?\.\(m\)/);
   assert.match(changeMode[0], /resetLine\(m\)/);
-  // Page chrome, in-frame pack card, and fullscreen overlay share local mode.
-  assert.equal([...train.matchAll(/active=\{mode === "learn"\}/g)].length, 3);
-  assert.equal([...train.matchAll(/active=\{mode === "practice"\}/g)].length, 3);
+  // Page chrome, in-frame pack card, fullscreen overlay, and the website coach bar.
+  assert.equal([...train.matchAll(/active=\{mode === "learn"\}/g)].length, 4);
+  assert.equal([...train.matchAll(/active=\{mode === "practice"\}/g)].length, 4);
 });
 
 test("ModeTab nudge is additive and keeps active/inactive chrome", () => {

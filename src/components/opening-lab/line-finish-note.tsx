@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Chess } from "chess.js";
 import { ChessBoard } from "./chess-board";
@@ -17,9 +17,10 @@ type Props = {
   flip: boolean;
   text: string;
   onDone: () => void;
+  extra?: ReactNode;
 };
 
-export function LineFinishNote({ name, plies, flip, text, onDone }: Props) {
+export function LineFinishNote({ name, plies, flip, text, onDone, extra }: Props) {
   const [mounted, setMounted] = useState(false);
   const game = useMemo(() => positionAfter(plies), [plies]);
 
@@ -65,6 +66,7 @@ export function LineFinishNote({ name, plies, flip, text, onDone }: Props) {
             {text}
           </p>
         </div>
+        {extra ? <div className="ask-coach-slot">{extra}</div> : null}
         <button type="button" className="slav-notice-primary" data-line-finish-got-it onClick={onDone}>
           Got it
         </button>
