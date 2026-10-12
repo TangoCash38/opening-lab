@@ -3615,7 +3615,7 @@ export const PACKS: Pack[] = [
         id: "qg6",
         name: "Tartakower: ...b6",
         plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "h6", "Bh4", "b6", "cxd5", "Nxd5", "Bxe7", "Qxe7", "Nxd5", "exd5", "Rc1", "Be6"],
-        idea: "Tartakower. ...h6 ...b6, the knights trade on d5, and ...Be6 develops against the isolated pawn.",
+        idea: "Tartakower. ...h6 ...b6, the knights trade on d5, and ...Be6 develops beside the pawn on d5.",
         next: "Bd3 and O-O. Black's pawn on d5 is the target and the defence.",
         side: "w",
       },
@@ -5547,6 +5547,8 @@ export const PACKS: Pack[] = [
     isPremium: true,
     price: "£1.99",
     blurb: "10 lines from Opening Lab",
+    about:
+      "The Slav Defence is 1.d4 d5 2.c4 c6. Black supports d5 without shutting in the light-squared bishop, and meets the Classical, Exchange, Czech, and Chebanenko with their own book replies. 10 lines from Opening Lab.\n\nPractice the book moves with the green hint. Then Test with none to prove you remember them.",
     lines: [
       {
         id: "sd1",

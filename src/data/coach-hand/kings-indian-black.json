@@ -83,7 +83,7 @@
     ]
   },
   "kidb4": {
-    "intro": "The Classical with an exchange on d4. Black opens the e-file, the knight recaptures, and c6 challenges the centre.",
+    "intro": "The Classical with an exchange on d4. Black leaves the e-file half-open, the knight recaptures, and c6 challenges the centre.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -98,9 +98,9 @@
       "Be2 develops the light-squared bishop.",
       "e5 claims a share of the centre.",
       "Be3 develops the dark-squared bishop and supports the centre.",
-      "exd4 takes the pawn on d4 and opens the e-file. Black chooses an open centre instead of a closed one.",
+      "exd4 takes the pawn on d4 and leaves the e-file half-open. Black chooses a fluid centre instead of a closed one.",
       "Nxd4 recaptures the pawn on d4. The knight sits in the centre.",
-      "Re8 puts the rook on the open e-file, facing the pawn on e4.",
+      "Re8 puts the rook on the half-open e-file, facing the pawn on e4.",
       "f3 supports the pawn on e4.",
       "c6 challenges the knight on d4 and prepares central play."
     ]
@@ -137,16 +137,16 @@
       "Bg7 puts the dark-squared bishop on the long diagonal.",
       "e4 claims a broad pawn centre.",
       "d6 keeps the centre flexible.",
-      "f4 gains more space and supports the pawn on e4. Four pawns is a lot of centre to defend.",
+      "f4 gains more space. Four pawns is a lot of centre to defend.",
       "O-O brings the king to g8 and the rook to f8.",
       "Nf3 develops the king's knight.",
       "c5 attacks the pawn on d4 and challenges the broad centre.",
       "d5 gains a wedge of space in the centre.",
       "e6 attacks the pawn on d5 and chips at the wedge.",
       "Be2 develops the light-squared bishop and prepares castling.",
-      "exd5 takes the pawn on d5 and opens the e-file.",
+      "exd5 takes the pawn on d5. The e-file is half-open.",
       "cxd5 recaptures the pawn on d5. White keeps a central pawn.",
-      "Re8 puts the rook on the open e-file.",
+      "Re8 puts the rook on the half-open e-file.",
       "e5 pushes the central pawn and attacks the knight on f6. The centre opens completely.",
       "dxe5 takes the pawn on e5 and accepts the open centre."
     ]
@@ -213,7 +213,7 @@
       "O-O brings the king to g8 and the rook to f8.",
       "Be2 develops the light-squared bishop.",
       "e5 claims a share of the centre.",
-      "dxe5 takes the pawn on e5 and opens the d-file. White chooses an early exchange.",
+      "dxe5 takes the pawn on e5 and leaves the d-file half-open. White chooses an early exchange.",
       "dxe5 recaptures the pawn on e5. The d-file is open.",
       "Qxd8 trades queens and draws the rook to the open file.",
       "Rxd8 recaptures the queen on d8. The rook takes the open file, and the king stays in the centre for the moment.",
@@ -247,7 +247,7 @@
       "h3 takes g4 away from Black's pieces and gives the king air.",
       "Re8 puts the rook on the e-file, behind the pawn on e5.",
       "Be3 develops the dark-squared bishop and supports the centre.",
-      "exd4 takes the pawn on d4 and opens the e-file.",
+      "exd4 takes the pawn on d4 and leaves the e-file half-open.",
       "Bxd4 recaptures the pawn on d4. The dark-squared bishop takes the centre and opposes the bishop on g7."
     ]
   }

@@ -14,12 +14,12 @@
       "O-O brings the king to g8 and the rook to f8.",
       "Nf3 develops the king's knight and prepares castling. It also watches the centre.",
       "Nbd7 develops the queen's knight and supports the knight on f6. Black keeps the c-pawn free.",
-      "Rc1 puts a rook on the half-open c-file. That file is why the gambit pawn was offered.",
+      "Rc1 puts the rook behind the pawn on c4. Both c-pawns are still on the board.",
       "c6 supports the pawn on d5 and keeps the centre solid. The rook on c1 is staring at this pawn.",
       "Bd3 develops the light-squared bishop and aims at the kingside. Black usually takes on c4 now, so the bishop will move twice.",
       "dxc4 takes the pawn on c4 and releases the centre. The light-squared bishop has to move again.",
       "Bxc4 recaptures the pawn on c4. The bishop spent a move, and Black uses that tempo.",
-      "Nd5 plants the knight in the centre and attacks the bishop on g5. The trade of dark-squared bishops is the classical idea.",
+      "Nd5 plants the knight in the centre and attacks the knight on c3. The trade of dark-squared bishops is the classical idea.",
       "Bxe7 takes the bishop on e7. White accepts the trade the knight asked for.",
       "Qxe7 recaptures the bishop on e7. The queen is developed, and the dark-squared bishops are gone."
     ]
@@ -64,7 +64,7 @@
       "Bb4 develops the dark-squared bishop and attacks the knight on c3. Black uses the pin to finish development.",
       "O-O brings the king to g1 and the rook to f1. The king leaves before the centre opens.",
       "Nbd7 develops the queen's knight and supports the centre.",
-      "Qe2 develops the queen and supports the coming central push. She also connects the rooks.",
+      "Qe2 develops the queen and supports the coming central push.",
       "Bg6 keeps the light-squared bishop and steps off the diagonal the e-pawn wants.",
       "e4 gains space and builds a full pawn centre. The bishop on g6 is now staring at that pawn.",
       "O-O brings the king to g8 and the rook to f8. Black castles into White's pawn centre."
@@ -144,8 +144,8 @@
       "Bxe7 takes the bishop on e7. The dark-squared bishops come off, and the queen will recapture.",
       "Qxe7 recaptures the bishop on e7. The queen is developed.",
       "Nxd5 takes the knight on d5. White removes the blockading knight.",
-      "exd5 recaptures the knight on d5. Black accepts an isolated pawn on d5 in return for free piece play.",
-      "Rc1 puts the rook on the half-open c-file, where the isolated pawn's neighbours have left gaps.",
+      "exd5 recaptures the knight on d5. The pawn on c7 still stands beside the pawn on d5.",
+      "Rc1 puts the rook on the half-open c-file. The pawn on d5 still has its neighbour on the c-file.",
       "Be6 develops the light-squared bishop and defends the pawn on d5. The bishop has found its square."
     ]
   },
@@ -157,19 +157,19 @@
       "c4 attacks the pawn on d5. White offers a wing pawn: taking it draws the centre pawn off d5, and declining leaves the pressure on.",
       "e6 supports the pawn on d5 and declines the gambit. The dark-squared bishop gets out, and the light-squared bishop stays in for now.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
-      "c5 hits back at the pawn on d4. The Tarrasch accepts an isolated pawn in return for free piece play.",
-      "cxd5 takes the pawn on d5 and starts the isolated-pawn structure.",
+      "c5 hits back at the pawn on d4. The Tarrasch fights the centre with a pawn.",
+      "cxd5 takes the pawn on d5 and opens the centre. The pawn on c5 is still beside the d-file.",
       "exd5 recaptures the pawn on d5 and opens the e-file. The pawn on d5 will be the long-term target.",
       "Nf3 develops the king's knight and prepares the fianchetto. The pawn on d5 is the centre Black has accepted.",
-      "Nc6 develops the queen's knight and defends the pawn on d5.",
-      "g3 prepares a fianchetto. The light-squared bishop will sit on the long diagonal against the pawn on d5.",
+      "Nc6 develops the queen's knight and attacks the pawn on d4.",
+      "g3 prepares a fianchetto. The light-squared bishop belongs on the long diagonal.",
       "Nf6 develops the king's knight and supports the centre.",
-      "Bg2 puts the light-squared bishop on the long diagonal, eyeing the pawn on d5.",
+      "Bg2 puts the light-squared bishop on the long diagonal. The knight on f3 still stands on that diagonal.",
       "Be7 develops the dark-squared bishop and prepares castling.",
       "O-O brings the king to g1 and the rook to f1. The bishop on g2 is already at work.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bg5 develops the dark-squared bishop and attacks the knight on f6. The pressure is on the pieces defending d5.",
-      "Be6 develops the light-squared bishop and defends the pawn on d5. Both bishops now look after that pawn."
+      "Bg5 develops the dark-squared bishop and attacks the knight on f6.",
+      "Be6 develops the light-squared bishop and defends the pawn on d5. The bishop has found its square."
     ]
   },
   "qg8": {
@@ -187,7 +187,7 @@
       "c6 supports the pawn on d5 and leaves the queen a path toward the queenside.",
       "Nf3 develops the king's knight. The queen is about to pin the other knight.",
       "Qa5 attacks along the diagonal toward the knight on c3. The queen and the coming bishop are the idea.",
-      "Nd2 steps a knight onto the diagonal and defends the knight on c3. White unpins before the bishop arrives.",
+      "Nd2 blocks the pin from the queen on a5. The knight on c3 is shielded from the king on e1.",
       "Bb4 develops the dark-squared bishop and attacks the knight on c3. The queen on a5 and this bishop are Black's active pieces.",
       "Qc2 develops the queen and steps off the pin's file. She also watches the centre.",
       "O-O brings the king to g8 and the rook to f8. Black castles with the queenside pressure already built.",

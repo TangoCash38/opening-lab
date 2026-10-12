@@ -13,10 +13,10 @@
       "e3 supports the centre and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
       "Nf3 develops the king's knight.",
-      "Nbd7 develops the queen's knight and defends the pawn on d5. The c-pawn stays free to move.",
+      "Nbd7 develops the queen's knight and defends the knight on f6. The c-pawn stays free to move.",
       "Rc1 puts the rook on the c-file, behind the pawn on c4.",
       "c6 supports the pawn on d5. This solid pawn is the Orthodox choice.",
-      "Qc2 develops the queen on the c-file and connects the rooks once the bishop moves.",
+      "Qc2 develops the queen on the c-file and looks toward the centre.",
       "Re8 puts the rook on the e-file, behind the pawn on e6."
     ]
   },
@@ -34,7 +34,7 @@
       "e3 supports the centre and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
       "Nf3 develops the king's knight.",
-      "Nbd7 develops the queen's knight and defends the pawn on d5. The c-pawn stays free to move.",
+      "Nbd7 develops the queen's knight and defends the knight on f6. The c-pawn stays free to move.",
       "Rc1 puts the rook on the c-file, behind the pawn on c4.",
       "c6 supports the pawn on d5.",
       "Bd3 develops the light-squared bishop and aims toward the kingside.",
@@ -88,7 +88,7 @@
     ]
   },
   "qgdb5": {
-    "intro": "The Exchange with the knight on e2. The queen comes to c2, and Black's rook meets the open e-file.",
+    "intro": "The Exchange with the knight on e2. The queen comes to c2, and Black's rook meets the half-open e-file.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
@@ -124,7 +124,7 @@
       "Bg5 develops the dark-squared bishop and attacks the knight on f6. The bishop on e7 already stands between that knight and the queen.",
       "O-O brings the king to g8 and the rook to f8.",
       "e3 supports the centre and frees the light-squared bishop.",
-      "Nbd7 develops the queen's knight and defends the pawn on d5. The c-pawn stays free.",
+      "Nbd7 develops the queen's knight and defends the knight on f6. The c-pawn stays free.",
       "Rc1 puts the rook on the c-file, behind the pawn on c4.",
       "c6 supports the pawn on d5. The Orthodox wall is complete."
     ]
