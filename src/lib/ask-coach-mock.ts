@@ -12,7 +12,7 @@ function one(text: string | null | undefined): string | null {
 
 function aimSentence(ctx: CoachContext): string {
   const idea = one(ctx.coachIntro ?? ctx.idea);
-  const plain = `This line is ${ctx.lineName} in the Scotch Gambit, one of 10 lines from Opening Lab.`;
+  const plain = `This line is ${ctx.lineName} in the ${ctx.packName}, one of 10 lines from Opening Lab.`;
   if (!idea) return plain;
   const denied = withheldSans(ctx);
   if (sanTokens(idea).some((san) => denied.has(san))) return plain;
@@ -70,7 +70,7 @@ export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: 
   }
   if (question === "free" && offTopic(text)) {
     parts = [
-      "I can only help with this Scotch Gambit position.",
+      `I can only help with this ${ctx.packName} position.`,
       "Ask me about the plan, this move, or what happens if they play something else.",
     ];
   } else if (
@@ -79,7 +79,7 @@ export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: 
   ) {
     parts = [
       "There are many moves here, but you're learning this line.",
-      "These 10 lines from Opening Lab give a strong grip on the Scotch.",
+      `These 10 lines from Opening Lab give a strong grip on the ${ctx.packName}.`,
       bookNextSentence(ctx) ?? "Stay with the book move you are drilling in this line.",
     ];
   } else if (question === "why") {
@@ -92,7 +92,7 @@ export function mockCoachAnswer(ctx: CoachContext, question: AskQuestion, text: 
       "Stay with the book move you are drilling in this line.";
     parts = [
       "There are many moves here, but you're learning this line.",
-      "These 10 lines from Opening Lab give a strong grip on the Scotch.",
+      `These 10 lines from Opening Lab give a strong grip on the ${ctx.packName}.`,
       `It is ${ctx.sideToMove} to move, with ${ctx.legalSans.length} legal moves.`,
       steer,
     ];

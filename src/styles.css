@@ -7250,24 +7250,13 @@ html[data-slav-opening] .app-header-logo {
   }
 }
 
-/* Ask the coach. Scotch only. Board on top, panel underneath, like a phone analysis pane. */
+/* Coach notes. Board on top, panel underneath, like a phone analysis pane. */
 .train-layout--coach {
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - var(--coach-keyboard, 0px)
-  );
-  max-height: calc(
-    100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px) - var(--coach-keyboard, 0px)
-  );
+  min-height: calc(100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px));
+  max-height: calc(100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px));
   overflow: hidden;
-}
-
-/* Keyboard open: the board stays full size. Extra padding lets the question box scroll above the keys. */
-html[data-coach-keyboard] .train-layout--coach:not(.train-embedded) {
-  max-height: none;
-  overflow: visible;
-  padding-bottom: var(--coach-keyboard, 0px);
 }
 
 /* Play and phones: full-size board, then a fixed notes pane. The page scrolls if the buttons need it. */
@@ -7684,8 +7673,7 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 }
 
 .ask-coach-primary,
-.ask-coach-show,
-.ask-coach-send {
+.ask-coach-show {
   border: 1px solid transparent;
   background: var(--color-accent);
   color: var(--color-accent-fg);
@@ -7707,48 +7695,11 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   gap: 0.45rem;
 }
 
-.ask-coach-remaining,
 .ask-coach-book {
   margin: 0;
   font-size: 0.82rem;
   line-height: 1.4;
   color: var(--color-fg-muted);
-}
-
-.ask-coach-error {
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: var(--color-danger, #9b2c2c);
-}
-
-.ask-coach-form {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.ask-coach-input {
-  min-width: 0;
-  flex: 1 1 auto;
-  min-height: 2.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.9rem;
-  background: var(--color-bg);
-  padding: 0.4rem 0.7rem;
-  font-size: 0.92rem;
-  color: var(--color-fg);
-  touch-action: manipulation;
-}
-
-.ask-coach-send {
-  min-height: 2.75rem;
-  flex: 0 0 auto;
-  border-radius: 0.9rem;
-  padding: 0.35rem 0.85rem;
-}
-
-.ask-coach-send:disabled {
-  opacity: 0.45;
 }
 
 @media (min-width: 960px) {

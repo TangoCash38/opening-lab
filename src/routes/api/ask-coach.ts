@@ -1,6 +1,5 @@
 /**
- * Scotch-only Ask the coach. Other packs are rejected in the handler.
- * Vercel has no Stockfish binary: evals come from the cached JSON.
+ * Free-text Ask the coach is off. The handler always refuses.
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { askCoachPost } from "@/lib/ask-coach.server";

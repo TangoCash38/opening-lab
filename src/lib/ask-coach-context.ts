@@ -5,9 +5,10 @@
  */
 import { Chess } from "chess.js";
 import { PACKS, type OpeningLine } from "@/data/packs";
+import { coachLineIntro, coachLineNote } from "@/data/coach-notes";
 import { lineFinishNote } from "@/data/line-explains";
-import { scotchCoachIntro, scotchCoachNote } from "@/data/scotch-coach-notes";
 import engineFile from "@/data/scotch-coach-engine.json";
+import { LIVE_PACK_IDS } from "@/lib/catalog";
 import { SCOTCH_CANAL_BEATS, SCOTCH_COACH_BEATS, SCOTCH_PACK_ID } from "@/lib/scotch-coach";
 import { STUDY_PACK_ROWS } from "@/lib/study-pack-copy";
 
@@ -43,7 +44,7 @@ export type CoachEngineMove = {
 };
 
 export type CoachContext = {
-  packId: typeof SCOTCH_PACK_ID;
+  packId: string;
   packName: string;
   lineId: string;
   lineName: string;
@@ -115,15 +116,17 @@ const PIECE: Record<string, string> = {
 
 const EMPTY_BAG = (): MaterialBag => ({ P: 0, N: 0, B: 0, R: 0, Q: 0 });
 
-function scotchPack() {
-  const pack = PACKS.find((p) => p.id === SCOTCH_PACK_ID);
-  if (!pack) throw new Error("Scotch pack is missing");
+function livePack(packId: string) {
+  const pack = PACKS.find((p) => p.id === packId);
+  if (!pack || !(LIVE_PACK_IDS as readonly string[]).includes(packId)) {
+    throw new Error("Ask the coach is only on packs that are on sale");
+  }
   return pack;
 }
 
-function scotchLine(lineId: string): OpeningLine {
-  const line = scotchPack().lines.find((l) => l.id === lineId);
-  if (!line) throw new Error("Unknown Scotch line");
+function liveLine(packId: string, lineId: string): OpeningLine {
+  const line = livePack(packId).lines.find((l) => l.id === lineId);
+  if (!line) throw new Error("Unknown line");
   return line;
 }
 
@@ -181,14 +184,13 @@ function describeMove(mv: {
   return { san: mv.san, by, sentence };
 }
 
-function packIntro(): string {
-  const row = STUDY_PACK_ROWS.find((r) => r.packId === SCOTCH_PACK_ID);
-  const parts = [
-    row ? `${row.tagline} ${row.lead} ${row.rest}` : "",
-    SCOTCH_COACH_BEATS.join(" "),
-    SCOTCH_CANAL_BEATS.join(" "),
-  ].filter(Boolean);
-  return parts.join("\n\n");
+function packIntro(packId: string): string {
+  const row = STUDY_PACK_ROWS.find((r) => r.packId === packId);
+  const parts = [row ? `${row.tagline} ${row.lead} ${row.rest}` : ""];
+  if (packId === SCOTCH_PACK_ID) {
+    parts.push(SCOTCH_COACH_BEATS.join(" "), SCOTCH_CANAL_BEATS.join(" "));
+  }
+  return parts.filter(Boolean).join("\n\n");
 }
 
 function engineAt(lineId: string, ply: number, fen: string, legal: Set<string>): CoachContext["engine"] {
@@ -214,9 +216,8 @@ function engineAt(lineId: string, ply: number, fen: string, legal: Set<string>):
 }
 
 export function buildCoachContext(req: AskRequest): CoachContext {
-  if (req.packId !== SCOTCH_PACK_ID) throw new Error("Ask the coach is only on the Scotch pack");
-  const pack = scotchPack();
-  const line = scotchLine(req.lineId);
+  const pack = livePack(req.packId);
+  const line = liveLine(req.packId, req.lineId);
   if (!Number.isInteger(req.ply) || req.ply < 0 || req.ply > line.plies.length) {
     throw new Error("Invalid ply");
   }
@@ -230,7 +231,7 @@ export function buildCoachContext(req: AskRequest): CoachContext {
   const fen = game.fen();
   const legalSans = game.moves();
   return {
-    packId: SCOTCH_PACK_ID,
+    packId: pack.id,
     packName: pack.name,
     lineId: line.id,
     lineName: line.name,
@@ -248,13 +249,13 @@ export function buildCoachContext(req: AskRequest): CoachContext {
     futureBookSans: line.plies.slice(req.ply),
     nextBookSan: line.plies[req.ply] ?? null,
     lastMove: last,
-    idea: scotchCoachIntro(line.id),
-    coachNote: scotchCoachNote(line.id, req.ply),
-    coachIntro: scotchCoachIntro(line.id),
+    idea: coachLineIntro(pack.id, line.id),
+    coachNote: coachLineNote(pack.id, line.id, req.ply),
+    coachIntro: coachLineIntro(pack.id, line.id),
     finishNote: lineFinishNote(line, pack.id) ?? null,
     nextText: line.next?.trim() || null,
-    intro: packIntro(),
-    engine: engineAt(line.id, req.ply, fen, new Set(legalSans)),
+    intro: packIntro(pack.id),
+    engine: pack.id === SCOTCH_PACK_ID ? engineAt(line.id, req.ply, fen, new Set(legalSans)) : null,
   };
 }
 
