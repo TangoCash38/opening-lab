@@ -15,6 +15,9 @@ from pathlib import Path
 
 import chess
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from coach_purpose import notes_for_packs, verify_move_note  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[1]
 LINES = Path("/tmp/live-lines.json")
 OUT = ROOT / "src" / "data" / "coach-notes.json"
@@ -553,11 +556,11 @@ def verify_tree(notes: dict, packs: list[dict]) -> list[str]:
             if len(row["notes"]) != len(line["plies"]):
                 problems.append(f"{line['id']} length")
                 continue
-            for ply, san in enumerate(line["plies"], start=1):
-                note = row["notes"][ply - 1]
-                errs = verify_note(board, san, note)
+            for index, san in enumerate(line["plies"]):
+                note = row["notes"][index]
+                errs = verify_move_note(board, san, note, line["plies"][index + 1 :], line["plies"][: index + 1])
                 if errs:
-                    problems.append(f"{pack['id']} {line['id']} {ply} {san}: {errs} :: {note}")
+                    problems.append(f"{pack['id']} {line['id']} {index + 1} {san}: {errs} :: {note}")
                 board.push_san(san)
     return problems
 
@@ -594,12 +597,8 @@ def main() -> int:
     packs = json.loads(LINES.read_text())
     mode = sys.argv[1] if len(sys.argv) > 1 else "generate"
     if mode == "generate":
-        general = {}
-        for pack in packs:
-            if pack["id"] == "scotch":
-                continue
-            print("building", pack["id"], flush=True)
-            general[pack["id"]] = build_pack(pack)
+        print("building notes", flush=True)
+        general = notes_for_packs(packs)
         problems = verify_tree(general, packs)
         if problems:
             print(f"{len(problems)} problems")
