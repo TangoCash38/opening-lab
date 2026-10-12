@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build and verify coach notes for every on-sale pack except the Scotch.
+"""Verify hand-written coach notes for every on-sale pack except the Scotch.
 
-Scotch notes stay in src/data/scotch-coach-notes.json. This script writes the
-other live packs from python-chess facts only, then checks every claim.
+Scotch notes stay in src/data/scotch-coach-notes.json. python-chess checks
+claims in the notes. It does not write them.
 """
 
 from __future__ import annotations
@@ -15,8 +15,7 @@ from pathlib import Path
 
 import chess
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from coach_purpose import notes_for_packs, verify_move_note  # noqa: E402
+# Notes are written by hand. python-chess only checks the claims in them.
 
 ROOT = Path(__file__).resolve().parents[1]
 LINES = Path("/tmp/live-lines.json")
@@ -542,6 +541,113 @@ def verify_note(before: chess.Board, san: str, note: str) -> list[str]:
     return errors
 
 
+SAN_RE = re.compile(
+    r"^(?:O-O-O|O-O|[KQRBN][a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|[a-h]x[a-h][1-8](?:=[QRBN])?[+#]?|[a-h][1-8](?:=[QRBN])?[+#]?)$"
+)
+PIECE_ON = re.compile(
+    rf"((?:light-squared|dark-squared)\s+)?({PIECE_WORD}) on ({SQUARE})",
+    re.I,
+)
+CLAIM_TAKE = re.compile(rf"(?:takes|recaptures) the ({PIECE_WORD}) on ({SQUARE})", re.I)
+CLAIM_WAS = re.compile(rf"was attacking the ({PIECE_WORD}) on ({SQUARE})", re.I)
+
+
+def san_tokens(text: str) -> list[str]:
+    out = []
+    for raw in re.split(r"[\s,;:()\[\]\"']+", text):
+        tok = re.sub(r"^[(\"']+|[)\"'.,;:!?]+$", "", raw.strip())
+        tok = re.sub(r"^\d+\.(?:\.\.)?", "", tok).lstrip(".")
+        if SAN_RE.match(tok):
+            out.append(tok)
+    return out
+
+
+def sentence_count(text: str) -> int:
+    return len([part for part in re.split(r"(?<=[.!?])\s+", text.strip()) if part])
+
+
+def _kind_ok(piece: chess.Piece, sq: int, kind: str | None, word: str) -> bool:
+    if piece_name(piece.piece_type) != word.lower():
+        return False
+    if not kind:
+        return True
+    dark = (chess.square_file(sq) + chess.square_rank(sq)) % 2 == 0
+    return dark == kind.lower().startswith("dark")
+
+
+def verify_hand_note(before: chess.Board, san: str, note: str, future: list[str], played: list[str]) -> list[str]:
+    """Check a hand-written note. Do not invent wording."""
+    errors: list[str] = []
+    if not note.startswith(san + " "):
+        errors.append("san prefix")
+    if DASH.search(note):
+        errors.append("dash")
+    if EVAL_SENTENCE.search(note):
+        errors.append("eval")
+    count = sentence_count(note)
+    if count < 1 or count > 2:
+        errors.append("sentence count")
+    future_set, played_set = set(future), set(played)
+    for tok in san_tokens(note):
+        if tok in future_set and tok not in played_set:
+            errors.append(f"future {tok}")
+    try:
+        move = before.parse_san(san)
+    except ValueError:
+        return errors + ["illegal"]
+    after = before.copy(stack=False)
+    after.push(move)
+    if re.search(r"checkmate|\bmates\b", note, re.I) and not after.is_checkmate():
+        errors.append("false mate")
+    if re.search(r"gives check|with check|checks the", note, re.I) and not after.is_check():
+        errors.append("false check")
+    if re.search(r"only legal", note, re.I) and before.legal_moves.count() != 1:
+        errors.append("not only legal")
+    cap_sq = capture_square(before, move)
+    cap = before.piece_at(cap_sq) if cap_sq is not None else None
+    if re.search(r"\brecaptures\b", note, re.I):
+        prev_cap = False
+        if before.move_stack:
+            prev = before.peek()
+            earlier = before.copy()
+            earlier.pop()
+            prev_cap = earlier.is_capture(prev) and prev.to_square == move.to_square
+        if not prev_cap:
+            errors.append("false recapture")
+    for match in CLAIM_TAKE.finditer(note):
+        word, sq = match.group(1).lower(), chess.parse_square(match.group(2))
+        if cap is None or cap_sq != sq or piece_name(cap.piece_type) != word:
+            errors.append(f"false capture {word} {match.group(2)}")
+    for match in CLAIM_WAS.finditer(note):
+        word, sq = match.group(1).lower(), chess.parse_square(match.group(2))
+        if cap_sq is None or sq not in before.attacks(cap_sq):
+            errors.append("false was-attacking")
+            continue
+        occ = before.piece_at(sq)
+        if occ is None or piece_name(occ.piece_type) != word or occ.color != before.turn:
+            errors.append("false was-attacking")
+    for match in PIECE_ON.finditer(note):
+        kind, word, sq_name = match.group(1), match.group(2).lower(), match.group(3)
+        sq = chess.parse_square(sq_name)
+        found = False
+        for board in (after, before):
+            occ = board.piece_at(sq)
+            if occ and _kind_ok(occ, sq, kind, word):
+                found = True
+        if cap and cap_sq == sq and _kind_ok(cap, sq, kind, word):
+            found = True
+        if not found:
+            errors.append(f"no {word} on {sq_name}")
+    body = note[len(san):]
+    for sq_name in set(re.findall(SQUARE, body)):
+        sq = chess.parse_square(sq_name)
+        occupied = before.piece_at(sq) is not None or after.piece_at(sq) is not None
+        if sq in (move.from_square, move.to_square) or occupied or sq in after.attacks(move.to_square):
+            continue
+        errors.append(f"loose square {sq_name}")
+    return errors
+
+
 def verify_tree(notes: dict, packs: list[dict]) -> list[str]:
     problems = []
     for pack in packs:
@@ -558,7 +664,7 @@ def verify_tree(notes: dict, packs: list[dict]) -> list[str]:
                 continue
             for index, san in enumerate(line["plies"]):
                 note = row["notes"][index]
-                errs = verify_move_note(board, san, note, line["plies"][index + 1 :], line["plies"][: index + 1])
+                errs = verify_hand_note(board, san, note, line["plies"][index + 1 :], line["plies"][: index + 1])
                 if errs:
                     problems.append(f"{pack['id']} {line['id']} {index + 1} {san}: {errs} :: {note}")
                 board.push_san(san)
@@ -597,15 +703,14 @@ def main() -> int:
     packs = json.loads(LINES.read_text())
     mode = sys.argv[1] if len(sys.argv) > 1 else "generate"
     if mode == "generate":
-        print("building notes", flush=True)
-        general = notes_for_packs(packs)
+        print("hand-written notes are not regenerated", flush=True)
+        general = json.loads(OUT.read_text())
         problems = verify_tree(general, packs)
         if problems:
             print(f"{len(problems)} problems")
             for row in problems[:40]:
                 print(row)
             return 1
-        OUT.write_text(json.dumps(general, indent=2, ensure_ascii=False) + "\n")
         scotch = json.loads(SCOTCH.read_text())
         rows = artifact_rows(packs, general, scotch)
         ARTIFACT_JSON.parent.mkdir(parents=True, exist_ok=True)
