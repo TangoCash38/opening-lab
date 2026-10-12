@@ -351,7 +351,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [finishNote, setFinishNote] = useState<string | null>(null);
   const [coachStarted, setCoachStarted] = useState(initialMode === "practice");
   const coachLesson =
-    pack.id === "scotch" &&
     !runTheGame &&
     !freeTry &&
     !warmup &&

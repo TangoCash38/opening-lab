@@ -72,9 +72,9 @@ async function countStore(): Promise<CountStore> {
   }
 }
 
-async function tierFor(request: Request): Promise<{ tier: CoachTier; userId: string | null }> {
+async function tierFor(request: Request, packId: string): Promise<{ tier: CoachTier; userId: string | null }> {
   try {
-    const owned = await signedInOwnsPack(request, "scotch");
+    const owned = await signedInOwnsPack(request, packId);
     if (owned.owns) return { tier: "buyer", userId: owned.userId };
     return { tier: "visitor", userId: owned.userId };
   } catch {
@@ -184,11 +184,11 @@ export async function askCoachPost({ request }: { request: Request }): Promise<R
     ctx = buildCoachContext(parsed.value);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Invalid position";
-    const status = message.includes("only on the Scotch") ? 404 : 400;
+    const status = message.includes("only on packs that are on sale") ? 404 : 400;
     return json({ error: message }, status);
   }
 
-  const who = await tierFor(request);
+  const who = await tierFor(request, parsed.value.packId);
   // Move notes are the lesson feed. They do not use the daily question cap.
   // The text box at the end of the line does.
   if (parsed.value.question === "move") {

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { readFileSync, writeFileSync } from "node:fs";
 import { createServer } from "vite";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -40,12 +41,15 @@ function req(over = {}) {
   };
 }
 
-test("flag is Scotch only and can be switched off", () => {
+test("flag is on for on-sale packs and can be switched off", () => {
   assert.equal(flag.askTheCoachEnabled("scotch", undefined), true);
+  assert.equal(flag.askTheCoachEnabled("london", undefined), true);
+  assert.equal(flag.askTheCoachEnabled("caro-kann-black", undefined), true);
   assert.equal(flag.askTheCoachEnabled("italian", undefined), false);
-  assert.equal(flag.askTheCoachEnabled("london", "1"), false);
+  assert.equal(flag.askTheCoachEnabled("english-white", undefined), false);
+  assert.equal(flag.askTheCoachEnabled("london", "1"), true);
   assert.equal(flag.askTheCoachEnabled("scotch", "0"), false);
-  assert.equal(flag.askTheCoachEnabled("scotch", "false"), false);
+  assert.equal(flag.askTheCoachEnabled("london", "false"), false);
   assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 Chrome"), true);
   assert.equal(flag.askTheCoachServerEnabled("Mozilla/5.0 OpeningLabPlay"), true);
   const src = readFileSync(join(root, "src/lib/ask-coach-flag.ts"), "utf8");
@@ -129,8 +133,23 @@ test("context replays the book and matches chess.js", () => {
   }
 });
 
-test("other packs are rejected", () => {
-  assert.throws(() => context.buildCoachContext(req({ packId: "italian", lineId: "i1" })), /Scotch/);
+test("coming-soon packs are rejected", () => {
+  assert.throws(() => context.buildCoachContext(req({ packId: "english-white", lineId: "en1" })), /on sale/);
+  assert.throws(() => context.buildCoachContext(req({ packId: "italian", lineId: "i1" })), /on sale/);
+});
+
+test("a live pack uses its own coach note and no engine file", () => {
+  const ctx = context.buildCoachContext(req({ packId: "london", lineId: "lon1", ply: 1, mode: "practice", question: "move" }));
+  assert.equal(ctx.packId, "london");
+  assert.equal(ctx.engine, null);
+  assert.match(ctx.coachNote, /^d4 /);
+  assert.equal(validate.leaksEngineTalk(ctx.coachNote), false);
+  assert.doesNotMatch(ctx.coachIntro, /—|–|level|engine/);
+  const black = context.buildCoachContext(req({ packId: "caro-kann-black", lineId: "ckb1", ply: 2, question: "move" }));
+  assert.match(black.coachNote, /^c6 /);
+  assert.equal(black.engine, null);
+  const fin = validate.finalizeCoachAnswer(mock.mockCoachAnswer(black, "move", ""), black, 1);
+  assert.equal(fin.text, black.coachNote);
 });
 
 test("test mode strips the next book move and illegal inventions", () => {
@@ -266,8 +285,50 @@ test("every Scotch ply has a verified coach note", () => {
 test("off topic mock refuses", () => {
   const ctx = context.buildCoachContext(req());
   const text = mock.mockCoachAnswer(ctx, "free", "Write a poem about the weather");
-  assert.match(text, /Scotch Gambit position/);
+  assert.match(text, /Scotch Gambit \(White\) position/);
   assert.doesNotMatch(text, /poem/i);
+});
+
+test("every on-sale pack note matches the board", async () => {
+  const catalog = await vite.ssrLoadModule("/src/lib/catalog.ts");
+  const explains = await vite.ssrLoadModule("/src/data/line-explains.ts");
+  const study = await vite.ssrLoadModule("/src/lib/study-pack-copy.ts");
+  const coachNotes = await vite.ssrLoadModule("/src/data/coach-notes.ts");
+  const out = [];
+  for (const id of catalog.LIVE_PACK_IDS) {
+    const pack = packs.PACKS.find((p) => p.id === id);
+    assert.equal(pack.lines.length, 10, id);
+    const row = study.STUDY_PACK_ROWS.find((r) => r.packId === id);
+    out.push({
+      id,
+      name: pack.name,
+      side: row?.side ?? null,
+      tagline: row?.tagline ?? "",
+      lead: row?.lead ?? "",
+      lines: pack.lines.map((line) => ({
+        id: line.id,
+        name: line.name,
+        idea: line.idea ?? "",
+        explain: explains.lineFinishNote(line, pack.id) ?? "",
+        plies: line.plies,
+      })),
+    });
+    for (const line of pack.lines) {
+      assert.equal(coachNotes.coachLineNote(id, line.id, 0), null);
+      assert.ok(coachNotes.coachLineIntro(id, line.id), `${id} ${line.id} intro`);
+      assert.equal(coachNotes.coachLineIntro(id, line.id).includes("—"), false);
+      for (let ply = 1; ply <= line.plies.length; ply += 1) {
+        const note = coachNotes.coachLineNote(id, line.id, ply);
+        assert.ok(note, `${id} ${line.id} ${ply}`);
+        assert.equal(validate.leaksEngineTalk(note), false, note);
+        assert.equal(note.includes("—") || note.includes("–"), false, note);
+      }
+    }
+  }
+  writeFileSync("/tmp/live-lines.json", JSON.stringify(out));
+  const py = spawnSync("python3", ["scripts/build-coach-notes.py", "verify"], { cwd: root, encoding: "utf8" });
+  assert.equal(py.status, 0, `${py.stdout}\n${py.stderr}`);
+  assert.match(py.stdout, /python-chess ok/);
 });
 
 test.after(async () => {
