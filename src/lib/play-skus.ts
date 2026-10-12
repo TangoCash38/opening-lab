@@ -11,15 +11,35 @@
  *   buy_all_packs  →  applyPurchase({ kind: "buy_all" })
  *
  * No Lab+ / no lab_plus_yearly / no subscriptions.
- * Do not invent pack titles. Ids match VISIBLE_PACK_IDS except
- * french-black, ruy-lopez-white, and sicilian-black, which are live on
- * the website only until the next Play bundle. ruy-white stays here as
- * the older coming-soon stub and is not a visible catalog card.
- * Do not add a Play Console SKU for sicilian-black from this repo.
+ * Do not invent pack titles. Ids match VISIBLE_PACK_IDS, plus the older
+ * ruy-white coming-soon stub (not a visible catalog card).
+ * french-black, ruy-lopez-white, and sicilian-black are on sale with the
+ * other live packs. Product ids: pack_french_black, pack_ruy_lopez_white,
+ * pack_sicilian_black.
  */
 
 export const PLAY_SKU_BUY_ALL = "buy_all_packs";
 export const PLAY_SKU_PACK_PREFIX = "pack_";
+
+/**
+ * Packs the Play app in users' hands can launch (1.0.10, versionCode 11).
+ * That binary's live-sale list is only these six. The Android source lists
+ * the other live packs for the next binary, which is not shipped. Inside
+ * the current WebView, any other pack stays on Buy all or
+ * "not on sale in the store yet". Do not call buyPack for them.
+ */
+export const PLAY_CURRENT_APP_LIVE_SALE_PACK_IDS = [
+  "scotch",
+  "opening-traps",
+  "caro-kann-black",
+  "london",
+  "italian-white",
+  "qg-white",
+] as const;
+
+export function currentPlayAppSellsPack(packId: string): boolean {
+  return (PLAY_CURRENT_APP_LIVE_SALE_PACK_IDS as readonly string[]).includes(packId);
+}
 
 /**
  * 33 paid visible packs + caro-kann-black (Caro rest is
@@ -73,6 +93,9 @@ export const PLAY_PATH_B_PACK_IDS = [
   "stafford-black",
   "ponziani-white",
   "alekhine-black",
+  "french-black",
+  "ruy-lopez-white",
+  "sicilian-black",
 ] as const;
 
 export type PlayProduct =

@@ -112,7 +112,7 @@ test("Queen's Gambit Declined is the signed qgd-black pack: 10 book lines, £1.9
     billing.indexOf("LIVE_SALE_PACK_IDS"),
     billing.indexOf("private static final Set"),
   );
-  assert.equal(liveSale.includes('"qgd-black"'), false);
+  assert.equal(liveSale.includes('"qgd-black"'), true);
 
   const opening = intro.slice(intro.indexOf('"qgd-black"'), intro.indexOf("london:"));
   assert.match(opening, /The Queen's Gambit Declined is 1\.d4 d5 2\.c4 e6/);

@@ -103,7 +103,7 @@ Path B (no Lab+): create **managed, non-consumable** one-time products. Play pro
 | `pack_<pack_id_with_underscores>` | One-time managed | `applyPurchase({ kind: "pack", packId })` |
 | `buy_all_packs` | One-time managed | `{ kind: "buy_all" }` |
 
-In-app labels are **£1.99** for every paid drill pack and **£10.99** for Buy all while `BUY_ALL_FOR_SALE` is true. Play Console prices are not written by this repo. Set each live SKU (`pack_scotch`, `pack_london`, `pack_opening_traps`, `pack_caro_kann_black`, `pack_qg_white`, `pack_italian_white`) to £1.99. Set `buy_all_packs` to £10.99 so the Play charge matches the in-app label. Buy all is a one-time product, not a subscription and not lifetime access.
+In-app labels are **£1.99** for every paid drill pack and **£10.99** for Buy all while `BUY_ALL_FOR_SALE` is true. Play Console prices are not written by this repo. Set each live SKU to £1.99: `pack_scotch`, `pack_london`, `pack_opening_traps`, `pack_caro_kann_black`, `pack_italian_white`, `pack_qg_white`, `pack_french_black`, `pack_ruy_lopez_white`, `pack_sicilian_black`, `pack_qgd_black`, `pack_slav_defence`, `pack_nimzo_indian_black`, `pack_kings_indian_black`. Set `buy_all_packs` to £10.99 so the Play charge matches the in-app label. Buy all is a one-time product with a 12-month guarantee, not a subscription.
 
 Do not invent pack titles in Console — use the catalog id, not a marketing name, as the SKU suffix. No `lab_plus_yearly` / no subscriptions.
 
@@ -111,7 +111,7 @@ Server verify (products API) runs only when `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` i
 
 Mobile POSTs `{ packageName, productId, purchaseToken, orderId? }` to **`POST /api/play/subscribe`** (same-origin, session). Restore is one POST per `{productId, purchaseToken}`.
 
-App version for the next AAB: **versionCode 11 / versionName 1.0.10**. Do not upload an AAB from this note alone.
+App version for the next AAB: **versionCode 12 / versionName 1.0.11**. Signing keys are not in this repo, so a signed release AAB is not built here. Do not upload an AAB from this note alone.
 
 ## Out of scope
 

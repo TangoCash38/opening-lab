@@ -74,7 +74,7 @@ test("French Defence Potato Pie intro stays on the line list; Line 1 is the Wina
   const opening = intro.slice(intro.indexOf('"french-black"'), intro.indexOf("};"));
   assert.match(opening, /10 lines from Opening Lab\. Practice with the green hint, then Test with none\./);
   const playList = skus.slice(skus.indexOf("PLAY_PATH_B_PACK_IDS"), skus.indexOf("export type PlayProduct"));
-  assert.equal(playList.includes('"french-black"'), false);
+  assert.equal(playList.includes('"french-black"'), true);
   assert.match(hero, /pack\.id === "french-black"/);
   assert.match(hero, /l\.id === "frb1"/);
   assert.match(hero, /Unpaid visitors still hear Potato Pie/);

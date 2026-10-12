@@ -18,6 +18,8 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryProductDetailsResult;
 import com.android.billingclient.api.QueryPurchasesParams;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +34,10 @@ import java.util.Set;
  *
  * JavascriptInterface the site calls: OpeningLabPlay.buyPack(packId),
  * OpeningLabPlay.buyAll(), OpeningLabPlay.restorePurchases()
- * (restorePacks is an alias). Lab+ / SUBS is not launched.
+ * (restorePacks is an alias), OpeningLabPlay.requestReview().
+ * Lab+ / SUBS is not launched.
+ * requestReview uses the Play In-App Review API. Google decides whether
+ * the sheet shows. There is no pre-question and nothing is offered for a rating.
  *
  * Digital Goods will not work in this raw System WebView.
  */
@@ -90,6 +95,9 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "stafford-black",
             "ponziani-white",
             "alekhine-black",
+            "french-black",
+            "ruy-lopez-white",
+            "sicilian-black",
     };
 
     /**
@@ -105,6 +113,13 @@ public class PlayBilling implements PurchasesUpdatedListener {
             "london",
             "italian-white",
             "qg-white",
+            "french-black",
+            "ruy-lopez-white",
+            "sicilian-black",
+            "qgd-black",
+            "slav-defence",
+            "nimzo-indian-black",
+            "kings-indian-black",
     };
 
     private static final Set<String> PATH_B_SKUS;
@@ -166,6 +181,18 @@ public class PlayBilling implements PurchasesUpdatedListener {
         @JavascriptInterface
         public void restorePacks() {
             activity.runOnUiThread(() -> startRestore());
+        }
+
+        /** In-App Review. Google may ignore the request. No pre-question. */
+        @JavascriptInterface
+        public void requestReview() {
+            activity.runOnUiThread(() -> {
+                final ReviewManager manager = ReviewManagerFactory.create(activity);
+                manager.requestReviewFlow().addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) return;
+                    manager.launchReviewFlow(activity, task.getResult());
+                });
+            });
         }
     }
 

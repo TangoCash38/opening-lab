@@ -104,7 +104,7 @@ test("French Defence for Black is the signed french-black pack: frb1–frb10 boo
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),
     skus.indexOf("export type PlayProduct"),
   );
-  assert.equal(playList.includes('"french-black"'), false);
+  assert.equal(playList.includes('"french-black"'), true);
 
   const pathB = billing.slice(
     billing.indexOf("PATH_B_PACK_IDS"),
@@ -114,8 +114,8 @@ test("French Defence for Black is the signed french-black pack: frb1–frb10 boo
     billing.indexOf("LIVE_SALE_PACK_IDS"),
     billing.indexOf("private static final Set"),
   );
-  assert.equal(pathB.includes('"french-black"'), false);
-  assert.equal(liveSale.includes('"french-black"'), false);
+  assert.equal(pathB.includes('"french-black"'), true);
+  assert.equal(liveSale.includes('"french-black"'), true);
 
   const opening = intro.slice(intro.indexOf('"french-black"'), intro.indexOf("};"));
   assert.match(opening, /10 lines from Opening Lab\. Practice with the green hint, then Test with none\./);

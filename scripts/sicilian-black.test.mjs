@@ -343,8 +343,8 @@ test("Sicilian for Black is the signed sicilian-black pack: sib1â€“sib10 book, Â
     skus.indexOf("PLAY_PATH_B_PACK_IDS"),
     skus.indexOf("export type PlayProduct"),
   );
-  assert.equal(playList.includes('"sicilian-black"'), false);
-  assert.doesNotMatch(playList, /pack_sicilian_black/);
+  assert.equal(playList.includes('"sicilian-black"'), true);
+  assert.match(playList, /pack_sicilian_black|sicilian-black/);
 
   const pathB = billing.slice(
     billing.indexOf("PATH_B_PACK_IDS"),
@@ -354,9 +354,9 @@ test("Sicilian for Black is the signed sicilian-black pack: sib1â€“sib10 book, Â
     billing.indexOf("LIVE_SALE_PACK_IDS"),
     billing.indexOf("private static final Set"),
   );
-  assert.equal(pathB.includes('"sicilian-black"'), false);
-  assert.equal(liveSale.includes('"sicilian-black"'), false);
-  assert.doesNotMatch(billing, /pack_sicilian_black/);
+  assert.equal(pathB.includes('"sicilian-black"'), true);
+  assert.equal(liveSale.includes('"sicilian-black"'), true);
+  assert.match(billing, /pack_sicilian_black|sicilian-black/);
 
   const opening = intro.slice(intro.indexOf('"sicilian-black"'), intro.indexOf("};"));
   assert.match(opening, /10 lines from Opening Lab\. Practice with the green hint, then Test with none\./);
