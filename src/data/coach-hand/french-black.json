@@ -89,7 +89,7 @@
     ]
   },
   "frb4": {
-    "intro": "The open Tarrasch. Both sides recapture with pawns, the c-pawn comes off later, and the light-squared bishop comes to g4 against the isolated pawn.",
+    "intro": "The open Tarrasch. Both sides recapture with pawns, the c-pawns come off, Black plays with an isolated pawn on d5, and the light-squared bishop comes to g4.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
       "e6 prepares a central pawn and shuts the light-squared bishop in. Black accepts that bishop for a solid centre.",
@@ -136,7 +136,7 @@
       "f6 challenges the pawn on e5. The closed centre has to be broken.",
       "exf6 takes the pawn on f6 and opens the position.",
       "Nxf6 recaptures the pawn on f6. The knight returns to a natural square.",
-      "Nf3 brings the knight from e2 to its natural square now that the king's knight has moved.",
+      "Nf3 brings the queen's knight from d2 to f3, where it watches e5 and frees the dark-squared bishop.",
       "Bd6 develops the dark-squared bishop onto an active diagonal.",
       "O-O brings the king to g1 and the rook to f1.",
       "O-O brings the king to g8 and the rook to f8.",
@@ -279,7 +279,7 @@
       "g4 pushes on and cramps the knight on f3.",
       "N3d2 drops the king's knight back, off the pawn.",
       "Ncxe5 takes the pawn on e5. The knight from c6 collects the advanced pawn.",
-      "Nb3 improves the queen's knight and eyes the queenside.",
+      "Nb3 moves the king's knight from d2 to b3, where it eyes the pawn on c5.",
       "f5 challenges the centre and opens lines for the rooks. The kingside pawns and this break are the counterplay."
     ]
   }

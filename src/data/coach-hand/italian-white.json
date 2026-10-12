@@ -69,7 +69,7 @@
       "h3 gives the king air and stops a piece landing on g4.",
       "Nxd4 takes the knight on d4. Black removes the central knight.",
       "Qxd4 recaptures the knight on d4. The queen takes the centre.",
-      "c6 blunts the bishop on c4 and supports a compact centre.",
+      "c6 keeps White's pieces off b5 and d5 and prepares ...d5 against the bishop on c4.",
       "Bf4 develops the dark-squared bishop to an active square. White's pieces are comfortably placed.",
       "Be6 offers a trade of the light-squared bishop that sits on c4. Black finishes the development of the minor pieces."
     ]
@@ -123,7 +123,7 @@
     ]
   },
   "it6": {
-    "intro": "A quiet Two Knights with d3. Black castles, then Na5 trades the light-squared bishops and opens the a-file.",
+    "intro": "A quiet Two Knights with d3. Black castles, then the knight from a5 takes White's light-squared bishop on b3 and the a-file opens.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop. The Italian puts that bishop on the diagonal toward f7.",
       "e5 meets White in the centre and frees the dark-squared bishop. This is an open game.",
@@ -138,7 +138,7 @@
       "Re1 puts the rook behind the pawn on e4, ready to support the centre.",
       "d6 supports the pawn on e5 and frees the light-squared bishop.",
       "c3 prepares a central pawn and gives the light-squared bishop a square to drop back to.",
-      "Na5 attacks the bishop on c4. Black wants the trade of light-squared bishops.",
+      "Na5 attacks the bishop on c4. Black wants to trade the knight for that bishop.",
       "Bb3 keeps the light-squared bishop and steps off the knight. White offers the trade on b3 rather than giving the bishop away for nothing.",
       "Nxb3 takes the light-squared bishop on b3. That was the point of sending the knight to a5.",
       "axb3 recaptures the knight on b3. The a-file is half-open for the rook."
@@ -186,8 +186,8 @@
       "Bf1 drops the light-squared bishop home, off the pawn on b5. The bishop will come back out once the queen has moved.",
       "Qxd5 takes the pawn on d5 and develops the queen into the centre. She will be asked to move.",
       "Nc3 develops the queen's knight and attacks the queen on d5.",
-      "Qc5 steps the queen off the knight and keeps her active. She has left d5, so the b-pawn can be taken.",
-      "Bxb5 takes the pawn on b5 now that the queen has left the centre.",
+      "Qc5 steps the queen off the knight and keeps her active. The knight on c3 now covers b5, so the pawn there can be taken.",
+      "Bxb5 takes the pawn on b5. The knight on c3 defends the bishop, so it is safe there.",
       "Be7 develops the dark-squared bishop and prepares castling.",
       "d3 supports the centre and frees the dark-squared bishop.",
       "O-O brings the king to g8 and the rook to f8. Black is castled, and White still needs to castle."
@@ -207,7 +207,7 @@
       "d4 attacks the bishop on c5 and opens the centre. This is the Centre Attack.",
       "exd4 takes the pawn on d4. Black accepts the opening of the centre.",
       "e5 kicks the knight on f6 and does not take the pawn back yet. White wants the knight off before recapturing.",
-      "d5 attacks the bishop on c4 and the pawn on e5. Black strikes back in the centre.",
+      "d5 attacks the bishop on c4 and claims the centre. Black strikes back instead of retreating the knight.",
       "Bb5 pins the knight on c6, because the d-pawn has left its home, and steps the bishop off the pawn on d5.",
       "Ne4 steps the knight off the pawn on e5 and into the centre.",
       "cxd4 takes the pawn on d4 and restores a pawn in the centre. The file opens.",
@@ -215,7 +215,7 @@
     ]
   },
   "it10": {
-    "intro": "Two Knights with an early d4. The centre pushes on, the light-squared bishops come off, and White castles.",
+    "intro": "Two Knights with an early d4. The centre pushes on, White's light-squared bishop takes on c6, and White castles.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop. The Italian puts that bishop on the diagonal toward f7.",
       "e5 meets White in the centre and frees the dark-squared bishop. This is an open game.",
@@ -226,7 +226,7 @@
       "d4 opens the centre immediately. White does not play the quiet pawn or the knight jump.",
       "exd4 takes the pawn on d4 and accepts the open centre.",
       "e5 kicks the knight on f6. White pushes past the pawn on d4 instead of taking it.",
-      "d5 attacks the bishop on c4 and the pawn on e5.",
+      "d5 attacks the bishop on c4 and claims the centre.",
       "Bb5 steps the light-squared bishop off the pawn on d5 and attacks the knight on c6.",
       "Ne4 steps the knight off the pawn on e5 and into the centre. This knight is Black's active piece.",
       "Nxd4 takes the pawn on d4 and puts a knight in the centre. The earlier pawn push has done its job.",

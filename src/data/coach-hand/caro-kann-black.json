@@ -83,7 +83,7 @@
       "Bxd6 takes the bishop on d6. White accepts the trade.",
       "Qxd6 recaptures the bishop on d6. The queen is developed, and the dark-squared bishops are gone.",
       "O-O brings the king to g1 and the rook to f1. The centre is calm enough to castle.",
-      "O-O brings the king to g8 and the rook to f8. Both kings are castled, and the pawn structure is symmetrical."
+      "O-O brings the king to g8 and the rook to f8. Both kings are castled, and the centre is closed and quiet."
     ]
   },
   "ckb4": {
@@ -156,9 +156,9 @@
       "Nxe4 recaptures the pawn on e4. The knight lands in the centre, where Black can develop against it.",
       "Nd7 is the Karpov move. The knight supports the king's knight and leaves the light-squared bishop flexible.",
       "Ng5 is a nuisance jump near the king's knight's square. Black develops there anyway.",
-      "Ngf6 develops the king's knight beside the knight on g5. If White takes, the knight on d7 can take back.",
+      "Ngf6 develops the king's knight. The knight on d7 backs it up, and White's knight on g5 is eyeing the pawn on f7.",
       "Bd3 develops the light-squared bishop toward the kingside. Black will blunt it with a pawn and then a bishop.",
-      "e6 blunts the bishop on d3 and frees the dark-squared bishop. The centre stays compact.",
+      "e6 frees the dark-squared bishop and takes the e6 square away from the knight on g5.",
       "N1f3 brings the other knight out and prepares castling. The knight on g5 is the one making the nuisance.",
       "Bd6 develops the dark-squared bishop onto an active diagonal, aimed at the centre.",
       "Qe2 develops the queen onto the e-file. White keeps the choice of which side to castle.",
@@ -233,7 +233,7 @@
       "Nc6 develops the queen's knight and attacks the pawn on d4.",
       "Nf3 develops the king's knight and defends the pawn on d4. The knight can be pinned.",
       "Bg4 pins the knight on f3 to the queen on d1. The pin adds to the pressure on the pawn on d4.",
-      "Be2 develops the light-squared bishop onto the pin. White steps into it in order to castle.",
+      "Be2 develops the light-squared bishop and blocks the pin, so the knight on f3 is no longer pinned to the queen.",
       "e6 builds the chain and frees the dark-squared bishop. The light-squared bishop is already active on g4.",
       "O-O brings the king to g1 and the rook to f1. The king leaves before the centre opens.",
       "cxd4 takes the pawn on d4 and opens the c-file against White's position.",

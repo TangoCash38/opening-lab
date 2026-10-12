@@ -49,8 +49,8 @@
       "Rxa5 recaptures the pawn on a5. The rook comes to an active square.",
       "a4 gains space and restrains Black's queenside.",
       "b6 supports the rook and gains a foothold on the queenside.",
-      "Ba3 develops the dark-squared bishop onto the long diagonal.",
-      "Nd7 supports the centre and frees the knight on f6.",
+      "Ba3 develops the dark-squared bishop on the a3-f8 diagonal, where it eyes the pawn on d6.",
+      "Nd7 supports the pawn on e5 and frees the f-pawn.",
       "Re1 puts the rook on the e-file, behind the pawn on e4.",
       "f5 attacks the pawn on e4 and starts the kingside pawn storm."
     ]
@@ -216,7 +216,7 @@
       "dxe5 takes the pawn on e5 and leaves the d-file half-open. White chooses an early exchange.",
       "dxe5 recaptures the pawn on e5. The d-file is open.",
       "Qxd8 trades queens and draws the rook to the open file.",
-      "Rxd8 recaptures the queen on d8. The rook takes the open file, and the king stays in the centre for the moment.",
+      "Rxd8 recaptures the queen on d8. The rook takes the open file, and White's king is still in the centre for the moment.",
       "O-O brings the king to g1 and the rook to f1.",
       "c6 supports the centre and controls d5.",
       "Be3 develops the dark-squared bishop.",

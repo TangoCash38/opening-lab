@@ -3615,7 +3615,7 @@ export const PACKS: Pack[] = [
         id: "qg6",
         name: "Tartakower: ...b6",
         plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "h6", "Bh4", "b6", "cxd5", "Nxd5", "Bxe7", "Qxe7", "Nxd5", "exd5", "Rc1", "Be6"],
-        idea: "Tartakower. ...h6 ...b6, the knights trade on d5, and ...Be6 develops beside the pawn on d5.",
+        idea: "Tartakower. ...h6 ...b6, the knights trade on d5, and ...Be6 defends the pawn on d5.",
         next: "Bd3 and O-O. Black's pawn on d5 is the target and the defence.",
         side: "w",
       },
