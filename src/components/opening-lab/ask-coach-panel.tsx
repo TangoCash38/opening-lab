@@ -293,7 +293,7 @@ export function AskCoachPanel({
             disabled={index === 0}
             onClick={() => go(-1)}
           >
-            ‹
+            <ArrowGlyph dir="prev" />
           </button>
           <div
             className="ask-coach-viewport"
@@ -400,7 +400,7 @@ export function AskCoachPanel({
             disabled={index === latest}
             onClick={() => go(1)}
           >
-            ›
+            <ArrowGlyph dir="next" />
           </button>
         </div>
         <p className="ask-coach-count" data-coach-slide-count>
@@ -419,6 +419,21 @@ export function AskCoachPanel({
         )
       ) : null}
     </section>
+  );
+}
+
+function ArrowGlyph({ dir }: { dir: "prev" | "next" }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d={dir === "prev" ? "M14.5 5.5 8 12l6.5 6.5" : "M9.5 5.5 16 12l-6.5 6.5"}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 

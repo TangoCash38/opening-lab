@@ -7595,21 +7595,30 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 
 .ask-coach-arrow {
   align-self: center;
-  width: 2rem;
-  height: 2rem;
-  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  padding: 0;
   border: 0;
   border-radius: 999px;
-  background: var(--color-bg-subtle);
-  color: var(--color-fg);
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
   touch-action: manipulation;
 }
 
+.ask-coach-arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
 .ask-coach-arrow:disabled {
-  opacity: 0.35;
+  background: color-mix(in srgb, var(--color-accent) 62%, var(--color-bg-elevated));
+  color: var(--color-accent-fg);
+  opacity: 1;
 }
 
 .ask-coach-viewport {
