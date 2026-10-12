@@ -94,6 +94,14 @@ test("Play coach stays inside the WebView", () => {
   assert.match(train, /train-coach-line/);
   assert.match(panel, /data-coach-prev/);
   assert.match(panel, /data-coach-next/);
+  assert.match(panel, /ArrowGlyph/);
+  const arrowCss = css.slice(css.indexOf(".ask-coach-arrow {"), css.indexOf(".ask-coach-viewport {"));
+  assert.match(arrowCss, /width: 44px/);
+  assert.match(arrowCss, /height: 44px/);
+  assert.match(arrowCss, /background: var\(--color-accent\)/);
+  assert.match(arrowCss, /color: var\(--color-accent-fg\)/);
+  assert.doesNotMatch(arrowCss, /opacity: 0\.35/);
+  assert.match(arrowCss, /\.ask-coach-arrow:disabled \{[^}]*opacity: 1/);
   assert.match(panel, /onPointerDown/);
   assert.match(css, /\.slav-notice\[data-slav-notice\] \.slav-intro-board/);
   assert.match(css, /width: min\(100% - 1\.5rem, 14rem\)/);
