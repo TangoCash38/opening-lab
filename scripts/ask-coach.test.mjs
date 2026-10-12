@@ -24,6 +24,7 @@ const prompt = await vite.ssrLoadModule("/src/lib/ask-coach-prompt.ts");
 const notes = await vite.ssrLoadModule("/src/data/scotch-coach-notes.ts");
 const packs = await vite.ssrLoadModule("/src/data/packs.ts");
 const rate = await vite.ssrLoadModule("/src/lib/ask-coach-rate.ts");
+const slides = await vite.ssrLoadModule("/src/lib/coach-slides.ts");
 
 function req(over = {}) {
   return {
@@ -52,6 +53,24 @@ test("flag is Scotch only and can be switched off", () => {
   assert.equal(src.includes("isPlayWrap"), false);
 });
 
+test("coach slides are one move pair at a time", () => {
+  const plies = ["e4", "e5", "Nf3", "Nc6", "d4"];
+  assert.deepEqual(slides.coachSlides(0, false).map((s) => s.kind), ["intro"]);
+  const one = slides.coachSlides(1, false);
+  assert.equal(one.length, 2);
+  assert.equal(one[1].blackPly, null);
+  assert.equal(slides.coachPairHeading(plies, 1, null), "1. e4");
+  const pair = slides.coachSlides(2, false);
+  assert.equal(pair[1].blackPly, 2);
+  assert.equal(slides.coachPairHeading(plies, 1, 2), "1. e4 e5");
+  const next = slides.coachSlides(3, false);
+  assert.equal(next.length, 3);
+  assert.equal(slides.coachPairHeading(plies, 2, null), "2. Nf3");
+  const done = slides.coachSlides(4, true);
+  assert.deepEqual(done.map((s) => s.kind), ["intro", "pair", "pair", "end"]);
+  assert.equal(slides.coachPairHeading(plies, 2, 4), "2. Nf3 Nc6");
+});
+
 test("Play coach stays inside the WebView", () => {
   const train = readFileSync(join(root, "src/components/opening-lab/train-view.tsx"), "utf8");
   const at = train.indexOf('className="train-coach-back"');
@@ -73,6 +92,11 @@ test("Play coach stays inside the WebView", () => {
   assert.doesNotMatch(titleCss, /ellipsis/);
   assert.match(train, /train-coach-pack/);
   assert.match(train, /train-coach-line/);
+  assert.match(panel, /data-coach-prev/);
+  assert.match(panel, /data-coach-next/);
+  assert.match(panel, /onPointerDown/);
+  assert.match(css, /\.slav-notice\[data-slav-notice\] \.slav-intro-board/);
+  assert.match(css, /width: min\(100% - 1\.5rem, 14rem\)/);
 });
 
 test("context replays the book and matches chess.js", () => {

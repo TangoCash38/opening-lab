@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { scotchCoachIntro } from "@/data/scotch-coach-notes";
 import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
 import { coachIntroText } from "@/lib/ask-coach-mock";
+import { coachPairHeading, coachSlides } from "@/lib/coach-slides";
 import { useT } from "@/lib/i18n";
 
 type UiMode = "learn" | "practice";
@@ -62,6 +63,8 @@ export function AskCoachPanel({
   const [remaining, setRemaining] = useState<number | null>(null);
   const panelRef = useRef<HTMLElement>(null);
   const inflight = useRef<string | null>(null);
+  const [slide, setSlide] = useState(0);
+  const swipe = useRef<{ x: number; y: number; moved: boolean } | null>(null);
 
   useEffect(() => {
     setNotes({});
@@ -69,6 +72,7 @@ export function AskCoachPanel({
     setAskDraft("");
     setAskError(null);
     setRevealed(false);
+    setSlide(0);
   }, [lineId]);
 
   useEffect(() => {
@@ -139,11 +143,13 @@ export function AskCoachPanel({
     return () => ac.abort();
   }, [phase, ply, lineId, packId, mode]);
 
+  const slides = coachSlides(ply, phase === "done");
+  const latest = Math.max(0, slides.length - 1);
+
   useEffect(() => {
-    const el = panelRef.current;
-    if (!el) return;
-    el.scrollTop = el.scrollHeight;
-  }, [notes, ply, phase, askText, revealed]);
+    const next = coachSlides(ply, phase === "done");
+    setSlide(Math.max(0, next.length - 1));
+  }, [lineId, ply, phase]);
 
   useEffect(() => {
     const panel = panelRef.current;
@@ -210,10 +216,26 @@ export function AskCoachPanel({
 
   const intro = coachIntroText(lineName, scotchCoachIntro(lineId) ?? idea);
   const nextBook = ply >= 0 && ply < plies.length ? plies[ply] : null;
-  const visible = Object.keys(notes)
-    .map((n) => Number(n))
-    .filter((n) => n >= 1 && n <= ply && notes[n])
-    .sort((a, b) => a - b);
+  const index = Math.min(slide, latest);
+
+  function go(delta: number) {
+    setSlide((current) => Math.max(0, Math.min(latest, current + delta)));
+  }
+
+  function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    swipe.current = { x: event.clientX, y: event.clientY, moved: false };
+  }
+
+  function onPointerUp(event: ReactPointerEvent<HTMLDivElement>) {
+    const start = swipe.current;
+    swipe.current = null;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy)) return;
+    start.moved = true;
+    go(dx < 0 ? 1 : -1);
+  }
 
   async function ask(event: FormEvent) {
     event.preventDefault();
@@ -261,39 +283,130 @@ export function AskCoachPanel({
           {prompt}
         </p>
       ) : null}
-      {phase === "intro" ? (
-        <>
-          <p className="slav-notice-paragraph" data-ask-coach-intro>
-            {intro}
-          </p>
-          <button type="button" className="ask-coach-primary" data-ask-coach-practice onClick={onPractice}>
-            {t("Practice")}
+      <div className="ask-coach-slider" data-ask-coach-feed>
+        <div className="ask-coach-slider-row">
+          <button
+            type="button"
+            className="ask-coach-arrow"
+            data-coach-prev
+            aria-label={t("Earlier")}
+            disabled={index === 0}
+            onClick={() => go(-1)}
+          >
+            ‹
           </button>
-        </>
-      ) : (
-        <div className="ask-coach-feed" data-ask-coach-feed aria-live="polite">
-          {visible.length === 0 && phase !== "done" ? (
-            <p className="slav-notice-paragraph" data-ask-coach-wait>
-              {mode === "test"
-                ? t("Your move. The next book move stays hidden until you tap Show me.")
-                : t("Your move. I will explain each one here.")}
-            </p>
-          ) : null}
-          {visible.map((n) => (
-            <p
-              key={n}
-              className="ask-coach-note-line"
-              data-ask-coach-note={n}
-              data-ask-coach-latest={n === ply ? "true" : undefined}
-            >
-              <span className="ask-coach-ply">{plies[n - 1]}</span> {notes[n]}
-            </p>
-          ))}
-          {loadingPly === ply && !notes[ply] ? (
-            <p className="slav-notice-paragraph">{t("Looking at this move.")}</p>
-          ) : null}
+          <div
+            className="ask-coach-viewport"
+            data-coach-viewport
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={() => {
+              swipe.current = null;
+            }}
+          >
+            <div className="ask-coach-track" style={{ transform: `translateX(-${index * 100}%)` }} data-coach-slide={index}>
+              {slides.map((item) => {
+                if (item.kind === "intro") {
+                  return (
+                    <div key="intro" className="ask-coach-slide" data-coach-slide-kind="intro">
+                      <p className="slav-notice-paragraph" data-ask-coach-intro>
+                        {intro}
+                      </p>
+                      {phase === "intro" ? (
+                        <button type="button" className="ask-coach-primary" data-ask-coach-practice onClick={onPractice}>
+                          {t("Practice")}
+                        </button>
+                      ) : ply < 1 ? (
+                        <p className="slav-notice-paragraph" data-ask-coach-wait>
+                          {mode === "test"
+                            ? t("Your move. The next book move stays hidden until you tap Show me.")
+                            : t("Your move. I will explain each one here.")}
+                        </p>
+                      ) : null}
+                    </div>
+                  );
+                }
+                if (item.kind === "end") {
+                  return (
+                    <div key="end" className="ask-coach-slide" data-coach-slide-kind="end">
+                      <div className="ask-coach-done" data-ask-coach-done>
+                        <h3 className="slav-notice-title" data-ask-coach-any>
+                          {t("Any questions?")}
+                        </h3>
+                        {askError ? <p className="ask-coach-error">{askError}</p> : null}
+                        {askText ? (
+                          <p className="slav-notice-paragraph" data-ask-coach-answer>
+                            {askText}
+                          </p>
+                        ) : null}
+                        <form className="ask-coach-form" onSubmit={(event) => void ask(event)}>
+                          <input
+                            className="ask-coach-input"
+                            data-ask-coach-input
+                            value={askDraft}
+                            maxLength={240}
+                            placeholder={t("Ask about this position")}
+                            aria-label={t("Ask about this position")}
+                            onChange={(event) => setAskDraft(event.target.value)}
+                          />
+                          <button type="submit" className="ask-coach-send" data-ask-coach-send disabled={asking || !askDraft.trim()}>
+                            {t("Send")}
+                          </button>
+                        </form>
+                        {remaining != null ? (
+                          <p className="ask-coach-remaining" data-ask-coach-remaining>
+                            {t("{n} left today", { n: remaining })}
+                          </p>
+                        ) : null}
+                        <button type="button" className="ask-coach-primary" data-ask-coach-test onClick={onTest}>
+                          {t("Test yourself")}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+                const heading = coachPairHeading(plies, item.index, item.blackPly);
+                return (
+                  <div key={item.whitePly} className="ask-coach-slide" data-coach-slide-kind="pair" data-coach-pair={item.index}>
+                    <p className="ask-coach-pair-label">{heading}</p>
+                    <NoteLine
+                      san={plies[item.whitePly - 1] ?? ""}
+                      ply={item.whitePly}
+                      text={notes[item.whitePly]}
+                      latest={item.whitePly === ply}
+                      waiting={loadingPly === item.whitePly && !notes[item.whitePly]}
+                      waitingCopy={t("Looking at this move.")}
+                    />
+                    {item.blackPly != null ? (
+                      <NoteLine
+                        san={plies[item.blackPly - 1] ?? ""}
+                        ply={item.blackPly}
+                        text={notes[item.blackPly]}
+                        latest={item.blackPly === ply}
+                        waiting={loadingPly === item.blackPly && !notes[item.blackPly]}
+                        waitingCopy={t("Looking at this move.")}
+                      />
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <button
+            type="button"
+            className="ask-coach-arrow"
+            data-coach-next
+            aria-label={t("Later")}
+            disabled={index === latest}
+            onClick={() => go(1)}
+          >
+            ›
+          </button>
         </div>
-      )}
+        <p className="ask-coach-count" data-coach-slide-count>
+          {t("{n} of {m}", { n: index + 1, m: slides.length })}
+        </p>
+      </div>
       {phase === "test" && nextBook ? (
         revealed ? (
           <p className="ask-coach-book" data-ask-coach-book>
@@ -305,41 +418,32 @@ export function AskCoachPanel({
           </button>
         )
       ) : null}
-      {phase === "done" ? (
-        <div className="ask-coach-done" data-ask-coach-done>
-          <h3 className="slav-notice-title" data-ask-coach-any>
-            {t("Any questions?")}
-          </h3>
-          {askError ? <p className="ask-coach-error">{askError}</p> : null}
-          {askText ? (
-            <p className="slav-notice-paragraph" data-ask-coach-answer>
-              {askText}
-            </p>
-          ) : null}
-          <form className="ask-coach-form" onSubmit={(event) => void ask(event)}>
-            <input
-              className="ask-coach-input"
-              data-ask-coach-input
-              value={askDraft}
-              maxLength={240}
-              placeholder={t("Ask about this position")}
-              aria-label={t("Ask about this position")}
-              onChange={(event) => setAskDraft(event.target.value)}
-            />
-            <button type="submit" className="ask-coach-send" data-ask-coach-send disabled={asking || !askDraft.trim()}>
-              {t("Send")}
-            </button>
-          </form>
-          {remaining != null ? (
-            <p className="ask-coach-remaining" data-ask-coach-remaining>
-              {t("{n} left today", { n: remaining })}
-            </p>
-          ) : null}
-          <button type="button" className="ask-coach-primary" data-ask-coach-test onClick={onTest}>
-            {t("Test yourself")}
-          </button>
-        </div>
-      ) : null}
     </section>
+  );
+}
+
+function NoteLine({
+  san,
+  ply,
+  text,
+  latest,
+  waiting,
+  waitingCopy,
+}: {
+  san: string;
+  ply: number;
+  text: string | undefined;
+  latest: boolean;
+  waiting: boolean;
+  waitingCopy: string;
+}) {
+  if (!text && waiting) {
+    return <p className="slav-notice-paragraph">{waitingCopy}</p>;
+  }
+  if (!text) return null;
+  return (
+    <p className="ask-coach-note-line" data-ask-coach-note={ply} data-ask-coach-latest={latest ? "true" : undefined}>
+      <span className="ask-coach-ply">{san}</span> {text}
+    </p>
   );
 }
