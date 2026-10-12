@@ -1,5 +1,5 @@
 import { ChevronDown, Maximize2, Minimize2, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useOverlayHistory } from "@/hooks/use-overlay-history";
 import { useT } from "@/lib/i18n";
 
@@ -22,6 +22,8 @@ type Props = {
   onAction?: () => void;
   /** Stronger dim when the trainer board is fullscreen behind the popup. */
   boardExpanded?: boolean;
+  /** Scotch end card only. Other packs pass nothing. */
+  askCoach?: ReactNode;
 };
 
 export function LineResultModal({
@@ -35,6 +37,7 @@ export function LineResultModal({
   onPrimary,
   onAction,
   boardExpanded = false,
+  askCoach = null,
 }: Props) {
   const t = useT();
   const showPrimary = Boolean(primaryLabel && onPrimary);
@@ -231,6 +234,7 @@ export function LineResultModal({
               </button>
             </div>
           </div>
+          {askCoach ? <div className="ask-coach-slot ask-coach-slot--dock">{askCoach}</div> : null}
           {renderActions(true)}
         </div>
       </div>
@@ -319,6 +323,7 @@ export function LineResultModal({
             ) : null}
           </div>
         ) : null}
+        {askCoach ? <div className="ask-coach-slot">{askCoach}</div> : null}
         {renderActions(false)}
       </div>
     </div>
