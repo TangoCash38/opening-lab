@@ -87,7 +87,7 @@
     ]
   },
   "sib4": {
-    "intro": "The Sveshnikov: Black plays the e-pawn, one knight hops out to the wing, the other lands in the centre, and Black's dark-squared bishop takes back and becomes active.",
+    "intro": "The Sveshnikov: Black plays the e-pawn, one white knight goes to a3, the other lands on d5, and Black's dark-squared bishop takes back on f6 and becomes active.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
       "c5 fights for the centre from the flank.",
@@ -114,7 +114,7 @@
     ]
   },
   "sib5": {
-    "intro": "A sharp open Sicilian: White pushes the e-pawn, the bishop checks from b4, and the king steps up before Black hits the knight with the f-pawn.",
+    "intro": "A sharp open Sicilian: White pushes the e-pawn, the bishop checks from b4, and the king steps to Ke2 before Black hits the knight with the f-pawn.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
       "c5 fights for the centre from the flank.",

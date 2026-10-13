@@ -7583,6 +7583,8 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 }
 
 .ask-coach-arrow {
+  position: relative;
+  z-index: 1;
   align-self: center;
   display: inline-flex;
   align-items: center;
@@ -7596,6 +7598,16 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   background: var(--color-accent);
   color: var(--color-accent-fg);
   touch-action: manipulation;
+}
+
+.ask-coach-arrow::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
 }
 
 .ask-coach-arrow svg {

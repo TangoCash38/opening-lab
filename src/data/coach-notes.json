@@ -1,7 +1,7 @@
 {
   "opening-traps": {
     "ot1": {
-      "intro": "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
+      "intro": "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop checks on f7 and a knight mates on d5.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop.",
         "e5 meets White in the centre. Nothing is wrong yet, but the dark-squared bishop is about to be shut in.",
@@ -103,7 +103,7 @@
       ]
     },
     "ot6": {
-      "intro": "The Stafford Trap: taking the queen is the bait, and the two bishops mate the king that steps up.",
+      "intro": "The Stafford Trap: taking the queen is the bait, and the two bishops mate the king on e2.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop.",
         "e5 meets White in the centre. The Stafford needs this open king's pawn game.",
@@ -473,7 +473,7 @@
   },
   "london": {
     "lon1": {
-      "intro": "The classical London pyramid: the dark-squared bishop stays out, steps across against the bishop on d6, and the knight on e5 is backed up by the f-pawn.",
+      "intro": "The classical London pyramid: the dark-squared bishop stays out, drops to g3 against the bishop on d6, and the knight on e5 is backed up by the f-pawn.",
       "notes": [
         "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
         "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
@@ -856,7 +856,7 @@
       ]
     },
     "it7": {
-      "intro": "The Greco trap: taking the pawn on c3 with the bishop walks into checks from a3 and b5, with the king still in the centre.",
+      "intro": "The Greco trap: taking the pawn on c3 with the bishop walks into the bishop moves to a3 and b5, with the king stuck in the centre.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop. The Italian puts that bishop on the diagonal towards f7.",
         "e5 meets White in the centre and frees the dark-squared bishop.",
@@ -1340,7 +1340,7 @@
       ]
     },
     "frb6": {
-      "intro": "The Classical: the dark-squared bishop meets the pin, the queen takes it, and the light-squared bishop comes to b7.",
+      "intro": "The Classical: the dark-squared bishop breaks the pin, White takes it on e7, the queen takes back, and the light-squared bishop comes to b7.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop.",
         "e6 prepares a central pawn and shuts the light-squared bishop in. Black accepts that bishop for a solid centre.",
@@ -1842,7 +1842,7 @@
       ]
     },
     "sib4": {
-      "intro": "The Sveshnikov: Black plays the e-pawn, one knight hops out to the wing, the other lands in the centre, and Black's dark-squared bishop takes back and becomes active.",
+      "intro": "The Sveshnikov: Black plays the e-pawn, one white knight goes to a3, the other lands on d5, and Black's dark-squared bishop takes back on f6 and becomes active.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop.",
         "c5 fights for the centre from the flank.",
@@ -1869,7 +1869,7 @@
       ]
     },
     "sib5": {
-      "intro": "A sharp open Sicilian: White pushes the e-pawn, the bishop checks from b4, and the king steps up before Black hits the knight with the f-pawn.",
+      "intro": "A sharp open Sicilian: White pushes the e-pawn, the bishop checks from b4, and the king steps to Ke2 before Black hits the knight with the f-pawn.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop.",
         "c5 fights for the centre from the flank.",
@@ -2574,7 +2574,7 @@
       ]
     },
     "nib8": {
-      "intro": "The Kmoch: Black strikes in the centre before White can settle the doubled pawns.",
+      "intro": "The Kmoch with the f-pawn on f3: Black strikes in the centre before White can settle the doubled pawns.",
       "notes": [
         "d4 claims the centre and frees the dark-squared bishop.",
         "Nf6 develops the king's knight and controls e4.",
@@ -2758,7 +2758,7 @@
       ]
     },
     "kidb6": {
-      "intro": "The Four Pawns Attack: White grabs space, and the centre blows open with pawn breaks and captures.",
+      "intro": "The Four Pawns Attack: White grabs space with the f- and d-pawns, and Black blows the centre open with pawn breaks.",
       "notes": [
         "d4 claims the centre and frees the dark-squared bishop.",
         "Nf6 develops the king's knight and controls the central squares.",
@@ -2855,7 +2855,7 @@
       ]
     },
     "kidb10": {
-      "intro": "The Classical with the knight on d7. The bishop drops home, Black plays the a-pawn and a rook to e8, and the dark-squared bishop takes back on d4.",
+      "intro": "The Classical with the knight on d7. The bishop drops home, Black pushes the a-pawn and puts a rook on e8, and the dark-squared bishop takes back on d4.",
       "notes": [
         "d4 claims the centre and frees the dark-squared bishop.",
         "Nf6 develops the king's knight and controls the central squares.",

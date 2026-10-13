@@ -106,8 +106,10 @@ test("Play coach stays inside the WebView", () => {
   assert.match(panel, /data-coach-next/);
   assert.match(panel, /ArrowGlyph/);
   const arrowCss = css.slice(css.indexOf(".ask-coach-arrow {"), css.indexOf(".ask-coach-viewport {"));
-  assert.match(arrowCss, /width: 32px/);
-  assert.match(arrowCss, /height: 32px/);
+  assert.match(arrowCss, /\.ask-coach-arrow \{[^}]*width: 32px/);
+  assert.match(arrowCss, /\.ask-coach-arrow \{[^}]*height: 32px/);
+  assert.match(arrowCss, /\.ask-coach-arrow::before \{[^}]*width: 44px/);
+  assert.match(arrowCss, /\.ask-coach-arrow::before \{[^}]*height: 44px/);
   assert.match(arrowCss, /background: var\(--color-accent\)/);
   assert.match(arrowCss, /color: var\(--color-accent-fg\)/);
   assert.doesNotMatch(arrowCss, /opacity: 0\.35/);
@@ -224,11 +226,11 @@ test("visitor cap is 5 and the buyer cap is 50", async () => {
 test("intro and move notes stay on the line", () => {
   const intro = mock.coachIntroText(
     "Trap · Legal's Mate",
-    "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
+    "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop checks on f7 and a knight mates on d5.",
   );
   assert.equal(
     intro,
-    "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
+    "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop checks on f7 and a knight mates on d5.",
   );
   assert.doesNotMatch(intro, /Trap ·|one of 10 lines|Tap Practice/);
   assert.doesNotMatch(intro, /—|–|\bforever\b|\blifetime\b|\bPlay on\b/);

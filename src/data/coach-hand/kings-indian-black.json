@@ -127,7 +127,7 @@
     ]
   },
   "kidb6": {
-    "intro": "The Four Pawns Attack: White grabs space, and the centre blows open with pawn breaks and captures.",
+    "intro": "The Four Pawns Attack: White grabs space with the f- and d-pawns, and Black blows the centre open with pawn breaks.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -224,7 +224,7 @@
     ]
   },
   "kidb10": {
-    "intro": "The Classical with the knight on d7. The bishop drops home, Black plays the a-pawn and a rook to e8, and the dark-squared bishop takes back on d4.",
+    "intro": "The Classical with the knight on d7. The bishop drops home, Black pushes the a-pawn and puts a rook on e8, and the dark-squared bishop takes back on d4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",

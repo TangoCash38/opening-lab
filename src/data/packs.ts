@@ -415,7 +415,7 @@ export const PACKS: Pack[] = [
         name: "Line 1",
         plies: ["d4", "d5", "Bf4", "Nf6", "e3", "c5", "c3", "Nc6", "Nd2", "e6", "Ngf3", "Bd6", "Bg3", "O-O", "Bd3", "b6", "Ne5", "Bb7", "O-O", "Qc7", "f4"],
         idea: "Classical London pyramid: …d5/…c5/…e6. White builds Bf4–e3–c3–Nd2–Ngf3, meets …Bd6 with Bg3, then Ne5 and f4 for the kingside clamp.",
-        next: "You have the bishop pair and an open centre. Castle, or play a rook to b1.",
+        next: "Keep going with the queen to f3 or e2, and a rook to e1. Black often reroutes a knight towards f5 or takes on d4. Keep the knight on e5. Do not rush the e-pawn until the pieces are ready.",
         side: "w",
       },
       {
@@ -935,7 +935,7 @@ export const PACKS: Pack[] = [
         id: "ckb2",
         name: "Line 2",
         idea: "Main Classical. The bishop comes to f5, drops to g6 and then h7 when White pushes the h-pawn, and is traded on d3. Then …e6, …Ngf6 and …Be7 build a compact shell.",
-        next: "White has castled long and you castle short next, so both sides are attacking. Castle, then look at the c-pawn or the queen to c7 with the b-pawn, to open lines on White's king. The pawn on h5 cramps your kingside, so keep the pawn on h6 and do not play the g-pawn.",
+        next: "White has castled long and you castle short next, so both sides are attacking. Castle, then push the c-pawn, or bring the queen to c7 and push the b-pawn, to open lines on White's king. The pawn on h5 cramps your kingside, so keep the pawn on h6 and do not play the g-pawn.",
         plies: ["e4", "c6", "d4", "d5", "Nc3", "dxe4", "Nxe4", "Bf5", "Ng3", "Bg6", "h4", "h6", "Nf3", "Nd7", "h5", "Bh7", "Bd3", "Bxd3", "Qxd3", "e6", "Bd2", "Ngf6", "O-O-O", "Be7"],
         side: "b",
       },
@@ -3576,7 +3576,7 @@ export const PACKS: Pack[] = [
         name: "Line 1",
         plies: ["d4", "d5", "c4", "e6", "Nc3", "Nf6", "Bg5", "Be7", "e3", "O-O", "Nf3", "Nbd7", "Rc1", "c6", "Bd3", "dxc4", "Bxc4", "Nd5", "Bxe7", "Qxe7"],
         idea: "Queen's Gambit Declined Orthodox: after …e6/…Nf6/…Be7 White pins with Bg5, builds e3–Nf3–Rc1–Bd3, and meets the …dxc4 release with Bxc4 and the classic …Nd5 trade.",
-        next: "Roughly equal. Castle, then choose between e4, minority ideas after …c6, or Nxd5/cxd5 structures. Black often …Nxc3 or …b6/…Bb7.",
+        next: "Castle, then choose between a pawn to e4, play on the queenside after the c-pawn, or a knight trade on d5. Black often takes on c3 or fianchettoes.",
         side: "w",
       },
       {
@@ -3584,7 +3584,7 @@ export const PACKS: Pack[] = [
         name: "Line 2",
         plies: ["d4", "d5", "c4", "dxc4", "Nf3", "Nf6", "e3", "e6", "Bxc4", "c5", "O-O", "a6", "Bb3", "Nc6", "Nc3", "Be7"],
         idea: "Queen's Gambit Accepted Classical: White recovers c4 with e3/Bxc4, castles, and parks the bishop on Bb3. Meet …c5/…a6/…Nc6 with calm development.",
-        next: "Equal QGA. Decide between dxc5 or d5; Black seeks …cxd4 and …Na5/…b5. Do not cling to an extra pawn that Black never kept.",
+        next: "Decide between taking on c5 and pushing the d-pawn. Black looks to take on d4 and play a knight to a5 or a pawn to b5. Black gave the pawn back, so do not play as if you kept an extra pawn.",
         side: "w",
       },
       {
@@ -3592,7 +3592,7 @@ export const PACKS: Pack[] = [
         name: "Line 3",
         plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"],
         idea: "Slav Defence Czech: after …dxc4 White's a4 stops …b5, then e3/Bxc4 recovers the pawn. Meet …Bb4 and …Bf5–g6 with Qe2 and the e4 space grab.",
-        next: "White has a healthy centre. Push e5, or bring a rook to d1. Be3 lets the knight on f6 jump to e4. Black aims …Qa5 or …c5. Keep the bishop pair if Black offers trades.",
+        next: "Push the e-pawn, or bring a rook to d1. The bishop to e3 lets the knight on f6 jump to e4. Black aims at the queen to a5 or a pawn to c5. Keep the bishop pair if Black offers trades.",
         side: "w",
       },
       {
@@ -3600,7 +3600,7 @@ export const PACKS: Pack[] = [
         name: "Line 4",
         plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "e6", "e3", "Nbd7", "Bd3", "dxc4", "Bxc4", "b5", "Bd3", "Bb7", "O-O", "a6", "e4", "c5"],
         idea: "Semi-Slav Meran: …e6 and …c6, then …dxc4/…b5/…Bb7. White retreats Bd3 and strikes with e4 against the …a6/…c5 structure.",
-        next: "Theoretical Meran race. After …c5, d5 or e5 are the main plans; Black presses the e4 pawn and queenside majority. Stay accurate in the tactics.",
+        next: "After the c-pawn, a pawn to d5 or e5 is the main plan. Black presses the pawn on e4 and the queenside pawns. Stay accurate when the tactics start.",
         side: "w",
       },
       {
@@ -3608,7 +3608,7 @@ export const PACKS: Pack[] = [
         name: "Line 5",
         plies: ["d4", "d5", "c4", "Nc6", "Nf3", "Bg4", "cxd5", "Bxf3", "gxf3", "Qxd5", "e3", "e5", "Nc3", "Bb4", "Bd2", "Bxc3", "bxc3", "exd4", "cxd4", "Nge7", "Bg2", "Qe6"],
         idea: "Chigorin Defence …Nc6: White takes on d5, accepts …Bxf3/gxf3, and builds e3–Nc3–Bd2. After …Bxc3 bxc3 and …exd4 cxd4, …Qe6 keeps Black coordinated.",
-        next: "White has the bishop pair and an open centre. Castle, or play Rb1.",
+        next: "You have the bishop pair and an open centre. Castle, or play a rook to b1.",
         side: "w",
       },
       {
@@ -6191,7 +6191,7 @@ export const PACKS: Pack[] = [
         id: "ot5",
         name: "Trap · Blackburne Shilling",
         idea: "After …Qg5, Nxf7 is the second greedy take. …Qxg2 picks up the pawn, and …d5 hits the bishop. You are winning.",
-        next: "White's king is still in the centre and the knight on f7 is loose. Develop the dark-squared bishop to g4 and bring the other knight out. Leave the rook on h1 until the centre has been dealt with.",
+        next: "White's king is still in the centre and the knight on f7 is loose. Develop the light-squared bishop to g4 and bring the other knight out. Leave the rook on h1 until the centre has been dealt with.",
         plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nd4", "Nxe5", "Qg5", "Nxf7", "Qxg2", "d3", "d5"],
         side: "b",
       },

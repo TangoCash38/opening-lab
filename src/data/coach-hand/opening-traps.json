@@ -1,6 +1,6 @@
 {
   "ot1": {
-    "intro": "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
+    "intro": "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop checks on f7 and a knight mates on d5.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. Nothing is wrong yet, but the dark-squared bishop is about to be shut in.",
@@ -102,7 +102,7 @@
     ]
   },
   "ot6": {
-    "intro": "The Stafford Trap: taking the queen is the bait, and the two bishops mate the king that steps up.",
+    "intro": "The Stafford Trap: taking the queen is the bait, and the two bishops mate the king on e2.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The Stafford needs this open king's pawn game.",
