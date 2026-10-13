@@ -951,7 +951,7 @@ export const PACKS: Pack[] = [
         id: "ckb4",
         name: "Line 4",
         idea: "Panov with an isolated d4 pawn. Recapture on d5 with the knight, castle, then blockade with …Bf6 and …Nce7 so d5 stays firmly in Black's hands.",
-        next: "White's queen and bishop aim at h7, so a pawn on h6 stops the knight jumping to g5. Next the bishop to d7, then a rook to c8 or the queen to b6. The knight to f5 drops that knight. Trades help you, because the isolated pawn gets weaker as pieces come off.",
+        next: "White's queen and bishop aim at h7, so a pawn on h6 stops the knight jumping to g5. Next the bishop to d7, then a rook to c8 or the queen to b6. The knight to f5 just lets White trade the bishop for it on f5. Trades help you, because the isolated pawn gets weaker as pieces come off.",
         plies: ["e4", "c6", "d4", "d5", "exd5", "cxd5", "c4", "Nf6", "Nc3", "e6", "Nf3", "Be7", "cxd5", "Nxd5", "Bd3", "Nc6", "O-O", "O-O", "Re1", "Bf6", "Be4", "Nce7", "Qd3", "h6"],
         side: "b",
       },
@@ -3592,7 +3592,7 @@ export const PACKS: Pack[] = [
         name: "Line 3",
         plies: ["d4", "d5", "c4", "c6", "Nf3", "Nf6", "Nc3", "dxc4", "a4", "Bf5", "e3", "e6", "Bxc4", "Bb4", "O-O", "Nbd7", "Qe2", "Bg6", "e4", "O-O"],
         idea: "Slav Defence Czech: after …dxc4 White's a4 stops …b5, then e3/Bxc4 recovers the pawn. Meet …Bb4 and …Bf5–g6 with Qe2 and the e4 space grab.",
-        next: "Push the e-pawn, or bring a rook to d1. The bishop to e3 lets the knight on f6 jump to e4. Black aims at the queen to a5 or a pawn to c5. Keep the bishop pair if Black offers trades.",
+        next: "Push the e-pawn to e5, or prepare it with the bishop to d3. A rook to d1 too early lets Black take on c3 and then on e4.",
         side: "w",
       },
       {

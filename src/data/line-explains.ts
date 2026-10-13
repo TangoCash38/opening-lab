@@ -10,7 +10,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "scotch:sg1":
     "You played the main Scotch Gambit: the pawn to c3, the dark-squared bishops came off, and you won the pawn back. Both kings have castled, your knight is still on d2, and Black's knight is on d5. Next, bring that knight to b3 or e4 and use the open e-file. You are not a pawn down.",
   "scotch:sg2":
-    "This time the queen goes to b3, and Black's knight comes out to a5 to attack her. The other knight is on d5. Next, move the queen, often to c2 or a4, and castle. That knight has done its job once the queen steps away.",
+    "This time the queen goes to b3, and Black's knight comes out to a5 to attack her. The other knight is on d5. Next, move the queen, usually with a check on a4, and castle. That knight has done its job once the queen steps away.",
   "london:lon1":
     "Both kings are castled, your knight is on e5, and the f-pawn is already in, with the dark-squared bishop on g3 facing the bishop on d6. That knight is the piece this London is built around. Next, keep the knight supported. Do not throw more pawns at the king just to make something happen.",
   "london:lon2":
@@ -52,7 +52,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "italian-white:it2":
     "This is the Two Knights, not the quiet bishop-to-c5 Italian. You are a pawn up, and Black's pawn on e4 and the bishop on d6 give real activity. Your knight is on e5, and that bishop looks straight at it. Next, play a pawn to d4. Do not grab on f7 in this book position.",
   "ruy-lopez-white:rlw1":
-    "This is the closed Spanish: the knight has arrived on f1 and both kings are castled. From f1 that knight usually wants e3 or g3. Next, choose one of those and keep the centre under control with the bishop on c2.",
+    "From f1 the knight usually goes to g3. Going to e3 lets Black take on d4 and then grab the e4-pawn.",
   "ruy-lopez-white:rlw2":
     "The previous line rerouted the knight to f1. This time Black fianchettoes, and you meet it with a pawn to d3, a pawn to a4, and the bishop tucked on a2 after the knight goes to a5. It is Black to move. Next, keep the bishop on a2 aimed at the centre. There is no need to open the centre on the next move.",
   "french-white:fr1":
