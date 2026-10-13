@@ -256,11 +256,17 @@ function ArrowGlyph({ dir }: { dir: "prev" | "next" }) {
   );
 }
 
+/** The move is already shown in the badge, so the sentence does not start with it again. */
+function noteProse(san: string, text: string): string {
+  const prefix = `${san} `;
+  return text.startsWith(prefix) ? text.slice(prefix.length) : text;
+}
+
 function NoteLine({ san, ply, text, latest }: { san: string; ply: number; text: string | undefined; latest: boolean }) {
   if (!text) return null;
   return (
     <p className="ask-coach-note-line" data-ask-coach-note={ply} data-ask-coach-latest={latest ? "true" : undefined}>
-      <span className="ask-coach-ply">{san}</span> {text}
+      <span className="ask-coach-ply">{san}</span> {noteProse(san, text)}
     </p>
   );
 }

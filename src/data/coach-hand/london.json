@@ -1,10 +1,10 @@
 {
   "lon1": {
-    "intro": "Classical London pyramid. The dark-squared bishop stays out, steps to g3 against Bd6, and the knight on e5 is supported by f4.",
+    "intro": "The classical London pyramid: the dark-squared bishop stays out, drops to g3 against the bishop on d6, and the knight on e5 is backed up by the f-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in. That early bishop is the London.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in.",
       "Nf6 develops the king's knight. Black gets a piece out while White finishes the pyramid.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside, so this pawn does not shut it in.",
       "c5 hits the pawn on d4 and fights for space. White will support the centre rather than take at once.",
@@ -26,11 +26,11 @@
     ]
   },
   "lon2": {
-    "intro": "Classical London where Black takes on d4 early. The centre opens, the light-squared bishop comes to f5, and Bd6 hits the bishop on f4.",
+    "intro": "Black takes on d4 early. The centre opens, the light-squared bishop comes to f5, and the bishop on d6 hits the bishop on f4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in. That early bishop is the London.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in.",
       "Nf6 develops the king's knight. Black gets a piece out while White finishes the pyramid.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside, so this pawn does not shut it in.",
       "c5 hits the pawn on d4 and fights for space. White will support the centre rather than take at once.",
@@ -51,7 +51,7 @@
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "Nf6 develops the king's knight and keeps Black's options open. There is no central pawn yet.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves. The London plays this whatever Black has chosen.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves.",
       "c5 hits the pawn on d4 at once, before Black has a pawn in the centre.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already out.",
       "cxd4 takes the pawn on d4 and opens the centre.",
@@ -72,11 +72,11 @@
     ]
   },
   "lon4": {
-    "intro": "A king's Indian against the London. When the e-pawn advances, the dark-squared bishop drops to h2 and stays on the board.",
+    "intro": "A king's Indian against the London. When the e-pawn advances, the dark-squared bishop drops back and stays on the board.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "Nf6 develops the king's knight and keeps Black's options open. There is no central pawn yet.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves. The London plays this whatever Black has chosen.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves.",
       "g6 prepares a fianchetto. Black is setting up a king's Indian against the London.",
       "e3 supports the centre and frees the light-squared bishop. The dark-squared bishop stays on f4, outside the chain.",
       "Bg7 puts the dark-squared bishop on the long diagonal, behind the knight on f6.",
@@ -90,18 +90,18 @@
       "Qe8 slides the queen across so a central pawn push will not block her. The rook can then use the e-file.",
       "c3 supports the pawn on d4. White wants that pawn solid when the centre opens.",
       "e5 challenges the pawn on d4 and attacks the bishop on f4. The bishop should leave this diagonal.",
-      "Bh2 keeps the dark-squared bishop. Retreating here rather than taking keeps the bishop, and it still looks down the diagonal toward the pawn on e5.",
+      "Bh2 keeps the dark-squared bishop. Retreating here rather than taking keeps the bishop, and it still looks down the diagonal towards the pawn on e5.",
       "Qe7 puts the queen on the e-file, in front of the pawn on e5. The rook can stand behind her.",
       "Nbd2 develops the queen's knight beside the pawn on c3 and supports the centre.",
       "Re8 puts the rook on the e-file behind the queen on e7. That file is Black's lever."
     ]
   },
   "lon5": {
-    "intro": "An Indian move order that reaches a London pyramid. The queen goes to e2, and the king's knight means the centre break is the e-pawn.",
+    "intro": "An Indian move order that reaches the London pyramid. The queen goes to e2, and with the king's knight out the centre break is the e-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "Nf6 develops the king's knight and keeps Black's options open. There is no central pawn yet.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves. The London plays this whatever Black has chosen.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves.",
       "e6 frees the dark-squared bishop and prepares a pawn centre. The d-pawn has not moved yet.",
       "e3 supports the centre and frees the light-squared bishop. The dark-squared bishop is already on f4.",
       "c5 hits the pawn on d4. Black fights for space before committing the d-pawn.",
@@ -122,7 +122,7 @@
     ]
   },
   "lon6": {
-    "intro": "The Jobava. The queen's knight goes to c3, Black takes on d4, and the light-squared bishop trades for the knight on f3.",
+    "intro": "The Jobava: the queen's knight goes to c3, Black takes on d4, and the light-squared bishop trades for the knight on f3.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
@@ -143,11 +143,11 @@
     ]
   },
   "lon7": {
-    "intro": "The light-squared bishop comes to f5, and the queen comes to b6. White meets that queen and gains space with the c-pawn.",
+    "intro": "The light-squared bishop comes to f5 and the queen comes to b6. White meets that queen and gains space with the c-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in. That early bishop is the London.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in.",
       "Nf6 develops the king's knight. Black gets a piece out while White finishes the pyramid.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside, so this pawn does not shut it in.",
       "Bf5 develops the light-squared bishop outside the chain, before the e-pawn closes. Black is using the same idea as the London.",
@@ -163,11 +163,11 @@
     ]
   },
   "lon8": {
-    "intro": "An early queen on b6 against the London. White meets her, steps aside from the pawn wedge, and finishes development.",
+    "intro": "An early queen on b6. White meets her, steps aside from the pawn wedge, and finishes developing.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in. That early bishop is the London.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in.",
       "Nf6 develops the king's knight. Black gets a piece out while White finishes the pyramid.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside, so this pawn does not shut it in.",
       "c5 hits the pawn on d4 and fights for space. White will support the centre rather than take at once.",
@@ -184,11 +184,11 @@
     ]
   },
   "lon9": {
-    "intro": "A fianchetto with d5. White takes on c5, keeps the dark-squared bishop, and tucks it away when the knight kicks it.",
+    "intro": "A fianchetto with a pawn on d5. White takes on c5, keeps the dark-squared bishop, and tucks it away when a knight kicks it.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "Nf6 develops the king's knight and keeps Black's options open. There is no central pawn yet.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves. The London plays this whatever Black has chosen.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn moves.",
       "g6 prepares a fianchetto. Black is setting up a king's Indian against the London.",
       "e3 supports the centre and frees the light-squared bishop. The dark-squared bishop stays on f4, outside the chain.",
       "Bg7 puts the dark-squared bishop on the long diagonal, behind the king's knight.",
@@ -211,11 +211,11 @@
     ]
   },
   "lon10": {
-    "intro": "Nc6 against the London, without an early pawn hit. Black keeps the light-squared bishop, and White asks it a question with the knight.",
+    "intro": "A knight on c6 against the London, without an early pawn hit. Black keeps the light-squared bishop, and White asks it a question with the knight.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop. The London gets that bishop out before the e-pawn moves.",
       "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
-      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in. That early bishop is the London.",
+      "Bf4 develops the dark-squared bishop outside the pawn chain, before the e-pawn can shut it in.",
       "Nf6 develops the king's knight. Black gets a piece out while White finishes the pyramid.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside, so this pawn does not shut it in.",
       "Nc6 develops the queen's knight and attacks the pawn on d4. Black has not challenged that pawn with a pawn of their own.",
@@ -228,7 +228,7 @@
       "Bg3 keeps the dark-squared bishop rather than trading it for the bishop on d6.",
       "O-O brings the king to g8 and the rook to f8.",
       "Be2 develops the light-squared bishop. With the centre closed, this modest square is enough.",
-      "Ne7 reroutes the queen's knight toward the centre and the kingside. The c-pawn can then move.",
+      "Ne7 reroutes the queen's knight towards the centre and the kingside. The c-pawn can then move.",
       "O-O brings the king to g1 and the rook to f1.",
       "c6 supports the pawn on d5 and keeps the centre solid. This line never hits d4 with a pawn.",
       "Nh4 attacks the bishop on f5 and offers a trade. Black can keep the bishop.",

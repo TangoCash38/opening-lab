@@ -1,9 +1,9 @@
 {
   "sib1": {
-    "intro": "The Najdorf, English Attack. Black kicks the knight with e5, both sides castle on opposite wings, and the pawn storms start with g4 and b5.",
+    "intro": "The Najdorf, English Attack: Black kicks the knight with the e-pawn, the kings castle on opposite wings, and the pawn storms start on both sides.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nf3 develops the king's knight and prepares to open the centre.",
       "d6 keeps the centre compact and lets the king's knight come out. The Najdorf comes when the a-pawn advances a few moves later.",
       "d4 opens the centre and offers a pawn to put a knight on the central square.",
@@ -12,7 +12,7 @@
       "Nf6 develops the king's knight and attacks the pawn on e4.",
       "Nc3 develops the queen's knight and defends the pawn on e4.",
       "a6 is the Najdorf move. It keeps a white knight off the square in front of Black's queenside and prepares expansion there.",
-      "Be3 develops the dark-squared bishop. White is building toward castling on the queenside.",
+      "Be3 develops the dark-squared bishop. White is building towards castling on the queenside.",
       "e5 attacks the knight on d4 and gains space. The pawn on d6 stays back, which this line accepts.",
       "Nb3 steps the knight off the pawn and leaves the dark-squared bishop on e3.",
       "Be6 develops the light-squared bishop to an active square before the centre closes up.",
@@ -27,10 +27,10 @@
     ]
   },
   "sib2": {
-    "intro": "The Dragon. The bishop fianchettoes, the kings castle on opposite wings, and Black breaks with d5 before the queen settles on a5.",
+    "intro": "The Dragon: the bishop fianchettoes, the kings castle on opposite wings, and Black breaks in the centre before the queen settles on the a-file.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nf3 develops the king's knight and prepares to open the centre.",
       "d6 controls e5 and lets the king's knight come out.",
       "d4 opens the centre and offers a pawn to put a knight on the central square.",
@@ -55,15 +55,15 @@
       "Bxd4 takes the bishop on d4. Black accepts the trade.",
       "Qxd4 recaptures the bishop on d4. The queen stands in the centre.",
       "Qb6 attacks the queen on d4 and puts pressure down the half-open b-file.",
-      "Na4 attacks the queen on b6 and steps the knight toward the queenside.",
+      "Na4 attacks the queen on b6 and steps the knight towards the queenside.",
       "Qa5 steps the queen off the knight and keeps her on the queenside."
     ]
   },
   "sib3": {
-    "intro": "The Richter-Rauzer. The bishop comes to g5, White castles long and plays f4, and after the trade on d4 Black's queen comes to a5.",
+    "intro": "The Richter-Rauzer: the bishop comes to g5, White castles long and plays the f-pawn, and after the trade in the centre Black's queen comes to the a-file.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nf3 develops the king's knight and prepares to open the centre.",
       "d6 controls e5 and lets the king's knight come out.",
       "d4 opens the centre and offers a pawn to put a knight on the central square.",
@@ -87,10 +87,10 @@
     ]
   },
   "sib4": {
-    "intro": "The Sveshnikov. Black plays e5, the knight hops via b5 to a3, the other knight lands on d5, and Black's dark-squared bishop recaptures on f6 and becomes active on g5.",
+    "intro": "The Sveshnikov: Black plays the e-pawn, one white knight goes to a3, the other lands on d5, and Black's dark-squared bishop takes back on f6 and becomes active.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nf3 develops the king's knight and prepares to open the centre.",
       "Nc6 develops the queen's knight and fights for the central squares.",
       "d4 opens the centre and offers a pawn to put a knight on the central square.",
@@ -114,10 +114,10 @@
     ]
   },
   "sib5": {
-    "intro": "A sharp open Sicilian with e6. White pushes e5, the bishop checks from b4, and the king steps to e2 before Black hits the knight with the f-pawn.",
+    "intro": "A sharp open Sicilian: White pushes the e-pawn, the bishop checks from b4, and the king steps to e2 before Black hits the knight with the f-pawn.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nf3 develops the king's knight and prepares to open the centre.",
       "e6 supports a central pawn and frees the dark-squared bishop. Black keeps the position flexible.",
       "d4 opens the centre and offers a pawn to put a knight on the central square.",
@@ -141,10 +141,10 @@
     ]
   },
   "sib6": {
-    "intro": "The Alapin. White plays c3 and meets d5, the queen recaptures, and a knight jump to b5 sends her home.",
+    "intro": "The Alapin: White plays the c-pawn and meets a pawn to d5, the queen takes back, and a knight jump sends her home.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "c3 prepares a central pawn and avoids the open-file Sicilian. This is the Alapin.",
       "d5 strikes at the pawn on e4 at once. Black does not let White build in peace.",
       "exd5 takes the pawn on d5 and opens the e-file.",
@@ -166,10 +166,10 @@
     ]
   },
   "sib7": {
-    "intro": "The Smith-Morra Gambit. White offers a pawn for development, the bishop comes to c4, and the rook lands on the half-open d-file.",
+    "intro": "The Smith-Morra Gambit: White offers a pawn for development, the bishop comes to c4, and a rook lands on the half-open d-file.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "d4 offers a pawn to open lines. This is a gambit, not the quiet Sicilian.",
       "cxd4 takes the pawn on d4. Black accepts the first pawn.",
       "c3 offers a second pawn so that a knight can recapture with tempo.",
@@ -191,10 +191,10 @@
     ]
   },
   "sib8": {
-    "intro": "The Grand Prix Attack. White plays f4 and Bb5, Black trades that bishop, and the centre opens with d5 and d4.",
+    "intro": "The Grand Prix Attack: White plays the f-pawn and a bishop to b5, Black trades that bishop, and the centre opens.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nc3 develops the queen's knight and keeps the centre flexible. White is not opening with the d-pawn yet.",
       "Nc6 develops the queen's knight and fights for the centre.",
       "f4 gains kingside space and prepares an attack. This is the Grand Prix.",
@@ -216,10 +216,10 @@
     ]
   },
   "sib9": {
-    "intro": "The Rossolimo. The bishop takes on c6, Black recaptures toward the centre, and both sides fix the queenside with a4 and a5.",
+    "intro": "The Rossolimo: the bishop takes on c6, Black takes back towards the centre, and both sides fix the queenside.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nf3 develops the king's knight.",
       "Nc6 develops the queen's knight and fights for the centre.",
       "Bb5 attacks the knight on c6 and offers the bishop pair to damage Black's pawns. This is the Rossolimo.",
@@ -229,9 +229,9 @@
       "Re1 puts the rook behind the pawn on e4.",
       "e5 claims a share of the centre.",
       "Bxc6 takes the knight on c6. White gives up the bishop to double the pawns.",
-      "dxc6 recaptures the bishop on c6 toward the centre. The c-pawns are doubled, and the light-squared bishop is free.",
+      "dxc6 recaptures the bishop on c6 towards the centre. The c-pawns are doubled, and the light-squared bishop is free.",
       "d3 supports the pawn on e4 and frees the dark-squared bishop.",
-      "Ne7 develops the king's knight toward the centre. The doubled pawns mean this knight does not belong on c6.",
+      "Ne7 develops the king's knight towards the centre. The doubled pawns mean this knight does not belong on c6.",
       "Be3 develops the dark-squared bishop and eyes the queenside.",
       "b6 prepares to develop the light-squared bishop and supports the pawn on c5.",
       "Nbd2 develops the queen's knight without blocking the c-pawn.",
@@ -241,10 +241,10 @@
     ]
   },
   "sib10": {
-    "intro": "The Closed Sicilian. Both sides fianchetto, the knight jumps to d4, and Black breaks with d5 before White untangles.",
+    "intro": "The Closed Sicilian: both sides fianchetto, a knight jumps into the centre, and Black breaks with a pawn to d5 before White untangles.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
-      "c5 fights for the centre from the flank. This is the Sicilian.",
+      "c5 fights for the centre from the flank.",
       "Nc3 develops the queen's knight. White is keeping the centre closed.",
       "Nc6 develops the queen's knight and fights for the centre.",
       "g3 prepares the fianchetto. The light-squared bishop will sit on the long diagonal.",
