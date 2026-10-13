@@ -1,6 +1,6 @@
 {
   "qg1": {
-    "intro": "The Orthodox Queen's Gambit Declined. White pins with the dark-squared bishop, builds the centre, and meets the capture on c4 with the bishop and the knight trade on d5.",
+    "intro": "The Orthodox Queen's Gambit Declined: White pins with the dark-squared bishop, builds the centre, and meets the capture on c4 with the bishop and a knight trade on d5.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -8,7 +8,7 @@
       "e6 supports the pawn on d5 and declines the gambit. The dark-squared bishop gets out, and the light-squared bishop stays in for now.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
-      "Bg5 pins the knight on f6 to the queen on d8. The pin is the start of the Orthodox.",
+      "Bg5 pins the knight on f6 to the queen on d8.",
       "Be7 breaks that pin by stepping the dark-squared bishop between the knight and the queen, and prepares castling.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside the chain.",
       "O-O brings the king to g8 and the rook to f8.",
@@ -25,7 +25,7 @@
     ]
   },
   "qg2": {
-    "intro": "The Queen's Gambit Accepted. White takes the pawn back with the light-squared bishop, castles, and tucks that bishop to b3.",
+    "intro": "The Queen's Gambit Accepted: White takes the pawn back with the light-squared bishop, castles, and tucks that bishop away.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -46,12 +46,12 @@
     ]
   },
   "qg3": {
-    "intro": "The Czech Slav. a4 stops the queenside expansion, White takes the pawn back, and e4 gains space against the bishop on g6.",
+    "intro": "The Czech Slav: a pawn on a4 stops the queenside expansion, White takes the pawn back, and the e-pawn gains space against the bishop on g6.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
       "c4 attacks the pawn on d5. White offers a wing pawn: taking it draws the centre pawn off d5, and declining leaves the pressure on.",
-      "c6 supports the pawn on d5 and leaves the light-squared bishop free. That is the Slav.",
+      "c6 supports the pawn on d5 and leaves the light-squared bishop free.",
       "Nf3 develops the king's knight and controls the centre before the queen's knight comes out.",
       "Nf6 develops the king's knight and defends the centre.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
@@ -71,7 +71,7 @@
     ]
   },
   "qg4": {
-    "intro": "The Meran Semi-Slav. Black takes on c4, expands with b5, and White strikes in the centre with e4.",
+    "intro": "The Meran: Black takes on c4, expands with the b-pawn, and White strikes in the centre with the e-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -96,7 +96,7 @@
     ]
   },
   "qg5": {
-    "intro": "The Chigorin. Black develops the queen's knight and the light-squared bishop, and White accepts doubled pawns for the centre and the bishop pair.",
+    "intro": "The Chigorin: Black develops the queen's knight and the light-squared bishop, and White accepts doubled pawns for the centre and the bishop pair.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -117,13 +117,13 @@
       "bxc3 recaptures the bishop on c3. White's queenside pawns are split, but the centre stays full.",
       "exd4 takes the pawn on d4 and opens the e-file.",
       "cxd4 recaptures the pawn on d4 and restores a pawn in the centre.",
-      "Nge7 develops the king's knight toward the centre.",
+      "Nge7 develops the king's knight towards the centre.",
       "Bg2 puts the light-squared bishop on the long diagonal. The fianchetto makes sense of the doubled kingside pawns.",
       "Qe6 steps the queen to a stable square and keeps an eye on the centre."
     ]
   },
   "qg6": {
-    "intro": "The Tartakower. Black asks the dark-squared bishop a question, fianchettoes the other bishop's pawn, and the knights come off on d5.",
+    "intro": "The Tartakower: Black asks the dark-squared bishop a question, fianchettoes, and the knights come off on d5.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -131,7 +131,7 @@
       "e6 supports the pawn on d5 and declines the gambit. The dark-squared bishop gets out, and the light-squared bishop stays in for now.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
-      "Bg5 pins the knight on f6 to the queen on d8. The pin is the start of the Orthodox.",
+      "Bg5 pins the knight on f6 to the queen on d8.",
       "Be7 breaks that pin by stepping the dark-squared bishop between the knight and the queen, and prepares castling.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside the chain.",
       "O-O brings the king to g8 and the rook to f8.",
@@ -150,7 +150,7 @@
     ]
   },
   "qg7": {
-    "intro": "The Tarrasch. Black hits back with c5, the centre opens, and White fianchettos against the pawn on d5.",
+    "intro": "The Tarrasch: Black hits back with the c-pawn, the centre opens, and White fianchettoes against the pawn on d5.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -173,7 +173,7 @@
     ]
   },
   "qg8": {
-    "intro": "The Cambridge Springs. The queen comes to a5 against the pinned knight, and the dark-squared bishop joins her on b4.",
+    "intro": "The Cambridge Springs: the queen comes to a5 against the pinned knight, and the dark-squared bishop joins her on b4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -181,12 +181,12 @@
       "e6 supports the pawn on d5 and declines the gambit. The dark-squared bishop gets out, and the light-squared bishop stays in for now.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
-      "Bg5 pins the knight on f6 to the queen on d8. The pin is the start of the Orthodox.",
+      "Bg5 pins the knight on f6 to the queen on d8.",
       "Nbd7 develops the queen's knight and defends the knight on f6, so the pin does not cost the knight. This is the Cambridge Springs.",
       "e3 supports the pawn on d4 and frees the light-squared bishop. The dark-squared bishop is already outside the chain.",
-      "c6 supports the pawn on d5 and leaves the queen a path toward the queenside.",
+      "c6 supports the pawn on d5 and leaves the queen a path towards the queenside.",
       "Nf3 develops the king's knight. The queen is about to pin the other knight.",
-      "Qa5 attacks along the diagonal toward the knight on c3. The queen and the coming bishop are the idea.",
+      "Qa5 attacks along the diagonal towards the knight on c3. The queen and the coming bishop are the idea.",
       "Nd2 puts a second piece on the a5-e1 diagonal, so the knight on c3 is no longer pinned to the king.",
       "Bb4 develops the dark-squared bishop and attacks the knight on c3. The queen on a5 and this bishop are Black's active pieces.",
       "Qc2 develops the queen and adds a defender to the knight on c3. She also watches the centre.",
@@ -195,7 +195,7 @@
     ]
   },
   "qg9": {
-    "intro": "The Albin Counter-Gambit. Black plants a pawn on d4, and White fianchettos against it, castles, and trades the knights.",
+    "intro": "The Albin: Black plants a pawn on d4, and White fianchettoes against it, castles, and trades the knights.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
@@ -206,24 +206,24 @@
       "Nf3 develops the king's knight and attacks the pawn on d4.",
       "Nc6 develops the queen's knight and defends the pawn on d4.",
       "g3 prepares a fianchetto against the pawn on d4. The long diagonal is how White handles the wedge.",
-      "Nge7 develops the king's knight toward g6, where it can help recover the pawn.",
+      "Nge7 develops the king's knight towards g6, where it can help recover the pawn.",
       "Bg2 puts the light-squared bishop on the long diagonal, aiming at the queenside once the knight on f3 moves.",
       "Ng6 eyes the pawn on e5. Black wants the gambit pawn back.",
       "O-O brings the king to g1 and the rook to f1. The king is safe behind the fianchetto.",
       "Ngxe5 takes the pawn on e5. The gambit pawn comes back, and the knight on f3 can trade.",
       "Nxe5 takes the knight on e5 and trades a pair of knights.",
       "Nxe5 recaptures the knight on e5. The knights come off, and the pawn on d4 remains the feature.",
-      "Na3 develops the queen's knight toward b5, where it can annoy the pawn on d4.",
+      "Na3 develops the queen's knight towards b5, where it can annoy the pawn on d4.",
       "Be7 develops the dark-squared bishop and prepares castling."
     ]
   },
   "qg10": {
-    "intro": "The Moscow. White takes the knight on f6, the queen recaptures, and Black prepares a fianchetto after taking on c4.",
+    "intro": "The Moscow: White takes the knight on f6, the queen takes back, and Black prepares a fianchetto after taking on c4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black is ready to decline or take the gambit pawn.",
       "c4 attacks the pawn on d5. White offers a wing pawn: taking it draws the centre pawn off d5, and declining leaves the pressure on.",
-      "c6 supports the pawn on d5 and leaves the light-squared bishop free. That is the Slav.",
+      "c6 supports the pawn on d5 and leaves the light-squared bishop free.",
       "Nf3 develops the king's knight and controls the centre before the queen's knight comes out.",
       "Nf6 develops the king's knight and defends the centre.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",

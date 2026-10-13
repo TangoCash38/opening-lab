@@ -26,13 +26,23 @@ function bookNextSentence(ctx: CoachContext): string | null {
   return `The book move from here is ${ctx.nextBookSan}.`;
 }
 
+/** Drop a catalogue prefix such as "Trap · " so prose uses the plain name once. */
+export function plainLineName(lineName: string): string {
+  return lineName.replace(/^Trap\s*[·•:]\s*/u, "").replace(/\s+/g, " ").trim();
+}
+
+/**
+ * The intro card is the coach paragraph itself.
+ * The line name is not pasted on again, and there is no stock "tap Practice" line.
+ */
 export function coachIntroText(lineName: string, idea: string | null | undefined): string {
-  const about = `This is ${lineName}, one of 10 lines from Opening Lab.`;
-  const plan = idea?.trim();
-  const ready = "Tap Practice when you want to play the moves.";
-  if (!plan) return `${about} ${ready}`;
+  const plan = idea?.trim() ?? "";
+  if (!plan) {
+    const name = plainLineName(lineName);
+    return name ? `${name}.` : "Have a look at the position, then tap Practice.";
+  }
   const tidy = /[.!?]$/.test(plan) ? plan : `${plan}.`;
-  return `${about} ${tidy} ${ready}`;
+  return tidy.replace(/^Trap\s*[·•]\s*/u, "");
 }
 
 function moveNote(ctx: CoachContext): string {

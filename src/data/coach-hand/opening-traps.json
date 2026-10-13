@@ -1,8 +1,8 @@
 {
   "ot1": {
-    "intro": "Legal's Mate. Black takes the offered queen, and the bishop check and the knight finish it.",
+    "intro": "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. These traps need that open centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. Nothing is wrong yet, but the dark-squared bishop is about to be shut in.",
       "Nf3 develops the king's knight and attacks the pawn on e5. This is the knight Black will pin.",
       "d6 defends the pawn on e5 and shuts the dark-squared bishop in. That passive pawn is the first loose thread.",
@@ -18,9 +18,9 @@
     ]
   },
   "ot2": {
-    "intro": "The Fishing Pole. Black offers a knight so that taking it opens the h-file in front of White's castled king.",
+    "intro": "The Fishing Pole: Black parks a knight beside the castled king, and if White takes it the h-file opens for the queen.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. These traps need that open centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 takes a share of the centre. The Fishing Pole is a Spanish, so Black is happy to see the bishop come to the queenside.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nc6 develops the queen's knight and defends the pawn on e5. This is the knight the Spanish bishop comes to attack.",
@@ -41,9 +41,9 @@
     ]
   },
   "ot3": {
-    "intro": "The Elephant Trap. A knight capture on d5 lets Black pin the queen and take the bishop.",
+    "intro": "The Elephant Trap: a capture on d5 lets Black pin the queen, and the bishop that took the queen does not get away.",
     "notes": [
-      "d4 claims the centre and frees the dark-squared bishop. The queen's-pawn traps start from here.",
+      "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. Black will keep a solid pawn here and spring the trap from a pin.",
       "c4 attacks the pawn on d5 and offers the queen's pawn.",
       "e6 backs up the pawn on d5 and frees the dark-squared bishop. The light-squared bishop stays inside the chain, which is normal here.",
@@ -62,9 +62,9 @@
     ]
   },
   "ot4": {
-    "intro": "The Lasker Trap in the Albin. Taking the bishop lets a pawn promote to a knight with check, and the queen is lost.",
+    "intro": "The Lasker Trap: taking the bishop lets a pawn promote to a knight with check, and the queen is lost.",
     "notes": [
-      "d4 claims the centre and frees the dark-squared bishop. The queen's-pawn traps start from here.",
+      "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre. The Albin will offer the e-pawn rather than simply hold.",
       "c4 attacks the pawn on d5 and offers the queen's pawn.",
       "e5 is the Albin offer. Black wants a pawn on d4, and is willing to give up the pawn on e5 for it.",
@@ -85,9 +85,9 @@
     ]
   },
   "ot5": {
-    "intro": "The Blackburne Shilling trap. A second greedy capture lets the queen take on g2 and hit the bishop.",
+    "intro": "The Blackburne Shilling Trap: a second greedy capture lets the queen take on g2 and hit the bishop.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. These traps need that open centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The shilling trap needs this open game.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nc6 develops the queen's knight and defends the pawn on e5.",
@@ -102,9 +102,9 @@
     ]
   },
   "ot6": {
-    "intro": "The Stafford trap. Taking the queen is the bait, and the two bishops mate the king that steps to e2.",
+    "intro": "The Stafford Trap: taking the queen is the bait, and the two bishops mate the king that steps up.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. These traps need that open centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The Stafford needs this open king's pawn game.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nf6 develops the king's knight and attacks the pawn on e4. Black is offering the e-pawn.",
@@ -123,9 +123,9 @@
     ]
   },
   "ot7": {
-    "intro": "The Englund trap. Taking the bishop lets the queen finish a raid on the queenside.",
+    "intro": "The Englund Trap: taking the bishop lets the queen finish a raid on the queenside and come away with a piece for a pawn.",
     "notes": [
-      "d4 claims the centre and frees the dark-squared bishop. The queen's-pawn traps start from here.",
+      "d4 claims the centre and frees the dark-squared bishop.",
       "e5 offers a pawn straight away. The Englund is a gambit, not a solid centre.",
       "dxe5 takes the pawn on e5 and accepts the gambit.",
       "Nc6 develops the queen's knight and attacks the pawn on e5. Black wants the queen out next, not a quiet recapture.",
@@ -144,9 +144,9 @@
     ]
   },
   "ot8": {
-    "intro": "A Queen's Gambit Accepted trap. Holding the pawn with b5 lets the queen take the rook on a8.",
+    "intro": "In the Queen's Gambit Accepted, holding the extra pawn on the queenside lets the queen take the rook on a8.",
     "notes": [
-      "d4 claims the centre and frees the dark-squared bishop. The queen's-pawn traps start from here.",
+      "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets the centre. Black will accept the gambit pawn, which this trap needs.",
       "c4 attacks the pawn on d5 and offers the queen's pawn.",
       "dxc4 takes the pawn on c4 and accepts the gambit. The trap is the later capture that opens the a-file, not this one.",
@@ -162,9 +162,9 @@
     ]
   },
   "ot9": {
-    "intro": "The Damiano. Defending the e-pawn with the f-pawn lets the queen check at once.",
+    "intro": "The Damiano Defence: defending the e-pawn with the f-pawn lets the queen check at once and keep the attack going.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. These traps need that open centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The Damiano is what Black does next, not this move.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "f6 tries to defend the pawn on e5 and opens the king's diagonal. That is the Damiano mistake.",
@@ -182,9 +182,9 @@
     ]
   },
   "ot10": {
-    "intro": "The Kieninger Trap in the Budapest. Taking the bishop on b4 allows mate.",
+    "intro": "The Kieninger Trap: taking the bishop on b4 walks into mate.",
     "notes": [
-      "d4 claims the centre and frees the dark-squared bishop. The queen's-pawn traps start from here.",
+      "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and prepares the Budapest pawn offer.",
       "c4 gains space and offers a queen's-pawn game. Black answers with the gambit.",
       "e5 offers a pawn to open lines for a quick attack. This is the Budapest.",

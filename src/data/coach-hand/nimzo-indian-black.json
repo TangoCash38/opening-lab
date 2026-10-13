@@ -1,6 +1,6 @@
 {
   "nib1": {
-    "intro": "The Rubinstein Nimzo. White plays e3 and Bd3, and Black builds with d5, c5, and the knight on c6.",
+    "intro": "The Rubinstein: White plays the e-pawn and a bishop to d3, and Black builds with pawns on d5 and c5 and a knight on c6.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and watches the centre. Black does not commit a central pawn yet.",
@@ -10,7 +10,7 @@
       "Bb4 pins the knight on c3 to the king on e1. This pin is the Nimzo-Indian.",
       "e3 supports the centre and frees the light-squared bishop. Accepting the pin is the Rubinstein.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "d5 claims a share of the centre and attacks the pawn on c4.",
       "Nf3 develops the king's knight.",
       "c5 attacks the pawn on d4 and challenges the centre.",
@@ -19,7 +19,7 @@
     ]
   },
   "nib2": {
-    "intro": "The Rubinstein isolated pawn. Black takes on c4 and d4, and White recaptures with the e-pawn.",
+    "intro": "The Rubinstein with an isolated pawn: Black takes on c4 and d4, and White takes back with the e-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -29,7 +29,7 @@
       "Bb4 pins the knight on c3 to the king on e1.",
       "e3 supports the centre and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "d5 claims a share of the centre and attacks the pawn on c4.",
       "Nf3 develops the king's knight.",
       "c5 attacks the pawn on d4.",
@@ -41,7 +41,7 @@
     ]
   },
   "nib3": {
-    "intro": "The Huebner structure. Black trades on c3, doubles the pawns, and closes the centre with e5.",
+    "intro": "The Huebner: Black trades on c3, doubles the pawns, and closes the centre with the e-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and watches the centre.",
@@ -51,7 +51,7 @@
       "Bb4 pins the knight on c3 to the king on e1.",
       "e3 supports the centre and frees the light-squared bishop.",
       "c5 attacks the pawn on d4. Black challenges the centre before castling.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "Nc6 develops the queen's knight and attacks the pawn on d4.",
       "Nf3 develops the king's knight and defends the pawn on d4.",
       "Bxc3+ takes the knight on c3 and gives check. Black doubles the pawns on purpose.",
@@ -62,7 +62,7 @@
     ]
   },
   "nib4": {
-    "intro": "Rubinstein where White avoids doubled pawns. The knight comes to e2, a3 asks the bishop, and the bishop drops back to e7.",
+    "intro": "A Rubinstein where White avoids doubled pawns. The knight comes to e2, the a-pawn asks the bishop to move, and the bishop drops back.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -79,7 +79,7 @@
     ]
   },
   "nib5": {
-    "intro": "The Classical Nimzo. The queen comes to c2 so she can recapture on c3, and Black prepares a fianchetto.",
+    "intro": "The Classical: the queen comes to c2 so she can take back on c3, and Black prepares a fianchetto.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -96,7 +96,7 @@
     ]
   },
   "nib6": {
-    "intro": "The Classical with an immediate central strike. Pawns come off on d5, the bishop pins from g5, and Black plays c5.",
+    "intro": "The Classical with an immediate strike in the centre. Pawns come off on d5, the bishop pins from g5, and Black plays the c-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -115,7 +115,7 @@
     ]
   },
   "nib7": {
-    "intro": "The Saemisch. White forces the trade on c3 at once and accepts doubled pawns for the bishop pair.",
+    "intro": "The Saemisch: White forces the trade on c3 at once and accepts doubled pawns in return for the bishop pair.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -129,14 +129,14 @@
       "c5 attacks the pawn on d4 and puts pressure on the doubled pawns.",
       "e3 supports the centre and frees the light-squared bishop.",
       "Nc6 develops the queen's knight and attacks the pawn on d4.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "O-O brings the king to g8 and the rook to f8.",
       "Ne2 develops the king's knight. The c-pawn sits on c3, so this knight uses e2.",
       "d6 supports the centre and keeps the position solid."
     ]
   },
   "nib8": {
-    "intro": "The Kmoch with f3. Black strikes with d5 and c5 before White can settle the doubled pawns.",
+    "intro": "The Kmoch: Black strikes in the centre before White can settle the doubled pawns.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -153,7 +153,7 @@
     ]
   },
   "nib9": {
-    "intro": "The Leningrad. The bishop pins from g5, Black challenges with c5, and White pushes d5.",
+    "intro": "The Leningrad: the bishop pins from g5, Black challenges with the c-pawn, and White pushes the d-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -170,7 +170,7 @@
     ]
   },
   "nib10": {
-    "intro": "A Three Knights move order that reaches a Ragozin. Black kicks the bishop with g5 and plants the knight on e4.",
+    "intro": "A Three Knights move order that reaches a Ragozin. Black kicks the bishop with the g-pawn and plants a knight on e4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",

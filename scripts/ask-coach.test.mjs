@@ -106,8 +106,8 @@ test("Play coach stays inside the WebView", () => {
   assert.match(panel, /data-coach-next/);
   assert.match(panel, /ArrowGlyph/);
   const arrowCss = css.slice(css.indexOf(".ask-coach-arrow {"), css.indexOf(".ask-coach-viewport {"));
-  assert.match(arrowCss, /width: 44px/);
-  assert.match(arrowCss, /height: 44px/);
+  assert.match(arrowCss, /width: 32px/);
+  assert.match(arrowCss, /height: 32px/);
   assert.match(arrowCss, /background: var\(--color-accent\)/);
   assert.match(arrowCss, /color: var\(--color-accent-fg\)/);
   assert.doesNotMatch(arrowCss, /opacity: 0\.35/);
@@ -222,9 +222,15 @@ test("visitor cap is 5 and the buyer cap is 50", async () => {
 });
 
 test("intro and move notes stay on the line", () => {
-  const intro = mock.coachIntroText("Line 1", "Main 5.c3 gambit: meet Bb4+ with Bd2, and castle.");
-  assert.match(intro, /10 lines from Opening Lab/);
-  assert.match(intro, /Practice/);
+  const intro = mock.coachIntroText(
+    "Trap · Legal's Mate",
+    "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
+  );
+  assert.equal(
+    intro,
+    "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop gives check and the knights deliver mate.",
+  );
+  assert.doesNotMatch(intro, /Trap ·|one of 10 lines|Tap Practice/);
   assert.doesNotMatch(intro, /—|–|\bforever\b|\blifetime\b|\bPlay on\b/);
 
   const testCtx = context.buildCoachContext(req({ mode: "test", showBook: false }));
@@ -262,8 +268,9 @@ test("engine talk is replaced with the coach note", () => {
   assert.doesNotMatch(body, /ahead by|Stockfish|main line is|centipawn/i);
 
   const intro = mock.coachIntroText("Line 1", notes.scotchCoachIntro("sg1"));
-  assert.match(intro, /10 lines from Opening Lab/);
+  assert.equal(intro, notes.scotchCoachIntro("sg1"));
   assert.match(intro, /Bd2/);
+  assert.doesNotMatch(intro, /10 lines from Opening Lab|Tap Practice/);
   assert.doesNotMatch(intro, /level|engine|ahead|—|–/);
 });
 

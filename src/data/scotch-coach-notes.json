@@ -1,12 +1,12 @@
 {
   "sg1": {
-    "intro": "The main 5.c3 gambit: meet Bb4+ with Bd2, win the pawn back by exd5, and castle.",
+    "intro": "The main Scotch Gambit: meet Bb4+ with Bd2, win the pawn back, and castle.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bc5 develops the dark-squared bishop.",
@@ -25,13 +25,13 @@
     ]
   },
   "sg2": {
-    "intro": "Black plays Nf6. After cxd4 and Bb4+, the bishops come off and Qb3 meets Na5.",
+    "intro": "Black plays Nf6. After the pawn trade and Bb4+, the bishops come off and Qb3 meets Na5.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bc5 develops the dark-squared bishop.",
@@ -50,13 +50,13 @@
     ]
   },
   "sg3": {
-    "intro": "Ng5 hits f7. The knight goes in, and Qh5+ follows the king to f7.",
+    "intro": "Ng5 hits f7. The knight goes in, and Qh5+ follows the king that takes it.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bc5 develops the dark-squared bishop.",
@@ -71,13 +71,13 @@
     ]
   },
   "sg4": {
-    "intro": "Castle, then meet Nxe4 with Re1. White presses with Neg5 against queenside castling.",
+    "intro": "Castle first, then meet the capture on e4 with a rook. White presses with a knight against queenside castling.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Nf6 develops a knight towards the centre and attacks the pawn on e4.",
@@ -96,13 +96,13 @@
     ]
   },
   "sg5": {
-    "intro": "Black plays Be7. White castles, pushes e5, and opens the centre with exd6.",
+    "intro": "Black plays the modest bishop. White castles, pushes the e-pawn, and opens the centre.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Be7 develops the dark-squared bishop and gets ready to castle.",
@@ -117,13 +117,13 @@
     ]
   },
   "sg6": {
-    "intro": "Black checks with Bb4+. Castle, push e5, and take on f6.",
+    "intro": "Black checks with the dark-squared bishop. Castle, push the e-pawn, and take on f6.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bb4+ develops the dark-squared bishop and gives check.",
@@ -138,13 +138,13 @@
     ]
   },
   "sg7": {
-    "intro": "Taking on c3 is the greed trap. Bxf7+ and the queen checks win the bishop on c5.",
+    "intro": "Taking on c3 is the greedy capture. The bishop gives check, and the queen then wins the bishop on c5.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bc5 develops the dark-squared bishop.",
@@ -162,13 +162,13 @@
     ]
   },
   "sg8": {
-    "intro": "Black plays Nf6. White pushes e5, pins with Bb5, and takes on c6 before castling.",
+    "intro": "Black plays Nf6. White pushes the e-pawn, pins, and takes on c6 before castling.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Nf6 develops a knight towards the centre and attacks the pawn on e4.",
@@ -185,13 +185,13 @@
     ]
   },
   "sg9": {
-    "intro": "Black plays Nf6. After Bb4+, Nc3 is the move, then castle and meet d5.",
+    "intro": "Black plays Nf6. After Bb4+, Nc3 is the move, then castle and meet the pawn in the centre.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bc5 develops the dark-squared bishop.",
@@ -208,13 +208,13 @@
     ]
   },
   "sg10": {
-    "intro": "Black checks with Bb4+. Take back on c3, castle, and meet d5 with Nxd5.",
+    "intro": "Black checks with Bb4+. Take back on c3, castle, and meet the pawn in the centre with a knight capture.",
     "notes": [
       "e4 grabs a big share of the centre and opens lines for the bishop and queen.",
       "e5 claims a matching share of the centre and opens a path for the dark-squared bishop.",
       "Nf3 develops a knight towards the centre and attacks the pawn on e5.",
       "Nc6 develops a knight and defends the pawn on e5.",
-      "d4 strikes at the centre straight away. This is the Scotch.",
+      "d4 strikes at the centre straight away.",
       "exd4 takes the pawn on d4.",
       "Bc4 aims at f7, Black's weak spot.",
       "Bb4+ develops the dark-squared bishop and gives check.",

@@ -1,11 +1,11 @@
 {
   "sd1": {
-    "intro": "The Classical Slav foundation. Black takes on c4, develops the light-squared bishop, and the knight comes to a6 against White's knight on e5.",
+    "intro": "The Classical foundation: Black takes on c4, develops the light-squared bishop, and a knight comes to a6 against White's knight on e5.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
-      "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop. That is the Slav.",
+      "c4 offers a pawn to fight for d5.",
+      "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight and supports the centre.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
@@ -17,11 +17,11 @@
     ]
   },
   "sd2": {
-    "intro": "The Classical Slav with safe development. White takes the pawn back on c4, and Black pins with the bishop on b4 before both sides castle.",
+    "intro": "The Classical with safe development: White takes the pawn back, and Black pins with the bishop before both sides castle.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight and supports the centre.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -38,11 +38,11 @@
     ]
   },
   "sd3": {
-    "intro": "The Czech Slav. White's knight takes the light-squared bishop, and Black recaptures with the e-pawn.",
+    "intro": "The Czech Slav: White's knight takes the light-squared bishop, and Black takes back with the e-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -58,11 +58,11 @@
     ]
   },
   "sd4": {
-    "intro": "White omits a4. Black holds the pawn with b5, and the knight is driven from c3 to a2 before White takes on c4.",
+    "intro": "White leaves out the a-pawn. Black holds the pawn with the b-pawn, and the knight is driven off c3 before White takes on c4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -78,11 +78,11 @@
     ]
   },
   "sd5": {
-    "intro": "The Slow Slav. White plays e3 before Nc3, Black develops the light-squared bishop, and Bd3 asks that bishop a question.",
+    "intro": "The Slow Slav: White plays the e-pawn before the queen's knight, Black develops the light-squared bishop, and the bishop on d3 asks that bishop a question.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -94,11 +94,11 @@
     ]
   },
   "sd6": {
-    "intro": "The Slow Slav with the bishop dropping to g6. White takes it, Black recaptures on g6, and the dark-squared bishop comes to d6.",
+    "intro": "The Slow Slav with the bishop dropping back: White takes it, Black takes back, and the dark-squared bishop comes to d6.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -113,15 +113,15 @@
       "g3 prepares a fianchetto. The light-squared bishop will sit on the long diagonal.",
       "Nbd7 develops the queen's knight.",
       "Bg2 puts the light-squared bishop on the long diagonal.",
-      "Bd6 develops the dark-squared bishop and aims toward the kingside."
+      "Bd6 develops the dark-squared bishop and aims towards the kingside."
     ]
   },
   "sd7": {
-    "intro": "The Exchange Slav. The c-pawns come off, and both sides develop the remaining pieces to natural squares.",
+    "intro": "The Exchange: the c-pawns come off, and both sides develop the remaining pieces to natural squares.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "cxd5 takes the pawn on d5 and chooses the Exchange.",
       "cxd5 recaptures the pawn on d5. The c-file is open, and the structure is symmetrical.",
@@ -134,11 +134,11 @@
     ]
   },
   "sd8": {
-    "intro": "The Exchange Slav with queen pressure. White's queen comes to b3, and Black's queen defends from c7.",
+    "intro": "The Exchange with queen pressure: White's queen comes to b3, and Black's queen defends from c7.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -151,11 +151,11 @@
     ]
   },
   "sd9": {
-    "intro": "The Chebanenko. Black plays a6 instead of taking on c4, White pushes c5, and the knight comes to h5 against the dark-squared bishop.",
+    "intro": "The Chebanenko: Black plays the a-pawn instead of taking on c4, White pushes the c-pawn, and a knight comes to h5 against the dark-squared bishop.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -170,11 +170,11 @@
     ]
   },
   "sd10": {
-    "intro": "Central counterplay. Black develops against the knight on e5, the queen comes to c7, and the e-pawn breaks in the centre.",
+    "intro": "Central counterplay: Black develops against the knight on e5, the queen comes to c7, and the e-pawn breaks in the centre.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",

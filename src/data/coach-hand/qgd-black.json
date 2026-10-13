@@ -1,10 +1,10 @@
 {
   "qgdb1": {
-    "intro": "The Orthodox Queen's Gambit Declined. Black keeps the centre with c6 and Nbd7, and the rook comes to e8.",
+    "intro": "The Orthodox: Black keeps the centre with the c-pawn and a knight on d7, and the rook comes to the e-file.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop. The light-squared bishop stays behind the chain for now.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -16,16 +16,16 @@
       "Nbd7 develops the queen's knight and defends the knight on f6. The c-pawn stays free to move.",
       "Rc1 puts the rook on the c-file, behind the pawn on c4.",
       "c6 supports the pawn on d5. This solid pawn is the Orthodox choice.",
-      "Qc2 develops the queen on the c-file and looks toward the centre.",
+      "Qc2 develops the queen on the c-file and looks towards the centre.",
       "Re8 puts the rook on the e-file, behind the pawn on e6."
     ]
   },
   "qgdb2": {
-    "intro": "The freeing jump. Black takes on c4 and plants the knight on d5 against White's dark-squared bishop.",
+    "intro": "The freeing jump: Black takes on c4 and plants a knight on d5 against White's dark-squared bishop.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop. The light-squared bishop stays behind the chain for now.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -37,18 +37,18 @@
       "Nbd7 develops the queen's knight and defends the knight on f6. The c-pawn stays free to move.",
       "Rc1 puts the rook on the c-file, behind the pawn on c4.",
       "c6 supports the pawn on d5.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "dxc4 takes the pawn on c4 and opens lines. This capture is how Black starts to free the position.",
       "Bxc4 recaptures the pawn on c4 and keeps the light-squared bishop on an active diagonal.",
       "Nd5 plants the knight in the centre and attacks the knight on c3. Black is ready to trade off White's active pieces."
     ]
   },
   "qgdb3": {
-    "intro": "An early Exchange. White takes on d5 before developing the king's knight, and h3 gives the king air.",
+    "intro": "An early Exchange: White takes on d5 before developing the king's knight, and the h-pawn gives the king air.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -58,18 +58,18 @@
       "Be7 develops the dark-squared bishop and breaks that pin.",
       "e3 supports the pawn on d4 and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "c6 supports the pawn on d5.",
       "h3 takes g4 away from Black's pieces and gives the king a flight square.",
       "Nbd7 develops the queen's knight and defends the centre."
     ]
   },
   "qgdb4": {
-    "intro": "The Exchange with normal development. Both sides castle, the knight comes to d7, and the rook to e8.",
+    "intro": "The Exchange with normal development: both sides castle, the knight comes to d7, and the rook comes to the e-file.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -79,7 +79,7 @@
       "Be7 develops the dark-squared bishop and breaks that pin.",
       "e3 supports the pawn on d4 and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "c6 supports the pawn on d5.",
       "Nf3 develops the king's knight.",
       "Nbd7 develops the queen's knight and supports the centre.",
@@ -88,11 +88,11 @@
     ]
   },
   "qgdb5": {
-    "intro": "The Exchange with the knight on e2. The queen comes to c2, and Black's rook meets the half-open e-file.",
+    "intro": "The Exchange with the knight on e2: the queen comes to c2, and Black's rook meets the half-open e-file.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -102,20 +102,20 @@
       "Be7 develops the dark-squared bishop and breaks that pin.",
       "e3 supports the pawn on d4 and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "c6 supports the pawn on d5.",
-      "Qc2 develops the queen behind the bishop on d3. The two pieces share the diagonal toward the kingside.",
+      "Qc2 develops the queen behind the bishop on d3. The two pieces share the diagonal towards the kingside.",
       "Nbd7 develops the queen's knight.",
       "Nge2 develops the king's knight beside the centre. The f-pawn stays free.",
       "Re8 puts the rook on the half-open e-file."
     ]
   },
   "qgdb6": {
-    "intro": "Orthodox move order with Nf3 first. The dark-squared bishop comes to e7 before White pins, and the rook still lands on c1.",
+    "intro": "An Orthodox move order with the knight to f3 first. The dark-squared bishop comes out before White pins, and a rook still lands on the c-file.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop. The light-squared bishop stays behind the chain for now.",
       "Nf3 develops the king's knight and supports the centre.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -130,11 +130,11 @@
     ]
   },
   "qgdb7": {
-    "intro": "A quiet Queen's Gambit with Bd3. Black answers c5 and brings the knight to c6.",
+    "intro": "A quiet Queen's Gambit with the bishop on d3. Black answers with the c-pawn and brings a knight to c6.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -142,18 +142,18 @@
       "Be7 develops the dark-squared bishop and prepares castling.",
       "e3 supports the centre and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "c5 attacks the pawn on d4 and challenges the centre. Black does not stay cramped.",
       "O-O brings the king to g1 and the rook to f1.",
       "Nc6 develops the queen's knight and adds pressure to the pawn on d4."
     ]
   },
   "qgdb8": {
-    "intro": "The Ragozin. The bishop pins from b4, the queen recaptures on f6, and Black breaks with c5.",
+    "intro": "The Ragozin: the bishop pins from b4, the queen takes back on f6, and Black breaks with the c-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -174,11 +174,11 @@
     ]
   },
   "qgdb9": {
-    "intro": "The Lasker Defence. Black asks the bishop a question, jumps the knight to e4, and then takes on c3.",
+    "intro": "The Lasker Defence: Black asks the bishop a question, jumps a knight to e4, and then takes on c3.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -197,11 +197,11 @@
     ]
   },
   "qgdb10": {
-    "intro": "The Tartakower. After h6 and Bh4, Black fianchettos the light-squared bishop and develops the knight to d7.",
+    "intro": "The Tartakower: after the h-pawn and the bishop's retreat, Black fianchettoes the light-squared bishop and develops a knight to d7.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
-      "c4 offers a pawn to fight for d5. This is the Queen's Gambit.",
+      "c4 offers a pawn to fight for d5.",
       "e6 supports the pawn on d5 and frees the dark-squared bishop. The light-squared bishop will need another route.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -213,7 +213,7 @@
       "h6 asks the bishop on g5 a question.",
       "Bh4 keeps the dark-squared bishop on the diagonal and steps off the pawn.",
       "b6 prepares the fianchetto. The e-pawn shuts the light-squared bishop in, so Black develops it on the long diagonal.",
-      "Bd3 develops the light-squared bishop and aims toward the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside.",
       "Bb7 puts the light-squared bishop on the long diagonal. This is the Tartakower.",
       "O-O brings the king to g1 and the rook to f1.",
       "Nbd7 develops the queen's knight and supports the centre."

@@ -1,6 +1,6 @@
 {
   "kidb1": {
-    "intro": "The Classical King's Indian, Mar del Plata. White closes the centre with d5, the knight reroutes via e7, and Black starts the pawn storm with f5.",
+    "intro": "The Classical, Mar del Plata: White closes the centre, the knight reroutes, and Black starts the pawn storm with the f-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -25,7 +25,7 @@
     ]
   },
   "kidb2": {
-    "intro": "The Bayonet Attack. White expands with b4 on the queenside, Black challenges with a5, and the rook recaptures before f5.",
+    "intro": "The Bayonet: White expands on the queenside, Black challenges with the a-pawn, and the rook takes back before the f-pawn goes.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -42,7 +42,7 @@
       "O-O brings the king to g1 and the rook to f1.",
       "Nc6 develops the queen's knight and attacks the pawn on d4.",
       "d5 gains space and attacks the knight on c6.",
-      "Ne7 steps the knight off the pawn and toward the kingside.",
+      "Ne7 steps the knight off the pawn and towards the kingside.",
       "b4 starts the queenside expansion. This early pawn push is the Bayonet.",
       "a5 attacks the pawn on b4 and challenges that expansion.",
       "bxa5 takes the pawn on a5 and opens the queenside.",
@@ -56,7 +56,7 @@
     ]
   },
   "kidb3": {
-    "intro": "The Petrosian system. White plays d5 and Bg5, Black kicks the bishop with h6 and g5, and the knight comes to h5.",
+    "intro": "The Petrosian: White plays a pawn to d5 and a bishop to g5, Black kicks that bishop with the h-pawn and the g-pawn, and the knight comes to h5.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -83,7 +83,7 @@
     ]
   },
   "kidb4": {
-    "intro": "The Classical with an exchange on d4. Black leaves the e-file half-open, the knight recaptures, and c6 challenges the centre.",
+    "intro": "The Classical with a trade on d4. Black leaves the e-file half open, the knight takes back, and the c-pawn challenges the centre.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -106,7 +106,7 @@
     ]
   },
   "kidb5": {
-    "intro": "The Samisch. White plays f3, Be3, and Qd2, and Black expands on the queenside with a6 and the rook to b8.",
+    "intro": "The Samisch: White plays the f-pawn, a bishop to e3 and the queen to d2, and Black expands on the queenside with the a-pawn and a rook to b8.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -127,7 +127,7 @@
     ]
   },
   "kidb6": {
-    "intro": "The Four Pawns Attack. White grabs space with f4 and d5, and the centre blows open with e6, e5, and the captures on e5.",
+    "intro": "The Four Pawns Attack: White grabs space, and the centre blows open with pawn breaks and captures.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -152,7 +152,7 @@
     ]
   },
   "kidb7": {
-    "intro": "The Fianchetto Variation. Both bishops sit on the long diagonal, Black plays Nbd7 and c6, and the centre is exchanged on d4.",
+    "intro": "The Fianchetto: both bishops sit on the long diagonal, Black plays the queen's knight to d7 and a pawn to c6, and the centre is traded on d4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -178,7 +178,7 @@
     ]
   },
   "kidb8": {
-    "intro": "The Averbakh. The bishop comes to g5 and then f4, and Black challenges the centre with c5 and e6.",
+    "intro": "The Averbakh: the bishop comes to g5 and then f4, and Black challenges the centre with the c-pawn and the e-pawn.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -199,7 +199,7 @@
     ]
   },
   "kidb9": {
-    "intro": "The Exchange. The centre comes off, queens are traded, and both sides develop the remaining pieces calmly.",
+    "intro": "The Exchange: the centre comes off, the queens are traded, and both sides bring out the remaining pieces.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",
@@ -224,7 +224,7 @@
     ]
   },
   "kidb10": {
-    "intro": "The Classical with Nbd7. The bishop drops home to f1, Black plays a5 and Re8, and the dark-squared bishop recaptures on d4.",
+    "intro": "The Classical with the knight on d7. The bishop drops home, Black plays the a-pawn and a rook to e8, and the dark-squared bishop takes back on d4.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls the central squares.",

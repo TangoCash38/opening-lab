@@ -1,9 +1,9 @@
 {
   "ckb1": {
-    "intro": "The Advance. Get the light-squared bishop out before the e-pawn closes the centre, then hit d4 and trade White's light-squared bishop.",
+    "intro": "The Advance: bring the light-squared bishop out before the e-pawn closes the centre, then chip at d4 and trade White's light-squared bishop.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
       "e5 gains space and clamps the centre. Black has to challenge this pawn chain before the space becomes a problem.",
@@ -17,7 +17,7 @@
       "c3 supports the pawn on d4. White keeps the centre intact rather than letting the file open at once.",
       "cxd4 takes the pawn on d4 and opens the c-file.",
       "cxd4 recaptures the pawn on d4 and keeps a pawn in the centre. The c-file is now open.",
-      "Nge7 develops the king's knight toward the centre. It moves on before the dark-squared bishop needs this square.",
+      "Nge7 develops the king's knight towards the centre. It moves on before the dark-squared bishop needs this square.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "Bg4 puts the light-squared bishop opposite the bishop on e2. The knight on f3 is in the way, and once it moves the trade is there.",
       "Ne1 steps the king's knight off the bishop on g4. The queen's knight can then take back on e2.",
@@ -29,13 +29,13 @@
     ]
   },
   "ckb2": {
-    "intro": "Main Classical. The light-squared bishop goes to f5, drops back from the h-pawn, and is traded. Then Black builds a compact shell.",
+    "intro": "The main Classical: the light-squared bishop goes to f5, steps back when the h-pawn arrives, and is traded. Black then sits in a compact shell.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
-      "Nc3 develops the queen's knight and attacks the pawn on d5. This is the Classical, and Black takes on e4.",
+      "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "dxe4 takes the pawn on e4 and opens the centre. The light-squared bishop can still come out before the e-pawn moves.",
       "Nxe4 recaptures the pawn on e4. The knight lands in the centre, where Black can develop against it.",
       "Bf5 develops the light-squared bishop to an active square before the e-pawn moves. This is the main Classical.",
@@ -49,19 +49,19 @@
       "Bh7 tucks the light-squared bishop away from the pawn on h5. It is safe in the corner and still on the board.",
       "Bd3 offers a trade of the bishop on h7. White would rather remove it than leave it sitting there.",
       "Bxd3 takes the bishop on d3. Black is content to trade the light-squared bishop once it has done its job.",
-      "Qxd3 recaptures the bishop on d3. The queen's diagonal runs toward the kingside, so White's king will castle the other way.",
+      "Qxd3 recaptures the bishop on d3. The queen's diagonal runs towards the kingside, so White's king will castle the other way.",
       "e6 closes the centre and frees the dark-squared bishop. The light-squared bishop has already been traded, so this does not shut a piece in.",
       "Bd2 develops the dark-squared bishop and clears the way to castle queenside.",
-      "Ngf6 develops the king's knight toward the centre. The knight on d7 is already out, so the king's knight can use this square.",
-      "O-O-O brings the king to c1 and the rook to d1. The queen on d3 looks toward the kingside, so the king goes the other way.",
+      "Ngf6 develops the king's knight towards the centre. The knight on d7 is already out, so the king's knight can use this square.",
+      "O-O-O brings the king to c1 and the rook to d1. The queen on d3 looks towards the kingside, so the king goes the other way.",
       "Be7 develops the dark-squared bishop and prepares short castling. The king will sit on the opposite wing from the king on c1."
     ]
   },
   "ckb3": {
-    "intro": "Exchange Caro with the bishop on d3. Black develops, pins the king's knight, covers the b-pawn, and trades the dark-squared bishops.",
+    "intro": "The Exchange: with the bishop on d3, Black develops, pins the king's knight, covers the b-pawn, and trades the dark-squared bishops.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
       "exd5 takes the pawn on d5 and opens the centre. Black takes back with the c-pawn.",
@@ -87,10 +87,10 @@
     ]
   },
   "ckb4": {
-    "intro": "The Panov. Recapture on d5 with the knight, castle, and keep that knight in front of the queen's pawn.",
+    "intro": "The Panov: take back on d5 with the knight, castle, and keep that knight in front of the queen's pawn.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
       "exd5 takes the pawn on d5 and opens the centre. Black takes back with the c-pawn.",
@@ -103,7 +103,7 @@
       "Be7 develops the dark-squared bishop and prepares castling. It can drop back later to help hold the centre.",
       "cxd5 takes the pawn on d5. The knight can recapture and sit in the centre.",
       "Nxd5 recaptures the pawn on d5 and plants a knight in the centre.",
-      "Bd3 develops the light-squared bishop toward the kingside. The knight on d5 stands in front of the queen's pawn.",
+      "Bd3 develops the light-squared bishop towards the kingside. The knight on d5 stands in front of the queen's pawn.",
       "Nc6 develops the queen's knight and attacks the pawn on d4. The knight on d5 stays in front of that pawn.",
       "O-O brings the king to g1 and the rook to f1. The king gets out before Black finishes the blockade.",
       "O-O brings the king to g8 and the rook to f8. The king is safe, and the knight on d5 stays in the centre.",
@@ -116,11 +116,11 @@
     ]
   },
   "ckb5": {
-    "intro": "The Two Knights. Give the light-squared bishop up for the knight on f3, build a solid centre, and trade the knights on e4.",
+    "intro": "The Two Knights: give up the light-squared bishop for the knight on f3, keep a solid centre, and trade the knights on e4.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
-      "Nc3 develops the queen's knight before the d-pawn joins in. This is the Two Knights.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
+      "Nc3 develops the queen's knight before the d-pawn joins in.",
       "d5 challenges the pawn on e4. The knight on c3 already attacks this pawn, so the centre is a fight at once.",
       "Nf3 develops the king's knight. Black can pin it straight away.",
       "Bg4 pins the knight on f3 to the queen on d1. The pin is the idea of this line.",
@@ -145,19 +145,19 @@
     ]
   },
   "ckb6": {
-    "intro": "The Karpov Classical. The knight goes to d7, the bishop to d6, and after h6 the queen recaptures on e4.",
+    "intro": "The Karpov Classical: the knight goes to d7 and the bishop to d6, and after the h-pawn the queen takes back on e4.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
-      "Nc3 develops the queen's knight and attacks the pawn on d5. This is the Classical, and Black takes on e4.",
+      "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "dxe4 takes the pawn on e4 and opens the centre. The light-squared bishop can still come out before the e-pawn moves.",
       "Nxe4 recaptures the pawn on e4. The knight lands in the centre, where Black can develop against it.",
       "Nd7 is the Karpov move. The knight supports the king's knight and leaves the light-squared bishop flexible.",
       "Ng5 is a nuisance jump near the king's knight's square. Black develops there anyway.",
       "Ngf6 develops the king's knight. The knight on d7 backs it up, and White's knight on g5 is eyeing the pawn on f7.",
-      "Bd3 develops the light-squared bishop toward the kingside. Black will blunt it with a pawn and then a bishop.",
+      "Bd3 develops the light-squared bishop towards the kingside. Black will blunt it with a pawn and then a bishop.",
       "e6 frees the dark-squared bishop and takes the e6 square away from the knight on g5.",
       "N1f3 brings the other knight out and prepares castling. The knight on g5 is the one making the nuisance.",
       "Bd6 develops the dark-squared bishop onto an active diagonal, aimed at the centre.",
@@ -165,14 +165,14 @@
       "h6 asks the knight on g5 a question before Black castles. It should not be left sitting there.",
       "Ne4 drops the knight back from g5 onto a central square. Black can trade it.",
       "Nxe4 takes the knight on e4. Black removes the knight that dropped back into the centre.",
-      "Qxe4 recaptures the knight on e4. The queen looks toward h7, with the bishop on d3 sitting behind her."
+      "Qxe4 recaptures the knight on e4. The queen looks towards h7, with the bishop on d3 sitting behind her."
     ]
   },
   "ckb7": {
-    "intro": "The Fantasy. The knight takes on e5 into a pin, the bishop takes the queen, and Black's queen comes out with check.",
+    "intro": "The Fantasy: the knight steps into a pin on e5, the bishop takes the queen, and Black's queen comes out with check.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
       "f3 is the Fantasy. It supports the pawn on e4 and blocks the king's knight, which is the drawback Black can use.",
@@ -189,22 +189,22 @@
       "Nf6 develops the king's knight and attacks the pawn on e4.",
       "Nd2 brings the queen's knight out beside the king on d1. The king still needs a safer square.",
       "Qd8 steps the queen back from d4. The check has done its job, and the queen stays out of trouble.",
-      "c3 opens a path for the king toward the queenside and supports the centre.",
-      "Nbd7 develops the queen's knight toward the centre.",
-      "Kc2 walks the king toward the queenside. The king has already moved, so castling is no longer possible.",
+      "c3 opens a path for the king towards the queenside and supports the centre.",
+      "Nbd7 develops the queen's knight towards the centre.",
+      "Kc2 walks the king towards the queenside. The king has already moved, so castling is no longer possible.",
       "Nc5 attacks the knight on d3 and the pawn on e4. The knight joins the pressure on White's centre.",
       "a4 gains a little space on the queenside. It does not replace the queen.",
       "Qd7 brings the queen out again. The knights are already on f6 and c5."
     ]
   },
   "ckb8": {
-    "intro": "Classical with the knight on f6. Recapture with the e-pawn, castle, and put a rook on the open e-file.",
+    "intro": "Classical with the knight on f6: take back with the e-pawn, castle, and put a rook on the open e-file.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
-      "Nc3 develops the queen's knight and attacks the pawn on d5. This is the Classical, and Black takes on e4.",
+      "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "dxe4 takes the pawn on e4 and opens the centre. The light-squared bishop can still come out before the e-pawn moves.",
       "Nxe4 recaptures the pawn on e4. The knight lands in the centre, where Black can develop against it.",
       "Nf6 attacks the knight on e4. Black offers the trade that will shape the pawn structure.",
@@ -221,10 +221,10 @@
     ]
   },
   "ckb9": {
-    "intro": "Advance with an early hit on the base of the chain. Pin the king's knight, open the c-file, and bring the other knight toward the centre.",
+    "intro": "Another Advance: hit the base of the pawn chain early, pin the king's knight, open the c-file, and bring the other knight towards the centre.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
       "e5 gains space and clamps the centre. Black has to challenge this pawn chain before the space becomes a problem.",
@@ -238,14 +238,14 @@
       "O-O brings the king to g1 and the rook to f1. The king leaves before the centre opens.",
       "cxd4 takes the pawn on d4 and opens the c-file against White's position.",
       "cxd4 recaptures the pawn on d4 and restores a pawn in the centre. The c-file stays open.",
-      "Nge7 develops the king's knight toward the centre."
+      "Nge7 develops the king's knight towards the centre."
     ]
   },
   "ckb10": {
-    "intro": "Panov with a fianchetto. Castle, then the queen's knight asks the bishop on c4 to move.",
+    "intro": "The Panov with a fianchetto: castle, then the queen's knight asks the bishop on c4 to move.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. The Caro meets this by building a pawn centre.",
-      "c6 prepares a pawn in the centre and leaves the light-squared bishop free. That is the Caro.",
+      "e4 opens the game and frees the light-squared bishop.",
+      "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
       "d4 claims the centre and frees the dark-squared bishop. The pawn on c6 is there to support Black's answer.",
       "d5 challenges the pawn on e4 and takes a share of the centre. The light-squared bishop is still free, because the c-pawn moved first.",
       "exd5 takes the pawn on d5 and opens the centre. Black takes back with the c-pawn.",
@@ -259,7 +259,7 @@
       "cxd5 takes the pawn on d5 and opens the centre while Black is about to castle. The recapture can wait one move.",
       "O-O brings the king to g8 and the rook to f8. The king gets out first, and the bishop on g7 stays on its diagonal.",
       "Bc4 develops the light-squared bishop onto an active diagonal. The queen's knight can ask this bishop to move.",
-      "Nbd7 develops the queen's knight toward the queenside.",
+      "Nbd7 develops the queen's knight towards the queenside.",
       "O-O brings the king to g1 and the rook to f1. White castles before the bishop is kicked.",
       "Nb6 attacks the bishop on c4 and asks it where it wants to go. The bishop on g7 keeps the long diagonal."
     ]
