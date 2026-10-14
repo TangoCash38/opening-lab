@@ -20,7 +20,6 @@ type Props = {
   finished: boolean;
   /** Book prompt such as "Play: Nf3". Empty while the intro is on screen. */
   prompt?: string;
-  onPractice: () => void;
   onTest: () => void;
 };
 
@@ -35,7 +34,6 @@ export function AskCoachPanel({
   started,
   finished,
   prompt = "",
-  onPractice,
   onTest,
 }: Props) {
   const t = useT();
@@ -45,12 +43,15 @@ export function AskCoachPanel({
   const [revealed, setRevealed] = useState(false);
   const panelRef = useRef<HTMLElement>(null);
   const [slide, setSlide] = useState(0);
+  /** True while the reader is on the newest slide, so a new pair may follow. */
+  const followed = useRef(true);
   const swipe = useRef<{ x: number; y: number; moved: boolean } | null>(null);
 
   useEffect(() => {
     setNotes({});
     setRevealed(false);
     setSlide(0);
+    followed.current = true;
   }, [lineId]);
 
   useEffect(() => {
@@ -98,7 +99,12 @@ export function AskCoachPanel({
 
   useEffect(() => {
     const next = coachSlides(ply, phase === "done");
-    setSlide(Math.max(0, next.length - 1));
+    const nextLatest = Math.max(0, next.length - 1);
+    setSlide((current) => {
+      // A look back stays put. An auto move must not skip the note on screen.
+      if (!followed.current) return Math.min(current, nextLatest);
+      return nextLatest;
+    });
   }, [lineId, ply, phase]);
 
   if (!askTheCoachClientEnabled(packId)) return null;
@@ -108,7 +114,11 @@ export function AskCoachPanel({
   const index = Math.min(slide, latest);
 
   function go(delta: number) {
-    setSlide((current) => Math.max(0, Math.min(latest, current + delta)));
+    setSlide((current) => {
+      const next = Math.max(0, Math.min(latest, current + delta));
+      followed.current = next === latest;
+      return next;
+    });
   }
 
   function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
@@ -168,11 +178,7 @@ export function AskCoachPanel({
                       <p className="slav-notice-paragraph" data-ask-coach-intro>
                         {intro}
                       </p>
-                      {phase === "intro" ? (
-                        <button type="button" className="ask-coach-primary" data-ask-coach-practice onClick={onPractice}>
-                          {t("Practice")}
-                        </button>
-                      ) : ply < 1 ? (
+                      {phase !== "intro" && ply < 1 ? (
                         <p className="slav-notice-paragraph" data-ask-coach-wait>
                           {mode === "test"
                             ? t("Your move. The next book move stays hidden until you tap Show me.")
@@ -195,7 +201,13 @@ export function AskCoachPanel({
                 }
                 const heading = coachPairHeading(plies, item.index, item.blackPly);
                 return (
-                  <div key={item.whitePly} className="ask-coach-slide" data-coach-slide-kind="pair" data-coach-pair={item.index}>
+                  <div
+                    key={item.whitePly}
+                    className="ask-coach-slide"
+                    data-coach-slide-kind="pair"
+                    data-coach-pair={item.index}
+                    data-coach-pair-full={item.blackPly != null ? "true" : "false"}
+                  >
                     <p className="ask-coach-pair-label">{heading}</p>
                     <NoteLine san={plies[item.whitePly - 1] ?? ""} ply={item.whitePly} text={notes[item.whitePly]} latest={item.whitePly === ply} />
                     {item.blackPly != null ? (

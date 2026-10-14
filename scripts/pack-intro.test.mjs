@@ -37,9 +37,8 @@ test("PackAboutModal auto-starts — no gym or opening-explain UI", () => {
 });
 
 test("Hero still opens PackAboutModal which now auto-starts Potato Pie", () => {
-  assert.match(hero, /openIntroThenPractice/);
   assert.match(hero, /PackAboutModal/);
-  assert.match(hero, /if \(pack\?\.about\) setAboutOpen\(true\)/);
+  assert.match(hero, /if \(pack\.about\) \{\s*setPendingLine\(item\);\s*setAboutOpen\(true\);/);
   assert.match(list, /<HomeHero/);
   assert.match(list, /linesInitiallyOpen/);
 });

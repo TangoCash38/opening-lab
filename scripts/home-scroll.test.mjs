@@ -11,12 +11,13 @@ const hero = readFileSync(
 );
 const css = readFileSync(join(root, "src/styles.css"), "utf8");
 
-test("home Caro board does not start practice; only Tap to practice does", () => {
-  assert.match(hero, /Tap to practice/);
+test("home Caro board does not start practice; a line from the list does", () => {
+  assert.doesNotMatch(hero, /Tap to practice/);
+  assert.doesNotMatch(hero, /onClick=\{openIntroThenPractice\}/);
   assert.match(hero, /interactive=\{false\}/);
   assert.match(hero, /onSquare=\{\(\) => \{\}\}/);
   assert.match(hero, /pointer-events-none/);
-  assert.doesNotMatch(hero, /onSquare=\{\(\) => openIntroThenPractice/);
+  assert.match(hero, /launchLine\(item\)/);
 });
 
 test("home board lets the page scroll", () => {

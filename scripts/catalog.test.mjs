@@ -111,19 +111,18 @@ test("Help and home name the free packs and do not pitch Lab+", () => {
   assert.doesNotMatch(guide, /Play on/);
   assert.doesNotMatch(guide, /playing on/);
 
-  assert.match(hero, /Tap to practice/);
+  assert.doesNotMatch(hero, /Tap to practice/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
   assert.match(hero, /showHints=\{false\}/);
   assert.match(hero, /expected=\{null\}/);
-  assert.match(hero, /openIntroThenPractice/);
-  assert.match(hero, /onClick=\{openIntroThenPractice\}/);
+  assert.doesNotMatch(hero, /onClick=\{openIntroThenPractice\}/);
   assert.match(hero, /See \{n\} \{pack\} lines/);
   assert.match(hero, /aria-expanded=\{linesOpen\}/);
   assert.match(hero, /Free sample/);
   assert.match(hero, /Advance, Classical, Exchange/);
   assert.match(hero, /PackAboutModal/);
   assert.match(hero, /aboutOpen/);
-  assert.match(hero, /pack\?\.about/);
+  assert.match(hero, /if \(pack\.about\) \{\s*setPendingLine\(item\);\s*setAboutOpen\(true\);/);
   assert.doesNotMatch(hero, /The Caro-Kann is Black's answer to 1\.e4/);
   assert.match(hero, /id === "ckb1"/);
   assert.match(hero, /onStartLine\(pack, line, "learn"\)/);
@@ -3700,7 +3699,7 @@ test("two-step pack intro exists; gym copy is not the only opening text; no setu
   assert.match(hero, /packId=\{pack\.id\}/);
   assert.match(hero, /onStart/);
   assert.match(hero, /startLabel=\{t\("Start"\)\}/);
-  assert.match(hero, /openIntroThenPractice/);
+  assert.doesNotMatch(hero, /onClick=\{openIntroThenPractice\}/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
   assert.match(hero, /packId=\{pack\.id\}/);
   assert.match(hero, /startLabel=\{t\("Start"\)\}/);
