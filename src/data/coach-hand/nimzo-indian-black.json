@@ -10,7 +10,7 @@
       "Bb4 pins the knight on c3 to the king on e1. This pin is the Nimzo-Indian.",
       "e3 supports the centre and frees the light-squared bishop. Accepting the pin is the Rubinstein.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims towards the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside. It eyes the pawn on h7.",
       "d5 claims a share of the centre and attacks the pawn on c4.",
       "Nf3 develops the king's knight.",
       "c5 attacks the pawn on d4 and challenges the centre.",
@@ -29,14 +29,14 @@
       "Bb4 pins the knight on c3 to the king on e1.",
       "e3 supports the centre and frees the light-squared bishop.",
       "O-O brings the king to g8 and the rook to f8.",
-      "Bd3 develops the light-squared bishop and aims towards the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside. It eyes the pawn on h7.",
       "d5 claims a share of the centre and attacks the pawn on c4.",
       "Nf3 develops the king's knight.",
       "c5 attacks the pawn on d4.",
       "O-O brings the king to g1 and the rook to f1. The king steps off the pin.",
-      "dxc4 takes the pawn on c4 and opens the position.",
+      "dxc4 takes the pawn on c4 and opens the position. It also eyes the bishop on d3.",
       "Bxc4 recaptures the pawn on c4. The light-squared bishop stays active.",
-      "cxd4 takes the pawn on d4 and opens the centre.",
+      "cxd4 takes the pawn on d4 and opens the centre. It also eyes the pawn on e3.",
       "exd4 recaptures the pawn on d4. The d-pawn is isolated, and the lines are open."
     ]
   },
@@ -51,7 +51,7 @@
       "Bb4 pins the knight on c3 to the king on e1.",
       "e3 supports the centre and frees the light-squared bishop.",
       "c5 attacks the pawn on d4. Black challenges the centre before castling.",
-      "Bd3 develops the light-squared bishop and aims towards the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside. It eyes the pawn on h7.",
       "Nc6 develops the queen's knight and attacks the pawn on d4.",
       "Nf3 develops the king's knight and defends the pawn on d4.",
       "Bxc3+ takes the knight on c3 and gives check. Black doubles the pawns on purpose.",
@@ -90,7 +90,7 @@
       "Qc2 develops the queen and defends the knight on c3. She is also ready to recapture there, so the pawns need not double.",
       "O-O brings the king to g8 and the rook to f8.",
       "a3 asks the bishop on b4 a question.",
-      "Bxc3+ takes the knight on c3 and gives check.",
+      "Bxc3+ takes the knight on c3 and gives check. It also eyes the pawn on d4.",
       "Qxc3 recaptures the bishop on c3. The queen takes, and the pawns stay healthy.",
       "b6 prepares the fianchetto. The light-squared bishop wants the long diagonal."
     ]
@@ -104,13 +104,13 @@
       "e6 frees the dark-squared bishop and supports the central pawn that follows.",
       "Nc3 develops the queen's knight and fights for the centre.",
       "Bb4 pins the knight on c3 to the king on e1.",
-      "Qc2 develops the queen and defends the knight on c3.",
+      "Qc2 develops the queen and defends the knight on c3. It eyes the pawn on h7.",
       "d5 claims the centre and attacks the pawn on c4.",
-      "cxd5 takes the pawn on d5 and opens the c-file.",
-      "exd5 recaptures the pawn on d5 and opens the e-file.",
+      "cxd5 takes the pawn on d5 and opens the c-file. It also eyes the pawn on e6.",
+      "exd5 recaptures the pawn on d5 and opens the e-file. That pawn move takes a share of the centre.",
       "Bg5 pins the knight on f6 to the queen on d8.",
       "h6 asks the bishop on g5 a question.",
-      "Bh4 keeps the dark-squared bishop on the pinning diagonal and steps off the pawn.",
+      "Bh4 keeps the dark-squared bishop on the pinning diagonal and steps off the pawn. It eyes the knight on f6.",
       "c5 attacks the pawn on d4 and challenges the centre."
     ]
   },
@@ -124,12 +124,12 @@
       "Nc3 develops the queen's knight and fights for the centre.",
       "Bb4 pins the knight on c3 to the king on e1.",
       "a3 asks the bishop on b4 a question at once. White wants the trade now.",
-      "Bxc3+ takes the knight on c3 and gives check.",
+      "Bxc3+ takes the knight on c3 and gives check. It also eyes the pawn on d4.",
       "bxc3 recaptures the bishop on c3. The pawns are doubled, and White keeps the bishop pair.",
       "c5 attacks the pawn on d4 and puts pressure on the doubled pawns.",
       "e3 supports the centre and frees the light-squared bishop.",
       "Nc6 develops the queen's knight and attacks the pawn on d4.",
-      "Bd3 develops the light-squared bishop and aims towards the kingside.",
+      "Bd3 develops the light-squared bishop and aims towards the kingside. It eyes the pawn on h7.",
       "O-O brings the king to g8 and the rook to f8.",
       "Ne2 develops the king's knight. The c-pawn sits on c3, so this knight uses e2.",
       "d6 supports the centre and keeps the position solid."
@@ -145,9 +145,9 @@
       "Nc3 develops the queen's knight and fights for the centre.",
       "Bb4 pins the knight on c3 to the king on e1.",
       "f3 supports a central pawn and takes e4 under firmer control. The king's knight will not develop to its usual square.",
-      "d5 strikes at the centre before White consolidates.",
+      "d5 strikes at the centre before White consolidates. It eyes the pawn on c4.",
       "a3 asks the bishop on b4 a question.",
-      "Bxc3+ takes the knight on c3 and gives check.",
+      "Bxc3+ takes the knight on c3 and gives check. It also eyes the pawn on d4.",
       "bxc3 recaptures the bishop on c3. The pawns are doubled.",
       "c5 attacks the pawn on d4 and increases the pressure on the doubled pawns."
     ]
@@ -163,9 +163,9 @@
       "Bb4 pins the knight on c3 to the king on e1.",
       "Bg5 pins the knight on f6 to the queen on d8. White answers the pin with a pin.",
       "h6 asks the bishop on g5 a question.",
-      "Bh4 keeps the dark-squared bishop on the pinning diagonal and steps off the pawn.",
+      "Bh4 keeps the dark-squared bishop on the pinning diagonal and steps off the pawn. It eyes the knight on f6.",
       "c5 attacks the pawn on d4 and challenges the centre.",
-      "d5 gains a wedge of space and attacks the pawn on e6.",
+      "d5 gains a wedge of space and attacks the pawn on e6. That pawn move takes a share of the centre.",
       "d6 supports the centre and keeps the wedge from becoming a target on its own."
     ]
   },
@@ -180,14 +180,14 @@
       "Bb4 pins the knight on c3 to the king on e1.",
       "Nf3 develops the king's knight. White does not pin the knight on f6 yet.",
       "d5 claims the centre and attacks the pawn on c4.",
-      "cxd5 takes the pawn on d5.",
-      "exd5 recaptures the pawn on d5 and opens the e-file.",
+      "cxd5 takes the pawn on d5. It also eyes the pawn on e6.",
+      "exd5 recaptures the pawn on d5 and opens the e-file. That pawn move takes a share of the centre.",
       "Bg5 pins the knight on f6 to the queen on d8.",
       "h6 asks the dark-squared bishop a question.",
-      "Bh4 keeps the pin and steps off the pawn.",
+      "Bh4 keeps the pin and steps off the pawn. It eyes the knight on f6.",
       "g5 attacks the bishop on h4 and gains kingside space.",
-      "Bg3 drops the dark-squared bishop back and keeps it on the board.",
-      "Ne4 plants the knight in the centre and attacks the bishop on g3."
+      "Bg3 drops the dark-squared bishop back and keeps it on the board. It eyes the pawn on c7.",
+      "Ne4 plants the knight in the centre and attacks the bishop on g3. It eyes the pawn on f2."
     ]
   }
 }

@@ -80,9 +80,9 @@ test("Slav Defence is a listed live pack: 10 educational lines, free sample sd1"
   assert.match(intro, /About the opening/);
   assert.match(intro, /Welcome to the start of your Slav Defence for Black learning pack/);
   assert.match(notice, /data-slav-next/);
-  assert.match(notice, />\s*Next\s*</);
+  assert.match(notice, /Continue/);
   assert.match(notice, /data-slav-start/);
-  assert.match(notice, />\s*Start\s*</);
+  assert.match(notice, /Tap to practice/);
   assert.doesNotMatch(notice, /Start first line|Begin line 1|How to play/);
   assert.doesNotMatch(notice, /coach-seated|potato|big-red|portrait|<img/i);
   assert.match(intro, /You play Black\./);

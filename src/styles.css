@@ -6991,8 +6991,8 @@ html[data-slav-opening] .app-header-logo {
 
 /* Pack intro cards only. Nearly-there and the finish note keep the small board. */
 .slav-notice[data-slav-notice] .slav-intro-board {
-  width: min(100% - 1.8rem, 26.25rem);
-  margin: 0.2rem auto 0;
+  width: min(100% - 0.75rem, 36rem);
+  margin: 0.1rem auto 0;
 }
 
 .slav-notice[data-slav-notice] .slav-intro-board > .relative {
