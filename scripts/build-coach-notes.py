@@ -587,16 +587,19 @@ def verify_hand_note(before: chess.Board, san: str, note: str, future: list[str]
     count = sentence_count(note)
     if count < 1 or count > 2:
         errors.append("sentence count")
-    future_set, played_set = set(future), set(played)
-    for tok in san_tokens(note):
-        if tok in future_set and tok not in played_set:
-            errors.append(f"future {tok}")
     try:
         move = before.parse_san(san)
     except ValueError:
         return errors + ["illegal"]
     after = before.copy(stack=False)
     after.push(move)
+    future_set, played_set = set(future), set(played)
+    for tok in san_tokens(note):
+        if tok in future_set and tok not in played_set:
+            # A square the mover attacks is the point of this move, not a later book move.
+            if re.fullmatch(r"[a-h][1-8]", tok) and chess.parse_square(tok) in after.attacks(move.to_square):
+                continue
+            errors.append(f"future {tok}")
     if re.search(r"checkmate|\bmates\b", note, re.I) and not after.is_checkmate():
         errors.append("false mate")
     if re.search(r"gives check|with check|checks the", note, re.I) and not after.is_check():
@@ -643,6 +646,11 @@ def verify_hand_note(before: chess.Board, san: str, note: str, future: list[str]
         sq = chess.parse_square(sq_name)
         occupied = before.piece_at(sq) is not None or after.piece_at(sq) is not None
         if sq in (move.from_square, move.to_square) or occupied or sq in after.attacks(move.to_square):
+            continue
+        empty = before.piece_at(sq) is None and after.piece_at(sq) is None
+        if empty and re.search(rf"keeps {sq_name} (?:free|open)\b", note):
+            continue
+        if empty and re.search(rf"drop back to {sq_name}\b", note):
             continue
         errors.append(f"loose square {sq_name}")
     return errors
