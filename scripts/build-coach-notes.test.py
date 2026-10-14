@@ -110,6 +110,50 @@ class VerifyHandNoteExemptions(unittest.TestCase):
         )
         self.assertEqual(errors, [])
 
+    def test_square_a_later_move_reaches_is_not_loose(self):
+        board = chess.Board()
+        errors = bcn.verify_hand_note(
+            board,
+            "e4",
+            "e4 takes space. The knight can come to f3.",
+            ["Nf3"],
+            ["e4"],
+        )
+        self.assertEqual(errors, [])
+
+    def test_named_square_fails_when_the_line_never_plays_it(self):
+        board = chess.Board()
+        errors = bcn.verify_hand_note(
+            board,
+            "e4",
+            "e4 takes space. The knight can come to f3.",
+            [],
+            ["e4"],
+        )
+        self.assertIn("loose square f3", errors)
+
+    def test_unplayed_empty_square_is_still_loose(self):
+        board = chess.Board()
+        errors = bcn.verify_hand_note(
+            board,
+            "e4",
+            "e4 takes space. The knight can come to h3.",
+            ["Nf3"],
+            ["e4"],
+        )
+        self.assertIn("loose square h3", errors)
+
+    def test_taking_on_a_square_is_not_read_as_a_king(self):
+        board = board_after(["e4", "c6", "d4", "d5", "f3", "dxe4", "fxe4"])
+        errors = bcn.verify_hand_note(
+            board,
+            "e5",
+            "e5 attacks the pawn on d4 and offers a pawn. If the knight comes to f3, the bishop to g4 pins it, and taking on e5 then loses the queen.",
+            ["Nf3", "Bg4", "Nxe5", "Bxd1"],
+            ["e4", "c6", "d4", "d5", "f3", "dxe4", "fxe4", "e5"],
+        )
+        self.assertEqual(errors, [])
+
     def test_empty_square_without_an_exemption_is_still_loose(self):
         board = chess.Board()
         errors = bcn.verify_hand_note(

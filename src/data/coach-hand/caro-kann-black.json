@@ -178,7 +178,7 @@
       "f3 is the Fantasy. It supports the pawn on e4 and blocks the king's knight, which is the drawback Black can use.",
       "dxe4 takes the pawn on e4 and opens the centre. Black is happy to see the f-pawn recapture.",
       "fxe4 recaptures the pawn on e4 and opens the f-file. The king's knight still has no natural square.",
-      "e5 attacks the pawn on d4 and offers a pawn. Black will pin the knight that defends the centre, and taking the pawn then loses the queen.",
+      "e5 attacks the pawn on d4 and offers a pawn. If the knight comes to f3, the bishop to g4 pins it, and taking on e5 then loses the queen.",
       "Nf3 develops the king's knight onto the square the pin wants, and it attacks the pawn on e5.",
       "Bg4 pins the knight on f3 to the queen on d1. Taking the pawn now loses the queen.",
       "Nxe5 moves the pinned knight and takes the pawn on e5. The queen looks free, and that is the mistake.",

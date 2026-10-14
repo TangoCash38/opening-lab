@@ -63,7 +63,7 @@
       "Ng5 attacks the pawn on f7.",
       "Nh6 develops a knight and defends the pawn on f7.",
       "Nxf7 takes the pawn on f7 and attacks the knight on h6.",
-      "Nxf7 recaptures the knight on f7. Black removes the knight that broke in on f7.",
+      "Nxf7 recaptures the knight on f7. Black wins the knight back before it can take the queen on d8.",
       "Bxf7+ takes the knight on f7 and gives check.",
       "Kxf7 takes the bishop on f7 and pulls the king out of the centre.",
       "Qh5+ gives check and attacks the king on f7.",
@@ -89,7 +89,7 @@
       "Qxd5 recaptures the bishop on d5 and defends the knight on e4.",
       "Nc3 develops a knight and attacks the queen on d5.",
       "Qa5 moves the queen away and attacks the knight on c3.",
-      "Nxe4 takes the knight on e4. White removes the knight that took the pawn.",
+      "Nxe4 takes the knight on e4. The new knight defends the pawn on f2.",
       "Be6 develops the light-squared bishop and defends the pawn on f7.",
       "Neg5 attacks the bishop on e6 and the pawn on f7.",
       "O-O-O castles the king to the queenside and brings a rook towards the centre."
@@ -134,7 +134,7 @@
       "e5 attacks the knight on f6.",
       "d5 attacks the bishop on c4. Black challenges that bishop and asks it to move or be taken.",
       "exf6 takes the knight on f6 and attacks the pawn on g7.",
-      "dxc4 takes the bishop on c4. Black removes the light-squared bishop."
+      "dxc4 takes the bishop on c4. That capture opens the d-file."
     ]
   },
   "sg7": {
@@ -232,7 +232,7 @@
       "Ne7 attacks the bishop on d5.",
       "Bb3 aims at f7, the pawn in front of the castled king.",
       "Qxd1 takes the queen on d1 and attacks the bishop on b3.",
-      "Rxd1 recaptures the queen on d1. White takes the queen back so the trade does not lose it.",
+      "Rxd1 recaptures the queen on d1. The rook defends the bishop on c1 and stands on the open d-file.",
       "Be6 develops the light-squared bishop and attacks the bishop on b3."
     ]
   }

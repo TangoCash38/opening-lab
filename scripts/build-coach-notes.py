@@ -545,7 +545,7 @@ SAN_RE = re.compile(
     r"^(?:O-O-O|O-O|[KQRBN][a-h]?[1-8]?x?[a-h][1-8](?:=[QRBN])?[+#]?|[a-h]x[a-h][1-8](?:=[QRBN])?[+#]?|[a-h][1-8](?:=[QRBN])?[+#]?)$"
 )
 PIECE_ON = re.compile(
-    rf"((?:light-squared|dark-squared)\s+)?({PIECE_WORD}) on ({SQUARE})",
+    rf"((?:light-squared|dark-squared)\s+)?\b({PIECE_WORD}) on ({SQUARE})",
     re.I,
 )
 CLAIM_TAKE = re.compile(rf"(?:takes|recaptures) the ({PIECE_WORD}) on ({SQUARE})", re.I)
@@ -573,6 +573,16 @@ def _kind_ok(piece: chess.Piece, sq: int, kind: str | None, word: str) -> bool:
         return True
     dark = (chess.square_file(sq) + chess.square_rank(sq)) % 2 == 0
     return dark == kind.lower().startswith("dark")
+
+
+def move_destinations(sans: list[str]) -> set[int]:
+    """Squares a list of SAN moves lands on. Castling has no trailing square."""
+    found: set[int] = set()
+    for token in sans:
+        match = re.search(rf"({SQUARE})(?:=[QRBN])?[+#]?$", token)
+        if match:
+            found.add(chess.parse_square(match.group(1)))
+    return found
 
 
 def verify_hand_note(before: chess.Board, san: str, note: str, future: list[str], played: list[str]) -> list[str]:
@@ -651,6 +661,9 @@ def verify_hand_note(before: chess.Board, san: str, note: str, future: list[str]
         if empty and re.search(rf"keeps {sq_name} (?:free|open)\b", note):
             continue
         if empty and re.search(rf"drop back to {sq_name}\b", note):
+            continue
+        # A square a later book move lands on is part of this line, not an invented square.
+        if empty and sq in move_destinations(future):
             continue
         errors.append(f"loose square {sq_name}")
     return errors
