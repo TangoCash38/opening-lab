@@ -2,7 +2,7 @@
   "ot1": {
     "intro": "Legal's Mate: White seems to give away the queen, but if Black grabs it, the bishop checks on f7 and a knight mates on d5.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. That pawn move takes a share of the centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. Nothing is wrong yet, but the dark-squared bishop is about to be shut in.",
       "Nf3 develops the king's knight and attacks the pawn on e5. This is the knight Black will pin.",
       "d6 defends the pawn on e5 and shuts the dark-squared bishop in. That passive pawn is the first loose thread.",
@@ -20,7 +20,7 @@
   "ot2": {
     "intro": "The Fishing Pole: Black parks a knight beside the castled king, and if White takes it the h-file opens for the queen.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. That pawn move takes a share of the centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 takes a share of the centre. The Fishing Pole is a Spanish, so Black is happy to see the bishop come to the queenside.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nc6 develops the queen's knight and defends the pawn on e5. This is the knight the Spanish bishop comes to attack.",
@@ -35,7 +35,7 @@
       "c3 is a quiet pawn move, and it leaves the open h-file alone.",
       "a6 attacks the bishop on b5 and asks it to step away. The attack on the king is the real story.",
       "Ba4 steps the light-squared bishop off the pawn on a6 and keeps it. The bishop is no longer the point of the position.",
-      "gxf3 takes the knight on f3 and clears the queen's road to the h-file. It also eyes the pawn on g2.",
+      "gxf3 takes the knight on f3 and clears the queen's road to the h-file.",
       "Qxf3 recaptures the pawn on f3. The queen leaves d1, and the h-file stays open.",
       "Qh4 puts the queen on the open h-file. That is the Fishing Pole."
     ]
@@ -68,10 +68,10 @@
       "d5 meets White in the centre. The Albin will offer the e-pawn rather than simply hold.",
       "c4 attacks the pawn on d5 and offers the queen's pawn.",
       "e5 is the Albin offer. Black wants a pawn on d4, and is willing to give up the pawn on e5 for it.",
-      "dxe5 takes the pawn on e5 and accepts the offer. That pawn move takes a share of the centre.",
+      "dxe5 takes the pawn on e5 and accepts the offer.",
       "d4 plants a pawn in the centre. That was the point of giving up the e-pawn.",
       "e3 attacks the pawn on d4. Taking is natural, and it is what the trap wants.",
-      "Bb4+ gives check and brings the dark-squared bishop out with tempo, before the centre pawn is taken. It eyes the king on e1.",
+      "Bb4+ gives check and brings the dark-squared bishop out with tempo, before the centre pawn is taken.",
       "Bd2 blocks the check. The dark-squared bishop also stands where it can take on b4.",
       "dxe3 takes the pawn on e3. The pawn now attacks f2, which is where the combination starts.",
       "Bxb4 takes the bishop on b4. It looks like a free piece, and it gives Black the tempo for the pawn check.",
@@ -87,7 +87,7 @@
   "ot5": {
     "intro": "The Blackburne Shilling Trap: a second greedy capture lets the queen take on g2 and hit the bishop.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. That pawn move takes a share of the centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The shilling trap needs this open game.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nc6 develops the queen's knight and defends the pawn on e5.",
@@ -104,7 +104,7 @@
   "ot6": {
     "intro": "The Stafford Trap: taking the queen is the bait, and the two bishops mate the king on e2.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. That pawn move takes a share of the centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The Stafford needs this open king's pawn game.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nf6 develops the king's knight and attacks the pawn on e4. Black is offering the e-pawn.",
@@ -127,7 +127,7 @@
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "e5 offers a pawn straight away. The Englund is a gambit, not a solid centre.",
-      "dxe5 takes the pawn on e5 and accepts the gambit. That pawn move takes a share of the centre.",
+      "dxe5 takes the pawn on e5 and accepts the gambit.",
       "Nc6 develops the queen's knight and attacks the pawn on e5. Black wants the queen out next, not a quiet recapture.",
       "Nf3 develops the king's knight and defends the pawn on e5.",
       "Qe7 develops the queen and attacks the pawn on e5 again. The queen is also ready to swing to the queenside.",
@@ -154,7 +154,7 @@
       "b5 holds the pawn on c4 and gains space. It also puts a pawn where White can open the a-file.",
       "a4 attacks the pawn on b5 and asks Black how the extra pawn will be kept.",
       "c6 backs up the pawn on b5. It looks solid, and it is the move that lets the a-file open.",
-      "axb5 takes the pawn on b5 and opens the a-file. It also eyes the pawn on c6.",
+      "axb5 takes the pawn on b5 and opens the a-file.",
       "cxb5 recaptures the pawn on b5. The rook on a8 is now the target.",
       "Qf3 develops the queen onto the diagonal of the rook on a8. The b-pawn has left b7, so that diagonal is clear.",
       "a6 defends the pawn on b5 and does not block the queen. The rook on a8 stays on the diagonal.",
@@ -164,7 +164,7 @@
   "ot9": {
     "intro": "The Damiano Defence: defending the e-pawn with the f-pawn lets the queen check at once and keep the attack going.",
     "notes": [
-      "e4 opens the game and frees the light-squared bishop. That pawn move takes a share of the centre.",
+      "e4 opens the game and frees the light-squared bishop.",
       "e5 meets White in the centre. The Damiano is what Black does next, not this move.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "f6 tries to defend the pawn on e5 and opens the king's diagonal. That is the Damiano mistake.",
@@ -188,14 +188,14 @@
       "Nf6 develops the king's knight and prepares the Budapest pawn offer.",
       "c4 gains space and offers a queen's-pawn game. Black answers with the gambit.",
       "e5 offers a pawn to open lines for a quick attack. This is the Budapest.",
-      "dxe5 takes the pawn on e5 and accepts the gambit. It also eyes the knight on f6.",
+      "dxe5 takes the pawn on e5 and accepts the gambit.",
       "Ng4 attacks the pawn on e5. Black wants that pawn back, or the attack that follows if White holds it.",
       "Bf4 develops the dark-squared bishop and defends the pawn on e5.",
       "Nc6 develops the queen's knight and attacks the pawn on e5 again.",
       "Nf3 develops the king's knight and defends the pawn on e5. The queenside is where White is about to be careless.",
       "Bb4+ gives check. In this trap White blocks with the queen's knight.",
       "Nbd2 blocks the check. The queen's knight stands on the diagonal of the bishop on b4.",
-      "Qe7 develops the queen onto the e-file, where she will later pin the pawn in front of the king. It eyes the pawn on e5.",
+      "Qe7 develops the queen onto the e-file, where she will later pin the pawn in front of the king.",
       "a3 attacks the bishop on b4 and asks it to move or be taken. Taking is the Kieninger mistake.",
       "Ngxe5 takes the pawn on e5 with the knight from g4. The knight is heading for the mating square.",
       "axb4 takes the bishop on b4. Removing that bishop is the move that allows mate.",

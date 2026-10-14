@@ -12,7 +12,7 @@
       "dxc4 takes the pawn on c4. Black accepts it for the moment so the light-squared bishop can come out.",
       "a4 stops a queenside pawn rush and fixes the pawn on c4.",
       "Bf5 develops the light-squared bishop outside the pawn chain, which is why Black took on c4.",
-      "Ne5 plants the knight in the centre and attacks the pawn on c6. It eyes the pawn on f7.",
+      "Ne5 plants the knight in the centre and attacks the pawn on c6.",
       "Na6 develops the queen's knight. The pawn on c6 has taken its natural square, so the knight uses the edge."
     ]
   },
@@ -31,7 +31,7 @@
       "Bf5 develops the light-squared bishop to an active square.",
       "e3 supports the centre and frees the light-squared bishop.",
       "e6 supports the centre. The light-squared bishop is already outside the chain, so this pawn does not shut it in.",
-      "Bxc4 takes the pawn on c4 and develops the light-squared bishop. It also eyes the pawn on e6.",
+      "Bxc4 takes the pawn on c4 and develops the light-squared bishop.",
       "Bb4 pins the knight on c3 to the king on e1.",
       "O-O brings the king to g1 and the rook to f1. The king steps off the pin.",
       "O-O brings the king to g8 and the rook to f8."
@@ -87,7 +87,7 @@
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
       "e3 supports the centre and frees the light-squared bishop. White is in no hurry to attack d5 with a knight.",
-      "Bf5 develops the light-squared bishop outside the pawn chain. It eyes the knight on b1.",
+      "Bf5 develops the light-squared bishop outside the pawn chain.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "e6 supports the centre. The light-squared bishop is already out.",
       "Bd3 challenges the bishop on f5. White offers a trade of light-squared bishops."
@@ -103,7 +103,7 @@
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
       "e3 supports the centre and frees the light-squared bishop.",
-      "Bf5 develops the light-squared bishop outside the pawn chain. It eyes the knight on b1.",
+      "Bf5 develops the light-squared bishop outside the pawn chain.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "e6 supports the centre.",
       "Nh4 attacks the bishop on f5.",
@@ -112,8 +112,8 @@
       "hxg6 recaptures the knight on g6 and opens the h-file.",
       "g3 prepares a fianchetto. The light-squared bishop will sit on the long diagonal.",
       "Nbd7 develops the queen's knight.",
-      "Bg2 puts the light-squared bishop on the long diagonal. It eyes the pawn on d5.",
-      "Bd6 develops the dark-squared bishop and aims towards the kingside. It eyes the pawn on g3."
+      "Bg2 puts the light-squared bishop on the long diagonal.",
+      "Bd6 develops the dark-squared bishop and aims towards the kingside."
     ]
   },
   "sd7": {
@@ -123,7 +123,7 @@
       "d5 meets White in the centre.",
       "c4 offers a pawn to fight for d5.",
       "c6 supports the pawn on d5 and leaves the diagonal open for the light-squared bishop.",
-      "cxd5 takes the pawn on d5 and chooses the Exchange. It also eyes the pawn on c6.",
+      "cxd5 takes the pawn on d5 and chooses the Exchange.",
       "cxd5 recaptures the pawn on d5. The c-file is open, and the structure is symmetrical.",
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
@@ -143,11 +143,11 @@
       "Nf3 develops the king's knight.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
       "e3 supports the centre and frees the light-squared bishop.",
-      "Bf5 develops the light-squared bishop outside the pawn chain. It eyes the knight on b1.",
-      "cxd5 takes the pawn on d5 and opens the c-file. It also eyes the pawn on c6.",
+      "Bf5 develops the light-squared bishop outside the pawn chain.",
+      "cxd5 takes the pawn on d5 and opens the c-file.",
       "cxd5 recaptures the pawn on d5. The c-file is open.",
       "Qb3 develops the queen and attacks the pawn on b7. She also eyes the pawn on d5.",
-      "Qc7 develops the queen, defends the pawn on b7, and keeps an eye on the open c-file. It eyes the pawn on h2."
+      "Qc7 develops the queen, defends the pawn on b7, and keeps an eye on the open c-file."
     ]
   },
   "sd9": {
@@ -163,8 +163,8 @@
       "a6 is the Chebanenko move. It prepares queenside expansion and keeps a white piece off b5.",
       "c5 gains space and clamps the queenside. White does not wait for Black to expand.",
       "Bf5 develops the light-squared bishop outside the pawn chain.",
-      "Bf4 develops the dark-squared bishop to an active square. It eyes the knight on b8.",
-      "Nbd7 develops the queen's knight and supports a later central break. It eyes the pawn on c5.",
+      "Bf4 develops the dark-squared bishop to an active square.",
+      "Nbd7 develops the queen's knight and supports a later central break.",
       "e3 supports the centre and frees the light-squared bishop.",
       "Nh5 attacks the bishop on f4 and offers a trade of that bishop."
     ]
@@ -182,10 +182,10 @@
       "dxc4 takes the pawn on c4 so the light-squared bishop can develop.",
       "a4 stops a queenside pawn rush.",
       "Bf5 develops the light-squared bishop outside the pawn chain.",
-      "Ne5 plants the knight in the centre and attacks the pawn on c6. It eyes the pawn on f7.",
+      "Ne5 plants the knight in the centre and attacks the pawn on c6.",
       "Nbd7 develops the queen's knight and attacks the central knight.",
       "Nxc4 takes the pawn on c4 and steps the knight off the attack.",
-      "Qc7 develops the queen. It eyes the pawn on h2.",
+      "Qc7 develops the queen.",
       "g3 prepares a fianchetto.",
       "e5 breaks in the centre and attacks the pawn on d4. This is the counterplay the line is built on."
     ]

@@ -842,8 +842,9 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (busy || slide) return;
     if (plyIndex >= bookEndPly) return;
     if (isUserTurn(game)) return;
-    // Hold the opening position until Tap to practice. Otherwise White's
-    // first move lands before the notes, and Black lines look skipped.
+    // Hold the opening position while the intro card is open, on every pack.
+    // Otherwise White's first move plays behind the card on Black lines.
+    if (lineCard !== "off") return;
     if (coachLesson && mode === "learn" && !coachStarted) return;
 
     setStatus({ text: "…", cls: "" });
@@ -892,6 +893,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     beginSlide,
     coachLesson,
     coachStarted,
+    lineCard,
     mode,
   ]);
 
