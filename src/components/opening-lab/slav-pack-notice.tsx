@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Chess } from "chess.js";
 import type { OpeningLine } from "@/data/packs";
+import { useT } from "@/lib/i18n";
 import type { StudyIntroCopy } from "@/lib/pack-study-intro";
 import { ChessBoard } from "./chess-board";
 
@@ -49,6 +50,7 @@ function SlavStemBoard({ plies, flip }: { plies: readonly string[]; flip: boolea
 }
 
 export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProps) {
+  const t = useT();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -87,23 +89,23 @@ export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProp
           ) : (
             <>
               <h2 id="slav-intro-title" className="slav-notice-title">
-                {copy.welcomeTitle}
+                {t("Tap to practice")}
               </h2>
-              <ol className="slav-notice-steps" data-slav-howto>
-                {copy.howTo.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ol>
+              <p className="slav-notice-paragraph" data-slav-practice-blurb>
+                {flip
+                  ? "The game starts from the first move. White's moves play on the board one at a time, and the notes follow each one."
+                  : "The game starts from the first move, and the notes follow each one as it is played."}
+              </p>
             </>
           )}
         </div>
         {step === "about" ? (
           <button type="button" className="slav-notice-primary" data-slav-next onClick={onNext}>
-            Next
+            {t("Continue")}
           </button>
         ) : (
           <button type="button" className="slav-notice-primary" data-slav-start onClick={onStart}>
-            Start
+            {t("Tap to practice")}
           </button>
         )}
       </div>

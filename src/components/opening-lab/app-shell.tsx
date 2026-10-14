@@ -82,6 +82,7 @@ function OpeningLabInner() {
     plyLimit?: number;
     startPly?: number;
     autoRunTheGame?: boolean;
+    startNow?: boolean;
     /** Homepage board tap. Practice only. End card stays on this board. */
     freeTry?: boolean;
   } | null>(null);
@@ -236,6 +237,7 @@ function OpeningLabInner() {
       plyLimit: options?.plyLimit,
       startPly: options?.startPly,
       autoRunTheGame: options?.autoRunTheGame,
+      startNow: options?.startNow,
     });
     setView("train");
     soundSelect();
@@ -428,6 +430,7 @@ function OpeningLabInner() {
             gym={isGymPack(active.pack)}
             parkRunTheGame={isClassicSamplePack(active.pack)}
             autoRunTheGame={active.autoRunTheGame === true}
+            startNow={active.startNow === true}
             plyLimit={active.plyLimit}
             startPly={active.startPly}
             testLocked={

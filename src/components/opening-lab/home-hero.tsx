@@ -66,6 +66,7 @@ type FrameSession = {
   plyLimit?: number;
   startPly?: number;
   autoRunTheGame?: boolean;
+  startNow?: boolean;
 };
 
 type CoachSession = FrameSession & {
@@ -208,6 +209,7 @@ export function HomeHero({
       mode: mode ?? prev?.mode ?? "learn",
       plyLimit: options?.plyLimit,
       startPly: options?.startPly,
+      startNow: options?.startNow,
     }));
   };
 
@@ -336,7 +338,7 @@ export function HomeHero({
       soundSelect();
       return;
     }
-    if (options?.plyLimit != null || options?.startPly != null) {
+    if (options?.plyLimit != null || options?.startPly != null || options?.startNow || options?.autoRunTheGame) {
       onStartLine(pack, line, "learn", options);
       return;
     }
@@ -535,7 +537,7 @@ export function HomeHero({
       return;
     }
     const line = pickPracticeLine();
-    if (line) launchLine(line, undefined, true);
+    if (line) launchLine(line, { startNow: true }, true);
     else onRequestUnlock?.(pack);
   };
 
@@ -556,10 +558,10 @@ export function HomeHero({
       return;
     }
     if (preferInFrame()) {
-      openInFrame(line, undefined, "learn");
+      openInFrame(line, { startNow: true }, "learn");
       return;
     }
-    onStartLine(pack, line, "learn");
+    onStartLine(pack, line, "learn", { startNow: true });
   };
   const studyIntro = packStudyIntro(pack.id);
 
@@ -621,6 +623,7 @@ export function HomeHero({
                   testLocked={frame.plyLimit != null}
                   parkRunTheGame={isClassicSamplePack(pack)}
                   autoRunTheGame={frame.autoRunTheGame === true}
+                  startNow={frame.startNow === true}
                   embedded
                   frameCoords={!playApp}
                   onBack={() => setFrame(null)}

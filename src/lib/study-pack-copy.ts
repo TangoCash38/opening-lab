@@ -364,7 +364,7 @@ export const STUDY_PACK_ROWS: readonly StudyPackRow[] = [
     line1Free: true,
     stem: ["d4", "Nf6", "c4", "g6"],
     tagline: "Let the centre grow. Then strike.",
-    lead: "The King's Indian Defence (KID) is one of Black's most combative replies to 1.d4, defined by the moves 1.d4 Nf6 2.c4 g6, followed by ...Bg7 and ...d6. Black lets White build a big centre, fianchettoes the bishop and castles, then strikes back with ...e5 or ...c5. Play often turns into opposite-side attacks: Black storms the kingside with ...f5, while White expands on the queenside. It is a favourite of fighters such as Bobby Fischer, Garry Kasparov and Teimour Radjabov, and it suits club players who want real winning chances with Black.",
+    lead: "The King's Indian Defence (KID) is one of Black's most combative replies to 1.d4, defined by the moves 1.d4 Nf6 2.c4 g6, followed by ...Bg7 and ...d6. Black lets White build a big centre, fianchettoes the bishop and castles, then strikes back with ...e5 or ...c5. Play often turns into opposite-side attacks: Black storms the kingside with ...f5, while White expands on the queenside. It is a favourite of fighters such as Bobby Fischer, Garry Kasparov and Teimour Radjabov, and it suits club players who want a real fight with Black.",
     rest: "These ten learning lines are not forced sequences. Each one teaches a different White system and a clear plan for Black. They cover the Classical and Mar del Plata, the Bayonet, the Petrosian, a Classical ...exd4, the Samisch, the Four Pawns, the Fianchetto, the Averbakh, the Exchange, and a Classical ...Nbd7.",
   },
   {

@@ -13,6 +13,8 @@ export type TrainStartOptions = {
   startPly?: number;
   /** Website Classic: open straight into the Run the game replay. */
   autoRunTheGame?: boolean;
+  /** The opening card was already dismissed with Tap to practice. Start the moves. */
+  startNow?: boolean;
 };
 
 export type LondonWarmupProgress = Pick<

@@ -33,7 +33,10 @@ import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
+import { isPackComingSoon } from "@/lib/catalog";
+import { packStudyIntro } from "@/lib/pack-study-intro";
 import { AskCoachPanel } from "./ask-coach-panel";
+import { SlavPackNotice } from "./slav-pack-notice";
 import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
 import { NearlyThere } from "./nearly-there";
@@ -69,6 +72,8 @@ type Props = {
   parkRunTheGame?: boolean;
   /** Open already inside Run the game. Skip returns to Practice. */
   autoRunTheGame?: boolean;
+  /** Opening card already finished. Start Practice from the first move. */
+  startNow?: boolean;
   /** Cap this session at startPly + plyLimit book plies (London warm-up). */
   plyLimit?: number;
   startPly?: number;
@@ -266,7 +271,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
   return { from: m.from as Square, to: m.to as Square };
 }
 
-export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, plyLimit, startPly = 0, embedded = false, frameCoords = false, freeTry = false, onFreeTryBuyAll, onFreeTryPickPack, onFreeTryMoreFree, onFreeTryFeedback }: Props) {
+export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, startNow = false, plyLimit, startPly = 0, embedded = false, frameCoords = false, freeTry = false, onFreeTryBuyAll, onFreeTryPickPack, onFreeTryMoreFree, onFreeTryFeedback }: Props) {
   const t = useT();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
@@ -349,7 +354,18 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     secondaryAction?: "practiceNext";
   } | null>(null);
   const [finishNote, setFinishNote] = useState<string | null>(null);
-  const [coachStarted, setCoachStarted] = useState(initialMode === "practice");
+  const [coachStarted, setCoachStarted] = useState(initialMode === "practice" || startNow);
+  const [liveCoachPly, setLiveCoachPly] = useState(bookStartPly);
+  const lineIntroCopy =
+    !startNow &&
+    initialMode === "learn" &&
+    !gym &&
+    !freeTry &&
+    !warmup &&
+    !isPackComingSoon(pack.id)
+      ? packStudyIntro(pack.id)
+      : null;
+  const [lineCard, setLineCard] = useState<"about" | "go" | "off">(lineIntroCopy ? "about" : "off");
   const coachLesson =
     !runTheGame &&
     !freeTry &&
@@ -358,8 +374,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const coachLessonRef = useRef(coachLesson);
   coachLessonRef.current = coachLesson;
   useEffect(() => {
-    setCoachStarted(initialMode === "practice");
-  }, [line.id, initialMode]);
+    setCoachStarted(initialMode === "practice" || startNow);
+    setLineCard(lineIntroCopy ? "about" : "off");
+    setLiveCoachPly(bookStartPly);
+  }, [line.id, initialMode, startNow, lineIntroCopy, bookStartPly]);
   useEffect(() => {
     if (!coachLesson || embedded) return;
     const root = document.documentElement;
@@ -483,6 +501,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       setGame(start);
       setPlyIndex(bookStartPly);
       setViewPly(bookStartPly);
+      setLiveCoachPly(bookStartPly);
       setLastMove(lastMoveSquares(start));
       setSelected(null);
       setWrongUntil(null);
@@ -660,6 +679,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
         move: { from, to },
         userMove,
       };
+      setLiveCoachPly(nextPly);
       slideGen.current = animGen.current;
       setSlide({
         from,
@@ -822,6 +842,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (busy || slide) return;
     if (plyIndex >= bookEndPly) return;
     if (isUserTurn(game)) return;
+    // Hold the opening position while the intro card is open, on every pack.
+    // Otherwise White's first move plays behind the card on Black lines.
+    if (lineCard !== "off") return;
+    if (coachLesson && mode === "learn" && !coachStarted) return;
 
     setStatus({ text: "…", cls: "" });
     setHintsReady(false);
@@ -867,6 +891,10 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     expectedMove,
     clearReplyTimer,
     beginSlide,
+    coachLesson,
+    coachStarted,
+    lineCard,
+    mode,
   ]);
 
   const playFromTo = (from: Square, to: Square) => {
@@ -1604,18 +1632,32 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           lineName={line.name}
           idea={line.idea ?? null}
           plies={line.plies}
-          ply={viewPly}
+          ply={viewingHistory ? viewPly : liveCoachPly}
           uiMode={mode}
           started={coachStarted}
           finished={bookDone && mode === "learn"}
           prompt={coachStarted && mode === "learn" ? hint : ""}
           onPractice={() => {
+            setLineCard("off");
             setCoachStarted(true);
             if (mode !== "learn") changeMode("learn");
           }}
           onTest={() => {
             setCoachStarted(true);
             changeMode("practice");
+          }}
+        />
+      ) : null}
+
+      {lineIntroCopy && lineCard !== "off" ? (
+        <SlavPackNotice
+          step={lineCard === "about" ? "about" : "welcome"}
+          copy={lineIntroCopy}
+          flip={line.side === "b"}
+          onNext={() => setLineCard("go")}
+          onStart={() => {
+            setLineCard("off");
+            setCoachStarted(true);
           }}
         />
       ) : null}
