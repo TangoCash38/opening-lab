@@ -54,7 +54,7 @@ test("every visible drill pack has a two-card study intro", async (t) => {
   assert.match(study, /qgd-black/);
   assert.match(study, /howTo: SLAV_HOW_TO/);
   assert.match(hero, /studyPackReplacesCoach\(pack\.id\)/);
-  assert.match(hero, /isLineUnlocked\(pack, line\.id, purchased\)/);
+  assert.match(hero, /isLineUnlocked\(pack, item\.id, purchased\)/);
   assert.match(hero, /<SlavPackNotice[\s\S]*flip=\{pack\.side === "Black"\}/);
   const notice = src("src/components/opening-lab/slav-pack-notice.tsx");
   assert.match(notice, /<ChessBoard[\s\S]*flip=\{flip\}/);

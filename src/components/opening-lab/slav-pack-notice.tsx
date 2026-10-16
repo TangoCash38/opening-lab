@@ -93,8 +93,8 @@ export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProp
               </h2>
               <p className="slav-notice-paragraph" data-slav-practice-blurb>
                 {flip
-                  ? "The game starts from the first move. White's moves play on the board one at a time, and the notes follow each one."
-                  : "The game starts from the first move, and the notes follow each one as it is played."}
+                  ? "The game starts from the first move. White's move and your reply stay together on one slide until the next pair."
+                  : "The game starts from the first move. Your move and the reply stay together on one slide until the next pair."}
               </p>
             </>
           )}

@@ -1155,29 +1155,21 @@ const RUY_LOPEZ_LINE: readonly CoachLineBeat[] = [
 
 const SICILIAN_BLACK_PACK_ID = "sicilian-black";
 
-export const SICILIAN_INTRO_MP3 = "/coach/sicilian-black/tango-sicilian-intro.mp3";
 export const SICILIAN_PORTRAIT = "/coach/sicilian-black/king-cedar-portrait.jpg";
-/** King Cedar's Sicilian intro. Beat times were read off this clip. He does not name himself. */
-export const SICILIAN_INTRO_SEC = 50.21;
 
+/**
+ * Written Najdorf intro. The old spoken clip said 2...e6, so that file is
+ * gone. These sentences run through 5. Nc3 a6, and the board stays at the
+ * start.
+ */
 const SICILIAN_INTRO = [
   "Right then, the Sicilian Defence for Black.",
   "White starts with 1. e4, claiming the centre.",
   "Black replies 1... c5, striking from the side rather than copying White directly.",
   "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
-  "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.",
+  "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6.",
   "There you are, a sharp, flexible defence with plenty of bite.",
 ] as const;
-
-const SICILIAN_INTRO_AT_SEC = [0, 4.7, 9.9, 18.9, 27.5, 44.2] as const;
-
-/**
- * Moves named in the Sicilian intro, in the order they are first spoken.
- * e4 and c5 are the opening "1. e4" / "1... c5" pair. The rest is the common route
- * (1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6), not the Najdorf book line.
- */
-export const SICILIAN_INTRO_STEM = ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nf6"] as const;
-export const SICILIAN_INTRO_STEM_AT_SEC = [6.2, 11.5, 33.1, 34.84, 36.5, 37.9, 40.1, 42.3] as const;
 
 export const SICILIAN_LINE_MP3 = "/coach/sicilian-black/tango-sicilian-line1.mp3";
 /** King Cedar's Najdorf Line 1. Beat and spoken-move times were read off this clip. He does not name himself. */
@@ -1311,12 +1303,12 @@ const QGD_BLACK_PACK_ID = "qgd-black";
 /**
  * Written Queen's Gambit Declined intro. No recording and no auto-advance.
  * The player reads it, then presses Start. The sentences follow the ten
- * signed lines: Orthodox, Nf3-first Orthodox, ...dxc4/...Nd5, quiet Bd3
+ * signed lines: Orthodox, 5.Bf4 and ...c5, ...dxc4/...Nd5, quiet Bd3
  * ...c5, three Exchange lines, the Ragozin, Lasker Defence, and Tartakower.
  */
 const QGD_BLACK_INTRO = [
   "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.",
-  "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.",
+  "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.",
   "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.",
   "Practice with the green hint, then Test with none.",
 ] as const;
@@ -1475,11 +1467,6 @@ export const COACH_PACKS: Readonly<Record<string, CoachPackConfig>> = {
     portrait: SICILIAN_PORTRAIT,
     introTitle: "King Cedar · Sicilian",
     introBeats: SICILIAN_INTRO,
-    introAudio: SICILIAN_INTRO_MP3,
-    introAudioFallbackSec: SICILIAN_INTRO_SEC,
-    introBeatAtSec: SICILIAN_INTRO_AT_SEC,
-    introStem: SICILIAN_INTRO_STEM,
-    introStemAtSec: SICILIAN_INTRO_STEM_AT_SEC,
     firstLineId: "sib1",
     firstLineTitle: "Line 1",
     firstLineBeats: SICILIAN_LINE,
@@ -1505,7 +1492,8 @@ export function coachPack(packId: string): CoachPackConfig | undefined {
 /**
  * Packs whose intro has no recording. Those used to step through captions
  * on a short timer. They now show the same sentences together, and wait.
- * Audio intros (Scotch, Potato Pie, Big Red, King Cedar) stay on the clip.
+ * Audio intros (Scotch, Potato Pie, Big Red) stay on the clip.
+ * King Cedar's Sicilian intro is written: the recorded clip still says 2...e6.
  */
 export function coachPackWrittenIntro(packId: string): boolean {
   if (packId === SCOTCH_PACK_ID) return false;

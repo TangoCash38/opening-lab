@@ -129,10 +129,12 @@ test("UI chrome is translated; chess names stay English in the product", () => {
   assert.match(guide, /t\("User guide"\)/);
 });
 
-test("home board still only starts from Tap to practice", () => {
-  assert.match(hero, /Tap to practice/);
+test("home board does not start practice; the line list does", () => {
+  assert.doesNotMatch(hero, /Tap to practice/);
+  assert.doesNotMatch(hero, /onClick=\{openIntroThenPractice\}/);
   assert.match(hero, /interactive=\{false\}/);
   assert.match(hero, /pointer-events-none/);
+  assert.match(hero, /launchLine\(item\)/);
   assert.doesNotMatch(hero, /g\.move\("e4"\)/);
 });
 

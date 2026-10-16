@@ -32,7 +32,7 @@ test("scotch coach is flag- and pack-gated to Practice entry on phone and Play",
   assert.match(hero, /practiceEntry = false/);
   assert.match(hero, /practiceEntry &&/);
   const advanceAt = hero.indexOf("const startAdvance");
-  const advance = hero.slice(advanceAt, hero.indexOf("const openIntroThenPractice"));
+  const advance = hero.slice(advanceAt, hero.indexOf("const beginStudyLine"));
   assert.match(advance, /launchLine\(line, undefined, true\)/);
   assert.match(hero, /else launchLine\(item\)/);
   assert.match(hero, /if \(line\) launchLine\(line\)/);

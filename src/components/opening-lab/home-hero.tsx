@@ -372,8 +372,8 @@ export function HomeHero({
   }, [pack.id, playApp]);
 
   /**
-   * Potato Pie jumps out as soon as this pack's Practice screen opens —
-   * no Tap to practice required. Once per session; never in Test.
+   * Potato Pie jumps out as soon as this pack's Practice screen opens.
+   * Once per session; never in Test.
    */
   useEffect(() => {
     // Defer past Strict Mode's setup/cleanup/setup so the session flag is
@@ -537,31 +537,13 @@ export function HomeHero({
       return;
     }
     const line = pickPracticeLine();
-    if (line) launchLine(line, { startNow: true }, true);
+    if (line) launchLine(line, undefined, true);
     else onRequestUnlock?.(pack);
-  };
-
-  const openIntroThenPractice = () => {
-    if (pack?.about) setAboutOpen(true);
-    else startAdvance();
   };
 
   const beginStudyLine = () => {
     markPackStudyIntroSeen(pack.id);
     setStudyStep("ready");
-    const intro = packStudyIntro(pack.id);
-    const line = pack.lines.find((item) => item.id === intro?.freeLineId) ?? pack.lines[0];
-    if (!line) return;
-    const lineOpen = subscribed || isLineUnlocked(pack, line.id, purchased);
-    if (!lineOpen) {
-      onRequestUnlock?.(pack);
-      return;
-    }
-    if (preferInFrame()) {
-      openInFrame(line, { startNow: true }, "learn");
-      return;
-    }
-    onStartLine(pack, line, "learn", { startNow: true });
   };
   const studyIntro = packStudyIntro(pack.id);
 
@@ -722,15 +704,6 @@ export function HomeHero({
                     <BoardThemePicker compact className="w-full" />
                   </div>
                 </div>
-                <div className="space-y-2.5 px-4 pb-3 pt-1">
-                  <button
-                    type="button"
-                    onClick={openIntroThenPractice}
-                    className="min-h-12 w-full rounded-2xl bg-accent px-4 py-3 text-[0.95rem] font-bold text-accent-fg active:scale-[0.99]"
-                  >
-                    {t("Tap to practice")}
-                  </button>
-                </div>
               </>
             )}
           </div>
@@ -842,7 +815,7 @@ export function HomeHero({
           step={studyStep === "welcome" ? "welcome" : "about"}
           copy={studyIntro}
           flip={pack.side === "Black"}
-          onNext={() => setStudyStep("welcome")}
+          onNext={beginStudyLine}
           onStart={beginStudyLine}
         />
       ) : null}

@@ -18,7 +18,7 @@ export const LINE_EXPLAINS: Readonly<Record<string, string>> = {
   "sicilian-black:sib1":
     "White has castled queenside and you have castled kingside, so the b-pawn is the start of your play against that king. Your pieces are already on e6, e7, d7 and f6. Next, keep expanding on the queenside, and do not start a pawn storm in front of your own king.",
   "sicilian-black:sib2":
-    "The previous line was the pawn-to-a6 attack with the b-pawn. This time you fianchetto, break with a pawn to d5, and after the trades the queen sits on a5. Next, develop the light-squared bishop and use the half-open b-file. Do not start a pawn storm in front of your own king.",
+    "The previous line met the English Attack with a short castle and ...b5. This time the bishop comes to g5, White castles long, and your light-squared bishop lands on b7. Your king is still on e8. Next, castle and keep the queenside push going. Do not leave the king in the centre.",
   "french-black:frb1":
     "You traded the dark-squared bishop for the knight, played the c-pawn and the f-pawn, and castled long. White's c-pawns are doubled. The pawn on f6 already attacks the pawn on e5. Next, sort out that tension before you start a new plan.",
   "french-black:frb2":

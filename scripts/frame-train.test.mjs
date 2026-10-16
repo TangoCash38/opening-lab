@@ -24,7 +24,8 @@ test("website desktop pack card practices in the frame; play still navigates", (
   assert.doesNotMatch(hero, /isPlayWrap\(\)/);
   assert.match(hero, /interactive=\{false\}/);
   assert.match(hero, /pointer-events-none/);
-  assert.match(hero, /Tap to practice/);
+  assert.doesNotMatch(hero, /Tap to practice/);
+  assert.match(hero, /launchLine\(item\)/);
   assert.match(shell, /setView\("train"\)/);
 });
 
