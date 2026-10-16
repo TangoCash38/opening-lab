@@ -145,7 +145,7 @@
     ]
   },
   "ckb6": {
-    "intro": "The Karpov Classical: the knight goes to d7 and the bishop to d6, and after the h-pawn the queen takes back on e4.",
+    "intro": "The Karpov Classical: the knight goes to d7 and the bishop to d6, then the queen comes to c7 and the c-pawn breaks the centre. The knight recaptures on c5.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop.",
       "c6 prepares a pawn in the centre and leaves the light-squared bishop free.",
@@ -165,7 +165,14 @@
       "h6 asks the knight on g5 a question before Black castles. It should not be left sitting there.",
       "Ne4 drops the knight back from g5 onto a central square. Black can trade it.",
       "Nxe4 takes the knight on e4. Black removes the knight that dropped back into the centre.",
-      "Qxe4 recaptures the knight on e4. The queen looks towards h7, with the bishop on d3 sitting behind her."
+      "Qxe4 recaptures the knight on e4. The queen looks towards h7, with the bishop on d3 sitting behind her.",
+      "Qc7 develops the queen and defends the bishop on d6. The queen also defends the pawn on c6, ready for the c-pawn to challenge the pawn on d4.",
+      "Bd2 develops the dark-squared bishop and attacks the pawn on h6. The bishop also clears the back rank so the king can castle long.",
+      "c5 attacks the pawn on d4 and breaks the centre. The queen on c7 stands behind the break.",
+      "dxc5 takes the pawn on c5 and attacks the bishop on d6. White opens the centre.",
+      "Nxc5 recaptures the pawn on c5 and attacks the bishop on d3. The knight also attacks the queen on e4.",
+      "Bb5+ gives check and attacks the king on e8.",
+      "Bd7 blocks the check and attacks the bishop on b5. The light-squared bishop comes out in front of the king on e8."
     ]
   },
   "ckb7": {

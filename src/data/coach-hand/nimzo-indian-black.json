@@ -19,7 +19,7 @@
     ]
   },
   "nib2": {
-    "intro": "The Rubinstein with an isolated pawn: Black takes on c4 and d4, and White takes back with the e-pawn.",
+    "intro": "The Rubinstein with an isolated pawn: Black takes on c4 and d4, then fianchettoes the light-squared bishop and puts a rook on the c-file.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "Nf6 develops the king's knight and controls e4.",
@@ -37,7 +37,14 @@
       "dxc4 takes the pawn on c4 and opens the position.",
       "Bxc4 recaptures the pawn on c4. The light-squared bishop stays active.",
       "cxd4 takes the pawn on d4 and opens the centre.",
-      "exd4 recaptures the pawn on d4. The d-pawn is isolated, and the lines are open."
+      "exd4 recaptures the pawn on d4. The d-pawn is isolated, and the lines are open.",
+      "b6 prepares the light-squared bishop for the long diagonal.",
+      "Bg5 develops the dark-squared bishop and attacks the knight on f6. The queen on d8 stands on the same diagonal, so that knight should not wander off.",
+      "Bb7 develops the light-squared bishop onto the long diagonal and attacks the knight on f3.",
+      "Rc1 puts the rook on the open c-file and defends the knight on c3.",
+      "Nbd7 develops the queen's knight and defends the knight on f6. The knight also defends the pawn on b6.",
+      "Re1 puts the rook on the e-file and attacks the pawn on e6. The rook also stays beside the king on g1.",
+      "Rc8 puts the rook on the open c-file and attacks the bishop on c4. Black's rook opposes the rook on c1."
     ]
   },
   "nib3": {

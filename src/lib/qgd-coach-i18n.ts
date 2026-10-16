@@ -7,8 +7,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   es: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Esto es el Gambito de Dama Rehusado con las negras. Después de 1.d4 d5 2.c4, las negras juegan e6 y el peón en d5 se queda.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "Las 10 líneas de este paquete son el esquema Orthodox, el Orthodox con Nf3 primero, la liberación con ...dxc4 y ...Nd5, un Bd3 tranquilo con ...c5, la Lasker Defence y la Tartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Las 10 líneas de este paquete son el esquema Orthodox, 5.Bf4 y ...c5, la liberación con ...dxc4 y ...Nd5, un Bd3 tranquilo con ...c5, la Lasker Defence y la Tartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "También cubren tres líneas Exchange: Early Exchange, el desarrollo de la Exchange y la Exchange con Nge2, más la Ragozin.",
     "Practice with the green hint, then Test with none.":
@@ -49,8 +49,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   zh: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "这是后翼弃兵拒绝对黑方。在 1.d4 d5 2.c4 之后，黑方走 e6，d5 的兵留在原地。",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "这个包里的 10 条线路是 Orthodox 布局、先走 Nf3 的 Orthodox、用 ...dxc4 和 ...Nd5 解放、安静的 Bd3 配 ...c5、Lasker Defence 和 Tartakower。",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "这个包里的 10 条线路是 Orthodox 布局、5.Bf4 与 ...c5、用 ...dxc4 和 ...Nd5 解放、安静的 Bd3 配 ...c5、Lasker Defence 和 Tartakower。",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "它们还包括三条 Exchange 线路：Early Exchange、Exchange development、带 Nge2 的 Exchange，以及 Ragozin。",
     "Practice with the green hint, then Test with none.":
@@ -81,8 +81,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   fr: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Voici le gambit dame refusé pour les noirs. Après 1.d4 d5 2.c4, les noirs jouent e6 et le pion en d5 reste.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "Les 10 lignes de ce pack sont le schéma Orthodox, l'Orthodox avec Nf3 d'abord, la libération par ...dxc4 et ...Nd5, un Bd3 calme avec ...c5, la Lasker Defence et la Tartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Les 10 lignes de ce pack sont le schéma Orthodox, 5.Bf4 et ...c5, la libération par ...dxc4 et ...Nd5, un Bd3 calme avec ...c5, la Lasker Defence et la Tartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "Elles couvrent aussi trois lignes Exchange : Early Exchange, le développement Exchange et l'Exchange avec Nge2, plus la Ragozin.",
     "Practice with the green hint, then Test with none.":
@@ -120,8 +120,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   de: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Das ist das abgelehnte Damengambit für Schwarz. Nach 1.d4 d5 2.c4 spielt Schwarz e6, und der Bauer auf d5 bleibt.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "Die 10 Linien in diesem Paket sind der Orthodox-Aufbau, Orthodox mit Nf3 zuerst, Befreiung mit ...dxc4 und ...Nd5, ein ruhiges Bd3 mit ...c5, die Lasker Defence und Tartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Die 10 Linien in diesem Paket sind der Orthodox-Aufbau, 5.Bf4 und ...c5, Befreiung mit ...dxc4 und ...Nd5, ein ruhiges Bd3 mit ...c5, die Lasker Defence und Tartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "Dazu kommen drei Exchange-Linien: Early Exchange, Exchange-Entwicklung und Exchange mit Nge2, plus die Ragozin.",
     "Practice with the green hint, then Test with none.":
@@ -159,8 +159,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   pt: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Isto é o Gambito da Dama Recusado para as negras. Depois de 1.d4 d5 2.c4, as negras jogam e6 e o peão em d5 fica.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "As 10 linhas deste pacote são o esquema Orthodox, o Orthodox com Nf3 primeiro, a libertação com ...dxc4 e ...Nd5, um Bd3 calmo com ...c5, a Lasker Defence e a Tartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "As 10 linhas deste pacote são o esquema Orthodox, 5.Bf4 e ...c5, a libertação com ...dxc4 e ...Nd5, um Bd3 calmo com ...c5, a Lasker Defence e a Tartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "Também cobrem três linhas Exchange: Early Exchange, desenvolvimento da Exchange e Exchange com Nge2, mais a Ragozin.",
     "Practice with the green hint, then Test with none.":
@@ -195,8 +195,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   ru: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Это отказанный ферзевый гамбит за чёрных. После 1.d4 d5 2.c4 чёрные играют e6, и пешка на d5 остаётся.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "10 линий в этом пакете — схема Orthodox, Orthodox с Nf3 вперёд, освобождение через ...dxc4 и ...Nd5, спокойный Bd3 с ...c5, Lasker Defence и Tartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "10 линий в этом пакете — схема Orthodox, 5.Bf4 и ...c5, освобождение через ...dxc4 и ...Nd5, спокойный Bd3 с ...c5, Lasker Defence и Tartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "Ещё три линии Exchange: Early Exchange, развитие Exchange и Exchange с Nge2, плюс Рагозин.",
     "Practice with the green hint, then Test with none.":
@@ -230,8 +230,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   it: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Questo è il gambetto di donna rifiutato per il Nero. Dopo 1.d4 d5 2.c4 il Nero gioca e6 e il pedone in d5 resta.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "Le 10 linee di questo pacchetto sono lo schema Orthodox, l'Orthodox con Nf3 per primo, la liberazione con ...dxc4 e ...Nd5, un Bd3 tranquillo con ...c5, la Lasker Defence e la Tartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Le 10 linee di questo pacchetto sono lo schema Orthodox, 5.Bf4 e ...c5, la liberazione con ...dxc4 e ...Nd5, un Bd3 tranquillo con ...c5, la Lasker Defence e la Tartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "Coprono anche tre linee Exchange: Early Exchange, lo sviluppo Exchange e l'Exchange con Nge2, più la Ragozin.",
     "Practice with the green hint, then Test with none.":
@@ -265,8 +265,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   hi: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "यह काले के लिए क्वीन्स गैम्बिट रिफ्यूज्ड है। 1.d4 d5 2.c4 के बाद काला e6 खेलता है और d5 का प्यादा रहता है।",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "इस पैक की 10 लाइनें हैं Orthodox व्यवस्था, पहले Nf3 वाला Orthodox, ...dxc4 और ...Nd5 से मुक्ति, शांत Bd3 के साथ ...c5, Lasker Defence और Tartakower।",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "इस पैक की 10 लाइनें हैं Orthodox व्यवस्था, 5.Bf4 और ...c5, ...dxc4 और ...Nd5 से मुक्ति, शांत Bd3 के साथ ...c5, Lasker Defence और Tartakower।",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "इनमें तीन Exchange लाइनें भी हैं: Early Exchange, Exchange development, Nge2 वाली Exchange, और Ragozin।",
     "Practice with the green hint, then Test with none.":
@@ -298,8 +298,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   ja: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "これは黒のクイーンギャンビット・ディクラインドです。1.d4 d5 2.c4 のあと、黒は e6 と指し、d5 のポーンは残ります。",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "このパックの10ラインは、Orthodox の形、Nf3 を先に出す Orthodox、...dxc4 と ...Nd5 の解放、静かな Bd3 と ...c5、Lasker Defence、Tartakower です。",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "このパックの10ラインは、Orthodox の形、5.Bf4 と ...c5、...dxc4 と ...Nd5 の解放、静かな Bd3 と ...c5、Lasker Defence、Tartakower です。",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "さらに3つの Exchange ラインもあります。Early Exchange、Exchange development、Nge2 の Exchange、それに Ragozin です。",
     "Practice with the green hint, then Test with none.":
@@ -331,8 +331,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   ar: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "هذا غامبيت المؤخرة المرفوض للأسود. بعد 1.d4 d5 2.c4 يلعب الأسود e6 ويبقى البيدق على d5.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "الخطوط العشرة في هذه الحزمة هي ترتيب Orthodox، وOrthodox مع Nf3 أولًا، والتحرير بـ ...dxc4 و...Nd5، وBd3 هادئ مع ...c5، وLasker Defence وTartakower.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "الخطوط العشرة في هذه الحزمة هي ترتيب Orthodox، و5.Bf4 مع ...c5، والتحرير بـ ...dxc4 و...Nd5، وBd3 هادئ مع ...c5، وLasker Defence وTartakower.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "وتغطي أيضًا ثلاثة خطوط Exchange: Early Exchange، وتطوير Exchange، وExchange مع Nge2، بالإضافة إلى Ragozin.",
     "Practice with the green hint, then Test with none.":
@@ -363,8 +363,8 @@ export const QGD_BLACK_CAPTIONS: Record<string, Record<string, string>> = {
   tr: {
     "This is the Queen's Gambit Declined for Black. After 1.d4 d5 2.c4, Black plays e6 and the pawn on d5 stays.":
       "Bu, Siyah için vezir gambiti reddidir. 1.d4 d5 2.c4 ardından Siyah e6 oynar ve d5'teki piyon kalır.",
-    "The 10 lines in this pack are the Orthodox setup, the Nf3-first Orthodox, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
-      "Bu paketteki 10 hat Orthodox düzeni, önce Nf3 ile Orthodox, ...dxc4 ve ...Nd5 ile kurtulma, sakin Bd3 ile ...c5, Lasker Defence ve Tartakower'dır.",
+    "The 10 lines in this pack are the Orthodox setup, 5.Bf4 and ...c5, freeing with ...dxc4 and ...Nd5, a quiet Bd3 with ...c5, the Lasker Defence, and the Tartakower.":
+      "Bu paketteki 10 hat Orthodox düzeni, 5.Bf4 ve ...c5, ...dxc4 ve ...Nd5 ile kurtulma, sakin Bd3 ile ...c5, Lasker Defence ve Tartakower'dır.",
     "They also cover three Exchange lines: Early Exchange, Exchange development, and Exchange with Nge2, plus the Ragozin.":
       "Üç Exchange hattını da kapsar: Early Exchange, Exchange development, Nge2 ile Exchange ve Ragozin.",
     "Practice with the green hint, then Test with none.":

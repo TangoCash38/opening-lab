@@ -38,7 +38,7 @@
     ]
   },
   "sd3": {
-    "intro": "The Czech Slav: White's knight takes the light-squared bishop, and Black takes back with the e-pawn.",
+    "intro": "The Czech Slav: White's knight takes the light-squared bishop, and Black takes back with the e-pawn. Black then develops the dark-squared bishop, castles, and puts a knight on d7.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
@@ -54,7 +54,14 @@
       "e6 supports the centre and prepares to recapture on f5.",
       "Nxf5 takes the bishop on f5. White gives a knight for the light-squared bishop.",
       "exf5 recaptures the knight on f5. The e-file opens and the f-pawns are doubled.",
-      "e3 supports the centre and frees the light-squared bishop."
+      "e3 supports the centre and frees the light-squared bishop.",
+      "Bd6 develops the dark-squared bishop and attacks the pawn on h2. The bishop takes an active diagonal before Black castles.",
+      "Bxc4 takes the pawn on c4 and attacks the pawn on f7. White wins that pawn back.",
+      "O-O brings the king to g8 and the rook to f8. The king steps off the e-file.",
+      "O-O brings the king to g1 and the rook to f1. White's king leaves the centre as well.",
+      "Nbd7 develops the queen's knight and defends the knight on f6. The knight also defends the rook on f8.",
+      "Qc2 develops the queen and attacks the pawn on f5. The doubled pawns on the f-file are the target.",
+      "g6 defends the pawn on f5 and gives the king on g8 a little room. Black does not push that pawn any further yet."
     ]
   },
   "sd4": {
@@ -74,11 +81,18 @@
       "b4 attacks the knight on c3 and gains more space.",
       "Na2 steps the knight off the pawn. The edge is an awkward square, which is the cost of omitting the earlier restraint.",
       "e6 supports the centre and frees the dark-squared bishop.",
-      "Bxc4 takes the pawn on c4. White gets the pawn back after all."
+      "Bxc4 takes the pawn on c4. White gets the pawn back after all.",
+      "Be7 develops the dark-squared bishop and defends the pawn on b4. It also defends the knight on f6, so Black can castle.",
+      "O-O brings the king to g1 and the rook to f1. White castles before Black does.",
+      "O-O brings the king to g8 and the rook to f8. Both kings are safe, and Black still has the queenside space.",
+      "b3 supports the bishop on c4 and the pawn on a4. It also frees the dark-squared bishop.",
+      "Nbd7 develops the queen's knight and defends the knight on f6. The knight also defends the rook on f8.",
+      "Bb2 develops the dark-squared bishop and defends the pawn on d4. The bishop takes the long diagonal.",
+      "Bb7 develops the light-squared bishop behind the pawn on c6. It defends that pawn and the rook on a8, and it can wait until the centre opens."
     ]
   },
   "sd5": {
-    "intro": "The Slow Slav: White plays the e-pawn before the queen's knight, Black develops the light-squared bishop, and the bishop on d3 asks that bishop a question.",
+    "intro": "The Slow Slav: White plays the e-pawn before the queen's knight, the light-squared bishops are traded, and Black castles with the queen on c7.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
@@ -90,7 +104,16 @@
       "Bf5 develops the light-squared bishop outside the pawn chain.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
       "e6 supports the centre. The light-squared bishop is already out.",
-      "Bd3 challenges the bishop on f5. White offers a trade of light-squared bishops."
+      "Bd3 challenges the bishop on f5. White offers a trade of light-squared bishops.",
+      "Bxd3 takes the bishop on d3. Black accepts the trade of light-squared bishops that White offered.",
+      "Qxd3 recaptures the bishop on d3 and attacks the pawn on h7. The queen replaces the bishop on that square.",
+      "Be7 develops the dark-squared bishop and defends the knight on f6.",
+      "O-O brings the king to g1 and the rook to f1. White castles before Black's knight arrives.",
+      "Nbd7 develops the queen's knight and defends the knight on f6.",
+      "b3 supports the pawn on c4 and frees the dark-squared bishop. That bishop can use b2.",
+      "O-O brings the king to g8 and the rook to f8. The king steps off the e-file.",
+      "Bb2 develops the dark-squared bishop and defends the knight on c3.",
+      "Qc7 develops the queen and attacks the pawn on h2. The queen also defends the knight on d7 and the pawn on c6."
     ]
   },
   "sd6": {

@@ -152,7 +152,7 @@
     ]
   },
   "kidb7": {
-    "intro": "The Fianchetto: both bishops sit on the long diagonal, Black plays the queen's knight to d7 and a pawn to c6, and the centre is traded on d4.",
+    "intro": "The Fianchetto: both bishops sit on the long diagonal, Black plays the queen's knight to d7 and a pawn to c6, and after the trade the knight comes to c5.",
     "notes": [
       "d4 takes space in the centre and frees the dark-squared bishop.",
       "Nf6 brings the king's knight out so the centre can be challenged.",
@@ -174,7 +174,12 @@
       "Re8 puts the rook on the e-file and defends the pawn on e5.",
       "Re1 puts the rook on the e-file and defends the pawn on e4.",
       "exd4 takes the pawn on d4 and leaves the e-file half-open for Black.",
-      "Nxd4 recaptures the pawn on d4. The knight replaces the pawn in the centre."
+      "Nxd4 recaptures the pawn on d4. The knight replaces the pawn in the centre.",
+      "Nc5 attacks the pawn on e4 and defends the pawn on b7. The knight finds an active square after the trade in the centre.",
+      "Qc2 develops the queen and defends the pawn on e4. The queen also defends the knight on c3, so the pawn on e4 is not left to the knight on c5.",
+      "a5 gains queenside space and takes b4 under control.",
+      "Be3 develops the dark-squared bishop and defends the knight on d4. The bishop also defends the pawn on f2.",
+      "a4 grabs more queenside space and the knight on c5 keeps its post."
     ]
   },
   "kidb8": {
@@ -224,7 +229,7 @@
     ]
   },
   "kidb10": {
-    "intro": "The Classical with the knight on d7. The bishop drops home, Black pushes the a-pawn and puts a rook on e8, and the dark-squared bishop takes back on d4.",
+    "intro": "The Classical with the knight on d7. The bishop drops home, Black pushes the a-pawn and puts a rook on e8, then the knight comes to e5 and the light-squared bishop to e6.",
     "notes": [
       "d4 takes space in the centre and frees the dark-squared bishop.",
       "Nf6 brings the king's knight out so the centre can be challenged.",
@@ -248,7 +253,10 @@
       "Re8 puts the rook on the e-file and defends the pawn on e5.",
       "Be3 develops the dark-squared bishop and defends the pawn on d4.",
       "exd4 takes the pawn on d4 and leaves the e-file half-open for Black.",
-      "Bxd4 recaptures the pawn on d4 and plants the dark-squared bishop in the centre."
+      "Bxd4 recaptures the pawn on d4 and plants the dark-squared bishop in the centre.",
+      "Ne5 attacks the knight on f3 and the pawn on c4. The knight takes a central post after the bishop recaptured on d4.",
+      "Nh2 steps the knight off f3, where the knight on e5 was attacking it. The knight also defends the bishop on f1.",
+      "Be6 develops the light-squared bishop and attacks the pawn on c4. The bishop also attacks the pawn on h3."
     ]
   }
 }

@@ -50,7 +50,7 @@
     ]
   },
   "sg3": {
-    "intro": "Ng5 hits f7. The knight goes in, and Qh5+ follows the king that takes it.",
+    "intro": "Ng5 hits f7. The knight goes in, Qxc5 wins the bishop back, and a rook comes to e8.",
     "notes": [
       "e4 takes space in the centre and opens lines for the bishop and queen.",
       "e5 meets White in the centre and opens a path for the dark-squared bishop.",
@@ -67,7 +67,13 @@
       "Bxf7+ takes the knight on f7 and gives check.",
       "Kxf7 takes the bishop on f7 and pulls the king out of the centre.",
       "Qh5+ gives check and attacks the king on f7.",
-      "g6 blocks the check and attacks the queen on h5."
+      "g6 blocks the check and attacks the queen on h5.",
+      "Qxc5 takes the bishop on c5 and attacks the knight on c6. The bishop that sat on c5 is gone, so the piece given up on f7 comes back.",
+      "d6 attacks the queen on c5. The queen has to move, and the pawn also covers e5.",
+      "Qd5+ gives check and moves into the centre, attacking the knight on c6.",
+      "Kg7 steps the king out of check and defends the pawn on g6.",
+      "O-O castles the king to safety and brings a rook towards the centre. Black's king is still on g7.",
+      "Re8 puts the rook on the e-file and attacks the pawn on e4. The rook also defends the queen on d8."
     ]
   },
   "sg4": {
