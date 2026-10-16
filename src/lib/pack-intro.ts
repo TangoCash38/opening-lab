@@ -153,7 +153,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
   "sicilian-black": [
-    "The Sicilian Defence is 1.e4 c5. This pack is the Najdorf: 2...d6 and 5...a6 against the open lines, and the same ...d6 setup against 3.Bb5+, the Alapin, the Smith-Morra, the Grand Prix and the Closed Sicilian.",
+    "The Sicilian Defence is 1.e4 c5. This pack is one system, the Najdorf: 2...d6 and 5...a6. The lines are 6.Bg5, the English Attack, 6.Be2, 6.Bc4, 6.h3, 6.f4, 6.g3, 6.a4, the Poisoned Pawn, and 6.Be3 with ...Ng4.",
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
 };

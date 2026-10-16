@@ -149,110 +149,11 @@ const EXPECTED = {
     "O-O",
     "Be7"
   ],
-  "sib6": [
-    "e4",
-    "c5",
-    "Nf3",
-    "d6",
-    "Bb5+",
-    "Bd7",
-    "Bxd7+",
-    "Qxd7",
-    "O-O",
-    "Nf6",
-    "Re1",
-    "Nc6",
-    "c3",
-    "e6",
-    "d4",
-    "cxd4",
-    "cxd4",
-    "Be7",
-    "Nc3",
-    "O-O"
-  ],
-  "sib7": [
-    "e4",
-    "c5",
-    "d4",
-    "cxd4",
-    "c3",
-    "dxc3",
-    "Nxc3",
-    "Nc6",
-    "Nf3",
-    "d6",
-    "Bc4",
-    "e6",
-    "O-O",
-    "Nf6",
-    "Qe2",
-    "a6",
-    "Rd1",
-    "Qc7",
-    "Bf4",
-    "Be7"
-  ],
-  "sib8": [
-    "e4",
-    "c5",
-    "Nc3",
-    "d6",
-    "f4",
-    "Nf6",
-    "Nf3",
-    "Nc6",
-    "Bb5",
-    "Bd7",
-    "O-O",
-    "e6",
-    "d3",
-    "Be7",
-    "Bxc6",
-    "Bxc6",
-    "Qe1",
-    "O-O"
-  ],
-  "sib9": [
-    "e4",
-    "c5",
-    "c3",
-    "Nf6",
-    "e5",
-    "Nd5",
-    "d4",
-    "cxd4",
-    "Nf3",
-    "Nc6",
-    "cxd4",
-    "d6",
-    "Bc4",
-    "e6",
-    "O-O",
-    "Be7",
-    "Re1",
-    "O-O"
-  ],
-  "sib10": [
-    "e4",
-    "c5",
-    "Nc3",
-    "d6",
-    "g3",
-    "Nc6",
-    "Bg2",
-    "Nf6",
-    "d3",
-    "e6",
-    "Nge2",
-    "Be7",
-    "O-O",
-    "O-O",
-    "f4",
-    "a6",
-    "Be3",
-    "Qc7"
-  ]
+  "sib6": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "f4", "e5", "Nf3", "Nbd7", "a4", "Be7", "Bd3", "O-O", "O-O", "Qc7"],
+  "sib7": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "g3", "e5", "Nde2", "Be7", "Bg2", "O-O", "O-O", "b5"],
+  "sib8": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "a4", "e5", "Nb3", "Be7", "Be2", "O-O", "O-O", "Nc6"],
+  "sib9": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Bg5", "e6", "f4", "Qb6", "Qd2", "Qxb2", "Rb1", "Qa3", "f5", "Nc6"],
+  "sib10": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "Ng4", "Bg5", "h6", "Bh4", "g5", "Bg3", "Bg7", "h3", "Ne5"]
 };
 
 const IDEAS = {
@@ -261,11 +162,11 @@ const IDEAS = {
   "sib3": "Najdorf against 6.Be2. ...e5 sends the knight to b3, both sides castle short, and ...Be6 meets the f-pawn by taking on f4.",
   "sib4": "Najdorf against 6.Bc4. The bishop drops to b3, both sides castle, and ...b5 with ...Bb7 meets the f-pawn.",
   "sib5": "Najdorf against 6.h3. ...e5 and ...h5 slow the kingside pawns, then ...Be6, ...Nbd7 and ...Be7.",
-  "sib6": "3.Bb5+ against ...d6. Trade the light-squared bishops, put the queen on d7, open the centre, and castle.",
-  "sib7": "Smith-Morra Accepted: Black returns development tempo with …Nc6–…d6–…e6–…Nf6 and completes …Be7.",
-  "sib8": "Grand Prix against ...d6. Meet Bb5 by developing, trade on c6 with the bishop, and castle.",
-  "sib9": "Alapin against a ...d6 setup. The knight goes to d5, ...d6 challenges the pawn on e5, and Black castles.",
-  "sib10": "Closed Sicilian against ...d6. No kingside fianchetto: ...e6, ...Be7 and ...a6, with the queen on c7."
+  "sib6": "Najdorf against 6.f4. ...e5 kicks the knight, both sides castle, and the queen comes to c7.",
+  "sib7": "Najdorf against 6.g3. ...e5 kicks the knight, both sides castle, and ...b5 gains queenside space.",
+  "sib8": "Najdorf against 6.a4. ...e5 kicks the knight, both sides castle, and the queen's knight comes to c6.",
+  "sib9": "Najdorf Poisoned Pawn. After 6.Bg5 and ...e6, the queen takes on b2, steps to a3, and the knight comes to c6.",
+  "sib10": "Najdorf with 6.Be3 and ...Ng4. Black kicks the dark-squared bishop, pushes the g-pawn, and the knight settles on e5."
 };
 
 const NAMES = {
@@ -380,7 +281,11 @@ test("Sicilian for Black is the signed sicilian-black pack: sib1–sib10 book, �
     assert.equal(game.turn(), "w", `${id} must end after Black`);
   }
 
-  assert.equal(linePlies(sib, "sib8")[4], "f4");
+  assert.equal(linePlies(sib, "sib6")[10], "f4");
+  assert.equal(linePlies(sib, "sib7")[10], "g3");
+  assert.equal(linePlies(sib, "sib8")[10], "a4");
+  assert.equal(linePlies(sib, "sib9")[13], "Qb6");
+  assert.equal(linePlies(sib, "sib10")[11], "Ng4");
 
   const allPlies = lineIds.map((id) => ({ id, plies: linePlies(sib, id) }));
   for (let i = 0; i < allPlies.length; i++) {

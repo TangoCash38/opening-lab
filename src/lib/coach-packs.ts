@@ -1165,7 +1165,7 @@ const SICILIAN_INTRO = [
   "White starts with 1. e4, claiming the centre.",
   "Black replies 1... c5, striking from the side rather than copying White directly.",
   "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
-  "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.",
+  "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.",
   "There you are, a sharp, flexible defence with plenty of bite.",
 ] as const;
 
@@ -1174,9 +1174,9 @@ const SICILIAN_INTRO_AT_SEC = [0, 4.7, 9.9, 18.9, 27.5, 44.2] as const;
 /**
  * Moves named in the Sicilian intro, in the order they are first spoken.
  * e4 and c5 are the opening "1. e4" / "1... c5" pair. The rest is the common route
- * (1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6), not the Najdorf book line.
+ * (1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6), the Najdorf.
  */
-export const SICILIAN_INTRO_STEM = ["e4", "c5", "Nf3", "e6", "d4", "cxd4", "Nxd4", "Nf6"] as const;
+export const SICILIAN_INTRO_STEM = ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6"] as const;
 export const SICILIAN_INTRO_STEM_AT_SEC = [6.2, 11.5, 33.1, 34.84, 36.5, 37.9, 40.1, 42.3] as const;
 
 export const SICILIAN_LINE_MP3 = "/coach/sicilian-black/tango-sicilian-line1.mp3";

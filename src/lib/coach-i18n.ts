@@ -608,8 +608,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "Las negras responden un punto c5, golpeando de lado en vez de copiar a las blancas directamente.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "La idea es desafiar las ambiciones centrales de las blancas, desarrollarse con actividad y crear contrajuego desde el principio.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Una ruta habitual es 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "La Najdorf es 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Ahí lo tienes: una defensa aguda y flexible, con mucho mordiente.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -1015,8 +1015,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "黑方应以 1. c5 从侧翼还击，而不是直接照搬白方。",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "其用意是挑战白方的中心野心，积极出子，并从一开始就制造反击。",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "一条常见路线是 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6。",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "纳吉多夫是 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6。",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "就是这样：一种锐利、灵活、很有锋芒的防御。",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -1444,8 +1444,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "Les Noirs répondent un point c5, en frappant de côté plutôt qu'en copiant directement les Blancs.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "L'idée est de contester les ambitions centrales des Blancs, de se développer activement et de créer du contre-jeu dès le début.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Une voie courante est 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "La Najdorf est 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Vous y voilà : une défense aiguë et souple, avec beaucoup de mordant.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -1874,8 +1874,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "Schwarz antwortet mit einem Punkt c5 und schlägt von der Seite zu, statt Weiß direkt zu kopieren.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "Die Idee ist, die zentralen Ambitionen von Weiß herauszufordern, aktiv zu entwickeln und von Anfang an Gegenspiel zu schaffen.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Ein üblicher Weg ist 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "Die Najdorf ist 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Da sind Sie: eine scharfe, flexible Verteidigung mit ordentlich Biss.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -2301,8 +2301,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "As Pretas respondem um ponto c5, golpeando de lado em vez de copiar as Brancas diretamente.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "A ideia é desafiar as ambições centrais das Brancas, desenvolver-se com atividade e criar contrajogo desde o início.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Uma rota comum é 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "A Najdorf é 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Aí está: uma defesa aguda e flexível, com bastante mordida.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -2725,8 +2725,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "Чёрные отвечают одним пунктом c5, ударяя с фланга, а не копируя белых напрямую.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "Идея в том, чтобы оспорить центральные амбиции белых, активно развиваться и создавать контригру с самого начала.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Обычный маршрут: 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "Найдорф: 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Вот так: острая, гибкая защита с изрядным запасом зуба.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -3153,8 +3153,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "Il Nero risponde un punto c5, colpendo di fianco invece di copiare direttamente il Bianco.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "L'idea è sfidare le ambizioni centrali del Bianco, svilupparsi con attività e creare controgioco fin dall'inizio.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Una strada comune è 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "La Najdorf è 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "Eccoci: una difesa acuta e flessibile, con un bel morso.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -3582,8 +3582,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "काला एक बिंदु c5 से जवाब देता है, सीधे सफ़ेद की नकल करने के बजाय बगल से प्रहार करता है।",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "विचार है सफ़ेद की केंद्रीय महत्वाकांक्षाओं को चुनौती देना, सक्रिय रूप से विकसित होना, और शुरुआत से ही काउंटरप्ले बनाना।",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "एक आम रास्ता है 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6।",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "नाजडॉर्फ है 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6।",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "यह रहा: एक तीखी, लचीली रक्षा, जिसमें खूब काट है।",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -3999,8 +3999,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "黒はワンポイント c5 で応え、白をそのまま真似るのではなく横から突きます。",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "狙いは白の中央の野心に挑み、積極的に駒を出し、最初からカウンタープレイを作ることです。",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "よくある道筋は 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6 です。",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "ナイドルフは 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6 です。",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "そこです。鋭く柔軟で、切れ味のある防御です。",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -4416,8 +4416,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "يرد الأسود بنقطة c5، ضاربًا من الجانب بدل نسخ الأبيض مباشرة.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "الفكرة هي تحدي طموح الأبيض في المركز، والتطوير بنشاط، وخلق لعب مضاد منذ البداية.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "طريق شائع هو 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "النايدورف هي 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "ها أنت: دفاع حاد ومرن، وفيه الكثير من العض.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":
@@ -4838,8 +4838,8 @@ const COACH_CAPTION_BASE: Record<string, Record<string, string>> = {
       "Siyah bir nokta c5 ile karşılık verir; Beyazı doğrudan kopyalamak yerine yandan vurur.",
     "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.":
       "Fikir, Beyazın merkezdeki hırsına meydan okumak, etkin gelişmek ve en başından karşı oyun kurmaktır.",
-    "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.":
-      "Sık bir yol 1. e4, c5, 2. Nf3, e6, 3. d4, cxd4, 4. Nxd4, Nf6.",
+    "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.":
+      "Najdorf 1. e4, c5, 2. Nf3, d6, 3. d4, cxd4, 4. Nxd4, Nf6.",
     "There you are, a sharp, flexible defence with plenty of bite.":
       "İşte oradasınız: keskin, esnek ve epey ısırığı olan bir savunma.",
     "Right then, welcome to Line 1 of the Sicilian, the Najdorf.":

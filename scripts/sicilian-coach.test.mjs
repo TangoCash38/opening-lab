@@ -191,7 +191,7 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
         "White starts with 1. e4, claiming the centre.",
         "Black replies 1... c5, striking from the side rather than copying White directly.",
         "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
-        "A common route is 1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6.",
+        "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.",
         "There you are, a sharp, flexible defence with plenty of bite.",
       ];
       if (coach.introBeats.join("\\n") !== captions.join("\\n")) throw new Error("captions\\n" + coach.introBeats.join("\\n"));
@@ -200,7 +200,7 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
       if (!spoken.endsWith("plenty of bite.")) throw new Error("closer");
       if (!coach.introBeatAtSec || coach.introBeatAtSec.length !== coach.introBeats.length) throw new Error("beat clock");
       if (coach.introStem.join(" ") !== SICILIAN_INTRO_STEM.join(" ")) throw new Error("stem");
-      if (coach.introStem.join(" ") !== "e4 c5 Nf3 e6 d4 cxd4 Nxd4 Nf6") throw new Error("spoken stem");
+      if (coach.introStem.join(" ") !== "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6") throw new Error("spoken stem");
       if (coach.introStemAtSec.join(",") !== SICILIAN_INTRO_STEM_AT_SEC.join(",")) throw new Error("stem clock");
       const game = new Chess();
       for (const san of coach.introStem) {

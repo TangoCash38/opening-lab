@@ -449,6 +449,6 @@ export const STUDY_PACK_ROWS: readonly StudyPackRow[] = [
     stem: ["e4", "c5"],
     tagline: "Fight 1.e4 from the flank.",
     lead: "The Sicilian Defence is 1.e4 c5. Black answers the king's pawn from the flank and fights for the centre a move later.",
-    rest: "It is one of the oldest replies to 1.e4, already analysed in the late 16th century, and it is the most common fighting defence today. This pack is one system: the Najdorf, with 2...d6 and 5...a6. The 10 lines are 6.Bg5, the English Attack, 6.Be2, 6.Bc4 and 6.h3, plus 3.Bb5+, the Alapin, the Smith-Morra, the Grand Prix and the Closed Sicilian, each met with a ...d6 setup.",
+    rest: "It is one of the oldest replies to 1.e4, already analysed in the late 16th century, and it is the most common fighting defence today. This pack is one system, the Najdorf, with 2...d6 and 5...a6. The 10 lines are 6.Bg5, the English Attack, 6.Be2, 6.Bc4, 6.h3, 6.f4, 6.g3, 6.a4, the Poisoned Pawn, and 6.Be3 with ...Ng4.",
   },
 ];
