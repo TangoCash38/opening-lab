@@ -57,17 +57,20 @@ test("flag is on for on-sale packs and can be switched off", () => {
   assert.equal(src.includes("isPlayWrap"), false);
 });
 
-test("a finished pair waits to be read before the next auto move", () => {
-  assert.equal(slides.opponentAutoDelay(0), slides.OPPONENT_REPLY_MS);
-  assert.equal(slides.opponentAutoDelay(1), slides.OPPONENT_REPLY_MS);
-  assert.equal(slides.opponentAutoDelay(2), slides.PAIR_READ_MS);
-  assert.equal(slides.opponentAutoDelay(3), slides.OPPONENT_REPLY_MS);
-  assert.equal(slides.opponentAutoDelay(4), slides.PAIR_READ_MS);
-  assert.ok(slides.PAIR_READ_MS > slides.OPPONENT_REPLY_MS);
+test("a finished pair does not pause the board and the reply stays at normal speed", () => {
+  for (const ply of [0, 1, 2, 3, 4]) {
+    assert.equal(slides.opponentAutoDelay(ply), slides.OPPONENT_REPLY_MS);
+  }
+  assert.equal(slides.OPPONENT_REPLY_MS, 420);
+  assert.equal(slides.PAIR_READ_MS, undefined);
+  const slidesSrc = readFileSync(join(root, "src/lib/coach-slides.ts"), "utf8");
+  assert.doesNotMatch(slidesSrc, /PAIR_READ_MS|4500/);
   const train = readFileSync(join(root, "src/components/opening-lab/train-view.tsx"), "utf8");
   const panel = readFileSync(join(root, "src/components/opening-lab/ask-coach-panel.tsx"), "utf8");
   assert.match(train, /opponentAutoDelay\(idx\)/);
-  assert.match(train, /pairHoldUntil/);
+  assert.doesNotMatch(train, /pairHoldUntil|PAIR_READ_MS/);
+  assert.match(panel, /followed\.current/);
+  assert.match(panel, /data-coach-prev/);
   assert.doesNotMatch(panel, /data-ask-coach-practice/);
   assert.doesNotMatch(train, /data-ask-coach-practice/);
   const notice = readFileSync(join(root, "src/components/opening-lab/slav-pack-notice.tsx"), "utf8");

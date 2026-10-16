@@ -16,24 +16,16 @@ export function coachSlides(ply: number, finished: boolean): CoachSlide[] {
   return slides;
 }
 
-/** Short beat before the reply that completes the pair on the same slide. */
+/** Normal speed for an automatic opponent move. A finished pair adds no extra wait. */
 export const OPPONENT_REPLY_MS = 420;
 
 /**
- * After both moves of a pair are on the board, wait before the next pair.
- * Long enough to read the two notes. The next auto move must not start sooner.
- */
-export const PAIR_READ_MS = 4500;
-
-/**
  * Delay before an automatic opponent move.
- * An even ply means a full pair is already on the board, so the next move
- * starts another pair and has to wait. An odd ply is the reply on this slide.
- * The count is the same whichever colour is being trained: White's move is
- * the odd ply and Black's reply is the even ply.
+ * The board never holds after a pair. The player's next move is accepted at
+ * once and advances the slide. The reply, including the move that starts the
+ * next pair, always uses this same short beat.
  */
-export function opponentAutoDelay(plyIndex: number): number {
-  if (plyIndex > 0 && plyIndex % 2 === 0) return PAIR_READ_MS;
+export function opponentAutoDelay(_plyIndex: number): number {
   return OPPONENT_REPLY_MS;
 }
 
