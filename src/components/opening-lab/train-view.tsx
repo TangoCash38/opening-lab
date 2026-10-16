@@ -33,7 +33,7 @@ import { LineCompleteBurst } from "./line-complete-burst";
 import { LineFeedback } from "./line-feedback";
 import { PackAboutModal } from "./pack-about-modal";
 import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
-import { opponentAutoDelay, PAIR_READ_MS } from "@/lib/coach-slides";
+import { opponentAutoDelay } from "@/lib/coach-slides";
 import { isPackComingSoon } from "@/lib/catalog";
 import { packStudyIntro } from "@/lib/pack-study-intro";
 import { AskCoachPanel } from "./ask-coach-panel";
@@ -357,8 +357,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const [finishNote, setFinishNote] = useState<string | null>(null);
   const [coachStarted, setCoachStarted] = useState(initialMode === "practice");
   const [liveCoachPly, setLiveCoachPly] = useState(bookStartPly);
-  /** Timestamp until which the finished pair stays on screen. 0 when not holding. */
-  const [pairHoldUntil, setPairHoldUntil] = useState(0);
   const lineIntroCopy =
     initialMode === "learn" &&
     !gym &&
@@ -379,7 +377,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     setCoachStarted(initialMode === "practice");
     setLineCard(lineIntroCopy ? "about" : "off");
     setLiveCoachPly(bookStartPly);
-    setPairHoldUntil(0);
   }, [line.id, initialMode, startNow, lineIntroCopy, bookStartPly]);
   useEffect(() => {
     if (!coachLesson || embedded) return;
@@ -841,17 +838,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   }, [line, pack, purchased, subscribed, t, mode, warmup, bookEndPly, scheduleHints, onLineComplete, onLearnDone, onTestPly, openEndCard, freeTry, showLineFinish]);
 
   useEffect(() => {
-    if (!(coachLesson && mode === "learn" && plyIndex > 0 && plyIndex % 2 === 0)) {
-      setPairHoldUntil(0);
-      return;
-    }
-    const until = Date.now() + PAIR_READ_MS;
-    setPairHoldUntil(until);
-    const id = window.setTimeout(() => setPairHoldUntil(0), PAIR_READ_MS);
-    return () => window.clearTimeout(id);
-  }, [coachLesson, mode, plyIndex]);
-
-  useEffect(() => {
     clearReplyTimer();
     if (busy || slide) return;
     if (plyIndex >= bookEndPly) return;
@@ -862,11 +848,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     if (coachLesson && mode === "learn" && !coachStarted) return;
 
     const idx = plyIndex;
-    const readingPair = coachLesson && mode === "learn" && idx > 0 && idx % 2 === 0;
-    if (!readingPair) {
-      setStatus({ text: "…", cls: "" });
-      setHintsReady(false);
-    }
+    setStatus({ text: "…", cls: "" });
+    setHintsReady(false);
     const fenNow = game.fen();
 
     const gen = replyGenRef.current;
@@ -918,7 +901,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   const playFromTo = (from: Square, to: Square) => {
     if (from === to) return;
     if (busy || slide) return;
-    if (pairHoldUntil > Date.now()) return;
     if (plyIndex >= bookEndPly) return;
     const live = gameRef.current;
     if (!isUserTurn(live)) return;
@@ -940,7 +922,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
   };
 
   const tryPlay = (from: Square, to: Square, promotion?: string) => {
-    if (pairHoldUntil > Date.now()) return;
     const exp = expectedMove(game, plyIndex);
     if (!exp) return;
     if (exp.from !== from || exp.to !== to) {
@@ -1013,7 +994,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
 
   const onSquare = (sq: Square) => {
     if (busy || slide) return;
-    if (pairHoldUntil > Date.now()) return;
     if (plyIndex >= bookEndPly) return;
     if (!isUserTurn(game)) return;
 
@@ -1134,7 +1114,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     mode === "learn" &&
     userTurn &&
     hintsReady &&
-    pairHoldUntil === 0 &&
     plyIndex < bookEndPly;
   const exp = bookExp;
 
@@ -1580,7 +1559,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
               frameCoords={frameCoords && !boardExpanded}
               mateBlast={mateBlast}
               onMateBlastDone={stopMateBlast}
-              interactive={!busy && !slide && !viewingHistory && pairHoldUntil === 0 && (!coachLesson || coachStarted || mode === "practice")}
+              interactive={!busy && !slide && !viewingHistory && (!coachLesson || coachStarted || mode === "practice")}
             />
             )}
             {celebratePiece ? (
