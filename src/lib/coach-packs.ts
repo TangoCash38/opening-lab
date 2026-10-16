@@ -1158,16 +1158,16 @@ const SICILIAN_BLACK_PACK_ID = "sicilian-black";
 export const SICILIAN_PORTRAIT = "/coach/sicilian-black/king-cedar-portrait.jpg";
 
 /**
- * Written Najdorf intro. The old spoken clip still says 2...e6, so it is not
- * played. These sentences are the Najdorf (2. Nf3 d6), and the board stays
- * at the start so no caption is tied to that clip.
+ * Written Najdorf intro. The old spoken clip said 2...e6, so that file is
+ * gone. These sentences run through 5. Nc3 a6, and the board stays at the
+ * start.
  */
 const SICILIAN_INTRO = [
   "Right then, the Sicilian Defence for Black.",
   "White starts with 1. e4, claiming the centre.",
   "Black replies 1... c5, striking from the side rather than copying White directly.",
   "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
-  "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.",
+  "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6.",
   "There you are, a sharp, flexible defence with plenty of bite.",
 ] as const;
 

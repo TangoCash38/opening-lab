@@ -50,15 +50,14 @@ function compileCoachPacks(t) {
 test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t) => {
   const compiled = compileCoachPacks(t);
   if (!compiled) return;
-  const mp3 = "public/coach/sicilian-black/tango-sicilian-intro.mp3";
   const lineMp3 = "public/coach/sicilian-black/tango-sicilian-line1.mp3";
   const oldMp3 = "public/coach/sicilian-black/sicilian-intro.mp3";
+  const droppedIntro = "public/coach/sicilian-black/tango-sicilian-intro.mp3";
   const portrait = "public/coach/sicilian-black/king-cedar-portrait.jpg";
   const oldPortrait = "public/coach/sicilian-black/tango-portrait.png";
-  assert.equal(existsSync(join(root, mp3)), true, mp3);
+  assert.equal(existsSync(join(root, droppedIntro)), false, droppedIntro);
   assert.equal(existsSync(join(root, lineMp3)), true, lineMp3);
   assert.equal(existsSync(join(root, oldMp3)), false, oldMp3);
-  assert.ok(statSync(join(root, mp3)).size > 700_000, mp3);
   assert.equal(statSync(join(root, lineMp3)).size, 2_293_292, lineMp3);
   assert.equal(existsSync(join(root, portrait)), true, portrait);
   assert.equal(existsSync(join(root, oldPortrait)), false, oldPortrait);
@@ -185,7 +184,7 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
         "White starts with 1. e4, claiming the centre.",
         "Black replies 1... c5, striking from the side rather than copying White directly.",
         "The idea is to challenge White's central ambitions, develop actively, and create counterplay from the very beginning.",
-        "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6.",
+        "The Najdorf is 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6.",
         "There you are, a sharp, flexible defence with plenty of bite.",
       ];
       if (coach.introBeats.join("\\n") !== captions.join("\\n")) throw new Error("captions\\n" + coach.introBeats.join("\\n"));
@@ -193,7 +192,7 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
       if (/one point|Now let's see|builds the position|Tango/i.test(spoken)) throw new Error("cut or old words");
       if (!spoken.endsWith("plenty of bite.")) throw new Error("closer");
       if (/\\be6\\b|Alapin|2\\. Nf3 e6/.test(spoken)) throw new Error("old e6 route in the written intro");
-      if (!spoken.includes("2. Nf3 d6")) throw new Error("najdorf moves missing");
+      if (!spoken.includes("2. Nf3 d6") || !spoken.includes("5. Nc3 a6")) throw new Error("najdorf moves missing");
       const introPlies = coachTalkPlies("sicilian-black", "intro");
       if (!introPlies || introPlies.some(Boolean)) throw new Error("intro should hold the start position");
       const lineCaps = [
