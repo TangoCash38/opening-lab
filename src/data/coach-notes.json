@@ -840,7 +840,7 @@
         "c6 defends the knight on d5 and keeps a white piece off b5.",
         "d4 attacks the pawn on e5 and opens lines against the king on e6.",
         "Qf6 attacks the queen on f3 and defends the king on e6. The queens face each other, and Black tries to take the heat off the king.",
-        "Qe2 steps the queen back to e2 and keeps the queens on. Next the dark-squared bishop comes out and a rook goes to e1."
+        "Qe2 steps the queen back to e2 and keeps the queens on. Next, keep the king on the run with Ne4 or dxe5, and bring the bishop and rook out after that."
       ]
     },
     "it6": {
@@ -1988,7 +1988,11 @@
         "Rb1 puts the rook on the b-file and attacks the queen on b2. The queen has to step away.",
         "Qa3 steps the queen off the rook on b1 and attacks the pawn on a2. The queen also attacks the knight on c3.",
         "f5 attacks the pawn on e6 and pushes into Black's camp.",
-        "Nc6 develops the queen's knight and attacks the knight on d4."
+        "Nc6 develops the queen's knight and attacks the knight on d4.",
+        "fxe6 takes the pawn on e6 and attacks the pawn on f7. The pawn on f7 can take it back.",
+        "fxe6 recaptures the pawn on e6 and clears f7. The knight on d4 attacks the knight on c6.",
+        "Nxc6 takes the knight on c6. The pawn on b7 can take the knight on c6 back.",
+        "bxc6 recaptures the knight on c6. The b-file opens for the rook on b1."
       ]
     },
     "sib10": {

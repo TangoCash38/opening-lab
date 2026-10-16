@@ -152,7 +152,7 @@ const EXPECTED = {
   "sib6": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "f4", "e5", "Nf3", "Nbd7", "a4", "Be7", "Bd3", "O-O", "O-O", "Qc7"],
   "sib7": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "g3", "e5", "Nde2", "Be7", "Bg2", "O-O", "O-O", "b5"],
   "sib8": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "a4", "e5", "Nb3", "Be7", "Be2", "O-O", "O-O", "Nc6"],
-  "sib9": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Bg5", "e6", "f4", "Qb6", "Qd2", "Qxb2", "Rb1", "Qa3", "f5", "Nc6"],
+  "sib9": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Bg5", "e6", "f4", "Qb6", "Qd2", "Qxb2", "Rb1", "Qa3", "f5", "Nc6", "fxe6", "fxe6", "Nxc6", "bxc6"],
   "sib10": ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Be3", "Ng4", "Bg5", "h6", "Bh4", "g5", "Bg3", "Bg7", "h3", "Ne5"]
 };
 

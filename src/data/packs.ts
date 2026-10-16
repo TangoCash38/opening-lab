@@ -812,7 +812,7 @@ export const PACKS: Pack[] = [
       {
         id: "sib9",
         name: "Line 9",
-        plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Bg5", "e6", "f4", "Qb6", "Qd2", "Qxb2", "Rb1", "Qa3", "f5", "Nc6"],
+        plies: ["e4", "c5", "Nf3", "d6", "d4", "cxd4", "Nxd4", "Nf6", "Nc3", "a6", "Bg5", "e6", "f4", "Qb6", "Qd2", "Qxb2", "Rb1", "Qa3", "f5", "Nc6", "fxe6", "fxe6", "Nxc6", "bxc6"],
         idea: "Najdorf Poisoned Pawn. After 6.Bg5 and ...e6, the queen takes on b2, steps to a3, and the knight comes to c6.",
         side: "b",
       },
@@ -1723,7 +1723,7 @@ export const PACKS: Pack[] = [
         name: "Line 5",
         plies: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6", "Qe2"],
         idea: "Fried Liver. After ...Nxd5 the knight goes to f7, the king takes, and Qf3+ follows the king to e6. White castles, opens the centre with d4, and steps the queen back to e2.",
-        next: "The queen has stepped back to e2 and the queens stay on. Next the dark-squared bishop comes out and a rook goes to e1. The king on e6 is still the target.",
+        next: "The queen has stepped back and the queens stay on. Next, keep the king on the run with Ne4 or dxe5. Bring the bishop and rook out after that.",
         side: "w",
       },
       {

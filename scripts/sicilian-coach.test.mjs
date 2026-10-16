@@ -93,7 +93,8 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
   assert.match(entry, /coachName: "King Cedar"/);
   assert.match(entry, /portrait: SICILIAN_PORTRAIT/);
   assert.match(entry, /introTitle: "King Cedar · Sicilian"/);
-  assert.match(entry, /introAudio: SICILIAN_INTRO_MP3/);
+  assert.match(entry, /introBeats: SICILIAN_INTRO/);
+  assert.doesNotMatch(entry, /introAudio|introStem|introBeatAtSec|introAudioFallbackSec|tango-sicilian-intro/);
   assert.match(entry, /lineTalkOnTapOnly: true/);
   assert.match(entry, /firstLineId: "sib1"/);
   assert.match(entry, /firstLineBeats: SICILIAN_LINE/);
@@ -123,10 +124,6 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
       const { PACKS } = await import("./src/data/packs.ts");
       const {
         COACH_PACKS,
-        SICILIAN_INTRO_MP3,
-        SICILIAN_INTRO_SEC,
-        SICILIAN_INTRO_STEM,
-        SICILIAN_INTRO_STEM_AT_SEC,
         SICILIAN_PORTRAIT,
         SICILIAN_LINE_MP3,
         SICILIAN_LINE_SEC,
@@ -135,6 +132,7 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
         coachLinePlyCues,
         coachPackIntroApplies,
         coachPackLineApplies,
+        coachPackWrittenIntro,
         coachTalkAfterPackIntro,
         coachTalkHasAudio,
         coachTalkPlies,
@@ -153,25 +151,21 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
       if (coach.coachName !== "King Cedar") throw new Error("name " + coach.coachName);
       if (coach.portrait !== SICILIAN_PORTRAIT) throw new Error("portrait");
       if (coach.portrait !== "/coach/sicilian-black/king-cedar-portrait.jpg") throw new Error("portrait path");
-      if (coach.introAudio !== SICILIAN_INTRO_MP3) throw new Error("audio");
-      if (coach.introAudio !== "/coach/sicilian-black/tango-sicilian-intro.mp3") throw new Error("audio path");
-      if (coach.introAudio.includes("sicilian-intro.mp3") && !coach.introAudio.endsWith("tango-sicilian-intro.mp3")) {
-        throw new Error("old audio path");
-      }
-      if (coach.introAudioFallbackSec !== SICILIAN_INTRO_SEC || SICILIAN_INTRO_SEC !== 50.21) {
-        throw new Error("length " + coach.introAudioFallbackSec);
-      }
+      if (coach.introAudio) throw new Error("intro audio still wired " + coach.introAudio);
+      if (coach.introStem) throw new Error("intro stem still wired");
+      if (coach.introBeatAtSec) throw new Error("intro clock still wired");
+      if (coach.introAudioFallbackSec) throw new Error("intro length still wired");
+      if (!coachPackWrittenIntro("sicilian-black")) throw new Error("written intro");
       if (coach.introTitle !== "King Cedar · Sicilian") throw new Error("title");
       if (coach.lineTalkOnTapOnly !== true) throw new Error("tap only");
       if (coach.firstLineId !== "sib1") throw new Error("line id");
       if (coach.firstLineAudio !== SICILIAN_LINE_MP3) throw new Error("line audio " + coach.firstLineAudio);
       if (coach.firstLineAudio !== "/coach/sicilian-black/tango-sicilian-line1.mp3") throw new Error("line path");
-      if (coach.firstLineAudio === coach.introAudio) throw new Error("line reuses intro");
       if (coach.firstLineAudioFallbackSec !== SICILIAN_LINE_SEC || SICILIAN_LINE_SEC !== 143.3) {
         throw new Error("line length " + coach.firstLineAudioFallbackSec);
       }
       if (!coachTalkHasAudio("sicilian-black", "line")) throw new Error("line clip");
-      if (!coachTalkHasAudio("sicilian-black", "intro")) throw new Error("intro clip");
+      if (coachTalkHasAudio("sicilian-black", "intro")) throw new Error("intro clip still plays");
       if (!coachPackIntroApplies("sicilian-black")) throw new Error("intro gate");
       if (!coachPackLineApplies({ packId: "sicilian-black", lineId: "sib1" })) throw new Error("sib1 talk");
       if (coachPackLineApplies({ packId: "sicilian-black", lineId: "sib2" })) throw new Error("sib2 talk");
@@ -198,15 +192,10 @@ test("King Cedar introduces Sicilian for Black; Skip stays on the line list", (t
       const spoken = coach.introBeats.join(" ");
       if (/one point|Now let's see|builds the position|Tango/i.test(spoken)) throw new Error("cut or old words");
       if (!spoken.endsWith("plenty of bite.")) throw new Error("closer");
-      if (!coach.introBeatAtSec || coach.introBeatAtSec.length !== coach.introBeats.length) throw new Error("beat clock");
-      if (coach.introStem.join(" ") !== SICILIAN_INTRO_STEM.join(" ")) throw new Error("stem");
-      if (coach.introStem.join(" ") !== "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6") throw new Error("spoken stem");
-      if (coach.introStemAtSec.join(",") !== SICILIAN_INTRO_STEM_AT_SEC.join(",")) throw new Error("stem clock");
-      const game = new Chess();
-      for (const san of coach.introStem) {
-        if (!game.move(san)) throw new Error("illegal " + san);
-      }
-      if (coachTalkPlies("sicilian-black", "intro") !== null) throw new Error("intro uses the stem clock");
+      if (/\\be6\\b|Alapin|2\\. Nf3 e6/.test(spoken)) throw new Error("old e6 route in the written intro");
+      if (!spoken.includes("2. Nf3 d6")) throw new Error("najdorf moves missing");
+      const introPlies = coachTalkPlies("sicilian-black", "intro");
+      if (!introPlies || introPlies.some(Boolean)) throw new Error("intro should hold the start position");
       const lineCaps = [
         "Right then, welcome to Line 1 of the Sicilian, the Najdorf.",
         "This is one of Black's most ambitious answers to pawn to e4.",

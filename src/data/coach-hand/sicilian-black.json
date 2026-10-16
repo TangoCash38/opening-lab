@@ -223,7 +223,11 @@
       "Rb1 puts the rook on the b-file and attacks the queen on b2. The queen has to step away.",
       "Qa3 steps the queen off the rook on b1 and attacks the pawn on a2. The queen also attacks the knight on c3.",
       "f5 attacks the pawn on e6 and pushes into Black's camp.",
-      "Nc6 develops the queen's knight and attacks the knight on d4."
+      "Nc6 develops the queen's knight and attacks the knight on d4.",
+      "fxe6 takes the pawn on e6 and attacks the pawn on f7. The pawn on f7 can take it back.",
+      "fxe6 recaptures the pawn on e6 and clears f7. The knight on d4 attacks the knight on c6.",
+      "Nxc6 takes the knight on c6. The pawn on b7 can take the knight on c6 back.",
+      "bxc6 recaptures the knight on c6. The b-file opens for the rook on b1."
     ]
   },
   "sib10": {

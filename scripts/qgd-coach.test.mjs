@@ -166,7 +166,7 @@ test("Queen's Gambit Declined coach is text-only, with no character voice", (t) 
       if (why !== qgdb1.idea) throw new Error("last caption is not the signed why");
       if (!coachPackWrittenIntro("qgd-black")) throw new Error("written intro");
       for (const id of Object.keys(COACH_PACKS)) {
-        if (id !== "qgd-black" && coachPackWrittenIntro(id)) {
+        if (id !== "qgd-black" && id !== "sicilian-black" && coachPackWrittenIntro(id)) {
           throw new Error("unexpected written intro " + id);
         }
       }
