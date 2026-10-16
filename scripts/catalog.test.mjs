@@ -681,7 +681,7 @@ test("Italian Game for White is the signed 10 lines: it1–it5 book, it6–it7 a
     it2: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Na5", "Bb5+", "c6", "dxc6", "bxc6", "Be2", "h6", "Nf3", "e4", "Ne5", "Bd6"],
     it3: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Be7", "d4", "exd4", "Nxd4", "Nf6", "Nc3", "O-O", "O-O", "d6", "h3", "Nxd4", "Qxd4", "c6", "Bf4", "Be6"],
     it4: ["e4", "e5", "Nf3", "Nc6", "Bc4", "d6", "c3", "Be7", "Qb3", "Nh6", "d4", "O-O", "Bxh6", "gxh6", "O-O", "Bg5", "Na3", "Kh8", "Rfe1", "a5"],
-    it5: ["e4", "e5", "Nf3", "Nc6", "Bc4", "g6", "d3", "Bg7", "Ng5", "Nh6", "a4", "f6", "Nf3", "Nf7", "Nc3", "d6", "Be3", "O-O"],
+    it5: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "Nxd5", "Nxf7", "Kxf7", "Qf3+", "Ke6", "Nc3", "Nb4", "O-O", "c6", "d4", "Qf6"],
     it6: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Be7", "O-O", "O-O", "Re1", "d6", "c3", "Na5", "Bb3", "Nxb3", "axb3"],
     it7: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5", "c3", "Nf6", "d4", "exd4", "cxd4", "Bb4+", "Nc3", "Nxe4", "O-O", "Nxc3", "bxc3", "Bxc3", "Ba3", "d5", "Bb5"],
     it8: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Nf6", "Ng5", "d5", "exd5", "b5", "Bf1", "Qxd5", "Nc3", "Qc5", "Bxb5", "Be7", "d3", "O-O"],
@@ -2041,7 +2041,7 @@ test("Nimzo-Indian Defence for Black is Sean's ten learning lines, line 1 free",
 
   const expected = {
     nib1: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Bd3", "d5", "Nf3", "c5", "O-O", "Nc6"],
-    nib2: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Bd3", "d5", "Nf3", "c5", "O-O", "dxc4", "Bxc4", "cxd4", "exd4"],
+    nib2: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Bd3", "d5", "Nf3", "c5", "O-O", "dxc4", "Bxc4", "cxd4", "exd4", "b6", "Bg5", "Bb7", "Rc1", "Nbd7", "Re1", "Rc8"],
     nib3: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "c5", "Bd3", "Nc6", "Nf3", "Bxc3+", "bxc3", "d6", "e4", "e5"],
     nib4: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "e3", "O-O", "Ne2", "d5", "a3", "Be7"],
     nib5: ["d4", "Nf6", "c4", "e6", "Nc3", "Bb4", "Qc2", "O-O", "a3", "Bxc3+", "Qxc3", "b6"],
@@ -2382,10 +2382,10 @@ test("King's Indian Defence for Black is Sean's ten learning lines, line 1 free"
     kidb4: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "Be3", "exd4", "Nxd4", "Re8", "f3", "c6"],
     kidb5: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f3", "O-O", "Be3", "Nc6", "Qd2", "a6", "Nge2", "Rb8"],
     kidb6: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "f4", "O-O", "Nf3", "c5", "d5", "e6", "Be2", "exd5", "cxd5", "Re8", "e5", "dxe5"],
-    kidb7: ["d4", "Nf6", "c4", "g6", "g3", "Bg7", "Bg2", "O-O", "Nf3", "d6", "O-O", "Nbd7", "Nc3", "e5", "e4", "c6", "h3", "Re8", "Re1", "exd4", "Nxd4"],
+    kidb7: ["d4", "Nf6", "c4", "g6", "g3", "Bg7", "Bg2", "O-O", "Nf3", "d6", "O-O", "Nbd7", "Nc3", "e5", "e4", "c6", "h3", "Re8", "Re1", "exd4", "Nxd4", "Nc5", "Qc2", "a5", "Be3", "Nfd7"],
     kidb8: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Be2", "O-O", "Bg5", "c5", "d5", "h6", "Bf4", "e6"],
     kidb9: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "dxe5", "dxe5", "Qxd8", "Rxd8", "O-O", "c6", "Be3", "Nbd7"],
-    kidb10: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Bxd4"],
+    kidb10: ["d4", "Nf6", "c4", "g6", "Nc3", "Bg7", "e4", "d6", "Nf3", "O-O", "Be2", "e5", "O-O", "Nbd7", "Re1", "c6", "Bf1", "a5", "h3", "Re8", "Be3", "exd4", "Bxd4", "Ne5", "Nh2", "Be6"],
   };
   for (const [id, plies] of Object.entries(expected)) {
     assert.deepEqual(linePlies(id), plies, id);
@@ -2899,7 +2899,7 @@ test("Scotch Gambit pack is the signed 10 lines: sg1–sg5 book, sg6 trap, sg7�
   const expected = {
     sg1: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "O-O", "O-O"],
     sg2: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "c3", "Nf6", "cxd4", "Bb4+", "Bd2", "Bxd2+", "Nbxd2", "d5", "exd5", "Nxd5", "Qb3", "Na5"],
-    sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6"],
+    sg3: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bc5", "Ng5", "Nh6", "Nxf7", "Nxf7", "Bxf7+", "Kxf7", "Qh5+", "g6", "Qxc5", "d6", "Qd5+", "Kg7", "O-O", "Re8"],
     sg4: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Nf6", "O-O", "Nxe4", "Re1", "d5", "Bxd5", "Qxd5", "Nc3", "Qa5", "Nxe4", "Be6", "Neg5", "O-O-O"],
     sg5: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Be7", "O-O", "Nf6", "e5", "Ng4", "Re1", "d6", "exd6", "Qxd6"],
     sg6: ["e4", "e5", "Nf3", "Nc6", "d4", "exd4", "Bc4", "Bb4+", "c3", "dxc3", "O-O", "Nf6", "e5", "d5", "exf6", "dxc4"],

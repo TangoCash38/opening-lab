@@ -111,7 +111,7 @@
     ]
   },
   "qgdb6": {
-    "intro": "An Orthodox move order with the knight to f3 first. The dark-squared bishop comes out before White pins, and a rook still lands on the c-file.",
+    "intro": "5.Bf4. Black castles, breaks with the c-pawn, and the dark-squared bishop takes back on c5 before dropping to e7.",
     "notes": [
       "d4 claims the centre and frees the dark-squared bishop.",
       "d5 meets White in the centre.",
@@ -120,13 +120,19 @@
       "Nf3 develops the king's knight and supports the centre.",
       "Nf6 develops the king's knight and defends the pawn on d5.",
       "Nc3 develops the queen's knight and attacks the pawn on d5.",
-      "Be7 develops the dark-squared bishop and prepares castling. It will stand behind the knight if White pins.",
-      "Bg5 develops the dark-squared bishop and attacks the knight on f6. The bishop on e7 already stands between that knight and the queen.",
+      "Be7 develops the dark-squared bishop and defends the knight on f6. Black is ready to castle.",
+      "Bf4 develops the dark-squared bishop and attacks the pawn on c7.",
       "O-O brings the king to g8 and the rook to f8. The king steps off the e-file.",
       "e3 supports the centre and frees the light-squared bishop.",
-      "Nbd7 develops the queen's knight and defends the knight on f6. The c-pawn stays free.",
-      "Rc1 puts the rook on the c-file, behind the pawn on c4.",
-      "c6 supports the pawn on d5. The pawn wall is complete, and the centre stays firm."
+      "c5 attacks the pawn on d4 and challenges the centre. Black does not stay cramped.",
+      "dxc5 takes the pawn on c5.",
+      "Bxc5 recaptures the pawn on c5 and attacks the pawn on e3. The dark-squared bishop takes up an active diagonal.",
+      "Qc2 develops the queen and defends the knight on c3. The queen also attacks the pawn on h7.",
+      "Nc6 develops the queen's knight and defends the pawn on a7. The queen still has a5.",
+      "a3 keeps a black piece off b4. The pawn takes that square away from the bishop on c5.",
+      "Qa5 attacks the knight on c3 and the pawn on a3. The queen pins the knight on c3 to the king on e1.",
+      "Rd1 puts the rook on the d-file and attacks the pawn on d5. The knight on c3 is pinned, so it is a shaky defender of that pawn.",
+      "Be7 drops the dark-squared bishop back to e7 and defends the knight on f6. It also attacks the pawn on a3, beside the queen on a5."
     ]
   },
   "qgdb7": {

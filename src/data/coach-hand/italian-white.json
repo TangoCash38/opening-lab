@@ -100,26 +100,28 @@
     ]
   },
   "it5": {
-    "intro": "A fianchetto against the Italian: White's knight visits g5, then both sides finish developing and Black castles.",
+    "intro": "The Fried Liver. After the knight takes on d5, White gives the knight up on f7 and follows the king out to e6.",
     "notes": [
       "e4 opens the game and frees the light-squared bishop, so that bishop can take up the diagonal in front of the black king.",
       "e5 meets White in the centre and frees the dark-squared bishop.",
       "Nf3 develops the king's knight and attacks the pawn on e5.",
       "Nc6 develops the queen's knight and defends the pawn on e5.",
       "Bc4 aims the light-squared bishop at the pawn on f7, the soft point in front of the king.",
-      "g6 prepares a fianchetto. The dark-squared bishop will use the long diagonal.",
-      "d3 supports the pawn on e4 and frees the dark-squared bishop. White stays flexible against the fianchetto.",
-      "Bg7 puts the dark-squared bishop on the long diagonal and defends the pawn on e5. That pawn stands in front of the bishop for now.",
-      "Ng5 attacks the pawn on f7 and probes the kingside. The knight is a nuisance, not a sacrifice.",
-      "Nh6 defends the pawn on f7 and develops the king's knight. The square is awkward, which is the point of the probe.",
-      "a4 gains queenside space before the knight drops back.",
-      "f6 kicks the knight on g5. The pawn also takes the natural square from the king's knight, which is why it went to h6.",
-      "Nf3 drops the knight back to its proper square. The probe is over.",
-      "Nf7 improves the knight from h6. It can support the centre and cover the kingside.",
-      "Nc3 develops the queen's knight and defends the pawn on e4.",
-      "d6 supports the pawn on e5 and frees the light-squared bishop.",
-      "Be3 develops the dark-squared bishop and opposes the bishop on g7.",
-      "O-O brings the king to g8 and the rook to f8. The king sits behind the fianchetto, and White still has to castle."
+      "Nf6 develops the king's knight and attacks the pawn on e4.",
+      "Ng5 attacks the pawn on f7 and the pawn on h7. This is the jump that starts the sacrifice.",
+      "d5 attacks the bishop on c4 and the pawn on e4. Black meets the threat to the pawn on f7 by challenging the centre.",
+      "exd5 takes the pawn on d5 and attacks the knight on c6.",
+      "Nxd5 takes the pawn on d5. The knight on g5 can now jump onto the pawn on f7, so this capture walks into the sacrifice.",
+      "Nxf7 takes the pawn on f7 and attacks the queen on d8. The knight is given up, and only the king on e8 can take it back.",
+      "Kxf7 recaptures the knight on f7. The king is dragged out to f7, which is the cost of removing that knight.",
+      "Qf3+ gives check and attacks the knight on d5. The queen follows the king on f7.",
+      "Ke6 steps the king out of check and defends the knight on d5. The king is out in the open, and that is what White is playing for.",
+      "Nc3 develops the queen's knight and attacks the knight on d5. The knight on d5 is the shield in front of the king on e6.",
+      "Nb4 defends the knight on d5 and attacks the pawn on c2. Black props up the knight the queen is already hitting.",
+      "O-O brings the king to g1 and the rook to f1. White's king is safe while the king on e6 is still in the middle.",
+      "c6 defends the knight on d5 and keeps a white piece off b5.",
+      "d4 attacks the pawn on e5 and opens lines against the king on e6.",
+      "Qf6 attacks the queen on f3 and defends the king on e6. The queens face each other, and Black tries to take the heat off the king."
     ]
   },
   "it6": {

@@ -18,7 +18,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
   ],
   "qgd-black": [
     "The Queen's Gambit Declined is 1.d4 d5 2.c4 e6. Black keeps the pawn on d5 instead of taking on c4.",
-    "It is one of the oldest and most trusted replies to 1.d4, and a world championship staple. It is worth learning because the same first moves meet the main ways White continues. The 10 lines in this pack are the Orthodox setup, freeing with ...dxc4 and ...Nd5, Early Exchange, Exchange development, Exchange with Nge2, the Nf3-first Orthodox, quiet Bd3 and ...c5, the Ragozin, the Lasker Defence, and the Tartakower.",
+    "It is one of the oldest and most trusted replies to 1.d4, and a world championship staple. It is worth learning because the same first moves meet the main ways White continues. The 10 lines in this pack are the Orthodox setup, freeing with ...dxc4 and ...Nd5, Early Exchange, Exchange development, Exchange with Nge2, 5.Bf4 and ...c5, quiet Bd3 and ...c5, the Ragozin, the Lasker Defence, and the Tartakower.",
   ],
   london: [
     "The London System is White’s classical 1.d4 with an early Bf4. The centre stays solid behind e3 and c3, the dark-squared bishop is out, and the same pyramid meets …d5, …c5, …Bf5, a King’s Indian, or an Indian move-order.",
@@ -45,7 +45,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
   "italian-white": [
-    "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White eyes f7 and meets …Bc5, the Two Knights, the Hungarian, …d6, and the kingside fianchetto with their own book replies.",
+    "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White meets …Bc5, the Two Knights, the Hungarian, …d6, and the Fried Liver with their own book replies.",
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
   "ruy-white": [
@@ -153,7 +153,7 @@ export const PACK_OPENING: Readonly<Record<string, readonly string[]>> = {
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
   "sicilian-black": [
-    "The Sicilian Defence is 1.e4 c5. Black answers the King's Pawn from the flank and meets the Open Sicilian, Alapin, Smith-Morra, Grand Prix, Rossolimo, and Closed with their own replies.",
+    "The Sicilian Defence is 1.e4 c5. This pack is the Najdorf: 2...d6 and 5...a6 against the open lines, and the same ...d6 setup against 3.Bb5+, the Alapin, the Smith-Morra, the Grand Prix and the Closed Sicilian.",
     "10 lines from Opening Lab. Practice with the green hint, then Test with none.",
   ],
 };

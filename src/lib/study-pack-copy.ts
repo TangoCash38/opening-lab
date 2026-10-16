@@ -89,7 +89,7 @@ export const STUDY_PACK_ROWS: readonly StudyPackRow[] = [
     stem: ["e4", "e5", "Nf3", "Nc6", "Bc4"],
     tagline: "A classical centre. A bishop aimed at f7.",
     lead: "The Italian Game is 1.e4 e5 2.Nf3 Nc6 3.Bc4. White develops fast and looks toward the pawn on f7.",
-    rest: "It is one of the oldest open games, taught in the Italian schools of the 16th and 17th centuries. It is worth learning because the same three moves meet several Black defences. The 10 lines cover the quiet Giuoco Pianissimo, the Two Knights, the Hungarian, ...d6, the kingside fianchetto, the Fried Liver, the classical centre, and replies to a loose Black move.",
+    rest: "It is one of the oldest open games, taught in the Italian schools of the 16th and 17th centuries. It is worth learning because the same three moves meet several Black defences. The 10 lines cover the quiet Giuoco Pianissimo, the Two Knights, the Hungarian, ...d6, the Fried Liver, the classical centre, and replies to a loose Black move.",
   },
   {
     packId: "french-white",
@@ -449,6 +449,6 @@ export const STUDY_PACK_ROWS: readonly StudyPackRow[] = [
     stem: ["e4", "c5"],
     tagline: "Fight 1.e4 from the flank.",
     lead: "The Sicilian Defence is 1.e4 c5. Black answers the king's pawn from the flank and fights for the centre a move later.",
-    rest: "It is one of the oldest replies to 1.e4, already analysed in the late 16th century, and it is the most common fighting defence today. The 10 lines cover the Najdorf, the Dragon, the Classical, the Sveshnikov, the Four Knights, the Alapin, the Smith-Morra, the Grand Prix, the Rossolimo, and the Closed Sicilian.",
+    rest: "It is one of the oldest replies to 1.e4, already analysed in the late 16th century, and it is the most common fighting defence today. This pack is one system: the Najdorf, with 2...d6 and 5...a6. The 10 lines are 6.Bg5, the English Attack, 6.Be2, 6.Bc4 and 6.h3, plus 3.Bb5+, the Alapin, the Smith-Morra, the Grand Prix and the Closed Sicilian, each met with a ...d6 setup.",
   },
 ];
