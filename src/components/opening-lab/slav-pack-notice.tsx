@@ -18,7 +18,7 @@ type NoticeStep = "about" | "welcome";
 export type LineWelcome = {
   n: number;
   pack: string;
-  /** Real line title. Null when the name is only "Line N", or the line is locked. */
+  /** Real line title. Null when the name is only "Line N". Locked lines still show a real title. */
   line: string | null;
   /** Two or three sentences about this line, already in the active language. */
   about: string;

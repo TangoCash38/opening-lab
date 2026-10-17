@@ -1655,7 +1655,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           lineWelcome={{
             n,
             pack: shortPack,
-            line: welcomeLineName(line.name, !isLineUnlocked(pack, line.id, unlockIds)),
+            line: welcomeLineName(line.name),
             about: lineWelcomeBlurb(line.id, lang),
           }}
           onNext={() => setLineCard("go")}

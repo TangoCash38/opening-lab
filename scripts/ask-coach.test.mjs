@@ -84,7 +84,7 @@ test("a finished pair does not pause the board and the reply stays at normal spe
   assert.match(notice, /\{copy\.lead\}/);
   assert.match(
     train,
-    /line: welcomeLineName\(line\.name, !isLineUnlocked\(pack, line\.id, unlockIds\)\)/,
+    /line: welcomeLineName\(line\.name\)/,
   );
   assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills\./);
   assert.doesNotMatch(notice, /Welcome to Line \{n\} of the \{pack\} drills: the \{line\}\./);
@@ -92,7 +92,7 @@ test("a finished pair does not pause the board and the reply stays at normal spe
   assert.doesNotMatch(train, /!startNow &&/);
 });
 
-test("the line welcome names a real line and hides a generic or locked one", () => {
+test("the line welcome names a real line, including a locked one, and hides a generic name", () => {
   const plain = "Welcome to Line {n} of the {pack} drills.";
   const named = "Welcome to Line {n} of the {pack} drills: {line}.";
   const practice =
@@ -103,10 +103,10 @@ test("the line welcome names a real line and hides a generic or locked one", () 
   assert.equal(lineWelcome.welcomeLineName("line 12"), null);
   assert.equal(lineWelcome.welcomeLineName("  "), null);
   assert.equal(lineWelcome.welcomeLineName("Fried Liver"), "Fried Liver");
-  assert.equal(lineWelcome.welcomeLineName("Fried Liver", true), null);
+  assert.equal(lineWelcome.welcomeLineName("Fried Liver", true), "Fried Liver");
   assert.equal(lineWelcome.welcomeLineName("Line 5 · Fried Liver"), "Fried Liver");
   assert.equal(lineWelcome.welcomeLineName("Canal: 4...Nf6"), "Canal: 4...Nf6");
-  assert.equal(lineWelcome.welcomeLineName("Two Knights: 4.d3", true), null);
+  assert.equal(lineWelcome.welcomeLineName("Two Knights: 4.d3", true), "Two Knights: 4.d3");
   assert.equal(
     i18n.translate("en", plain, { n: 1, pack: "Scotch Gambit" }),
     "Welcome to Line 1 of the Scotch Gambit drills.",
