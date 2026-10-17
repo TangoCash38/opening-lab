@@ -15,14 +15,49 @@ function positionAfter(plies: readonly string[]): Chess {
 
 type NoticeStep = "about" | "welcome";
 
+export type LineWelcome = {
+  n: number;
+  pack: string;
+  /** Real line title. Null when the name is only "Line N", or the line is locked. */
+  line: string | null;
+};
+
 type NoticeProps = {
   step: NoticeStep;
   copy: StudyIntroCopy;
   /** White at the bottom unless the pack trains Black. */
   flip: boolean;
+  /** Line card only. The pack card keeps the opening intro. */
+  lineWelcome?: LineWelcome;
   onNext: () => void;
   onStart: () => void;
 };
+
+function LineDrillWelcome({ welcome }: { welcome: LineWelcome }) {
+  const t = useT();
+  const title = welcome.line
+    ? t("Welcome to Line {n} of the {pack} drills: {line}.", welcome)
+    : t("Welcome to Line {n} of the {pack} drills.", welcome);
+  return (
+    <>
+      <h2 id="slav-intro-title" className="slav-notice-title" data-line-welcome>
+        {title}
+      </h2>
+      <div data-line-how-to>
+        <p className="slav-notice-paragraph">
+          {t(
+            "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.",
+          )}
+        </p>
+        <p className="slav-notice-paragraph">
+          {t(
+            "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.",
+          )}
+        </p>
+      </div>
+    </>
+  );
+}
 
 function SlavStemBoard({ plies, flip }: { plies: readonly string[]; flip: boolean }) {
   const game = useMemo(() => positionAfter(plies), [plies]);
@@ -49,7 +84,7 @@ function SlavStemBoard({ plies, flip }: { plies: readonly string[]; flip: boolea
   );
 }
 
-export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProps) {
+export function SlavPackNotice({ step, copy, flip, lineWelcome, onNext, onStart }: NoticeProps) {
   const t = useT();
   const [mounted, setMounted] = useState(false);
 
@@ -73,19 +108,23 @@ export function SlavPackNotice({ step, copy, flip, onNext, onStart }: NoticeProp
       <div className="slav-notice-card" data-slav-card>
         <div className="slav-notice-card-body">
           {step === "about" ? (
-            <>
-              <p className="slav-notice-kicker">{copy.aboutTitle}</p>
-              <h2 id="slav-intro-title" className="slav-notice-title">
-                {copy.header}
-              </h2>
-              <p className="slav-notice-subtitle">{copy.subtitle}</p>
-              <p className="slav-notice-start">{copy.start}</p>
-              <p className="slav-notice-tagline">{copy.tagline}</p>
-              <div data-slav-intro-body>
-                <p className="slav-notice-paragraph">{copy.lead}</p>
-                <p className="slav-notice-paragraph">{copy.rest}</p>
-              </div>
-            </>
+            lineWelcome ? (
+              <LineDrillWelcome welcome={lineWelcome} />
+            ) : (
+              <>
+                <p className="slav-notice-kicker">{copy.aboutTitle}</p>
+                <h2 id="slav-intro-title" className="slav-notice-title">
+                  {copy.header}
+                </h2>
+                <p className="slav-notice-subtitle">{copy.subtitle}</p>
+                <p className="slav-notice-start">{copy.start}</p>
+                <p className="slav-notice-tagline">{copy.tagline}</p>
+                <div data-slav-intro-body>
+                  <p className="slav-notice-paragraph">{copy.lead}</p>
+                  <p className="slav-notice-paragraph">{copy.rest}</p>
+                </div>
+              </>
+            )
           ) : (
             <>
               <h2 id="slav-intro-title" className="slav-notice-title">

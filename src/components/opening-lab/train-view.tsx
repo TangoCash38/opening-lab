@@ -6,7 +6,8 @@ import {
   type Pack,
 } from "@/data/packs";
 import { lineFinishNote } from "@/data/line-explains";
-import { canPurchasePack, FREE_SAMPLE_LINE_IDS, nextUnlockedLine } from "@/lib/catalog";
+import { canPurchasePack, FREE_SAMPLE_LINE_IDS, isLineUnlocked, nextUnlockedLine } from "@/lib/catalog";
+import { welcomeLineName } from "@/lib/line-welcome";
 import { getLineProgress, lineTestPercent } from "@/lib/progress";
 import {
   soundBad,
@@ -1650,6 +1651,11 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           step={lineCard === "about" ? "about" : "welcome"}
           copy={lineIntroCopy}
           flip={line.side === "b"}
+          lineWelcome={{
+            n,
+            pack: shortPack,
+            line: welcomeLineName(line.name, !isLineUnlocked(pack, line.id, unlockIds)),
+          }}
           onNext={() => setLineCard("go")}
           onStart={() => {
             setLineCard("off");
