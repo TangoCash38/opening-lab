@@ -1650,6 +1650,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           step={lineCard === "about" ? "about" : "welcome"}
           copy={lineIntroCopy}
           flip={line.side === "b"}
+          lineWelcome={{ n, pack: shortPack, line: line.name }}
           onNext={() => setLineCard("go")}
           onStart={() => {
             setLineCard("off");

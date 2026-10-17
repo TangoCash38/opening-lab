@@ -26,6 +26,7 @@ const notes = await vite.ssrLoadModule("/src/data/scotch-coach-notes.ts");
 const packs = await vite.ssrLoadModule("/src/data/packs.ts");
 const rate = await vite.ssrLoadModule("/src/lib/ask-coach-rate.ts");
 const slides = await vite.ssrLoadModule("/src/lib/coach-slides.ts");
+const i18n = await vite.ssrLoadModule("/src/lib/i18n.ts");
 
 function req(over = {}) {
   return {
@@ -77,7 +78,38 @@ test("a finished pair does not pause the board and the reply stays at normal spe
   assert.match(train, /SlavPackNotice/);
   assert.match(notice, /data-slav-start/);
   assert.match(notice, /Tap to practice/);
+  assert.match(notice, /data-line-welcome/);
+  assert.match(notice, /lineWelcome \?/);
+  assert.match(notice, /\{copy\.lead\}/);
+  assert.match(train, /lineWelcome=\{\{ n, pack: shortPack, line: line\.name \}\}/);
   assert.doesNotMatch(train, /!startNow &&/);
+});
+
+test("the line welcome names the line and is translated", () => {
+  const welcome = "Welcome to Line {n} of the {pack} drills: {line}.";
+  const practice =
+    "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.";
+  const exam =
+    "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.";
+  const english = i18n.translate("en", welcome, { n: 1, pack: "Scotch Gambit", line: "Line 1" });
+  assert.equal(english, "Welcome to Line 1 of the Scotch Gambit drills: Line 1.");
+  for (const lang of i18n.LANGS) {
+    const text = i18n.translate(lang, welcome, { n: 4, pack: "Sicilian for Black", line: "Poisoned Pawn" });
+    assert.match(text, /4/);
+    assert.match(text, /Sicilian for Black/);
+    assert.match(text, /Poisoned Pawn/);
+    const how = i18n.translate(lang, practice);
+    const testCopy = i18n.translate(lang, exam);
+    assert.equal(how.includes("—") || how.includes("–"), false, lang);
+    assert.equal(testCopy.includes("—") || testCopy.includes("–"), false, lang);
+    assert.doesNotMatch(how, /engine|eval|centipawn/i);
+    assert.doesNotMatch(testCopy, /engine|eval|centipawn/i);
+    if (lang !== "en") {
+      assert.notEqual(text, i18n.translate("en", welcome, { n: 4, pack: "Sicilian for Black", line: "Poisoned Pawn" }));
+      assert.notEqual(how, practice);
+      assert.notEqual(testCopy, exam);
+    }
+  }
 });
 
 test("coach slides are one move pair at a time", () => {
