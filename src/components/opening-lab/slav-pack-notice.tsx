@@ -20,6 +20,8 @@ export type LineWelcome = {
   pack: string;
   /** Real line title. Null when the name is only "Line N", or the line is locked. */
   line: string | null;
+  /** Two or three sentences about this line, already in the active language. */
+  about: string;
 };
 
 type NoticeProps = {
@@ -43,6 +45,9 @@ function LineDrillWelcome({ welcome }: { welcome: LineWelcome }) {
       <h2 id="slav-intro-title" className="slav-notice-title" data-line-welcome>
         {title}
       </h2>
+      <p className="slav-notice-paragraph" data-line-about>
+        {welcome.about}
+      </p>
       <div data-line-how-to>
         <p className="slav-notice-paragraph">
           {t(

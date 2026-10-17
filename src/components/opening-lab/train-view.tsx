@@ -18,7 +18,8 @@ import {
   soundSelect,
   soundWin,
 } from "@/lib/sounds";
-import { useT, type Translate } from "@/lib/i18n";
+import { useI18n, useT, type Translate } from "@/lib/i18n";
+import { lineWelcomeBlurb } from "@/lib/line-welcome-blurb";
 import {
   formatOpeningIdentity,
   lookupOpeningIdentityPrefix,
@@ -274,7 +275,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
 }
 
 export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, startNow = false, plyLimit, startPly = 0, embedded = false, frameCoords = false, freeTry = false, onFreeTryBuyAll, onFreeTryPickPack, onFreeTryMoreFree, onFreeTryFeedback }: Props) {
-  const t = useT();
+  const { t, lang } = useI18n();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const unlockIds = subscribed ? [pack.id] : purchased;
@@ -1655,6 +1656,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             n,
             pack: shortPack,
             line: welcomeLineName(line.name, !isLineUnlocked(pack, line.id, unlockIds)),
+            about: lineWelcomeBlurb(line.id, lang),
           }}
           onNext={() => setLineCard("go")}
           onStart={() => {
