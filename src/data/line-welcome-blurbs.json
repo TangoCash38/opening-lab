@@ -127,7 +127,7 @@
   },
   "sg10": {
     "en": "Taking back on c3 with the knight is the calm answer to the early check. Both sides castle, your e5 meets Black's d5, and the knights trade before the queens come off, leaving you a cramping pawn on e5.",
-    "es": "Recuperar en c3 con el caballo es la respuesta calmada al jaque temprano. Ambos hacen el enroque, tu peón de e5 se topa con el peón de d5 de las negras, y los caballos se cambian antes de que las damas se hayan cambiado, dejándote un peón de e5 que aprieta.",
+    "es": "Recuperar en c3 con el caballo es la respuesta calmada al jaque temprano. Ambos hacen el enroque, tu peón de e5 se topa con el peón de d5 de las negras, y los caballos se cambian antes de que se cambien las damas, dejándote un peón de e5 que aprieta.",
     "zh": "用马在c3吃回，是对早将军的平静回答。双方都王车易位，你的e5迎上黑方的d5，马先兑换，后随后被兑换，给你留下e5上那只憋人的兵。",
     "fr": "Reprendre en c3 avec le cavalier, c'est la réponse posée à l'échec du début. Les deux camps font le roque, ton e5 rencontre le d5 des Noirs, et les cavaliers s'échangent avant que les dames n'aient été échangées, ce qui te laisse un pion étouffant en e5.",
     "de": "Auf c3 mit dem Springer zurückzunehmen ist die ruhige Antwort auf das frühe Schach. Beide Seiten machen die Rochade, dein e5 trifft auf das d5 von Schwarz, und die Springer tauschen, bevor die Damen getauscht werden, sodass dir ein beengender Bauer auf e5 bleibt.",
@@ -190,8 +190,8 @@
     "pt": "A armadilha de Lasker no Albin é uma subpromoção quando as brancas jogam e3 e então agarram o bispo em b4. Seu peão promove a cavalo com xeque e a dama some.",
     "ru": "Ловушка Ласкера в Альбине — это недопревращение, когда белые играют e3 и затем хватают слона на b4. Твоя пешка превращается в коня с шахом, и ферзь исчезает.",
     "it": "La trappola di Lasker nell'Albin è una sottopromozione quando il Bianco gioca e3 e poi afferra l'alfiere in b4. Il tuo pedone promuove a cavallo con scacco e la donna sparisce.",
-    "hi": "एल्बिन में लास्कर का जाल एक अधोप्रोन्नति है, जब सफेद e3 खेलता है और फिर b4 वाले ऊँट को झपट ले। आपका प्यादा शह के साथ घोड़े में बदलता है और रानी गायब हो जाती है।",
-    "ja": "アルビンのラスカートラップは、白がe3を指してからb4のビショップをつかむときの不成です。ポーンがチェック付きでナイトに成り、クイーンが消えます。",
+    "hi": "एल्बिन में लास्कर का जाल एक अधोप्रोन्नति है, जब सफेद e3 खेलता है और फिर b4 वाले ऊँट को झपट लेता है। आपका प्यादा शह के साथ घोड़े में बदलता है और रानी गायब हो जाती है।",
+    "ja": "アルビンのラスカートラップは、白がe3を指してからb4のビショップをつかむときのアンダープロモーションです。ポーンがチェック付きでナイトに成り、クイーンが消えます。",
     "ar": "فخ لاسكر في ألبين ترقية ناقصة حين يلعب الأبيض e3 ثم يخطف الفيل على b4. يترقى بيدقك إلى حصان مع كش وتختفي الملكة.",
     "tr": "Albin'deki Lasker tuzağı, Beyaz e3 oynayıp sonra b4'teki fili kapınca bir eksik terfidir. Piyonun şah çekerek ata terfi eder ve vezir yok olur."
   },
@@ -323,7 +323,7 @@
   },
   "ckb4": {
     "en": "The Panov leaves White an isolated pawn on d4 after White takes on d5 and plays c4, and the job is to blockade it. You recapture on d5 with the knight, castle, and use the bishop on f6 with the knight on e7 so that pawn stays under control, with trades helping later.",
-    "es": "El Panov deja a las blancas un peón de d4 aislado después de que las blancas tomen en d5 y juegan c4, y el trabajo es bloquearlo. Recuperas en d5 con el caballo, haces el enroque y usas el alfil de f6 con el caballo de e7 para que ese peón siga bajo control, y los cambios ayudan después.",
+    "es": "El Panov deja a las blancas un peón de d4 aislado después de que las blancas tomen en d5 y jueguen c4, y el trabajo es bloquearlo. Recuperas en d5 con el caballo, haces el enroque y usas el alfil de f6 con el caballo de e7 para que ese peón siga bajo control, y los cambios ayudan después.",
     "zh": "帕诺夫给白方留下d4的孤兵，那是在白方于d5吃子并走c4之后，任务就是封锁它。你用马在d5吃回，王车易位，再用f6的象和e7的马让那只兵一直受控，以后的兑换也有帮助。",
     "fr": "Le Panov laisse aux Blancs un pion isolé en d4 après que les Blancs prennent en d5 et jouent c4, et le travail est de le bloquer. Tu reprends en d5 avec le cavalier, tu fais le roque, et tu utilises le fou en f6 avec le cavalier en e7 pour que ce pion reste sous contrôle, les échanges aidant plus tard.",
     "de": "Der Panow lässt Weiß einen isolierten Bauern auf d4, nachdem Weiß auf d5 genommen und c4 gespielt hat, und die Aufgabe ist, ihn zu blockieren. Du nimmst auf d5 mit dem Springer zurück, machst die Rochade und nutzt den Läufer auf f6 mit dem Springer auf e7, damit dieser Bauer unter Kontrolle bleibt, wobei Tausch später hilft.",
@@ -1012,14 +1012,14 @@
     "es": "El final de la Berlín, al que se llega cuando las negras toman en e4 y las damas se han cambiado después de d4, es famosamente difícil de romper. El rey negro camina a d8 y vuelve a e8, y sin derecho al enroque ese rey es incómodo de desenredar. Construyes con calma, llevando el caballo a c3, un peón hasta h3 y una torre a d1, y luego el caballo salta a e4.",
     "zh": "柏林残局在黑方于e4吃子且d4之后后被兑换时到达，出了名地难破。黑王走到d8再回到e8，没有王车易位权，那个王很难解开。你平静地布置，把马带到c3，把一个兵带到h3，把车带到d1，然后马跳到e4。",
     "fr": "La finale berlinoise, atteinte quand les Noirs prennent en e4 et que les dames ont été échangées après d4, est célèbre pour être dure à percer. Le roi noir marche en d8 puis revient en e8, et sans droit au roque ce roi est malaisé à démêler. Tu construis calmement, en menant le cavalier en c3, un pion jusqu'en h3 et une tour en d1, puis le cavalier saute en e4.",
-    "de": "Das Berliner Endspiel, erreicht wenn Schwarz auf e4 nimmt und die Damen nach d4 getauscht werden, ist bekanntlich schwer zu knacken. Der schwarze König geht nach d8 und zurück nach e8, und ohne Rochaderecht ist dieser König schwer zu entwirren. Du baust ruhig auf, führst den Springer nach c3, einen Bauern nach h3 und einen Turm nach d1, und dann springt der Springer nach e4.",
+    "de": "Das Berliner Endspiel, erreicht, wenn Schwarz auf e4 nimmt und die Damen nach d4 getauscht werden, ist bekanntlich schwer zu knacken. Der schwarze König geht nach d8 und zurück nach e8, und ohne Rochaderecht ist dieser König schwer zu entwirren. Du baust ruhig auf, führst den Springer nach c3, einen Bauern nach h3 und einen Turm nach d1, und dann springt der Springer nach e4.",
     "pt": "O final de Berlim, alcançado quando as pretas tomam em e4 e as damas foram trocadas após d4, é famosamente difícil de romper. O rei das pretas caminha até d8 e volta a e8, e sem direito ao roque esse rei é incômodo de desembaraçar. Você constrói com calma, levando o cavalo a c3, um peão até h3 e uma torre a d1, e então o cavalo salta a e4.",
     "ru": "Берлинский эндшпиль, к которому приходят, когда чёрные берут на e4 и ферзи меняются после d4, славится тем, что его трудно взломать. Король чёрных идёт на d8 и обратно на e8, и без права на рокировку этого короля неудобно распутать. Ты строишь спокойно, ведя коня на c3, пешку на h3 и ладью на d1, а затем конь прыгает на e4.",
     "it": "Il finale di Berlino, raggiunto quando il Nero prende in e4 e le donne sono state cambiate dopo d4, è notoriamente duro da scardinare. Il re nero cammina in d8 e torna in e8, e senza diritto all'arrocco quel re è scomodo da districare. Costruisci con calma, portando il cavallo in c3, un pedone su h3 e una torre in d1, poi il cavallo salta in e4.",
     "hi": "बर्लिन का अंतखेल, जब काले e4 पर लेते हैं और d4 के बाद रानियाँ बदल चुकी होती हैं, तोड़ना मशहूर रूप से कठिन है। काले का राजा d8 तक चलता है और e8 पर लौटता है, और कैसल के अधिकार के बिना उस राजा को सुलझाना अटपटा है। आप शांति से बनाते हैं, घोड़े को c3 पर, एक प्यादे को h3 पर, एक हाथी को d1 पर ले जाते हैं, फिर घोड़ा e4 पर कूदता है।",
-    "ja": "ベルリンの終盤は、黒がe4で取り、d4のあとクイーンが交換されると到達し、破るのが有名に難しいです。黒のキングはd8へ歩きe8へ戻り、キャスリングの権利がないとそのキングはほぐしにくいです。落ち着いて組み、ナイトをc3へ、ポーンをh3へ、ルークをd1へ進め、それからナイトがe4へ跳ねます。",
+    "ja": "ベルリンの終盤は、黒がe4で取り、d4のあとクイーンが交換されると到達し、破るのが難しいことで有名です。黒のキングはd8へ歩きe8へ戻り、キャスリングの権利がないとそのキングはほぐしにくいです。落ち着いて組み、ナイトをc3へ、ポーンをh3へ、ルークをd1へ進め、それからナイトがe4へ跳ねます。",
     "ar": "نهاية برلين، التي تُبلغ حين يأخذ الأسود على e4 وتتبادل الملكتان عقب d4، مشهورة بصعوبة كسرها. يسير ملك الأسود إلى d8 ويعود إلى e8، وبلا حق التبييت يصعب فك ذلك الملك. تبني بهدوء، فتأتي بالحصان إلى c3 وببيدق إلى h3 وبقلعة إلى d1، ثم يقفز الحصان إلى e4.",
-    "tr": "Berlin oyun sonu, Siyah e4'te alıp d4 ardından vezirler takas edilince ulaşılan, kırması meşhur zordur. Siyahın şahı d8'e yürür ve e8'e döner, rok hakkı olmayınca o şahı çözmek zordur. Sen sakin kurarsın, atı c3'e, bir piyonu h3'e ve bir kaleyi d1'e getirirsin, sonra at e4'e sıçrar."
+    "tr": "Siyah e4'te alıp d4'ten sonra vezirler takas edilince ulaşılan Berlin oyun sonunu kırmak meşhur derecede zordur. Siyahın şahı d8'e yürür ve e8'e döner, rok hakkı olmayınca o şahı çözmek zordur. Sen sakin kurarsın, atı c3'e, bir piyonu h3'e ve bir kaleyi d1'e getirirsin, sonra at e4'e sıçrar."
   },
   "rlw4": {
     "en": "In the Open Spanish, Black grabs the pawn on e4 and holds the centre with d5. You hit back with d4, drop the bishop to b3, then play c3 and Nbd2 before tucking the bishop on c2. After the knight trade on d2 the game is open and full of play.",
@@ -1148,8 +1148,8 @@
     "tr": "g5'e fil, Najdorf'a karşı Beyazın en saldırgan denemesidir. e6, e7'deki fil ve c7'deki vezirle sağlam kalırsın ve Beyaz uzun rok yapınca b5 ile b7'deki fil saldırını başlatır. Zehirli Piyon'un aksine vezirin c7'de kalır ve b2'yi rahat bırakır."
   },
   "sib3": {
-    "en": "Against the quiet bishop on e2, e5 sends the knight back to b3 and both sides castle short. When White plays f4, you take with the pawn from e5, and after the rook recaptures the knight comes to d7. The result is a calm, positional Najdorf.",
-    "es": "Contra el alfil tranquilo en e2, e5 manda al caballo de vuelta a b3 y ambos hacen el enroque corto. Cuando las blancas juegan f4, tomas con el peón de e5, y después de que la torre recupere el caballo llega a d7. El resultado es una Najdorf tranquila y posicional.",
+    "en": "Against the quiet bishop on e2, e5 sends the knight back to b3 and both sides castle short. When White plays f4, you take with the pawn from e5, and after the rook recaptures, the knight comes to d7. The result is a calm, positional Najdorf.",
+    "es": "Contra el alfil tranquilo en e2, e5 manda al caballo de vuelta a b3 y ambos hacen el enroque corto. Cuando las blancas juegan f4, tomas con el peón de e5, y después de que la torre recupere, el caballo llega a d7. El resultado es una Najdorf tranquila y posicional.",
     "zh": "对付e2上安静的象，e5把马送回b3，你和白方都短易位。白方走f4时，你用e5的兵去吃，车吃回之后马来到d7。结果是安静的、局面型的纳多夫。",
     "fr": "Contre le fou calme en e2, e5 renvoie le cavalier en b3 et les deux camps font le petit roque. Quand les Blancs jouent f4, tu prends avec le pion venu de e5, et après la reprise de la tour le cavalier vient en d7. Le résultat est une Najdorf calme et positionnelle.",
     "de": "Gegen den ruhigen Läufer auf e2 schickt e5 den Springer zurück nach b3, und beide Seiten machen die kurze Rochade. Wenn Weiß f4 spielt, nimmst du mit dem Bauern von e5, und nachdem der Turm zurücknimmt, kommt der Springer nach d7. Das Ergebnis ist eine ruhige, positionelle Najdorf.",
@@ -1394,7 +1394,7 @@
     "pt": "O Tartakower manda o bispo de volta com h6 e depois faz o fianqueto em b7. Depois do bispo em d3 e do roque, um cavalo em d7 termina um desenvolvimento comum. Com o bispo em e7 e o rei rocado, é o fianqueto sólido contra a cravada em g5.",
     "ru": "Тартаковер отгоняет слона ходом h6, затем делает фианкетто на b7. После слона на d3 и рокировки конь на d7 завершает обычное развитие. Со слоном на e7 и твоим королём уже рокированным это прочное фианкетто против связки на g5.",
     "it": "Il Tartakower rimanda indietro l'alfiere con h6, poi fianchetta in b7. Dopo l'alfiere in d3 e l'arrocco, un cavallo in d7 chiude uno sviluppo ordinario. Con l'alfiere in e7 e il re arroccato, è il fianchetto solido contro l'inchiodatura in g5.",
-    "hi": "तारताकोवर h6 से ऊँट को वापस भेजता है, फिर b7 पर फियानकेटो करता है। d3 पर ऊँट और कैसल के बाद d7 पर घोड़ा साधारण विकास पूरा करता है। ऊँट e7 पर हो और आपका राजा कैसल कर चुका हो, तब g5 की पकड़ के विरुद्ध यह ठोस फियानकेटो है।",
+    "hi": "तारताकोवर h6 से ऊँट को वापस भेजता है, फिर b7 पर फियानकेटो करता है। d3 पर ऊँट और कैसल के बाद d7 पर घोड़ा साधारण विकास पूरा करता है। ऊँट e7 पर हो और आपका राजा कैसल कर चुका हो, तब g5 की जकड़ के विरुद्ध यह ठोस फियानकेटो है।",
     "ja": "タルタコワーはh6でビショップを戻し、そのあとb7にフィアンケットします。ビショップがd3に行きキャスリングしたあと、d7のナイトが普通の展開を仕上げます。ビショップがe7にありキングがキャスリング済みなら、これはg5のピンに対する堅いフィアンケットです。",
     "ar": "تارتاكوفر يعيد الفيل بـ h6 ثم يطوّر على الجناح في b7. بعد الفيل إلى d3 والتبييت يكمل حصان على d7 تطويرا عاديا. مع الفيل على e7 وملكك مبيّت، هذا هو التطوير الجانبي المتين ضد التثبيت على g5.",
     "tr": "Tartakower fili h6 ile geri yollar, sonra b7'de fianchetto yapar. Fil d3'e gelip rok olduktan sonra d7'deki bir at sıradan gelişimi bitirir. Fil e7'de ve şahın rok yapmışken bu, g5'teki bağa karşı sağlam fianchettodur."

@@ -137,16 +137,9 @@ export function SlavPackNotice({ step, copy, flip, lineWelcome, onNext, onStart 
               </>
             )
           ) : (
-            <>
-              <h2 id="slav-intro-title" className="slav-notice-title">
-                {t("Tap to practice")}
-              </h2>
-              <p className="slav-notice-paragraph" data-slav-practice-blurb>
-                {flip
-                  ? "The game starts from the first move. White's move and your reply stay together on one slide until the next pair."
-                  : "The game starts from the first move. Your move and the reply stay together on one slide until the next pair."}
-              </p>
-            </>
+            <h2 id="slav-intro-title" className="slav-notice-title">
+              {t("Tap to practice")}
+            </h2>
           )}
         </div>
         {step === "about" ? (

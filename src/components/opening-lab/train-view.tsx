@@ -372,8 +372,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     !freeTry &&
     !warmup &&
     askTheCoachClientEnabled(pack.id);
-  const coachLessonRef = useRef(coachLesson);
-  coachLessonRef.current = coachLesson;
   useEffect(() => {
     setCoachStarted(initialMode === "practice");
     setLineCard(lineIntroCopy ? "about" : "off");
@@ -766,17 +764,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
-          text: coachLessonRef.current
-            ? "Practice done. Test with no hints."
-            : "Practice done — Test with no hints",
+          text: "Practice done — Test with no hints",
           cls: "done",
         });
-        if (!coachLessonRef.current) {
-          showLineFinish(
-            endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
-            pending.nextGame,
-          );
-        }
+        showLineFinish(
+          endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
+          pending.nextGame,
+        );
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
