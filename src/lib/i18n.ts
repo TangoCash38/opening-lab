@@ -55,8 +55,8 @@ const en: Dict = {
   "Tap to practice": "Tap to practice",
   "Welcome to Line {n} of the {pack} drills.":
     "Welcome to Line {n} of the {pack} drills.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
-    "Welcome to Line {n} of the {pack} drills: the {line}.",
+  "Welcome to Line {n} of the {pack} drills: {line}.":
+    "Welcome to Line {n} of the {pack} drills: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.",
   "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
@@ -335,10 +335,10 @@ const es: Dict = {
   "Tap to practice": "Toca para practicar",
   "Welcome to Line {n} of the {pack} drills.":
     "Bienvenido a la línea {n} de los ejercicios de {pack}.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "Bienvenido a la línea {n} de los ejercicios de {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "En Practice juegas tu bando en el tablero. El entrenador explica cada pareja, y puedes deslizar hacia atrás para ver una anterior. Una pista verde muestra tu siguiente jugada. Una jugada incorrecta parpadea en rojo y muestra la jugada de libro, para que lo intentes de nuevo desde ahí.",
+    "En Practice juegas tu bando en el tablero. El entrenador explica cada par de jugadas, y puedes deslizar hacia atrás para ver una anterior. Una pista verde muestra tu siguiente jugada. Una jugada incorrecta parpadea en rojo y muestra la jugada de libro, para que lo intentes de nuevo desde ahí.",
   "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
     "Después, ponte a prueba en Test. La pista verde no aparece. Solo cuenta la jugada de libro, y una jugada incorrecta hace que ese Test no se supere. Un Test limpio pone la línea en verde.",
   "See 18 lines": "Ver 18 líneas",
@@ -564,7 +564,7 @@ const zh: Dict = {
   "Tap to practice": "点按开始练习",
   "Welcome to Line {n} of the {pack} drills.":
     "欢迎来到 {pack} 练习的第 {n} 条线路。",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "欢迎来到 {pack} 练习的第 {n} 条线路：{line}。",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "在 Practice 里，你在棋盘上走自己的一方。教练讲解每一对棋步，你可以滑回前面的一对。绿色提示显示你的下一步。走错时格子会闪红，并告诉你书谱着法，你可以就地再试。",
@@ -793,7 +793,7 @@ const fr: Dict = {
   "Tap to practice": "Touche pour t'entraîner",
   "Welcome to Line {n} of the {pack} drills.":
     "Bienvenue dans la ligne {n} des exercices {pack}.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "Bienvenue dans la ligne {n} des exercices {pack} : {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "En Practice, tu joues ton camp sur l'échiquier. Le coach explique chaque paire de coups, et tu peux revenir en arrière d'un glissement. Un indice vert montre ton prochain coup. Un mauvais coup clignote en rouge et montre le coup du livre, pour que tu réessayes depuis là.",
@@ -1022,12 +1022,12 @@ const de: Dict = {
   "Tap to practice": "Tippen zum Üben",
   "Welcome to Line {n} of the {pack} drills.":
     "Willkommen bei Linie {n} der {pack}-Übungen.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "Willkommen bei Linie {n} der {pack}-Übungen: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "Im Practice spielst du deine Seite auf dem Brett. Der Coach erklärt jedes Zugpaar, und du kannst zu einem früheren zurückwischen. Ein grüner Hinweis zeigt deinen nächsten Zug. Ein falscher Zug blinkt rot und zeigt den Buchzug, damit du von dort noch einmal versuchst.",
   "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Danach testest du dich. Der grüne Hinweis bleibt aus. Nur der Buchzug zählt, und ein falscher Zug bedeutet, dass dieser Test nicht besteht. Ein sauberer Test färbt die Linie grün.",
+    "Danach testest du dich. Der grüne Hinweis bleibt aus. Nur der Buchzug zählt, und ein falscher Zug bedeutet, dass du diesen Test nicht bestehst. Ein sauberer Test färbt die Linie grün.",
   "See 18 lines": "18 Linien ansehen",
   "See {n} lines": "{n} Linien ansehen",
   "See {n} {pack} lines": "{n} {pack}-Linien ansehen",
@@ -1251,7 +1251,7 @@ const pt: Dict = {
   "Tap to practice": "Toque para treinar",
   "Welcome to Line {n} of the {pack} drills.":
     "Bem-vindo à linha {n} dos exercícios de {pack}.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "Bem-vindo à linha {n} dos exercícios de {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "No Practice você joga o seu lado no tabuleiro. O treinador explica cada par de lances, e você pode deslizar de volta para um anterior. Uma dica verde mostra o próximo lance. Um lance errado pisca em vermelho e mostra o lance de livro, para você tentar de novo dali.",
@@ -1480,7 +1480,7 @@ const ru: Dict = {
   "Tap to practice": "Нажми, чтобы тренировать",
   "Welcome to Line {n} of the {pack} drills.":
     "Добро пожаловать на линию {n} упражнений {pack}.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "Добро пожаловать на линию {n} упражнений {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "В Practice ты играешь свою сторону на доске. Тренер объясняет каждую пару ходов, и можно смахнуть назад к более ранней. Зелёная подсказка показывает следующий ход. Неверный ход вспыхивает красным и показывает книжный ход, чтобы ты попробовал снова с этого места.",
@@ -1708,7 +1708,7 @@ const it: Dict = {
   "Tap to practice": "Tocca per allenarti",
   "Welcome to Line {n} of the {pack} drills.":
     "Benvenuto alla linea {n} degli esercizi {pack}.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "Benvenuto alla linea {n} degli esercizi {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "In Practice giochi la tua parte sulla scacchiera. Il coach spiega ogni coppia di mosse, e puoi scorrere indietro a una precedente. Un suggerimento verde mostra la mossa successiva. Una mossa sbagliata lampeggia in rosso e mostra la mossa di libro, così puoi riprovare da lì.",
@@ -1936,13 +1936,13 @@ const hi: Dict = {
   "Continue on the web": "वेब पर जारी रखें",
   "Tap to practice": "ट्रेन करने के लिए टैप करें",
   "Welcome to Line {n} of the {pack} drills.":
-    "{pack} अभ्यास की लाइन {n} में आपका स्वागत है.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
-    "{pack} अभ्यास की लाइन {n} में आपका स्वागत है: {line}.",
+    "{pack} अभ्यास की लाइन {n} में आपका स्वागत है।",
+  "Welcome to Line {n} of the {pack} drills: {line}.":
+    "{pack} अभ्यास की लाइन {n} में आपका स्वागत है: {line}।",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "Practice में आप बोर्ड पर अपनी तरफ खेलते हैं। कोच हर जोड़ी समझाता है, और आप पीछे स्वाइप करके पहले वाली जोड़ी देख सकते हैं। हरी संकेत अगली चाल दिखाती है। गलत चाल लाल चमकती है और बुक चाल दिखाती है, ताकि आप वहीं से फिर कोशिश करें।",
+    "Practice में आप बोर्ड पर अपनी तरफ खेलते हैं। कोच हर जोड़ी समझाता है, और आप पीछे स्वाइप करके पहले वाली जोड़ी देख सकते हैं। हरा संकेत अगली चाल दिखाता है। गलत चाल लाल चमकती है और बुक चाल दिखाती है, ताकि आप वहीं से फिर कोशिश करें।",
   "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "फिर Test में खुद को जाँचें। हरी संकेत नहीं रहती। सिर्फ बुक चाल गिनी जाती है, और एक गलत चाल का मतलब है कि वह Test पास नहीं होता। साफ Test लाइन को हरा कर देता है।",
+    "फिर Test में खुद को जाँचें। हरा संकेत नहीं रहता। सिर्फ बुक चाल गिनी जाती है, और एक गलत चाल का मतलब है कि वह Test पास नहीं होता। साफ Test लाइन को हरा कर देता है।",
   "See 18 lines": "18 लाइनें देखें",
   "See {n} lines": "{n} लाइनें देखें",
   "See {n} {pack} lines": "{n} {pack} लाइनें देखें",
@@ -2166,12 +2166,12 @@ const ja: Dict = {
   "Tap to practice": "タップして練習",
   "Welcome to Line {n} of the {pack} drills.":
     "{pack} のドリル、ライン {n} へようこそ。",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "{pack} のドリル、ライン {n} へようこそ：{line}。",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "Practice では、盤上で自分の側を指します。コーチが一手ずつの組を説明し、スワイプで前の説明に戻れます。緑のヒントが次の手を示します。違う手は赤く光り、定跡の手を見せるので、その場からやり直せます。",
+    "Practice では、盤上で自分の側を指します。コーチが2手ずつの組を説明し、スワイプで前の説明に戻れます。緑のヒントが次の手を示します。違う手は赤く光り、定跡の手を見せるので、その場からやり直せます。",
   "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "そのあと Test です。緑のヒントは出ません。定跡の手だけが数えられ、一手でも違うと、その Test は合格になりません。きれいな Test でラインが緑になります。",
+    "そのあと Test です。緑のヒントは出ません。定跡の手だけが数えられ、一手でも違うと、その Test は合格になりません。ノーミスの Test でラインが緑になります。",
   "See 18 lines": "18ラインを見る",
   "See {n} lines": "{n}ラインを見る",
   "See {n} {pack} lines": "{n}の{pack}ラインを見る",
@@ -2391,7 +2391,7 @@ const ar: Dict = {
   "Tap to practice": "اضغط للتدرّب",
   "Welcome to Line {n} of the {pack} drills.":
     "أهلاً بك في الخط {n} من تمارين {pack}.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "أهلاً بك في الخط {n} من تمارين {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "في Practice تلعب طرفك على الرقعة. يشرح المدرب كل زوج من النقلات، ويمكنك السحب للخلف إلى زوج أسبق. تلميح أخضر يُظهر نقلتك التالية. النقلة الخاطئة تومض بالأحمر وتُظهر حركة الكتاب، لتعيد المحاولة من هناك.",
@@ -2620,7 +2620,7 @@ const tr: Dict = {
   "Tap to practice": "Çalışmak için dokun",
   "Welcome to Line {n} of the {pack} drills.":
     "{pack} alıştırmalarının {n}. hattına hoş geldin.",
-  "Welcome to Line {n} of the {pack} drills: the {line}.":
+  "Welcome to Line {n} of the {pack} drills: {line}.":
     "{pack} alıştırmalarının {n}. hattına hoş geldin: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "Practice'te tahtada kendi tarafını oynarsın. Koç her hamle çiftini anlatır ve geri kaydırarak önceki bir çifte dönebilirsin. Yeşil ipucu sonraki hamleyi gösterir. Yanlış hamle kırmızı yanar ve kitap hamlesini gösterir, oradan yeniden denersin.",

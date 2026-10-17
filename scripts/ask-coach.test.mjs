@@ -87,14 +87,14 @@ test("a finished pair does not pause the board and the reply stays at normal spe
     /line: welcomeLineName\(line\.name, !isLineUnlocked\(pack, line\.id, unlockIds\)\)/,
   );
   assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills\./);
-  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills: the \{line\}\./);
-  assert.doesNotMatch(notice, /drills: \{line\}\./);
+  assert.doesNotMatch(notice, /Welcome to Line \{n\} of the \{pack\} drills: the \{line\}\./);
+  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills: \{line\}\./);
   assert.doesNotMatch(train, /!startNow &&/);
 });
 
 test("the line welcome names a real line and hides a generic or locked one", () => {
   const plain = "Welcome to Line {n} of the {pack} drills.";
-  const named = "Welcome to Line {n} of the {pack} drills: the {line}.";
+  const named = "Welcome to Line {n} of the {pack} drills: {line}.";
   const practice =
     "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.";
   const exam =
@@ -113,7 +113,7 @@ test("the line welcome names a real line and hides a generic or locked one", () 
   );
   assert.equal(
     i18n.translate("en", named, { n: 5, pack: "Italian", line: "Fried Liver" }),
-    "Welcome to Line 5 of the Italian drills: the Fried Liver.",
+    "Welcome to Line 5 of the Italian drills: Fried Liver.",
   );
   for (const lang of i18n.LANGS) {
     const short = i18n.translate(lang, plain, { n: 1, pack: "Scotch Gambit" });

@@ -36,7 +36,7 @@ type NoticeProps = {
 function LineDrillWelcome({ welcome }: { welcome: LineWelcome }) {
   const t = useT();
   const title = welcome.line
-    ? t("Welcome to Line {n} of the {pack} drills: the {line}.", welcome)
+    ? t("Welcome to Line {n} of the {pack} drills: {line}.", welcome)
     : t("Welcome to Line {n} of the {pack} drills.", welcome);
   return (
     <>
