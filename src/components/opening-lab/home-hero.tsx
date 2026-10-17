@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { ChevronDown } from "lucide-react";
 import { Chess } from "chess.js";
 import { type OpeningLine, type Pack } from "@/data/packs";
@@ -17,9 +16,7 @@ import { classicRunAlreadySeen, markClassicRunSeen } from "@/lib/classic-run";
 import { beginClassicRunNarration } from "./classic-run-the-game";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useUnlocks } from "@/hooks/use-unlocks";
-import { useI18n, useT } from "@/lib/i18n";
-import { welcomeLineName } from "@/lib/line-welcome";
-import { lineWelcomeBlurb } from "@/lib/line-welcome-blurb";
+import { useT } from "@/lib/i18n";
 import {
   coachIntroAlreadySeen,
   coachLineAlreadySeen,
@@ -100,82 +97,6 @@ type Props = {
   embedded?: boolean;
 };
 
-/** Title and blurb for a locked line, shown before the pay prompt. */
-function LockedLineTeaser({
-  pack,
-  line,
-  onClose,
-  onUnlock,
-}: {
-  pack: Pack;
-  line: OpeningLine;
-  onClose: () => void;
-  onUnlock: () => void;
-}) {
-  const { t, lang } = useI18n();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) return null;
-  const n = pack.lines.findIndex((item) => item.id === line.id) + 1;
-  const shortPack = pack.name.replace(/\s*\((?:White|Black)\)\s*$/i, "");
-  const named = welcomeLineName(line.name);
-  const title = named
-    ? t("Welcome to Line {n} of the {pack} drills: {line}.", {
-        n,
-        pack: shortPack,
-        line: named,
-      })
-    : t("Welcome to Line {n} of the {pack} drills.", { n, pack: shortPack });
-  return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 sm:items-center"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="line-teaser-title"
-      data-line-teaser
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-bg-elevated shadow-2xl"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="px-5 py-4">
-          <h2
-            id="line-teaser-title"
-            className="m-0 font-display text-lg font-bold leading-snug"
-            data-line-welcome
-          >
-            {title}
-          </h2>
-          <p className="m-0 mt-3 text-[0.95rem] leading-relaxed" data-line-about>
-            {lineWelcomeBlurb(line.id, lang)}
-          </p>
-        </div>
-        <div className="flex gap-2 border-t border-border px-5 py-4">
-          <button
-            type="button"
-            className="rounded-xl bg-bg-subtle px-4 py-3 text-sm font-semibold"
-            onClick={onClose}
-          >
-            {t("Close")}
-          </button>
-          <button
-            type="button"
-            className="flex-1 rounded-xl bg-accent px-4 py-3 text-sm font-bold text-accent-fg"
-            data-line-teaser-unlock
-            onClick={onUnlock}
-          >
-            {t("Unlock {packName}", { packName: shortPack })}
-          </button>
-        </div>
-      </div>
-    </div>,
-    document.body,
-  );
-}
-
 export function HomeHero({
   pack,
   onStartLine,
@@ -201,7 +122,6 @@ export function HomeHero({
   const [linesOpen, setLinesOpen] = useState(linesInitiallyOpen);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [pendingLine, setPendingLine] = useState<OpeningLine | null>(null);
-  const [lockedTeaser, setLockedTeaser] = useState<OpeningLine | null>(null);
   const [frame, setFrame] = useState<FrameSession | null>(null);
   const [coach, setCoach] = useState<CoachSession | null>(null);
   const [textBeat, setTextBeat] = useState(0);
@@ -877,7 +797,7 @@ export function HomeHero({
                               setPendingLine(item);
                               setAboutOpen(true);
                             } else launchLine(item);
-                          } else setLockedTeaser(item);
+                          } else onRequestUnlock?.(pack);
                         }}
                       />
                     </div>
@@ -897,18 +817,6 @@ export function HomeHero({
           flip={pack.side === "Black"}
           onNext={beginStudyLine}
           onStart={beginStudyLine}
-        />
-      ) : null}
-
-      {lockedTeaser ? (
-        <LockedLineTeaser
-          pack={pack}
-          line={lockedTeaser}
-          onClose={() => setLockedTeaser(null)}
-          onUnlock={() => {
-            setLockedTeaser(null);
-            onRequestUnlock?.(pack);
-          }}
         />
       ) : null}
 

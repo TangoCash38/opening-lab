@@ -7509,10 +7509,11 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 }
 
 .train-layout--coach .train-board-band {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   min-height: 0;
 }
 
@@ -7523,6 +7524,12 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 
 .train-layout--coach .train-board-anchor > .relative {
   margin-bottom: 0.4rem;
+}
+
+/* The notes panel is hidden. Let the square board take the space it used. */
+.train-layout--coach .train-board-anchor .relative:has(> .board-frame) {
+  width: min(100%, 40rem, calc(100dvh - var(--coach-offset, 4.75rem) - 12.75rem));
+  max-width: min(100%, 40rem, calc(100dvh - var(--coach-offset, 4.75rem) - 12.75rem));
 }
 
 .train-layout--coach .train-below {
@@ -7715,18 +7722,13 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 }
 
 @media (min-width: 960px) {
-  /* Full-page website only. Play stays a 520px column, so the panel stays under the board. */
+  /* Full-page website. The notes column is hidden, so the board uses the width. */
   [data-surface="website"] .train-layout--coach:not(.train-embedded) {
-    display: grid;
-    grid-template-columns: minmax(16rem, 1fr) minmax(14rem, 18rem);
-    grid-template-areas:
-      "chrome chrome"
-      "board panel"
-      "below panel";
-    column-gap: 1rem;
-    align-items: start;
-    max-height: none;
-    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-height: calc(100dvh - var(--coach-offset, 4.75rem) - env(safe-area-inset-top, 0px));
+    overflow: hidden;
     min-height: 0;
   }
 
@@ -7739,7 +7741,7 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   }
 
   [data-surface="website"] .train-layout--coach:not(.train-embedded) .train-board-anchor {
-    width: min(100%, 32rem);
+    width: min(100%, 40rem, calc(100dvh - var(--coach-offset, 4.75rem) - 12.75rem));
   }
 
   [data-surface="website"] .train-layout--coach:not(.train-embedded) .ask-coach-panel {

@@ -38,7 +38,6 @@ import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
 import { opponentAutoDelay } from "@/lib/coach-slides";
 import { isPackComingSoon } from "@/lib/catalog";
 import { packStudyIntro } from "@/lib/pack-study-intro";
-import { AskCoachPanel } from "./ask-coach-panel";
 import { SlavPackNotice } from "./slav-pack-notice";
 import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
@@ -1628,25 +1627,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
       </div>
 
-      {coachLesson && !boardExpanded && !runTheGame ? (
-        <AskCoachPanel
-          packId={pack.id}
-          lineId={line.id}
-          lineName={line.name}
-          idea={line.idea ?? null}
-          plies={line.plies}
-          ply={viewingHistory ? viewPly : liveCoachPly}
-          uiMode={mode}
-          started={coachStarted}
-          finished={bookDone && mode === "learn"}
-          prompt={coachStarted && mode === "learn" ? hint : ""}
-          onTest={() => {
-            setCoachStarted(true);
-            changeMode("practice");
-          }}
-        />
-      ) : null}
-
       {lineIntroCopy && lineCard !== "off" ? (
         <SlavPackNotice
           step={lineCard === "about" ? "about" : "welcome"}
@@ -1655,8 +1635,8 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
           lineWelcome={{
             n,
             pack: shortPack,
-            line: welcomeLineName(line.name),
-            about: lineWelcomeBlurb(line.id, lang),
+            line: welcomeLineName(line.name, !isLineUnlocked(pack, line.id, unlockIds)),
+            about: isLineUnlocked(pack, line.id, unlockIds) ? lineWelcomeBlurb(line.id, lang) : "",
           }}
           onNext={() => setLineCard("go")}
           onStart={() => {
