@@ -86,19 +86,23 @@ test("a finished pair does not pause the board and the reply stays at normal spe
     train,
     /line: welcomeLineName\(line\.name, !isLineUnlocked\(pack, line\.id, unlockIds\)\)/,
   );
-  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills\./);
-  assert.doesNotMatch(notice, /Welcome to Line \{n\} of the \{pack\} drills: the \{line\}\./);
-  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills: \{line\}\./);
+  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} Drills!/);
+  assert.match(notice, /data-line-title/);
+  assert.match(notice, /<strong>\{t\("Practice Mode:"\)\}<\/strong>/);
+  assert.match(notice, /<strong>\{t\("Test Mode:"\)\}<\/strong>/);
+  assert.doesNotMatch(notice, /Welcome to Line \{n\} of the \{pack\} drills/);
+  assert.doesNotMatch(train, /<AskCoachPanel/);
   assert.doesNotMatch(train, /!startNow &&/);
 });
 
 test("the line welcome names a real line and hides a generic or locked one", () => {
-  const plain = "Welcome to Line {n} of the {pack} drills.";
-  const named = "Welcome to Line {n} of the {pack} drills: {line}.";
+  const plain = "Welcome to Line {n} of the {pack} Drills!";
+  const practiceLabel = "Practice Mode:";
   const practice =
-    "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.";
+    "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.";
+  const testLabel = "Test Mode:";
   const exam =
-    "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.";
+    "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!";
   assert.equal(lineWelcome.welcomeLineName("Line 1"), null);
   assert.equal(lineWelcome.welcomeLineName("line 12"), null);
   assert.equal(lineWelcome.welcomeLineName("  "), null);
@@ -109,34 +113,32 @@ test("the line welcome names a real line and hides a generic or locked one", () 
   assert.equal(lineWelcome.welcomeLineName("Two Knights: 4.d3", true), null);
   assert.equal(
     i18n.translate("en", plain, { n: 1, pack: "Scotch Gambit" }),
-    "Welcome to Line 1 of the Scotch Gambit drills.",
+    "Welcome to Line 1 of the Scotch Gambit Drills!",
   );
-  assert.equal(
-    i18n.translate("en", named, { n: 5, pack: "Italian", line: "Fried Liver" }),
-    "Welcome to Line 5 of the Italian drills: Fried Liver.",
-  );
+  assert.equal(i18n.translate("en", practice), practice);
+  assert.equal(i18n.translate("en", exam), exam);
   for (const lang of i18n.LANGS) {
     const short = i18n.translate(lang, plain, { n: 1, pack: "Scotch Gambit" });
-    const text = i18n.translate(lang, named, { n: 5, pack: "Italian", line: "Fried Liver" });
+    const howLabel = i18n.translate(lang, practiceLabel);
+    const how = i18n.translate(lang, practice);
+    const examLabel = i18n.translate(lang, testLabel);
+    const testCopy = i18n.translate(lang, exam);
     assert.match(short, /1/);
     assert.match(short, /Scotch Gambit/);
     assert.equal(short.includes("Fried Liver"), false, lang);
-    assert.match(text, /5/);
-    assert.match(text, /Italian/);
-    assert.match(text, /Fried Liver/);
-    assert.notEqual(short, text);
-    const how = i18n.translate(lang, practice);
-    const testCopy = i18n.translate(lang, exam);
-    assert.equal(how.includes("—") || how.includes("–"), false, lang);
-    assert.equal(testCopy.includes("—") || testCopy.includes("–"), false, lang);
     assert.equal(short.includes("—") || short.includes("–"), false, lang);
-    assert.equal(text.includes("—") || text.includes("–"), false, lang);
+    assert.equal(how.includes("—") || how.includes("–"), false, lang);
+    assert.equal(howLabel.includes("—") || howLabel.includes("–"), false, lang);
+    assert.equal(examLabel.includes("—") || examLabel.includes("–"), false, lang);
+    if (lang === "en") assert.match(testCopy, /—/);
+    else assert.equal(testCopy.includes("—") || testCopy.includes("–"), false, lang);
     assert.doesNotMatch(how, /engine|eval|centipawn/i);
     assert.doesNotMatch(testCopy, /engine|eval|centipawn/i);
     if (lang !== "en") {
       assert.notEqual(short, i18n.translate("en", plain, { n: 1, pack: "Scotch Gambit" }));
-      assert.notEqual(text, i18n.translate("en", named, { n: 5, pack: "Italian", line: "Fried Liver" }));
+      assert.notEqual(howLabel, practiceLabel);
       assert.notEqual(how, practice);
+      assert.notEqual(examLabel, testLabel);
       assert.notEqual(testCopy, exam);
     }
   }
@@ -167,6 +169,7 @@ test("Play coach stays inside the WebView", () => {
   assert.match(back, /onClick=\{onBack\}/);
   assert.match(back, /data-train-back/);
   assert.doesNotMatch(back, /history\.back/);
+  assert.doesNotMatch(train, /<AskCoachPanel/);
   const panel = readFileSync(join(root, "src/components/opening-lab/ask-coach-panel.tsx"), "utf8");
   assert.doesNotMatch(panel, /data-ask-coach-input|Any questions|\/api\/ask-coach|visualViewport|virtualKeyboard/);
   assert.match(panel, /data-ask-coach-intro/);

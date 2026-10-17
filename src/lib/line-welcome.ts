@@ -1,7 +1,6 @@
 /**
- * Title to append after the line-welcome heading.
- * A generic "Line N", or a locked line, stays unnamed so the heading does not
- * repeat the number or reveal a hidden name.
+ * Title shown under the line-welcome heading.
+ * A generic "Line N", or a locked line, stays unnamed.
  */
 export function welcomeLineName(name: string, locked = false): string | null {
   if (locked) return null;

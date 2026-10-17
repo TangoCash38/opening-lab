@@ -53,14 +53,16 @@ const en: Dict = {
   "Coming soon with Professor Potato Pie.": "Coming soon with Professor Potato Pie.",
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Welcome to Line {n} of the {pack} drills.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Welcome to Line {n} of the {pack} drills: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "Welcome to Line {n} of the {pack} Drills!",
+  "Practice Mode:":
+    "Practice Mode:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.",
+  "Test Mode:":
+    "Test Mode:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!",
   "Professor Potato Pie": "Professor Potato Pie",
   "Read the intro": "Read the intro",
   "Hide the intro": "Hide the intro",
@@ -333,14 +335,16 @@ const es: Dict = {
   "App coming soon": "App próximamente",
   "Continue on the web": "Seguir en la web",
   "Tap to practice": "Toca para practicar",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Bienvenido a la línea {n} de los ejercicios de {pack}.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Bienvenido a la línea {n} de los ejercicios de {pack}: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "En Practice juegas tu bando en el tablero. El entrenador explica cada par de jugadas, y puedes deslizar hacia atrás para ver una anterior. Una pista verde muestra tu siguiente jugada. Una jugada incorrecta parpadea en rojo y muestra la jugada de libro, para que lo intentes de nuevo desde ahí.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Después, ponte a prueba en Test. La pista verde no aparece. Solo cuenta la jugada de libro, y una jugada incorrecta hace que ese Test no se supere. Un Test limpio pone la línea en verde.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "¡Bienvenido a la línea {n} de los ejercicios de {pack}!",
+  "Practice Mode:":
+    "Modo práctica:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Juega tus jugadas directamente en el tablero. Las pistas verdes muestran tu siguiente jugada, mientras que las jugadas incorrectas parpadean en rojo y revelan la jugada del libro para que puedas intentarlo de nuevo.",
+  "Test Mode:":
+    "Modo prueba:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "Se quitan las ruedas de apoyo: las pistas verdes se desactivan. Solo se acepta la jugada del libro, y un solo error significa que no apruebas. Aprueba limpio para poner la línea en verde.",
   "See 18 lines": "Ver 18 líneas",
   "See {n} lines": "Ver {n} líneas",
   "See {n} {pack} lines": "Ver {n} líneas de {pack}",
@@ -562,14 +566,16 @@ const zh: Dict = {
   "App coming soon": "应用即将推出",
   "Continue on the web": "继续使用网页",
   "Tap to practice": "点按开始练习",
-  "Welcome to Line {n} of the {pack} drills.":
-    "欢迎来到 {pack} 练习的第 {n} 条线路。",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "欢迎来到 {pack} 练习的第 {n} 条线路：{line}。",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "在 Practice 里，你在棋盘上走自己的一方。教练讲解每一对棋步，你可以滑回前面的一对。绿色提示显示你的下一步。走错时格子会闪红，并告诉你书谱着法，你可以就地再试。",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "然后进入 Test。绿色提示不再出现。只有书谱着法算数，走错一步，这次 Test 就不通过。一次干净的 Test 会把这条线路标成绿色。",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "欢迎来到 {pack} 练习的第 {n} 条线路！",
+  "Practice Mode:":
+    "练习模式：",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "直接在棋盘上走你的棋。绿色提示显示你的下一步，走错会闪红并显示正确的谱着，你可以再试一次。",
+  "Test Mode:":
+    "测试模式：",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "辅助轮拿掉：绿色提示关闭。只接受谱着，一次失误就不能通过。干净通过，这条线路就会变绿。",
   "See 18 lines": "查看 18 条线路",
   "See {n} lines": "查看 {n} 条线路",
   "See {n} {pack} lines": "查看 {n} 条 {pack} 线路",
@@ -791,14 +797,16 @@ const fr: Dict = {
   "App coming soon": "Appli bientôt disponible",
   "Continue on the web": "Continuer sur le web",
   "Tap to practice": "Touche pour t'entraîner",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Bienvenue dans la ligne {n} des exercices {pack}.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Bienvenue dans la ligne {n} des exercices {pack} : {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "En Practice, tu joues ton camp sur l'échiquier. Le coach explique chaque paire de coups, et tu peux revenir en arrière d'un glissement. Un indice vert montre ton prochain coup. Un mauvais coup clignote en rouge et montre le coup du livre, pour que tu réessayes depuis là.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Ensuite, teste-toi. L'indice vert reste éteint. Seul le coup du livre compte, et un seul mauvais coup fait que ce Test n'est pas réussi. Un Test sans faute passe la ligne au vert.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "Bienvenue dans la ligne {n} des exercices {pack} !",
+  "Practice Mode:":
+    "Mode pratique :",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Joue tes coups directement sur l'échiquier. Les indices verts montrent ton coup suivant, tandis qu'un coup faux clignote en rouge et révèle le coup du livre pour que tu puisses réessayer.",
+  "Test Mode:":
+    "Mode test :",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "Les petites roues tombent : les indices verts sont désactivés. Seul le coup du livre est accepté, et une seule erreur veut dire que tu ne réussis pas. Réussis sans faute pour passer la ligne au vert.",
   "See 18 lines": "Voir 18 lignes",
   "See {n} lines": "Voir {n} lignes",
   "See {n} {pack} lines": "Voir {n} lignes {pack}",
@@ -1020,14 +1028,16 @@ const de: Dict = {
   "App coming soon": "App demnächst",
   "Continue on the web": "Im Web weiter",
   "Tap to practice": "Tippen zum Üben",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Willkommen bei Linie {n} der {pack}-Übungen.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Willkommen bei Linie {n} der {pack}-Übungen: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "Im Practice spielst du deine Seite auf dem Brett. Der Coach erklärt jedes Zugpaar, und du kannst zu einem früheren zurückwischen. Ein grüner Hinweis zeigt deinen nächsten Zug. Ein falscher Zug blinkt rot und zeigt den Buchzug, damit du von dort noch einmal versuchst.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Danach testest du dich. Der grüne Hinweis bleibt aus. Nur der Buchzug zählt, und ein falscher Zug bedeutet, dass du diesen Test nicht bestehst. Ein sauberer Test färbt die Linie grün.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "Willkommen bei Linie {n} der {pack}-Übungen!",
+  "Practice Mode:":
+    "Übungsmodus:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Spiele deine Züge direkt auf dem Brett. Grüne Hinweise zeigen deinen nächsten Zug, während falsche Züge rot aufleuchten und den richtigen Buchzug zeigen, damit du es noch einmal versuchen kannst.",
+  "Test Mode:":
+    "Testmodus:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "Die Stützräder fallen weg: grüne Hinweise sind aus. Nur der Buchzug zählt, und ein einziger Fehler heißt, dass du nicht bestehst. Bestehe sauber, damit die Linie grün wird.",
   "See 18 lines": "18 Linien ansehen",
   "See {n} lines": "{n} Linien ansehen",
   "See {n} {pack} lines": "{n} {pack}-Linien ansehen",
@@ -1249,14 +1259,16 @@ const pt: Dict = {
   "App coming soon": "App em breve",
   "Continue on the web": "Continuar na web",
   "Tap to practice": "Toque para treinar",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Bem-vindo à linha {n} dos exercícios de {pack}.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Bem-vindo à linha {n} dos exercícios de {pack}: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "No Practice você joga o seu lado no tabuleiro. O treinador explica cada par de lances, e você pode deslizar de volta para um anterior. Uma dica verde mostra o próximo lance. Um lance errado pisca em vermelho e mostra o lance de livro, para você tentar de novo dali.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Depois, teste a si mesmo. A dica verde fica desligada. Só o lance de livro conta, e um lance errado faz esse Test não passar. Um Test limpo deixa a linha verde.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "Bem-vindo à linha {n} dos exercícios de {pack}!",
+  "Practice Mode:":
+    "Modo prática:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Jogue seus lances direto no tabuleiro. As dicas verdes mostram o seu próximo lance, enquanto lances errados piscam em vermelho e revelam o lance do livro para você tentar de novo.",
+  "Test Mode:":
+    "Modo teste:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "As rodinhas saem: as dicas verdes ficam desligadas. Só o lance do livro é aceito, e um único erro significa que você não passa. Passe limpo para deixar a linha verde.",
   "See 18 lines": "Ver 18 linhas",
   "See {n} lines": "Ver {n} linhas",
   "See {n} {pack} lines": "Ver {n} linhas de {pack}",
@@ -1478,14 +1490,16 @@ const ru: Dict = {
   "App coming soon": "Приложение скоро",
   "Continue on the web": "Продолжить в браузере",
   "Tap to practice": "Нажми, чтобы тренировать",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Добро пожаловать на линию {n} упражнений {pack}.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Добро пожаловать на линию {n} упражнений {pack}: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "В Practice ты играешь свою сторону на доске. Тренер объясняет каждую пару ходов, и можно смахнуть назад к более ранней. Зелёная подсказка показывает следующий ход. Неверный ход вспыхивает красным и показывает книжный ход, чтобы ты попробовал снова с этого места.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Потом проверь себя в Test. Зелёной подсказки нет. Считается только книжный ход, и одна ошибка значит, что этот Test не сдан. Чистый Test делает линию зелёной.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "Добро пожаловать на линию {n} упражнений {pack}!",
+  "Practice Mode:":
+    "Режим практики:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Ходи прямо на доске. Зелёные подсказки показывают твой следующий ход, а неверные ходы вспыхивают красным и открывают правильный ход по книге, чтобы ты мог попробовать снова.",
+  "Test Mode:":
+    "Режим теста:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "Страховка снимается: зелёные подсказки выключены. Принимается только ход по книге, и одна ошибка значит, что ты не сдашь. Сдай чисто, чтобы линия стала зелёной.",
   "See 18 lines": "Смотреть 18 линий",
   "See {n} lines": "Смотреть {n} линий",
   "See {n} {pack} lines": "Смотреть {n} линий {pack}",
@@ -1706,14 +1720,16 @@ const it: Dict = {
   "App coming soon": "App in arrivo",
   "Continue on the web": "Continua sul web",
   "Tap to practice": "Tocca per allenarti",
-  "Welcome to Line {n} of the {pack} drills.":
-    "Benvenuto alla linea {n} degli esercizi {pack}.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Benvenuto alla linea {n} degli esercizi {pack}: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "In Practice giochi la tua parte sulla scacchiera. Il coach spiega ogni coppia di mosse, e puoi scorrere indietro a una precedente. Un suggerimento verde mostra la mossa successiva. Una mossa sbagliata lampeggia in rosso e mostra la mossa di libro, così puoi riprovare da lì.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Poi mettiti alla prova nel Test. Il suggerimento verde resta spento. Conta solo la mossa di libro, e una mossa sbagliata fa sì che quel Test non sia superato. Un Test pulito colora la linea di verde.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "Benvenuto alla linea {n} degli esercizi {pack}!",
+  "Practice Mode:":
+    "Modalità pratica:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Gioca le tue mosse direttamente sulla scacchiera. I suggerimenti verdi mostrano la tua mossa successiva, mentre le mosse sbagliate lampeggiano in rosso e rivelano la mossa del libro così puoi riprovare.",
+  "Test Mode:":
+    "Modalità test:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "Le rotelle di sostegno cadono: i suggerimenti verdi sono disattivati. Si accetta solo la mossa del libro, e un solo errore significa che non superi. Supera pulito per far diventare verde la linea.",
   "See 18 lines": "Vedi 18 linee",
   "See {n} lines": "Vedi {n} linee",
   "See {n} {pack} lines": "Vedi {n} linee {pack}",
@@ -1935,14 +1951,16 @@ const hi: Dict = {
   "App coming soon": "ऐप जल्द आ रहा है",
   "Continue on the web": "वेब पर जारी रखें",
   "Tap to practice": "ट्रेन करने के लिए टैप करें",
-  "Welcome to Line {n} of the {pack} drills.":
+  "Welcome to Line {n} of the {pack} Drills!":
     "{pack} अभ्यास की लाइन {n} में आपका स्वागत है।",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "{pack} अभ्यास की लाइन {n} में आपका स्वागत है: {line}।",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "Practice में आप बोर्ड पर अपनी तरफ खेलते हैं। कोच हर जोड़ी समझाता है, और आप पीछे स्वाइप करके पहले वाली जोड़ी देख सकते हैं। हरा संकेत अगली चाल दिखाता है। गलत चाल लाल चमकती है और बुक चाल दिखाती है, ताकि आप वहीं से फिर कोशिश करें।",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "फिर Test में खुद को जाँचें। हरा संकेत नहीं रहता। सिर्फ बुक चाल गिनी जाती है, और एक गलत चाल का मतलब है कि वह Test पास नहीं होता। साफ Test लाइन को हरा कर देता है।",
+  "Practice Mode:":
+    "अभ्यास मोड:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "अपनी चालें सीधे बोर्ड पर खेलें। हरे संकेत आपकी अगली चाल दिखाते हैं, जबकि गलत चालें लाल चमकती हैं और सही पुस्तक चाल दिखाती हैं ताकि आप फिर से कोशिश कर सकें।",
+  "Test Mode:":
+    "परीक्षा मोड:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "सहायक पहिए हट जाते हैं: हरे संकेत बंद हो जाते हैं। केवल पुस्तक चाल मानी जाती है, और एक गलती का मतलब है कि आप पास नहीं होंगे। साफ पास करें, तब लाइन हरी हो जाएगी।",
   "See 18 lines": "18 लाइनें देखें",
   "See {n} lines": "{n} लाइनें देखें",
   "See {n} {pack} lines": "{n} {pack} लाइनें देखें",
@@ -2164,14 +2182,16 @@ const ja: Dict = {
   "App coming soon": "アプリ近日公開",
   "Continue on the web": "ウェブで続ける",
   "Tap to practice": "タップして練習",
-  "Welcome to Line {n} of the {pack} drills.":
-    "{pack} のドリル、ライン {n} へようこそ。",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "{pack} のドリル、ライン {n} へようこそ：{line}。",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "Practice では、盤上で自分の側を指します。コーチが2手ずつの組を説明し、スワイプで前の説明に戻れます。緑のヒントが次の手を示します。違う手は赤く光り、定跡の手を見せるので、その場からやり直せます。",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "そのあと Test です。緑のヒントは出ません。定跡の手だけが数えられ、一手でも違うと、その Test は合格になりません。ノーミスの Test でラインが緑になります。",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "{pack} のドリル、ライン {n} へようこそ！",
+  "Practice Mode:":
+    "練習モード：",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "手は盤の上で直接指してください。緑のヒントが次の手を示し、間違った手は赤く点滅して定跡の正しい手を見せるので、もう一度試せます。",
+  "Test Mode:":
+    "テストモード：",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "補助輪は外れます。緑のヒントはオフです。定跡の手だけが通り、一度のミスで不合格です。きれいに合格するとラインが緑になります。",
   "See 18 lines": "18ラインを見る",
   "See {n} lines": "{n}ラインを見る",
   "See {n} {pack} lines": "{n}の{pack}ラインを見る",
@@ -2389,14 +2409,16 @@ const ar: Dict = {
   "App coming soon": "التطبيق قريبًا",
   "Continue on the web": "تابع على الويب",
   "Tap to practice": "اضغط للتدرّب",
-  "Welcome to Line {n} of the {pack} drills.":
-    "أهلاً بك في الخط {n} من تمارين {pack}.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "أهلاً بك في الخط {n} من تمارين {pack}: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "في Practice تلعب طرفك على الرقعة. يشرح المدرب كل زوج من النقلات، ويمكنك السحب للخلف إلى زوج أسبق. تلميح أخضر يُظهر نقلتك التالية. النقلة الخاطئة تومض بالأحمر وتُظهر حركة الكتاب، لتعيد المحاولة من هناك.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "ثم اختبر نفسك في Test. التلميح الأخضر لا يظهر. حركة الكتاب وحدها تُحتسب، ونقلة خاطئة واحدة تعني أن هذا Test لم ينجح. Test نظيف يجعل الخط أخضر.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "أهلاً بك في الخط {n} من تمارين {pack}!",
+  "Practice Mode:":
+    "وضع التدريب:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "العب نقلاتك مباشرة على الرقعة. الإشارات الخضراء تُظهر نقلتك التالية، بينما تومض النقلات الخاطئة بالأحمر وتكشف نقلة الكتاب الصحيحة حتى تعيد المحاولة.",
+  "Test Mode:":
+    "وضع الاختبار:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "تُرفع العجلات المساعدة: تُعطّل الإشارات الخضراء. تُقبل نقلة الكتاب فقط، وخطأ واحد يعني أنك لا تنجح. انجح بلا خطأ ليصير الخط أخضر.",
   "See 18 lines": "عرض 18 خطًا",
   "See {n} lines": "عرض {n} خطًا",
   "See {n} {pack} lines": "عرض {n} خطًا من {pack}",
@@ -2618,14 +2640,16 @@ const tr: Dict = {
   "App coming soon": "Uygulama yakında",
   "Continue on the web": "Web’de devam et",
   "Tap to practice": "Çalışmak için dokun",
-  "Welcome to Line {n} of the {pack} drills.":
-    "{pack} alıştırmalarının {n}. hattına hoş geldin.",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "{pack} alıştırmalarının {n}. hattına hoş geldin: {line}.",
-  "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
-    "Practice'te tahtada kendi tarafını oynarsın. Koç her hamle çiftini anlatır ve geri kaydırarak önceki bir çifte dönebilirsin. Yeşil ipucu sonraki hamleyi gösterir. Yanlış hamle kırmızı yanar ve kitap hamlesini gösterir, oradan yeniden denersin.",
-  "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
-    "Sonra Test'te kendini yokla. Yeşil ipucu kapalı kalır. Yalnızca kitap hamlesi sayılır ve bir yanlış hamle o Test'in geçmediği anlamına gelir. Temiz bir Test hattı yeşile çevirir.",
+  "Welcome to Line {n} of the {pack} Drills!":
+    "{pack} alıştırmalarının {n}. hattına hoş geldin!",
+  "Practice Mode:":
+    "Alıştırma modu:",
+  "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
+    "Hamlelerini doğrudan tahtada oyna. Yeşil ipuçları sonraki hamleni gösterir, yanlış hamleler kırmızı yanıp söner ve doğru kitap hamlesini gösterir, böylece yeniden deneyebilirsin.",
+  "Test Mode:":
+    "Test modu:",
+  "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!":
+    "Yardım tekerlekleri çıkar: yeşil ipuçları kapanır. Yalnızca kitap hamlesi kabul edilir ve tek bir hata geçemeyeceğin anlamına gelir. Temiz geç, hat yeşil olsun.",
   "See 18 lines": "18 hattı gör",
   "See {n} lines": "{n} hattı gör",
   "See {n} {pack} lines": "{n} {pack} hattı gör",

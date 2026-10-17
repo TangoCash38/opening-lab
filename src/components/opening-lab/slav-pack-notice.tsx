@@ -18,8 +18,10 @@ type NoticeStep = "about" | "welcome";
 export type LineWelcome = {
   n: number;
   pack: string;
-  /** Real line title. Null when the name is only "Line N", or the line is locked. */
+  /** Real line title. Null for a generic "Line N" and for a locked line. */
   line: string | null;
+  /** Two or three sentences about this line, already in the active language. */
+  about: string;
 };
 
 type NoticeProps = {
@@ -35,23 +37,32 @@ type NoticeProps = {
 
 function LineDrillWelcome({ welcome }: { welcome: LineWelcome }) {
   const t = useT();
-  const title = welcome.line
-    ? t("Welcome to Line {n} of the {pack} drills: {line}.", welcome)
-    : t("Welcome to Line {n} of the {pack} drills.", welcome);
   return (
     <>
       <h2 id="slav-intro-title" className="slav-notice-title" data-line-welcome>
-        {title}
+        {t("Welcome to Line {n} of the {pack} Drills!", welcome)}
       </h2>
+      {welcome.line ? (
+        <p className="slav-notice-paragraph" data-line-title>
+          {welcome.line}
+        </p>
+      ) : null}
+      {welcome.about ? (
+        <p className="slav-notice-paragraph" data-line-about>
+          {welcome.about}
+        </p>
+      ) : null}
       <div data-line-how-to>
         <p className="slav-notice-paragraph">
+          <strong>{t("Practice Mode:")}</strong>{" "}
           {t(
-            "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.",
+            "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.",
           )}
         </p>
         <p className="slav-notice-paragraph">
+          <strong>{t("Test Mode:")}</strong>{" "}
           {t(
-            "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.",
+            "The training wheels come off—green hints are disabled. Only the book move is accepted, and a single mistake means you won't pass. Pass cleanly to turn the line green!",
           )}
         </p>
       </div>
@@ -126,16 +137,9 @@ export function SlavPackNotice({ step, copy, flip, lineWelcome, onNext, onStart 
               </>
             )
           ) : (
-            <>
-              <h2 id="slav-intro-title" className="slav-notice-title">
-                {t("Tap to practice")}
-              </h2>
-              <p className="slav-notice-paragraph" data-slav-practice-blurb>
-                {flip
-                  ? "The game starts from the first move. White's move and your reply stay together on one slide until the next pair."
-                  : "The game starts from the first move. Your move and the reply stay together on one slide until the next pair."}
-              </p>
-            </>
+            <h2 id="slav-intro-title" className="slav-notice-title">
+              {t("Tap to practice")}
+            </h2>
           )}
         </div>
         {step === "about" ? (

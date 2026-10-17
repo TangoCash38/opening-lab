@@ -623,7 +623,7 @@
       ]
     },
     "lon7": {
-      "intro": "The light-squared bishop comes to f5 and the queen comes to b6. White meets that queen and gains space with the c-pawn.",
+      "intro": "The light-squared bishop comes to f5. Qb3 hits b7, the queen answers on b6, and c5 gains space.",
       "notes": [
         "d4 claims the centre and frees the dark-squared bishop. That bishop comes out before the e-pawn moves.",
         "d5 meets White in the centre. A closed centre is fine, and the dark-squared bishop is about to step outside the chain.",
@@ -1292,7 +1292,7 @@
       ]
     },
     "frb4": {
-      "intro": "The open Tarrasch: both sides take back with pawns, the c-pawns come off, Black is left with an isolated pawn on d5, and the light-squared bishop comes to g4.",
+      "intro": "The open Tarrasch: Black recaptures on d5 with the pawn and the bishop takes back on c5. Black is left with an isolated pawn on d5, and the light-squared bishop comes to g4.",
       "notes": [
         "e4 opens the game and frees the light-squared bishop.",
         "e6 prepares a central pawn and shuts the light-squared bishop in. Black accepts that bishop for a solid centre.",
@@ -2819,7 +2819,7 @@
       ]
     },
     "kidb7": {
-      "intro": "The Fianchetto: both bishops sit on the long diagonal, Black plays the queen's knight to d7 and a pawn to c6, and after the trade the knight comes to c5.",
+      "intro": "The Fianchetto: both bishops sit on long diagonals, Black plays the queen's knight to d7 and a pawn to c6, and after the trade the knight comes to c5.",
       "notes": [
         "d4 takes space in the centre and frees the dark-squared bishop.",
         "Nf6 brings the king's knight out so the centre can be challenged.",

@@ -18,7 +18,8 @@ import {
   soundSelect,
   soundWin,
 } from "@/lib/sounds";
-import { useT, type Translate } from "@/lib/i18n";
+import { useI18n, useT, type Translate } from "@/lib/i18n";
+import { lineWelcomeBlurb } from "@/lib/line-welcome-blurb";
 import {
   formatOpeningIdentity,
   lookupOpeningIdentityPrefix,
@@ -37,7 +38,6 @@ import { askTheCoachClientEnabled } from "@/lib/ask-coach-flag";
 import { opponentAutoDelay } from "@/lib/coach-slides";
 import { isPackComingSoon } from "@/lib/catalog";
 import { packStudyIntro } from "@/lib/pack-study-intro";
-import { AskCoachPanel } from "./ask-coach-panel";
 import { SlavPackNotice } from "./slav-pack-notice";
 import { LineFinishNote } from "./line-finish-note";
 import { LineResultModal } from "./line-result-modal";
@@ -274,7 +274,7 @@ function lastMoveSquares(g: Chess): { from: Square; to: Square } | null {
 }
 
 export function TrainView({ pack, line, onBack, initialMode = "learn", onModeChange, onLineComplete, onLearnDone, onPracticeFail, onTestPly, onTrainNext, hasNextDue, onPracticeNext, gym = false, testLocked = false, parkRunTheGame = false, autoRunTheGame = false, startNow = false, plyLimit, startPly = 0, embedded = false, frameCoords = false, freeTry = false, onFreeTryBuyAll, onFreeTryPickPack, onFreeTryMoreFree, onFreeTryFeedback }: Props) {
-  const t = useT();
+  const { t, lang } = useI18n();
   const { state, subscribed } = useUnlocks();
   const purchased = state.packs;
   const unlockIds = subscribed ? [pack.id] : purchased;
@@ -372,8 +372,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
     !freeTry &&
     !warmup &&
     askTheCoachClientEnabled(pack.id);
-  const coachLessonRef = useRef(coachLesson);
-  coachLessonRef.current = coachLesson;
   useEffect(() => {
     setCoachStarted(initialMode === "practice");
     setLineCard(lineIntroCopy ? "about" : "off");
@@ -766,17 +764,13 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       if (mode === "learn") {
         setNudgeTest(true);
         setStatus({
-          text: coachLessonRef.current
-            ? "Practice done. Test with no hints."
-            : "Practice done — Test with no hints",
+          text: "Practice done — Test with no hints",
           cls: "done",
         });
-        if (!coachLessonRef.current) {
-          showLineFinish(
-            endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
-            pending.nextGame,
-          );
-        }
+        showLineFinish(
+          endResultCard(line, pack, purchased, t("Practice done"), t, "testYourself", subscribed),
+          pending.nextGame,
+        );
         if (!completedRef.current) {
           completedRef.current = true;
           onLearnDone?.();
@@ -1627,25 +1621,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
       </div>
 
-      {coachLesson && !boardExpanded && !runTheGame ? (
-        <AskCoachPanel
-          packId={pack.id}
-          lineId={line.id}
-          lineName={line.name}
-          idea={line.idea ?? null}
-          plies={line.plies}
-          ply={viewingHistory ? viewPly : liveCoachPly}
-          uiMode={mode}
-          started={coachStarted}
-          finished={bookDone && mode === "learn"}
-          prompt={coachStarted && mode === "learn" ? hint : ""}
-          onTest={() => {
-            setCoachStarted(true);
-            changeMode("practice");
-          }}
-        />
-      ) : null}
-
       {lineIntroCopy && lineCard !== "off" ? (
         <SlavPackNotice
           step={lineCard === "about" ? "about" : "welcome"}
@@ -1655,6 +1630,7 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
             n,
             pack: shortPack,
             line: welcomeLineName(line.name, !isLineUnlocked(pack, line.id, unlockIds)),
+            about: isLineUnlocked(pack, line.id, unlockIds) ? lineWelcomeBlurb(line.id, lang) : "",
           }}
           onNext={() => setLineCard("go")}
           onStart={() => {
