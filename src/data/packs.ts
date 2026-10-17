@@ -431,7 +431,7 @@ export const PACKS: Pack[] = [
         name: "Line 3",
         plies: ["d4", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "d5", "c3", "Nc6", "Nd2", "Bf5", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Qc7"],
         idea: "Immediate …c5 vs Bf4. After …cxd4 exd4 and …d5 the game is a London vs Exchange-style centre; develop Bf5–e6–Bd6 and castle.",
-        next: "Your knight is already on f3 and the bishop is already on g3. Black's queen is on c7. A rook to c8 keeps the pressure on the c-file.",
+        next: "Your pieces are out and both kings are castled. Black's queen on c7 and a rook coming to c8 will press the c-file, so keep c3 and the bishop on g3 covered.",
         side: "w",
       },
       {
@@ -439,7 +439,7 @@ export const PACKS: Pack[] = [
         name: "Line 4",
         plies: ["d4", "Nf6", "Bf4", "g6", "e3", "Bg7", "Nf3", "O-O", "Be2", "d6", "h3", "Nbd7", "O-O", "Qe8", "c3", "e5", "Bh2", "Qe7", "Nbd2", "Re8"],
         idea: "KID setup vs London: …g6/…Bg7/…d6. White stays classical with e3–Be2–h3–c3; when …e5 comes, drop the bishop to h2.",
-        next: "d4 and e5 are still in tension, not a closed centre. Play the knight to c4 or a pawn to a4. Black's queen is on e7 and the rook is on e8.",
+        next: "The pawns on d4 and e5 are still in tension. Play the knight to c4 or a pawn to a4. Black's queen is on e7 and the rook is on e8.",
         side: "w",
       },
       {

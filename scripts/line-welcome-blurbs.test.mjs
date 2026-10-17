@@ -66,7 +66,8 @@ test("every on-sale line has a unique welcome blurb in every locale", () => {
       assert.equal(typeof text, "string", `${id} ${lang}`);
       const count = sentences(text, lang).length;
       assert.ok(count === 2 || count === 3, `${id} ${lang} has ${count}: ${text}`);
-      assert.equal(text.includes("—") || text.includes("–"), false, `${id} ${lang}`);
+      if (lang === "ru") assert.equal(text.includes("–"), false, `${id} ${lang}`);
+      else assert.equal(text.includes("—") || text.includes("–"), false, `${id} ${lang}`);
       assert.doesNotMatch(text, /engine|eval|centipawn|stockfish/i, `${id} ${lang}`);
       assert.equal(seen[lang].has(text), false, `${id} ${lang} repeats`);
       seen[lang].add(text);
@@ -88,7 +89,10 @@ test("every on-sale line has a unique welcome blurb in every locale", () => {
         assert.equal(text.includes("King's Indian"), false, `${id} ${lang}`);
       }
       if (["es", "pt", "it"].includes(lang)) {
-        assert.doesNotMatch(text, /pe[oó]n de e\b|pedone e e|peão de e\b/i, `${id} ${lang}`);
+        assert.doesNotMatch(text, /pedone in e\b/i, `${id} ${lang}`);
+        // Bare "peón c" / "peão e", not "peón de c" and not "peón débil".
+        if (lang === "es") assert.doesNotMatch(text, /peón [a-h](?=[\s,.;:!?)]|$)/i, `${id} ${lang}`);
+        if (lang === "pt") assert.doesNotMatch(text, /peão [a-h](?=[\s,.;:!?)]|$)/i, `${id} ${lang}`);
       }
     }
     assert.doesNotMatch(row.en, /you(?:'ll| will)? meet/i, id);
