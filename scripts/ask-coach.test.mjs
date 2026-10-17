@@ -27,6 +27,7 @@ const packs = await vite.ssrLoadModule("/src/data/packs.ts");
 const rate = await vite.ssrLoadModule("/src/lib/ask-coach-rate.ts");
 const slides = await vite.ssrLoadModule("/src/lib/coach-slides.ts");
 const i18n = await vite.ssrLoadModule("/src/lib/i18n.ts");
+const lineWelcome = await vite.ssrLoadModule("/src/lib/line-welcome.ts");
 
 function req(over = {}) {
   return {
@@ -81,31 +82,60 @@ test("a finished pair does not pause the board and the reply stays at normal spe
   assert.match(notice, /data-line-welcome/);
   assert.match(notice, /lineWelcome \?/);
   assert.match(notice, /\{copy\.lead\}/);
-  assert.match(train, /lineWelcome=\{\{ n, pack: shortPack, line: line\.name \}\}/);
+  assert.match(
+    train,
+    /line: welcomeLineName\(line\.name, !isLineUnlocked\(pack, line\.id, unlockIds\)\)/,
+  );
+  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills\./);
+  assert.match(notice, /Welcome to Line \{n\} of the \{pack\} drills: the \{line\}\./);
+  assert.doesNotMatch(notice, /drills: \{line\}\./);
   assert.doesNotMatch(train, /!startNow &&/);
 });
 
-test("the line welcome names the line and is translated", () => {
-  const welcome = "Welcome to Line {n} of the {pack} drills: {line}.";
+test("the line welcome names a real line and hides a generic or locked one", () => {
+  const plain = "Welcome to Line {n} of the {pack} drills.";
+  const named = "Welcome to Line {n} of the {pack} drills: the {line}.";
   const practice =
     "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.";
   const exam =
     "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.";
-  const english = i18n.translate("en", welcome, { n: 1, pack: "Scotch Gambit", line: "Line 1" });
-  assert.equal(english, "Welcome to Line 1 of the Scotch Gambit drills: Line 1.");
+  assert.equal(lineWelcome.welcomeLineName("Line 1"), null);
+  assert.equal(lineWelcome.welcomeLineName("line 12"), null);
+  assert.equal(lineWelcome.welcomeLineName("  "), null);
+  assert.equal(lineWelcome.welcomeLineName("Fried Liver"), "Fried Liver");
+  assert.equal(lineWelcome.welcomeLineName("Fried Liver", true), null);
+  assert.equal(lineWelcome.welcomeLineName("Line 5 · Fried Liver"), "Fried Liver");
+  assert.equal(lineWelcome.welcomeLineName("Canal: 4...Nf6"), "Canal: 4...Nf6");
+  assert.equal(lineWelcome.welcomeLineName("Two Knights: 4.d3", true), null);
+  assert.equal(
+    i18n.translate("en", plain, { n: 1, pack: "Scotch Gambit" }),
+    "Welcome to Line 1 of the Scotch Gambit drills.",
+  );
+  assert.equal(
+    i18n.translate("en", named, { n: 5, pack: "Italian", line: "Fried Liver" }),
+    "Welcome to Line 5 of the Italian drills: the Fried Liver.",
+  );
   for (const lang of i18n.LANGS) {
-    const text = i18n.translate(lang, welcome, { n: 4, pack: "Sicilian for Black", line: "Poisoned Pawn" });
-    assert.match(text, /4/);
-    assert.match(text, /Sicilian for Black/);
-    assert.match(text, /Poisoned Pawn/);
+    const short = i18n.translate(lang, plain, { n: 1, pack: "Scotch Gambit" });
+    const text = i18n.translate(lang, named, { n: 5, pack: "Italian", line: "Fried Liver" });
+    assert.match(short, /1/);
+    assert.match(short, /Scotch Gambit/);
+    assert.equal(short.includes("Fried Liver"), false, lang);
+    assert.match(text, /5/);
+    assert.match(text, /Italian/);
+    assert.match(text, /Fried Liver/);
+    assert.notEqual(short, text);
     const how = i18n.translate(lang, practice);
     const testCopy = i18n.translate(lang, exam);
     assert.equal(how.includes("—") || how.includes("–"), false, lang);
     assert.equal(testCopy.includes("—") || testCopy.includes("–"), false, lang);
+    assert.equal(short.includes("—") || short.includes("–"), false, lang);
+    assert.equal(text.includes("—") || text.includes("–"), false, lang);
     assert.doesNotMatch(how, /engine|eval|centipawn/i);
     assert.doesNotMatch(testCopy, /engine|eval|centipawn/i);
     if (lang !== "en") {
-      assert.notEqual(text, i18n.translate("en", welcome, { n: 4, pack: "Sicilian for Black", line: "Poisoned Pawn" }));
+      assert.notEqual(short, i18n.translate("en", plain, { n: 1, pack: "Scotch Gambit" }));
+      assert.notEqual(text, i18n.translate("en", named, { n: 5, pack: "Italian", line: "Fried Liver" }));
       assert.notEqual(how, practice);
       assert.notEqual(testCopy, exam);
     }

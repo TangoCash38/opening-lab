@@ -18,7 +18,8 @@ type NoticeStep = "about" | "welcome";
 export type LineWelcome = {
   n: number;
   pack: string;
-  line: string;
+  /** Real line title. Null when the name is only "Line N", or the line is locked. */
+  line: string | null;
 };
 
 type NoticeProps = {
@@ -34,10 +35,13 @@ type NoticeProps = {
 
 function LineDrillWelcome({ welcome }: { welcome: LineWelcome }) {
   const t = useT();
+  const title = welcome.line
+    ? t("Welcome to Line {n} of the {pack} drills: the {line}.", welcome)
+    : t("Welcome to Line {n} of the {pack} drills.", welcome);
   return (
     <>
       <h2 id="slav-intro-title" className="slav-notice-title" data-line-welcome>
-        {t("Welcome to Line {n} of the {pack} drills: {line}.", welcome)}
+        {title}
       </h2>
       <div data-line-how-to>
         <p className="slav-notice-paragraph">

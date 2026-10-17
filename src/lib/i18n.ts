@@ -53,8 +53,10 @@ const en: Dict = {
   "Coming soon with Professor Potato Pie.": "Coming soon with Professor Potato Pie.",
   "Continue on the web": "Continue on the web",
   "Tap to practice": "Tap to practice",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
-    "Welcome to Line {n} of the {pack} drills: {line}.",
+  "Welcome to Line {n} of the {pack} drills.":
+    "Welcome to Line {n} of the {pack} drills.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
+    "Welcome to Line {n} of the {pack} drills: the {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.",
   "Then Test yourself. The green hint stays off. Only the book move counts, and one wrong move means that Test does not pass. A clean Test turns the line green.":
@@ -331,7 +333,9 @@ const es: Dict = {
   "App coming soon": "App próximamente",
   "Continue on the web": "Seguir en la web",
   "Tap to practice": "Toca para practicar",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "Bienvenido a la línea {n} de los ejercicios de {pack}.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "Bienvenido a la línea {n} de los ejercicios de {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "En Practice juegas tu bando en el tablero. El entrenador explica cada pareja, y puedes deslizar hacia atrás para ver una anterior. Una pista verde muestra tu siguiente jugada. Una jugada incorrecta parpadea en rojo y muestra la jugada de libro, para que lo intentes de nuevo desde ahí.",
@@ -558,7 +562,9 @@ const zh: Dict = {
   "App coming soon": "应用即将推出",
   "Continue on the web": "继续使用网页",
   "Tap to practice": "点按开始练习",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "欢迎来到 {pack} 练习的第 {n} 条线路。",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "欢迎来到 {pack} 练习的第 {n} 条线路：{line}。",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "在 Practice 里，你在棋盘上走自己的一方。教练讲解每一对棋步，你可以滑回前面的一对。绿色提示显示你的下一步。走错时格子会闪红，并告诉你书谱着法，你可以就地再试。",
@@ -785,7 +791,9 @@ const fr: Dict = {
   "App coming soon": "Appli bientôt disponible",
   "Continue on the web": "Continuer sur le web",
   "Tap to practice": "Touche pour t'entraîner",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "Bienvenue dans la ligne {n} des exercices {pack}.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "Bienvenue dans la ligne {n} des exercices {pack} : {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "En Practice, tu joues ton camp sur l'échiquier. Le coach explique chaque paire de coups, et tu peux revenir en arrière d'un glissement. Un indice vert montre ton prochain coup. Un mauvais coup clignote en rouge et montre le coup du livre, pour que tu réessayes depuis là.",
@@ -1012,7 +1020,9 @@ const de: Dict = {
   "App coming soon": "App demnächst",
   "Continue on the web": "Im Web weiter",
   "Tap to practice": "Tippen zum Üben",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "Willkommen bei Linie {n} der {pack}-Übungen.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "Willkommen bei Linie {n} der {pack}-Übungen: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "Im Practice spielst du deine Seite auf dem Brett. Der Coach erklärt jedes Zugpaar, und du kannst zu einem früheren zurückwischen. Ein grüner Hinweis zeigt deinen nächsten Zug. Ein falscher Zug blinkt rot und zeigt den Buchzug, damit du von dort noch einmal versuchst.",
@@ -1239,7 +1249,9 @@ const pt: Dict = {
   "App coming soon": "App em breve",
   "Continue on the web": "Continuar na web",
   "Tap to practice": "Toque para treinar",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "Bem-vindo à linha {n} dos exercícios de {pack}.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "Bem-vindo à linha {n} dos exercícios de {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "No Practice você joga o seu lado no tabuleiro. O treinador explica cada par de lances, e você pode deslizar de volta para um anterior. Uma dica verde mostra o próximo lance. Um lance errado pisca em vermelho e mostra o lance de livro, para você tentar de novo dali.",
@@ -1466,7 +1478,9 @@ const ru: Dict = {
   "App coming soon": "Приложение скоро",
   "Continue on the web": "Продолжить в браузере",
   "Tap to practice": "Нажми, чтобы тренировать",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "Добро пожаловать на линию {n} упражнений {pack}.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "Добро пожаловать на линию {n} упражнений {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "В Practice ты играешь свою сторону на доске. Тренер объясняет каждую пару ходов, и можно смахнуть назад к более ранней. Зелёная подсказка показывает следующий ход. Неверный ход вспыхивает красным и показывает книжный ход, чтобы ты попробовал снова с этого места.",
@@ -1692,7 +1706,9 @@ const it: Dict = {
   "App coming soon": "App in arrivo",
   "Continue on the web": "Continua sul web",
   "Tap to practice": "Tocca per allenarti",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "Benvenuto alla linea {n} degli esercizi {pack}.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "Benvenuto alla linea {n} degli esercizi {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "In Practice giochi la tua parte sulla scacchiera. Il coach spiega ogni coppia di mosse, e puoi scorrere indietro a una precedente. Un suggerimento verde mostra la mossa successiva. Una mossa sbagliata lampeggia in rosso e mostra la mossa di libro, così puoi riprovare da lì.",
@@ -1919,7 +1935,9 @@ const hi: Dict = {
   "App coming soon": "ऐप जल्द आ रहा है",
   "Continue on the web": "वेब पर जारी रखें",
   "Tap to practice": "ट्रेन करने के लिए टैप करें",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "{pack} अभ्यास की लाइन {n} में आपका स्वागत है.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "{pack} अभ्यास की लाइन {n} में आपका स्वागत है: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "Practice में आप बोर्ड पर अपनी तरफ खेलते हैं। कोच हर जोड़ी समझाता है, और आप पीछे स्वाइप करके पहले वाली जोड़ी देख सकते हैं। हरी संकेत अगली चाल दिखाती है। गलत चाल लाल चमकती है और बुक चाल दिखाती है, ताकि आप वहीं से फिर कोशिश करें।",
@@ -2146,7 +2164,9 @@ const ja: Dict = {
   "App coming soon": "アプリ近日公開",
   "Continue on the web": "ウェブで続ける",
   "Tap to practice": "タップして練習",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "{pack} のドリル、ライン {n} へようこそ。",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "{pack} のドリル、ライン {n} へようこそ：{line}。",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "Practice では、盤上で自分の側を指します。コーチが一手ずつの組を説明し、スワイプで前の説明に戻れます。緑のヒントが次の手を示します。違う手は赤く光り、定跡の手を見せるので、その場からやり直せます。",
@@ -2369,7 +2389,9 @@ const ar: Dict = {
   "App coming soon": "التطبيق قريبًا",
   "Continue on the web": "تابع على الويب",
   "Tap to practice": "اضغط للتدرّب",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "أهلاً بك في الخط {n} من تمارين {pack}.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "أهلاً بك في الخط {n} من تمارين {pack}: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "في Practice تلعب طرفك على الرقعة. يشرح المدرب كل زوج من النقلات، ويمكنك السحب للخلف إلى زوج أسبق. تلميح أخضر يُظهر نقلتك التالية. النقلة الخاطئة تومض بالأحمر وتُظهر حركة الكتاب، لتعيد المحاولة من هناك.",
@@ -2596,7 +2618,9 @@ const tr: Dict = {
   "App coming soon": "Uygulama yakında",
   "Continue on the web": "Web’de devam et",
   "Tap to practice": "Çalışmak için dokun",
-  "Welcome to Line {n} of the {pack} drills: {line}.":
+  "Welcome to Line {n} of the {pack} drills.":
+    "{pack} alıştırmalarının {n}. hattına hoş geldin.",
+  "Welcome to Line {n} of the {pack} drills: the {line}.":
     "{pack} alıştırmalarının {n}. hattına hoş geldin: {line}.",
   "In Practice you play your side on the board. The coach explains each pair, and you can swipe back to an earlier one. A green hint shows your next move. A wrong move flashes red and shows you the book move, so you can try again from there.":
     "Practice'te tahtada kendi tarafını oynarsın. Koç her hamle çiftini anlatır ve geri kaydırarak önceki bir çifte dönebilirsin. Yeşil ipucu sonraki hamleyi gösterir. Yanlış hamle kırmızı yanar ve kitap hamlesini gösterir, oradan yeniden denersin.",
