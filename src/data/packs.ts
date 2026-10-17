@@ -431,7 +431,7 @@ export const PACKS: Pack[] = [
         name: "Line 3",
         plies: ["d4", "Nf6", "Bf4", "c5", "e3", "cxd4", "exd4", "d5", "c3", "Nc6", "Nd2", "Bf5", "Ngf3", "e6", "Be2", "Bd6", "Bg3", "O-O", "O-O", "Qc7"],
         idea: "Immediate …c5 vs Bf4. After …cxd4 exd4 and …d5 the game is a London vs Exchange-style centre; develop Bf5–e6–Bd6 and castle.",
-        next: "Your pieces are out and both kings are castled. Black's queen on c7 and a rook coming to c8 will press the c-file, so keep c3 and the bishop on g3 covered.",
+        next: "Your pieces are out and both kings are castled. Black's queen on c7 and bishop on d6 line up against your bishop on g3, which the pawns on f2 and h2 protect.",
         side: "w",
       },
       {
