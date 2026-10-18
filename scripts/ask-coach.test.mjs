@@ -97,6 +97,8 @@ test("a finished pair does not pause the board and the reply stays at normal spe
 
 test("the line welcome names a real line and hides a generic or locked one", () => {
   const plain = "Welcome to Line {n} of the {pack} Drills!";
+  const drill =
+    "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.";
   const practiceLabel = "Practice Mode:";
   const practice =
     "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.";
@@ -127,6 +129,18 @@ test("the line welcome names a real line and hides a generic or locked one", () 
     assert.match(short, /Scotch Gambit/);
     assert.equal(short.includes("Fried Liver"), false, lang);
     assert.equal(short.includes("—") || short.includes("–"), false, lang);
+    const drillCopy = i18n.translate(lang, drill);
+    assert.equal(drillCopy.includes("—") || drillCopy.includes("–"), false, lang);
+    assert.doesNotMatch(drillCopy, /engine|eval|centipawn|forever|lifetime/i, lang);
+    if (lang === "en") assert.equal(drillCopy, drill);
+    else assert.notEqual(drillCopy, drill, lang);
+    if (lang === "hi") {
+      assert.equal(drillCopy.includes("."), false, lang);
+      assert.equal(drillCopy.includes("तुम"), false, lang);
+    }
+    if (lang === "zh" || lang === "ja") assert.equal(drillCopy.includes("。 "), false, lang);
+    if (lang === "ar") assert.doesNotMatch(drillCopy, /رخ/);
+    if (lang === "pt") assert.doesNotMatch(drillCopy, /\b(aprendes|vais|fazes|podes|escolhes|jogas)\b/);
     assert.equal(how.includes("—") || how.includes("–"), false, lang);
     assert.equal(howLabel.includes("—") || howLabel.includes("–"), false, lang);
     assert.equal(examLabel.includes("—") || examLabel.includes("–"), false, lang);

@@ -115,15 +115,22 @@ test("every on-sale line has a unique welcome blurb in every locale", () => {
   }
 });
 
-test("the line card shows the blurb without changing the board size", () => {
+test("the line card shows the shared drill paragraph without changing the board size", () => {
   const notice = src("src/components/opening-lab/slav-pack-notice.tsx");
   const train = src("src/components/opening-lab/train-view.tsx");
   const hero = src("src/components/opening-lab/home-hero.tsx");
   const css = src("src/styles.css");
-  const about = notice.indexOf("data-line-about");
+  const drill = notice.indexOf("data-line-drill");
   const how = notice.indexOf("data-line-how-to");
   const title = notice.indexOf("data-line-welcome");
-  assert.ok(title >= 0 && about > title && how > about);
+  assert.ok(title >= 0 && drill > title && how > drill);
+  assert.equal(notice.includes("data-line-about"), false);
+  assert.match(
+    notice,
+    /Drilling is how serious players truly master an opening\. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct\. A few focused minutes a day, and this line will be yours for good\./,
+  );
+  assert.match(src("src/lib/line-welcome-blurb.ts"), /export function lineWelcomeBlurb/);
+  assert.match(src("src/data/line-welcome-blurbs.json"), /"sg1"/);
   assert.match(train, /about: isLineUnlocked\(pack, line\.id, unlockIds\) \? lineWelcomeBlurb\(line\.id, lang\) : ""/);
   assert.match(css, /\.slav-notice\[data-slav-notice\] \.slav-intro-board \{\s*width: min\(100% - 0\.75rem, 36rem\);/);
   assert.match(css, /\.slav-intro-board \{\s*flex: 0 0 auto;\s*width: min\(100% - 1\.5rem, 14rem\);/);

@@ -55,6 +55,8 @@ const en: Dict = {
   "Tap to practice": "Tap to practice",
   "Welcome to Line {n} of the {pack} Drills!":
     "Welcome to Line {n} of the {pack} Drills!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.",
   "Practice Mode:":
     "Practice Mode:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -337,6 +339,8 @@ const es: Dict = {
   "Tap to practice": "Toca para practicar",
   "Welcome to Line {n} of the {pack} Drills!":
     "¡Bienvenido a la línea {n} de los ejercicios de {pack}!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "La repetición es el camino de quien de verdad domina una apertura. En vez de leer las jugadas y dejar que se pierdan, las juegas tú, una tras otra, hasta que la línea se vuelva instinto. Unos minutos de concentración al día, y esta línea será tuya.",
   "Practice Mode:":
     "Modo práctica:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -568,6 +572,8 @@ const zh: Dict = {
   "Tap to practice": "点按开始练习",
   "Welcome to Line {n} of the {pack} Drills!":
     "欢迎来到 {pack} 练习的第 {n} 条线路！",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "反复演练，才是认真的棋手真正掌握开局的办法。与其读过着法便任其淡忘，不如亲手走出每一步，把这条线路重复到成为本能。每天专注几分钟，这条线路就会长久属于你。",
   "Practice Mode:":
     "练习模式：",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -799,6 +805,8 @@ const fr: Dict = {
   "Tap to practice": "Touche pour t'entraîner",
   "Welcome to Line {n} of the {pack} Drills!":
     "Bienvenue dans la ligne {n} des exercices {pack} !",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "C'est en répétant que les joueurs sérieux s'approprient vraiment une ouverture. Plutôt que de lire des coups et de les laisser s'effacer, tu joues chacun toi-même, jusqu'à ce que la ligne devienne un réflexe. Quelques minutes d'attention par jour, et cette ligne sera tienne.",
   "Practice Mode:":
     "Mode pratique :",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -1030,6 +1038,8 @@ const de: Dict = {
   "Tap to practice": "Tippen zum Üben",
   "Welcome to Line {n} of the {pack} Drills!":
     "Willkommen bei Linie {n} der {pack}-Übungen!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "Ernsthafte Spieler beherrschen eine Eröffnung, indem sie sie wiederholen. Statt die Züge nur zu lesen und sie verblassen zu lassen, spielst du jeden selbst, bis die Linie zum Instinkt wird. Ein paar konzentrierte Minuten am Tag, und diese Linie bleibt dein.",
   "Practice Mode:":
     "Übungsmodus:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -1261,6 +1271,8 @@ const pt: Dict = {
   "Tap to practice": "Toque para treinar",
   "Welcome to Line {n} of the {pack} Drills!":
     "Bem-vindo à linha {n} dos exercícios de {pack}!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "É no treino repetido que jogadores sérios dominam uma abertura de verdade. Em vez de ler os lances e deixá-los sumir, você joga cada um, repetindo a linha até ela virar instinto. Alguns minutos de foco por dia, e esta linha será sua.",
   "Practice Mode:":
     "Modo prática:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -1492,6 +1504,8 @@ const ru: Dict = {
   "Tap to practice": "Нажми, чтобы тренировать",
   "Welcome to Line {n} of the {pack} Drills!":
     "Добро пожаловать на линию {n} упражнений {pack}!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "Именно повторение даёт серьёзным игрокам настоящее владение дебютом. Вместо того чтобы читать ходы и давать им забыться, ты играешь каждый сам, пока линия не станет инстинктом. Несколько собранных минут в день, и эта линия останется с тобой.",
   "Practice Mode:":
     "Режим практики:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -1722,6 +1736,8 @@ const it: Dict = {
   "Tap to practice": "Tocca per allenarti",
   "Welcome to Line {n} of the {pack} Drills!":
     "Benvenuto alla linea {n} degli esercizi {pack}!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "È ripetendo che i giocatori seri padroneggiano davvero un'apertura. Invece di leggere le mosse e lasciarle svanire, le giochi tu, una per una, finché la linea non diventa istinto. Qualche minuto di attenzione al giorno, e questa linea sarà tua.",
   "Practice Mode:":
     "Modalità pratica:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -1953,6 +1969,8 @@ const hi: Dict = {
   "Tap to practice": "ट्रेन करने के लिए टैप करें",
   "Welcome to Line {n} of the {pack} Drills!":
     "{pack} अभ्यास की लाइन {n} में आपका स्वागत है।",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "गंभीर खिलाड़ी किसी ओपनिंग को सच में दोहराव से ही साधते हैं। चालें पढ़कर भूल जाने देने के बजाय, आप हर चाल खुद खेलते हैं और इस लाइन को तब तक दोहराते हैं, जब तक वह सहज ज्ञान न बन जाए। रोज़ कुछ मिनट की एकाग्रता, और यह लाइन आपकी हो जाएगी।",
   "Practice Mode:":
     "अभ्यास मोड:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -2184,6 +2202,8 @@ const ja: Dict = {
   "Tap to practice": "タップして練習",
   "Welcome to Line {n} of the {pack} Drills!":
     "{pack} のドリル、ライン {n} へようこそ！",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "真剣に取り組む人ほど、オープニングは反復で本当に身につきます。手順を読んで忘れさせるのではなく、一手ずつ自分の手で指し、そのラインが本能になるまで繰り返します。一日に数分、集中して続ければ、このラインは長くあなたのものです。",
   "Practice Mode:":
     "練習モード：",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -2411,6 +2431,8 @@ const ar: Dict = {
   "Tap to practice": "اضغط للتدرّب",
   "Welcome to Line {n} of the {pack} Drills!":
     "أهلاً بك في الخط {n} من تمارين {pack}!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "التكرار هو ما يمنح اللاعب الجاد إتقاناً حقيقياً للافتتاحية. بدلاً من قراءة النقلات وتركها تتلاشى، تلعب كل نقلة بنفسك، وتعيد الخط حتى يصير غريزة. دقائق قليلة من التركيز كل يوم، ويبقى هذا الخط لك.",
   "Practice Mode:":
     "وضع التدريب:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
@@ -2642,6 +2664,8 @@ const tr: Dict = {
   "Tap to practice": "Çalışmak için dokun",
   "Welcome to Line {n} of the {pack} Drills!":
     "{pack} alıştırmalarının {n}. hattına hoş geldin!",
+  "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.":
+    "Ciddi oyuncular bir açılışı gerçekten tekrar ederek öğrenir. Hamleleri okuyup unutulmaya bırakmak yerine her birini kendin oynarsın ve hat içgüdü olana kadar tekrar edersin. Günde birkaç odaklanmış dakika yeter, bu hat kalıcı olarak senin olur.",
   "Practice Mode:":
     "Alıştırma modu:",
   "Play your moves directly on the board. Green hints show your next move, while wrong moves flash red and reveal the correct book move so you can try again.":
