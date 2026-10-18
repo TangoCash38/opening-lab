@@ -96,25 +96,19 @@ test("a line with no note shows no card, and later lines only need text", () => 
   assert.equal(notes["french-as-white:fr1"], undefined);
 });
 
-test("finish card matches the intro shell and sits in front of the end sheet", () => {
+test("finish note data stays stored and the end card does not render it", () => {
   assert.match(card, /className="slav-notice"/);
-  assert.match(card, /className="slav-intro-board"/);
-  assert.match(card, /className="slav-notice-card"/);
-  assert.match(card, /className="slav-notice-primary"/);
   assert.match(card, /data-line-finish-note/);
-  assert.match(card, /data-line-finish-got-it/);
-  assert.match(card, />\s*Got it\s*</);
-  assert.match(card, /Where the line ends/);
-  assert.match(card, /lastMove=\{null\}/);
-  assert.match(card, /interactive=\{false\}/);
+  assert.match(card, /data-line-finish-text/);
+  assert.match(explains, /export function lineFinishNote/);
   assert.doesNotMatch(card, /Play on/);
-  assert.doesNotMatch(card, /data-slav-opening/);
   assert.doesNotMatch(card, /SlavLineNotes/);
 
-  assert.match(train, /LineFinishNote/);
-  assert.match(train, /lineFinishNote\(line, pack\.id\)/);
-  assert.match(train, /warmup \|\| freeTry \? undefined : lineFinishNote/);
-  assert.match(train, /data-line-finish-got-it|dismissFinishNote/);
+  assert.doesNotMatch(train, /LineFinishNote/);
+  assert.doesNotMatch(train, /lineFinishNote\(/);
+  assert.doesNotMatch(train, /data-line-finish/);
+  assert.doesNotMatch(train, /setFinishNote/);
+  assert.match(train, /The stored finish note stays in the repo and is not shown/);
   assert.doesNotMatch(train, /SlavLineNotes/);
   assert.doesNotMatch(train, /data-slav-line-notes/);
   assert.doesNotMatch(train, /Play on/);
