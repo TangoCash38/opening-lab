@@ -65,9 +65,14 @@ test("wrong-move popup names the book SAN only", () => {
   assert.doesNotMatch(train, /because the engine/);
 });
 
-test("end-of-line popup prefers line.next, else the catalog idea", () => {
-  assert.match(train, /body: \(line\.next \?\? line\.idea \?\? ""\)\.trim\(\)/);
+test("end card keeps the heading, status, and buttons without the idea write-up", () => {
+  assert.doesNotMatch(train, /line\.next \?\? line\.idea/);
+  assert.match(train, /body: ""/);
+  assert.match(train, /body: t\("Missed a move — practice again to lock it"\)/);
   assert.match(train, /kind: "end"/);
+  assert.doesNotMatch(modal, /data-line-finished-heading/);
+  assert.doesNotMatch(modal, /t\("Line finished"\)/);
+  assert.match(modal, /hasWriteUp \? " border-t border-border" : ""/);
   assert.match(modal, /data-result-kind/);
   assert.match(modal, /z-\[80\]/);
   assert.match(packs, /next\?: string/);
