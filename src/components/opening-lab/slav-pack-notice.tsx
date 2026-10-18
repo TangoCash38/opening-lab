@@ -47,11 +47,11 @@ function LineDrillWelcome({ welcome }: { welcome: LineWelcome }) {
           {welcome.line}
         </p>
       ) : null}
-      {welcome.about ? (
-        <p className="slav-notice-paragraph" data-line-about>
-          {welcome.about}
-        </p>
-      ) : null}
+      <p className="slav-notice-paragraph" data-line-drill>
+        {t(
+          "Drilling is how serious players truly master an opening. Rather than reading moves and letting them fade, you play each one yourself, repeating the line until it becomes instinct. A few focused minutes a day, and this line will be yours for good.",
+        )}
+      </p>
       <div data-line-how-to>
         <p className="slav-notice-paragraph">
           <strong>{t("Practice Mode:")}</strong>{" "}
