@@ -113,12 +113,13 @@ export function LineResultModal({
     setMinimized(false);
   };
 
+  const hasWriteUp = Boolean(body.trim());
   const renderActions = (compact: boolean) => (
     <div
       className={
         compact
           ? `shrink-0 px-3${showPrimary ? " py-2 space-y-1.5" : " py-1.5"}`
-          : `shrink-0 border-t border-border px-5${
+          : `shrink-0 px-5${hasWriteUp ? " border-t border-border" : ""}${
               showPrimary ? " py-3 space-y-2" : " py-3"
             }`
       }
@@ -263,11 +264,6 @@ export function LineResultModal({
       >
         <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border px-5 py-3">
           <div>
-            {isWrong ? null : (
-              <p className="m-0 mb-1 text-[0.78rem] font-extrabold tracking-[0.07em]" data-line-finished-heading>
-                {t("Line finished")}
-              </p>
-            )}
             <h2
               id="line-result-title"
               className={`m-0 pr-2 font-display text-lg font-bold leading-snug${

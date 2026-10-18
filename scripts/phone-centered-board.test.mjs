@@ -16,7 +16,7 @@ test("phone board centering trial markers exist and stay CSS-only", () => {
   assert.match(train, /className="train-top-chrome"/);
   assert.match(train, /className="train-board-band"/);
   assert.match(train, /className="train-below"/);
-  assert.match(train, /train-idea/);
+  assert.doesNotMatch(train, /train-idea/);
   assert.doesNotMatch(train, /scrollIntoView/);
 
   assert.match(

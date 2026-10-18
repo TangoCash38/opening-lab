@@ -1338,9 +1338,6 @@ export function TrainView({ pack, line, onBack, initialMode = "learn", onModeCha
       </div>
         </>
       )}
-      {!gym && line.idea && !coachLesson ? (
-        <p className="train-idea mt-1 text-[0.88rem] text-fg-muted">{line.idea}</p>
-      ) : null}
       {!gym ? (
       <div className="text-[0.78rem] text-fg-subtle">
         {pack.name} · train as {line.side === "b" ? "Black" : "White"}

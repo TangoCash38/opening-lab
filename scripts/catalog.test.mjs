@@ -3468,7 +3468,7 @@ test("isLineUnlocked locks paid packs until purchase; Caro samples stay free", a
   assert.equal(nextUnlockedLine(sibPack, "sib1", ["sicilian-black"])?.id, "sib2");
 });
 
-test("every ckb1–10, qgdb1–10, alb1–18, d4s1–18, as1–18, nl1–18, it1–10, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qg1–10, engw1–18, catw1–18, nib1–10, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; train-view renders line.idea", () => {
+test("every ckb1–10, qgdb1–10, alb1–18, d4s1–18, as1–18, nl1–18, it1–10, rl1–18, fr1–18, al1–18, en1–18, kg1–18, sc1–18, pm1–18, du1–18, ckw1–18, evb1–18, eg1–18, bp1–18, bdg1–18, qg1–10, engw1–18, catw1–18, nib1–10, gfb1–18, peb1–18, berb1–18, kidb1–18, oib1–9, stb1–20, pw1–20, and ab1–18 has a non-empty idea; the train header does not render it", () => {
   const packs = readFileSync(join(root, "src/data/packs.ts"), "utf8");
   const train = readFileSync(
     join(root, "src/components/opening-lab/train-view.tsx"),
@@ -3577,9 +3577,8 @@ test("every ckb1–10, qgdb1–10, alb1–18, d4s1–18, as1–18, nl1–18, it1
     /idea: "Support d5, develop both knights, castle, then meet Rc1 with \.\.\.c6 and \.\.\.Re8 against White's Qc2 setup/,
   );
 
-  assert.match(train, /\{line\.idea\}/);
-  assert.match(train, /text-\[0\.88rem\]/);
-  assert.match(train, /text-fg-muted/);
+  assert.doesNotMatch(train, /\{line\.idea\}/);
+  assert.doesNotMatch(train, /train-idea/);
   assert.doesNotMatch(feedback, /line\.idea/);
   assert.match(feedback, /Wrong move\?/);
   assert.match(feedback, /Send it to support/);
