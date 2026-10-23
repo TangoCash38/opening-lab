@@ -5181,6 +5181,8 @@ body:has([data-square-memory-page]) {
     "focus side-a"
     "focus side-b"
     "focus side-c"
+    "focus side-d"
+    "focus side-e"
     "all all";
   align-items: start;
   gap: 0.08rem 0.7rem;
@@ -5210,6 +5212,14 @@ body:has([data-square-memory-page]) {
 
 .sqmem-plaque-pair > .sqmem-plaque:nth-child(3) {
   grid-area: side-c;
+}
+
+.sqmem-plaque-pair > .sqmem-plaque:nth-child(4) {
+  grid-area: side-d;
+}
+
+.sqmem-plaque-pair > .sqmem-plaque:nth-child(5) {
+  grid-area: side-e;
 }
 
 .sqmem-plaque:not([data-selected="true"]) .sqmem-plaque-row:nth-child(n + 2) {
