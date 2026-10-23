@@ -609,6 +609,118 @@ test("QGD Orthodox Exchange is a fourth line on the same page, from Black's side
   assert.match(view, /id: "qg"/);
 });
 
+test("Italian Game is a fifth line on the same page, from White's side", () => {
+  const packs = src("src/data/packs.ts");
+  const line = src("src/lib/square-memory-italian.ts");
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const api = src("src/routes/api/square-memory-scores.ts");
+  const migration = src("migrations/0011_square_memory_italian_caro.sql");
+  const css = src("src/styles.css");
+  const italian = packs.slice(
+    packs.indexOf('id: "italian-white"'),
+    packs.indexOf('id: "ruy-lopez-white"'),
+  );
+  const it1 = italian.slice(italian.indexOf('id: "it1"'), italian.indexOf('id: "it2"'));
+  const moves = ["e4", "e5", "Nf3", "Nc6", "Bc4"];
+  assert.match(it1, /\["e4", "e5", "Nf3", "Nc6", "Bc4",/);
+  assert.match(line, /ITALIAN_MEMORY_MOVES = \["e4", "e5", "Nf3", "Nc6", "Bc4"\]/);
+  assert.match(line, /ITALIAN_MEMORY_PACK_ID = "italian-white"/);
+  assert.match(line, /ITALIAN_MEMORY_NAME = "Italian Game"/);
+  assert.doesNotMatch(line, /ITALIAN_MEMORY_MOVES = \[[^\]]*Bc5/);
+  const chess = new Chess();
+  const squares = [];
+  for (const san of moves) {
+    const played = chess.move(san);
+    assert.ok(played, san);
+    assert.equal(played.san, san);
+    squares.push(played.from, played.to);
+  }
+  assert.deepEqual(squares, ["e2", "e4", "e7", "e5", "g1", "f3", "b8", "c6", "f1", "c4"]);
+  assert.equal(chess.fen(), "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3");
+  assert.match(view, /id: "italian"/);
+  assert.match(view, /pick: "Italian"/);
+  assert.match(view, /name: ITALIAN_MEMORY_NAME/);
+  assert.match(view, /name=\{ITALIAN_MEMORY_NAME\}/);
+  assert.match(view, /packLabel: "Italian Game for White"/);
+  assert.match(view, /packId: ITALIAN_MEMORY_PACK_ID/);
+  assert.match(view, /opening-lab:square-memory-italian-best/);
+  assert.match(view, /orientation: "white"/);
+  assert.match(
+    view,
+    /You smashed it\. That's the Italian Game\. Want to learn openings properly\? Try the opening packs\./,
+  );
+  assert.match(view, /coach: "Professor Potato Pie"/);
+  assert.match(view, /coach-seated-v2\.png/);
+  assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
+  assert.match(api, /value === "italian"/);
+  assert.match(api, /italian: ITALIAN_MEMORY_LINE\.squares\.length/);
+  assert.match(migration, /line in \('ruy', 'london', 'qg', 'orthodox', 'italian', 'caro'\)/);
+  assert.doesNotMatch(migration, /delete from square_memory_scores/);
+  assert.match(
+    css,
+    /\.sqmem-grid\s*\{[^}]*grid-template-columns:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/,
+  );
+  assert.match(
+    css,
+    /\.sqmem-grid\s*\{[^}]*grid-template-rows:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/,
+  );
+  assert.match(view, /axes\.ranks\.map\(\(rank\) =>\s*axes\.files\.map\(\(file\) =>/);
+});
+
+test("Caro-Kann is a sixth line on the same page, from Black's side", () => {
+  const packs = src("src/data/packs.ts");
+  const line = src("src/lib/square-memory-caro.ts");
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const api = src("src/routes/api/square-memory-scores.ts");
+  const migration = src("migrations/0011_square_memory_italian_caro.sql");
+  const caro = packs.slice(
+    packs.indexOf('id: "caro-kann-black"'),
+    packs.indexOf('id: "qgd-black"'),
+  );
+  const ckb1 = caro.slice(caro.indexOf('id: "ckb1"'), caro.indexOf('id: "ckb2"'));
+  const moves = ["e4", "c6", "d4", "d5", "e5"];
+  assert.match(ckb1, /\["e4", "c6", "d4", "d5", "e5",/);
+  assert.match(line, /CARO_MEMORY_MOVES = \["e4", "c6", "d4", "d5", "e5"\]/);
+  assert.match(line, /CARO_MEMORY_PACK_ID = "caro-kann-black"/);
+  assert.match(line, /CARO_MEMORY_NAME = "Caro-Kann"/);
+  assert.match(line, /CARO_MEMORY_ORIENTATION = "black"/);
+  assert.doesNotMatch(line, /CARO_MEMORY_MOVES = \[[^\]]*Bf5/);
+  const chess = new Chess();
+  const squares = [];
+  for (const san of moves) {
+    const played = chess.move(san);
+    assert.ok(played, san);
+    assert.equal(played.san, san);
+    squares.push(played.from, played.to);
+  }
+  assert.deepEqual(squares, ["e2", "e4", "c7", "c6", "d2", "d4", "d7", "d5", "e4", "e5"]);
+  assert.equal(chess.fen(), "rnbqkbnr/pp2pppp/2p5/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3");
+  assert.match(view, /id: "caro"/);
+  assert.match(view, /pick: "Caro-Kann"/);
+  assert.match(view, /name: CARO_MEMORY_NAME/);
+  assert.match(view, /name=\{CARO_MEMORY_NAME\}/);
+  assert.match(view, /orientation: CARO_MEMORY_ORIENTATION/);
+  assert.match(view, /orientation=\{choice\.orientation\}/);
+  assert.match(view, /data-board-orientation=\{orientation\}/);
+  assert.match(view, /Chessboard, Black at the bottom/);
+  assert.match(view, /files: \["h", "g", "f", "e", "d", "c", "b", "a"\]/);
+  assert.match(view, /ranks: \["1", "2", "3", "4", "5", "6", "7", "8"\]/);
+  assert.match(
+    view,
+    /You smashed it\. That's the Caro-Kann\. Want to learn openings properly\? Try the opening packs\./,
+  );
+  assert.match(view, /packLabel: "Caro-Kann for Black"/);
+  assert.match(view, /packId: CARO_MEMORY_PACK_ID/);
+  assert.match(view, /opening-lab:square-memory-caro-best/);
+  assert.match(view, /coach: "Professor Potato Pie"/);
+  assert.match(view, /coach-seated-v2\.png/);
+  assert.doesNotMatch(`${line}\n${view}`, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
+  assert.match(api, /value === "caro"/);
+  assert.match(api, /caro: CARO_MEMORY_LINE\.squares\.length/);
+  assert.match(migration, /line in \('ruy', 'london', 'qg', 'orthodox', 'italian', 'caro'\)/);
+  assert.doesNotMatch(migration, /delete from square_memory_scores/);
+});
+
 test("a full clear is timed and only that time can join the shared board", () => {
   const view = src("src/components/opening-lab/square-memory.tsx");
   const api = src("src/routes/api/square-memory-scores.ts");

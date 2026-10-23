@@ -19,6 +19,17 @@ import {
   type MemoryPly,
   type PlayedMemory,
 } from "@/lib/square-memory-line";
+import {
+  CARO_MEMORY_LINE,
+  CARO_MEMORY_NAME,
+  CARO_MEMORY_ORIENTATION,
+  CARO_MEMORY_PACK_ID,
+} from "@/lib/square-memory-caro";
+import {
+  ITALIAN_MEMORY_LINE,
+  ITALIAN_MEMORY_NAME,
+  ITALIAN_MEMORY_PACK_ID,
+} from "@/lib/square-memory-italian";
 import { LONDON_MEMORY_LINE, LONDON_MEMORY_PACK_ID } from "@/lib/square-memory-london";
 import {
   ORTHODOX_MEMORY_LINE,
@@ -46,7 +57,7 @@ const BIG_RED_PORTRAIT = "/coach/ruy-lopez-white/big-red-portrait.png";
 const BOARD_BEFORE_CHEER_MS = 2000;
 
 type MemoryChoice = {
-  id: "ruy" | "london" | "qg" | "orthodox";
+  id: "ruy" | "london" | "qg" | "orthodox" | "italian" | "caro";
   pick: string;
   name: string;
   packId: string;
@@ -127,6 +138,38 @@ const CHOICES: readonly MemoryChoice[] = [
     portraitHeight: 1071,
     orientation: ORTHODOX_MEMORY_ORIENTATION,
   },
+  {
+    id: "italian",
+    pick: "Italian",
+    name: ITALIAN_MEMORY_NAME,
+    packId: ITALIAN_MEMORY_PACK_ID,
+    packLabel: "Italian Game for White",
+    line: ITALIAN_MEMORY_LINE,
+    bestKey: "opening-lab:square-memory-italian-best",
+    portrait: "/scotch-coach/coach-seated-v2.png",
+    coach: "Professor Potato Pie",
+    cheer:
+      "You smashed it. That's the Italian Game. Want to learn openings properly? Try the opening packs.",
+    portraitWidth: 640,
+    portraitHeight: 1071,
+    orientation: "white",
+  },
+  {
+    id: "caro",
+    pick: "Caro-Kann",
+    name: CARO_MEMORY_NAME,
+    packId: CARO_MEMORY_PACK_ID,
+    packLabel: "Caro-Kann for Black",
+    line: CARO_MEMORY_LINE,
+    bestKey: "opening-lab:square-memory-caro-best",
+    portrait: "/scotch-coach/coach-seated-v2.png",
+    coach: "Professor Potato Pie",
+    cheer:
+      "You smashed it. That's the Caro-Kann. Want to learn openings properly? Try the opening packs.",
+    portraitWidth: 640,
+    portraitHeight: 1071,
+    orientation: CARO_MEMORY_ORIENTATION,
+  },
 ];
 function readBest(key: string): number {
   try {
@@ -168,6 +211,8 @@ export function SquareMemory() {
     london: [],
     qg: [],
     orthodox: [],
+    italian: [],
+    caro: [],
   });
   const [boardNote, setBoardNote] = useState("");
   const [saving, setSaving] = useState(false);
@@ -376,7 +421,15 @@ export function SquareMemory() {
       }),
     )
       .then((pairs) => {
-        setBoards({ ruy: [], london: [], qg: [], orthodox: [], ...Object.fromEntries(pairs) });
+        setBoards({
+          ruy: [],
+          london: [],
+          qg: [],
+          orthodox: [],
+          italian: [],
+          caro: [],
+          ...Object.fromEntries(pairs),
+        });
         setBoardNote("");
       })
       .catch((err: unknown) => {
@@ -604,6 +657,14 @@ function LinePlaque({
     return (
       <ScorePlaque lineId="orthodox" name={ORTHODOX_MEMORY_NAME} rows={rows} selected={selected} />
     );
+  }
+  if (id === "italian") {
+    return (
+      <ScorePlaque lineId="italian" name={ITALIAN_MEMORY_NAME} rows={rows} selected={selected} />
+    );
+  }
+  if (id === "caro") {
+    return <ScorePlaque lineId="caro" name={CARO_MEMORY_NAME} rows={rows} selected={selected} />;
   }
   return <ScorePlaque lineId="ruy" name="Ruy Lopez" rows={rows} selected={selected} />;
 }

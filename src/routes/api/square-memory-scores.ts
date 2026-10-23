@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getSql } from "@/lib/db";
+import { CARO_MEMORY_LINE } from "@/lib/square-memory-caro";
+import { ITALIAN_MEMORY_LINE } from "@/lib/square-memory-italian";
 import { LONDON_MEMORY_LINE } from "@/lib/square-memory-london";
 import { ORTHODOX_MEMORY_LINE } from "@/lib/square-memory-orthodox";
 import { QG_MEMORY_LINE } from "@/lib/square-memory-qg";
@@ -11,6 +13,8 @@ const LINES = {
   london: LONDON_MEMORY_LINE.squares.length,
   qg: QG_MEMORY_LINE.squares.length,
   orthodox: ORTHODOX_MEMORY_LINE.squares.length,
+  italian: ITALIAN_MEMORY_LINE.squares.length,
+  caro: CARO_MEMORY_LINE.squares.length,
 } as const;
 
 type LineId = keyof typeof LINES;
@@ -22,7 +26,12 @@ function json(data: unknown, status = 200): Response {
 }
 
 function lineId(value: unknown): LineId | null {
-  return value === "ruy" || value === "london" || value === "qg" || value === "orthodox"
+  return value === "ruy" ||
+    value === "london" ||
+    value === "qg" ||
+    value === "orthodox" ||
+    value === "italian" ||
+    value === "caro"
     ? value
     : null;
 }
