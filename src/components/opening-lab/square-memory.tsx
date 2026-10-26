@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import { Volume2, VolumeX } from "lucide-react";
 import { ChessPiece, pieceName } from "./chess-pieces";
@@ -40,7 +40,7 @@ import {
 import { QG_MEMORY_LINE, QG_MEMORY_NAME, QG_MEMORY_PACK_ID } from "@/lib/square-memory-qg";
 import {
   begin,
-  formatClearTime,
+  nextInOrder,
   tap,
   tick,
   titleState,
@@ -48,13 +48,7 @@ import {
   type Snapshot,
 } from "@/lib/square-memory";
 
-const NAME_KEY = "opening-lab:square-memory-name";
-
-type BoardRow = { name: string; ms: number };
-
 const MUTE_KEY = "opening-lab:square-memory-muted";
-const BIG_RED_PORTRAIT = "/coach/ruy-lopez-white/big-red-portrait.png";
-const BOARD_BEFORE_CHEER_MS = 2000;
 
 type MemoryChoice = {
   id: "ruy" | "london" | "qg" | "orthodox" | "italian" | "caro";
@@ -64,11 +58,6 @@ type MemoryChoice = {
   packLabel: string;
   line: PlayedMemory;
   bestKey: string;
-  portrait: string;
-  coach: string;
-  cheer: string;
-  portraitWidth: number;
-  portraitHeight: number;
   /** Black repertoire lines sit with Black at the bottom. */
   orientation: "white" | "black";
 };
@@ -82,12 +71,6 @@ const CHOICES: readonly MemoryChoice[] = [
     packLabel: "Ruy Lopez for White",
     line: SQUARE_MEMORY_LINE,
     bestKey: "opening-lab:square-memory-best",
-    portrait: BIG_RED_PORTRAIT,
-    coach: "Big Red",
-    cheer:
-      "You smashed it. That's the Ruy Lopez. Want to learn openings properly? Try the opening packs.",
-    portraitWidth: 360,
-    portraitHeight: 800,
     orientation: "white",
   },
   {
@@ -98,12 +81,6 @@ const CHOICES: readonly MemoryChoice[] = [
     packLabel: "London System",
     line: LONDON_MEMORY_LINE,
     bestKey: "opening-lab:square-memory-london-best",
-    portrait: "/scotch-coach/coach-seated-v2.png",
-    coach: "Professor Potato Pie",
-    cheer:
-      "You smashed it. That's the London System. Want to learn openings properly? Try the opening packs.",
-    portraitWidth: 640,
-    portraitHeight: 1071,
     orientation: "white",
   },
   {
@@ -114,12 +91,6 @@ const CHOICES: readonly MemoryChoice[] = [
     packLabel: "Queen's Gambit for White",
     line: QG_MEMORY_LINE,
     bestKey: "opening-lab:square-memory-qg-best",
-    portrait: "/scotch-coach/coach-seated-v2.png",
-    coach: "Professor Potato Pie",
-    cheer:
-      "You smashed it. That's the Queen's Gambit Declined. Want to learn openings properly? Try the opening packs.",
-    portraitWidth: 640,
-    portraitHeight: 1071,
     orientation: "white",
   },
   {
@@ -130,12 +101,6 @@ const CHOICES: readonly MemoryChoice[] = [
     packLabel: "Queen's Gambit Declined for Black",
     line: ORTHODOX_MEMORY_LINE,
     bestKey: "opening-lab:square-memory-orthodox-best",
-    portrait: "/scotch-coach/coach-seated-v2.png",
-    coach: "Professor Potato Pie",
-    cheer:
-      "You smashed it. That's the QGD Orthodox Exchange. Want to learn openings properly? Try the opening packs.",
-    portraitWidth: 640,
-    portraitHeight: 1071,
     orientation: ORTHODOX_MEMORY_ORIENTATION,
   },
   {
@@ -146,12 +111,6 @@ const CHOICES: readonly MemoryChoice[] = [
     packLabel: "Italian Game for White",
     line: ITALIAN_MEMORY_LINE,
     bestKey: "opening-lab:square-memory-italian-best",
-    portrait: "/scotch-coach/coach-seated-v2.png",
-    coach: "Professor Potato Pie",
-    cheer:
-      "You smashed it. That's the Italian Game. Want to learn openings properly? Try the opening packs.",
-    portraitWidth: 640,
-    portraitHeight: 1071,
     orientation: "white",
   },
   {
@@ -162,12 +121,6 @@ const CHOICES: readonly MemoryChoice[] = [
     packLabel: "Caro-Kann for Black",
     line: CARO_MEMORY_LINE,
     bestKey: "opening-lab:square-memory-caro-best",
-    portrait: "/scotch-coach/coach-seated-v2.png",
-    coach: "Professor Potato Pie",
-    cheer:
-      "You smashed it. That's the Caro-Kann. Want to learn openings properly? Try the opening packs.",
-    portraitWidth: 640,
-    portraitHeight: 1071,
     orientation: CARO_MEMORY_ORIENTATION,
   },
 ];
@@ -201,27 +154,9 @@ export function SquareMemory() {
   const [snap, setSnap] = useState<Snapshot>(() => titleState(0));
   const [bestLabel, setBestLabel] = useState(0);
   const [muted, setMutedState] = useState(false);
-  const [cheerOn, setCheerOn] = useState(false);
-  const [showClearTime, setShowClearTime] = useState(false);
-  const [allTimes, setAllTimes] = useState(false);
-  const [clearMs, setClearMs] = useState<number | null>(null);
-  const [playerName, setPlayerName] = useState("");
-  const [boards, setBoards] = useState<Record<MemoryChoice["id"], BoardRow[]>>({
-    ruy: [],
-    london: [],
-    qg: [],
-    orthodox: [],
-    italian: [],
-    caro: [],
-  });
-  const [boardNote, setBoardNote] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [boardVersion, setBoardVersion] = useState(0);
   const [burst, setBurst] = useState<{ square: string; id: number } | null>(null);
   const snapRef = useRef(snap);
   const bestRef = useRef(0);
-  const bestAtStart = useRef(0);
-  const runStartRef = useRef(0);
   const choice = CHOICES.find((item) => item.id === choiceId) ?? CHOICES[0]!;
   const choiceRef = useRef(choice);
   choiceRef.current = choice;
@@ -247,12 +182,6 @@ export function SquareMemory() {
     const quiet = readMuted();
     setMutedState(quiet);
     setMuted(quiet);
-    try {
-      const storedName = localStorage.getItem(NAME_KEY) ?? "";
-      if (storedName) setPlayerName(storedName);
-    } catch {
-      /* private mode */
-    }
   }, []);
 
   useEffect(() => {
@@ -294,9 +223,18 @@ export function SquareMemory() {
     };
   }, []);
 
-  function start() {
-    const phase = snapRef.current.phase;
-    if (phase !== "title" && phase !== "reveal") return;
+  function applyChoice(id: MemoryChoice["id"]) {
+    const next = CHOICES.find((item) => item.id === id);
+    if (!next) return false;
+    const best = readBest(next.bestKey);
+    choiceRef.current = next;
+    bestRef.current = best;
+    setChoiceId(next.id);
+    setBestLabel(best);
+    return true;
+  }
+
+  function startRun() {
     // Unlock before the clock starts. Creating the audio context used to eat
     // the opening flash, so the first squares ran shorter than the rest.
     try {
@@ -305,13 +243,6 @@ export function SquareMemory() {
       /* sound is optional */
     }
     const now = performance.now();
-    runStartRef.current = now;
-    bestAtStart.current = bestRef.current;
-    setCheerOn(false);
-    setShowClearTime(false);
-    setClearMs(null);
-    setAllTimes(false);
-    setBoardNote("");
     setBurst(null);
     commit(begin(bestRef.current, now, choiceRef.current.line.squares));
     try {
@@ -320,6 +251,10 @@ export function SquareMemory() {
     } catch {
       /* sound is optional */
     }
+  }
+
+  function start() {
+    startRun();
   }
 
   function onTap(square: string) {
@@ -333,13 +268,6 @@ export function SquareMemory() {
     const now = performance.now();
     const next = tap(prev, square, squares, now);
     if (next === prev) return;
-    if (
-      next.litKind === "hit" &&
-      next.length === squares.length &&
-      next.cursor === squares.length
-    ) {
-      setClearMs(Math.round(now - runStartRef.current));
-    }
     commit(next);
     try {
       if (next.phase === "punish") {
@@ -376,116 +304,31 @@ export function SquareMemory() {
     return () => window.clearTimeout(id);
   }, [burst]);
 
-  useEffect(() => {
-    if (!(snap.phase === "reveal" && snap.perfect)) {
-      setCheerOn(false);
-      setShowClearTime(false);
-      return;
-    }
-    const timeId = window.setTimeout(() => setShowClearTime(true), 1000);
-    const cheerId = window.setTimeout(() => setCheerOn(true), BOARD_BEFORE_CHEER_MS);
-    return () => {
-      window.clearTimeout(timeId);
-      window.clearTimeout(cheerId);
-    };
-  }, [snap.phase, snap.perfect]);
-
   function chooseLine(id: MemoryChoice["id"]) {
-    const phase = snapRef.current.phase;
-    if (phase !== "title" && phase !== "reveal") return;
-    const next = CHOICES.find((item) => item.id === id);
-    if (!next || next.id === choiceRef.current.id) return;
-    const best = readBest(next.bestKey);
-    choiceRef.current = next;
-    bestRef.current = best;
-    setChoiceId(id);
-    setBestLabel(best);
-    setCheerOn(false);
-    setShowClearTime(false);
-    setClearMs(null);
-    setAllTimes(false);
-    setBoardNote("");
-    if (phase === "reveal") commit(titleState(best));
+    if (!applyChoice(id)) return;
+    startRun();
   }
 
-  useEffect(() => {
-    const ctrl = new AbortController();
-    Promise.all(
-      CHOICES.map(async (item) => {
-        const res = await fetch(`/api/square-memory-scores?line=${item.id}`, {
-          signal: ctrl.signal,
-        });
-        if (!res.ok) throw new Error("down");
-        const data = (await res.json()) as { scores?: BoardRow[] };
-        return [item.id, Array.isArray(data.scores) ? data.scores : []] as const;
-      }),
-    )
-      .then((pairs) => {
-        setBoards({
-          ruy: [],
-          london: [],
-          qg: [],
-          orthodox: [],
-          italian: [],
-          caro: [],
-          ...Object.fromEntries(pairs),
-        });
-        setBoardNote("");
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error && err.name === "AbortError") return;
-        setBoardNote("The board is not available right now.");
-      });
-    return () => ctrl.abort();
-  }, [boardVersion]);
+  function exitToBoard() {
+    setBurst(null);
+    commit(titleState(bestRef.current));
+  }
 
-  async function saveTime(event: FormEvent) {
-    event.preventDefault();
-    if (!(snap.phase === "reveal" && snap.perfect) || clearMs == null || saving) return;
-    const name = playerName.replace(/\s+/g, " ").trim();
-    if (!name) return;
-    setSaving(true);
-    setBoardNote("");
-    try {
-      const res = await fetch("/api/square-memory-scores", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ line: choice.id, name, ms: clearMs }),
-      });
-      const data = (await res.json()) as {
-        error?: string;
-        ms?: number;
-        scores?: BoardRow[];
-      };
-      if (!res.ok) {
-        setBoardNote(data.error || "Could not save that time.");
-        return;
-      }
-      try {
-        localStorage.setItem(NAME_KEY, name);
-      } catch {
-        /* private mode */
-      }
-      if (Array.isArray(data.scores)) {
-        const saved = data.scores;
-        setBoards((current) => ({ ...current, [choice.id]: saved }));
-      } else setBoardVersion((n) => n + 1);
-      setBoardNote(
-        typeof data.ms === "number" && data.ms < clearMs
-          ? `Your best is still ${formatClearTime(data.ms)}.`
-          : "Saved.",
-      );
-    } catch {
-      setBoardNote("The board is not available right now.");
-    } finally {
-      setSaving(false);
-    }
+  function retryOpening() {
+    if (snapRef.current.phase !== "reveal" || snapRef.current.perfect) return;
+    startRun();
+  }
+
+  function nextOpening() {
+    if (snapRef.current.phase !== "reveal" || !snapRef.current.perfect) return;
+    const next = nextInOrder(CHOICES, choiceRef.current);
+    if (!applyChoice(next.id)) return;
+    startRun();
   }
 
   const playing = snap.phase === "watch" || snap.phase === "input" || snap.phase === "punish";
   const revealing = snap.phase === "reveal";
   const line = choice.line;
-  const otherChoices = CHOICES.filter((item) => item.id !== choice.id);
   const plyCount = revealing ? Math.floor(snap.score / 2) : 0;
   const position = revealing ? (line.positions[plyCount] ?? line.positions[0]!) : null;
   const last = revealing && plyCount > 0 ? line.plies[plyCount - 1] : undefined;
@@ -532,38 +375,11 @@ export function SquareMemory() {
         </p>
       ) : null}
 
-      <div className={perfect && cheerOn ? "sqmem-table is-cheer" : "sqmem-table"}>
-        <div className="sqmem-boards" data-square-memory-boards data-selected={choice.id}>
-          <div className="sqmem-plaque-col" data-square-memory-active={choice.id}>
-            <LinePlaque id={choice.id} rows={boards[choice.id]} selected />
-            <button
-              type="button"
-              className="sqmem-all-times"
-              data-square-memory-all-times
-              onClick={() => setAllTimes(true)}
-            >
-              All times
-            </button>
-          </div>
-          <div className="sqmem-plaque-pair">
-            {otherChoices.map((item) => (
-              <LinePlaque key={item.id} id={item.id} rows={boards[item.id]} selected={false} />
-            ))}
-          </div>
-          {boardNote ? <p className="sqmem-boards-note">{boardNote}</p> : null}
-        </div>
-
+      <div className="sqmem-table">
         <div className="sqmem-frame">
           <div className="sqmem-frame-tools">
             <LinePick choiceId={choice.id} onChoose={chooseLine} />
           </div>
-
-          {perfect && showClearTime && clearMs != null ? (
-            <p className="sqmem-time" data-square-memory-time>
-              <span className="sqmem-time-value">{formatClearTime(clearMs)}</span>
-              <span className="sqmem-time-note">Full clear</span>
-            </p>
-          ) : null}
 
           <div className="sqmem-play">
             <div className="sqmem-board">
@@ -573,9 +389,6 @@ export function SquareMemory() {
                     ? { square: snap.lit, kind: snap.litKind }
                     : null
                 }
-                trace={
-                  snap.phase === "watch" ? line.squares.slice(0, Math.max(0, snap.cursor + 1)) : []
-                }
                 burst={burst}
                 interactive={snap.phase === "input" && snap.cursor < snap.length}
                 position={position}
@@ -583,11 +396,14 @@ export function SquareMemory() {
                 found={partial ? partial.from : null}
                 orientation={choice.orientation}
                 onTap={onTap}
-                startLabel={snap.phase === "title" ? "Start" : revealing ? "Play again" : null}
+                startLabel={snap.phase === "title" ? "Start" : null}
                 onStart={start}
               />
             </div>
-            {perfect && cheerOn ? <PerfectCheer choice={choice} /> : null}
+            {perfect ? <WinEnd onNext={nextOpening} onExit={exitToBoard} /> : null}
+            {revealing && !snap.perfect ? (
+              <MissEnd onRetry={retryOpening} onExit={exitToBoard} />
+            ) : null}
           </div>
         </div>
       </div>
@@ -610,139 +426,9 @@ export function SquareMemory() {
             Best · {bestLabel} {bestLabel === 1 ? "square" : "squares"}
           </p>
         ) : null}
-        {perfect && showClearTime && clearMs != null ? (
-          <form className="sqmem-score-form" data-square-memory-score-form onSubmit={saveTime}>
-            <input
-              className="sqmem-score-name"
-              data-square-memory-name
-              aria-label="Name"
-              placeholder="Name"
-              maxLength={16}
-              autoComplete="nickname"
-              value={playerName}
-              onChange={(event) => setPlayerName(event.target.value)}
-            />
-            <button
-              type="submit"
-              className="sqmem-score-save"
-              disabled={saving || !playerName.trim()}
-            >
-              {saving ? "Saving" : "Save time"}
-            </button>
-          </form>
-        ) : null}
         {showPackLink || playing ? <PackLink choice={choice} /> : null}
       </footer>
-      {allTimes ? <AllTimes boards={boards} onClose={() => setAllTimes(false)} /> : null}
     </main>
-  );
-}
-
-function LinePlaque({
-  id,
-  rows,
-  selected,
-}: {
-  id: MemoryChoice["id"];
-  rows: readonly BoardRow[];
-  selected: boolean;
-}) {
-  if (id === "london") {
-    return <ScorePlaque lineId="london" name="London System" rows={rows} selected={selected} />;
-  }
-  if (id === "qg") {
-    return <ScorePlaque lineId="qg" name={QG_MEMORY_NAME} rows={rows} selected={selected} />;
-  }
-  if (id === "orthodox") {
-    return (
-      <ScorePlaque lineId="orthodox" name={ORTHODOX_MEMORY_NAME} rows={rows} selected={selected} />
-    );
-  }
-  if (id === "italian") {
-    return (
-      <ScorePlaque lineId="italian" name={ITALIAN_MEMORY_NAME} rows={rows} selected={selected} />
-    );
-  }
-  if (id === "caro") {
-    return <ScorePlaque lineId="caro" name={CARO_MEMORY_NAME} rows={rows} selected={selected} />;
-  }
-  return <ScorePlaque lineId="ruy" name="Ruy Lopez" rows={rows} selected={selected} />;
-}
-
-function ScorePlaque({
-  lineId,
-  name,
-  rows,
-  selected,
-}: {
-  lineId: MemoryChoice["id"];
-  name: string;
-  rows: readonly BoardRow[];
-  selected: boolean;
-}) {
-  const shown = rows.slice(0, 3);
-  return (
-    <section
-      className="sqmem-plaque"
-      data-square-memory-leaderboard={lineId}
-      data-line={lineId}
-      data-selected={selected ? "true" : "false"}
-      aria-label={`${name} times`}
-    >
-      <h2 className="sqmem-plaque-name">{name}</h2>
-      {shown.length === 0 ? (
-        <p className="sqmem-plaque-empty">No times yet.</p>
-      ) : (
-        <ol className="sqmem-plaque-list">
-          {shown.map((row, index) => (
-            <li className="sqmem-plaque-row" key={`${row.name}-${row.ms}`} data-place={index + 1}>
-              <span className="sqmem-plaque-person">{row.name}</span>
-              <span className="sqmem-plaque-time">{formatClearTime(row.ms)}</span>
-            </li>
-          ))}
-        </ol>
-      )}
-    </section>
-  );
-}
-
-function AllTimes({
-  boards,
-  onClose,
-}: {
-  boards: Record<MemoryChoice["id"], readonly BoardRow[]>;
-  onClose: () => void;
-}) {
-  return (
-    <div className="sqmem-sheet-back" data-square-memory-sheet>
-      <div className="sqmem-sheet" role="dialog" aria-label="All times">
-        <div className="sqmem-sheet-bar">
-          <h2>All times</h2>
-          <button type="button" className="sqmem-sheet-close" onClick={onClose}>
-            Close
-          </button>
-        </div>
-        <div className="sqmem-sheet-cols">
-          {CHOICES.map((item) => (
-            <section key={item.id} aria-label={`${item.name} times`}>
-              <h3>{item.name}</h3>
-              {boards[item.id].length === 0 ? (
-                <p className="sqmem-plaque-empty">No times yet.</p>
-              ) : (
-                <ol className="sqmem-sheet-list">
-                  {boards[item.id].map((row, index) => (
-                    <li key={`${item.id}-${row.name}-${row.ms}`} data-place={index + 1}>
-                      <span>{row.name}</span>
-                      <span>{formatClearTime(row.ms)}</span>
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </section>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -783,37 +469,54 @@ function PackLink({ choice }: { choice: MemoryChoice }) {
   );
 }
 
-function PerfectCheer({ choice }: { choice: MemoryChoice }) {
+function WinEnd({ onNext, onExit }: { onNext: () => void; onExit: () => void }) {
   return (
-    <section className="sqmem-cheer" data-square-memory-cheer aria-label={choice.coach}>
-      <img
-        className="sqmem-cheer-portrait"
-        src={choice.portrait}
-        alt={choice.coach}
-        width={choice.portraitWidth}
-        height={choice.portraitHeight}
-        decoding="async"
-        draggable={false}
-      />
-      <div className="sqmem-cheer-card">
-        <p className="sqmem-cheer-name">{choice.coach}</p>
-        <p className="sqmem-cheer-bubble" data-square-memory-cheer-line>
-          {choice.cheer}
-        </p>
-        <div className="sqmem-cheer-actions">
-          <a
-            className="sqmem-cheer-btn"
-            data-square-memory-pack={choice.packId}
-            href={`/#pack/${choice.packId}`}
+    <div className="sqmem-end-back" data-square-memory-end="win">
+      <div className="sqmem-end" role="dialog" aria-label="Well done, you did it!">
+        <p className="sqmem-end-title">Well done, you did it!</p>
+        <div className="sqmem-end-actions">
+          <button type="button" className="sqmem-end-btn" data-square-memory-next onClick={onNext}>
+            Next
+          </button>
+          <button
+            type="button"
+            className="sqmem-end-btn sqmem-end-btn-quiet"
+            data-square-memory-exit
+            onClick={onExit}
           >
-            {choice.packLabel}
-          </a>
-          <a className="sqmem-cheer-btn sqmem-cheer-btn-gym" data-square-memory-gym href="/#gym">
-            Opening packs
-          </a>
+            Exit
+          </button>
         </div>
       </div>
-    </section>
+    </div>
+  );
+}
+
+function MissEnd({ onRetry, onExit }: { onRetry: () => void; onExit: () => void }) {
+  return (
+    <div className="sqmem-end-back" data-square-memory-end="miss">
+      <div className="sqmem-end" role="dialog" aria-label="Not this time.">
+        <p className="sqmem-end-title">Not this time.</p>
+        <div className="sqmem-end-actions">
+          <button
+            type="button"
+            className="sqmem-end-btn"
+            data-square-memory-retry
+            onClick={onRetry}
+          >
+            Retry
+          </button>
+          <button
+            type="button"
+            className="sqmem-end-btn sqmem-end-btn-quiet"
+            data-square-memory-exit
+            onClick={onExit}
+          >
+            Exit
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -884,64 +587,6 @@ function moveRows(
   return rows;
 }
 
-function squareCenter(
-  square: string,
-  orientation: MemoryChoice["orientation"],
-): { x: number; y: number } | null {
-  if (square.length < 2) return null;
-  const file = square.charCodeAt(0) - 97;
-  const rank = Number(square[1]);
-  if (file < 0 || file > 7 || rank < 1 || rank > 8) return null;
-  if (orientation === "black") {
-    return { x: ((7 - file + 0.5) / 8) * 100, y: ((rank - 0.5) / 8) * 100 };
-  }
-  return { x: ((file + 0.5) / 8) * 100, y: ((8.5 - rank) / 8) * 100 };
-}
-
-function PathTrace({
-  squares,
-  orientation,
-}: {
-  squares: readonly string[];
-  orientation: MemoryChoice["orientation"];
-}) {
-  const points = squares
-    .map((square) => squareCenter(square, orientation))
-    .filter((point): point is { x: number; y: number } => point !== null);
-  if (points.length < 2) return null;
-  const settled = points.slice(0, -1);
-  const prev = points[points.length - 2]!;
-  const last = points[points.length - 1]!;
-  return (
-    <svg className="sqmem-trace" viewBox="0 0 100 100" aria-hidden="true">
-      {settled.length >= 2 ? (
-        <polyline
-          className="sqmem-trace-path"
-          points={settled.map((point) => `${point.x},${point.y}`).join(" ")}
-        />
-      ) : null}
-      <g key={`${prev.x}:${prev.y}:${last.x}:${last.y}`}>
-        <line
-          className="sqmem-trace-glow"
-          pathLength={1}
-          x1={prev.x}
-          y1={prev.y}
-          x2={last.x}
-          y2={last.y}
-        />
-        <line
-          className="sqmem-trace-draw"
-          pathLength={1}
-          x1={prev.x}
-          y1={prev.y}
-          x2={last.x}
-          y2={last.y}
-        />
-      </g>
-    </svg>
-  );
-}
-
 function HitRipple({ id }: { id: number }) {
   return (
     <span className="sqmem-ripple" data-ripple={id} aria-hidden="true">
@@ -973,7 +618,6 @@ function boardAxes(orientation: MemoryChoice["orientation"]) {
 
 function MemoryBoard({
   lit,
-  trace,
   burst,
   interactive,
   position,
@@ -985,7 +629,6 @@ function MemoryBoard({
   onStart,
 }: {
   lit: { square: string; kind: LitKind } | null;
-  trace: readonly string[];
   burst: { square: string; id: number } | null;
   interactive: boolean;
   position: MemoryBoard | null;
@@ -1051,7 +694,6 @@ function MemoryBoard({
             }),
           )}
         </div>
-        <PathTrace squares={trace} orientation={orientation} />
         {startLabel ? (
           <button type="button" className="sqmem-start" data-begin="" onClick={onStart}>
             {startLabel}

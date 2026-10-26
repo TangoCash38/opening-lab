@@ -136,7 +136,9 @@ html[data-color-scheme="dark"] {
     touch-action: manipulation;
     -webkit-user-select: none;
     user-select: none;
-    transition: background 0.15s ease, transform 0.12s ease;
+    transition:
+      background 0.15s ease,
+      transform 0.12s ease;
   }
 
   .header-icon-btn:active {
@@ -279,11 +281,15 @@ html[data-color-scheme="dark"] {
     touch-action: manipulation;
     -webkit-user-select: none;
     user-select: none;
-    background-image: linear-gradient(45deg, transparent 50%, var(--color-fg-subtle) 50%),
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--color-fg-subtle) 50%),
       linear-gradient(135deg, var(--color-fg-subtle) 50%, transparent 50%);
-    background-position: calc(100% - 0.72rem) calc(50% - 0.12rem),
+    background-position:
+      calc(100% - 0.72rem) calc(50% - 0.12rem),
       calc(100% - 0.48rem) calc(50% - 0.12rem);
-    background-size: 0.28rem 0.28rem, 0.28rem 0.28rem;
+    background-size:
+      0.28rem 0.28rem,
+      0.28rem 0.28rem;
     background-repeat: no-repeat;
   }
 
@@ -1234,7 +1240,8 @@ html[data-color-scheme="dark"] {
 }
 
 [data-board-theme="future"] .piece-abs-inner {
-  filter: drop-shadow(0 0 0.6px rgba(255, 255, 255, 0.55)) drop-shadow(0 1px 2px rgba(8, 12, 20, 0.28));
+  filter: drop-shadow(0 0 0.6px rgba(255, 255, 255, 0.55))
+    drop-shadow(0 1px 2px rgba(8, 12, 20, 0.28));
 }
 
 /* Future: keep green hints (not cool tint). */
@@ -1333,8 +1340,6 @@ html[data-color-scheme="dark"] {
   background-color: #c5f0cc !important;
 }
 
-
-
 /* Arcade: neon cabinet board. Fun motion/sounds only when this theme is on. */
 [data-board-theme="arcade"] .sq-light {
   background-color: #2a2150;
@@ -1389,7 +1394,8 @@ html[data-color-scheme="dark"] {
 
 /* Keep pieces readable on neon pink/purple — light outline only (no heavy filters). */
 [data-board-theme="arcade"] .piece-abs-inner {
-  filter: drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.85))
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
 }
 
 [data-board-theme="arcade"] .sq-hint-from {
@@ -1430,40 +1436,16 @@ html[data-color-scheme="dark"] {
 [data-board-theme="print"] .sq-dark {
   background-color: #faf8f2;
   background-image:
-    repeating-linear-gradient(
-      45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    );
+    repeating-linear-gradient(45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(-45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px);
 }
 
 [data-board-theme="print"] .sq-selected,
 [data-board-theme="print"] .sq-dark.sq-selected {
   background-image:
     linear-gradient(rgba(92, 64, 51, 0.16), rgba(92, 64, 51, 0.16)),
-    repeating-linear-gradient(
-      45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    );
+    repeating-linear-gradient(45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(-45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px);
   box-shadow: inset 0 0 0 2px rgba(92, 64, 51, 0.42);
 }
 
@@ -1480,20 +1462,8 @@ html[data-color-scheme="dark"] {
 [data-board-theme="print"] .sq-dark.sq-last-to {
   background-image:
     linear-gradient(#ecec4a55, #ecec4a55),
-    repeating-linear-gradient(
-      45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    );
+    repeating-linear-gradient(45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(-45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px);
 }
 
 [data-board-theme="print"] .legal-dot {
@@ -1511,20 +1481,8 @@ html[data-color-scheme="dark"] {
 [data-board-theme="print"] .mini-sq-dark {
   background-color: #faf8f2;
   background-image:
-    repeating-linear-gradient(
-      45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      #a39e94 0,
-      #a39e94 1px,
-      transparent 1px,
-      transparent 4px
-    );
+    repeating-linear-gradient(45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(-45deg, #a39e94 0, #a39e94 1px, transparent 1px, transparent 4px);
 }
 
 [data-board-theme="print"] .board-frame {
@@ -1566,7 +1524,8 @@ html[data-color-scheme="dark"] {
 
 /* Book piece set — light ink outline only (no extra filters). */
 [data-board-theme="print"] .piece-abs-inner {
-  filter: drop-shadow(0 0 0.5px rgba(250, 248, 242, 0.7)) drop-shadow(0 0.5px 0.5px rgba(61, 42, 26, 0.22));
+  filter: drop-shadow(0 0 0.5px rgba(250, 248, 242, 0.7))
+    drop-shadow(0 0.5px 0.5px rgba(61, 42, 26, 0.22));
 }
 
 /* Dark scheme + drop-shadow/will-change promotes piece layers that Chromium
@@ -1616,7 +1575,8 @@ html[data-color-scheme="dark"] .lcb-king {
     opacity: 1;
   }
   100% {
-    transform: translate(var(--blast-x, 120%), var(--blast-y, -120%)) scale(0.35) rotate(var(--blast-rot, 40deg));
+    transform: translate(var(--blast-x, 120%), var(--blast-y, -120%)) scale(0.35)
+      rotate(var(--blast-rot, 40deg));
     opacity: 0;
   }
 }
@@ -1634,7 +1594,8 @@ html[data-color-scheme="dark"] .lcb-king {
     filter: brightness(1.2);
   }
   100% {
-    transform: translate(var(--mate-x, 80%), var(--mate-y, -80%)) scale(0.55) rotate(var(--mate-rot, 40deg));
+    transform: translate(var(--mate-x, 80%), var(--mate-y, -80%)) scale(0.55)
+      rotate(var(--mate-rot, 40deg));
     opacity: 0;
     filter: brightness(2.2);
   }
@@ -1735,15 +1696,11 @@ html[data-color-scheme="dark"] .lcb-king {
   }
 }
 
-
-
 @media (prefers-reduced-motion: reduce) {
   .piece-arcade-blast {
     animation-duration: 0.01ms;
   }
 }
-
-
 
 /* Board coordinates — readable on every theme (printed-diagram ink, not neon). */
 [data-board-theme="future"] .sq-coord--on-light {
@@ -1776,8 +1733,6 @@ html[data-color-scheme="dark"] .lcb-king {
   text-shadow: 0 0 1px rgba(61, 42, 26, 0.55);
 }
 
-
-
 @keyframes hint-in {
   from {
     opacity: 0;
@@ -1787,14 +1742,23 @@ html[data-color-scheme="dark"] .lcb-king {
   }
 }
 
-
 @keyframes splash-logo-spin {
-  0% { transform: rotate(-8deg) scale(0.88); }
-  100% { transform: rotate(352deg) scale(1); }
+  0% {
+    transform: rotate(-8deg) scale(0.88);
+  }
+  100% {
+    transform: rotate(352deg) scale(1);
+  }
 }
 @keyframes splash-story-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .splash-logo {
   animation: splash-logo-spin 1.55s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
@@ -1803,7 +1767,10 @@ html[data-color-scheme="dark"] .lcb-king {
   animation: splash-story-in 0.55s ease-out 0.15s both;
 }
 @media (prefers-reduced-motion: reduce) {
-  .splash-logo, .splash-story { animation: none; }
+  .splash-logo,
+  .splash-story {
+    animation: none;
+  }
 }
 
 /* Additive pulse — does not replace active/inactive tab chrome */
@@ -1979,8 +1946,7 @@ html[data-color-scheme="dark"] .lcb-king {
 }
 
 .lcb-thumb--green {
-  filter: hue-rotate(70deg) saturate(1.35)
-    drop-shadow(0 0 6px rgba(47, 122, 74, 0.75))
+  filter: hue-rotate(70deg) saturate(1.35) drop-shadow(0 0 6px rgba(47, 122, 74, 0.75))
     drop-shadow(0 2px 2px rgba(28, 25, 21, 0.25));
 }
 
@@ -2038,8 +2004,7 @@ html[data-color-scheme="dark"] .lcb-king {
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rot))
-      scale(0.5);
+    transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rot)) scale(0.5);
   }
 }
 
@@ -2050,23 +2015,20 @@ html[data-color-scheme="dark"] .lcb-king {
   }
   14% {
     opacity: 1;
-    transform: translate(-50%, -50%)
-      translate(calc(var(--x) * 0.38), calc(var(--y) * 0.28 - 4%))
+    transform: translate(-50%, -50%) translate(calc(var(--x) * 0.38), calc(var(--y) * 0.28 - 4%))
       scale(calc(var(--size) * 1.18)) rotate(calc(var(--spin) * 0.35));
   }
   58% {
     opacity: 1;
-    transform: translate(-50%, -50%) translate(var(--x), var(--y))
-      scale(var(--size)) rotate(var(--spin));
+    transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(var(--size))
+      rotate(var(--spin));
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%)
-      translate(var(--x), calc(var(--y) + 10%))
+    transform: translate(-50%, -50%) translate(var(--x), calc(var(--y) + 10%))
       scale(calc(var(--size) * 0.7)) rotate(var(--spin));
   }
 }
-
 
 /* Play-on promotion picker (Q/R/B/N). Lives inside .board-play. Book mode does not use this. */
 .promo-picker {
@@ -2648,7 +2610,6 @@ html[data-color-scheme="dark"] .line-result-scroll-fade {
   opacity: 0.55;
 }
 
-
 .board-arrow {
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -3176,8 +3137,8 @@ html[data-color-scheme="dark"] .app-shell--landing {
   row-gap: 0;
   width: min(1100px, 100%);
   margin: 0 auto;
-  padding: max(0.45rem, env(safe-area-inset-top, 0px)) max(1rem, env(safe-area-inset-right, 0px)) 0.15rem
-    max(1rem, env(safe-area-inset-left, 0px));
+  padding: max(0.45rem, env(safe-area-inset-top, 0px)) max(1rem, env(safe-area-inset-right, 0px))
+    0.15rem max(1rem, env(safe-area-inset-left, 0px));
 }
 
 .landing-nav {
@@ -3358,8 +3319,8 @@ html[data-color-scheme="dark"] .app-shell--landing {
 .landing-inner {
   width: min(1100px, 100%);
   margin: 0 auto;
-  padding: 0.35rem max(1.1rem, env(safe-area-inset-right, 0px)) max(2.4rem, env(safe-area-inset-bottom, 0px))
-    max(1.1rem, env(safe-area-inset-left, 0px));
+  padding: 0.35rem max(1.1rem, env(safe-area-inset-right, 0px))
+    max(2.4rem, env(safe-area-inset-bottom, 0px)) max(1.1rem, env(safe-area-inset-left, 0px));
 }
 
 .landing-hero-art {
@@ -4577,12 +4538,18 @@ html[data-color-scheme="dark"] .pack-card[data-free-lines="true"] {
 }
 
 .home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-actions,
-[data-surface="play"] .home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-actions {
+[data-surface="play"]
+  .home-coach-practice[data-written-intro="true"]
+  .written-pack-intro
+  .scotch-coach-actions {
   margin-top: 0.75rem;
 }
 
 .home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-next,
-[data-surface="play"] .home-coach-practice[data-written-intro="true"] .written-pack-intro .scotch-coach-next {
+[data-surface="play"]
+  .home-coach-practice[data-written-intro="true"]
+  .written-pack-intro
+  .scotch-coach-next {
   flex: 1 1 100%;
   width: 100%;
   min-height: 2.75rem;
@@ -5470,6 +5437,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-play {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
@@ -5477,6 +5445,76 @@ body:has([data-square-memory-page]) {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sqmem-end-back {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  padding: 0.55rem;
+  overflow: auto;
+  background: color-mix(in srgb, var(--app-bg) 58%, transparent);
+}
+
+.sqmem-end {
+  box-sizing: border-box;
+  width: min(18.5rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: auto;
+  padding: 0.9rem 0.85rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 16%, transparent);
+  border-radius: 1rem;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+.sqmem-end-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.sqmem-end .sqmem-time {
+  padding: 0;
+  background: transparent;
+}
+
+.sqmem-end .sqmem-score-form {
+  flex-wrap: wrap;
+}
+
+.sqmem-end .sqmem-score-name,
+.sqmem-end .sqmem-score-save {
+  flex: 1 1 7rem;
+}
+
+.sqmem-end-actions {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.sqmem-end-btn {
+  flex: 1 1 0;
+  min-height: 2.7rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  border-radius: 0.8rem;
+  background: var(--square-light);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.sqmem-end-btn-quiet {
+  background: transparent;
 }
 
 .sqmem-board {
@@ -5529,38 +5567,6 @@ body:has([data-square-memory-page]) {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-.sqmem-trace {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.sqmem-trace-path,
-.sqmem-trace-draw,
-.sqmem-trace-glow {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.sqmem-trace-path,
-.sqmem-trace-glow {
-  stroke: color-mix(in srgb, var(--glow-amber) 42%, transparent);
-  stroke-width: 0.9;
-}
-
-.sqmem-trace-draw {
-  stroke: color-mix(in srgb, var(--glow-amber) 86%, white);
-  stroke-width: 0.38;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: sqmem-trace-in 0.4s ease-out forwards;
 }
 
 .sqmem-sq {
@@ -5727,12 +5733,6 @@ body:has([data-square-memory-page]) {
   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.9)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
 }
 
-@keyframes sqmem-trace-in {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 @keyframes sqmem-ring {
   to {
     transform: translate(-50%, -50%) scale(2.5);
@@ -5801,11 +5801,6 @@ body:has([data-square-memory-page]) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sqmem-trace-draw {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-
   .sqmem-ripple span,
   .sqmem-ripple::before,
   .sqmem-sq.is-miss,
@@ -6003,246 +5998,7 @@ html[data-color-scheme="dark"] .sqmem-opening {
     margin-right: auto;
     margin-left: auto;
   }
-
-  .sqmem-table.is-cheer .sqmem-plaque-col {
-    align-self: start;
-    z-index: 3;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: min(15.5rem, 100%);
-    max-height: calc(100% - 8.75rem);
-    margin: 0;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-portrait {
-    flex: 0 1 auto;
-    width: 100%;
-    height: auto;
-    max-height: 13rem;
-    object-fit: contain;
-    object-position: center bottom;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-card {
-    overflow: visible;
-  }
 }
-
-.sqmem-cheer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex: 0 1 auto;
-  align-items: flex-end;
-  gap: 0.35rem;
-  width: 100%;
-  min-height: 0;
-  margin-top: 0.3rem;
-  pointer-events: none;
-}
-
-.sqmem-cheer-portrait {
-  flex: 0 0 46%;
-  width: 46%;
-  height: 7.4rem;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: left bottom;
-  transform-origin: left bottom;
-  filter: drop-shadow(0 12px 14px rgba(20, 10, 6, 0.38));
-  animation: sqmem-cheer-pop 0.46s cubic-bezier(0.16, 0.84, 0.28, 1.18) both;
-  -webkit-user-drag: none;
-  user-select: none;
-}
-
-/* On a phone the plate under the board is wide and the coach was only using
-   the left half. The drawing fills that plate. The same caption sits on the
-   lower edge, so the squares above stay clear. */
-@media (max-width: 959px) {
-  .sqmem-cheer {
-    display: grid;
-    height: 16rem;
-    max-height: 16rem;
-  }
-
-  .sqmem-cheer-portrait {
-    grid-area: 1 / 1;
-    width: 100%;
-    height: 16rem;
-    min-height: 0;
-    max-height: 16rem;
-    object-fit: cover;
-    object-position: center 18%;
-  }
-
-  .sqmem-cheer-card {
-    grid-area: 1 / 1;
-    align-self: end;
-    width: auto;
-    margin: 0 0.4rem 0.35rem;
-  }
-}
-
-.sqmem-cheer-card {
-  pointer-events: auto;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-  min-width: 0;
-  overflow: visible;
-  margin: 0;
-  padding: 0.45rem 0.5rem 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--text-primary) 14%, transparent);
-  border-radius: 0.85rem;
-  background: var(--panel-bg);
-  color: var(--text-primary);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.28);
-  animation: sqmem-cheer-card 0.38s ease 0.1s both;
-}
-
-.sqmem-cheer-name {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 750;
-  line-height: 1.2;
-  color: var(--glow-amber);
-}
-
-.sqmem-cheer-bubble {
-  margin: 0;
-  font-size: 0.78rem;
-  font-weight: 750;
-  line-height: 1.25;
-}
-
-.sqmem-cheer-actions {
-  display: flex;
-  gap: 0.3rem;
-}
-
-.sqmem-cheer-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 1.9rem;
-  padding: 0.28rem 0.4rem;
-  border-radius: 0.7rem;
-  background: var(--square-light);
-  color: var(--text-primary);
-  font-size: 0.78rem;
-  font-weight: 750;
-  line-height: 1.15;
-  text-align: center;
-  text-decoration: none;
-}
-
-.sqmem-cheer-btn-gym {
-  background: var(--app-bg);
-  color: var(--text-primary);
-}
-
-@keyframes sqmem-cheer-pop {
-  0% {
-    transform: translateY(18%) scale(0.72);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes sqmem-cheer-card {
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* A short phone cannot keep a full board once the time and moves are on
-   screen. The spare width beside that board holds the character and the
-   writing, so the squares are not pushed down into a postage stamp. */
-@media (max-width: 959px) and (max-height: 760px) {
-  .sqmem-table.is-cheer .sqmem-play {
-    flex-direction: row;
-    align-items: stretch;
-    gap: 0.35rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-board {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 12.25rem;
-    width: 12.25rem;
-    height: auto;
-    max-height: none;
-    margin-top: 0;
-    justify-content: flex-end;
-    gap: 0.25rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-portrait {
-    grid-area: auto;
-    flex: 1 1 0;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    object-fit: cover;
-    object-position: center top;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-card {
-    grid-area: auto;
-    align-self: stretch;
-    flex: 0 0 auto;
-    width: auto;
-    max-height: none;
-    margin: 0;
-    gap: 0.18rem;
-    padding: 0.32rem 0.38rem 0.32rem;
-    overflow: visible;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-name {
-    font-size: 0.78rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-bubble {
-    font-size: 0.66rem;
-    line-height: 1.2;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-actions {
-    flex-direction: column;
-    gap: 0.22rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-btn {
-    min-height: 1.6rem;
-    padding: 0.16rem 0.3rem;
-    font-size: 0.68rem;
-  }
-}
-
 
 /* Grandmaster Vision — Position Recall, one viewport. Website page only. */
 html:has([data-grandmaster-vision-page]),
@@ -6272,7 +6028,7 @@ body:has([data-grandmaster-vision-page]) {
   margin: 0;
   overflow: hidden;
   padding: max(0.2rem, env(safe-area-inset-top, 0px)) 0 0;
-  background: #0F1216;
+  background: #0f1216;
   color: #f4efe6;
   font-family: var(--font-sans);
 }
@@ -6295,7 +6051,8 @@ body:has([data-grandmaster-vision-page]) {
   align-items: center;
   gap: 0.4rem;
   min-height: 2.85rem;
-  padding: 0.15rem max(0.45rem, env(safe-area-inset-right, 0px)) 0.1rem max(0.45rem, env(safe-area-inset-left, 0px));
+  padding: 0.15rem max(0.45rem, env(safe-area-inset-right, 0px)) 0.1rem
+    max(0.45rem, env(safe-area-inset-left, 0px));
 }
 
 .gmv-home {
@@ -6351,9 +6108,9 @@ body:has([data-grandmaster-vision-page]) {
   min-width: 2.15rem;
   height: 1.55rem;
   padding: 0 0.4rem;
-  border: 1px solid #3E4756;
+  border: 1px solid #3e4756;
   border-radius: 999px;
-  background: #1B2028;
+  background: #1b2028;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -6361,9 +6118,9 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-pill.is-current .gmv-pill-id {
-  border-color: #FFB800;
-  background: #FFB800;
-  color: #0F1216;
+  border-color: #ffb800;
+  background: #ffb800;
+  color: #0f1216;
 }
 
 .gmv-pill-stars {
@@ -6374,7 +6131,7 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-pill-stars .is-on {
-  color: #FFB800;
+  color: #ffb800;
 }
 
 .gmv-pill[data-gmv-locked="true"] {
@@ -6385,7 +6142,7 @@ body:has([data-grandmaster-vision-page]) {
 .gmv-study-time {
   flex: 0 0 auto;
   margin: 0;
-  color: #FFB800;
+  color: #ffb800;
   font-size: 0.95rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -6439,8 +6196,8 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-dock[data-live="true"] .gmv-tray-piece.is-on {
-  border-color: #FFB800;
-  box-shadow: 0 0 0 2px #FFB800;
+  border-color: #ffb800;
+  box-shadow: 0 0 0 2px #ffb800;
 }
 
 .gmv-tray-col {
@@ -6473,8 +6230,8 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-tray-piece.is-on {
-  border-color: #FFB800;
-  box-shadow: inset 0 0 0 2px #FFB800;
+  border-color: #ffb800;
+  box-shadow: inset 0 0 0 2px #ffb800;
 }
 
 .gmv-tray-piece .chess-piece-img {
@@ -6581,7 +6338,7 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-sq.is-armed {
-  box-shadow: inset 0 0 0 2px #FFB800;
+  box-shadow: inset 0 0 0 2px #ffb800;
 }
 
 .gmv-sq.is-ok::after,
@@ -6725,8 +6482,8 @@ body:has([data-grandmaster-vision-page]) {
   min-height: 2.7rem;
   border: 0;
   border-radius: 999px;
-  background: #FFB800;
-  color: #0F1216;
+  background: #ffb800;
+  color: #0f1216;
   font-size: 1.02rem;
   font-weight: 800;
   cursor: pointer;
@@ -6845,7 +6602,7 @@ body:has([data-grandmaster-vision-page]) {
 .gmv-intro-check input {
   width: 1rem;
   height: 1rem;
-  accent-color: #FFB800;
+  accent-color: #ffb800;
 }
 
 .gmv-stars {
@@ -6856,13 +6613,13 @@ body:has([data-grandmaster-vision-page]) {
 }
 
 .gmv-star {
-  color: #3E4756;
+  color: #3e4756;
   font-size: 2rem;
   line-height: 1;
 }
 
 .gmv-star.is-on {
-  color: #FFB800;
+  color: #ffb800;
   animation: gmv-star-pop 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -6953,7 +6710,7 @@ body:has([data-grandmaster-vision-page]) {
 
 .gmv-score-actions .gmv-replay {
   width: 100%;
-  border: 1px solid #3E4756;
+  border: 1px solid #3e4756;
   border-radius: 999px;
   background: rgba(15, 18, 22, 0.72);
   color: #f4efe6;

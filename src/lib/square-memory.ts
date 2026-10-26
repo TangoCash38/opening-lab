@@ -45,6 +45,13 @@ export function titleState(best: number): Snapshot {
   };
 }
 
+/** Next item in picker order. The last item wraps back to the first. */
+export function nextInOrder<T>(items: readonly T[], current: T): T {
+  if (items.length === 0) return current;
+  const index = items.indexOf(current);
+  return items[(index < 0 ? 0 : index + 1) % items.length]!;
+}
+
 export function begin(best: number, now: number, squares: readonly string[]): Snapshot {
   return startWatch(titleState(best), Math.min(2, squares.length), now, squares);
 }
