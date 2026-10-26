@@ -7764,3 +7764,483 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
     grid-area: below;
   }
 }
+
+/* Square Memory does not show a clock, a name form, or the shared times.
+   The score API and its tables stay; this only takes the panels off the page. */
+[data-square-memory] .sqmem-boards,
+[data-square-memory] .sqmem-time,
+[data-square-memory] .sqmem-best,
+[data-square-memory] .sqmem-score-form,
+[data-square-memory] .sqmem-sheet-back {
+  display: none !important;
+}
+
+/* Square Memory levels. Dark, full-height, board as large as the phone allows. */
+.sml {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: max(0.3rem, env(safe-area-inset-top, 0px)) max(0.45rem, env(safe-area-inset-right, 0px))
+    max(0.35rem, env(safe-area-inset-bottom, 0px)) max(0.45rem, env(safe-area-inset-left, 0px));
+  background: var(--app-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.sml-pick,
+.sml-play {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.sml-bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.6rem;
+}
+
+.sml-home {
+  flex: 0 0 auto;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.sml-title {
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.sml-pick-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-height: 0;
+  width: min(100%, 28rem);
+  margin: 0 auto;
+  padding: 0.35rem 0 0.2rem;
+  overflow: auto;
+}
+
+.sml-lead,
+.sml-note,
+.sml-lines-note,
+.sml-status {
+  margin: 0;
+}
+
+.sml-lead {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.sml-note,
+.sml-lines-note {
+  color: color-mix(in srgb, var(--text-primary) 68%, transparent);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.sml-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sml-level {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  width: 100%;
+  min-height: 3.35rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 16%, transparent);
+  border-radius: 0.9rem;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sml-level:active {
+  border-color: var(--glow-amber);
+}
+
+.sml-level-name {
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.sml-level-count {
+  margin-left: auto;
+  color: color-mix(in srgb, var(--text-primary) 72%, transparent);
+  font-size: 0.92rem;
+}
+
+.sml-lines-link {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18rem;
+  cursor: pointer;
+}
+
+.sml-top {
+  position: relative;
+  z-index: 35;
+  flex: 0 0 auto;
+}
+
+.sml-pills {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 0.28rem;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sml-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.sml-pill {
+  display: grid;
+  place-items: center;
+  min-width: 2.15rem;
+  height: 1.7rem;
+  padding: 0 0.45rem;
+  border: 1px solid #3e4756;
+  border-radius: 999px;
+  background: #1b2028;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sml-pill.is-current {
+  border-color: var(--glow-amber);
+  background: var(--glow-amber);
+  color: #0f1216;
+}
+
+.sml-status {
+  min-height: 1.35rem;
+  padding: 0.05rem 0 0.25rem;
+  color: color-mix(in srgb, var(--text-primary) 82%, transparent);
+  font-size: 0.98rem;
+}
+
+.sml-stage {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sml-arena {
+  --sml-chrome: 0rem;
+  container-type: size;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+}
+
+.sml-arena[data-sml-placing="true"] {
+  --sml-chrome: 10.6rem;
+}
+
+.sml-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.45rem;
+  width: min(100cqi, calc(100cqb - var(--sml-chrome)));
+  max-width: 100%;
+}
+
+.sml-board {
+  width: 100%;
+  aspect-ratio: 1;
+  min-height: 0;
+  touch-action: none;
+}
+
+.sml-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 2px solid var(--board-border);
+  border-radius: 4px;
+  user-select: none;
+}
+
+.sml-sq {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  appearance: none;
+  touch-action: none;
+}
+
+.sml-sq.is-light {
+  background: var(--square-light);
+}
+
+.sml-sq.is-dark {
+  background: var(--square-dark);
+}
+
+.sml-sq.is-armed {
+  box-shadow: inset 0 0 0 2px var(--glow-amber);
+}
+
+.sml-sq[aria-disabled="true"] {
+  cursor: default;
+}
+
+.sml-live {
+  position: absolute;
+  inset: 8%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.sml-live.is-pop {
+  animation: sml-pop 0.42s ease-out both;
+}
+
+@keyframes sml-pop {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.sml-live .chess-piece-img,
+.sml-tray-piece .chess-piece-img,
+.sml-float img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.88)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+}
+
+.sml-coord {
+  position: absolute;
+  z-index: 2;
+  color: var(--coordinates);
+  font-size: clamp(0.48rem, 2.4cqmin, 0.72rem);
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sml-coord-rank {
+  top: 0.08rem;
+  left: 0.1rem;
+}
+
+.sml-coord-file {
+  right: 0.1rem;
+  bottom: 0.08rem;
+}
+
+.sml-dock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  width: 100%;
+}
+
+.sml-tray-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.28rem;
+}
+
+.sml-tray-piece {
+  display: grid;
+  place-items: center;
+  height: 2.75rem;
+  padding: 0.12rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  border-radius: 0.4rem;
+  background: #232a33;
+  cursor: grab;
+  touch-action: none;
+}
+
+.sml-tray-row:last-child .sml-tray-piece {
+  background: #f4efe6;
+  border-color: rgba(27, 32, 40, 0.35);
+}
+
+.sml-tray-piece.is-on {
+  border-color: var(--glow-amber);
+  box-shadow: 0 0 0 2px var(--glow-amber);
+}
+
+.sml-tray-piece .chess-piece-img {
+  width: 86%;
+  height: 86%;
+}
+
+.sml-done,
+.sml-btn {
+  min-height: 2.75rem;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sml-done,
+.sml-btn-primary {
+  border: 0;
+  background: var(--glow-amber);
+  color: #0f1216;
+}
+
+.sml-btn-quiet {
+  border: 1px solid color-mix(in srgb, var(--text-primary) 24%, transparent);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.sml-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 0.85rem;
+  background: rgba(15, 18, 22, 0.72);
+}
+
+.sml-modal-card {
+  width: min(100%, 18rem);
+  padding: 1.15rem 1rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 16%, transparent);
+  border-radius: 1rem;
+  background: var(--panel-bg);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.sml-result-title {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.sml-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.sml-float {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 3.2rem;
+  height: 3.2rem;
+  pointer-events: none;
+}
+
+.sml-lines {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.sml-lines-back {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 0.15rem 0.15rem 0.2rem;
+  padding: 0.28rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 28%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sml-lines-game {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sml-lines-game > .sqmem {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sml-live.is-pop {
+    animation: none;
+  }
+}
