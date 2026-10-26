@@ -365,8 +365,8 @@ export function SquareMemoryLevels({ onOpenLines }: { onOpenLines: () => void })
             <p className="sml-status" data-sml-status={phase} aria-live="polite">
               {phase === "show" ? "Watch." : null}
               {phase === "rebuild" ? "Put the pieces back." : null}
-              {phase === "success" ? "Well done." : null}
-              {phase === "fail" ? "Not quite." : null}
+              {phase === "success" ? "Well done!" : null}
+              {phase === "fail" ? "Not quite" : null}
             </p>
           </div>
 
@@ -450,7 +450,7 @@ export function SquareMemoryLevels({ onOpenLines }: { onOpenLines: () => void })
               <div className="sml-modal" role="dialog" aria-modal="true" aria-labelledby="sml-result-title" data-sml-result="success">
                 <div className="sml-modal-card">
                   <h2 id="sml-result-title" className="sml-result-title">
-                    Well done
+                    Well done!
                   </h2>
                   <div className="sml-modal-actions">
                     {level < 5 ? (

@@ -151,7 +151,7 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
   {
     id: "l3-vancura",
     level: 3,
-    name: "Vancura",
+    name: "Rooks and a pawn",
     fen: "6k1/6r1/8/8/8/6P1/6K1/6R1 w - - 0 1",
   },
   {
@@ -193,7 +193,7 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
   {
     id: "l3-passed",
     level: 3,
-    name: "Protected passed pawn",
+    name: "Passed pawn",
     fen: "8/2k5/2p5/2P1P3/3K4/8/8/8 w - - 0 1",
   },
   {
@@ -223,14 +223,14 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
   {
     id: "l4-qg",
     level: 4,
-    name: "Queen's Gambit center",
-    fen: "4k3/8/8/3p4/3P4/2N1P3/8/2K5 w - - 0 1",
+    name: "Queen's Gambit pawns",
+    fen: "4k3/8/4p3/3p4/2PP4/8/8/4K3 w - - 0 1",
   },
   {
     id: "l4-sicilian",
     level: 4,
-    name: "Sicilian center",
-    fen: "4k3/8/3p4/2p5/4P3/5N2/8/4K3 w - - 0 1",
+    name: "Open Sicilian",
+    fen: "4k3/8/2n5/2p5/4P3/5N2/8/4K3 w - - 0 1",
   },
   {
     id: "l4-queen",
@@ -253,7 +253,7 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
   {
     id: "l4-french",
     level: 4,
-    name: "French center",
+    name: "Pawn wedge",
     fen: "4k3/4p3/3p4/3P4/4P3/8/4K3/8 w - - 0 1",
   },
   {
@@ -266,13 +266,13 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
     id: "l5-carlsbad",
     level: 5,
     name: "Carlsbad structure",
-    fen: "6k1/8/2p1p3/3p4/3P4/2P1PN2/6P1/6K1 w - - 0 1",
+    fen: "6k1/1p1n4/2p5/3p4/3P4/4PN2/1P6/6K1 w - - 0 1",
   },
   {
     id: "l5-rooks",
     level: 5,
-    name: "Open file",
-    fen: "4r1k1/5pp1/8/3p4/3P4/6P1/5PK1/4R3 w - - 0 1",
+    name: "Open e-file",
+    fen: "4rk2/5pp1/8/3p4/3P4/6P1/5P2/4RK2 w - - 0 1",
   },
   {
     id: "l5-fianchetto",
@@ -284,7 +284,7 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
     id: "l5-iqp",
     level: 5,
     name: "Isolated queen pawn",
-    fen: "2r3k1/5pp1/3p4/8/3P4/5N2/5P2/2R2K2 w - - 0 1",
+    fen: "3r2k1/5pp1/8/3n4/3P4/5N2/5P2/3R2K1 w - - 0 1",
   },
   {
     id: "l5-queenside",
@@ -307,8 +307,8 @@ export const SQUARE_MEMORY_POSITIONS: readonly SquareMemoryPosition[] = [
   {
     id: "l5-open",
     level: 5,
-    name: "Simplified middlegame",
-    fen: "r5k1/5pp1/2n5/8/8/2N5/5PP1/R5K1 w - - 0 1",
+    name: "Open center",
+    fen: "2r3k1/5pp1/2n5/8/8/2N5/5PP1/3R2K1 w - - 0 1",
   },
   {
     id: "l5-queens",
