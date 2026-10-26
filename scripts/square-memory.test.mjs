@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { Chess } from "chess.js";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -774,6 +774,91 @@ test("a completed game renders the plain win popup and no coach", () => {
     view,
     /PerfectCheer|sqmem-cheer|big-red-portrait|coach-seated|You smashed it|Big Red|Professor Potato Pie|<img/,
   );
+});
+
+test("no connecting line renders during the demo or player taps", async (t) => {
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const css = src("src/styles.css");
+  const route = src("src/routes/square-memory.tsx");
+  const libs = [
+    "src/lib/square-memory.ts",
+    "src/lib/square-memory-audio.ts",
+    "src/lib/square-memory-line.ts",
+    "src/lib/square-memory-london.ts",
+    "src/lib/square-memory-qg.ts",
+    "src/lib/square-memory-orthodox.ts",
+    "src/lib/square-memory-italian.ts",
+    "src/lib/square-memory-caro.ts",
+  ]
+    .map((rel) => src(rel))
+    .join("\n");
+  const drawn =
+    /<(svg|line|polyline|path)\b|sqmem-trace|PathTrace|squareCenter|data-board-arrows|laser|connector|trail/i;
+
+  const board = view.slice(view.indexOf("function MemoryBoard"), view.indexOf("function kindFor"));
+  const boardCall = view.slice(view.indexOf("<MemoryBoard"), view.indexOf("/>", view.indexOf("<MemoryBoard")));
+  assert.ok(board.includes("function MemoryBoard"));
+  assert.doesNotMatch(board, drawn);
+  assert.doesNotMatch(boardCall, /trace=|trail=|path=|squares=\{|line\.squares\.slice/);
+  assert.doesNotMatch(view, drawn);
+  assert.doesNotMatch(libs, drawn);
+  assert.doesNotMatch(css, /\.sqmem-trace|sqmem-trace-in|sqmem-laser|sqmem-trail|sqmem-connector|data-board-arrows/);
+  assert.match(board, /is-\$\{kind\}/);
+  assert.match(board, /<HitRipple/);
+  assert.match(view, /className="sqmem-ripple"/);
+  assert.match(view, /litKind === "hit"/);
+  assert.match(view, /playHit\(square\)/);
+
+  assert.match(route, /<SquareMemory \/>/);
+  assert.doesNotMatch(
+    `${route}\n${view}`,
+    /SquareMemoryLevels|Opening lines|data-sml-|square-memory-levels|square-memory-positions/,
+  );
+  for (const rel of [
+    "src/components/opening-lab/square-memory-levels.tsx",
+    "src/lib/square-memory-levels.ts",
+    "src/lib/square-memory-positions.ts",
+    "scripts/square-memory-levels.test.mjs",
+    "scripts/square-memory-levels-validate.py",
+  ]) {
+    assert.equal(existsSync(join(root, rel)), false, rel);
+  }
+
+  const mod = await loadModule(t, "src/lib/square-memory.ts", "board-lines.mjs");
+  if (!mod) return;
+  let now = 1_000;
+  let state = mod.begin(0, now, SQUARES);
+  const marks = [];
+  const expectNoLine = (snap, label) => {
+    assert.equal(snap.trace, undefined, label);
+    assert.equal(snap.trail, undefined, label);
+    assert.equal(snap.path, undefined, label);
+    assert.equal(snap.lines, undefined, label);
+    assert.equal(snap.connectors, undefined, label);
+    marks.push(`${snap.phase}:${snap.litKind ?? "dark"}`);
+  };
+
+  assert.equal(state.phase, "watch");
+  for (let guard = 0; guard < 40 && state.phase === "watch"; guard++) {
+    expectNoLine(state, "demo");
+    now = state.lit ? state.litUntil : state.gapUntil;
+    const next = mod.tick(state, now, SQUARES);
+    if (next === state) throw new Error("demo flash made no progress");
+    state = next;
+  }
+  assert.equal(state.phase, "input");
+  for (const square of SQUARES.slice(0, state.length)) {
+    expectNoLine(state, `before ${square}`);
+    const tapped = mod.tap(state, square, SQUARES, now);
+    assert.notEqual(tapped, state);
+    assert.equal(tapped.lit, square);
+    assert.equal(tapped.litKind, "hit");
+    expectNoLine(tapped, `tap ${square}`);
+    now = tapped.litUntil;
+    state = mod.tick(tapped, now, SQUARES);
+  }
+  assert.ok(marks.some((mark) => mark.startsWith("watch:flash")));
+  assert.ok(marks.some((mark) => mark.startsWith("input:hit")));
 });
 
 test("Play preview is off until seven taps, and the website ignores it", async (t) => {
