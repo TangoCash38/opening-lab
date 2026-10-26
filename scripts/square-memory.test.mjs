@@ -47,6 +47,18 @@ function drainWatch(tick, state, now) {
   return { state, now };
 }
 
+test("next opening wraps around the picker", async (t) => {
+  const mod = await loadModule(t, "src/lib/square-memory.ts", "logic-order.mjs");
+  if (!mod) return;
+  const ids = ["ruy", "london", "qg", "orthodox", "italian", "caro"];
+  assert.equal(mod.nextInOrder(ids, "ruy"), "london");
+  assert.equal(mod.nextInOrder(ids, "london"), "qg");
+  assert.equal(mod.nextInOrder(ids, "qg"), "orthodox");
+  assert.equal(mod.nextInOrder(ids, "orthodox"), "italian");
+  assert.equal(mod.nextInOrder(ids, "italian"), "caro");
+  assert.equal(mod.nextInOrder(ids, "caro"), "ruy");
+});
+
 test("rounds grow by two and a miss keeps the finished squares", async (t) => {
   const mod = await loadModule(t, "src/lib/square-memory.ts", "logic.mjs");
   if (!mod) return;
@@ -289,7 +301,8 @@ test("home shows Square Memory under the board in the website and the Play app",
   assert.match(view, /data-square-memory-pack=\{choice\.packId\}/);
   assert.match(view, /href=\{`\/#pack\/\$\{choice\.packId\}`\}/);
   assert.match(view, /SQUARE_MEMORY_PACK_ID/);
-  assert.match(view, /Play again/);
+  assert.match(view, /Well done, you did it!/);
+  assert.doesNotMatch(view, /Play again/);
   assert.match(view, /localStorage/);
   assert.doesNotMatch(view, /document\.addEventListener\(\s*["']pointerdown/);
   assert.doesNotMatch(view, /document\.addEventListener\(\s*["']click/);
@@ -342,7 +355,8 @@ test("rank pitches follow a C pentatonic and the board keeps its glow cues", asy
   assert.match(view, /playWatch\(next\.lit\)/);
   assert.match(view, /playHit\(square\)/);
   assert.match(view, /playWin\(\)/);
-  assert.match(view, /className="sqmem-trace"/);
+  assert.doesNotMatch(view, /sqmem-trace|PathTrace/);
+  assert.match(view, /is-\$\{kind\}/);
   assert.match(view, /className="sqmem-ripple"/);
   assert.match(view, /sqmem-coord-rank/);
   assert.match(view, /sqmem-coord-file/);
@@ -386,40 +400,48 @@ test("rank pitches follow a C pentatonic and the board keeps its glow cues", asy
   assert.match(css, /@keyframes sqmem-glitch/);
   assert.match(css, /@keyframes sqmem-shake/);
   assert.match(css, /@keyframes sqmem-particle/);
-  assert.match(css, /\.sqmem-trace-draw/);
+  assert.doesNotMatch(css, /\.sqmem-trace/);
+  assert.match(
+    css,
+    /\.sqmem-sq\.is-flash,\s*\.sqmem-sq-light\.is-flash,\s*\.sqmem-sq-dark\.is-flash\s*\{[^}]*var\(--glow-amber\)/,
+  );
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
 });
 
-test("a perfect line brings Big Red in; a miss does not", () => {
+test("a full clear and a miss use plain popups, with no coach", () => {
   const view = src("src/components/opening-lab/square-memory.tsx");
   const audio = src("src/lib/square-memory-audio.ts");
   const css = src("src/styles.css");
   const shell = src("src/components/opening-lab/app-shell.tsx");
   const catalog = src("src/lib/catalog.ts");
-  const coach = src("src/lib/coach-packs.ts");
-  const portrait = coach.match(/RUY_LOPEZ_PORTRAIT = "([^"]+)"/)?.[1];
-  assert.equal(portrait, "/coach/ruy-lopez-white/big-red-portrait.png");
-  assert.match(view, /const BIG_RED_PORTRAIT = "\/coach\/ruy-lopez-white\/big-red-portrait\.png"/);
-  assert.match(view, /perfect && cheerOn \? <PerfectCheer choice=\{choice\} \/> : null/);
-  assert.match(view, /BOARD_BEFORE_CHEER_MS = 2000/);
-  assert.match(view, /revealing && !snap\.perfect/);
-  assert.match(
+  assert.doesNotMatch(
     view,
-    /You smashed it\. That's the Ruy Lopez\. Want to learn openings properly\? Try the opening packs\./,
+    /big-red-portrait|coach-seated-v2|PerfectCheer|sqmem-cheer|Big Red|Professor Potato Pie|You smashed it/,
   );
-  assert.match(view, /data-square-memory-cheer/);
-  assert.match(view, /coach: "Big Red"/);
-  assert.match(view, /data-square-memory-gym/);
-  assert.match(view, /href="\/#gym"/);
+  assert.match(view, /Well done, you did it!/);
+  assert.match(view, /Not this time\./);
+  assert.match(view, /data-square-memory-end="win"/);
+  assert.match(view, /data-square-memory-end="miss"/);
+  assert.match(view, /data-square-memory-next/);
+  assert.match(view, /data-square-memory-retry/);
+  assert.match(view, /data-square-memory-exit/);
+  assert.match(view, />\s*Next\s*</);
+  assert.match(view, />\s*Retry\s*</);
+  assert.match(view, />\s*Exit\s*</);
+  assert.match(view, /revealing && !snap\.perfect/);
+  assert.match(view, /function chooseLine[\s\S]{0,240}startRun\(\)/);
+  assert.doesNotMatch(view, /next\.id === choiceRef\.current\.id/);
+  assert.match(view, /function exitToBoard[\s\S]{0,180}titleState\(bestRef\.current\)/);
+  assert.match(view, /nextInOrder\(CHOICES, choiceRef\.current\)/);
   assert.match(view, /unlockAudio\(\)[\s\S]{0,280}performance\.now\(\)/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.doesNotMatch(audio, /You smashed it/);
-  assert.match(css, /\.sqmem-cheer-portrait\s*\{[^}]*width:\s*46%/);
+  assert.doesNotMatch(css, /\.sqmem-cheer|is-cheer/);
+  assert.match(css, /\.sqmem-end-back\s*\{[^}]*position:\s*absolute/);
   assert.match(
     css,
-    /@media \(max-width: 959px\) \{[\s\S]*?\.sqmem-cheer-portrait\s*\{[^}]*max-height:\s*16rem[^}]*object-fit:\s*cover/,
+    /\.sqmem-grid\s*\{[^}]*grid-template-columns:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/,
   );
-  assert.match(css, /\.sqmem-cheer-bubble/);
   assert.match(catalog, /export function readRequestedGym/);
   assert.match(catalog, /raw === "gym"/);
   assert.match(shell, /readRequestedGym\(\) && !isPlayWrap\(\)\) goPacks\(\)/);
@@ -438,12 +460,7 @@ test("both openings live on Square Memory, and the old London URL redirects", ()
   assert.match(line, /LONDON_MEMORY_MOVES = \["d4", "d5", "Bf4", "Nf6", "e3"\]/);
   assert.match(line, /LONDON_MEMORY_PACK_ID = "london"/);
   assert.match(line, /LONDON_MEMORY_NAME = "London System"/);
-  assert.match(
-    view,
-    /You smashed it\. That's the London System\. Want to learn openings properly\? Try the opening packs\./,
-  );
-  assert.match(view, /coach-seated-v2\.png/);
-  assert.match(view, /Professor Potato Pie/);
+  assert.doesNotMatch(view, /You smashed it|Professor Potato Pie|coach-seated-v2|Big Red/);
   assert.match(view, /data-memory-line=\{item\.id\}/);
   assert.match(view, /<h1 className="sqmem-title">Square Memory<\/h1>/);
   assert.doesNotMatch(view, /London Memory|Square London/);
@@ -485,13 +502,10 @@ test("Queen's Gambit Declined is the third hidden line on the same page", () => 
     squares.push(played.from, played.to);
   }
   assert.deepEqual(squares, ["d2", "d4", "d7", "d5", "c2", "c4", "e7", "e6", "b1", "c3"]);
-  assert.match(
-    view,
-    /You smashed it\. That's the Queen's Gambit Declined\. Want to learn openings properly\? Try the opening packs\./,
-  );
+  assert.doesNotMatch(view, /You smashed it/);
   assert.match(view, /pick: "Declined"/);
   assert.match(view, /name: QG_MEMORY_NAME/);
-  assert.match(view, /name=\{QG_MEMORY_NAME\}/);
+  assert.match(view, /\{choice\.name\}/);
   assert.match(view, /packLabel: "Queen's Gambit for White"/);
   assert.match(view, /packId: QG_MEMORY_PACK_ID/);
   assert.match(view, /id: "qg"/);
@@ -587,17 +601,14 @@ test("QGD Orthodox Exchange is a fourth line on the same page, from Black's side
   assert.match(view, /id: "orthodox"/);
   assert.match(view, /pick: "Orthodox"/);
   assert.match(view, /name: ORTHODOX_MEMORY_NAME/);
-  assert.match(view, /name=\{ORTHODOX_MEMORY_NAME\}/);
+  assert.match(view, /\{choice\.name\}/);
   assert.match(view, /orientation: ORTHODOX_MEMORY_ORIENTATION/);
   assert.match(view, /orientation: "white"/);
   assert.match(view, /orientation=\{choice\.orientation\}/);
   assert.match(view, /data-board-orientation=\{orientation\}/);
   assert.match(view, /Chessboard, Black at the bottom/);
   assert.match(view, /Chessboard, White at the bottom/);
-  assert.match(
-    view,
-    /You smashed it\. That's the QGD Orthodox Exchange\. Want to learn openings properly\? Try the opening packs\./,
-  );
+  assert.doesNotMatch(view, /You smashed it/);
   assert.match(view, /packLabel: "Queen's Gambit Declined for Black"/);
   assert.doesNotMatch(`${line}\n${view}`, /5 book \+ 5 punish/);
   assert.match(api, /value === "orthodox"/);
@@ -640,17 +651,12 @@ test("Italian Game is a fifth line on the same page, from White's side", () => {
   assert.match(view, /id: "italian"/);
   assert.match(view, /pick: "Italian"/);
   assert.match(view, /name: ITALIAN_MEMORY_NAME/);
-  assert.match(view, /name=\{ITALIAN_MEMORY_NAME\}/);
+  assert.match(view, /\{choice\.name\}/);
   assert.match(view, /packLabel: "Italian Game for White"/);
   assert.match(view, /packId: ITALIAN_MEMORY_PACK_ID/);
   assert.match(view, /opening-lab:square-memory-italian-best/);
   assert.match(view, /orientation: "white"/);
-  assert.match(
-    view,
-    /You smashed it\. That's the Italian Game\. Want to learn openings properly\? Try the opening packs\./,
-  );
-  assert.match(view, /coach: "Professor Potato Pie"/);
-  assert.match(view, /coach-seated-v2\.png/);
+  assert.doesNotMatch(view, /You smashed it|Professor Potato Pie|coach-seated-v2/);
   assert.doesNotMatch(view, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.match(api, /value === "italian"/);
   assert.match(api, /italian: ITALIAN_MEMORY_LINE\.squares\.length/);
@@ -698,22 +704,18 @@ test("Caro-Kann is a sixth line on the same page, from Black's side", () => {
   assert.match(view, /id: "caro"/);
   assert.match(view, /pick: "Caro-Kann"/);
   assert.match(view, /name: CARO_MEMORY_NAME/);
-  assert.match(view, /name=\{CARO_MEMORY_NAME\}/);
+  assert.match(view, /\{choice\.name\}/);
   assert.match(view, /orientation: CARO_MEMORY_ORIENTATION/);
   assert.match(view, /orientation=\{choice\.orientation\}/);
   assert.match(view, /data-board-orientation=\{orientation\}/);
   assert.match(view, /Chessboard, Black at the bottom/);
   assert.match(view, /files: \["h", "g", "f", "e", "d", "c", "b", "a"\]/);
   assert.match(view, /ranks: \["1", "2", "3", "4", "5", "6", "7", "8"\]/);
-  assert.match(
-    view,
-    /You smashed it\. That's the Caro-Kann\. Want to learn openings properly\? Try the opening packs\./,
-  );
+  assert.doesNotMatch(view, /You smashed it/);
   assert.match(view, /packLabel: "Caro-Kann for Black"/);
   assert.match(view, /packId: CARO_MEMORY_PACK_ID/);
   assert.match(view, /opening-lab:square-memory-caro-best/);
-  assert.match(view, /coach: "Professor Potato Pie"/);
-  assert.match(view, /coach-seated-v2\.png/);
+  assert.doesNotMatch(view, /Professor Potato Pie|coach-seated-v2|Big Red/);
   assert.doesNotMatch(`${line}\n${view}`, /speechSynthesis|new Audio\(|\.mp3|\.wav/);
   assert.match(api, /value === "caro"/);
   assert.match(api, /caro: CARO_MEMORY_LINE\.squares\.length/);
@@ -721,33 +723,16 @@ test("Caro-Kann is a sixth line on the same page, from Black's side", () => {
   assert.doesNotMatch(migration, /delete from square_memory_scores/);
 });
 
-test("a full clear is timed and only that time can join the shared board", () => {
+test("play hides the timer and the leaderboards, and the score store stays", () => {
   const view = src("src/components/opening-lab/square-memory.tsx");
   const api = src("src/routes/api/square-memory-scores.ts");
   const migration = src("migrations/0007_square_memory_scores.sql");
   const qgMigration = src("migrations/0008_square_memory_qg.sql");
-  assert.match(view, /runStartRef\.current = now/);
-  assert.match(view, /data-square-memory-time/);
-  assert.match(view, /perfect && showClearTime && clearMs != null/);
-  assert.match(view, /No times yet\./);
-  assert.match(view, /data-square-memory-all-times/);
-  assert.match(view, /All times/);
-  assert.match(view, /data-square-memory-score-form/);
-  assert.match(view, /data-square-memory-boards/);
-  assert.match(view, /data-square-memory-leaderboard=\{lineId\}/);
-  assert.match(view, /CHOICES\.map\(\(item\) =>/);
-  const active = view.slice(view.indexOf("sqmem-plaque-col"), view.indexOf("sqmem-plaque-pair"));
-  assert.match(active, /data-square-memory-active=\{choice\.id\}/);
-  assert.match(active, /rows=\{boards\[choice\.id\]\}/);
-  assert.match(active, /selected /);
-  assert.doesNotMatch(active, /lineId="ruy"|rows=\{boards\.ruy\}/);
-  assert.match(view, /otherChoices\.map/);
   assert.doesNotMatch(
-    src("src/styles.css"),
-    /\.sqmem-plaque:not\(\[data-selected="true"\]\) \.sqmem-plaque-row:nth-child\(n \+ 2\) \{\s*display:\s*grid/,
+    view,
+    /\/api\/square-memory-scores|data-square-memory-time|Save time|All times|No times yet|data-square-memory-boards|data-square-memory-score-form|Full clear|formatClearTime|runStartRef|sqmem-plaque/,
   );
-  assert.match(view, /\/api\/square-memory-scores/);
-  assert.doesNotMatch(view, /localStorage\.setItem\([^)]*square-memory-scores/);
+  assert.match(view, /Well done, you did it!/);
   assert.match(api, /getSql\(/);
   assert.match(api, /minimumClearMs/);
   assert.match(api, /cleanScoreName/);
@@ -755,6 +740,40 @@ test("a full clear is timed and only that time can join the shared board", () =>
   assert.match(migration, /line in \('ruy', 'london'\)/);
   assert.match(qgMigration, /line in \('ruy', 'london', 'qg'\)/);
   assert.doesNotMatch(api, /localStorage/);
+  assert.doesNotMatch(migration, /delete from square_memory_scores/);
+});
+
+test("tapping an opening mid-round abandons it and starts that opening", () => {
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const choose = view.slice(
+    view.indexOf("function chooseLine"),
+    view.indexOf("function exitToBoard"),
+  );
+  assert.match(choose, /if \(!applyChoice\(id\)\) return;\s*startRun\(\);/);
+  assert.doesNotMatch(choose, /phase|watch|input|punish|reveal|title/);
+  const startRun = view.slice(view.indexOf("function startRun"), view.indexOf("function start("));
+  assert.doesNotMatch(startRun, /phase !==|return;/);
+  assert.match(startRun, /begin\(bestRef\.current, now, choiceRef\.current\.line\.squares\)/);
+  assert.doesNotMatch(view, /disabled=\{playing\}|disabled=\{locked\}/);
+});
+
+test("a completed game renders the plain win popup and no coach", () => {
+  const view = src("src/components/opening-lab/square-memory.tsx");
+  const win = view.slice(view.indexOf("function WinEnd"), view.indexOf("function MissEnd"));
+  const shown = view.slice(view.indexOf("{perfect ?"), view.indexOf("{revealing && !snap.perfect"));
+  assert.match(shown, /<WinEnd onNext=\{nextOpening\} onExit=\{exitToBoard\} \/>/);
+  assert.doesNotMatch(shown, /Cheer|coach|portrait|img|You smashed|Big Red|Potato/);
+  assert.match(win, /Well done, you did it!/);
+  assert.match(win, />\s*Next\s*</);
+  assert.match(win, />\s*Exit\s*</);
+  assert.doesNotMatch(
+    win,
+    /img|portrait|coach|Big Red|Professor Potato Pie|You smashed|Full clear|Save time|sqmem-time/,
+  );
+  assert.doesNotMatch(
+    view,
+    /PerfectCheer|sqmem-cheer|big-red-portrait|coach-seated|You smashed it|Big Red|Professor Potato Pie|<img/,
+  );
 });
 
 test("Play preview is off until seven taps, and the website ignores it", async (t) => {

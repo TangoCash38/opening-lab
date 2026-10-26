@@ -5470,6 +5470,7 @@ body:has([data-square-memory-page]) {
 }
 
 .sqmem-play {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
@@ -5477,6 +5478,62 @@ body:has([data-square-memory-page]) {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sqmem-end-back {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  padding: 0.55rem;
+  overflow: auto;
+  background: color-mix(in srgb, var(--app-bg) 58%, transparent);
+}
+
+.sqmem-end {
+  box-sizing: border-box;
+  width: min(18.5rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: auto;
+  padding: 0.9rem 0.85rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 16%, transparent);
+  border-radius: 1rem;
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+.sqmem-end-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.sqmem-end-actions {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.sqmem-end-btn {
+  flex: 1 1 0;
+  min-height: 2.7rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  border-radius: 0.8rem;
+  background: var(--square-light);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.sqmem-end-btn-quiet {
+  background: transparent;
 }
 
 .sqmem-board {
@@ -5529,38 +5586,6 @@ body:has([data-square-memory-page]) {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-.sqmem-trace {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.sqmem-trace-path,
-.sqmem-trace-draw,
-.sqmem-trace-glow {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.sqmem-trace-path,
-.sqmem-trace-glow {
-  stroke: color-mix(in srgb, var(--glow-amber) 42%, transparent);
-  stroke-width: 0.9;
-}
-
-.sqmem-trace-draw {
-  stroke: color-mix(in srgb, var(--glow-amber) 86%, white);
-  stroke-width: 0.38;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: sqmem-trace-in 0.4s ease-out forwards;
 }
 
 .sqmem-sq {
@@ -5727,12 +5752,6 @@ body:has([data-square-memory-page]) {
   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.9)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
 }
 
-@keyframes sqmem-trace-in {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 @keyframes sqmem-ring {
   to {
     transform: translate(-50%, -50%) scale(2.5);
@@ -5801,11 +5820,6 @@ body:has([data-square-memory-page]) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sqmem-trace-draw {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-
   .sqmem-ripple span,
   .sqmem-ripple::before,
   .sqmem-sq.is-miss,
@@ -6003,246 +6017,7 @@ html[data-color-scheme="dark"] .sqmem-opening {
     margin-right: auto;
     margin-left: auto;
   }
-
-  .sqmem-table.is-cheer .sqmem-plaque-col {
-    align-self: start;
-    z-index: 3;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: min(15.5rem, 100%);
-    max-height: calc(100% - 8.75rem);
-    margin: 0;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-portrait {
-    flex: 0 1 auto;
-    width: 100%;
-    height: auto;
-    max-height: 13rem;
-    object-fit: contain;
-    object-position: center bottom;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-card {
-    overflow: visible;
-  }
 }
-
-.sqmem-cheer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex: 0 1 auto;
-  align-items: flex-end;
-  gap: 0.35rem;
-  width: 100%;
-  min-height: 0;
-  margin-top: 0.3rem;
-  pointer-events: none;
-}
-
-.sqmem-cheer-portrait {
-  flex: 0 0 46%;
-  width: 46%;
-  height: 7.4rem;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: left bottom;
-  transform-origin: left bottom;
-  filter: drop-shadow(0 12px 14px rgba(20, 10, 6, 0.38));
-  animation: sqmem-cheer-pop 0.46s cubic-bezier(0.16, 0.84, 0.28, 1.18) both;
-  -webkit-user-drag: none;
-  user-select: none;
-}
-
-/* On a phone the plate under the board is wide and the coach was only using
-   the left half. The drawing fills that plate. The same caption sits on the
-   lower edge, so the squares above stay clear. */
-@media (max-width: 959px) {
-  .sqmem-cheer {
-    display: grid;
-    height: 16rem;
-    max-height: 16rem;
-  }
-
-  .sqmem-cheer-portrait {
-    grid-area: 1 / 1;
-    width: 100%;
-    height: 16rem;
-    min-height: 0;
-    max-height: 16rem;
-    object-fit: cover;
-    object-position: center 18%;
-  }
-
-  .sqmem-cheer-card {
-    grid-area: 1 / 1;
-    align-self: end;
-    width: auto;
-    margin: 0 0.4rem 0.35rem;
-  }
-}
-
-.sqmem-cheer-card {
-  pointer-events: auto;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-  min-width: 0;
-  overflow: visible;
-  margin: 0;
-  padding: 0.45rem 0.5rem 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--text-primary) 14%, transparent);
-  border-radius: 0.85rem;
-  background: var(--panel-bg);
-  color: var(--text-primary);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.28);
-  animation: sqmem-cheer-card 0.38s ease 0.1s both;
-}
-
-.sqmem-cheer-name {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 750;
-  line-height: 1.2;
-  color: var(--glow-amber);
-}
-
-.sqmem-cheer-bubble {
-  margin: 0;
-  font-size: 0.78rem;
-  font-weight: 750;
-  line-height: 1.25;
-}
-
-.sqmem-cheer-actions {
-  display: flex;
-  gap: 0.3rem;
-}
-
-.sqmem-cheer-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 1.9rem;
-  padding: 0.28rem 0.4rem;
-  border-radius: 0.7rem;
-  background: var(--square-light);
-  color: var(--text-primary);
-  font-size: 0.78rem;
-  font-weight: 750;
-  line-height: 1.15;
-  text-align: center;
-  text-decoration: none;
-}
-
-.sqmem-cheer-btn-gym {
-  background: var(--app-bg);
-  color: var(--text-primary);
-}
-
-@keyframes sqmem-cheer-pop {
-  0% {
-    transform: translateY(18%) scale(0.72);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes sqmem-cheer-card {
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* A short phone cannot keep a full board once the time and moves are on
-   screen. The spare width beside that board holds the character and the
-   writing, so the squares are not pushed down into a postage stamp. */
-@media (max-width: 959px) and (max-height: 760px) {
-  .sqmem-table.is-cheer .sqmem-play {
-    flex-direction: row;
-    align-items: stretch;
-    gap: 0.35rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-board {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 12.25rem;
-    width: 12.25rem;
-    height: auto;
-    max-height: none;
-    margin-top: 0;
-    justify-content: flex-end;
-    gap: 0.25rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-portrait {
-    grid-area: auto;
-    flex: 1 1 0;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    object-fit: cover;
-    object-position: center top;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-card {
-    grid-area: auto;
-    align-self: stretch;
-    flex: 0 0 auto;
-    width: auto;
-    max-height: none;
-    margin: 0;
-    gap: 0.18rem;
-    padding: 0.32rem 0.38rem 0.32rem;
-    overflow: visible;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-name {
-    font-size: 0.78rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-bubble {
-    font-size: 0.66rem;
-    line-height: 1.2;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-actions {
-    flex-direction: column;
-    gap: 0.22rem;
-  }
-
-  .sqmem-table.is-cheer .sqmem-cheer-btn {
-    min-height: 1.6rem;
-    padding: 0.16rem 0.3rem;
-    font-size: 0.68rem;
-  }
-}
-
 
 /* Grandmaster Vision — Position Recall, one viewport. Website page only. */
 html:has([data-grandmaster-vision-page]),
