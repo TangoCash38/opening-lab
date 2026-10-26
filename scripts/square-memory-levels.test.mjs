@@ -138,16 +138,18 @@ test("level mode is the page, and the opening-line game stays a side door", () =
   assert.match(view, /data-sml-level=/);
   assert.match(view, /Opening lines/);
   assert.doesNotMatch(view, /data-sml-time|formatClearTime|Best |leaderboard|Save time/);
-  assert.match(
-    css,
-    /\[data-square-memory\] \.sqmem-boards,[\s\S]*\.sqmem-time,[\s\S]*\.sqmem-score-form,[\s\S]*display:\s*none !important/,
-  );
+  assert.match(lines, /Well done, you did it!/);
+  assert.match(lines, /Not this time/);
+  assert.match(lines, /data-square-memory-next/);
+  assert.match(lines, /data-square-memory-retry/);
+  assert.match(lines, /data-square-memory-exit/);
+  assert.doesNotMatch(lines, /sqmem-cheer|PerfectCheer|sqmem-trace|All times|data-square-memory-time|sqmem-score-form/);
   assert.match(src("src/routes/api/square-memory-scores.ts"), /square_memory_scores/);
+  assert.doesNotMatch(css, /\[data-square-memory\] \.sqmem-boards/);
   assert.match(view, /RANKS\.map\(\(rank\) =>/);
   assert.match(view, /FILES\.map\(\(file\) =>/);
   assert.doesNotMatch(view, /Big Red|Professor Potato Pie|big-red|coach-seated/);
-  assert.match(lines, /coach: "Big Red"/);
-  assert.match(lines, /Professor Potato Pie/);
+  assert.doesNotMatch(lines, /Big Red|Professor Potato Pie|sqmem-cheer/);
   assert.match(css, /\.sml-grid\s*\{[^}]*grid-template-columns:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(css, /\.sml-grid\s*\{[^}]*grid-template-rows:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(css, /@keyframes sml-pop/);

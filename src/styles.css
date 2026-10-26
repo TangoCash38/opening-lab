@@ -7522,16 +7522,6 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   }
 }
 
-/* Square Memory does not show a clock, a name form, or the shared times.
-   The score API and its tables stay; this only takes the panels off the page. */
-[data-square-memory] .sqmem-boards,
-[data-square-memory] .sqmem-time,
-[data-square-memory] .sqmem-best,
-[data-square-memory] .sqmem-score-form,
-[data-square-memory] .sqmem-sheet-back {
-  display: none !important;
-}
-
 /* Square Memory levels. Dark, full-height, board as large as the phone allows. */
 .sml {
   box-sizing: border-box;
@@ -7696,9 +7686,9 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
   min-width: 2.15rem;
   height: 1.7rem;
   padding: 0 0.45rem;
-  border: 1px solid #3e4756;
+  border: 1px solid #3E4756;
   border-radius: 999px;
-  background: #1b2028;
+  background: #1B2028;
   color: var(--text-primary);
   font-size: 0.82rem;
   font-weight: 800;
@@ -7708,7 +7698,7 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 .sml-pill.is-current {
   border-color: var(--glow-amber);
   background: var(--glow-amber);
-  color: #0f1216;
+  color: #0F1216;
 }
 
 .sml-status {
@@ -7910,7 +7900,7 @@ html[data-coach-compact] .train-layout--coach .train-below > .mt-4 > button {
 .sml-btn-primary {
   border: 0;
   background: var(--glow-amber);
-  color: #0f1216;
+  color: #0F1216;
 }
 
 .sml-btn-quiet {
