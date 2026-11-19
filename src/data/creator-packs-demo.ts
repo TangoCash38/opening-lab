@@ -68,6 +68,14 @@ export const DEMO_CREATORS: readonly DemoCreator[] = [
     about:
       "Demo Author is a sample byline. The lines stay inside a single Caro structure, so the pack reads as one idea.",
   },
+  {
+    id: "demo-creator",
+    name: "Demo Creator",
+    hue: "gold",
+    bio: "A fictional player. One made-up game, split into three moments.",
+    about:
+      "Demo Creator is not a real person. The pack follows a single invented game against Smith. Each line starts from its own position, with the moves played out and a comment on every move.",
+  },
 ] as const;
 
 const quietComments = [
@@ -199,6 +207,56 @@ export const DEMO_PACKS: readonly DemoPack[] = [
       { name: "The quiet e6", mode: "walk" },
     ],
   },
+  {
+    id: "game-vs-smith",
+    creatorId: "demo-creator",
+    name: "My game vs Smith",
+    price: "£2.00",
+    badge: "3 lines",
+    blurb:
+      "Three moments from a made-up game. Each line starts from its own position, with the moves played out and a comment on every one.",
+    lines: [
+      {
+        name: "The knight hops to f5",
+        mode: "walk",
+        fen: "r4rk1/bppq1pp1/p1npbn1p/4p3/4P3/1BPP1NN1/PP3PPP/R1BQR1K1 w - - 2 12",
+        plies: ["Nh4", "Rad8", "Nhf5", "Bxf5", "exf5"],
+        comments: [
+          "The knight steps toward f5. This moment is already a middlegame, long after the opening moves.",
+          "Black brings a rook to d8, behind the queen.",
+          "The knight lands on f5. That square was the point of the little manoeuvre.",
+          "Black's light bishop takes the knight.",
+          "The pawn recaptures on f5. White has opened a path for the rook on e1.",
+        ],
+      },
+      {
+        name: "The dark bishops leave",
+        mode: "walk",
+        fen: "3r1rk1/bppq1pp1/p1np1n1p/4pP2/8/1BPP2N1/PP3PPP/R1BQR1K1 b - - 0 14",
+        plies: ["Ne7", "Be3", "Bxe3", "Rxe3", "d5"],
+        comments: [
+          "The knight on c6 steps to e7, making room and watching the centre.",
+          "White offers a trade of the dark bishops.",
+          "Black accepts. The bishop on a7 leaves the long diagonal.",
+          "The rook recaptures on e3 and stays on the half-open e-file.",
+          "d5 challenges the centre. The position has a new shape.",
+        ],
+      },
+      {
+        name: "The centre opens",
+        mode: "walk",
+        fen: "3rr1k1/1ppqnpp1/p4n1p/3ppP2/2P5/1B1PR1N1/PP2QPPP/R5K1 b - - 0 18",
+        plies: ["dxc4", "dxc4", "Qe6", "Qd3", "Nfd5"],
+        comments: [
+          "Black takes on c4 and opens the centre.",
+          "White recaptures. The d-file is now open.",
+          "The queen steps to e6, opposite White's queen.",
+          "White's queen moves to d3, off the e-file and onto a useful square.",
+          "The knight from f6 arrives on d5, in the middle of the new centre.",
+        ],
+      },
+    ],
+  },
 ] as const;
 
 export const DEMO_REVIEWS: readonly DemoReview[] = [
@@ -251,6 +309,20 @@ export const DEMO_REVIEWS: readonly DemoReview[] = [
     stars: 3,
     text: "Clear notes. I wanted the walk-through to linger a little longer on the bishop outside the chain.",
   },
+  {
+    id: "review-smith-1",
+    packId: "game-vs-smith",
+    author: "Sample Sparring Partner",
+    stars: 5,
+    text: "Three moments, and each one started where the idea begins. I did not have to click through the opening first.",
+  },
+  {
+    id: "review-smith-2",
+    packId: "game-vs-smith",
+    author: "Fictional Friend",
+    stars: 4,
+    text: "The comment sits on the move. The knight landing on f5 finally made sense.",
+  },
 ] as const;
 
 export function demoCreator(id: string): DemoCreator | undefined {
@@ -290,13 +362,20 @@ export function formatStars(value: number): string {
   return value.toFixed(1);
 }
 
-export function formatDemoPlies(plies: readonly string[]): string {
-  return plies.map((san, index) => plyLabel(index, san)).join(" ");
+export function formatDemoPlies(plies: readonly string[], fen?: string): string {
+  return plies.map((san, index) => plyLabel(index, san, fen)).join(" ");
 }
 
-export function plyLabel(index: number, san: string): string {
-  const moveNo = Math.floor(index / 2) + 1;
-  return index % 2 === 0 ? `${moveNo}.${san}` : `${moveNo}...${san}`;
+/** Move label from the start of a line. A FEN supplies the real move number. */
+export function plyLabel(index: number, san: string, fen?: string): string {
+  const parts = fen?.trim().split(/\s+/) ?? [];
+  const side = parts[1] === "b" ? "b" : "w";
+  const parsedMove = Number(parts[5]);
+  const fullMove = Number.isFinite(parsedMove) && parsedMove > 0 ? parsedMove : 1;
+  const offset = (fullMove - 1) * 2 + (side === "b" ? 1 : 0);
+  const absolute = offset + index;
+  const moveNo = Math.floor(absolute / 2) + 1;
+  return absolute % 2 === 0 ? `${moveNo}.${san}` : `${moveNo}...${san}`;
 }
 
 export function modeLabel(mode: StudyMode): string {
