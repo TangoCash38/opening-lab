@@ -1,34 +1,59 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import { Chess, type Move, type Square } from "chess.js";
 import { Trash2 } from "lucide-react";
+import { plyLabel, type StudyMode } from "@/data/creator-packs-demo";
 import { useT } from "@/lib/i18n";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 
 type Side = "w" | "b";
 
+type DraftMove = {
+  san: string;
+  comment: string;
+};
+
 type KeptLine = {
   id: string;
   name: string;
   side: Side;
-  plies: string[];
+  mode: StudyMode;
+  moves: DraftMove[];
 };
 
 const LINE_CAP = 10;
 
-function replay(plies: readonly string[]): Chess {
+function replay(moves: readonly DraftMove[]): Chess {
   const chess = new Chess();
-  for (const san of plies) {
-    if (!chess.move(san)) break;
+  for (const move of moves) {
+    if (!chess.move(move.san)) break;
   }
   return chess;
 }
 
-function sanChips(plies: readonly string[]): { key: string; label: string }[] {
-  return plies.map((san, index) => ({
-    key: `${index}-${san}`,
-    label: index % 2 === 0 ? `${index / 2 + 1}.${san}` : san,
-  }));
+function parseTypedMove(chess: Chess, raw: string): Move | null {
+  const trimmed = raw.trim().replace(/[+#?!]/g, "");
+  if (!trimmed) return null;
+  const coord = trimmed.toLowerCase().match(/^([a-h][1-8])[-x]?([a-h][1-8])([qrbn])?$/);
+  try {
+    if (coord) {
+      const from = coord[1] as Square;
+      const to = coord[2] as Square;
+      const piece = chess.get(from);
+      const promo = coord[3] as "q" | "r" | "b" | "n" | undefined;
+      const promotes = piece?.type === "p" && (to[1] === "8" || to[1] === "1");
+      return (
+        chess.move({
+          from,
+          to,
+          ...(promotes ? { promotion: promo ?? "q" } : {}),
+        }) || null
+      );
+    }
+    return chess.move(trimmed) || null;
+  } catch {
+    return null;
+  }
 }
 
 export function CreatorPacksEditor() {
@@ -36,22 +61,35 @@ export function CreatorPacksEditor() {
   const [packName, setPackName] = useState("");
   const [lineName, setLineName] = useState("");
   const [side, setSide] = useState<Side>("w");
-  const [game, setGame] = useState(() => new Chess());
+  const [mode, setMode] = useState<StudyMode>("walk");
+  const [moves, setMoves] = useState<DraftMove[]>([]);
+  const [pending, setPending] = useState(false);
   const [selected, setSelected] = useState<Square | null>(null);
-  const [lastMove, setLastMove] = useState<{ from: Square; to: Square } | null>(null);
+  const [typed, setTyped] = useState("");
+  const [typedError, setTypedError] = useState<string | null>(null);
   const [kept, setKept] = useState<KeptLine[]>([]);
-  const [publishNote, setPublishNote] = useState(false);
+  const [publishStep, setPublishStep] = useState<"idle" | "remind" | "done">("idle");
   const lineId = useRef(0);
 
-  const plies = game.history();
-  const chips = useMemo(() => sanChips(plies), [plies]);
+  const game = useMemo(() => replay(moves), [moves]);
+  const verbose = game.history({ verbose: true });
+  const last = verbose[verbose.length - 1];
   const full = kept.length >= LINE_CAP;
+  const canMove = !pending && !full;
 
-  const playMove = useCallback((from: Square, to: Square) => {
-    const next = new Chess();
-    for (const san of game.history()) {
-      if (!next.move(san)) return;
-    }
+  const addSan = (san: string) => {
+    soundMove();
+    setMoves((current) => [...current, { san, comment: "" }]);
+    setPending(true);
+    setSelected(null);
+    setTyped("");
+    setTypedError(null);
+    setPublishStep("idle");
+  };
+
+  const playFromSquares = (from: Square, to: Square) => {
+    if (!canMove) return;
+    const next = replay(moves);
     let played: Move | null = null;
     try {
       played = next.move({ from, to, promotion: "q" });
@@ -62,14 +100,11 @@ export function CreatorPacksEditor() {
       setSelected(null);
       return;
     }
-    soundMove();
-    setGame(next);
-    setSelected(null);
-    setLastMove({ from: played.from as Square, to: played.to as Square });
-    setPublishNote(false);
-  }, [game]);
+    addSan(played.san);
+  };
 
   const onSquare = (sq: Square) => {
+    if (!canMove) return;
     if (selected) {
       if (selected === sq) {
         setSelected(null);
@@ -77,7 +112,7 @@ export function CreatorPacksEditor() {
       }
       const legal = game.moves({ verbose: true }).some((move) => move.from === selected && move.to === sq);
       if (legal) {
-        playMove(selected, sq);
+        playFromSquares(selected, sq);
         return;
       }
     }
@@ -90,42 +125,59 @@ export function CreatorPacksEditor() {
     setSelected(null);
   };
 
+  const submitTyped = (event: FormEvent) => {
+    event.preventDefault();
+    if (!canMove) return;
+    const played = parseTypedMove(replay(moves), typed);
+    if (!played) {
+      setTypedError("That move is not legal from here. Try SAN, such as Nf3, or coordinates, such as e2e4.");
+      return;
+    }
+    addSan(played.san);
+  };
+
+  const updateComment = (index: number, comment: string) => {
+    setMoves((current) => current.map((move, i) => (i === index ? { ...move, comment } : move)));
+  };
+
   const takeBack = () => {
-    const history = game.history();
-    if (history.length === 0) return;
-    const next = replay(history.slice(0, -1));
-    const verbose = next.history({ verbose: true });
-    const last = verbose[verbose.length - 1];
-    setGame(next);
+    if (moves.length === 0) return;
+    setMoves((current) => current.slice(0, -1));
+    setPending(false);
     setSelected(null);
-    setLastMove(last ? { from: last.from as Square, to: last.to as Square } : null);
   };
 
   const clearBoard = () => {
-    setGame(new Chess());
+    setMoves([]);
+    setPending(false);
     setSelected(null);
-    setLastMove(null);
+    setTyped("");
+    setTypedError(null);
   };
 
   const keepLine = () => {
-    if (plies.length === 0 || full) return;
+    if (moves.length === 0 || full || pending) return;
     const name = lineName.trim() || `Line ${kept.length + 1}`;
     const id = `line-${++lineId.current}`;
-    setKept((current) => [...current, { id, name, side, plies: [...plies] }]);
+    setKept((current) => [
+      ...current,
+      { id, name, side, mode, moves: moves.map((move) => ({ ...move })) },
+    ]);
     setLineName("");
     clearBoard();
-    setPublishNote(false);
+    setPublishStep("idle");
   };
 
-  const removeLine = (id: string) => {
-    setKept((current) => current.filter((line) => line.id !== id));
+  const continuePublish = () => {
+    setPublishStep("done");
   };
 
   return (
     <div data-creator-packs-editor>
       <h1 className="creator-packs-title">Pack editor</h1>
       <p className="creator-packs-lede">
-        Name the pack, then enter each line move by move. This desk is a sample. Nothing you type is saved.
+        Build an opening pack, a puzzle, or any part of a game. Enter the moves on the board, or type SAN or coordinates.
+        A comment box opens for each move. This desk is a sample. Nothing you type is stored.
       </p>
       <label className="creator-packs-field">
         <span>Pack name</span>
@@ -147,9 +199,13 @@ export function CreatorPacksEditor() {
                 <strong>
                   {index + 1}. {line.name}
                 </strong>
-                <span className="creator-kept-moves">{sanChips(line.plies).map((chip) => chip.label).join(" ")}</span>
+                <span className="creator-kept-moves">
+                  {line.mode === "drill" ? "Drill" : "Walk-through"}
+                  {" · "}
+                  {line.moves.map((move, moveIndex) => plyLabel(moveIndex, move.san)).join(" ")}
+                </span>
               </span>
-              <button type="button" onClick={() => removeLine(line.id)} aria-label={`Remove ${line.name}`}>
+              <button type="button" onClick={() => setKept((current) => current.filter((item) => item.id !== line.id))} aria-label={`Remove ${line.name}`}>
                 <Trash2 className="size-3.5" strokeWidth={2.25} aria-hidden />
               </button>
             </li>
@@ -169,25 +225,42 @@ export function CreatorPacksEditor() {
           />
         </label>
         <div className="creator-side" role="group" aria-label="Side the student plays">
+          <button type="button" aria-pressed={side === "w"} className={side === "w" ? "is-on" : undefined} onClick={() => setSide("w")}>
+            {t("White")}
+          </button>
+          <button type="button" aria-pressed={side === "b"} className={side === "b" ? "is-on" : undefined} onClick={() => setSide("b")}>
+            {t("Black")}
+          </button>
+        </div>
+        <div className="creator-side" role="group" aria-label="How players use this line">
           <button
             type="button"
-            aria-pressed={side === "w"}
-            className={side === "w" ? "is-on" : undefined}
-            onClick={() => setSide("w")}
+            aria-pressed={mode === "drill"}
+            className={mode === "drill" ? "is-on" : undefined}
+            data-creator-mode="drill"
+            onClick={() => setMode("drill")}
           >
-            {t("White")}
+            Drill
           </button>
           <button
             type="button"
-            aria-pressed={side === "b"}
-            className={side === "b" ? "is-on" : undefined}
-            onClick={() => setSide("b")}
+            aria-pressed={mode === "walk"}
+            className={mode === "walk" ? "is-on" : undefined}
+            data-creator-mode="walk"
+            onClick={() => setMode("walk")}
           >
-            {t("Black")}
+            Walk-through
           </button>
         </div>
       </div>
 
+      <p className="creator-packs-count" data-creator-turn>
+        {moves.length === 0
+          ? "Starting position. Play the first move."
+          : pending
+            ? `Comment on ${plyLabel(moves.length - 1, moves[moves.length - 1]!.san)}, then continue.`
+            : "Play the next move."}
+      </p>
       <div className="creator-packs-board" data-creator-board>
         <ChessBoard
           game={game}
@@ -196,56 +269,100 @@ export function CreatorPacksEditor() {
           wrongUntil={null}
           expected={null}
           showHints={false}
-          lastMove={lastMove}
+          lastMove={last ? { from: last.from as Square, to: last.to as Square } : null}
           slide={null}
           onSquare={onSquare}
-          onPlay={playMove}
-          interactive={!full}
+          onPlay={playFromSquares}
+          interactive={canMove}
         />
       </div>
-      <div className="creator-move-chips" aria-label="Moves in this line">
-        {chips.length === 0 ? (
-          <span className="creator-move-empty">Play the line, one move at a time.</span>
+
+      <form className="creator-typed-move" onSubmit={submitTyped}>
+        <label className="creator-packs-field">
+          <span>Or type the move</span>
+          <input
+            value={typed}
+            onChange={(event) => {
+              setTyped(event.target.value);
+              setTypedError(null);
+            }}
+            placeholder="e4 or e2e4"
+            disabled={!canMove}
+            data-creator-typed-move
+          />
+        </label>
+        <button type="submit" disabled={!canMove || typed.trim().length === 0}>
+          Add move
+        </button>
+        {typedError ? (
+          <p className="creator-packs-error" role="alert">
+            {typedError}
+          </p>
+        ) : null}
+      </form>
+
+      <div className="creator-comment-list" data-creator-comments>
+        {moves.length === 0 ? (
+          <p className="creator-move-empty">Each move gets its own comment box, including a whole game.</p>
         ) : (
-          chips.map((chip, index) => (
-            <span key={chip.key} className={index === chips.length - 1 ? "is-on" : undefined}>
-              {chip.label}
-            </span>
+          moves.map((move, index) => (
+            <label
+              key={`${index}-${move.san}`}
+              className={`creator-comment${index === moves.length - 1 ? " is-current" : ""}`}
+              data-creator-comment={index + 1}
+            >
+              <span>Comment for {plyLabel(index, move.san)}</span>
+              <textarea
+                value={move.comment}
+                rows={2}
+                placeholder="Optional. What should the player notice?"
+                onChange={(event) => updateComment(index, event.target.value)}
+              />
+            </label>
           ))
         )}
       </div>
+      {pending ? (
+        <button type="button" className="creator-packs-primary" data-creator-next onClick={() => setPending(false)}>
+          Next
+        </button>
+      ) : null}
+
       <div className="creator-editor-actions">
-        <button type="button" onClick={takeBack} disabled={plies.length === 0}>
+        <button type="button" onClick={takeBack} disabled={moves.length === 0}>
           Take back
         </button>
-        <button type="button" onClick={clearBoard} disabled={plies.length === 0}>
+        <button type="button" onClick={clearBoard} disabled={moves.length === 0}>
           {t("Clear")}
         </button>
         <button
           type="button"
           className="creator-packs-primary"
           onClick={keepLine}
-          disabled={plies.length === 0 || full}
+          disabled={moves.length === 0 || full || pending}
           data-creator-keep
         >
           Keep this line
         </button>
       </div>
-      <p className="creator-packs-check" data-creator-packs-check>
-        Before a pack goes live, each line is checked with Stockfish and then by an independent Line Gate.
-        A line that fails either check does not go live.
-      </p>
-      <button
-        type="button"
-        className="creator-packs-primary"
-        data-creator-publish
-        onClick={() => setPublishNote(true)}
-      >
-        Preview only
-      </button>
-      {publishNote ? (
-        <p className="creator-packs-note" role="status" data-creator-publish-note>
-          Preview only. {packName.trim() ? `"${packName.trim()}" was not saved.` : "Nothing was saved."} No pack is submitted.
+
+      {publishStep === "idle" ? (
+        <button type="button" className="creator-packs-primary" data-creator-publish onClick={() => setPublishStep("remind")}>
+          Publish
+        </button>
+      ) : null}
+      {publishStep === "remind" ? (
+        <div className="creator-publish-reminder" role="status" data-creator-publish-reminder>
+          <h2>Before you publish</h2>
+          <p>Double-check every line is exactly how you want it.</p>
+          <button type="button" className="creator-packs-primary" data-creator-continue onClick={continuePublish}>
+            Continue
+          </button>
+        </div>
+      ) : null}
+      {publishStep === "done" ? (
+        <p className="creator-packs-note" role="status" data-creator-published>
+          Published to your creator pack{packName.trim() ? `, "${packName.trim()}"` : ""}. This preview did not store it.
         </p>
       ) : null}
     </div>

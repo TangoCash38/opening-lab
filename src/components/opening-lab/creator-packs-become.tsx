@@ -34,7 +34,8 @@ export function CreatorPacksBecome() {
     <div data-creator-packs-become>
       <h1 className="creator-packs-title">Become a creator</h1>
       <p className="creator-packs-lede">
-        Publish 10 lines under your own name. Players buy the pack in Opening Lab, and you keep most of the sale.
+        A tool for the chess you want to teach. Build an opening pack, a puzzle, or any part of a game.
+        Enter the moves on the board, or type them in SAN or coordinates. Opening Lab turns that into a learning pack under your name.
       </p>
       <p className="creator-packs-note">
         These splits are the proposal, so the numbers can be read here before anything goes live.
@@ -42,7 +43,7 @@ export function CreatorPacksBecome() {
       <ul className="creator-packs-points">
         <li>
           <h2>Your name on the pack</h2>
-          <p>The card carries your name, a short note about you, and the 10 lines you chose.</p>
+          <p>The card carries your name, a short note about you, and the lines you chose. You decide what goes in.</p>
         </li>
         <li>
           <h2>You keep 70%</h2>
@@ -55,9 +56,9 @@ export function CreatorPacksBecome() {
           </p>
         </li>
         <li>
-          <h2>Checked before it goes live</h2>
+          <h2>Drill or Walk-through</h2>
           <p>
-            Every line is checked with Stockfish, then read by an independent Line Gate. A line that fails either check does not go live.
+            For each line, players either drill it in Practice and Test, or walk through the moves with your comment on each one.
           </p>
         </li>
       </ul>
@@ -105,7 +106,7 @@ export function CreatorPacksBecome() {
             />
           </label>
           <label className="creator-packs-field">
-            <span>The opening you would teach</span>
+            <span>What you would like to publish</span>
             <input
               value={fields.opening}
               onChange={(event) => set("opening")(event.target.value)}
@@ -113,7 +114,7 @@ export function CreatorPacksBecome() {
             />
           </label>
           <label className="creator-packs-field">
-            <span>A note for the editors</span>
+            <span>A note for Opening Lab</span>
             <textarea
               value={fields.note}
               onChange={(event) => set("note")(event.target.value)}

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/creator-packs_/editor")({
       { name: "robots", content: "noindex, nofollow" },
       {
         name: "description",
-        content: "Sample pack editor. Lines are not saved. Stockfish and Line Gate checks are described, not run.",
+        content: "Sample pack editor. Move comments, Drill or Walk-through, and publish stay on this page. Nothing is stored.",
       },
     ],
   }),

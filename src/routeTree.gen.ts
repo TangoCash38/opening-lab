@@ -30,6 +30,7 @@ import { Route as ApiSquareMemoryScoresRouteImport } from './routes/api/square-m
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as CreatorPacksBecomeRouteImport } from './routes/creator-packs_.become'
 import { Route as CreatorPacksEditorRouteImport } from './routes/creator-packs_.editor'
+import { Route as CreatorPacksRatingsRouteImport } from './routes/creator-packs_.ratings'
 import { Route as LessonsCourseIdRouteImport } from './routes/lessons_.$courseId'
 import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -37,6 +38,7 @@ import { Route as ApiCheckoutSessionRouteImport } from './routes/api/checkout.se
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 import { Route as ApiUnlocksClaimRouteImport } from './routes/api/unlocks.claim'
+import { Route as CreatorPacksCreatorCreatorIdRouteImport } from './routes/creator-packs_.creator.$creatorId'
 import { Route as CreatorPacksPackPackIdRouteImport } from './routes/creator-packs_.pack.$packId'
 import { Route as LessonsCourseIdIndexRouteImport } from './routes/lessons_.$courseId.index'
 import { Route as LessonsCourseIdLessonIdRouteImport } from './routes/lessons_.$courseId.$lessonId'
@@ -146,6 +148,11 @@ const CreatorPacksEditorRoute = CreatorPacksEditorRouteImport.update({
   path: '/creator-packs/editor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorPacksRatingsRoute = CreatorPacksRatingsRouteImport.update({
+  id: '/creator-packs_/ratings',
+  path: '/creator-packs/ratings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonsCourseIdRoute = LessonsCourseIdRouteImport.update({
   id: '/lessons_/$courseId',
   path: '/lessons/$courseId',
@@ -181,6 +188,12 @@ const ApiUnlocksClaimRoute = ApiUnlocksClaimRouteImport.update({
   path: '/claim',
   getParentRoute: () => ApiUnlocksRoute,
 } as any)
+const CreatorPacksCreatorCreatorIdRoute =
+  CreatorPacksCreatorCreatorIdRouteImport.update({
+    id: '/creator-packs_/creator/$creatorId',
+    path: '/creator-packs/creator/$creatorId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CreatorPacksPackPackIdRoute = CreatorPacksPackPackIdRouteImport.update({
   id: '/creator-packs_/pack/$packId',
   path: '/creator-packs/pack/$packId',
@@ -219,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/creator-packs/become': typeof CreatorPacksBecomeRoute
   '/creator-packs/editor': typeof CreatorPacksEditorRoute
+  '/creator-packs/ratings': typeof CreatorPacksRatingsRoute
   '/lessons/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -226,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/creator-packs/creator/$creatorId': typeof CreatorPacksCreatorCreatorIdRoute
   '/creator-packs/pack/$packId': typeof CreatorPacksPackPackIdRoute
   '/lessons/$courseId/$lessonId': typeof LessonsCourseIdLessonIdRoute
   '/lessons/$courseId/': typeof LessonsCourseIdIndexRoute
@@ -252,12 +267,14 @@ export interface FileRoutesByTo {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/creator-packs/become': typeof CreatorPacksBecomeRoute
   '/creator-packs/editor': typeof CreatorPacksEditorRoute
+  '/creator-packs/ratings': typeof CreatorPacksRatingsRoute
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/checkout/session': typeof ApiCheckoutSessionRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/creator-packs/creator/$creatorId': typeof CreatorPacksCreatorCreatorIdRoute
   '/creator-packs/pack/$packId': typeof CreatorPacksPackPackIdRoute
   '/lessons/$courseId/$lessonId': typeof LessonsCourseIdLessonIdRoute
   '/lessons/$courseId': typeof LessonsCourseIdIndexRoute
@@ -285,6 +302,7 @@ export interface FileRoutesById {
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/creator-packs_/become': typeof CreatorPacksBecomeRoute
   '/creator-packs_/editor': typeof CreatorPacksEditorRoute
+  '/creator-packs_/ratings': typeof CreatorPacksRatingsRoute
   '/lessons_/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -292,6 +310,7 @@ export interface FileRoutesById {
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/unlocks/claim': typeof ApiUnlocksClaimRoute
+  '/creator-packs_/creator/$creatorId': typeof CreatorPacksCreatorCreatorIdRoute
   '/creator-packs_/pack/$packId': typeof CreatorPacksPackPackIdRoute
   '/lessons_/$courseId/$lessonId': typeof LessonsCourseIdLessonIdRoute
   '/lessons_/$courseId/': typeof LessonsCourseIdIndexRoute
@@ -320,6 +339,7 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/creator-packs/become'
     | '/creator-packs/editor'
+    | '/creator-packs/ratings'
     | '/lessons/$courseId'
     | '/api/account/delete'
     | '/api/auth/$'
@@ -327,6 +347,7 @@ export interface FileRouteTypes {
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
     | '/api/unlocks/claim'
+    | '/creator-packs/creator/$creatorId'
     | '/creator-packs/pack/$packId'
     | '/lessons/$courseId/$lessonId'
     | '/lessons/$courseId/'
@@ -353,12 +374,14 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/creator-packs/become'
     | '/creator-packs/editor'
+    | '/creator-packs/ratings'
     | '/api/account/delete'
     | '/api/auth/$'
     | '/api/checkout/session'
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
     | '/api/unlocks/claim'
+    | '/creator-packs/creator/$creatorId'
     | '/creator-packs/pack/$packId'
     | '/lessons/$courseId/$lessonId'
     | '/lessons/$courseId'
@@ -385,6 +408,7 @@ export interface FileRouteTypes {
     | '/api/unlocks'
     | '/creator-packs_/become'
     | '/creator-packs_/editor'
+    | '/creator-packs_/ratings'
     | '/lessons_/$courseId'
     | '/api/account/delete'
     | '/api/auth/$'
@@ -392,6 +416,7 @@ export interface FileRouteTypes {
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
     | '/api/unlocks/claim'
+    | '/creator-packs_/creator/$creatorId'
     | '/creator-packs_/pack/$packId'
     | '/lessons_/$courseId/$lessonId'
     | '/lessons_/$courseId/'
@@ -419,11 +444,13 @@ export interface RootRouteChildren {
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   CreatorPacksBecomeRoute: typeof CreatorPacksBecomeRoute
   CreatorPacksEditorRoute: typeof CreatorPacksEditorRoute
+  CreatorPacksRatingsRoute: typeof CreatorPacksRatingsRoute
   LessonsCourseIdRoute: typeof LessonsCourseIdRouteWithChildren
   ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+  CreatorPacksCreatorCreatorIdRoute: typeof CreatorPacksCreatorCreatorIdRoute
   CreatorPacksPackPackIdRoute: typeof CreatorPacksPackPackIdRoute
 }
 
@@ -576,6 +603,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatorPacksEditorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator-packs_/ratings': {
+      id: '/creator-packs_/ratings'
+      path: '/creator-packs/ratings'
+      fullPath: '/creator-packs/ratings'
+      preLoaderRoute: typeof CreatorPacksRatingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lessons_/$courseId': {
       id: '/lessons_/$courseId'
       path: '/lessons/$courseId'
@@ -624,6 +658,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/unlocks/claim'
       preLoaderRoute: typeof ApiUnlocksClaimRouteImport
       parentRoute: typeof ApiUnlocksRoute
+    }
+    '/creator-packs_/creator/$creatorId': {
+      id: '/creator-packs_/creator/$creatorId'
+      path: '/creator-packs/creator/$creatorId'
+      fullPath: '/creator-packs/creator/$creatorId'
+      preLoaderRoute: typeof CreatorPacksCreatorCreatorIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/creator-packs_/pack/$packId': {
       id: '/creator-packs_/pack/$packId'
@@ -709,11 +750,13 @@ const rootRouteChildren: RootRouteChildren = {
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   CreatorPacksBecomeRoute: CreatorPacksBecomeRoute,
   CreatorPacksEditorRoute: CreatorPacksEditorRoute,
+  CreatorPacksRatingsRoute: CreatorPacksRatingsRoute,
   LessonsCourseIdRoute: LessonsCourseIdRouteWithChildren,
   ApiAccountDeleteRoute: ApiAccountDeleteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+  CreatorPacksCreatorCreatorIdRoute: CreatorPacksCreatorCreatorIdRoute,
   CreatorPacksPackPackIdRoute: CreatorPacksPackPackIdRoute,
 }
 export const routeTree = rootRouteImport

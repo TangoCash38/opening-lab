@@ -15,6 +15,8 @@ const pack = src("src/components/opening-lab/creator-packs-pack.tsx");
 const become = src("src/components/opening-lab/creator-packs-become.tsx");
 const editor = src("src/components/opening-lab/creator-packs-editor.tsx");
 const frame = src("src/components/opening-lab/creator-packs-frame.tsx");
+const study = src("src/components/opening-lab/creator-packs-study.tsx");
+const ratings = src("src/components/opening-lab/creator-packs-ratings.tsx");
 const vite = src("vite.config.ts");
 
 test("creator packs stay off production and the live hosts", () => {
@@ -49,28 +51,46 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   for (const name of ["Demo Coach", "Demo Streamer", "Demo Author"]) {
     assert.match(demo, new RegExp(name));
   }
-  assert.equal(demo.split('id: "').length - 1, 6);
-  assert.match(browse, /creator-pack-badge">10 lines</);
+  for (const id of ["quiet-centre", "evening-italian", "compact-caro", "f7-glance"]) {
+    assert.match(demo, new RegExp(`id: "${id}"`));
+  }
+  assert.match(demo, /badge: "10 lines"/);
+  assert.match(demo, /mode: "walk"/);
+  assert.match(demo, /mode: "drill"/);
+  assert.match(browse, /\{pack\.badge\}/);
   assert.match(pack, /index > 0/);
   assert.match(pack, /Preview only/);
   assert.match(pack, /data-creator-buy/);
   assert.match(pack, /No payment is taken/);
+  assert.match(pack, /Rate this pack/);
+  assert.match(pack, /has not stored your rating/);
   assert.match(become, /You keep 70%/);
   assert.match(become, /Opening Lab keeps 30%/);
   assert.match(become, /pays you 85%/);
-  assert.match(become, /Stockfish/);
-  assert.match(become, /Line Gate/);
+  assert.match(become, /Drill or Walk-through/);
   assert.match(become, /data-creator-thanks/);
   assert.match(become, /has not sent or stored/);
   assert.match(editor, /ChessBoard/);
-  assert.match(editor, /Stockfish/);
-  assert.match(editor, /Line Gate/);
-  assert.match(editor, /data-creator-publish/);
-  assert.match(editor, /Nothing you type is saved|Nothing was saved|was not saved/);
+  assert.match(editor, /Double-check every line is exactly how you want it/);
+  assert.match(editor, /data-creator-continue/);
+  assert.match(editor, /data-creator-comment/);
+  assert.match(editor, /data-creator-next/);
+  assert.match(editor, /e2e4/);
+  assert.match(editor, /did not store it/);
+  assert.match(study, /data-creator-study-mode="walk"/);
+  assert.match(study, /data-creator-study-mode="drill"/);
+  assert.match(study, /data-creator-walk-comment/);
+  assert.match(study, /data-creator-drill-comment/);
+  assert.match(demo, /Sample Student/);
+  assert.match(demo, /Fictional Viewer/);
+  assert.match(demo, /Demo Clubmate/);
+  assert.match(ratings, /Across every pack/);
+  assert.match(ratings, /review.author/);
   assert.match(frame, /creatorPacksPreviewEnabled/);
   assert.match(frame, /data-creator-packs-closed/);
-  const joined = [demo, browse, pack, become, editor, frame].join("\n");
+  const joined = [demo, browse, pack, become, editor, frame, study, ratings].join("\n");
   assert.doesNotMatch(joined, /—|–/);
+  assert.doesNotMatch(joined, /Stockfish|Line Gate|checked before it goes live/i);
   assert.doesNotMatch(joined, /5 book|punish|Play on/i);
   assert.doesNotMatch(joined, /stripe|play-billing|playBilling|startCheckout|@\/data\/packs/i);
   assert.doesNotMatch(joined, /fetch\(/);

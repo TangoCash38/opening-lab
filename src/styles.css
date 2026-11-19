@@ -8140,3 +8140,235 @@ html[data-color-scheme="dark"] .creator-packs-primary {
     width: min(22rem, 100%);
   }
 }
+
+.creator-pack-person,
+.creator-pack-open,
+.creator-pack-creator a,
+.creator-rating-packs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.creator-pack-identity .creator-packs-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.creator-pack-open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.creator-line-mode {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  color: #2f5d50;
+  font-size: 0.65rem;
+  font-weight: 750;
+}
+
+.creator-study {
+  margin-top: 1rem;
+  padding: 0.9rem 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, #a97850 28%, var(--color-border));
+  border-radius: 1.05rem;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-card);
+}
+
+.creator-study-title {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.creator-study-move {
+  margin: 0.65rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.creator-study-comment {
+  margin: 0.35rem 0 0;
+  color: var(--color-fg);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.creator-typed-move {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+  text-align: start;
+}
+
+.creator-typed-move .creator-packs-field {
+  flex: 1 1 12rem;
+  margin-top: 0;
+}
+
+.creator-typed-move button {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+  color: var(--color-fg);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.creator-comment-list {
+  margin-top: 0.85rem;
+}
+
+.creator-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  margin-top: 0.55rem;
+  text-align: start;
+}
+
+.creator-comment span {
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.creator-comment textarea {
+  width: 100%;
+  min-height: 4.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.7rem 0.85rem;
+  resize: vertical;
+}
+
+.creator-comment.is-current textarea {
+  border-color: var(--color-accent);
+}
+
+.creator-publish-reminder {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem 1rem;
+  border: 2px solid color-mix(in srgb, #2f5d50 48%, var(--color-border));
+  border-radius: 1.05rem;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-card);
+  text-align: start;
+}
+
+.creator-publish-reminder h2 {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.creator-publish-reminder p {
+  margin: 0.4rem 0 0;
+  color: var(--color-fg);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.creator-stars {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.12rem;
+  margin: 0.35rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.creator-stars .is-on {
+  display: inline-flex;
+  color: var(--color-gold);
+}
+
+.creator-rating-packs,
+.creator-review-list {
+  margin: 0.45rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.creator-rating-packs li,
+.creator-review-list li {
+  margin-top: 0.55rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.95rem;
+  background: var(--color-bg-elevated);
+}
+
+.creator-rating-packs a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.creator-review-author {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.creator-review-pack {
+  color: var(--color-fg-muted);
+  font-weight: 650;
+}
+
+.creator-review-text {
+  margin: 0.3rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.creator-rate-stars {
+  display: flex;
+  gap: 0.2rem;
+  margin-top: 0.7rem;
+}
+
+.creator-rate-stars button {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-fg-subtle);
+}
+
+.creator-rate-stars button.is-on {
+  color: var(--color-gold);
+}
+
+html[data-color-scheme="dark"] .creator-line-mode {
+  color: #e7f3ec;
+}

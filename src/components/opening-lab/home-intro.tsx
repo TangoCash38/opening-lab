@@ -219,7 +219,7 @@ export function LandingHome({
                   <span className="landing-puzzle-kicker">{t("Sample preview")}</span>
                   <span className="landing-puzzle-title">{t("Creator packs")}</span>
                   <span className="landing-puzzle-note">
-                    {t("Ten lines, published under a coach's own name.")}
+                    {t("A pack, a puzzle, or a game, under your own name.")}
                   </span>
                 </Link>
               </section>
