@@ -8,6 +8,24 @@ import { nitro } from "nitro/vite";
 import { grokPwaPlugin } from "./scripts/grok-pwa-plugin.mjs";
 
 /**
+ * Bake Vercel's deployment environment into the Creator Packs gate.
+ * Production builds receive "production" and the preview stays hidden.
+ */
+function creatorPacksEnvPlugin(): Plugin {
+  const value = JSON.stringify(process.env.VERCEL_ENV ?? "");
+  return {
+    name: "opening-lab:creator-packs-env",
+    enforce: "pre",
+    transform(code, id) {
+      const file = id.split("?")[0] ?? id;
+      if (!file.endsWith("src/lib/creator-packs-flag.ts")) return null;
+      if (!code.includes('"__VERCEL_ENV__"')) return null;
+      return code.replaceAll('"__VERCEL_ENV__"', value);
+    },
+  };
+}
+
+/**
  * Finish PGLite bootstrap during dev-server setup (before traffic). Vite awaits
  * async `configureServer` hooks. Production: `src/lib/db` kicks `ensureDbReady`
  * on import.
@@ -136,6 +154,7 @@ export default defineConfig(({ command }) => ({
   },
   resolve: { tsconfigPaths: true },
   plugins: [
+    creatorPacksEnvPlugin(),
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.
     authPopupPlugin(),

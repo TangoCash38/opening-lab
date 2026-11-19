@@ -13,6 +13,7 @@ import {
 import { useUnlocks } from "@/hooks/use-unlocks";
 import { packShortLabel } from "@/lib/featured-pack";
 import { useT } from "@/lib/i18n";
+import { creatorPacksPreviewEnabled } from "@/lib/creator-packs-flag";
 import { LESSONS_ENABLED } from "@/lib/lesson-products";
 import {
   isPlayApp,
@@ -84,9 +85,11 @@ export function LandingHome({
   const { subscribed } = useUnlocks();
   const showBuyAll = canPurchaseBuyAll() && !subscribed;
   const [showLessons, setShowLessons] = useState(LESSONS_ENABLED);
+  const [showCreatorPacks, setShowCreatorPacks] = useState(false);
   const previewTaps = useRef<number[]>([]);
   useLayoutEffect(() => {
     setShowLessons(LESSONS_ENABLED && !isPlayApp());
+    setShowCreatorPacks(creatorPacksPreviewEnabled());
   }, []);
   const onWordmarkClick = () => {
     if (!isPlayApp()) return;
@@ -206,6 +209,21 @@ export function LandingHome({
                 </span>
               </Link>
             </section>
+            {showCreatorPacks ? (
+              <section className="landing-creator-packs" aria-label={t("Creator packs")}>
+                <Link
+                  to="/creator-packs"
+                  className="landing-puzzle-card"
+                  data-creator-packs-entry
+                >
+                  <span className="landing-puzzle-kicker">{t("Sample preview")}</span>
+                  <span className="landing-puzzle-title">{t("Creator packs")}</span>
+                  <span className="landing-puzzle-note">
+                    {t("Ten lines, published under a coach's own name.")}
+                  </span>
+                </Link>
+              </section>
+            ) : null}
           </div>
           </div>
           <div className="landing-copy">
