@@ -11,9 +11,11 @@ import {
   type StoredPack,
 } from "@/lib/creator-packs-review";
 import { useCreatorPayout } from "@/lib/creator-packs-payout";
+import { firstPurchaseLink, NO_PURCHASE_LINK, purchaseLinkMessage } from "@/lib/creator-packs-text";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
+import { CreatorPromoteNote } from "./creator-packs-promote";
 import { CreatorPackStatus } from "./creator-packs-status";
 import { CreatorPackStudy } from "./creator-packs-study";
 
@@ -172,6 +174,7 @@ export function CreatorPacksEditor() {
   const [suggestedPrice, setSuggestedPrice] = useState<string | null>(null);
   const [customPrice, setCustomPrice] = useState("");
   const [priceError, setPriceError] = useState<string | null>(null);
+  const [linkError, setLinkError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<StoredPack | null>(null);
   const { youReady: payoutsReady } = useCreatorPayout();
 
@@ -267,9 +270,23 @@ export function CreatorPacksEditor() {
     };
   };
 
+  const draftTexts = (): string[] => [packName, lineName, ...moves.map((move) => move.comment)];
+
+  const lineTexts = (lines: readonly SavedLine[]): string[] => [
+    packName,
+    ...lines.flatMap((line) => [line.name, ...line.moves.map((move) => move.comment)]),
+  ];
+
+  const blockLinks = (values: readonly string[]): boolean => {
+    const blocked = firstPurchaseLink(values);
+    setLinkError(blocked);
+    return blocked !== null;
+  };
+
   const saveAndAddLine = () => {
     const line = currentLine();
     if (!line) return;
+    if (blockLinks(draftTexts())) return;
     setSavedLines((current) => [
       ...current,
       { ...line, id: `line-${Date.now()}-${current.length}` },
@@ -281,6 +298,7 @@ export function CreatorPacksEditor() {
 
   const beginPublish = (lines: SavedLine[]) => {
     if (lines.length === 0) return;
+    if (blockLinks(lineTexts(lines))) return;
     setPublishLines(lines);
     setPublishStep("remind");
     setPriceError(null);
@@ -295,6 +313,7 @@ export function CreatorPacksEditor() {
   };
 
   const submitPack = () => {
+    if (blockLinks(lineTexts(publishLines))) return;
     const price = chosenPrice();
     if (!price) {
       setPriceError(
@@ -400,15 +419,22 @@ export function CreatorPacksEditor() {
         If a position or a line is stuck, <Link to="/creator-packs/help">Need help?</Link> opens an email.
       </p>
       {publishStep === "idle" ? (
-        <label className="creator-packs-field">
-          <span>Pack name</span>
-          <input
-            value={packName}
-            onChange={(event) => setPackName(event.target.value)}
-            placeholder="My game vs Smith"
-            data-creator-pack-name
-          />
-        </label>
+        <>
+          <label className="creator-packs-field">
+            <span>Pack name</span>
+            <input
+              value={packName}
+              onChange={(event) => setPackName(event.target.value)}
+              placeholder="My game vs Smith"
+              data-creator-pack-name
+            />
+          </label>
+          {purchaseLinkMessage(packName) ? (
+            <p className="creator-packs-error" role="alert" data-creator-link-error>
+              {NO_PURCHASE_LINK}
+            </p>
+          ) : null}
+        </>
       ) : null}
       <ol className="creator-steps" aria-label="Editor steps">
         <li>
@@ -680,6 +706,11 @@ export function CreatorPacksEditor() {
               data-creator-line-name
             />
           </label>
+          {purchaseLinkMessage(lineName) ? (
+            <p className="creator-packs-error" role="alert" data-creator-link-error>
+              {NO_PURCHASE_LINK}
+            </p>
+          ) : null}
           <p className="creator-packs-count" data-creator-turn>
             {moves.length === 0
               ? "Starting position. Play the first move."
@@ -730,26 +761,48 @@ export function CreatorPacksEditor() {
               <p className="creator-move-empty">The move list appears here, with an optional comment on each move.</p>
             ) : (
               moves.map((move, index) => (
-                <label
-                  key={`${index}-${move.san}`}
-                  className={`creator-comment${index === moves.length - 1 ? " is-current" : ""}`}
-                  data-creator-comment={index + 1}
-                >
-                  <span>Comment for {plyLabel(index, move.san, lockedFen ?? undefined)}</span>
-                  <textarea
-                    value={move.comment}
-                    rows={2}
-                    placeholder="Optional. What should the player notice?"
-                    onChange={(event) => updateComment(index, event.target.value)}
-                  />
-                </label>
+                <div key={`${index}-${move.san}`}>
+                  <label
+                    className={`creator-comment${index === moves.length - 1 ? " is-current" : ""}`}
+                    data-creator-comment={index + 1}
+                  >
+                    <span>Comment for {plyLabel(index, move.san, lockedFen ?? undefined)}</span>
+                    <textarea
+                      value={move.comment}
+                      rows={2}
+                      placeholder="Optional. What should the player notice?"
+                      onChange={(event) => {
+                        updateComment(index, event.target.value);
+                        setLinkError(null);
+                      }}
+                    />
+                  </label>
+                  {purchaseLinkMessage(move.comment) ? (
+                    <p className="creator-packs-error" role="alert" data-creator-link-error>
+                      {NO_PURCHASE_LINK}
+                    </p>
+                  ) : null}
+                </div>
               ))
             )}
           </div>
           {pending ? (
-            <button type="button" className="creator-packs-primary" data-creator-next onClick={() => setPending(false)}>
+            <button
+              type="button"
+              className="creator-packs-primary"
+              data-creator-next
+              onClick={() => {
+                if (blockLinks([moves[moves.length - 1]?.comment ?? ""])) return;
+                setPending(false);
+              }}
+            >
               Next
             </button>
+          ) : null}
+          {linkError ? (
+            <p className="creator-packs-error" role="alert" data-creator-link-error>
+              {linkError}
+            </p>
           ) : null}
           <div className="creator-editor-actions">
             <button type="button" onClick={takeBack} disabled={moves.length === 0}>
@@ -763,7 +816,10 @@ export function CreatorPacksEditor() {
               className="creator-packs-primary"
               data-creator-to-format
               disabled={moves.length === 0 || pending}
-              onClick={() => setStep(3)}
+              onClick={() => {
+                if (blockLinks(draftTexts())) return;
+                setStep(3);
+              }}
             >
               Choose format
             </button>
@@ -865,11 +921,15 @@ export function CreatorPacksEditor() {
         <section className="creator-publish-reminder" data-creator-price>
           <h2>How much to charge?</h2>
           <p>
-            Free keeps the pack open. Or add a price. You suggest the amount, and Opening Lab sets the final price before anyone is charged.
+            Free keeps the pack open. Or suggest a price. Opening Lab reviews the pack and sets the final price before anyone is charged.
           </p>
-          <p>
-            On a sale inside Opening Lab, you keep 70% and Opening Lab keeps 30%. Share your own link. A sale that arrives that way pays you 85%, and Opening Lab keeps 15%.
-          </p>
+          <p>You keep 70% of every sale. Opening Lab keeps 30%. Players buy on Opening Lab&apos;s website or in the app.</p>
+          <CreatorPromoteNote />
+          {linkError ? (
+            <p className="creator-packs-error" role="alert" data-creator-link-error>
+              {linkError}
+            </p>
+          ) : null}
           <p className="creator-packs-note">This preview does not take payment.</p>
           <div className="creator-format-choices">
             <button

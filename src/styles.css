@@ -8494,6 +8494,11 @@ html[data-color-scheme="dark"] .creator-line-mode {
   font-weight: 750;
 }
 
+.creator-promote-url {
+  overflow-wrap: anywhere;
+  font-weight: 750;
+}
+
 .creator-payout-steps {
   margin: 0.7rem 0 0;
   padding-left: 1.25rem;

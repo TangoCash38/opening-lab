@@ -1,15 +1,16 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
+import { firstPurchaseLink } from "@/lib/creator-packs-text";
+import { CreatorPromoteNote } from "./creator-packs-promote";
 
 type Fields = {
   name: string;
   email: string;
-  known: string;
   opening: string;
   note: string;
 };
 
-const EMPTY: Fields = { name: "", email: "", known: "", opening: "", note: "" };
+const EMPTY: Fields = { name: "", email: "", opening: "", note: "" };
 
 export function CreatorPacksBecome() {
   const [fields, setFields] = useState<Fields>(EMPTY);
@@ -26,6 +27,11 @@ export function CreatorPacksBecome() {
       setError("Add your name and an email, so a reply would know where to go.");
       return;
     }
+    const blocked = firstPurchaseLink([fields.name, fields.opening, fields.note]);
+    if (blocked) {
+      setError(blocked);
+      return;
+    }
     setError(null);
     setThanks(true);
   };
@@ -35,30 +41,23 @@ export function CreatorPacksBecome() {
       <p className="creator-packs-kicker">Become a creator</p>
       <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
-        Set a starting position, play the moves, then turn them into a drill or a walk-through. You do not have to begin with an opening. The pack carries your name, and the lines stay as you wrote them.
-      </p>
-      <p className="creator-packs-note">
-        These splits are the proposal, so the numbers can be read here before anything goes live.
+        Build your pack on Opening Lab, put your name on it, and suggest a price. Opening Lab reviews it before other players can see it. Players buy on the website or in the app, and you keep 70% of every sale.
       </p>
       <ul className="creator-packs-points">
         <li>
-          <h2>Start from any position</h2>
+          <h2>Build it on Opening Lab</h2>
           <p>
-            You do not have to start from an opening. Place the pieces, or paste a FEN from the middle of a real game, then lock it in. A pack can hold several lines, and each line can start from its own position. A pack named after a game, such as My game vs Smith, might keep three moments, with the moves played out and a comment on every move.
+            Set a starting position, play the moves, then turn them into a drill or a walk-through. You do not have to start from an opening. Place the pieces, or paste a FEN from the middle of a real game, then lock it in. A pack can hold several lines, and each line can start from its own position.
           </p>
         </li>
         <li>
           <h2>Your name on the pack</h2>
-          <p>The card carries your name, a short note about you, and the lines you chose. You decide what goes in.</p>
+          <p>The card carries your name and the lines you wrote. You decide what goes in.</p>
         </li>
         <li>
-          <h2>You keep 70%</h2>
-          <p>On a sale inside Opening Lab, you keep 70% and Opening Lab keeps 30%.</p>
-        </li>
-        <li>
-          <h2>A better split on your link</h2>
+          <h2>Suggest a price</h2>
           <p>
-            Share your own link. A sale that arrives that way pays you 85%, and Opening Lab keeps 15%.
+            You suggest a price. Opening Lab reviews the pack and sets the final price before anyone is charged.
           </p>
         </li>
         <li>
@@ -67,7 +66,14 @@ export function CreatorPacksBecome() {
             For each line, players either drill it in Practice and Test, or walk through the moves with your comment on each one.
           </p>
         </li>
+        <li>
+          <h2>You keep 70%</h2>
+          <p>
+            Players buy on Opening Lab&apos;s website or in the app. You keep 70% of every sale. Opening Lab keeps 30%.
+          </p>
+        </li>
       </ul>
+      <CreatorPromoteNote />
 
       <aside className="creator-packs-form" data-creator-help-link>
         <h2>Need help?</h2>
@@ -111,14 +117,6 @@ export function CreatorPacksBecome() {
               autoComplete="email"
               inputMode="email"
               data-creator-field="email"
-            />
-          </label>
-          <label className="creator-packs-field">
-            <span>Where players know your chess</span>
-            <input
-              value={fields.known}
-              onChange={(event) => set("known")(event.target.value)}
-              data-creator-field="known"
             />
           </label>
           <label className="creator-packs-field">
