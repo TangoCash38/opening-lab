@@ -62,7 +62,7 @@ function WalkStudy({
         ? "Starting position. Step forward to read the note on each move."
         : "This is the position the line starts from. Step forward for each move and its note."
       : (comments[ply - 1] ?? "");
-  const moveName = ply === 0 ? "Start" : plyLabel(ply - 1, plies[ply - 1] ?? "");
+  const moveName = ply === 0 ? "Start" : plyLabel(ply - 1, plies[ply - 1] ?? "", fen);
 
   return (
     <section className="creator-study" data-creator-study data-creator-study-mode="walk">
@@ -234,7 +234,7 @@ function DrillStudy({
         />
       </div>
       <p className="creator-study-move" data-creator-drill-move>
-        {done ? "Line complete" : studentTurn ? `Your move · ${plyLabel(ply, plies[ply] ?? "")}` : "The reply plays itself"}
+        {done ? "Line complete" : studentTurn ? `Your move · ${plyLabel(ply, plies[ply] ?? "", fen)}` : "The reply plays itself"}
       </p>
       <p className="creator-study-comment" data-creator-drill-comment>
         {comment}

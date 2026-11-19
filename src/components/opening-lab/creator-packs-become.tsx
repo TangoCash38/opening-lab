@@ -35,12 +35,18 @@ export function CreatorPacksBecome() {
       <p className="creator-packs-kicker">Become a creator</p>
       <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
-        Set a starting position, play the moves, then turn them into a drill or a walk-through. The pack carries your name, and the lines stay as you wrote them.
+        Set a starting position, play the moves, then turn them into a drill or a walk-through. You do not have to begin with an opening. The pack carries your name, and the lines stay as you wrote them.
       </p>
       <p className="creator-packs-note">
         These splits are the proposal, so the numbers can be read here before anything goes live.
       </p>
       <ul className="creator-packs-points">
+        <li>
+          <h2>Start from any position</h2>
+          <p>
+            You do not have to start from an opening. Place the pieces, or paste a FEN from the middle of a real game, then lock it in. A pack can hold several lines, and each line can start from its own position. A pack named after a game, such as My game vs Smith, might keep three moments, with the moves played out and a comment on every move.
+          </p>
+        </li>
         <li>
           <h2>Your name on the pack</h2>
           <p>The card carries your name, a short note about you, and the lines you chose. You decide what goes in.</p>
@@ -62,6 +68,16 @@ export function CreatorPacksBecome() {
           </p>
         </li>
       </ul>
+
+      <aside className="creator-packs-form" data-creator-help-link>
+        <h2>Need help?</h2>
+        <p className="creator-packs-note">
+          If a position, a line, or a price is unclear, send a note. It opens an email to Opening Lab. Nothing is stored here.
+        </p>
+        <Link to="/creator-packs/help" className="creator-packs-primary creator-packs-primary-link">
+          Need help?
+        </Link>
+      </aside>
 
       {thanks ? (
         <div className="creator-packs-thanks" role="status" data-creator-thanks>

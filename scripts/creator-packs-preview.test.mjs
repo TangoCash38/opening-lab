@@ -18,6 +18,14 @@ const editor = src("src/components/opening-lab/creator-packs-editor.tsx");
 const frame = src("src/components/opening-lab/creator-packs-frame.tsx");
 const study = src("src/components/opening-lab/creator-packs-study.tsx");
 const ratings = src("src/components/opening-lab/creator-packs-ratings.tsx");
+const help = src("src/components/opening-lab/creator-packs-help.tsx");
+const dashboard = src("src/components/opening-lab/creator-packs-dashboard.tsx");
+const admin = src("src/components/opening-lab/creator-packs-admin.tsx");
+const helpEmail = src("src/lib/creator-packs-help.ts");
+const review = src("src/lib/creator-packs-review.ts");
+const payout = src("src/lib/creator-packs-payout.ts");
+const getPaid = src("src/components/opening-lab/creator-packs-get-paid.tsx");
+const status = src("src/components/opening-lab/creator-packs-status.tsx");
 const vite = src("vite.config.ts");
 
 test("creator packs stay off production and the live hosts", () => {
@@ -133,14 +141,103 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(demo, /Sample Student/);
   assert.match(demo, /Fictional Viewer/);
   assert.match(demo, /Demo Clubmate/);
+  assert.match(demo, /Demo Creator/);
+  assert.match(demo, /id: "game-vs-smith"/);
+  assert.match(demo, /name: "My game vs Smith"/);
+  assert.match(demo, /badge: "3 lines"/);
+  assert.match(become, /You do not have to start from an opening/);
+  assert.match(become, /paste a FEN/);
+  assert.match(become, /Need help\?/);
+  assert.match(editor, /Paste a FEN/);
+  assert.match(editor, /data-creator-fen/);
+  assert.match(editor, /data-creator-add-line/);
+  assert.match(editor, /How much to charge\?/);
+  assert.match(editor, /data-creator-price/);
+  assert.match(editor, /Your pack is live for you to see/);
+  assert.match(editor, /Visible only to you/);
+  assert.match(editor, /status="review"/);
+  assert.match(status, /In review/);
+  assert.match(status, /Live/);
+  assert.match(help, /data-creator-help-form/);
+  assert.match(help, /mailto:/);
+  assert.match(helpEmail, /CREATOR_PACKS_HELP_EMAIL/);
+  assert.match(helpEmail, /support@openinglab\.co\.uk/);
+  assert.match(dashboard, /data-creator-packs-dashboard/);
+  assert.match(dashboard, /Visible only to you/);
+  assert.match(admin, /data-creator-packs-admin/);
+  assert.match(admin, /data-creator-approve/);
+  assert.match(admin, /data-creator-send-back/);
+  assert.match(admin, /Final price/);
+  assert.match(admin, /Monthly payouts/);
+  assert.match(admin, /Pay via Stripe/);
+  assert.match(admin, /data-creator-payout-row/);
+  assert.match(getPaid, /Get paid with Stripe/);
+  assert.match(getPaid, /Set up payouts with Stripe/);
+  assert.match(getPaid, /Opening Lab never sees your bank details/);
+  assert.match(getPaid, /70% of each sale/);
+  assert.match(getPaid, /85% when the buyer came through your own link/);
+  assert.match(getPaid, /data-creator-payout-hosted/);
+  assert.match(editor, /data-creator-payout-prompt/);
+  assert.match(editor, /You can still submit now/);
+  assert.match(status, /Not set up/);
+  assert.match(status, /Payouts set up/);
+  assert.match(payout, /localStorage/);
+  assert.doesNotMatch(getPaid, /<input/);
+  assert.doesNotMatch(payout, /sk_live|sk_test|stripe\(/);
+  assert.match(review, /localStorage/);
+  assert.match(frame, /Need help\?/);
+  assert.doesNotMatch(frame, /creator-packs\/admin/);
   assert.match(ratings, /Across every pack/);
   assert.match(ratings, /review.author/);
   assert.match(frame, /creatorPacksRoutesOpen/);
   assert.match(frame, /data-creator-packs-closed/);
-  const joined = [demo, browse, pack, become, editor, frame, study, ratings].join("\n");
+  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status, payout, getPaid].join("\n");
   assert.doesNotMatch(joined, /—|–/);
   assert.doesNotMatch(joined, /Stockfish|Line Gate|checked before it goes live/i);
   assert.doesNotMatch(joined, /5 book|punish|Play on/i);
-  assert.doesNotMatch(joined, /stripe|play-billing|playBilling|startCheckout|@\/data\/packs/i);
+  assert.doesNotMatch(joined, /from ["']stripe["']|sk_live|sk_test|startCheckout|play-billing|playBilling|@\/data\/packs/i);
+  assert.doesNotMatch(joined, /account number|sort code|routing number|iban/i);
   assert.doesNotMatch(joined, /fetch\(/);
+});
+
+test("middlegame sample lines are legal and each starts from its own position", () => {
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+        import { Chess } from "chess.js";
+        import { DEMO_PACKS } from "./src/data/creator-packs-demo.ts";
+        const pack = DEMO_PACKS.find((item) => item.id === "game-vs-smith");
+        if (!pack || pack.lines.length !== 3) process.exit(2);
+        const fens = new Set();
+        for (const line of pack.lines) {
+          if (!line.fen || !line.plies?.length) process.exit(3);
+          if (!line.comments || line.comments.length !== line.plies.length) process.exit(4);
+          if (line.fen.startsWith("rnbqkbnr/pppppppp")) process.exit(5);
+          fens.add(line.fen);
+          const chess = new Chess(line.fen);
+          for (const san of line.plies) {
+            const played = chess.move(san);
+            if (!played) process.exit(6);
+          }
+        }
+        if (fens.size !== 3) process.exit(7);
+        for (const item of DEMO_PACKS) {
+          for (const line of item.lines) {
+            if (!line.plies?.length) continue;
+            const chess = line.fen ? new Chess(line.fen) : new Chess();
+            for (const san of line.plies) {
+              if (!chess.move(san)) process.exit(8);
+            }
+            if (line.comments && line.comments.length !== line.plies.length) process.exit(9);
+          }
+        }
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
 });

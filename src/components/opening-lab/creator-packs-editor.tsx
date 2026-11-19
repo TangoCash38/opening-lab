@@ -1,10 +1,20 @@
 import { useMemo, useState, type FormEvent } from "react";
+import { Link } from "@tanstack/react-router";
 import { Chess, type Move, type Square } from "chess.js";
 import { plyLabel, type StudyMode } from "@/data/creator-packs-demo";
 import { useT } from "@/lib/i18n";
+import {
+  formatPackPrice,
+  loadReviewPacks,
+  saveReviewPacks,
+  SUGGESTED_PACK_PRICES,
+  type StoredPack,
+} from "@/lib/creator-packs-review";
+import { useCreatorPayout } from "@/lib/creator-packs-payout";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
+import { CreatorPackStatus } from "./creator-packs-status";
 import { CreatorPackStudy } from "./creator-packs-study";
 
 type Side = "w" | "b";
@@ -18,6 +28,16 @@ type DraftMove = {
   san: string;
   comment: string;
 };
+
+type SavedLine = {
+  id: string;
+  name: string;
+  fen: string;
+  moves: DraftMove[];
+  mode: StudyMode;
+};
+
+type PublishStep = "idle" | "remind" | "price" | "submitted";
 
 const PALETTE: PieceType[] = ["k", "q", "r", "b", "n", "p"];
 
@@ -51,6 +71,20 @@ function castlingRights(grid: Grid): string {
     if (grid[0]?.[0]?.type === "r" && grid[0]?.[0]?.color === "b") rights += "q";
   }
   return rights || "-";
+}
+
+function parseSetupFen(raw: string): { fen: string; grid: Grid; turn: Side } | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  try {
+    const chess = new Chess(trimmed);
+    const grid = chess.board().map((rank) =>
+      rank.map((piece) => (piece ? { type: piece.type as PieceType, color: piece.color } : null)),
+    );
+    return { fen: chess.fen(), grid, turn: chess.turn() };
+  } catch {
+    return null;
+  }
 }
 
 function gridToFen(grid: Grid, turn: Side): string | null {
@@ -119,6 +153,12 @@ export function CreatorPacksEditor() {
   const [turn, setTurn] = useState<Side>("w");
   const [tool, setTool] = useState<Tool | null>(null);
   const [lockedFen, setLockedFen] = useState<string | null>(null);
+  const [fenDraft, setFenDraft] = useState("");
+  const [fenError, setFenError] = useState<string | null>(null);
+  const [pastedFen, setPastedFen] = useState<string | null>(null);
+  const [packName, setPackName] = useState("");
+  const [savedLines, setSavedLines] = useState<SavedLine[]>([]);
+  const [savedNote, setSavedNote] = useState(false);
   const [lineName, setLineName] = useState("");
   const [moves, setMoves] = useState<DraftMove[]>([]);
   const [pending, setPending] = useState(false);
@@ -126,7 +166,14 @@ export function CreatorPacksEditor() {
   const [typed, setTyped] = useState("");
   const [typedError, setTypedError] = useState<string | null>(null);
   const [format, setFormat] = useState<StudyMode | null>(null);
-  const [publishStep, setPublishStep] = useState<"idle" | "remind" | "done">("idle");
+  const [publishStep, setPublishStep] = useState<PublishStep>("idle");
+  const [publishLines, setPublishLines] = useState<SavedLine[]>([]);
+  const [priceMode, setPriceMode] = useState<"free" | "priced" | null>(null);
+  const [suggestedPrice, setSuggestedPrice] = useState<string | null>(null);
+  const [customPrice, setCustomPrice] = useState("");
+  const [priceError, setPriceError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState<StoredPack | null>(null);
+  const { youReady: payoutsReady } = useCreatorPayout();
 
   const draftFen = useMemo(() => gridToFen(grid, turn), [grid, turn]);
   const game = useMemo(
@@ -139,6 +186,8 @@ export function CreatorPacksEditor() {
 
   const place = (rank: number, file: number) => {
     if (lockedFen || !tool) return;
+    setPastedFen(null);
+    setSavedNote(false);
     setGrid((current) =>
       current.map((row, rowIndex) =>
         row.map((cell, fileIndex) => {
@@ -149,14 +198,52 @@ export function CreatorPacksEditor() {
     );
   };
 
+  const applyFen = () => {
+    const parsed = parseSetupFen(fenDraft);
+    if (!parsed) {
+      setPastedFen(null);
+      setFenError(
+        fenDraft.trim()
+          ? "That position could not be read. Check the FEN and try again."
+          : "Paste a FEN first.",
+      );
+      return;
+    }
+    setGrid(parsed.grid);
+    setTurn(parsed.turn);
+    setPastedFen(parsed.fen);
+    setFenError(null);
+    setSavedNote(false);
+  };
+
   const lockPosition = () => {
-    if (!draftFen) return;
-    setLockedFen(draftFen);
+    const fen = pastedFen ?? draftFen;
+    if (!fen) return;
+    setLockedFen(fen);
     setMoves([]);
     setPending(false);
     setFormat(null);
     setPublishStep("idle");
+    setSavedNote(false);
     setStep(2);
+  };
+
+  const resetDraft = () => {
+    setGrid(startGrid());
+    setTurn("w");
+    setTool(null);
+    setLockedFen(null);
+    setFenDraft("");
+    setFenError(null);
+    setPastedFen(null);
+    setLineName("");
+    setMoves([]);
+    setPending(false);
+    setSelected(null);
+    setTyped("");
+    setTypedError(null);
+    setFormat(null);
+    setStep(1);
   };
 
   const unlockPosition = () => {
@@ -167,6 +254,69 @@ export function CreatorPacksEditor() {
     setSelected(null);
     setPublishStep("idle");
     setStep(1);
+  };
+
+  const currentLine = (): SavedLine | null => {
+    if (!lockedFen || !format || moves.length === 0 || pending) return null;
+    return {
+      id: `draft-${savedLines.length + 1}`,
+      name: lineName.trim() || `Line ${savedLines.length + 1}`,
+      fen: lockedFen,
+      moves,
+      mode: format,
+    };
+  };
+
+  const saveAndAddLine = () => {
+    const line = currentLine();
+    if (!line) return;
+    setSavedLines((current) => [
+      ...current,
+      { ...line, id: `line-${Date.now()}-${current.length}` },
+    ]);
+    resetDraft();
+    setSavedNote(true);
+    setPublishStep("idle");
+  };
+
+  const beginPublish = (lines: SavedLine[]) => {
+    if (lines.length === 0) return;
+    setPublishLines(lines);
+    setPublishStep("remind");
+    setPriceError(null);
+  };
+
+  const chosenPrice = (): string | null => {
+    if (priceMode === "free") return "Free";
+    if (priceMode !== "priced") return null;
+    if (suggestedPrice) return suggestedPrice;
+    if (!customPrice.trim()) return null;
+    return formatPackPrice(customPrice);
+  };
+
+  const submitPack = () => {
+    const price = chosenPrice();
+    if (!price) {
+      setPriceError(
+        priceMode === "priced"
+          ? "Choose a suggested amount, or enter your own, such as 4.00."
+          : "Choose Free, or add a price.",
+      );
+      return;
+    }
+    const pack: StoredPack = {
+      id: `you-${Date.now()}`,
+      name: packName.trim() || publishLines[0]?.name || "Your pack",
+      creatorName: "You",
+      lineCount: publishLines.length,
+      suggestedPrice: price,
+      finalPrice: "",
+      status: "review",
+    };
+    saveReviewPacks([...loadReviewPacks(), pack]);
+    setSubmitted(pack);
+    setPublishStep("submitted");
+    setPriceError(null);
   };
 
   const addSan = (san: string) => {
@@ -244,16 +394,33 @@ export function CreatorPacksEditor() {
       <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
         Three steps. Set the position, play the moves, then see the drill or the walk-through a player would get.
-        This desk is a sample. Nothing you enter is stored.
+        You do not have to start from an opening. This desk is a sample. Nothing you enter is stored.
       </p>
+      <p className="creator-packs-note">
+        If a position or a line is stuck, <Link to="/creator-packs/help">Need help?</Link> opens an email.
+      </p>
+      {publishStep === "idle" ? (
+        <label className="creator-packs-field">
+          <span>Pack name</span>
+          <input
+            value={packName}
+            onChange={(event) => setPackName(event.target.value)}
+            placeholder="My game vs Smith"
+            data-creator-pack-name
+          />
+        </label>
+      ) : null}
       <ol className="creator-steps" aria-label="Editor steps">
         <li>
           <button
             type="button"
             data-creator-step="1"
-            className={step === 1 ? "is-on" : undefined}
-            aria-current={step === 1 ? "step" : undefined}
-            onClick={() => setStep(1)}
+            className={step === 1 && publishStep === "idle" ? "is-on" : undefined}
+            aria-current={step === 1 && publishStep === "idle" ? "step" : undefined}
+            onClick={() => {
+              setPublishStep("idle");
+              setStep(1);
+            }}
           >
             1 Position
           </button>
@@ -262,10 +429,14 @@ export function CreatorPacksEditor() {
           <button
             type="button"
             data-creator-step="2"
-            className={step === 2 ? "is-on" : undefined}
-            aria-current={step === 2 ? "step" : undefined}
+            className={step === 2 && publishStep === "idle" ? "is-on" : undefined}
+            aria-current={step === 2 && publishStep === "idle" ? "step" : undefined}
             disabled={!lockedFen}
-            onClick={() => lockedFen && setStep(2)}
+            onClick={() => {
+              if (!lockedFen) return;
+              setPublishStep("idle");
+              setStep(2);
+            }}
           >
             2 Moves
           </button>
@@ -274,17 +445,45 @@ export function CreatorPacksEditor() {
           <button
             type="button"
             data-creator-step="3"
-            className={step === 3 ? "is-on" : undefined}
-            aria-current={step === 3 ? "step" : undefined}
+            className={step === 3 && publishStep === "idle" ? "is-on" : undefined}
+            aria-current={step === 3 && publishStep === "idle" ? "step" : undefined}
             disabled={!lockedFen || moves.length === 0 || pending}
-            onClick={() => lockedFen && moves.length > 0 && !pending && setStep(3)}
+            onClick={() => {
+              if (!lockedFen || moves.length === 0 || pending) return;
+              setPublishStep("idle");
+              setStep(3);
+            }}
           >
             3 Format
           </button>
         </li>
       </ol>
+      {publishStep === "idle" && savedLines.length > 0 ? (
+        <section data-creator-saved-lines>
+          <h2 className="creator-packs-subhead">Lines in this pack</h2>
+          <p className="creator-packs-note">Each saved line keeps the position it started from.</p>
+          <ul className="creator-kept-list">
+            {savedLines.map((line) => (
+              <li key={line.id}>
+                <span>
+                  {line.name}
+                  <span className="creator-kept-moves">{line.moves.length} moves, own position</span>
+                </span>
+                <button type="button" aria-label={`Remove ${line.name}`} onClick={() => setSavedLines((current) => current.filter((item) => item.id !== line.id))}>
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="creator-editor-actions">
+            <button type="button" data-creator-publish-saved onClick={() => beginPublish(savedLines)}>
+              Publish the lines already saved
+            </button>
+          </div>
+        </section>
+      ) : null}
 
-      {step === 1 ? (
+      {publishStep === "idle" && step === 1 ? (
         <section data-creator-position>
           <h2 className="creator-packs-subhead">Set up the starting position</h2>
           {lockedFen ? (
@@ -317,9 +516,37 @@ export function CreatorPacksEditor() {
             </>
           ) : (
             <>
+              {savedNote ? (
+                <p className="creator-packs-check" data-creator-line-saved>
+                  Line saved. Set up the next position. It can be a different moment, with its own pieces.
+                </p>
+              ) : null}
               <p className="creator-packs-note">
-                Start from the normal opening position, or build any position you like. A middlegame and a puzzle both begin here.
+                You do not have to start from an opening. Place the pieces for any position, or paste a FEN from the middle of a real game, then lock it in. Each line in a pack can start from its own position.
               </p>
+              <label className="creator-packs-field">
+                <span>Paste a position</span>
+                <textarea
+                  value={fenDraft}
+                  onChange={(event) => {
+                    setFenDraft(event.target.value);
+                    setFenError(null);
+                  }}
+                  rows={3}
+                  placeholder="Paste a FEN from the middle of a game"
+                  data-creator-fen
+                />
+              </label>
+              <div className="creator-editor-actions">
+                <button type="button" data-creator-apply-fen onClick={applyFen}>
+                  Place on the board
+                </button>
+              </div>
+              {fenError ? (
+                <p className="creator-packs-error" role="alert" data-creator-fen-error>
+                  {fenError}
+                </p>
+              ) : null}
               <div className="creator-palette" role="group" aria-label="Piece palette">
                 {(["w", "b"] as const).map((color) => (
                   <div key={color} className="creator-palette-row">
@@ -373,7 +600,10 @@ export function CreatorPacksEditor() {
                   type="button"
                   aria-pressed={turn === "w"}
                   className={turn === "w" ? "is-on" : undefined}
-                  onClick={() => setTurn("w")}
+                  onClick={() => {
+                    if (turn !== "w") setPastedFen(null);
+                    setTurn("w");
+                  }}
                 >
                   {t("White")} to move
                 </button>
@@ -381,7 +611,10 @@ export function CreatorPacksEditor() {
                   type="button"
                   aria-pressed={turn === "b"}
                   className={turn === "b" ? "is-on" : undefined}
-                  onClick={() => setTurn("b")}
+                  onClick={() => {
+                    if (turn !== "b") setPastedFen(null);
+                    setTurn("b");
+                  }}
                 >
                   {t("Black")} to move
                 </button>
@@ -393,6 +626,8 @@ export function CreatorPacksEditor() {
                   onClick={() => {
                     setGrid(startGrid());
                     setTurn("w");
+                    setPastedFen(null);
+                    setFenError(null);
                   }}
                 >
                   Standard start
@@ -400,21 +635,27 @@ export function CreatorPacksEditor() {
                 <button
                   type="button"
                   data-creator-clear-board
-                  onClick={() => setGrid(emptyGrid())}
+                  onClick={() => {
+                    setGrid(emptyGrid());
+                    setPastedFen(null);
+                    setFenError(null);
+                  }}
                 >
                   Clear board
                 </button>
               </div>
               <p className="creator-packs-note" data-creator-position-status>
-                {draftFen
-                  ? "This position can start a game."
-                  : "Each side needs one king, and the side to move must not already be in an impossible check."}
+                {pastedFen
+                  ? "Position placed. Lock it in when it looks right."
+                  : draftFen
+                    ? "This position can start a game."
+                    : "Each side needs one king, and the side to move must not already be in an impossible check."}
               </p>
               <button
                 type="button"
                 className="creator-packs-primary"
                 data-creator-lock
-                disabled={!draftFen}
+                disabled={!(pastedFen || draftFen)}
                 onClick={lockPosition}
               >
                 Lock in position
@@ -424,7 +665,7 @@ export function CreatorPacksEditor() {
         </section>
       ) : null}
 
-      {step === 2 && lockedFen ? (
+      {publishStep === "idle" && step === 2 && lockedFen ? (
         <section data-creator-moves>
           <h2 className="creator-packs-subhead">Play out the moves</h2>
           <p className="creator-packs-note" data-creator-locked>
@@ -443,7 +684,7 @@ export function CreatorPacksEditor() {
             {moves.length === 0
               ? "Starting position. Play the first move."
               : pending
-                ? `Comment on ${plyLabel(moves.length - 1, moves[moves.length - 1]!.san)}, then continue.`
+                ? `Comment on ${plyLabel(moves.length - 1, moves[moves.length - 1]!.san, lockedFen)}, then continue.`
                 : "Play the next move."}
           </p>
           <div className="creator-packs-board" data-creator-board>
@@ -494,7 +735,7 @@ export function CreatorPacksEditor() {
                   className={`creator-comment${index === moves.length - 1 ? " is-current" : ""}`}
                   data-creator-comment={index + 1}
                 >
-                  <span>Comment for {plyLabel(index, move.san)}</span>
+                  <span>Comment for {plyLabel(index, move.san, lockedFen ?? undefined)}</span>
                   <textarea
                     value={move.comment}
                     rows={2}
@@ -530,7 +771,7 @@ export function CreatorPacksEditor() {
         </section>
       ) : null}
 
-      {step === 3 && lockedFen ? (
+      {publishStep === "idle" && step === 3 && lockedFen ? (
         <section data-creator-format-step>
           <h2 className="creator-packs-subhead">Choose the format</h2>
           <p className="creator-packs-note">
@@ -574,31 +815,161 @@ export function CreatorPacksEditor() {
               />
             </div>
           ) : null}
-          {publishStep === "idle" ? (
+          <div className="creator-editor-actions">
+            <button
+              type="button"
+              data-creator-add-line
+              disabled={!format || moves.length === 0 || pending}
+              onClick={saveAndAddLine}
+            >
+              Add another line
+            </button>
             <button
               type="button"
               className="creator-packs-primary"
               data-creator-publish
-              disabled={!format}
-              onClick={() => setPublishStep("remind")}
+              disabled={!format || moves.length === 0 || pending}
+              onClick={() => {
+                const line = currentLine();
+                if (!line) return;
+                beginPublish([...savedLines, line]);
+              }}
             >
               Publish
             </button>
+          </div>
+        </section>
+      ) : null}
+
+      {publishStep === "remind" ? (
+        <div className="creator-publish-reminder" role="status" data-creator-publish-reminder>
+          <h2>Before you publish</h2>
+          <p>Double-check every line is exactly how you want it.</p>
+          <ul className="creator-kept-list">
+            {publishLines.map((line) => (
+              <li key={line.id}>
+                <span>
+                  {line.name}
+                  <span className="creator-kept-moves">{line.moves.length} moves from its own position</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <button type="button" className="creator-packs-primary" data-creator-continue onClick={() => setPublishStep("price")}>
+            Continue
+          </button>
+        </div>
+      ) : null}
+
+      {publishStep === "price" ? (
+        <section className="creator-publish-reminder" data-creator-price>
+          <h2>How much to charge?</h2>
+          <p>
+            Free keeps the pack open. Or add a price. You suggest the amount, and Opening Lab sets the final price before anyone is charged.
+          </p>
+          <p>
+            On a sale inside Opening Lab, you keep 70% and Opening Lab keeps 30%. Share your own link. A sale that arrives that way pays you 85%, and Opening Lab keeps 15%.
+          </p>
+          <p className="creator-packs-note">This preview does not take payment.</p>
+          <div className="creator-format-choices">
+            <button
+              type="button"
+              className={priceMode === "free" ? "is-on" : undefined}
+              aria-pressed={priceMode === "free"}
+              data-creator-price-free
+              onClick={() => {
+                setPriceMode("free");
+                setPriceError(null);
+              }}
+            >
+              <span className="creator-pack-name">Free</span>
+              <span className="creator-pack-bio">Players can open the whole pack without paying.</span>
+            </button>
+            <button
+              type="button"
+              className={priceMode === "priced" ? "is-on" : undefined}
+              aria-pressed={priceMode === "priced"}
+              data-creator-price-paid
+              onClick={() => {
+                setPriceMode("priced");
+                setPriceError(null);
+              }}
+            >
+              <span className="creator-pack-name">Add a price</span>
+              <span className="creator-pack-bio">Suggest an amount. A few common prices are listed, or name your own.</span>
+            </button>
+          </div>
+          {priceMode === "priced" ? (
+            <>
+              <div className="creator-suggest-row" role="group" aria-label="Suggested prices">
+                {SUGGESTED_PACK_PRICES.map((amount) => (
+                  <button
+                    key={amount}
+                    type="button"
+                    className={suggestedPrice === amount ? "is-on" : undefined}
+                    aria-pressed={suggestedPrice === amount}
+                    data-creator-price-suggest={amount}
+                    onClick={() => {
+                      setSuggestedPrice(amount);
+                      setCustomPrice("");
+                      setPriceError(null);
+                    }}
+                  >
+                    {amount}
+                  </button>
+                ))}
+              </div>
+              <label className="creator-packs-field">
+                <span>Or name your own</span>
+                <input
+                  value={customPrice}
+                  onChange={(event) => {
+                    setCustomPrice(event.target.value);
+                    setSuggestedPrice(null);
+                    setPriceError(null);
+                  }}
+                  inputMode="decimal"
+                  placeholder="4.00"
+                  data-creator-price-custom
+                />
+              </label>
+            </>
           ) : null}
-          {publishStep === "remind" ? (
-            <div className="creator-publish-reminder" role="status" data-creator-publish-reminder>
-              <h2>Before you publish</h2>
-              <p>Double-check every line is exactly how you want it.</p>
-              <button type="button" className="creator-packs-primary" data-creator-continue onClick={() => setPublishStep("done")}>
-                Continue
-              </button>
-            </div>
-          ) : null}
-          {publishStep === "done" ? (
-            <p className="creator-packs-note" role="status" data-creator-published>
-              Published to your creator pack. This preview did not store it.
+          {priceError ? (
+            <p className="creator-packs-error" role="alert">
+              {priceError}
             </p>
           ) : null}
+          {priceMode === "priced" && !payoutsReady ? (
+            <p className="creator-packs-check" data-creator-payout-prompt>
+              A priced pack is paid once payouts are set up. You can still submit now, and set them up when you are
+              ready. <Link to="/creator-packs/dashboard">Set up payouts</Link>
+            </p>
+          ) : null}
+          <button type="button" className="creator-packs-primary" data-creator-submit-pack onClick={submitPack}>
+            Submit pack
+          </button>
+        </section>
+      ) : null}
+
+      {publishStep === "submitted" && submitted ? (
+        <section className="creator-publish-reminder" role="status" data-creator-submitted>
+          <h2>Submitted</h2>
+          <p>
+            Your pack is live for you to see. Opening Lab will check it over and set it live for everyone shortly.
+          </p>
+          <p className="creator-packs-note">This preview did not store it on a server.</p>
+          <article className="creator-pack-card" data-creator-own-pack={submitted.id}>
+            <span className="creator-pack-name">{submitted.name}</span>
+            <span className="creator-pack-meta">
+              <span className="creator-pack-price">{submitted.suggestedPrice}</span>
+              <CreatorPackStatus status="review" />
+            </span>
+            <p className="creator-only-note">Visible only to you</p>
+          </article>
+          <Link to="/creator-packs/dashboard" className="creator-packs-primary creator-packs-primary-link">
+            See your packs
+          </Link>
         </section>
       ) : null}
     </div>

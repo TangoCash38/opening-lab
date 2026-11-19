@@ -112,6 +112,9 @@ export function CreatorPacksPack({ packId }: { packId: string }) {
                 <span className="creator-line-name">
                   {line.name}
                   <span className="creator-line-mode">{modeLabel(line.mode)}</span>
+                  {line.fen && !line.fen.startsWith("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR") ? (
+                    <span className="creator-line-mode">Own position</span>
+                  ) : null}
                   {locked ? (
                     <span className="creator-line-lock">
                       <Lock className="size-3" strokeWidth={2.5} aria-hidden />
@@ -122,7 +125,7 @@ export function CreatorPacksPack({ packId }: { packId: string }) {
                   )}
                 </span>
                 {!locked && line.plies ? (
-                  <span className="creator-line-moves">{formatDemoPlies(line.plies)}</span>
+                  <span className="creator-line-moves">{formatDemoPlies(line.plies, line.fen)}</span>
                 ) : null}
               </span>
             </li>

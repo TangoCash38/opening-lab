@@ -6,7 +6,15 @@ import { creatorPacksRoutesOpen } from "@/lib/creator-packs-flag";
 import { initColorScheme } from "@/lib/color-scheme";
 import { I18nProvider, useT } from "@/lib/i18n";
 
-export type CreatorPacksScreen = "browse" | "pack" | "become" | "editor" | "ratings";
+export type CreatorPacksScreen =
+  | "browse"
+  | "pack"
+  | "become"
+  | "editor"
+  | "ratings"
+  | "help"
+  | "dashboard"
+  | "admin";
 
 type RouteProps = {
   current: CreatorPacksScreen;
@@ -89,11 +97,25 @@ function CreatorPacksFrame({ current, children }: RouteProps) {
             Pack editor
           </Link>
           <Link
+            to="/creator-packs/dashboard"
+            className={current === "dashboard" ? "is-on" : undefined}
+            data-creator-nav="dashboard"
+          >
+            Your packs
+          </Link>
+          <Link
             to="/creator-packs/ratings"
             className={current === "ratings" ? "is-on" : undefined}
             data-creator-nav="ratings"
           >
             Ratings
+          </Link>
+          <Link
+            to="/creator-packs/help"
+            className={current === "help" ? "is-on" : undefined}
+            data-creator-nav="help"
+          >
+            Need help?
           </Link>
         </nav>
         {children}

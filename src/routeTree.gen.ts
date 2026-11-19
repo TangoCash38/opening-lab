@@ -28,8 +28,11 @@ import { Route as ApiPaymentsRouteImport } from './routes/api/payments'
 import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice-review-eval'
 import { Route as ApiSquareMemoryScoresRouteImport } from './routes/api/square-memory-scores'
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
+import { Route as CreatorPacksAdminRouteImport } from './routes/creator-packs_.admin'
 import { Route as CreatorPacksBecomeRouteImport } from './routes/creator-packs_.become'
+import { Route as CreatorPacksDashboardRouteImport } from './routes/creator-packs_.dashboard'
 import { Route as CreatorPacksEditorRouteImport } from './routes/creator-packs_.editor'
+import { Route as CreatorPacksHelpRouteImport } from './routes/creator-packs_.help'
 import { Route as CreatorPacksRatingsRouteImport } from './routes/creator-packs_.ratings'
 import { Route as LessonsCourseIdRouteImport } from './routes/lessons_.$courseId'
 import { Route as ApiAccountDeleteRouteImport } from './routes/api/account.delete'
@@ -138,14 +141,29 @@ const ApiUnlocksRoute = ApiUnlocksRouteImport.update({
   path: '/api/unlocks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorPacksAdminRoute = CreatorPacksAdminRouteImport.update({
+  id: '/creator-packs_/admin',
+  path: '/creator-packs/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorPacksBecomeRoute = CreatorPacksBecomeRouteImport.update({
   id: '/creator-packs_/become',
   path: '/creator-packs/become',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorPacksDashboardRoute = CreatorPacksDashboardRouteImport.update({
+  id: '/creator-packs_/dashboard',
+  path: '/creator-packs/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorPacksEditorRoute = CreatorPacksEditorRouteImport.update({
   id: '/creator-packs_/editor',
   path: '/creator-packs/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorPacksHelpRoute = CreatorPacksHelpRouteImport.update({
+  id: '/creator-packs_/help',
+  path: '/creator-packs/help',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreatorPacksRatingsRoute = CreatorPacksRatingsRouteImport.update({
@@ -230,8 +248,11 @@ export interface FileRoutesByFullPath {
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/creator-packs/admin': typeof CreatorPacksAdminRoute
   '/creator-packs/become': typeof CreatorPacksBecomeRoute
+  '/creator-packs/dashboard': typeof CreatorPacksDashboardRoute
   '/creator-packs/editor': typeof CreatorPacksEditorRoute
+  '/creator-packs/help': typeof CreatorPacksHelpRoute
   '/creator-packs/ratings': typeof CreatorPacksRatingsRoute
   '/lessons/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
@@ -265,8 +286,11 @@ export interface FileRoutesByTo {
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/creator-packs/admin': typeof CreatorPacksAdminRoute
   '/creator-packs/become': typeof CreatorPacksBecomeRoute
+  '/creator-packs/dashboard': typeof CreatorPacksDashboardRoute
   '/creator-packs/editor': typeof CreatorPacksEditorRoute
+  '/creator-packs/help': typeof CreatorPacksHelpRoute
   '/creator-packs/ratings': typeof CreatorPacksRatingsRoute
   '/api/account/delete': typeof ApiAccountDeleteRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -300,8 +324,11 @@ export interface FileRoutesById {
   '/api/practice-review-eval': typeof ApiPracticeReviewEvalRoute
   '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
+  '/creator-packs_/admin': typeof CreatorPacksAdminRoute
   '/creator-packs_/become': typeof CreatorPacksBecomeRoute
+  '/creator-packs_/dashboard': typeof CreatorPacksDashboardRoute
   '/creator-packs_/editor': typeof CreatorPacksEditorRoute
+  '/creator-packs_/help': typeof CreatorPacksHelpRoute
   '/creator-packs_/ratings': typeof CreatorPacksRatingsRoute
   '/lessons_/$courseId': typeof LessonsCourseIdRouteWithChildren
   '/api/account/delete': typeof ApiAccountDeleteRoute
@@ -337,8 +364,11 @@ export interface FileRouteTypes {
     | '/api/practice-review-eval'
     | '/api/square-memory-scores'
     | '/api/unlocks'
+    | '/creator-packs/admin'
     | '/creator-packs/become'
+    | '/creator-packs/dashboard'
     | '/creator-packs/editor'
+    | '/creator-packs/help'
     | '/creator-packs/ratings'
     | '/lessons/$courseId'
     | '/api/account/delete'
@@ -372,8 +402,11 @@ export interface FileRouteTypes {
     | '/api/practice-review-eval'
     | '/api/square-memory-scores'
     | '/api/unlocks'
+    | '/creator-packs/admin'
     | '/creator-packs/become'
+    | '/creator-packs/dashboard'
     | '/creator-packs/editor'
+    | '/creator-packs/help'
     | '/creator-packs/ratings'
     | '/api/account/delete'
     | '/api/auth/$'
@@ -406,8 +439,11 @@ export interface FileRouteTypes {
     | '/api/practice-review-eval'
     | '/api/square-memory-scores'
     | '/api/unlocks'
+    | '/creator-packs_/admin'
     | '/creator-packs_/become'
+    | '/creator-packs_/dashboard'
     | '/creator-packs_/editor'
+    | '/creator-packs_/help'
     | '/creator-packs_/ratings'
     | '/lessons_/$courseId'
     | '/api/account/delete'
@@ -442,8 +478,11 @@ export interface RootRouteChildren {
   ApiPracticeReviewEvalRoute: typeof ApiPracticeReviewEvalRoute
   ApiSquareMemoryScoresRoute: typeof ApiSquareMemoryScoresRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
+  CreatorPacksAdminRoute: typeof CreatorPacksAdminRoute
   CreatorPacksBecomeRoute: typeof CreatorPacksBecomeRoute
+  CreatorPacksDashboardRoute: typeof CreatorPacksDashboardRoute
   CreatorPacksEditorRoute: typeof CreatorPacksEditorRoute
+  CreatorPacksHelpRoute: typeof CreatorPacksHelpRoute
   CreatorPacksRatingsRoute: typeof CreatorPacksRatingsRoute
   LessonsCourseIdRoute: typeof LessonsCourseIdRouteWithChildren
   ApiAccountDeleteRoute: typeof ApiAccountDeleteRoute
@@ -589,6 +628,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUnlocksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator-packs_/admin': {
+      id: '/creator-packs_/admin'
+      path: '/creator-packs/admin'
+      fullPath: '/creator-packs/admin'
+      preLoaderRoute: typeof CreatorPacksAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/creator-packs_/become': {
       id: '/creator-packs_/become'
       path: '/creator-packs/become'
@@ -596,11 +642,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatorPacksBecomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator-packs_/dashboard': {
+      id: '/creator-packs_/dashboard'
+      path: '/creator-packs/dashboard'
+      fullPath: '/creator-packs/dashboard'
+      preLoaderRoute: typeof CreatorPacksDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/creator-packs_/editor': {
       id: '/creator-packs_/editor'
       path: '/creator-packs/editor'
       fullPath: '/creator-packs/editor'
       preLoaderRoute: typeof CreatorPacksEditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator-packs_/help': {
+      id: '/creator-packs_/help'
+      path: '/creator-packs/help'
+      fullPath: '/creator-packs/help'
+      preLoaderRoute: typeof CreatorPacksHelpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/creator-packs_/ratings': {
@@ -748,8 +808,11 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPracticeReviewEvalRoute: ApiPracticeReviewEvalRoute,
   ApiSquareMemoryScoresRoute: ApiSquareMemoryScoresRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
+  CreatorPacksAdminRoute: CreatorPacksAdminRoute,
   CreatorPacksBecomeRoute: CreatorPacksBecomeRoute,
+  CreatorPacksDashboardRoute: CreatorPacksDashboardRoute,
   CreatorPacksEditorRoute: CreatorPacksEditorRoute,
+  CreatorPacksHelpRoute: CreatorPacksHelpRoute,
   CreatorPacksRatingsRoute: CreatorPacksRatingsRoute,
   LessonsCourseIdRoute: LessonsCourseIdRouteWithChildren,
   ApiAccountDeleteRoute: ApiAccountDeleteRoute,
