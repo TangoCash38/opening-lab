@@ -10,46 +10,57 @@ type Props = {
   plies: readonly string[];
   comments: readonly string[];
   side?: "w" | "b";
+  /** Starting position. Omitted means the normal opening array. */
+  fen?: string;
 };
 
-function replay(plies: readonly string[], upto: number): Chess {
-  const chess = new Chess();
+function replay(plies: readonly string[], upto: number, fen?: string): Chess {
+  const chess = fen ? new Chess(fen) : new Chess();
   for (let i = 0; i < upto && i < plies.length; i++) {
     if (!chess.move(plies[i]!)) break;
   }
   return chess;
 }
 
-function bookMove(plies: readonly string[], ply: number): Move | null {
+function bookMove(plies: readonly string[], ply: number, fen?: string): Move | null {
   if (ply < 0 || ply >= plies.length) return null;
-  const chess = replay(plies, ply);
+  const chess = replay(plies, ply, fen);
   const san = plies[ply]!;
   return chess.moves({ verbose: true }).find((move) => move.san === san) ?? null;
 }
 
-export function CreatorPackStudy({ title, mode, plies, comments, side = "w" }: Props) {
+function isStandardStart(fen?: string): boolean {
+  if (!fen) return true;
+  return fen.startsWith("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
+}
+
+export function CreatorPackStudy({ title, mode, plies, comments, side = "w", fen }: Props) {
   if (mode === "drill") {
-    return <DrillStudy title={title} plies={plies} comments={comments} side={side} />;
+    return <DrillStudy title={title} plies={plies} comments={comments} side={side} fen={fen} />;
   }
-  return <WalkStudy title={title} plies={plies} comments={comments} />;
+  return <WalkStudy title={title} plies={plies} comments={comments} fen={fen} />;
 }
 
 function WalkStudy({
   title,
   plies,
   comments,
+  fen,
 }: {
   title: string;
   plies: readonly string[];
   comments: readonly string[];
+  fen?: string;
 }) {
-  const [ply, setPly] = useState(plies.length > 0 ? 1 : 0);
-  const game = replay(plies, ply);
+  const [ply, setPly] = useState(isStandardStart(fen) && plies.length > 0 ? 1 : 0);
+  const game = replay(plies, ply, fen);
   const verbose = game.history({ verbose: true });
   const last = verbose[verbose.length - 1];
   const comment =
     ply === 0
-      ? "Starting position. Step forward to read the note on each move."
+      ? isStandardStart(fen)
+        ? "Starting position. Step forward to read the note on each move."
+        : "This is the position the line starts from. Step forward for each move and its note."
       : (comments[ply - 1] ?? "");
   const moveName = ply === 0 ? "Start" : plyLabel(ply - 1, plies[ply - 1] ?? "");
 
@@ -103,20 +114,22 @@ function DrillStudy({
   plies,
   comments,
   side,
+  fen,
 }: {
   title: string;
   plies: readonly string[];
   comments: readonly string[];
   side: "w" | "b";
+  fen?: string;
 }) {
   const [phase, setPhase] = useState<"practice" | "test">("practice");
   const [ply, setPly] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
   const [wrong, setWrong] = useState<Square | null>(null);
   const done = ply >= plies.length;
-  const studentTurn = !done && (ply % 2 === 0) === (side === "w");
-  const expected = studentTurn ? bookMove(plies, ply) : null;
-  const game = replay(plies, ply);
+  const studentTurn = !done && ply % 2 === 0;
+  const expected = studentTurn ? bookMove(plies, ply, fen) : null;
+  const game = replay(plies, ply, fen);
   const verbose = game.history({ verbose: true });
   const last = verbose[verbose.length - 1];
   const comment =

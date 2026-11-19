@@ -32,10 +32,10 @@ export function CreatorPacksBecome() {
 
   return (
     <div data-creator-packs-become>
-      <h1 className="creator-packs-title">Become a creator</h1>
+      <p className="creator-packs-kicker">Become a creator</p>
+      <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
-        A tool for the chess you want to teach. Build an opening pack, a puzzle, or any part of a game.
-        Enter the moves on the board, or type them in SAN or coordinates. Opening Lab turns that into a learning pack under your name.
+        Set a starting position, play the moves, then turn them into a drill or a walk-through. The pack carries your name, and the lines stay as you wrote them.
       </p>
       <p className="creator-packs-note">
         These splits are the proposal, so the numbers can be read here before anything goes live.

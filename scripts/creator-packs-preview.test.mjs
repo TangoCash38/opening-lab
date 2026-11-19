@@ -67,9 +67,16 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(become, /You keep 70%/);
   assert.match(become, /Opening Lab keeps 30%/);
   assert.match(become, /pays you 85%/);
+  assert.match(become, /Create your own Opening Lab style drill/);
   assert.match(become, /Drill or Walk-through/);
   assert.match(become, /data-creator-thanks/);
   assert.match(become, /has not sent or stored/);
+  assert.match(editor, /Create your own Opening Lab style drill/);
+  assert.match(editor, /Lock in position/);
+  assert.match(editor, /data-creator-step="1"/);
+  assert.match(editor, /data-creator-step="2"/);
+  assert.match(editor, /data-creator-step="3"/);
+  assert.match(editor, /Turn it into a drill/);
   assert.match(editor, /ChessBoard/);
   assert.match(editor, /Double-check every line is exactly how you want it/);
   assert.match(editor, /data-creator-continue/);
@@ -80,6 +87,8 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(study, /data-creator-study-mode="walk"/);
   assert.match(study, /data-creator-study-mode="drill"/);
   assert.match(study, /data-creator-walk-comment/);
+  assert.match(study, /new Chess\(fen\)/);
+  assert.match(demo, /r1bqkb1r\/pppp1ppp\/2n2n2\/4p2Q\/2B1P3\/8\/PPPP1PPP\/RNB1K1NR/);
   assert.match(study, /data-creator-drill-comment/);
   assert.match(demo, /Sample Student/);
   assert.match(demo, /Fictional Viewer/);

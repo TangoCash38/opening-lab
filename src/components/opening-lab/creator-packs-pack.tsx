@@ -62,6 +62,8 @@ export function CreatorPacksPack({ packId }: { packId: string }) {
           mode={openLine.mode}
           plies={openLine.plies}
           comments={openLine.comments ?? []}
+          fen={openLine.fen}
+          side={openLine.fen?.split(" ")[1] === "b" ? "b" : "w"}
         />
       ) : null}
       <p className="creator-packs-lede">{pack.blurb}</p>

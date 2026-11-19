@@ -20,6 +20,8 @@ export type DemoLine = {
   plies?: readonly string[];
   /** Optional note for each ply, aligned with `plies`. */
   comments?: readonly string[];
+  /** When set, the line starts here instead of the opening array. */
+  fen?: string;
 };
 
 export type DemoPack = {
@@ -125,19 +127,15 @@ export const DEMO_PACKS: readonly DemoPack[] = [
     name: "The f7 Glance",
     price: "£1.50",
     badge: "Puzzle",
-    blurb: "A short puzzle from the same fictional coach. One idea, then you stop.",
+    blurb:
+      "A puzzle from the same fictional coach. It starts in the middlegame, with the queen and bishop already looking at f7.",
     lines: [
       {
-        name: "The bishop's diagonal",
-        mode: "walk",
-        plies: ["e4", "e5", "Nf3", "Nc6", "Bc4"],
-        comments: [
-          "The king's pawn first.",
-          "Black takes a share of the centre.",
-          "The knight develops.",
-          "Black's knight comes to c6.",
-          "Now the bishop looks at f7. That glance is the whole puzzle.",
-        ],
+        name: "The glance at f7",
+        mode: "drill",
+        fen: "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+        plies: ["Qxf7"],
+        comments: ["The queen takes on f7. That glance was the whole idea."],
       },
     ],
   },
