@@ -14,7 +14,8 @@ import { useCreatorPayout } from "@/lib/creator-packs-payout";
 import { firstPurchaseLink, NO_PURCHASE_LINK, purchaseLinkMessage } from "@/lib/creator-packs-text";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
-import { ChessPiece } from "./chess-pieces";
+import { ChessPiece, pieceName } from "./chess-pieces";
+import { CreatorSetupBoard } from "./creator-packs-setup-board";
 import { CreatorPromoteNote } from "./creator-packs-promote";
 import { CreatorPackStatus } from "./creator-packs-status";
 import { CreatorPackStudy } from "./creator-packs-study";
@@ -187,16 +188,44 @@ export function CreatorPacksEditor() {
   const last = verbose[verbose.length - 1];
   const canMove = step === 2 && !!lockedFen && !pending;
 
-  const place = (rank: number, file: number) => {
-    if (lockedFen || !tool) return;
+  const touchGrid = () => {
     setPastedFen(null);
     setSavedNote(false);
+  };
+
+  const place = (rank: number, file: number) => {
+    if (lockedFen || !tool) return;
+    touchGrid();
     setGrid((current) =>
       current.map((row, rowIndex) =>
         row.map((cell, fileIndex) => {
           if (rowIndex !== rank || fileIndex !== file) return cell;
           return tool === "erase" ? null : { ...tool };
         }),
+      ),
+    );
+  };
+
+  const movePiece = (fromRank: number, fromFile: number, toRank: number, toFile: number) => {
+    touchGrid();
+    setGrid((current) => {
+      const moving = current[fromRank]?.[fromFile];
+      if (!moving) return current;
+      return current.map((row, rowIndex) =>
+        row.map((cell, fileIndex) => {
+          if (rowIndex === fromRank && fileIndex === fromFile) return null;
+          if (rowIndex === toRank && fileIndex === toFile) return moving;
+          return cell;
+        }),
+      );
+    });
+  };
+
+  const removePiece = (rank: number, file: number) => {
+    touchGrid();
+    setGrid((current) =>
+      current.map((row, rowIndex) =>
+        row.map((cell, fileIndex) => (rowIndex === rank && fileIndex === file ? null : cell)),
       ),
     );
   };
@@ -547,47 +576,29 @@ export function CreatorPacksEditor() {
                   Line saved. Set up the next position. It can be a different moment, with its own pieces.
                 </p>
               ) : null}
-              <p className="creator-packs-note">
-                You do not have to start from an opening. Place the pieces for any position, or paste a FEN from the middle of a real game, then lock it in. Each line in a pack can start from its own position.
-              </p>
-              <label className="creator-packs-field">
-                <span>Paste a position</span>
-                <textarea
-                  value={fenDraft}
-                  onChange={(event) => {
-                    setFenDraft(event.target.value);
-                    setFenError(null);
-                  }}
-                  rows={3}
-                  placeholder="Paste a FEN from the middle of a game"
-                  data-creator-fen
-                />
-              </label>
-              <div className="creator-editor-actions">
-                <button type="button" data-creator-apply-fen onClick={applyFen}>
-                  Place on the board
-                </button>
-              </div>
-              {fenError ? (
-                <p className="creator-packs-error" role="alert" data-creator-fen-error>
-                  {fenError}
-                </p>
-              ) : null}
+              <CreatorSetupBoard
+                codes={grid.map((rank) => rank.map((cell) => (cell ? pieceCode(cell) : null)))}
+                onPlace={place}
+                onMove={movePiece}
+                onRemove={removePiece}
+              />
               <div className="creator-palette" role="group" aria-label="Piece palette">
                 {(["w", "b"] as const).map((color) => (
                   <div key={color} className="creator-palette-row">
                     {PALETTE.map((type) => {
                       const active = tool !== "erase" && tool?.type === type && tool.color === color;
+                      const code = pieceCode({ type, color });
                       return (
                         <button
                           key={`${color}${type}`}
                           type="button"
                           className={active ? "is-on" : undefined}
                           aria-pressed={active}
+                          aria-label={pieceName(code)}
                           data-creator-palette={`${color}${type}`}
-                          onClick={() => setTool({ type, color })}
+                          onClick={() => setTool(active ? null : { type, color })}
                         >
-                          <ChessPiece code={pieceCode({ type, color })} />
+                          <ChessPiece code={code} />
                         </button>
                       );
                     })}
@@ -595,57 +606,18 @@ export function CreatorPacksEditor() {
                 ))}
                 <button
                   type="button"
-                  className={tool === "erase" ? "is-on" : undefined}
+                  className={`creator-palette-erase${tool === "erase" ? " is-on" : ""}`}
                   aria-pressed={tool === "erase"}
                   data-creator-erase
-                  onClick={() => setTool("erase")}
+                  onClick={() => setTool(tool === "erase" ? null : "erase")}
                 >
                   Remove
                 </button>
               </div>
-              <div className="creator-setup-board" data-creator-setup-board>
-                {grid.map((rank, rankIndex) =>
-                  rank.map((cell, fileIndex) => {
-                    const light = (rankIndex + fileIndex) % 2 === 1;
-                    return (
-                      <button
-                        key={`${rankIndex}-${fileIndex}`}
-                        type="button"
-                        className={`creator-setup-sq ${light ? "sq-light" : "sq-dark"}`}
-                        aria-label={`${"abcdefgh"[fileIndex]}${8 - rankIndex}`}
-                        onClick={() => place(rankIndex, fileIndex)}
-                      >
-                        {cell ? <ChessPiece code={pieceCode(cell)} /> : null}
-                      </button>
-                    );
-                  }),
-                )}
-              </div>
-              <div className="creator-side" role="group" aria-label="Side to move">
-                <button
-                  type="button"
-                  aria-pressed={turn === "w"}
-                  className={turn === "w" ? "is-on" : undefined}
-                  onClick={() => {
-                    if (turn !== "w") setPastedFen(null);
-                    setTurn("w");
-                  }}
-                >
-                  {t("White")} to move
-                </button>
-                <button
-                  type="button"
-                  aria-pressed={turn === "b"}
-                  className={turn === "b" ? "is-on" : undefined}
-                  onClick={() => {
-                    if (turn !== "b") setPastedFen(null);
-                    setTurn("b");
-                  }}
-                >
-                  {t("Black")} to move
-                </button>
-              </div>
-              <div className="creator-editor-actions">
+              <p className="creator-packs-note">
+                Tap a piece, then a square. Drag a piece to another square, or off the board to remove it.
+              </p>
+              <div className="creator-setup-controls">
                 <button
                   type="button"
                   data-creator-standard
@@ -669,7 +641,55 @@ export function CreatorPacksEditor() {
                 >
                   Clear board
                 </button>
+                <button
+                  type="button"
+                  aria-pressed={turn === "w"}
+                  className={turn === "w" ? "is-on" : undefined}
+                  onClick={() => {
+                    if (turn !== "w") setPastedFen(null);
+                    setTurn("w");
+                  }}
+                >
+                  {t("White")} to move
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={turn === "b"}
+                  className={turn === "b" ? "is-on" : undefined}
+                  onClick={() => {
+                    if (turn !== "b") setPastedFen(null);
+                    setTurn("b");
+                  }}
+                >
+                  {t("Black")} to move
+                </button>
               </div>
+              <details className="creator-advanced" data-creator-advanced>
+                <summary>Advanced: paste a position</summary>
+                <label className="creator-packs-field">
+                  <span>Paste a FEN</span>
+                  <textarea
+                    value={fenDraft}
+                    onChange={(event) => {
+                      setFenDraft(event.target.value);
+                      setFenError(null);
+                    }}
+                    rows={3}
+                    placeholder="Paste a FEN from the middle of a game"
+                    data-creator-fen
+                  />
+                </label>
+                <div className="creator-editor-actions">
+                  <button type="button" data-creator-apply-fen onClick={applyFen}>
+                    Place on the board
+                  </button>
+                </div>
+                {fenError ? (
+                  <p className="creator-packs-error" role="alert" data-creator-fen-error>
+                    {fenError}
+                  </p>
+                ) : null}
+              </details>
               <p className="creator-packs-note" data-creator-position-status>
                 {pastedFen
                   ? "Position placed. Lock it in when it looks right."

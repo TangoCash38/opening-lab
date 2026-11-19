@@ -158,6 +158,13 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(become, /Need help\?/);
   assert.match(editor, /Paste a FEN/);
   assert.match(editor, /data-creator-fen/);
+  assert.match(editor, /Advanced: paste a position/);
+  assert.match(editor, /CreatorSetupBoard/);
+  assert.match(editor, /Drag a piece to another square/);
+  const setupCss = src("src/styles.css").slice(src("src/styles.css").indexOf(".creator-setup-play"));
+  assert.match(setupCss, /aspect-ratio:\s*1/);
+  assert.match(setupCss, /grid-template-rows:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(setupCss, /\.creator-setup-sq[\s\S]*aspect-ratio:\s*1/);
   assert.match(editor, /data-creator-add-line/);
   assert.match(editor, /How much to charge\?/);
   assert.match(editor, /data-creator-price/);
@@ -213,7 +220,8 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(frame, /data-creator-packs-closed/);
   const promote = src("src/components/opening-lab/creator-packs-promote.tsx");
   const textGuard = src("src/lib/creator-packs-text.ts");
-  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status, payout, getPaid, promote, textGuard].join("\n");
+  const setupBoard = src("src/components/opening-lab/creator-packs-setup-board.tsx");
+  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status, payout, getPaid, promote, textGuard, setupBoard].join("\n");
   assert.doesNotMatch(joined, /—|–/);
   assert.doesNotMatch(joined, new RegExp("8" + "5%"));
   assert.doesNotMatch(joined, new RegExp("refer" + "ral", "i"));
