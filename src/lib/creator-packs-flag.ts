@@ -1,6 +1,10 @@
 /**
- * Creator Packs is a draft preview. Production builds and the live hosts
- * never show it. The Vite plugin replaces the sentinel with VERCEL_ENV.
+ * Creator Packs on the live site is a direct-URL test.
+ * Home and every other link from the rest of the app stay off production
+ * and off the live hosts. Typing /creator-packs still opens the pages.
+ * The Vite plugin replaces the sentinel with VERCEL_ENV.
+ *
+ * `VITE_CREATOR_PACKS=0` hides the pages as well as the links.
  */
 
 export type CreatorPacksGateInput = {
@@ -8,7 +12,7 @@ export type CreatorPacksGateInput = {
   vercelEnv: string;
   hostname: string;
   dev: boolean;
-  /** `VITE_CREATOR_PACKS`. `0` hides the preview. `1` cannot override production. */
+  /** `VITE_CREATOR_PACKS`. `0` hides links and pages. `1` cannot show links on production. */
   flag: string | undefined;
 };
 
@@ -20,6 +24,7 @@ const LIVE_HOSTS = new Set([
   "opening-lab-tango6.vercel.app",
 ]);
 
+/** Links from Home and the rest of the app. Never on a live host or a production build. */
 export function creatorPacksPreviewDecision(input: CreatorPacksGateInput): boolean {
   const flag = input.flag?.trim();
   if (flag === "0" || flag === "false") return false;
@@ -60,4 +65,16 @@ export function creatorPacksPreviewEnabled(): boolean {
     dev: import.meta.env.DEV,
     flag: typeof flag === "string" ? flag : undefined,
   });
+}
+
+/** Direct /creator-packs URLs. On unless VITE_CREATOR_PACKS is explicitly off. */
+export function creatorPacksRoutesEnabled(flag: string | undefined): boolean {
+  const value = flag?.trim();
+  if (value === "0" || value === "false") return false;
+  return true;
+}
+
+export function creatorPacksRoutesOpen(): boolean {
+  const flag = import.meta.env.VITE_CREATOR_PACKS;
+  return creatorPacksRoutesEnabled(typeof flag === "string" ? flag : undefined);
 }

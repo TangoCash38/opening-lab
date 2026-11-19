@@ -1,8 +1,8 @@
-import { useLayoutEffect, useState, type ReactNode } from "react";
+import { useLayoutEffect, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { creatorInitials, type CreatorHue } from "@/data/creator-packs-demo";
 import { initBoardTheme } from "@/lib/board-theme";
-import { creatorPacksPreviewEnabled } from "@/lib/creator-packs-flag";
+import { creatorPacksRoutesOpen } from "@/lib/creator-packs-flag";
 import { initColorScheme } from "@/lib/color-scheme";
 import { I18nProvider, useT } from "@/lib/i18n";
 
@@ -14,26 +14,21 @@ type RouteProps = {
 };
 
 export function CreatorPacksRoute({ current, children }: RouteProps) {
-  const [phase, setPhase] = useState<"wait" | "open" | "closed">("wait");
+  const open = creatorPacksRoutesOpen();
 
   useLayoutEffect(() => {
     const stopBoard = initBoardTheme();
     const stopColor = initColorScheme();
-    setPhase(creatorPacksPreviewEnabled() ? "open" : "closed");
     return () => {
       stopBoard();
       stopColor();
     };
   }, []);
 
-  if (phase === "wait") {
-    return <main className="creator-packs" data-creator-packs-pending />;
-  }
-
   return (
     <I18nProvider>
       <div data-surface="website" data-creator-packs-page>
-        {phase === "open" ? (
+        {open ? (
           <CreatorPacksFrame current={current}>{children}</CreatorPacksFrame>
         ) : (
           <CreatorPacksClosed />

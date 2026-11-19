@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -27,9 +28,48 @@ test("creator packs stay off production and the live hosts", () => {
   assert.match(flag, /vercelEnv === "production"/);
   assert.match(flag, /VITE_CREATOR_PACKS/);
   assert.match(flag, /flag === "0"/);
+  assert.match(flag, /export function creatorPacksRoutesEnabled/);
   assert.match(vite, /creatorPacksEnvPlugin/);
   assert.match(vite, /VERCEL_ENV/);
   assert.match(flag, /__VERCEL_ENV__/);
+  assert.match(frame, /creatorPacksRoutesOpen/);
+  assert.doesNotMatch(frame, /creatorPacksPreviewEnabled/);
+  assert.match(landing, /creatorPacksPreviewEnabled/);
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+        import { creatorPacksPreviewDecision, creatorPacksRoutesEnabled } from "./src/lib/creator-packs-flag.ts";
+        const live = { vercelEnv: "production", hostname: "openinglab.co.uk", dev: false, flag: undefined };
+        const www = { vercelEnv: "production", hostname: "www.openinglab.co.uk", dev: false, flag: "1" };
+        const alias = { vercelEnv: "production", hostname: "opening-lab-xi.vercel.app", dev: false, flag: undefined };
+        const preview = { vercelEnv: "preview", hostname: "opening-lab-git-cursor-creator-packs-preview-cd48-tango6.vercel.app", dev: false, flag: undefined };
+        if (creatorPacksPreviewDecision(live) !== false) process.exit(2);
+        if (creatorPacksPreviewDecision(www) !== false) process.exit(3);
+        if (creatorPacksPreviewDecision(alias) !== false) process.exit(4);
+        if (creatorPacksPreviewDecision(preview) !== true) process.exit(5);
+        if (creatorPacksRoutesEnabled(undefined) !== true) process.exit(6);
+        if (creatorPacksRoutesEnabled("0") !== false) process.exit(7);
+        if (creatorPacksRoutesEnabled("false") !== false) process.exit(8);
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
+test("creator pack routes are noindex and are not in a sitemap", () => {
+  const routes = readdirSync(join(root, "src/routes")).filter((name) => name.startsWith("creator-packs"));
+  assert.ok(routes.length >= 6);
+  for (const name of routes) {
+    const file = src(`src/routes/${name}`);
+    assert.match(file, /name: "robots", content: "noindex, nofollow"/);
+  }
+  assert.equal(src("src/routeTree.gen.ts").includes("sitemap"), false);
+  assert.doesNotMatch(src("vercel.json"), /sitemap/i);
 });
 
 test("home entry is gated and does not alter the live pack grid", () => {
@@ -95,7 +135,7 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(demo, /Demo Clubmate/);
   assert.match(ratings, /Across every pack/);
   assert.match(ratings, /review.author/);
-  assert.match(frame, /creatorPacksPreviewEnabled/);
+  assert.match(frame, /creatorPacksRoutesOpen/);
   assert.match(frame, /data-creator-packs-closed/);
   const joined = [demo, browse, pack, become, editor, frame, study, ratings].join("\n");
   assert.doesNotMatch(joined, /—|–/);
