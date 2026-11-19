@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useReviewPacks, type StoredPack } from "@/lib/creator-packs-review";
+import { CreatorGetPaid } from "./creator-packs-get-paid";
 import { CreatorPackStatus } from "./creator-packs-status";
 
 function priceLabel(pack: StoredPack): string {
@@ -18,6 +19,7 @@ export function CreatorPacksDashboard() {
         A pack in review is visible only to you. When Opening Lab sets it live, other players can see it too. This
         list stays on this device.
       </p>
+      <CreatorGetPaid />
       <div className="creator-packs-grid">
         {mine.map((pack) => (
           <article key={pack.id} className="creator-pack-card" data-creator-own-pack={pack.id}>

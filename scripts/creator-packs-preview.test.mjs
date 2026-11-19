@@ -23,6 +23,8 @@ const dashboard = src("src/components/opening-lab/creator-packs-dashboard.tsx");
 const admin = src("src/components/opening-lab/creator-packs-admin.tsx");
 const helpEmail = src("src/lib/creator-packs-help.ts");
 const review = src("src/lib/creator-packs-review.ts");
+const payout = src("src/lib/creator-packs-payout.ts");
+const getPaid = src("src/components/opening-lab/creator-packs-get-paid.tsx");
 const status = src("src/components/opening-lab/creator-packs-status.tsx");
 const vite = src("vite.config.ts");
 
@@ -166,6 +168,22 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(admin, /data-creator-approve/);
   assert.match(admin, /data-creator-send-back/);
   assert.match(admin, /Final price/);
+  assert.match(admin, /Monthly payouts/);
+  assert.match(admin, /Pay via Stripe/);
+  assert.match(admin, /data-creator-payout-row/);
+  assert.match(getPaid, /Get paid with Stripe/);
+  assert.match(getPaid, /Set up payouts with Stripe/);
+  assert.match(getPaid, /Opening Lab never sees your bank details/);
+  assert.match(getPaid, /70% of each sale/);
+  assert.match(getPaid, /85% when the buyer came through your own link/);
+  assert.match(getPaid, /data-creator-payout-hosted/);
+  assert.match(editor, /data-creator-payout-prompt/);
+  assert.match(editor, /You can still submit now/);
+  assert.match(status, /Not set up/);
+  assert.match(status, /Payouts set up/);
+  assert.match(payout, /localStorage/);
+  assert.doesNotMatch(getPaid, /<input/);
+  assert.doesNotMatch(payout, /sk_live|sk_test|stripe\(/);
   assert.match(review, /localStorage/);
   assert.match(frame, /Need help\?/);
   assert.doesNotMatch(frame, /creator-packs\/admin/);
@@ -173,11 +191,12 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(ratings, /review.author/);
   assert.match(frame, /creatorPacksRoutesOpen/);
   assert.match(frame, /data-creator-packs-closed/);
-  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status].join("\n");
+  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status, payout, getPaid].join("\n");
   assert.doesNotMatch(joined, /—|–/);
   assert.doesNotMatch(joined, /Stockfish|Line Gate|checked before it goes live/i);
   assert.doesNotMatch(joined, /5 book|punish|Play on/i);
-  assert.doesNotMatch(joined, /stripe|play-billing|playBilling|startCheckout|@\/data\/packs/i);
+  assert.doesNotMatch(joined, /from ["']stripe["']|sk_live|sk_test|startCheckout|play-billing|playBilling|@\/data\/packs/i);
+  assert.doesNotMatch(joined, /account number|sort code|routing number|iban/i);
   assert.doesNotMatch(joined, /fetch\(/);
 });
 

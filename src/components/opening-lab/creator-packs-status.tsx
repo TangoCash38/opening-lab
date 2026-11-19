@@ -13,3 +13,14 @@ export function CreatorPackStatus({ status }: { status: PackReviewStatus }) {
     </span>
   );
 }
+
+export function CreatorPayoutBadge({ ready }: { ready: boolean }) {
+  return (
+    <span
+      className={`creator-status ${ready ? "creator-status--live" : "creator-status--review"}`}
+      data-creator-payout={ready ? "ready" : "unset"}
+    >
+      {ready ? "Payouts set up" : "Not set up"}
+    </span>
+  );
+}

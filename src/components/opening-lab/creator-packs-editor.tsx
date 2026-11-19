@@ -10,6 +10,7 @@ import {
   SUGGESTED_PACK_PRICES,
   type StoredPack,
 } from "@/lib/creator-packs-review";
+import { useCreatorPayout } from "@/lib/creator-packs-payout";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
 import { ChessPiece } from "./chess-pieces";
@@ -172,6 +173,7 @@ export function CreatorPacksEditor() {
   const [customPrice, setCustomPrice] = useState("");
   const [priceError, setPriceError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<StoredPack | null>(null);
+  const { youReady: payoutsReady } = useCreatorPayout();
 
   const draftFen = useMemo(() => gridToFen(grid, turn), [grid, turn]);
   const game = useMemo(
@@ -936,6 +938,12 @@ export function CreatorPacksEditor() {
           {priceError ? (
             <p className="creator-packs-error" role="alert">
               {priceError}
+            </p>
+          ) : null}
+          {priceMode === "priced" && !payoutsReady ? (
+            <p className="creator-packs-check" data-creator-payout-prompt>
+              A priced pack is paid once payouts are set up. You can still submit now, and set them up when you are
+              ready. <Link to="/creator-packs/dashboard">Set up payouts</Link>
             </p>
           ) : null}
           <button type="button" className="creator-packs-primary" data-creator-submit-pack onClick={submitPack}>

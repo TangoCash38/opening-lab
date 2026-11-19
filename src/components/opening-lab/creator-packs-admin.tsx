@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { MONTHLY_PAYOUTS, payoutReadyFor, useCreatorPayout } from "@/lib/creator-packs-payout";
 import { formatPackPrice, useReviewPacks, type StoredPack } from "@/lib/creator-packs-review";
-import { CreatorPackStatus } from "./creator-packs-status";
+import { CreatorPackStatus, CreatorPayoutBadge } from "./creator-packs-status";
 
 export function CreatorPacksAdmin() {
   const [packs, replace, ready] = useReviewPacks();
+  const { youReady, paidIds, markPaid } = useCreatorPayout();
+  const [payNotes, setPayNotes] = useState<Record<string, string>>({});
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
@@ -56,6 +59,10 @@ export function CreatorPacksAdmin() {
               {pack.creatorName} · {pack.lineCount} {pack.lineCount === 1 ? "line" : "lines"}
             </span>
             <span className="creator-pack-meta">
+              <span className="creator-pack-bio">Payouts</span>
+              <CreatorPayoutBadge ready={payoutReadyFor(pack.creatorName, youReady)} />
+            </span>
+            <span className="creator-pack-meta">
               <span className="creator-pack-price">Suggested {pack.suggestedPrice}</span>
               <CreatorPackStatus status={pack.status} />
             </span>
@@ -100,6 +107,56 @@ export function CreatorPacksAdmin() {
             ) : null}
           </article>
         ))}
+      </div>
+      <h2 className="creator-packs-subhead">Monthly payouts</h2>
+      <p className="creator-packs-lede">
+        Buyers pay in the Google Play app. You pay creators from Opening Lab&apos;s Stripe account, once a month.
+        This list is a sample on this device.
+      </p>
+      <div className="creator-packs-grid" data-creator-monthly-payouts>
+        {MONTHLY_PAYOUTS.map((row) => {
+          const ready = payoutReadyFor(row.creatorName, youReady);
+          const paid = paidIds.includes(row.id);
+          return (
+            <article key={row.id} className="creator-pack-card" data-creator-payout-row={row.id}>
+              <div className="creator-pack-meta">
+                <span className="creator-pack-name">{row.creatorName}</span>
+                <CreatorPayoutBadge ready={ready} />
+              </div>
+              <span className="creator-pack-bio">Sales {row.salesLabel}</span>
+              <span className="creator-pack-price">Share owed {row.shareLabel}</span>
+              {paid ? (
+                <p className="creator-packs-note" role="status">
+                  Marked as paid on this device. Nothing was sent.
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  className="creator-packs-primary"
+                  data-creator-pay-stripe
+                  onClick={() => {
+                    if (!ready) {
+                      setPayNotes((current) => ({
+                        ...current,
+                        [row.id]: "Set up payouts first. Nothing was sent.",
+                      }));
+                      return;
+                    }
+                    markPaid(row.id);
+                    setPayNotes((current) => ({ ...current, [row.id]: "" }));
+                  }}
+                >
+                  Pay via Stripe
+                </button>
+              )}
+              {payNotes[row.id] ? (
+                <p className="creator-packs-note" role="status">
+                  {payNotes[row.id]}
+                </p>
+              ) : null}
+            </article>
+          );
+        })}
       </div>
     </div>
   );
