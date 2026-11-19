@@ -9,18 +9,40 @@ export type PayoutFile = {
   paidIds: string[];
 };
 
+/** Flat creator share. Every sale uses this rate. There is no second rate. */
+export const CREATOR_SHARE_PERCENT = 70;
+
 export type MonthlyPayout = {
   id: string;
   creatorName: string;
+  salesCount: number;
+  salesPence: number;
   salesLabel: string;
   shareLabel: string;
 };
 
-export const MONTHLY_PAYOUTS: readonly MonthlyPayout[] = [
-  { id: "you", creatorName: "You", salesLabel: "4 sales, £10.00", shareLabel: "£7.00" },
-  { id: "demo-coach", creatorName: "Demo Coach", salesLabel: "6 sales, £20.00", shareLabel: "£14.00" },
-  { id: "demo-author", creatorName: "Demo Author", salesLabel: "2 sales, £6.00", shareLabel: "£4.20" },
-];
+const MONTHLY_SALES = [
+  { id: "you", creatorName: "You", salesCount: 4, salesPence: 1000 },
+  { id: "demo-coach", creatorName: "Demo Coach", salesCount: 6, salesPence: 2000 },
+  { id: "demo-author", creatorName: "Demo Author", salesCount: 2, salesPence: 600 },
+] as const;
+
+export function creatorSharePence(salesPence: number): number {
+  return Math.round((salesPence * CREATOR_SHARE_PERCENT) / 100);
+}
+
+function pounds(pence: number): string {
+  return `£${(pence / 100).toFixed(2)}`;
+}
+
+export const MONTHLY_PAYOUTS: readonly MonthlyPayout[] = MONTHLY_SALES.map((row) => ({
+  id: row.id,
+  creatorName: row.creatorName,
+  salesCount: row.salesCount,
+  salesPence: row.salesPence,
+  salesLabel: `${row.salesCount} ${row.salesCount === 1 ? "sale" : "sales"}, ${pounds(row.salesPence)}`,
+  shareLabel: pounds(creatorSharePence(row.salesPence)),
+}));
 
 const EMPTY: PayoutFile = { version: 1, youReady: false, paidIds: [] };
 
