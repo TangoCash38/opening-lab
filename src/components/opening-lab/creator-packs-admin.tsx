@@ -110,8 +110,8 @@ export function CreatorPacksAdmin() {
       </div>
       <h2 className="creator-packs-subhead">Monthly payouts</h2>
       <p className="creator-packs-lede">
-        Buyers pay in the Google Play app. You pay creators from Opening Lab&apos;s Stripe account, once a month.
-        This list is a sample on this device.
+        Players buy on Opening Lab&apos;s website or in the app. You pay creators from Opening Lab&apos;s Stripe account, once a month.
+        The share is a flat 70% of sales. This list is a sample on this device.
       </p>
       <div className="creator-packs-grid" data-creator-monthly-payouts>
         {MONTHLY_PAYOUTS.map((row) => {
@@ -124,7 +124,7 @@ export function CreatorPacksAdmin() {
                 <CreatorPayoutBadge ready={ready} />
               </div>
               <span className="creator-pack-bio">Sales {row.salesLabel}</span>
-              <span className="creator-pack-price">Share owed {row.shareLabel}</span>
+              <span className="creator-pack-price">Share owed {row.shareLabel} (70% of sales)</span>
               {paid ? (
                 <p className="creator-packs-note" role="status">
                   Marked as paid on this device. Nothing was sent.

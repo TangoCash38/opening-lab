@@ -113,8 +113,16 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(pack, /Rate this pack/);
   assert.match(pack, /has not stored your rating/);
   assert.match(become, /You keep 70%/);
+  assert.match(become, /You keep 70% of every sale/);
   assert.match(become, /Opening Lab keeps 30%/);
-  assert.match(become, /pays you 85%/);
+  assert.match(become, /suggest a price/i);
+  assert.match(become, /Opening Lab reviews/);
+  assert.match(become, /Players buy on Opening Lab/);
+  assert.match(become, /CreatorPromoteNote/);
+  assert.match(src("src/components/opening-lab/creator-packs-promote.tsx"), /Promote your packs/);
+  assert.match(become, /website or in the app/);
+  assert.doesNotMatch(become, /Where players know/);
+  assert.doesNotMatch(become, /data-creator-field="known"/);
   assert.match(become, /Create your own Opening Lab style drill/);
   assert.match(become, /Drill or Walk-through/);
   assert.match(become, /data-creator-thanks/);
@@ -150,6 +158,13 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(become, /Need help\?/);
   assert.match(editor, /Paste a FEN/);
   assert.match(editor, /data-creator-fen/);
+  assert.match(editor, /Advanced: paste a position/);
+  assert.match(editor, /CreatorSetupBoard/);
+  assert.match(editor, /Drag a piece to another square/);
+  const setupCss = src("src/styles.css").slice(src("src/styles.css").indexOf(".creator-setup-play"));
+  assert.match(setupCss, /aspect-ratio:\s*1/);
+  assert.match(setupCss, /grid-template-rows:\s*repeat\(8,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(setupCss, /\.creator-setup-sq[\s\S]*aspect-ratio:\s*1/);
   assert.match(editor, /data-creator-add-line/);
   assert.match(editor, /How much to charge\?/);
   assert.match(editor, /data-creator-price/);
@@ -174,9 +189,21 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(getPaid, /Get paid with Stripe/);
   assert.match(getPaid, /Set up payouts with Stripe/);
   assert.match(getPaid, /Opening Lab never sees your bank details/);
-  assert.match(getPaid, /70% of each sale/);
-  assert.match(getPaid, /85% when the buyer came through your own link/);
+  assert.match(getPaid, /You keep 70% of every sale/);
+  assert.match(getPaid, /website or in the app/);
   assert.match(getPaid, /data-creator-payout-hosted/);
+  assert.match(editor, /You keep 70% of every sale/);
+  assert.match(editor, /firstPurchaseLink/);
+  assert.match(editor, /CreatorPromoteNote/);
+  assert.match(browse, /You keep 70% of every sale/);
+  assert.match(dashboard, /CreatorPromoteNote/);
+  assert.match(dashboard, /You keep 70% of every sale/);
+  assert.match(admin, /flat 70%/);
+  assert.match(admin, /70% of sales/);
+  assert.match(pack, /purchaseLinkMessage/);
+  assert.match(payout, /CREATOR_SHARE_PERCENT = 70/);
+  assert.match(src("src/components/opening-lab/creator-packs-promote.tsx"), /data-creator-promote/);
+  assert.match(src("src/lib/creator-packs-text.ts"), /hasPurchaseLink/);
   assert.match(editor, /data-creator-payout-prompt/);
   assert.match(editor, /You can still submit now/);
   assert.match(status, /Not set up/);
@@ -191,8 +218,16 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(ratings, /review.author/);
   assert.match(frame, /creatorPacksRoutesOpen/);
   assert.match(frame, /data-creator-packs-closed/);
-  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status, payout, getPaid].join("\n");
+  const promote = src("src/components/opening-lab/creator-packs-promote.tsx");
+  const textGuard = src("src/lib/creator-packs-text.ts");
+  const setupBoard = src("src/components/opening-lab/creator-packs-setup-board.tsx");
+  const joined = [demo, browse, pack, become, editor, frame, study, ratings, help, dashboard, admin, helpEmail, review, status, payout, getPaid, promote, textGuard, setupBoard].join("\n");
   assert.doesNotMatch(joined, /—|–/);
+  assert.doesNotMatch(joined, new RegExp("8" + "5%"));
+  assert.doesNotMatch(joined, new RegExp("refer" + "ral", "i"));
+  assert.doesNotMatch(joined, new RegExp("affil" + "iate", "i"));
+  assert.doesNotMatch(joined, new RegExp("own" + " link", "i"));
+  assert.doesNotMatch(joined, new RegExp("better" + " split", "i"));
   assert.doesNotMatch(joined, /Stockfish|Line Gate|checked before it goes live/i);
   assert.doesNotMatch(joined, /5 book|punish|Play on/i);
   assert.doesNotMatch(joined, /from ["']stripe["']|sk_live|sk_test|startCheckout|play-billing|playBilling|@\/data\/packs/i);
@@ -233,6 +268,78 @@ test("middlegame sample lines are legal and each starts from its own position", 
               if (!chess.move(san)) process.exit(8);
             }
             if (line.comments && line.comments.length !== line.plies.length) process.exit(9);
+          }
+        }
+      `,
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+});
+
+test("creator share is a flat 70 percent and pack text cannot carry a purchase link", () => {
+  const run = spawnSync(
+    process.execPath,
+    [
+      "--experimental-strip-types",
+      "--input-type=module",
+      "-e",
+      `
+        import { CREATOR_SHARE_PERCENT, MONTHLY_PAYOUTS, creatorSharePence } from "./src/lib/creator-packs-payout.ts";
+        import { hasPurchaseLink } from "./src/lib/creator-packs-text.ts";
+        import { DEMO_PACKS, DEMO_REVIEWS, DEMO_CREATORS } from "./src/data/creator-packs-demo.ts";
+        if (CREATOR_SHARE_PERCENT !== 70) process.exit(2);
+        if (creatorSharePence(1000) !== 700) process.exit(3);
+        if (creatorSharePence(2000) !== 1400) process.exit(4);
+        if (creatorSharePence(600) !== 420) process.exit(5);
+        for (const row of MONTHLY_PAYOUTS) {
+          const share = creatorSharePence(row.salesPence);
+          if (share !== Math.round((row.salesPence * 70) / 100)) process.exit(6);
+          if (row.shareLabel !== "£" + (share / 100).toFixed(2)) process.exit(7);
+        }
+        const samples = [];
+        for (const creator of DEMO_CREATORS) samples.push(creator.bio, creator.about, creator.name);
+        for (const pack of DEMO_PACKS) {
+          samples.push(pack.name, pack.blurb, pack.price);
+          for (const line of pack.lines) {
+            samples.push(line.name);
+            if (line.fen) samples.push(line.fen);
+            for (const comment of line.comments ?? []) samples.push(comment);
+          }
+        }
+        for (const review of DEMO_REVIEWS) samples.push(review.text, review.author);
+        for (const sample of samples) {
+          if (hasPurchaseLink(sample)) {
+            console.error(sample);
+            process.exit(8);
+          }
+        }
+        const blocked = [
+          "https://buy.example/pack",
+          "http://shop.test",
+          "www.coach.example",
+          "See youtube.com/coach",
+          "openinglab.co.uk/pack?ref=ada",
+          "use utm_source=stream",
+          "pay aff=creator",
+        ];
+        for (const value of blocked) {
+          if (!hasPurchaseLink(value)) {
+            console.error("allowed " + value);
+            process.exit(9);
+          }
+        }
+        const allowed = [
+          "The knight develops and watches e5.",
+          "My game vs Smith",
+          "e4 or e2e4",
+          "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+          "Suggest 4.00",
+        ];
+        for (const value of allowed) {
+          if (hasPurchaseLink(value)) {
+            console.error("blocked " + value);
+            process.exit(10);
           }
         }
       `,

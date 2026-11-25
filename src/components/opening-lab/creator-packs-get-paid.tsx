@@ -18,7 +18,7 @@ export function CreatorGetPaid() {
         <CreatorPayoutBadge ready={youReady} />
       </div>
       <p className="creator-packs-note">
-        Buyers pay in the Google Play app. Opening Lab pays your share from its Stripe account, once a month.
+        Players buy on Opening Lab&apos;s website or in the app. Opening Lab pays your share from its Stripe account, once a month.
       </p>
       <ol className="creator-payout-steps">
         <li>Tap Set up payouts.</li>
@@ -26,7 +26,7 @@ export function CreatorGetPaid() {
           Stripe opens its own secure page where you add your name, ID and bank details. Opening Lab never sees your bank details.
         </li>
         <li>
-          Once Stripe has verified you, you&apos;re ready. Your share is paid to your bank each month: 70% of each sale, or 85% when the buyer came through your own link.
+          Once Stripe has verified you, you are ready. You keep 70% of every sale, paid to your bank each month.
         </li>
       </ol>
       {hosted ? (

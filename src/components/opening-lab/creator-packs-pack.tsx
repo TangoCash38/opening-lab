@@ -10,6 +10,7 @@ import {
   modeLabel,
   reviewsForPack,
 } from "@/data/creator-packs-demo";
+import { purchaseLinkMessage } from "@/lib/creator-packs-text";
 import { useT } from "@/lib/i18n";
 import { CreatorAvatar } from "./creator-packs-frame";
 import { StarReadout } from "./creator-packs-ratings";
@@ -22,6 +23,7 @@ export function CreatorPacksPack({ packId }: { packId: string }) {
   const [stars, setStars] = useState(0);
   const [comment, setComment] = useState("");
   const [rated, setRated] = useState(false);
+  const [linkError, setLinkError] = useState<string | null>(null);
 
   if (!pack) {
     return (
@@ -158,6 +160,12 @@ export function CreatorPacksPack({ packId }: { packId: string }) {
         onSubmit={(event) => {
           event.preventDefault();
           if (stars < 1) return;
+          const blocked = purchaseLinkMessage(comment);
+          if (blocked) {
+            setLinkError(blocked);
+            return;
+          }
+          setLinkError(null);
           setRated(true);
         }}
       >
@@ -183,10 +191,18 @@ export function CreatorPacksPack({ packId }: { packId: string }) {
           <textarea
             rows={3}
             value={comment}
-            onChange={(event) => setComment(event.target.value)}
+            onChange={(event) => {
+              setComment(event.target.value);
+              setLinkError(null);
+            }}
             data-creator-rate-comment
           />
         </label>
+        {linkError ? (
+          <p className="creator-packs-error" role="alert" data-creator-link-error>
+            {linkError}
+          </p>
+        ) : null}
         {rated ? (
           <p className="creator-packs-note" role="status" data-creator-rated>
             Thank you. This preview has not stored your rating.

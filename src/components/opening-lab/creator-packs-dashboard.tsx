@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useReviewPacks, type StoredPack } from "@/lib/creator-packs-review";
 import { CreatorGetPaid } from "./creator-packs-get-paid";
+import { CreatorPromoteNote } from "./creator-packs-promote";
 import { CreatorPackStatus } from "./creator-packs-status";
 
 function priceLabel(pack: StoredPack): string {
@@ -17,8 +18,9 @@ export function CreatorPacksDashboard() {
       <h1 className="creator-packs-title">Your packs</h1>
       <p className="creator-packs-lede">
         A pack in review is visible only to you. When Opening Lab sets it live, other players can see it too. This
-        list stays on this device.
+        list stays on this device. You keep 70% of every sale.
       </p>
+      <CreatorPromoteNote />
       <CreatorGetPaid />
       <div className="creator-packs-grid">
         {mine.map((pack) => (

@@ -48,7 +48,7 @@ export function CreatorPacksBrowse() {
         <span className="creator-packs-kicker">For coaches</span>
         <span className="creator-pack-name">Build a pack under your name</span>
         <span className="creator-pack-bio">
-          You keep 70% of the sale. A link you share pays a better split.
+          You keep 70% of every sale. Players buy on Opening Lab.
         </span>
       </Link>
     </div>
