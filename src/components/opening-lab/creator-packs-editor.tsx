@@ -1,16 +1,11 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { Chess, type Move, type Square } from "chess.js";
 import { plyLabel, type StudyMode } from "@/data/creator-packs-demo";
 import { useT } from "@/lib/i18n";
-import {
-  formatPackPrice,
-  loadReviewPacks,
-  saveReviewPacks,
-  SUGGESTED_PACK_PRICES,
-  type StoredPack,
-} from "@/lib/creator-packs-review";
-import { useCreatorPayout } from "@/lib/creator-packs-payout";
+import { formatPackPrice, SUGGESTED_PACK_PRICES } from "@/lib/creator-packs-review";
+import { submitCreatorPack, fetchCreatorMine } from "@/lib/creator-packs-client";
+import { validateCreatorPack } from "@/lib/creator-packs-content";
 import { firstPurchaseLink, NO_PURCHASE_LINK, purchaseLinkMessage } from "@/lib/creator-packs-text";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
@@ -176,8 +171,21 @@ export function CreatorPacksEditor() {
   const [customPrice, setCustomPrice] = useState("");
   const [priceError, setPriceError] = useState<string | null>(null);
   const [linkError, setLinkError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState<StoredPack | null>(null);
-  const { youReady: payoutsReady } = useCreatorPayout();
+  const [submitted, setSubmitted] = useState<{ id: string; name: string; suggestedPrice: string } | null>(null);
+  const [payoutsReady, setPayoutsReady] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [blurb, setBlurb] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchCreatorMine().then((result) => {
+      if (cancelled || !result.ok) return;
+      setPayoutsReady(result.desk.profile?.payoutsReady === true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const draftFen = useMemo(() => gridToFen(grid, turn), [grid, turn]);
   const game = useMemo(
@@ -303,6 +311,7 @@ export function CreatorPacksEditor() {
 
   const lineTexts = (lines: readonly SavedLine[]): string[] => [
     packName,
+    blurb,
     ...lines.flatMap((line) => [line.name, ...line.moves.map((move) => move.comment)]),
   ];
 
@@ -342,6 +351,7 @@ export function CreatorPacksEditor() {
   };
 
   const submitPack = () => {
+    if (submitting) return;
     if (blockLinks(lineTexts(publishLines))) return;
     const price = chosenPrice();
     if (!price) {
@@ -352,19 +362,38 @@ export function CreatorPacksEditor() {
       );
       return;
     }
-    const pack: StoredPack = {
-      id: `you-${Date.now()}`,
+    const draft = {
       name: packName.trim() || publishLines[0]?.name || "Your pack",
-      creatorName: "You",
-      lineCount: publishLines.length,
+      blurb,
       suggestedPrice: price,
-      finalPrice: "",
-      status: "review",
+      lines: publishLines.map((line) => ({
+        name: line.name,
+        mode: line.mode,
+        fen: line.fen,
+        plies: line.moves.map((move) => move.san),
+        comments: line.moves.map((move) => move.comment),
+      })),
     };
-    saveReviewPacks([...loadReviewPacks(), pack]);
-    setSubmitted(pack);
-    setPublishStep("submitted");
-    setPriceError(null);
+    const checked = validateCreatorPack(draft);
+    if (!checked.ok) {
+      setPriceError(checked.error);
+      return;
+    }
+    setSubmitting(true);
+    void submitCreatorPack(draft).then((result) => {
+      setSubmitting(false);
+      if (!result.ok) {
+        setPriceError(
+          result.status === 401
+            ? "Sign in, then submit the pack again."
+            : result.error,
+        );
+        return;
+      }
+      setSubmitted({ id: result.pack.id, name: result.pack.name, suggestedPrice: price });
+      setPublishStep("submitted");
+      setPriceError(null);
+    });
   };
 
   const addSan = (san: string) => {
@@ -442,7 +471,8 @@ export function CreatorPacksEditor() {
       <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
         Three steps. Set the position, play the moves, then see the drill or the walk-through a player would get.
-        You do not have to start from an opening. This desk is a sample. Nothing you enter is stored.
+        You do not have to start from an opening. When you submit, Opening Lab saves the pack. You can see it
+        straight away. Other players see it only after it is approved.
       </p>
       <p className="creator-packs-note">
         If a position or a line is stuck, <Link to="/creator-packs/help">Need help?</Link> opens an email.
@@ -945,12 +975,21 @@ export function CreatorPacksEditor() {
           </p>
           <p>You keep 70% of every sale. Opening Lab keeps 30%. Players buy on Opening Lab&apos;s website or in the app.</p>
           <CreatorPromoteNote />
+          <label className="creator-packs-field">
+            <span>Note for players</span>
+            <textarea
+              value={blurb}
+              onChange={(event) => setBlurb(event.target.value)}
+              rows={3}
+              placeholder="Optional. What this pack is for."
+              data-creator-blurb
+            />
+          </label>
           {linkError ? (
             <p className="creator-packs-error" role="alert" data-creator-link-error>
               {linkError}
             </p>
           ) : null}
-          <p className="creator-packs-note">This preview does not take payment.</p>
           <div className="creator-format-choices">
             <button
               type="button"
@@ -1026,8 +1065,14 @@ export function CreatorPacksEditor() {
               ready. <Link to="/creator-packs/dashboard">Set up payouts</Link>
             </p>
           ) : null}
-          <button type="button" className="creator-packs-primary" data-creator-submit-pack onClick={submitPack}>
-            Submit pack
+          <button
+            type="button"
+            className="creator-packs-primary"
+            data-creator-submit-pack
+            disabled={submitting}
+            onClick={submitPack}
+          >
+            {submitting ? "Saving…" : "Submit pack"}
           </button>
         </section>
       ) : null}
@@ -1038,7 +1083,7 @@ export function CreatorPacksEditor() {
           <p>
             Your pack is live for you to see. Opening Lab will check it over and set it live for everyone shortly.
           </p>
-          <p className="creator-packs-note">This preview did not store it on a server.</p>
+          <p className="creator-packs-note">Opening Lab saves the pack for review. You can open it from your packs.</p>
           <article className="creator-pack-card" data-creator-own-pack={submitted.id}>
             <span className="creator-pack-name">{submitted.name}</span>
             <span className="creator-pack-meta">

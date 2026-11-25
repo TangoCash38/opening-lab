@@ -52,12 +52,31 @@ export async function deleteAuthUser(
   await sql.query(`delete from "user" where id = $1`, [userId]);
 }
 
+/**
+ * Drop creator-pack unlocks on this account. Keep sales rows.
+ * If they published packs, buyers keep the lines. The public name becomes
+ * "Former creator". The Stripe account id stays so a payout can be traced.
+ */
+export async function clearCreatorIdentity(userId: string): Promise<void> {
+  const sql = await getSql();
+  await sql.query(`delete from creator_pack_unlocks where buyer_user_id = $1`, [userId]);
+  await sql.query(
+    `update creator_profiles
+        set display_name = 'Former creator',
+            bio = '',
+            updated_at = now()
+      where user_id = $1`,
+    [userId],
+  );
+}
+
 /** Full delete: unlocks first, then identity. Safe to call twice. */
 export async function deleteAccountForUser(
   userId: string,
   email: string | null,
 ): Promise<DeleteAccountResult> {
   await clearAccountUnlocks(userId);
+  await clearCreatorIdentity(userId);
   await deleteAuthUser(userId, email);
   return { ok: true, deleted: true };
 }

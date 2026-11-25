@@ -1,45 +1,117 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useReviewPacks, type StoredPack } from "@/lib/creator-packs-review";
+import { fetchCreatorMine, type CreatorDesk } from "@/lib/creator-packs-client";
+import { formatSharePounds } from "@/lib/creator-packs-payout";
 import { CreatorGetPaid } from "./creator-packs-get-paid";
 import { CreatorPromoteNote } from "./creator-packs-promote";
 import { CreatorPackStatus } from "./creator-packs-status";
 
-function priceLabel(pack: StoredPack): string {
-  if (pack.status === "live" && pack.finalPrice) return pack.finalPrice;
-  return pack.suggestedPrice;
-}
-
 export function CreatorPacksDashboard() {
-  const [packs] = useReviewPacks();
-  const mine = packs.filter((pack) => pack.creatorName === "You");
+  const [desk, setDesk] = useState<CreatorDesk | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [returned, setReturned] = useState(false);
+
+  useEffect(() => {
+    setReturned(new URLSearchParams(window.location.search).get("stripe") === "return");
+    let cancelled = false;
+    void fetchCreatorMine().then((result) => {
+      if (cancelled) return;
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      setDesk(result.desk);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (error) {
+    return (
+      <div data-creator-packs-dashboard>
+        <h1 className="creator-packs-title">Your packs</h1>
+        <p className="creator-packs-error" role="alert">
+          {error}
+        </p>
+      </div>
+    );
+  }
+
+  if (!desk) {
+    return (
+      <div data-creator-packs-dashboard>
+        <h1 className="creator-packs-title">Your packs</h1>
+        <p className="creator-packs-note">Loading your packs…</p>
+      </div>
+    );
+  }
+
+  if (!desk.signedIn) {
+    return (
+      <div data-creator-packs-dashboard>
+        <h1 className="creator-packs-title">Your packs</h1>
+        <p className="creator-packs-lede">Sign in with your Opening Lab account to see the packs you have submitted.</p>
+        <a href="/login?next=/creator-packs/dashboard" className="creator-packs-primary creator-packs-primary-link">
+          Sign in
+        </a>
+      </div>
+    );
+  }
+
+  const sales = desk.sales;
 
   return (
     <div data-creator-packs-dashboard>
       <h1 className="creator-packs-title">Your packs</h1>
       <p className="creator-packs-lede">
-        A pack in review is visible only to you. When Opening Lab sets it live, other players can see it too. This
-        list stays on this device. You keep 70% of every sale.
+        A pack in review is visible only to you. When Opening Lab sets it live, other players can see it too. You keep 70% of every sale.
       </p>
-      <CreatorPromoteNote />
-      <CreatorGetPaid />
+      {desk.profile ? <CreatorPromoteNote creatorId={desk.profile.userId} /> : <CreatorPromoteNote />}
+      {!desk.profile ? (
+        <p className="creator-packs-note">
+          <Link to="/creator-packs/become">Add the name you want on your packs</Link> before you submit one.
+        </p>
+      ) : null}
+      <CreatorGetPaid
+        paymentsEnabled={desk.paymentsEnabled}
+        payoutsReady={desk.profile?.payoutsReady === true}
+        returned={returned}
+      />
+      {sales.count > 0 ? (
+        <p className="creator-packs-note" data-creator-sales>
+          {sales.count} website {sales.count === 1 ? "sale" : "sales"}, {formatSharePounds(sales.amountPence)}. Your
+          share {formatSharePounds(sales.sharePence)}, sent through Stripe.
+        </p>
+      ) : (
+        <p className="creator-packs-note" data-creator-sales>
+          No website sales yet. When a player buys a live pack, your 70% is sent through Stripe.
+        </p>
+      )}
       <div className="creator-packs-grid">
-        {mine.map((pack) => (
+        {desk.packs.map((pack) => (
           <article key={pack.id} className="creator-pack-card" data-creator-own-pack={pack.id}>
-            <span className="creator-pack-name">{pack.name}</span>
+            <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }} className="creator-pack-name">
+              {pack.name}
+            </Link>
             <span className="creator-pack-bio">
               {pack.lineCount} {pack.lineCount === 1 ? "line" : "lines"}
-              {pack.status === "returned" ? ". Have another look, then submit it again." : ""}
+              {pack.status === "returned" ? ". Have another look, then submit a fresh pack." : ""}
             </span>
             <span className="creator-pack-meta">
-              <span className="creator-pack-price">{priceLabel(pack)}</span>
+              <span className="creator-pack-price">
+                {pack.status === "live" && pack.finalPrice ? pack.finalPrice : pack.suggestedPrice}
+              </span>
               <CreatorPackStatus status={pack.status} />
             </span>
-            {pack.status === "review" ? (
-              <p className="creator-only-note">Visible only to you</p>
-            ) : null}
+            {pack.status === "review" ? <p className="creator-only-note">Visible only to you</p> : null}
+            {pack.reviewNote ? <p className="creator-packs-note">{pack.reviewNote}</p> : null}
           </article>
         ))}
       </div>
+      {desk.packs.length === 0 ? (
+        <p className="creator-packs-note">You have not submitted a pack yet.</p>
+      ) : null}
       <Link to="/creator-packs/editor" className="creator-packs-primary creator-packs-primary-link">
         Open the pack editor
       </Link>

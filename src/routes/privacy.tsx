@@ -74,6 +74,13 @@ function Privacy() {
           Buy all so we can unlock the trainer on your account. There is no
           Lab+ subscription.
         </p>
+        <p>
+          Creator packs store the name you put on a pack, the lines and comments
+          you write, a Stripe connected account id if you set up payouts, and
+          sales totals. We do not store bank details. A buyer of a creator pack
+          is recorded the same way as any other pack purchase: the unlock, the
+          amount, and the Stripe ids, not the card.
+        </p>
       </LegalSection>
 
       <LegalSection title="Why we collect it">

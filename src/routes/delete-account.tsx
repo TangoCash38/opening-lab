@@ -25,6 +25,7 @@ function DeleteAccount() {
           <li>Your sign-in email</li>
           <li>Your account record</li>
           <li>Packs and Buy all unlocks stored on that account</li>
+          <li>Creator pack unlocks stored on that account</li>
         </ul>
       </LegalSection>
 
@@ -33,6 +34,12 @@ function DeleteAccount() {
           <li>
             A payment record (Stripe, or Google Play if you ever paid there)
             for tax or legal reasons, without your card number
+          </li>
+          <li>
+            If you published a creator pack, the pack and the sales record stay
+            so buyers keep what they paid for. We replace your creator name
+            with Former creator. The Stripe account id stays so a payout can be
+            traced. No bank details are stored.
           </li>
         </ul>
       </LegalSection>

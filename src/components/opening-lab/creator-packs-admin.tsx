@@ -1,46 +1,76 @@
 import { useEffect, useState } from "react";
-import { MONTHLY_PAYOUTS, payoutReadyFor, useCreatorPayout } from "@/lib/creator-packs-payout";
-import { formatPackPrice, useReviewPacks, type StoredPack } from "@/lib/creator-packs-review";
+import { Link } from "@tanstack/react-router";
+import {
+  fetchCreatorAdmin,
+  reviewCreatorPack,
+  type AdminPack,
+  type AdminSale,
+} from "@/lib/creator-packs-client";
+import { formatSharePounds } from "@/lib/creator-packs-payout";
 import { CreatorPackStatus, CreatorPayoutBadge } from "./creator-packs-status";
 
 export function CreatorPacksAdmin() {
-  const [packs, replace, ready] = useReviewPacks();
-  const { youReady, paidIds, markPaid } = useCreatorPayout();
-  const [payNotes, setPayNotes] = useState<Record<string, string>>({});
+  const [packs, setPacks] = useState<AdminPack[]>([]);
+  const [sales, setSales] = useState<AdminSale[]>([]);
+  const [ready, setReady] = useState(false);
+  const [gate, setGate] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    setDrafts((current) => {
-      const next = { ...current };
-      for (const pack of packs) {
-        if (next[pack.id] === undefined) {
-          next[pack.id] = pack.finalPrice || (pack.suggestedPrice === "Free" ? "" : pack.suggestedPrice);
-        }
+  const load = () => {
+    void fetchCreatorAdmin().then((result) => {
+      setReady(true);
+      if (!result.ok) {
+        setGate(result.error);
+        setPacks([]);
+        setSales([]);
+        return;
       }
-      return next;
+      setGate(null);
+      setPacks(result.packs);
+      setSales(result.sales);
+      setDrafts((current) => {
+        const next = { ...current };
+        for (const pack of result.packs) {
+          if (next[pack.id] === undefined) {
+            next[pack.id] = pack.finalPrice || (pack.suggestedPrice === "Free" ? "" : pack.suggestedPrice);
+          }
+        }
+        return next;
+      });
     });
-  }, [packs]);
-
-  const patch = (id: string, update: Partial<StoredPack>, note: string) => {
-    replace(packs.map((pack) => (pack.id === id ? { ...pack, ...update } : pack)));
-    setNotes((current) => ({ ...current, [id]: note }));
-    setErrors((current) => ({ ...current, [id]: null }));
   };
 
-  const approve = (pack: StoredPack) => {
-    const raw = (drafts[pack.id] ?? "").trim();
-    const finalPrice = raw ? formatPackPrice(raw) : pack.suggestedPrice;
-    if (!finalPrice) {
-      setErrors((current) => ({ ...current, [pack.id]: "Enter a price such as 2.50, or leave the field blank to keep the suggestion." }));
-      return;
-    }
-    patch(pack.id, { status: "live", finalPrice }, "Approved. The pack would show as live at this price.");
+  useEffect(() => {
+    load();
+  }, []);
+
+  const approve = (pack: AdminPack) => {
+    void reviewCreatorPack({
+      packId: pack.id,
+      action: "approve",
+      finalPrice: (drafts[pack.id] ?? "").trim(),
+    }).then((result) => {
+      if (!result.ok) {
+        setErrors((current) => ({ ...current, [pack.id]: result.error }));
+        return;
+      }
+      setNotes((current) => ({ ...current, [pack.id]: "Approved. Players can see this pack at the final price." }));
+      setErrors((current) => ({ ...current, [pack.id]: null }));
+      load();
+    });
   };
 
-  const sendBack = (pack: StoredPack) => {
-    patch(pack.id, { status: "returned" }, "Sent back to the creator.");
+  const sendBack = (pack: AdminPack) => {
+    void reviewCreatorPack({ packId: pack.id, action: "return" }).then((result) => {
+      if (!result.ok) {
+        setErrors((current) => ({ ...current, [pack.id]: result.error }));
+        return;
+      }
+      setNotes((current) => ({ ...current, [pack.id]: "Sent back to the creator." }));
+      load();
+    });
   };
 
   return (
@@ -49,8 +79,20 @@ export function CreatorPacksAdmin() {
       <h1 className="creator-packs-title">Pack review</h1>
       <p className="creator-packs-lede">
         Each card shows the price the creator suggested. Set the final price, then approve the pack or send it back.
-        This sample only changes what is saved on this device.
+        Other players see a pack only after you approve it.
       </p>
+      {gate ? (
+        <div className="creator-packs-form" role="alert">
+          <p>{gate}</p>
+          <a href="/login?next=/creator-packs/admin" className="creator-packs-primary creator-packs-primary-link">
+            Sign in
+          </a>
+        </div>
+      ) : null}
+      {!ready && !gate ? <p className="creator-packs-note">Loading the review desk…</p> : null}
+      {ready && !gate && packs.length === 0 ? (
+        <p className="creator-packs-note">No packs are waiting.</p>
+      ) : null}
       <div className="creator-packs-grid">
         {packs.map((pack) => (
           <article key={pack.id} className="creator-pack-card" data-creator-admin-pack={pack.id}>
@@ -60,7 +102,7 @@ export function CreatorPacksAdmin() {
             </span>
             <span className="creator-pack-meta">
               <span className="creator-pack-bio">Payouts</span>
-              <CreatorPayoutBadge ready={payoutReadyFor(pack.creatorName, youReady)} />
+              <CreatorPayoutBadge ready={pack.payoutsReady} />
             </span>
             <span className="creator-pack-meta">
               <span className="creator-pack-price">Suggested {pack.suggestedPrice}</span>
@@ -81,6 +123,24 @@ export function CreatorPacksAdmin() {
                 data-creator-final-price
               />
             </label>
+            <details>
+              <summary>Look at the lines</summary>
+              <ul className="creator-kept-list">
+                {pack.lines.map((line) => (
+                  <li key={line.name}>
+                    <span>
+                      {line.name}
+                      <span className="creator-kept-moves">
+                        {line.mode === "drill" ? "Drill" : "Walk-through"} · {line.plyCount} moves
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+            <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }}>
+              Open the pack
+            </Link>
             {errors[pack.id] ? (
               <p className="creator-packs-error" role="alert">
                 {errors[pack.id]}
@@ -110,53 +170,35 @@ export function CreatorPacksAdmin() {
       </div>
       <h2 className="creator-packs-subhead">Monthly payouts</h2>
       <p className="creator-packs-lede">
-        Players buy on Opening Lab&apos;s website or in the app. You pay creators from Opening Lab&apos;s Stripe account, once a month.
-        The share is a flat 70% of sales. This list is a sample on this device.
+        Website sales already send a flat 70% of sales through Stripe when the buyer pays. App sales will wait here
+        for a monthly transfer. Pay via Stripe on this list stays off until an app sale is waiting.
       </p>
       <div className="creator-packs-grid" data-creator-monthly-payouts>
-        {MONTHLY_PAYOUTS.map((row) => {
-          const ready = payoutReadyFor(row.creatorName, youReady);
-          const paid = paidIds.includes(row.id);
-          return (
-            <article key={row.id} className="creator-pack-card" data-creator-payout-row={row.id}>
-              <div className="creator-pack-meta">
-                <span className="creator-pack-name">{row.creatorName}</span>
-                <CreatorPayoutBadge ready={ready} />
-              </div>
-              <span className="creator-pack-bio">Sales {row.salesLabel}</span>
-              <span className="creator-pack-price">Share owed {row.shareLabel} (70% of sales)</span>
-              {paid ? (
-                <p className="creator-packs-note" role="status">
-                  Marked as paid on this device. Nothing was sent.
-                </p>
-              ) : (
-                <button
-                  type="button"
-                  className="creator-packs-primary"
-                  data-creator-pay-stripe
-                  onClick={() => {
-                    if (!ready) {
-                      setPayNotes((current) => ({
-                        ...current,
-                        [row.id]: "Set up payouts first. Nothing was sent.",
-                      }));
-                      return;
-                    }
-                    markPaid(row.id);
-                    setPayNotes((current) => ({ ...current, [row.id]: "" }));
-                  }}
-                >
+        {sales.length === 0 ? (
+          <article className="creator-pack-card" data-creator-payout-row="none">
+            <span className="creator-pack-name">No sales yet</span>
+            <span className="creator-pack-bio">No app sales are waiting. Website sales are not paid from this list.</span>
+          </article>
+        ) : (
+          sales.map((row) => (
+            <article key={row.creatorUserId} className="creator-pack-card" data-creator-payout-row={row.creatorUserId}>
+              <span className="creator-pack-name">{row.creatorName}</span>
+              <span className="creator-pack-bio">
+                Website {row.webCount} {row.webCount === 1 ? "sale" : "sales"}, {formatSharePounds(row.webPence)}
+              </span>
+              <span className="creator-pack-price">
+                Share sent {formatSharePounds(row.webSharePence)} (70% of sales)
+              </span>
+              {row.playWaitingCount > 0 ? (
+                <button type="button" className="creator-packs-primary" data-creator-pay-stripe disabled>
                   Pay via Stripe
                 </button>
+              ) : (
+                <p className="creator-packs-note">No app sales are waiting for this creator.</p>
               )}
-              {payNotes[row.id] ? (
-                <p className="creator-packs-note" role="status">
-                  {payNotes[row.id]}
-                </p>
-              ) : null}
             </article>
-          );
-        })}
+          ))
+        )}
       </div>
     </div>
   );
