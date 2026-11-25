@@ -381,6 +381,22 @@ export async function handleStripeWebhook(request: Request): Promise<Response> {
       console.error("[creator-packs] connect sync failed", err);
       return new Response("Could not update creator payout status", { status: 500 });
     }
+  } else if (event?.type === "charge.refunded") {
+    try {
+      const { refundCreatorPackCharge } = await import("@/lib/creator-packs.server");
+      await refundCreatorPackCharge(event.data.object as Stripe.Charge);
+    } catch (err) {
+      console.error("[creator-packs] refund failed", err);
+      return new Response("Could not reverse the creator share", { status: 500 });
+    }
+  } else if (event?.type === "charge.dispute.created" || event?.type === "charge.dispute.closed") {
+    try {
+      const { syncCreatorPackDispute } = await import("@/lib/creator-packs.server");
+      await syncCreatorPackDispute(event.data.object as Stripe.Dispute);
+    } catch (err) {
+      console.error("[creator-packs] dispute failed", err);
+      return new Response("Could not record the dispute", { status: 500 });
+    }
   }
 
   return json({ received: true });

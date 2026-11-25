@@ -16,6 +16,7 @@ export function CreatorPacksAdmin() {
   const [gate, setGate] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string | null>>({});
+  const [reasons, setReasons] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
 
   const load = () => {
@@ -63,12 +64,13 @@ export function CreatorPacksAdmin() {
   };
 
   const sendBack = (pack: AdminPack) => {
-    void reviewCreatorPack({ packId: pack.id, action: "return" }).then((result) => {
+    const note = (reasons[pack.id] ?? "").trim();
+    void reviewCreatorPack({ packId: pack.id, action: "return", note }).then((result) => {
       if (!result.ok) {
         setErrors((current) => ({ ...current, [pack.id]: result.error }));
         return;
       }
-      setNotes((current) => ({ ...current, [pack.id]: "Sent back to the creator." }));
+      setNotes((current) => ({ ...current, [pack.id]: "Sent back. The creator can read your reason." }));
       load();
     });
   };
@@ -121,6 +123,20 @@ export function CreatorPacksAdmin() {
                 inputMode="decimal"
                 disabled={!ready}
                 data-creator-final-price
+              />
+            </label>
+            <label className="creator-packs-field">
+              <span>Reason if you send it back</span>
+              <textarea
+                value={reasons[pack.id] ?? ""}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setReasons((current) => ({ ...current, [pack.id]: value }));
+                  setErrors((current) => ({ ...current, [pack.id]: null }));
+                }}
+                rows={3}
+                placeholder="What should the creator change?"
+                data-creator-return-note
               />
             </label>
             <details>
@@ -190,9 +206,15 @@ export function CreatorPacksAdmin() {
                 Share sent {formatSharePounds(row.webSharePence)} (70% of sales)
               </span>
               {row.playWaitingCount > 0 ? (
-                <button type="button" className="creator-packs-primary" data-creator-pay-stripe disabled>
-                  Pay via Stripe
-                </button>
+                <>
+                  <p className="creator-packs-note" data-creator-play-report>
+                    App share owed {formatSharePounds(row.playWaitingPence)} from {row.playWaitingCount}{" "}
+                    {row.playWaitingCount === 1 ? "sale" : "sales"}. Pay this once a month from Stripe. This desk does not send it.
+                  </p>
+                  <button type="button" className="creator-packs-primary" data-creator-pay-stripe disabled>
+                    Pay via Stripe
+                  </button>
+                </>
               ) : (
                 <p className="creator-packs-note">No app sales are waiting for this creator.</p>
               )}

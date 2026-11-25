@@ -175,6 +175,7 @@ export function CreatorPacksEditor() {
   const [payoutsReady, setPayoutsReady] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [blurb, setBlurb] = useState("");
+  const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -362,6 +363,10 @@ export function CreatorPacksEditor() {
       );
       return;
     }
+    if (!accepted) {
+      setPriceError("Tick the creator agreement before you submit.");
+      return;
+    }
     const draft = {
       name: packName.trim() || publishLines[0]?.name || "Your pack",
       blurb,
@@ -380,7 +385,7 @@ export function CreatorPacksEditor() {
       return;
     }
     setSubmitting(true);
-    void submitCreatorPack(draft).then((result) => {
+    void submitCreatorPack({ ...draft, acceptedAgreement: true }).then((result) => {
       setSubmitting(false);
       if (!result.ok) {
         setPriceError(
@@ -1065,11 +1070,25 @@ export function CreatorPacksEditor() {
               ready. <Link to="/creator-packs/dashboard">Set up payouts</Link>
             </p>
           ) : null}
+          <label className="creator-accept" data-creator-accept-row>
+            <input
+              type="checkbox"
+              checked={accepted}
+              onChange={(event) => {
+                setAccepted(event.target.checked);
+                setPriceError(null);
+              }}
+              data-creator-accept
+            />
+            <span>
+              I have read the <Link to="/creator-packs/agreement">creator agreement</Link> and I accept it.
+            </span>
+          </label>
           <button
             type="button"
             className="creator-packs-primary"
             data-creator-submit-pack
-            disabled={submitting}
+            disabled={submitting || !accepted}
             onClick={submitPack}
           >
             {submitting ? "Saving…" : "Submit pack"}

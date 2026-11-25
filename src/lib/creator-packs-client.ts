@@ -25,7 +25,7 @@ export type CreatorDesk = {
     payoutsReady: boolean;
   } | null;
   packs: CreatorDeskPack[];
-  sales: { count: number; amountPence: number; sharePence: number };
+  sales: { count: number; amountPence: number; sharePence: number; playWaitingCount: number; playWaitingPence: number };
 };
 
 export type CataloguePack = {

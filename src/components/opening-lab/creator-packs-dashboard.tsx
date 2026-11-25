@@ -80,14 +80,18 @@ export function CreatorPacksDashboard() {
       />
       {sales.count > 0 ? (
         <p className="creator-packs-note" data-creator-sales>
-          {sales.count} website {sales.count === 1 ? "sale" : "sales"}, {formatSharePounds(sales.amountPence)}. Your
-          share {formatSharePounds(sales.sharePence)}, sent through Stripe.
+          Website: {sales.count} {sales.count === 1 ? "sale" : "sales"}, {formatSharePounds(sales.amountPence)}. Your share {formatSharePounds(sales.sharePence)}, sent through Stripe.
         </p>
       ) : (
         <p className="creator-packs-note" data-creator-sales>
           No website sales yet. When a player buys a live pack, your 70% is sent through Stripe.
         </p>
       )}
+      <p className="creator-packs-note" data-creator-play-sales>
+        {sales.playWaitingCount > 0
+          ? `App sales waiting: ${sales.playWaitingCount}, share ${formatSharePounds(sales.playWaitingPence)}. Paid once a month.`
+          : "No app sales are waiting. Those will be paid once a month when the Google Play shop opens."}
+      </p>
       <div className="creator-packs-grid">
         {desk.packs.map((pack) => (
           <article key={pack.id} className="creator-pack-card" data-creator-own-pack={pack.id}>
@@ -105,7 +109,11 @@ export function CreatorPacksDashboard() {
               <CreatorPackStatus status={pack.status} />
             </span>
             {pack.status === "review" ? <p className="creator-only-note">Visible only to you</p> : null}
-            {pack.reviewNote ? <p className="creator-packs-note">{pack.reviewNote}</p> : null}
+            {pack.status === "returned" && pack.reviewNote ? (
+              <p className="creator-packs-note" data-creator-return-reason>
+                Opening Lab sent this back: {pack.reviewNote}
+              </p>
+            ) : null}
           </article>
         ))}
       </div>

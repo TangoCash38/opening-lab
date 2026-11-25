@@ -30,7 +30,10 @@ const MAX_COMMENT = 500;
 
 function clean(value: unknown, max: number): string | null {
   if (typeof value !== "string") return null;
-  const trimmed = value.trim();
+  const trimmed = value
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+    .trim();
   if (trimmed.length > max) return null;
   return trimmed;
 }

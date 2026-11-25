@@ -15,18 +15,22 @@
  *
  * Do not import this from client code.
  */
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import Stripe from "stripe";
 import { getSql, type Sql } from "@/lib/db";
 import { signedInUser, type SignedInUser } from "@/lib/purchases.server";
+import { CREATOR_AGREEMENT_VERSION } from "@/lib/creator-packs-agreement";
 import {
   connectCountry,
   validateCreatorPack,
   validateCreatorProfile,
 } from "@/lib/creator-packs-content";
+import { CREATOR_SUBMIT_LIMIT, submitIsLimited } from "@/lib/creator-packs-limits";
+import { CREATOR_PLAY_PACKAGE, creatorPenceForPlaySku, playSkuForCreatorPence } from "@/lib/creator-packs-play";
 import { splitSalePence } from "@/lib/creator-packs-payout";
-import { formatPenceLabel, labelToPence, type PackReviewStatus } from "@/lib/creator-packs-review";
-import { firstPurchaseLink } from "@/lib/creator-packs-text";
+import { reversalForRefund } from "@/lib/creator-packs-refund";
+import { reviewDecision } from "@/lib/creator-packs-review-decision";
+import { formatPenceLabel, type PackReviewStatus } from "@/lib/creator-packs-review";
 
 const PACK_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -182,13 +186,17 @@ async function salesForCreator(sql: Sql, userId: string) {
     sales_count: number;
     amount_pence: number;
     share_pence: number;
+    play_waiting_count: number;
+    play_waiting_pence: number;
   }>(
-    `select count(*)::int as sales_count,
-            coalesce(sum(s.amount_pence), 0)::int as amount_pence,
-            coalesce(sum(s.creator_share_pence), 0)::int as share_pence
+    `select count(*) filter (where s.channel = 'web' and s.refunded_at is null)::int as sales_count,
+            coalesce(sum(s.amount_pence) filter (where s.channel = 'web' and s.refunded_at is null), 0)::int as amount_pence,
+            coalesce(sum(s.creator_share_pence) filter (where s.channel = 'web' and s.refunded_at is null), 0)::int as share_pence,
+            count(*) filter (where s.channel = 'play' and s.transferred_at is null and s.refunded_at is null)::int as play_waiting_count,
+            coalesce(sum(s.creator_share_pence) filter (where s.channel = 'play' and s.transferred_at is null and s.refunded_at is null), 0)::int as play_waiting_pence
        from creator_sales s
        join creator_packs p on p.id = s.pack_id
-      where p.creator_user_id = $1 and s.channel = 'web'`,
+      where p.creator_user_id = $1`,
     [userId],
   );
   const row = rows[0];
@@ -196,6 +204,8 @@ async function salesForCreator(sql: Sql, userId: string) {
     count: asInt(row?.sales_count),
     amountPence: asInt(row?.amount_pence),
     sharePence: asInt(row?.share_pence),
+    playWaitingCount: asInt(row?.play_waiting_count),
+    playWaitingPence: asInt(row?.play_waiting_pence),
   };
 }
 
@@ -256,7 +266,7 @@ export async function creatorPacksMineResponse(request: Request): Promise<Respon
       packs: hasProfile ? await packsForCreator(sql, user.id) : [],
       sales: hasProfile
         ? await salesForCreator(sql, user.id)
-        : { count: 0, amountPence: 0, sharePence: 0 },
+        : { count: 0, amountPence: 0, sharePence: 0, playWaitingCount: 0, playWaitingPence: 0 },
     });
   });
 }
@@ -297,14 +307,41 @@ export async function createCreatorPackResponse(request: Request): Promise<Respo
   }
   const parsed = validateCreatorPack(body);
   if (!parsed.ok) return json({ error: parsed.error }, 400);
+  const accepted = (body as { acceptedAgreement?: unknown }).acceptedAgreement === true;
+  if (!accepted) {
+    return json({ error: "Tick the creator agreement before you submit." }, 400);
+  }
   return withSql(async (sql) => {
     const profile = await loadProfile(sql, user.id);
     if (!profile) {
       return json({ error: "Add the name you want on your packs before you submit." }, 409);
     }
+    const recent = await sql.query<{ n: number }>(
+      `select count(*)::int as n
+         from creator_packs
+        where creator_user_id = $1
+          and created_at > now() - interval '1 hour'`,
+      [user.id],
+    );
+    if (submitIsLimited(asInt(recent[0]?.n))) {
+      return json(
+        {
+          error: `You have submitted ${CREATOR_SUBMIT_LIMIT} packs in the last hour. Wait a little, then try again.`,
+        },
+        429,
+      );
+    }
     const pack = parsed.pack;
     const id = randomUUID();
     try {
+      await sql.query(
+        `update creator_profiles
+            set agreement_version = $2,
+                agreement_accepted_at = now(),
+                updated_at = now()
+          where user_id = $1`,
+        [user.id, CREATOR_AGREEMENT_VERSION],
+      );
       await sql.query(
         `insert into creator_packs (
            id, creator_user_id, name, blurb, status, suggested_price_pence
@@ -858,11 +895,11 @@ export async function creatorAdminQueueResponse(request: Request): Promise<Respo
       play_waiting_pence: number;
     }>(
       `select pr.user_id, pr.display_name,
-              count(*) filter (where s.channel = 'web')::int as web_count,
-              coalesce(sum(s.amount_pence) filter (where s.channel = 'web'), 0)::int as web_pence,
-              coalesce(sum(s.creator_share_pence) filter (where s.channel = 'web'), 0)::int as web_share,
-              count(*) filter (where s.channel = 'play' and s.transferred_at is null)::int as play_waiting_count,
-              coalesce(sum(s.creator_share_pence) filter (where s.channel = 'play' and s.transferred_at is null), 0)::int as play_waiting_pence
+              count(*) filter (where s.channel = 'web' and s.refunded_at is null)::int as web_count,
+              coalesce(sum(s.amount_pence) filter (where s.channel = 'web' and s.refunded_at is null), 0)::int as web_pence,
+              coalesce(sum(s.creator_share_pence) filter (where s.channel = 'web' and s.refunded_at is null), 0)::int as web_share,
+              count(*) filter (where s.channel = 'play' and s.transferred_at is null and s.refunded_at is null)::int as play_waiting_count,
+              coalesce(sum(s.creator_share_pence) filter (where s.channel = 'play' and s.transferred_at is null and s.refunded_at is null), 0)::int as play_waiting_pence
          from creator_sales s
          join creator_packs pk on pk.id = s.pack_id
          join creator_profiles pr on pr.user_id = pk.creator_user_id
@@ -928,25 +965,21 @@ export async function reviewCreatorPackResponse(request: Request): Promise<Respo
   return withSql(async (sql) => {
     const pack = await loadPack(sql, body.packId as string);
     if (!pack) return json({ error: "This pack is not available." }, 404);
-    if (body.action === "return") {
-      const note = typeof body.note === "string" ? body.note.trim().slice(0, 500) : "";
-      const blocked = firstPurchaseLink([note]);
-      if (blocked) return json({ error: blocked }, 400);
+    const decision = reviewDecision({
+      action: body.action as string,
+      finalPrice: typeof body.finalPrice === "string" ? body.finalPrice : "",
+      suggestedPence: asInt(pack.suggested_price_pence),
+      note: typeof body.note === "string" ? body.note : "",
+    });
+    if (!decision.ok) return json({ error: decision.error }, 400);
+    if (decision.status === "returned") {
       await sql.query(
         `update creator_packs
             set status = 'returned', review_note = $2, updated_at = now()
           where id = $1`,
-        [pack.id, note],
+        [pack.id, decision.note],
       );
       return json({ ok: true, status: "returned" });
-    }
-    const raw = typeof body.finalPrice === "string" ? body.finalPrice.trim() : "";
-    const pence = raw ? labelToPence(raw) : asInt(pack.suggested_price_pence);
-    if (pence === null) {
-      return json(
-        { error: "Enter a price such as 2.50, or leave the field blank to keep the suggestion." },
-        400,
-      );
     }
     await sql.query(
       `update creator_packs
@@ -955,8 +988,239 @@ export async function reviewCreatorPackResponse(request: Request): Promise<Respo
               review_note = '',
               updated_at = now()
         where id = $1`,
-      [pack.id, pence],
+      [pack.id, decision.finalPence],
     );
-    return json({ ok: true, status: "live", finalPrice: formatPenceLabel(pence) });
+    return json({ ok: true, status: "live", finalPrice: formatPenceLabel(decision.finalPence) });
+  });
+}
+
+type SaleRefundRow = {
+  id: string;
+  pack_id: string;
+  buyer_user_id: string;
+  amount_pence: number;
+  creator_share_pence: number;
+  reversed_pence: number;
+  stripe_transfer_id: string | null;
+  refunded_at: string | null;
+};
+
+function paymentIntentId(value: string | { id?: string } | null | undefined): string | null {
+  if (!value) return null;
+  if (typeof value === "string") return value;
+  return value.id ?? null;
+}
+
+async function applyCreatorRefund(
+  sql: Sql,
+  sale: SaleRefundRow,
+  amountRefundedPence: number,
+): Promise<void> {
+  const plan = reversalForRefund({
+    saleAmountPence: asInt(sale.amount_pence),
+    creatorSharePence: asInt(sale.creator_share_pence),
+    alreadyReversedPence: asInt(sale.reversed_pence),
+    amountRefundedPence,
+  });
+  let reversedNow = 0;
+  if (plan.reversalPence > 0 && sale.stripe_transfer_id && creatorPaymentsEnabled()) {
+    try {
+      await stripeClient().transfers.createReversal(sale.stripe_transfer_id, {
+        amount: plan.reversalPence,
+      });
+      reversedNow = plan.reversalPence;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      if (/already been reversed|transfer reversal/i.test(message)) {
+        reversedNow = plan.reversalPence;
+      } else {
+        throw err;
+      }
+    }
+  }
+  await sql.query(
+    `update creator_sales
+        set refunded_pence = $2,
+            reversed_pence = reversed_pence + $3,
+            refunded_at = case when $4 then coalesce(refunded_at, now()) else refunded_at end
+      where id = $1`,
+    [sale.id, Math.min(asInt(sale.amount_pence), Math.max(0, amountRefundedPence)), reversedNow, plan.fullyRefunded],
+  );
+  if (plan.fullyRefunded) {
+    await sql.query(
+      `delete from creator_pack_unlocks where buyer_user_id = $1 and pack_id = $2`,
+      [sale.buyer_user_id, sale.pack_id],
+    );
+  }
+}
+
+async function saleForPaymentIntent(sql: Sql, paymentIntent: string): Promise<SaleRefundRow | null> {
+  const rows = await sql.query<SaleRefundRow>(
+    `select id, pack_id, buyer_user_id, amount_pence, creator_share_pence,
+            reversed_pence, stripe_transfer_id, refunded_at
+       from creator_sales
+      where stripe_payment_intent_id = $1 and channel = 'web'
+      limit 1`,
+    [paymentIntent],
+  );
+  return rows[0] ?? null;
+}
+
+/** Stripe refund. Reverses the creator's share of the refunded amount. */
+export async function refundCreatorPackCharge(charge: {
+  payment_intent?: string | { id?: string } | null;
+  amount_refunded?: number | null;
+}): Promise<void> {
+  const intent = paymentIntentId(charge.payment_intent);
+  if (!intent) return;
+  const sql = await getSql();
+  const sale = await saleForPaymentIntent(sql, intent);
+  if (!sale) return;
+  await applyCreatorRefund(sql, sale, asInt(charge.amount_refunded));
+}
+
+/** Dispute opened, or closed as won or lost. A lost dispute is treated as a full refund. */
+export async function syncCreatorPackDispute(dispute: {
+  payment_intent?: string | { id?: string } | null;
+  status?: string | null;
+}): Promise<void> {
+  const intent = paymentIntentId(dispute.payment_intent);
+  if (!intent) return;
+  const sql = await getSql();
+  const sale = await saleForPaymentIntent(sql, intent);
+  if (!sale) return;
+  const status = dispute.status ?? "";
+  if (status === "won") {
+    await sql.query(`update creator_sales set disputed_at = null where id = $1`, [sale.id]);
+    return;
+  }
+  if (status === "lost") {
+    await sql.query(`update creator_sales set disputed_at = coalesce(disputed_at, now()) where id = $1`, [sale.id]);
+    await applyCreatorRefund(sql, sale, asInt(sale.amount_pence));
+    return;
+  }
+  await sql.query(`update creator_sales set disputed_at = coalesce(disputed_at, now()) where id = $1`, [sale.id]);
+}
+
+function playOrderKey(orderId: string | null, token: string): string {
+  if (orderId && orderId.trim()) return orderId.trim().slice(0, 120);
+  return `tok_${createHash("sha256").update(token).digest("hex").slice(0, 32)}`;
+}
+
+/**
+ * Record a verified Google Play sale. The caller must already have checked
+ * the purchase with Google. transferred_at stays null for the monthly report.
+ */
+export async function recordCreatorPlaySale(input: {
+  packId: string;
+  buyerUserId: string;
+  amountPence: number;
+  orderKey: string;
+  productId: string;
+}): Promise<void> {
+  const split = splitSalePence(input.amountPence);
+  const sql = await getSql();
+  await sql.query(
+    `insert into creator_sales (
+       id, pack_id, buyer_user_id, channel, amount_pence, currency,
+       creator_share_pence, platform_share_pence, play_order_id, play_product_id
+     ) values ($1, $2, $3, 'play', $4, 'gbp', $5, $6, $7, $8)
+     on conflict do nothing`,
+    [
+      randomUUID(),
+      input.packId,
+      input.buyerUserId,
+      input.amountPence,
+      split.creatorPence,
+      split.platformPence,
+      input.orderKey,
+      input.productId,
+    ],
+  );
+  await sql.query(
+    `insert into creator_pack_unlocks (buyer_user_id, pack_id, sale_id)
+     select $1, $2, s.id
+       from creator_sales s
+      where s.buyer_user_id = $1 and s.pack_id = $2
+     on conflict do nothing`,
+    [input.buyerUserId, input.packId],
+  );
+}
+
+/**
+ * App confirm path. Does not start a purchase. Records a sale only after
+ * Google verifies the token. Missing Publisher credentials record nothing.
+ */
+export async function confirmCreatorPlayResponse(request: Request): Promise<Response> {
+  if (!playApp(request)) {
+    return json(
+      { error: "Creator packs in the app are bought with Google Play Billing, not on this page." },
+      400,
+    );
+  }
+  const user = await signedInUser(request);
+  if (!user) return json({ error: "Sign in required" }, 401);
+  let packId = "";
+  let productId = "";
+  let purchaseToken = "";
+  try {
+    const body = (await request.json()) as {
+      packId?: unknown;
+      productId?: unknown;
+      purchaseToken?: unknown;
+    };
+    if (typeof body.packId === "string") packId = body.packId;
+    if (typeof body.productId === "string") productId = body.productId;
+    if (typeof body.purchaseToken === "string") purchaseToken = body.purchaseToken.trim();
+  } catch {
+    return json({ error: "The purchase could not be read." }, 400);
+  }
+  if (!PACK_ID.test(packId) || !purchaseToken || purchaseToken.length > 500) {
+    return json({ error: "Missing pack or purchase." }, 400);
+  }
+  const tierPence = creatorPenceForPlaySku(productId);
+  if (tierPence === null) {
+    return json({ error: "That Play product is not a creator pack price." }, 400);
+  }
+  return withSql(async (sql) => {
+    const pack = await loadPack(sql, packId);
+    if (!pack || pack.status !== "live") return json({ error: "This pack is not on sale." }, 400);
+    const finalPence = pack.final_price_pence == null ? null : asInt(pack.final_price_pence);
+    if (finalPence == null || playSkuForCreatorPence(finalPence) !== productId) {
+      return json({ error: "This pack's price is not on sale in the app." }, 400);
+    }
+    const { playPublisherConfigured, verifyPlayOneTimeProduct } = await import("@/lib/play-billing.server");
+    if (!playPublisherConfigured()) {
+      return json(
+        {
+          error: "Google Play is not connected, so this purchase was not recorded.",
+          code: "not_connected",
+        },
+        503,
+      );
+    }
+    let orderId: string | null = null;
+    try {
+      const verified = await verifyPlayOneTimeProduct({
+        packageName: CREATOR_PLAY_PACKAGE,
+        productId,
+        purchaseToken,
+      });
+      orderId = verified.orderId;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      if (message === "not_connected") {
+        return json({ error: "Google Play is not connected, so this purchase was not recorded." }, 503);
+      }
+      return json({ error: "Google Play could not confirm that purchase. Nothing was recorded." }, 400);
+    }
+    await recordCreatorPlaySale({
+      packId: pack.id,
+      buyerUserId: user.id,
+      amountPence: tierPence,
+      orderKey: playOrderKey(orderId, purchaseToken),
+      productId,
+    });
+    return json({ ok: true, packId: pack.id });
   });
 }

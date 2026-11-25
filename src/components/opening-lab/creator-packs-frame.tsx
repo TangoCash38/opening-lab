@@ -14,7 +14,8 @@ export type CreatorPacksScreen =
   | "ratings"
   | "help"
   | "dashboard"
-  | "admin";
+  | "admin"
+  | "agreement";
 
 type RouteProps = {
   current: CreatorPacksScreen;

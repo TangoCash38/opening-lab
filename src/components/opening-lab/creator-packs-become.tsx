@@ -70,6 +70,12 @@ export function CreatorPacksBecome() {
           </p>
         </li>
       </ul>
+      <p className="creator-packs-note">
+        <Link to="/creator-packs/agreement" data-creator-agreement-link>
+          Read the creator agreement
+        </Link>{" "}
+        before you submit a pack. You will be asked to accept it.
+      </p>
       <CreatorPromoteNote />
 
       <aside className="creator-packs-form" data-creator-help-link>

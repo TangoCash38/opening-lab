@@ -8627,6 +8627,23 @@ html[data-color-scheme="dark"] .creator-line-mode {
   margin-top: 0.45rem;
 }
 
+.creator-accept {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin-top: 0.9rem;
+  text-align: start;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.creator-accept input {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.15rem;
+  flex: 0 0 auto;
+  accent-color: var(--color-accent);
+}
 .creator-suggest-row {
   display: flex;
   flex-wrap: wrap;

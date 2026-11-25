@@ -116,6 +116,20 @@ function publisherAuthHeader(access: string): { Authorization: string } {
   return { Authorization: `Bearer ${access}` };
 }
 
+/** Confirm a one-time Play purchase. Throws not_connected when Publisher creds are missing. */
+export async function verifyPlayOneTimeProduct(input: {
+  packageName: string;
+  productId: string;
+  purchaseToken: string;
+}): Promise<{ orderId: string | null }> {
+  const verified = await verifyOneTimeProduct(input);
+  return { orderId: verified.orderId };
+}
+
+export function playPublisherConfigured(): boolean {
+  return serviceAccount() !== null;
+}
+
 async function verifyOneTimeProduct(input: {
   packageName: string;
   productId: string;

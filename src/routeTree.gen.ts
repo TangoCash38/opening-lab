@@ -29,6 +29,7 @@ import { Route as ApiPracticeReviewEvalRouteImport } from './routes/api/practice
 import { Route as ApiSquareMemoryScoresRouteImport } from './routes/api/square-memory-scores'
 import { Route as ApiUnlocksRouteImport } from './routes/api/unlocks'
 import { Route as CreatorPacksAdminRouteImport } from './routes/creator-packs_.admin'
+import { Route as CreatorPacksAgreementRouteImport } from './routes/creator-packs_.agreement'
 import { Route as CreatorPacksBecomeRouteImport } from './routes/creator-packs_.become'
 import { Route as CreatorPacksDashboardRouteImport } from './routes/creator-packs_.dashboard'
 import { Route as CreatorPacksEditorRouteImport } from './routes/creator-packs_.editor'
@@ -43,6 +44,7 @@ import { Route as ApiCreatorPacksAdminRouteImport } from './routes/api/creator-p
 import { Route as ApiCreatorPacksCheckoutRouteImport } from './routes/api/creator-packs/checkout'
 import { Route as ApiCreatorPacksConnectRouteImport } from './routes/api/creator-packs/connect'
 import { Route as ApiCreatorPacksMineRouteImport } from './routes/api/creator-packs/mine'
+import { Route as ApiCreatorPacksPlayRouteImport } from './routes/api/creator-packs/play'
 import { Route as ApiCreatorPacksProfileRouteImport } from './routes/api/creator-packs/profile'
 import { Route as ApiPlaySubscribeRouteImport } from './routes/api/play.subscribe'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
@@ -156,6 +158,11 @@ const CreatorPacksAdminRoute = CreatorPacksAdminRouteImport.update({
   path: '/creator-packs/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorPacksAgreementRoute = CreatorPacksAgreementRouteImport.update({
+  id: '/creator-packs_/agreement',
+  path: '/creator-packs/agreement',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorPacksBecomeRoute = CreatorPacksBecomeRouteImport.update({
   id: '/creator-packs_/become',
   path: '/creator-packs/become',
@@ -224,6 +231,11 @@ const ApiCreatorPacksConnectRoute = ApiCreatorPacksConnectRouteImport.update({
 const ApiCreatorPacksMineRoute = ApiCreatorPacksMineRouteImport.update({
   id: '/api/creator-packs/mine',
   path: '/api/creator-packs/mine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCreatorPacksPlayRoute = ApiCreatorPacksPlayRouteImport.update({
+  id: '/api/creator-packs/play',
+  path: '/api/creator-packs/play',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCreatorPacksProfileRoute = ApiCreatorPacksProfileRouteImport.update({
@@ -313,6 +325,7 @@ export interface FileRoutesByFullPath {
   '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/creator-packs/admin': typeof CreatorPacksAdminRoute
+  '/creator-packs/agreement': typeof CreatorPacksAgreementRoute
   '/creator-packs/become': typeof CreatorPacksBecomeRoute
   '/creator-packs/dashboard': typeof CreatorPacksDashboardRoute
   '/creator-packs/editor': typeof CreatorPacksEditorRoute
@@ -326,6 +339,7 @@ export interface FileRoutesByFullPath {
   '/api/creator-packs/checkout': typeof ApiCreatorPacksCheckoutRouteWithChildren
   '/api/creator-packs/connect': typeof ApiCreatorPacksConnectRouteWithChildren
   '/api/creator-packs/mine': typeof ApiCreatorPacksMineRoute
+  '/api/creator-packs/play': typeof ApiCreatorPacksPlayRoute
   '/api/creator-packs/profile': typeof ApiCreatorPacksProfileRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -361,6 +375,7 @@ export interface FileRoutesByTo {
   '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/creator-packs/admin': typeof CreatorPacksAdminRoute
+  '/creator-packs/agreement': typeof CreatorPacksAgreementRoute
   '/creator-packs/become': typeof CreatorPacksBecomeRoute
   '/creator-packs/dashboard': typeof CreatorPacksDashboardRoute
   '/creator-packs/editor': typeof CreatorPacksEditorRoute
@@ -373,6 +388,7 @@ export interface FileRoutesByTo {
   '/api/creator-packs/checkout': typeof ApiCreatorPacksCheckoutRouteWithChildren
   '/api/creator-packs/connect': typeof ApiCreatorPacksConnectRouteWithChildren
   '/api/creator-packs/mine': typeof ApiCreatorPacksMineRoute
+  '/api/creator-packs/play': typeof ApiCreatorPacksPlayRoute
   '/api/creator-packs/profile': typeof ApiCreatorPacksProfileRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -409,6 +425,7 @@ export interface FileRoutesById {
   '/api/square-memory-scores': typeof ApiSquareMemoryScoresRoute
   '/api/unlocks': typeof ApiUnlocksRouteWithChildren
   '/creator-packs_/admin': typeof CreatorPacksAdminRoute
+  '/creator-packs_/agreement': typeof CreatorPacksAgreementRoute
   '/creator-packs_/become': typeof CreatorPacksBecomeRoute
   '/creator-packs_/dashboard': typeof CreatorPacksDashboardRoute
   '/creator-packs_/editor': typeof CreatorPacksEditorRoute
@@ -422,6 +439,7 @@ export interface FileRoutesById {
   '/api/creator-packs/checkout': typeof ApiCreatorPacksCheckoutRouteWithChildren
   '/api/creator-packs/connect': typeof ApiCreatorPacksConnectRouteWithChildren
   '/api/creator-packs/mine': typeof ApiCreatorPacksMineRoute
+  '/api/creator-packs/play': typeof ApiCreatorPacksPlayRoute
   '/api/creator-packs/profile': typeof ApiCreatorPacksProfileRoute
   '/api/play/subscribe': typeof ApiPlaySubscribeRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -459,6 +477,7 @@ export interface FileRouteTypes {
     | '/api/square-memory-scores'
     | '/api/unlocks'
     | '/creator-packs/admin'
+    | '/creator-packs/agreement'
     | '/creator-packs/become'
     | '/creator-packs/dashboard'
     | '/creator-packs/editor'
@@ -472,6 +491,7 @@ export interface FileRouteTypes {
     | '/api/creator-packs/checkout'
     | '/api/creator-packs/connect'
     | '/api/creator-packs/mine'
+    | '/api/creator-packs/play'
     | '/api/creator-packs/profile'
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
@@ -507,6 +527,7 @@ export interface FileRouteTypes {
     | '/api/square-memory-scores'
     | '/api/unlocks'
     | '/creator-packs/admin'
+    | '/creator-packs/agreement'
     | '/creator-packs/become'
     | '/creator-packs/dashboard'
     | '/creator-packs/editor'
@@ -519,6 +540,7 @@ export interface FileRouteTypes {
     | '/api/creator-packs/checkout'
     | '/api/creator-packs/connect'
     | '/api/creator-packs/mine'
+    | '/api/creator-packs/play'
     | '/api/creator-packs/profile'
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
@@ -554,6 +576,7 @@ export interface FileRouteTypes {
     | '/api/square-memory-scores'
     | '/api/unlocks'
     | '/creator-packs_/admin'
+    | '/creator-packs_/agreement'
     | '/creator-packs_/become'
     | '/creator-packs_/dashboard'
     | '/creator-packs_/editor'
@@ -567,6 +590,7 @@ export interface FileRouteTypes {
     | '/api/creator-packs/checkout'
     | '/api/creator-packs/connect'
     | '/api/creator-packs/mine'
+    | '/api/creator-packs/play'
     | '/api/creator-packs/profile'
     | '/api/play/subscribe'
     | '/api/stripe/webhook'
@@ -603,6 +627,7 @@ export interface RootRouteChildren {
   ApiSquareMemoryScoresRoute: typeof ApiSquareMemoryScoresRoute
   ApiUnlocksRoute: typeof ApiUnlocksRouteWithChildren
   CreatorPacksAdminRoute: typeof CreatorPacksAdminRoute
+  CreatorPacksAgreementRoute: typeof CreatorPacksAgreementRoute
   CreatorPacksBecomeRoute: typeof CreatorPacksBecomeRoute
   CreatorPacksDashboardRoute: typeof CreatorPacksDashboardRoute
   CreatorPacksEditorRoute: typeof CreatorPacksEditorRoute
@@ -615,6 +640,7 @@ export interface RootRouteChildren {
   ApiCreatorPacksCheckoutRoute: typeof ApiCreatorPacksCheckoutRouteWithChildren
   ApiCreatorPacksConnectRoute: typeof ApiCreatorPacksConnectRouteWithChildren
   ApiCreatorPacksMineRoute: typeof ApiCreatorPacksMineRoute
+  ApiCreatorPacksPlayRoute: typeof ApiCreatorPacksPlayRoute
   ApiCreatorPacksProfileRoute: typeof ApiCreatorPacksProfileRoute
   ApiPlaySubscribeRoute: typeof ApiPlaySubscribeRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
@@ -767,6 +793,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatorPacksAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creator-packs_/agreement': {
+      id: '/creator-packs_/agreement'
+      path: '/creator-packs/agreement'
+      fullPath: '/creator-packs/agreement'
+      preLoaderRoute: typeof CreatorPacksAgreementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/creator-packs_/become': {
       id: '/creator-packs_/become'
       path: '/creator-packs/become'
@@ -863,6 +896,13 @@ declare module '@tanstack/react-router' {
       path: '/api/creator-packs/mine'
       fullPath: '/api/creator-packs/mine'
       preLoaderRoute: typeof ApiCreatorPacksMineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/creator-packs/play': {
+      id: '/api/creator-packs/play'
+      path: '/api/creator-packs/play'
+      fullPath: '/api/creator-packs/play'
+      preLoaderRoute: typeof ApiCreatorPacksPlayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/creator-packs/profile': {
@@ -1039,6 +1079,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSquareMemoryScoresRoute: ApiSquareMemoryScoresRoute,
   ApiUnlocksRoute: ApiUnlocksRouteWithChildren,
   CreatorPacksAdminRoute: CreatorPacksAdminRoute,
+  CreatorPacksAgreementRoute: CreatorPacksAgreementRoute,
   CreatorPacksBecomeRoute: CreatorPacksBecomeRoute,
   CreatorPacksDashboardRoute: CreatorPacksDashboardRoute,
   CreatorPacksEditorRoute: CreatorPacksEditorRoute,
@@ -1051,6 +1092,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiCreatorPacksCheckoutRoute: ApiCreatorPacksCheckoutRouteWithChildren,
   ApiCreatorPacksConnectRoute: ApiCreatorPacksConnectRouteWithChildren,
   ApiCreatorPacksMineRoute: ApiCreatorPacksMineRoute,
+  ApiCreatorPacksPlayRoute: ApiCreatorPacksPlayRoute,
   ApiCreatorPacksProfileRoute: ApiCreatorPacksProfileRoute,
   ApiPlaySubscribeRoute: ApiPlaySubscribeRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
