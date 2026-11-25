@@ -18,9 +18,18 @@ export const Route = createFileRoute("/login")({
 
 type Mode = "signin" | "signup" | "forgot";
 
+function creatorReturnPath(): string {
+  if (typeof window === "undefined") return "/";
+  const raw = new URLSearchParams(window.location.search).get("next") ?? "";
+  if (!raw.startsWith("/creator-packs")) return "/";
+  if (raw.startsWith("//") || raw.includes("://") || raw.includes("\\") || raw.length > 180) return "/";
+  return raw;
+}
+
 function Login() {
   const { user, isPending } = useCurrentUserState();
   const search = Route.useSearch();
+  const nextPath = creatorReturnPath();
   const [mode, setMode] = useState<Mode>(search.forgot ? "forgot" : "signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +62,7 @@ function Login() {
         setOfferCreate(mapped.offerCreate);
         return;
       }
-      window.location.href = "/";
+      window.location.href = nextPath;
     } catch {
       setError(
         "Could not reach Opening Lab. Check your connection and try again.",
@@ -82,7 +91,7 @@ function Login() {
         setOfferSignIn(mapped.offerSignIn);
         return;
       }
-      window.location.href = "/";
+      window.location.href = nextPath;
     } catch {
       setError(
         "Could not reach Opening Lab. Check your connection and try again.",
@@ -188,6 +197,14 @@ function Login() {
             >
               Delete account
             </Link>
+            {nextPath !== "/" ? (
+              <a
+                href={nextPath}
+                className="block w-full rounded-full bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-fg no-underline shadow-sm"
+              >
+                Continue
+              </a>
+            ) : null}
             <button
               type="button"
               onClick={() => void signOut("/")}

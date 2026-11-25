@@ -107,15 +107,15 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(demo, /mode: "drill"/);
   assert.match(browse, /\{pack\.badge\}/);
   assert.match(pack, /index > 0/);
-  assert.match(pack, /Preview only/);
+  assert.match(pack, /Buy this pack/);
   assert.match(pack, /data-creator-buy/);
   assert.match(pack, /No payment is taken/);
-  assert.match(pack, /Rate this pack/);
-  assert.match(pack, /has not stored your rating/);
+  assert.match(pack, /CreatorPackStudy/);
   assert.match(become, /You keep 70%/);
   assert.match(become, /You keep 70% of every sale/);
   assert.match(become, /Opening Lab keeps 30%/);
-  assert.match(become, /suggest a price/i);
+  assert.match(become, /set a price/i);
+  assert.match(become, /may adjust/);
   assert.match(become, /Opening Lab reviews/);
   assert.match(become, /Players buy on Opening Lab/);
   assert.match(become, /CreatorPromoteNote/);
@@ -126,7 +126,7 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(become, /Create your own Opening Lab style drill/);
   assert.match(become, /Drill or Walk-through/);
   assert.match(become, /data-creator-thanks/);
-  assert.match(become, /has not sent or stored/);
+  assert.match(become, /Your name is saved/);
   assert.match(editor, /Create your own Opening Lab style drill/);
   assert.match(editor, /Lock in position/);
   assert.match(editor, /data-creator-step="1"/);
@@ -139,7 +139,7 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(editor, /data-creator-comment/);
   assert.match(editor, /data-creator-next/);
   assert.match(editor, /e2e4/);
-  assert.match(editor, /did not store it/);
+  assert.match(editor, /Opening Lab saves the pack/);
   assert.match(study, /data-creator-study-mode="walk"/);
   assert.match(study, /data-creator-study-mode="drill"/);
   assert.match(study, /data-creator-walk-comment/);
@@ -182,7 +182,8 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(admin, /data-creator-packs-admin/);
   assert.match(admin, /data-creator-approve/);
   assert.match(admin, /data-creator-send-back/);
-  assert.match(admin, /Final price/);
+  assert.match(admin, /Creator's price/);
+  assert.match(admin, /data-creator-edit-title/);
   assert.match(admin, /Monthly payouts/);
   assert.match(admin, /Pay via Stripe/);
   assert.match(admin, /data-creator-payout-row/);
@@ -200,7 +201,9 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(dashboard, /You keep 70% of every sale/);
   assert.match(admin, /flat 70%/);
   assert.match(admin, /70% of sales/);
-  assert.match(pack, /purchaseLinkMessage/);
+  assert.doesNotMatch(getPaid, /<input/);
+  assert.doesNotMatch(payout, /sk_live|sk_test|stripe\(/);
+  assert.doesNotMatch(pack, /purchaseLinkMessage/);
   assert.match(payout, /CREATOR_SHARE_PERCENT = 70/);
   assert.match(src("src/components/opening-lab/creator-packs-promote.tsx"), /data-creator-promote/);
   assert.match(src("src/lib/creator-packs-text.ts"), /hasPurchaseLink/);
@@ -208,14 +211,12 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(editor, /You can still submit now/);
   assert.match(status, /Not set up/);
   assert.match(status, /Payouts set up/);
-  assert.match(payout, /localStorage/);
-  assert.doesNotMatch(getPaid, /<input/);
-  assert.doesNotMatch(payout, /sk_live|sk_test|stripe\(/);
-  assert.match(review, /localStorage/);
+  assert.match(payout, /CREATOR_SHARE_PERCENT = 70/);
+  assert.doesNotMatch(payout, /localStorage/);
+  assert.doesNotMatch(review, /localStorage/);
   assert.match(frame, /Need help\?/);
   assert.doesNotMatch(frame, /creator-packs\/admin/);
-  assert.match(ratings, /Across every pack/);
-  assert.match(ratings, /review.author/);
+  assert.match(ratings, /Ratings are not open yet/);
   assert.match(frame, /creatorPacksRoutesOpen/);
   assert.match(frame, /data-creator-packs-closed/);
   const promote = src("src/components/opening-lab/creator-packs-promote.tsx");
@@ -285,18 +286,16 @@ test("creator share is a flat 70 percent and pack text cannot carry a purchase l
       "--input-type=module",
       "-e",
       `
-        import { CREATOR_SHARE_PERCENT, MONTHLY_PAYOUTS, creatorSharePence } from "./src/lib/creator-packs-payout.ts";
+        import { CREATOR_SHARE_PERCENT, creatorSharePence, splitSalePence } from "./src/lib/creator-packs-payout.ts";
         import { hasPurchaseLink } from "./src/lib/creator-packs-text.ts";
         import { DEMO_PACKS, DEMO_REVIEWS, DEMO_CREATORS } from "./src/data/creator-packs-demo.ts";
         if (CREATOR_SHARE_PERCENT !== 70) process.exit(2);
         if (creatorSharePence(1000) !== 700) process.exit(3);
         if (creatorSharePence(2000) !== 1400) process.exit(4);
         if (creatorSharePence(600) !== 420) process.exit(5);
-        for (const row of MONTHLY_PAYOUTS) {
-          const share = creatorSharePence(row.salesPence);
-          if (share !== Math.round((row.salesPence * 70) / 100)) process.exit(6);
-          if (row.shareLabel !== "£" + (share / 100).toFixed(2)) process.exit(7);
-        }
+        const split = splitSalePence(250);
+        if (split.creatorPence + split.platformPence !== 250) process.exit(6);
+        if (split.creatorPence !== 175) process.exit(7);
         const samples = [];
         for (const creator of DEMO_CREATORS) samples.push(creator.bio, creator.about, creator.name);
         for (const pack of DEMO_PACKS) {

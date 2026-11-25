@@ -14,7 +14,8 @@ export type CreatorPacksScreen =
   | "ratings"
   | "help"
   | "dashboard"
-  | "admin";
+  | "admin"
+  | "agreement";
 
 type RouteProps = {
   current: CreatorPacksScreen;
@@ -70,9 +71,9 @@ function CreatorPacksFrame({ current, children }: RouteProps) {
         <Link to="/" className="creator-packs-back">
           {t("← Back")}
         </Link>
-        <p className="creator-packs-kicker">Sample preview</p>
+        <p className="creator-packs-kicker">Private preview</p>
         <p className="creator-packs-sample" data-creator-packs-sample>
-          Fictional coaches and packs, shown so you can see the marketplace. Nothing here is for sale.
+          These pages stay off the home screen until Opening Lab opens them. Approved packs can be bought here.
         </p>
         <nav className="creator-packs-nav" aria-label="Creator packs preview">
           <Link

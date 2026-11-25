@@ -1,16 +1,12 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { Chess, type Move, type Square } from "chess.js";
 import { plyLabel, type StudyMode } from "@/data/creator-packs-demo";
 import { useT } from "@/lib/i18n";
-import {
-  formatPackPrice,
-  loadReviewPacks,
-  saveReviewPacks,
-  SUGGESTED_PACK_PRICES,
-  type StoredPack,
-} from "@/lib/creator-packs-review";
-import { useCreatorPayout } from "@/lib/creator-packs-payout";
+import { formatPackPrice, labelToPence, SUGGESTED_PACK_PRICES } from "@/lib/creator-packs-review";
+import { nearestPlayTier } from "@/lib/creator-packs-play";
+import { submitCreatorPack, fetchCreatorMine } from "@/lib/creator-packs-client";
+import { validateCreatorPack } from "@/lib/creator-packs-content";
 import { firstPurchaseLink, NO_PURCHASE_LINK, purchaseLinkMessage } from "@/lib/creator-packs-text";
 import { soundMove, soundSelect } from "@/lib/sounds";
 import { ChessBoard } from "./chess-board";
@@ -176,8 +172,22 @@ export function CreatorPacksEditor() {
   const [customPrice, setCustomPrice] = useState("");
   const [priceError, setPriceError] = useState<string | null>(null);
   const [linkError, setLinkError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState<StoredPack | null>(null);
-  const { youReady: payoutsReady } = useCreatorPayout();
+  const [submitted, setSubmitted] = useState<{ id: string; name: string; suggestedPrice: string } | null>(null);
+  const [payoutsReady, setPayoutsReady] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [blurb, setBlurb] = useState("");
+  const [accepted, setAccepted] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchCreatorMine().then((result) => {
+      if (cancelled || !result.ok) return;
+      setPayoutsReady(result.desk.profile?.payoutsReady === true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const draftFen = useMemo(() => gridToFen(grid, turn), [grid, turn]);
   const game = useMemo(
@@ -303,6 +313,7 @@ export function CreatorPacksEditor() {
 
   const lineTexts = (lines: readonly SavedLine[]): string[] => [
     packName,
+    blurb,
     ...lines.flatMap((line) => [line.name, ...line.moves.map((move) => move.comment)]),
   ];
 
@@ -342,29 +353,53 @@ export function CreatorPacksEditor() {
   };
 
   const submitPack = () => {
+    if (submitting) return;
     if (blockLinks(lineTexts(publishLines))) return;
     const price = chosenPrice();
     if (!price) {
       setPriceError(
         priceMode === "priced"
-          ? "Choose a suggested amount, or enter your own, such as 4.00."
+          ? "Choose an amount, or enter your own, such as 4.00."
           : "Choose Free, or add a price.",
       );
       return;
     }
-    const pack: StoredPack = {
-      id: `you-${Date.now()}`,
+    if (!accepted) {
+      setPriceError("Tick the creator agreement before you submit.");
+      return;
+    }
+    const draft = {
       name: packName.trim() || publishLines[0]?.name || "Your pack",
-      creatorName: "You",
-      lineCount: publishLines.length,
+      blurb,
       suggestedPrice: price,
-      finalPrice: "",
-      status: "review",
+      lines: publishLines.map((line) => ({
+        name: line.name,
+        mode: line.mode,
+        fen: line.fen,
+        plies: line.moves.map((move) => move.san),
+        comments: line.moves.map((move) => move.comment),
+      })),
     };
-    saveReviewPacks([...loadReviewPacks(), pack]);
-    setSubmitted(pack);
-    setPublishStep("submitted");
-    setPriceError(null);
+    const checked = validateCreatorPack(draft);
+    if (!checked.ok) {
+      setPriceError(checked.error);
+      return;
+    }
+    setSubmitting(true);
+    void submitCreatorPack({ ...draft, acceptedAgreement: true }).then((result) => {
+      setSubmitting(false);
+      if (!result.ok) {
+        setPriceError(
+          result.status === 401
+            ? "Sign in, then submit the pack again."
+            : result.error,
+        );
+        return;
+      }
+      setSubmitted({ id: result.pack.id, name: result.pack.name, suggestedPrice: price });
+      setPublishStep("submitted");
+      setPriceError(null);
+    });
   };
 
   const addSan = (san: string) => {
@@ -442,7 +477,8 @@ export function CreatorPacksEditor() {
       <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
         Three steps. Set the position, play the moves, then see the drill or the walk-through a player would get.
-        You do not have to start from an opening. This desk is a sample. Nothing you enter is stored.
+        You do not have to start from an opening. When you submit, Opening Lab saves the pack. You can see it
+        straight away. Other players see it only after it is approved.
       </p>
       <p className="creator-packs-note">
         If a position or a line is stuck, <Link to="/creator-packs/help">Need help?</Link> opens an email.
@@ -941,16 +977,25 @@ export function CreatorPacksEditor() {
         <section className="creator-publish-reminder" data-creator-price>
           <h2>How much to charge?</h2>
           <p>
-            Free keeps the pack open. Or suggest a price. Opening Lab reviews the pack and sets the final price before anyone is charged.
+            You set the price. Free keeps the pack open. Or choose an amount. Opening Lab reviews every pack and may adjust the price or the writing before anyone else can buy it.
           </p>
           <p>You keep 70% of every sale. Opening Lab keeps 30%. Players buy on Opening Lab&apos;s website or in the app.</p>
           <CreatorPromoteNote />
+          <label className="creator-packs-field">
+            <span>Note for players</span>
+            <textarea
+              value={blurb}
+              onChange={(event) => setBlurb(event.target.value)}
+              rows={3}
+              placeholder="Optional. What this pack is for."
+              data-creator-blurb
+            />
+          </label>
           {linkError ? (
             <p className="creator-packs-error" role="alert" data-creator-link-error>
               {linkError}
             </p>
           ) : null}
-          <p className="creator-packs-note">This preview does not take payment.</p>
           <div className="creator-format-choices">
             <button
               type="button"
@@ -976,12 +1021,12 @@ export function CreatorPacksEditor() {
               }}
             >
               <span className="creator-pack-name">Add a price</span>
-              <span className="creator-pack-bio">Suggest an amount. A few common prices are listed, or name your own.</span>
+              <span className="creator-pack-bio">Choose an amount. A few common prices are listed, or name your own.</span>
             </button>
           </div>
           {priceMode === "priced" ? (
             <>
-              <div className="creator-suggest-row" role="group" aria-label="Suggested prices">
+              <div className="creator-suggest-row" role="group" aria-label="Prices you can choose">
                 {SUGGESTED_PACK_PRICES.map((amount) => (
                   <button
                     key={amount}
@@ -1015,6 +1060,7 @@ export function CreatorPacksEditor() {
               </label>
             </>
           ) : null}
+          {priceMode === "priced" ? <PlayPriceNote label={chosenPrice()} /> : null}
           {priceError ? (
             <p className="creator-packs-error" role="alert">
               {priceError}
@@ -1026,8 +1072,28 @@ export function CreatorPacksEditor() {
               ready. <Link to="/creator-packs/dashboard">Set up payouts</Link>
             </p>
           ) : null}
-          <button type="button" className="creator-packs-primary" data-creator-submit-pack onClick={submitPack}>
-            Submit pack
+          <label className="creator-accept" data-creator-accept-row>
+            <input
+              type="checkbox"
+              checked={accepted}
+              onChange={(event) => {
+                setAccepted(event.target.checked);
+                setPriceError(null);
+              }}
+              data-creator-accept
+            />
+            <span>
+              I have read the <Link to="/creator-packs/agreement">creator agreement</Link> and I accept it.
+            </span>
+          </label>
+          <button
+            type="button"
+            className="creator-packs-primary"
+            data-creator-submit-pack
+            disabled={submitting || !accepted}
+            onClick={submitPack}
+          >
+            {submitting ? "Saving…" : "Submit pack"}
           </button>
         </section>
       ) : null}
@@ -1038,7 +1104,7 @@ export function CreatorPacksEditor() {
           <p>
             Your pack is live for you to see. Opening Lab will check it over and set it live for everyone shortly.
           </p>
-          <p className="creator-packs-note">This preview did not store it on a server.</p>
+          <p className="creator-packs-note">Opening Lab saves the pack for review. You can open it from your packs.</p>
           <article className="creator-pack-card" data-creator-own-pack={submitted.id}>
             <span className="creator-pack-name">{submitted.name}</span>
             <span className="creator-pack-meta">
@@ -1053,5 +1119,20 @@ export function CreatorPacksEditor() {
         </section>
       ) : null}
     </div>
+  );
+}
+
+function PlayPriceNote({ label }: { label: string | null }) {
+  if (!label || label === "Free") return null;
+  const pence = labelToPence(label);
+  if (pence == null) return null;
+  const tier = nearestPlayTier(pence);
+  if (!tier) return null;
+  return (
+    <p className="creator-packs-note" data-creator-play-price>
+      {tier.exact
+        ? `In the app, this matches a Play price, so players would pay the same ${tier.label}.`
+        : `In the app, this maps to the nearest Play price, ${tier.label}. The website charges the price you set.`}
+    </p>
   );
 }

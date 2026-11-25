@@ -362,8 +362,40 @@ export async function handleStripeWebhook(request: Request): Promise<Response> {
 
   if (event?.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    if (session.metadata?.userId || session.client_reference_id) {
+    if (session.metadata?.kind === "creator_pack") {
+      try {
+        const { recordCreatorPackCheckout } = await import("@/lib/creator-packs.server");
+        await recordCreatorPackCheckout(session);
+      } catch (err) {
+        console.error("[creator-packs] checkout record failed", err);
+        return new Response("Could not record the creator pack sale", { status: 500 });
+      }
+    } else if (session.metadata?.userId || session.client_reference_id) {
       await persistPaidSession(session);
+    }
+  } else if (event?.type === "account.updated") {
+    try {
+      const { syncCreatorConnectAccount } = await import("@/lib/creator-packs.server");
+      await syncCreatorConnectAccount(event.data.object as Stripe.Account);
+    } catch (err) {
+      console.error("[creator-packs] connect sync failed", err);
+      return new Response("Could not update creator payout status", { status: 500 });
+    }
+  } else if (event?.type === "charge.refunded") {
+    try {
+      const { refundCreatorPackCharge } = await import("@/lib/creator-packs.server");
+      await refundCreatorPackCharge(event.data.object as Stripe.Charge);
+    } catch (err) {
+      console.error("[creator-packs] refund failed", err);
+      return new Response("Could not reverse the creator share", { status: 500 });
+    }
+  } else if (event?.type === "charge.dispute.created" || event?.type === "charge.dispute.closed") {
+    try {
+      const { syncCreatorPackDispute } = await import("@/lib/creator-packs.server");
+      await syncCreatorPackDispute(event.data.object as Stripe.Dispute);
+    } catch (err) {
+      console.error("[creator-packs] dispute failed", err);
+      return new Response("Could not record the dispute", { status: 500 });
     }
   }
 

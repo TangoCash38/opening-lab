@@ -76,6 +76,26 @@ function Privacy() {
         </p>
       </LegalSection>
 
+      <LegalSection title="Creator packs">
+        <p>
+          Creator packs are not on the home screen yet. If you open those
+          pages and submit a pack, we already store what you send, so this
+          section applies now.
+        </p>
+        <ul className="list-disc space-y-1 pl-5">
+          <li>The public name you choose for your packs.</li>
+          <li>The packs you write: positions, moves, and comments.</li>
+          <li>A Stripe connected account id, once you set up payouts.</li>
+          <li>Sales totals, and the unlock for a buyer who paid.</li>
+        </ul>
+        <p>
+          Stripe handles identity checks and bank details on its own page. We
+          do not store bank details or card numbers. A buyer's record is the
+          same as any other pack purchase: that they bought it, the amount,
+          and the Stripe ids.
+        </p>
+      </LegalSection>
+
       <LegalSection title="Why we collect it">
         <p>
           We use this information to run your account, unlock packs you paid

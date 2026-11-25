@@ -1,106 +1,22 @@
-import { useEffect, useState } from "react";
+/** Flat creator share. Every website sale uses this rate. */
 
-/** Mock payout flags. Stored on this device only. No Stripe request is made. */
-export const CREATOR_PACKS_PAYOUT_KEY = "opening-lab.creator-packs.payouts";
-
-export type PayoutFile = {
-  version: 1;
-  youReady: boolean;
-  paidIds: string[];
-};
-
-/** Flat creator share. Every sale uses this rate. There is no second rate. */
 export const CREATOR_SHARE_PERCENT = 70;
 
-export type MonthlyPayout = {
-  id: string;
-  creatorName: string;
-  salesCount: number;
-  salesPence: number;
-  salesLabel: string;
-  shareLabel: string;
-};
-
-const MONTHLY_SALES = [
-  { id: "you", creatorName: "You", salesCount: 4, salesPence: 1000 },
-  { id: "demo-coach", creatorName: "Demo Coach", salesCount: 6, salesPence: 2000 },
-  { id: "demo-author", creatorName: "Demo Author", salesCount: 2, salesPence: 600 },
-] as const;
-
 export function creatorSharePence(salesPence: number): number {
+  if (!Number.isFinite(salesPence) || salesPence <= 0) return 0;
   return Math.round((salesPence * CREATOR_SHARE_PERCENT) / 100);
 }
 
-function pounds(pence: number): string {
-  return `£${(pence / 100).toFixed(2)}`;
+export function splitSalePence(amountPence: number): {
+  creatorPence: number;
+  platformPence: number;
+} {
+  const amount = Number.isFinite(amountPence) && amountPence > 0 ? Math.round(amountPence) : 0;
+  const creatorPence = Math.min(amount, creatorSharePence(amount));
+  return { creatorPence, platformPence: amount - creatorPence };
 }
 
-export const MONTHLY_PAYOUTS: readonly MonthlyPayout[] = MONTHLY_SALES.map((row) => ({
-  id: row.id,
-  creatorName: row.creatorName,
-  salesCount: row.salesCount,
-  salesPence: row.salesPence,
-  salesLabel: `${row.salesCount} ${row.salesCount === 1 ? "sale" : "sales"}, ${pounds(row.salesPence)}`,
-  shareLabel: pounds(creatorSharePence(row.salesPence)),
-}));
-
-const EMPTY: PayoutFile = { version: 1, youReady: false, paidIds: [] };
-
-export function payoutReadyFor(creatorName: string, youReady: boolean): boolean {
-  if (creatorName === "You") return youReady;
-  return creatorName === "Demo Coach";
-}
-
-export function loadPayoutFile(): PayoutFile {
-  if (typeof window === "undefined") return { ...EMPTY, paidIds: [] };
-  try {
-    const raw = window.localStorage.getItem(CREATOR_PACKS_PAYOUT_KEY);
-    if (!raw) return { ...EMPTY, paidIds: [] };
-    const parsed = JSON.parse(raw) as Partial<PayoutFile>;
-    if (parsed.version !== 1) return { ...EMPTY, paidIds: [] };
-    const paidIds = Array.isArray(parsed.paidIds) ? parsed.paidIds.filter((id) => typeof id === "string") : [];
-    return { version: 1, youReady: parsed.youReady === true, paidIds };
-  } catch {
-    return { ...EMPTY, paidIds: [] };
-  }
-}
-
-export function savePayoutFile(file: PayoutFile) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(CREATOR_PACKS_PAYOUT_KEY, JSON.stringify(file));
-  window.dispatchEvent(new Event("creator-packs-payout"));
-}
-
-export function useCreatorPayout() {
-  const [file, setFile] = useState<PayoutFile>({ ...EMPTY, paidIds: [] });
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    const sync = () => setFile(loadPayoutFile());
-    sync();
-    setHydrated(true);
-    window.addEventListener("storage", sync);
-    window.addEventListener("creator-packs-payout", sync);
-    return () => {
-      window.removeEventListener("storage", sync);
-      window.removeEventListener("creator-packs-payout", sync);
-    };
-  }, []);
-
-  const write = (next: PayoutFile) => {
-    savePayoutFile(next);
-    setFile(next);
-  };
-
-  return {
-    youReady: file.youReady,
-    hydrated,
-    paidIds: file.paidIds,
-    markReady: () => write({ ...loadPayoutFile(), youReady: true }),
-    markPaid: (id: string) => {
-      const current = loadPayoutFile();
-      if (current.paidIds.includes(id)) return;
-      write({ ...current, paidIds: [...current.paidIds, id] });
-    },
-  };
+export function formatSharePounds(pence: number): string {
+  const safe = Number.isFinite(pence) && pence > 0 ? pence : 0;
+  return `£${(safe / 100).toFixed(2)}`;
 }
