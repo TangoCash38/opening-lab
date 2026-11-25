@@ -14,7 +14,9 @@ export function CreatorPacksAdmin() {
   const [sales, setSales] = useState<AdminSale[]>([]);
   const [ready, setReady] = useState(false);
   const [gate, setGate] = useState<string | null>(null);
-  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [edits, setEdits] = useState<
+    Record<string, { name: string; blurb: string; price: string; lines: { id: string; name: string; comments: string[] }[] }>
+  >({});
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [reasons, setReasons] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
@@ -31,15 +33,23 @@ export function CreatorPacksAdmin() {
       setGate(null);
       setPacks(result.packs);
       setSales(result.sales);
-      setDrafts((current) => {
-        const next = { ...current };
-        for (const pack of result.packs) {
-          if (next[pack.id] === undefined) {
-            next[pack.id] = pack.finalPrice || (pack.suggestedPrice === "Free" ? "" : pack.suggestedPrice);
-          }
-        }
-        return next;
-      });
+      setEdits(
+        Object.fromEntries(
+          result.packs.map((pack) => [
+            pack.id,
+            {
+              name: pack.name,
+              blurb: pack.blurb,
+              price: pack.finalPrice || pack.suggestedPrice,
+              lines: pack.lines.map((line) => ({
+                id: line.id,
+                name: line.name,
+                comments: [...line.comments],
+              })),
+            },
+          ]),
+        ),
+      );
     });
   };
 
@@ -48,16 +58,20 @@ export function CreatorPacksAdmin() {
   }, []);
 
   const approve = (pack: AdminPack) => {
+    const edit = edits[pack.id];
     void reviewCreatorPack({
       packId: pack.id,
       action: "approve",
-      finalPrice: (drafts[pack.id] ?? "").trim(),
+      finalPrice: (edit?.price ?? pack.suggestedPrice).trim(),
+      name: edit?.name,
+      blurb: edit?.blurb,
+      lines: edit?.lines,
     }).then((result) => {
       if (!result.ok) {
         setErrors((current) => ({ ...current, [pack.id]: result.error }));
         return;
       }
-      setNotes((current) => ({ ...current, [pack.id]: "Approved. Players can see this pack at the final price." }));
+      setNotes((current) => ({ ...current, [pack.id]: "Approved. The creator can see this pack, and any change you made." }));
       setErrors((current) => ({ ...current, [pack.id]: null }));
       load();
     });
@@ -80,8 +94,7 @@ export function CreatorPacksAdmin() {
       <p className="creator-packs-kicker">For Sean</p>
       <h1 className="creator-packs-title">Pack review</h1>
       <p className="creator-packs-lede">
-        Each card shows the price the creator suggested. Set the final price, then approve the pack or send it back.
-        Other players see a pack only after you approve it.
+        The creator set the price. You can edit the title, the description, the lines and the price, then approve. The creator's price is already filled in. If you change the price or the writing, they see a short note on Your packs.
       </p>
       {gate ? (
         <div className="creator-packs-form" role="alert">
@@ -106,20 +119,52 @@ export function CreatorPacksAdmin() {
               <span className="creator-pack-bio">Payouts</span>
               <CreatorPayoutBadge ready={pack.payoutsReady} />
             </span>
+            <label className="creator-packs-field">
+              <span>Title</span>
+              <input
+                value={edits[pack.id]?.name ?? pack.name}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setEdits((current) => ({
+                    ...current,
+                    [pack.id]: { ...current[pack.id]!, name: value },
+                  }));
+                }}
+                data-creator-edit-title
+              />
+            </label>
+            <label className="creator-packs-field">
+              <span>Description</span>
+              <textarea
+                value={edits[pack.id]?.blurb ?? pack.blurb}
+                rows={3}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setEdits((current) => ({
+                    ...current,
+                    [pack.id]: { ...current[pack.id]!, blurb: value },
+                  }));
+                }}
+                data-creator-edit-blurb
+              />
+            </label>
             <span className="creator-pack-meta">
-              <span className="creator-pack-price">Suggested {pack.suggestedPrice}</span>
+              <span className="creator-pack-price">Creator's price {pack.suggestedPrice}</span>
               <CreatorPackStatus status={pack.status} />
             </span>
             <label className="creator-packs-field">
-              <span>Final price</span>
+              <span>Price</span>
               <input
-                value={drafts[pack.id] ?? ""}
+                value={edits[pack.id]?.price ?? pack.suggestedPrice}
                 onChange={(event) => {
                   const value = event.target.value;
-                  setDrafts((current) => ({ ...current, [pack.id]: value }));
+                  setEdits((current) => ({
+                    ...current,
+                    [pack.id]: { ...current[pack.id]!, price: value },
+                  }));
                   setErrors((current) => ({ ...current, [pack.id]: null }));
                 }}
-                placeholder={pack.suggestedPrice === "Free" ? "Free, or a price" : pack.suggestedPrice}
+                placeholder={pack.suggestedPrice}
                 inputMode="decimal"
                 disabled={!ready}
                 data-creator-final-price
@@ -139,21 +184,52 @@ export function CreatorPacksAdmin() {
                 data-creator-return-note
               />
             </label>
-            <details>
-              <summary>Look at the lines</summary>
-              <ul className="creator-kept-list">
-                {pack.lines.map((line) => (
-                  <li key={line.name}>
-                    <span>
-                      {line.name}
-                      <span className="creator-kept-moves">
-                        {line.mode === "drill" ? "Drill" : "Walk-through"} · {line.plyCount} moves
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </details>
+            <div data-creator-edit-lines>
+              {pack.lines.map((line, lineIndex) => (
+                <div key={line.id} className="creator-packs-form">
+                  <label className="creator-packs-field">
+                    <span>Line</span>
+                    <input
+                      value={edits[pack.id]?.lines[lineIndex]?.name ?? line.name}
+                      onChange={(event) => {
+                        const value = event.target.value;
+                        setEdits((current) => {
+                          const lines = current[pack.id]!.lines.map((item, index) =>
+                            index === lineIndex ? { ...item, name: value } : item,
+                          );
+                          return { ...current, [pack.id]: { ...current[pack.id]!, lines } };
+                        });
+                      }}
+                      data-creator-edit-line
+                    />
+                  </label>
+                  <p className="creator-packs-note">{line.plies.join(" ")}</p>
+                  {line.comments.map((_, commentIndex) => (
+                    <label key={`${line.id}-${commentIndex}`} className="creator-packs-field">
+                      <span>Comment {commentIndex + 1}</span>
+                      <textarea
+                        rows={2}
+                        value={edits[pack.id]?.lines[lineIndex]?.comments[commentIndex] ?? ""}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setEdits((current) => {
+                            const lines = current[pack.id]!.lines.map((item, index) => {
+                              if (index !== lineIndex) return item;
+                              const comments = item.comments.map((comment, index) =>
+                                index === commentIndex ? value : comment,
+                              );
+                              return { ...item, comments };
+                            });
+                            return { ...current, [pack.id]: { ...current[pack.id]!, lines } };
+                          });
+                        }}
+                        data-creator-edit-comment
+                      />
+                    </label>
+                  ))}
+                </div>
+              ))}
+            </div>
             <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }}>
               Open the pack
             </Link>

@@ -17,7 +17,7 @@ test("creator agreement is private, linked, and required before submit", () => {
   assert.match(route, /noindex, nofollow/);
   assert.match(page, /You keep 70%/);
   assert.match(page, /Opening Lab keeps 30%/);
-  assert.match(page, /sets the final price/);
+  assert.match(page, /may adjust the price/);
   assert.match(page, /only on Opening Lab/);
   assert.match(page, /Stripe Connect/);
   assert.match(page, /once a month/);
@@ -46,7 +46,8 @@ test("split, review, refund, and Play tiers", () => {
         import { reversalForRefund } from "./src/lib/creator-packs-refund.ts";
         import { reviewDecision } from "./src/lib/creator-packs-review-decision.ts";
         import { submitIsLimited, CREATOR_SUBMIT_LIMIT } from "./src/lib/creator-packs-limits.ts";
-        import { playSkuForCreatorPence, creatorPenceForPlaySku } from "./src/lib/creator-packs-play.ts";
+        import { playSkuForCreatorPence, creatorPenceForPlaySku, nearestPlayTier } from "./src/lib/creator-packs-play.ts";
+        import { describePackEdits } from "./src/lib/creator-packs-edits.ts";
 
         const a = splitSalePence(250);
         if (a.creatorPence !== 175 || a.platformPence !== 75) process.exit(2);
@@ -100,6 +101,20 @@ test("split, review, refund, and Play tiers", () => {
         if (playSkuForCreatorPence(250) !== "creator_pack_250") process.exit(17);
         if (playSkuForCreatorPence(400) !== null) process.exit(18);
         if (creatorPenceForPlaySku("creator_pack_150") !== 150) process.exit(19);
+        const near = nearestPlayTier(400);
+        if (!near || near.pence !== 300 || near.exact) process.exit(20);
+        const exact = nearestPlayTier(250);
+        if (!exact || !exact.exact || exact.label !== "£2.50") process.exit(21);
+        const same = describePackEdits(
+          { name: "Quiet", blurb: "", pricePence: 250, lines: [{ name: "A", comments: ["Hi"] }] },
+          { name: "Quiet", blurb: "", pricePence: 250, lines: [{ name: "A", comments: ["Hi"] }] },
+        );
+        if (same !== "") process.exit(22);
+        const changed = describePackEdits(
+          { name: "Quiet", blurb: "Old", pricePence: 250, lines: [{ name: "A", comments: ["Hi"] }] },
+          { name: "Calm", blurb: "Old", pricePence: 199, lines: [{ name: "A", comments: ["Hello"] }] },
+        );
+        if (!changed.includes("£2.50") || !changed.includes("£1.99") || !changed.includes("title") || !changed.includes("comment")) process.exit(23);
       `,
     ],
     { cwd: root, encoding: "utf8" },

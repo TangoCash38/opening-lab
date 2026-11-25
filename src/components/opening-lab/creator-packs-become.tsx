@@ -38,7 +38,7 @@ export function CreatorPacksBecome() {
       <p className="creator-packs-kicker">Become a creator</p>
       <h1 className="creator-packs-title">Create your own Opening Lab style drill</h1>
       <p className="creator-packs-lede">
-        Build your pack on Opening Lab, put your name on it, and suggest a price. Opening Lab reviews it before other
+        Build your pack on Opening Lab, put your name on it, and set a price. Opening Lab reviews every pack before other
         players can see it. Players buy on the website or in the app, and you keep 70% of every sale.
       </p>
       <ul className="creator-packs-points">
@@ -53,8 +53,11 @@ export function CreatorPacksBecome() {
           <p>The card carries your name and the lines you wrote. You decide what goes in.</p>
         </li>
         <li>
-          <h2>Suggest a price</h2>
-          <p>You suggest a price. Opening Lab reviews the pack and sets the final price before anyone is charged.</p>
+          <h2>You set the price</h2>
+          <p>
+            You set the price. Free, or an amount you choose. Opening Lab reviews every pack and may adjust the price
+            or the writing before anyone else can buy it.
+          </p>
         </li>
         <li>
           <h2>Drill or Walk-through</h2>

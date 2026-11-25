@@ -32,7 +32,7 @@ export function reviewDecision(input: {
   if (pence === null || pence < 0) {
     return {
       ok: false,
-      error: "Enter a price such as 2.50, or leave the field blank to keep the suggestion.",
+      error: "Enter a price such as 2.50, or leave the field blank to keep the creator's price.",
     };
   }
   return { ok: true, status: "live", finalPence: pence };

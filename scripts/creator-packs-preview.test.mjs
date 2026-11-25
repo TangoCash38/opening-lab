@@ -114,7 +114,8 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(become, /You keep 70%/);
   assert.match(become, /You keep 70% of every sale/);
   assert.match(become, /Opening Lab keeps 30%/);
-  assert.match(become, /suggest a price/i);
+  assert.match(become, /set a price/i);
+  assert.match(become, /may adjust/);
   assert.match(become, /Opening Lab reviews/);
   assert.match(become, /Players buy on Opening Lab/);
   assert.match(become, /CreatorPromoteNote/);
@@ -181,7 +182,8 @@ test("sample catalogue is fictional, ten lines, and not wired to payments", () =
   assert.match(admin, /data-creator-packs-admin/);
   assert.match(admin, /data-creator-approve/);
   assert.match(admin, /data-creator-send-back/);
-  assert.match(admin, /Final price/);
+  assert.match(admin, /Creator's price/);
+  assert.match(admin, /data-creator-edit-title/);
   assert.match(admin, /Monthly payouts/);
   assert.match(admin, /Pay via Stripe/);
   assert.match(admin, /data-creator-payout-row/);

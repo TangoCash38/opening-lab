@@ -26,11 +26,13 @@ import {
   validateCreatorProfile,
 } from "@/lib/creator-packs-content";
 import { CREATOR_SUBMIT_LIMIT, submitIsLimited } from "@/lib/creator-packs-limits";
-import { CREATOR_PLAY_PACKAGE, creatorPenceForPlaySku, playSkuForCreatorPence } from "@/lib/creator-packs-play";
+import { describePackEdits, type PackEditSnapshot } from "@/lib/creator-packs-edits";
+import { CREATOR_PLAY_PACKAGE, creatorPenceForPlaySku, nearestPlayTier } from "@/lib/creator-packs-play";
 import { splitSalePence } from "@/lib/creator-packs-payout";
 import { reversalForRefund } from "@/lib/creator-packs-refund";
 import { reviewDecision } from "@/lib/creator-packs-review-decision";
 import { formatPenceLabel, type PackReviewStatus } from "@/lib/creator-packs-review";
+import { firstPurchaseLink } from "@/lib/creator-packs-text";
 
 const PACK_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -51,6 +53,7 @@ type PackRow = {
   suggested_price_pence: number;
   final_price_pence: number | null;
   review_note: string;
+  change_note: string;
   display_name: string;
   bio: string;
   payouts_ready: boolean;
@@ -217,9 +220,10 @@ async function packsForCreator(sql: Sql, userId: string) {
     suggested_price_pence: number;
     final_price_pence: number | null;
     review_note: string;
+    change_note: string;
     line_count: number;
   }>(
-    `select p.id, p.name, p.status, p.suggested_price_pence, p.final_price_pence, p.review_note,
+    `select p.id, p.name, p.status, p.suggested_price_pence, p.final_price_pence, p.review_note, p.change_note,
             (select count(*)::int from creator_pack_lines l where l.pack_id = p.id) as line_count
        from creator_packs p
       where p.creator_user_id = $1
@@ -235,6 +239,7 @@ async function packsForCreator(sql: Sql, userId: string) {
     suggestedPrice: formatPenceLabel(asInt(row.suggested_price_pence)),
     finalPrice: row.final_price_pence == null ? "" : formatPenceLabel(asInt(row.final_price_pence)),
     reviewNote: row.review_note,
+    changeNote: row.change_note ?? "",
   }));
 }
 
@@ -375,7 +380,7 @@ export async function createCreatorPackResponse(request: Request): Promise<Respo
 
 const PACK_SELECT = `
   select p.id, p.creator_user_id, p.name, p.blurb, p.status,
-         p.suggested_price_pence, p.final_price_pence, p.review_note,
+         p.suggested_price_pence, p.final_price_pence, p.review_note, p.change_note,
          pr.display_name, pr.bio, pr.payouts_ready, pr.stripe_account_id
     from creator_packs p
     join creator_profiles pr on pr.user_id = p.creator_user_id
@@ -859,7 +864,9 @@ type AdminPack = {
   status: PackReviewStatus;
   payoutsReady: boolean;
   reviewNote: string;
-  lines: { name: string; mode: "drill" | "walk"; plyCount: number; comments: string[] }[];
+  changeNote: string;
+  blurb: string;
+  lines: { id: string; name: string; mode: "drill" | "walk"; plies: string[]; comments: string[] }[];
 };
 
 export async function creatorAdminQueueResponse(request: Request): Promise<Response> {
@@ -921,10 +928,13 @@ export async function creatorAdminQueueResponse(request: Request): Promise<Respo
         status: row.status,
         payoutsReady: row.payouts_ready,
         reviewNote: row.review_note,
+        changeNote: row.change_note ?? "",
+        blurb: row.blurb,
         lines: lines.map((line) => ({
+          id: line.id,
           name: line.name,
           mode: line.mode === "walk" ? "walk" : "drill",
-          plyCount: asStrings(line.plies).length,
+          plies: asStrings(line.plies),
           comments: asStrings(line.comments),
         })),
       });
@@ -942,6 +952,66 @@ export async function creatorAdminQueueResponse(request: Request): Promise<Respo
       })),
     });
   });
+}
+
+function clip(value: unknown, max: number): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (trimmed.length > max) return null;
+  return trimmed;
+}
+
+function readPackEdits(
+  body: { name?: unknown; blurb?: unknown; lines?: unknown },
+  pack: PackRow,
+  storedLines: LineRow[],
+  finalPence: number,
+): { ok: true; before: PackEditSnapshot; after: PackEditSnapshot } | { ok: false; error: string } {
+  const name = body.name == null ? pack.name : clip(body.name, 80);
+  const blurb = body.blurb == null ? pack.blurb : clip(body.blurb, 400);
+  if (!name || name.length < 2) return { ok: false, error: "Give the pack a title." };
+  if (blurb === null) return { ok: false, error: "Keep the description shorter." };
+  const incoming = Array.isArray(body.lines) ? body.lines : null;
+  const afterLines: { name: string; comments: string[] }[] = [];
+  const texts = [name, blurb];
+  for (let index = 0; index < storedLines.length; index += 1) {
+    const stored = storedLines[index]!;
+    const raw = incoming?.[index];
+    const source = raw && typeof raw === "object" ? (raw as { id?: unknown; name?: unknown; comments?: unknown }) : null;
+    if (source?.id != null && source.id !== stored.id) {
+      return { ok: false, error: "The lines do not match this pack." };
+    }
+    const lineName = source?.name == null ? stored.name : clip(source.name, 80);
+    if (!lineName) return { ok: false, error: "Give every line a name." };
+    const storedComments = asStrings(stored.comments);
+    let comments = storedComments;
+    if (source?.comments != null) {
+      if (!Array.isArray(source.comments) || source.comments.length !== storedComments.length) {
+        return { ok: false, error: "Each move still needs its own comment." };
+      }
+      const next: string[] = [];
+      for (const comment of source.comments) {
+        const clean = clip(comment, 500);
+        if (clean === null) return { ok: false, error: "Keep each comment under 500 characters." };
+        next.push(clean);
+      }
+      comments = next;
+    }
+    texts.push(lineName, ...comments);
+    afterLines.push({ name: lineName, comments });
+  }
+  const blocked = firstPurchaseLink(texts);
+  if (blocked) return { ok: false, error: blocked };
+  return {
+    ok: true,
+    before: {
+      name: pack.name,
+      blurb: pack.blurb,
+      pricePence: pack.final_price_pence == null ? asInt(pack.suggested_price_pence) : asInt(pack.final_price_pence),
+      lines: storedLines.map((line) => ({ name: line.name, comments: asStrings(line.comments) })),
+    },
+    after: { name, blurb, pricePence: finalPence, lines: afterLines },
+  };
 }
 
 export async function reviewCreatorPackResponse(request: Request): Promise<Response> {
@@ -981,16 +1051,32 @@ export async function reviewCreatorPackResponse(request: Request): Promise<Respo
       );
       return json({ ok: true, status: "returned" });
     }
+    const storedLines = await loadLines(sql, pack.id);
+    const edited = readPackEdits(body, pack, storedLines, decision.finalPence);
+    if (!edited.ok) return json({ error: edited.error }, 400);
+    const fresh = describePackEdits(edited.before, edited.after);
+    const changeNote = fresh || pack.change_note || "";
     await sql.query(
       `update creator_packs
           set status = 'live',
-              final_price_pence = $2,
+              name = $2,
+              blurb = $3,
+              final_price_pence = $4,
               review_note = '',
+              change_note = $5,
               updated_at = now()
         where id = $1`,
-      [pack.id, decision.finalPence],
+      [pack.id, edited.after.name, edited.after.blurb, decision.finalPence, changeNote],
     );
-    return json({ ok: true, status: "live", finalPrice: formatPenceLabel(decision.finalPence) });
+    for (let index = 0; index < storedLines.length; index += 1) {
+      const line = storedLines[index]!;
+      const next = edited.after.lines[index]!;
+      await sql.query(
+        `update creator_pack_lines set name = $2, comments = $3::text[] where id = $1 and pack_id = $4`,
+        [line.id, next.name, next.comments, pack.id],
+      );
+    }
+    return json({ ok: true, status: "live", finalPrice: formatPenceLabel(decision.finalPence), changeNote });
   });
 }
 
@@ -1186,8 +1272,9 @@ export async function confirmCreatorPlayResponse(request: Request): Promise<Resp
     const pack = await loadPack(sql, packId);
     if (!pack || pack.status !== "live") return json({ error: "This pack is not on sale." }, 400);
     const finalPence = pack.final_price_pence == null ? null : asInt(pack.final_price_pence);
-    if (finalPence == null || playSkuForCreatorPence(finalPence) !== productId) {
-      return json({ error: "This pack's price is not on sale in the app." }, 400);
+    const tier = nearestPlayTier(finalPence ?? -1);
+    if (!tier || tier.sku !== productId || tier.pence !== tierPence) {
+      return json({ error: "This pack's app price does not match that Play product." }, 400);
     }
     const { playPublisherConfigured, verifyPlayOneTimeProduct } = await import("@/lib/play-billing.server");
     if (!playPublisherConfigured()) {

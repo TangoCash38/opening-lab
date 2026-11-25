@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { Chess, type Move, type Square } from "chess.js";
 import { plyLabel, type StudyMode } from "@/data/creator-packs-demo";
 import { useT } from "@/lib/i18n";
-import { formatPackPrice, SUGGESTED_PACK_PRICES } from "@/lib/creator-packs-review";
+import { formatPackPrice, labelToPence, SUGGESTED_PACK_PRICES } from "@/lib/creator-packs-review";
+import { nearestPlayTier } from "@/lib/creator-packs-play";
 import { submitCreatorPack, fetchCreatorMine } from "@/lib/creator-packs-client";
 import { validateCreatorPack } from "@/lib/creator-packs-content";
 import { firstPurchaseLink, NO_PURCHASE_LINK, purchaseLinkMessage } from "@/lib/creator-packs-text";
@@ -358,7 +359,7 @@ export function CreatorPacksEditor() {
     if (!price) {
       setPriceError(
         priceMode === "priced"
-          ? "Choose a suggested amount, or enter your own, such as 4.00."
+          ? "Choose an amount, or enter your own, such as 4.00."
           : "Choose Free, or add a price.",
       );
       return;
@@ -976,7 +977,7 @@ export function CreatorPacksEditor() {
         <section className="creator-publish-reminder" data-creator-price>
           <h2>How much to charge?</h2>
           <p>
-            Free keeps the pack open. Or suggest a price. Opening Lab reviews the pack and sets the final price before anyone is charged.
+            You set the price. Free keeps the pack open. Or choose an amount. Opening Lab reviews every pack and may adjust the price or the writing before anyone else can buy it.
           </p>
           <p>You keep 70% of every sale. Opening Lab keeps 30%. Players buy on Opening Lab&apos;s website or in the app.</p>
           <CreatorPromoteNote />
@@ -1020,12 +1021,12 @@ export function CreatorPacksEditor() {
               }}
             >
               <span className="creator-pack-name">Add a price</span>
-              <span className="creator-pack-bio">Suggest an amount. A few common prices are listed, or name your own.</span>
+              <span className="creator-pack-bio">Choose an amount. A few common prices are listed, or name your own.</span>
             </button>
           </div>
           {priceMode === "priced" ? (
             <>
-              <div className="creator-suggest-row" role="group" aria-label="Suggested prices">
+              <div className="creator-suggest-row" role="group" aria-label="Prices you can choose">
                 {SUGGESTED_PACK_PRICES.map((amount) => (
                   <button
                     key={amount}
@@ -1059,6 +1060,7 @@ export function CreatorPacksEditor() {
               </label>
             </>
           ) : null}
+          {priceMode === "priced" ? <PlayPriceNote label={chosenPrice()} /> : null}
           {priceError ? (
             <p className="creator-packs-error" role="alert">
               {priceError}
@@ -1117,5 +1119,20 @@ export function CreatorPacksEditor() {
         </section>
       ) : null}
     </div>
+  );
+}
+
+function PlayPriceNote({ label }: { label: string | null }) {
+  if (!label || label === "Free") return null;
+  const pence = labelToPence(label);
+  if (pence == null) return null;
+  const tier = nearestPlayTier(pence);
+  if (!tier) return null;
+  return (
+    <p className="creator-packs-note" data-creator-play-price>
+      {tier.exact
+        ? `In the app, this matches a Play price, so players would pay the same ${tier.label}.`
+        : `In the app, this maps to the nearest Play price, ${tier.label}. The website charges the price you set.`}
+    </p>
   );
 }

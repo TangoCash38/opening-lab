@@ -21,8 +21,7 @@ export function CreatorPacksAgreement() {
         <li>
           <h2>Review and price</h2>
           <p>
-            You suggest a price, or you offer the pack free. Opening Lab reviews every pack and sets the final price
-            before anyone else can buy it. You can see your own pack as soon as you submit it.
+            You set the price. Free keeps the pack open, or you choose an amount. Opening Lab reviews every pack and may adjust the price or the writing before anyone else can buy it. You can see your own pack as soon as you submit it.
           </p>
         </li>
         <li>

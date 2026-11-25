@@ -114,6 +114,11 @@ export function CreatorPacksDashboard() {
                 Opening Lab sent this back: {pack.reviewNote}
               </p>
             ) : null}
+            {pack.changeNote ? (
+              <p className="creator-packs-note" data-creator-change-note>
+                {pack.changeNote}
+              </p>
+            ) : null}
           </article>
         ))}
       </div>

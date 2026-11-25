@@ -4,8 +4,9 @@
  * Package: uk.co.openinglab
  * The current app only sells the fixed drill-pack SKUs. Creator prices vary,
  * and Play requires a product for each price before a purchase can start.
- * The website can charge any approved price. The app can only sell a pack
- * whose final price is one of the tiers below.
+ * The website charges the price the creator set, after review.
+ * The app can only charge a fixed Play price, so a sale there uses the
+ * nearest tier. Say that on the price step.
  *
  * Later, in Play Console, create one one-time product per tier, priced in
  * GBP at that amount. Product ids use [a-z0-9._] only.
@@ -30,6 +31,20 @@ export const CREATOR_PLAY_TIERS = [
 export function playSkuForCreatorPence(pence: number): string | null {
   const tier = CREATOR_PLAY_TIERS.find((row) => row.pence === pence);
   return tier ? tier.sku : null;
+}
+
+export function nearestPlayTier(pence: number): ((typeof CREATOR_PLAY_TIERS)[number] & { exact: boolean }) | null {
+  if (!Number.isFinite(pence) || pence <= 0) return null;
+  let best: (typeof CREATOR_PLAY_TIERS)[number] = CREATOR_PLAY_TIERS[0];
+  let bestDiff = Math.abs(pence - best.pence);
+  for (const tier of CREATOR_PLAY_TIERS) {
+    const diff = Math.abs(pence - tier.pence);
+    if (diff < bestDiff || (diff === bestDiff && tier.pence < best.pence)) {
+      best = tier;
+      bestDiff = diff;
+    }
+  }
+  return { ...best, exact: bestDiff === 0 };
 }
 
 export function creatorPenceForPlaySku(sku: string): number | null {

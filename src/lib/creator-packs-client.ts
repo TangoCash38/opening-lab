@@ -13,6 +13,7 @@ export type CreatorDeskPack = {
   suggestedPrice: string;
   finalPrice: string;
   reviewNote: string;
+  changeNote: string;
 };
 
 export type CreatorDesk = {
@@ -78,7 +79,9 @@ export type AdminPack = {
   status: PackReviewStatus;
   payoutsReady: boolean;
   reviewNote: string;
-  lines: { name: string; mode: "drill" | "walk"; plyCount: number; comments: string[] }[];
+  changeNote: string;
+  blurb: string;
+  lines: { id: string; name: string; mode: "drill" | "walk"; plies: string[]; comments: string[] }[];
 };
 
 export type AdminSale = {
@@ -260,6 +263,9 @@ export async function reviewCreatorPack(input: {
   action: "approve" | "return";
   finalPrice?: string;
   note?: string;
+  name?: string;
+  blurb?: string;
+  lines?: { id: string; name: string; comments: string[] }[];
 }): Promise<{ ok: true } | Fail> {
   try {
     const { status, data } = await api<{ error?: string }>("/api/creator-packs/admin", {
