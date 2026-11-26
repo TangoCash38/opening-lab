@@ -37,8 +37,8 @@ export function CreatorPacksBrowse() {
     <div data-creator-packs-browse>
       <h1 className="creator-packs-title">Creator packs</h1>
       <p className="creator-packs-lede">
-        Coaches and players publish a pack under their name. Opening Lab reviews it, then sets the price. The first
-        line is free to try.
+        Coaches and players publish a pack under their name and set its price. Opening Lab reviews every pack before
+        it goes on sale. The first line is free to try.
       </p>
       {error ? (
         <p className="creator-packs-error" role="alert">
