@@ -42,6 +42,7 @@ import {
   startPlayPackBuy,
 } from "@/lib/play-billing";
 import { BuyAllOffer } from "./buy-all-offer";
+import { MakerBadge } from "./maker-badge";
 import { PackExpandHint } from "./pack-lines";
 import { LondonWarmupChip } from "./london-warmup-chip";
 import { MiniBoard } from "./mini-board";
@@ -204,17 +205,20 @@ function PackCard({
             )}
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <div className="min-w-0 break-words text-[0.95rem] font-bold leading-snug">
-                {pack.name}
+            <div className="maker-badge-row">
+              <div className="flex min-w-0 items-center gap-2">
+                <div className="min-w-0 break-words text-[0.95rem] font-bold leading-snug">
+                  {pack.name}
+                </div>
+                {!anyOpen && !comingSoonClosed && (
+                  <Lock
+                    className="size-3.5 shrink-0 text-fg-subtle"
+                    strokeWidth={2.5}
+                    aria-label="Locked"
+                  />
+                )}
               </div>
-              {!anyOpen && !comingSoonClosed && (
-                <Lock
-                  className="size-3.5 shrink-0 text-fg-subtle"
-                  strokeWidth={2.5}
-                  aria-label="Locked"
-                />
-              )}
+              <MakerBadge />
             </div>
             {pack.blurb ? <div className="mt-0.5 text-xs text-fg-subtle">{pack.blurb}</div> : null}
             <div className="mt-1.5 flex flex-wrap gap-1.5">

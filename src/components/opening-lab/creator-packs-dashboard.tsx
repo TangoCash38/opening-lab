@@ -4,6 +4,7 @@ import { fetchCreatorMine, type CreatorDesk } from "@/lib/creator-packs-client";
 import { formatSharePounds } from "@/lib/creator-packs-payout";
 import { CreatorGetPaid } from "./creator-packs-get-paid";
 import { CreatorPromoteNote } from "./creator-packs-promote";
+import { MakerBadge } from "./maker-badge";
 import { CreatorPackStatus } from "./creator-packs-status";
 
 export function CreatorPacksDashboard() {
@@ -95,9 +96,12 @@ export function CreatorPacksDashboard() {
       <div className="creator-packs-grid">
         {desk.packs.map((pack) => (
           <article key={pack.id} className="creator-pack-card" data-creator-own-pack={pack.id}>
-            <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }} className="creator-pack-name">
-              {pack.name}
-            </Link>
+            <div className="maker-badge-row">
+              <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }} className="creator-pack-name">
+                {pack.name}
+              </Link>
+              {desk.profile?.displayName ? <MakerBadge name={desk.profile.displayName} /> : null}
+            </div>
             <span className="creator-pack-bio">
               {pack.lineCount} {pack.lineCount === 1 ? "line" : "lines"}
               {pack.status === "returned" ? ". Have another look, then submit a fresh pack." : ""}

@@ -22,6 +22,7 @@ import {
 } from "@/lib/play-app";
 import { BuyAllOffer } from "./buy-all-offer";
 import { ColorSchemeToggle } from "./color-scheme-toggle";
+import { MakerBadge } from "./maker-badge";
 import { LandingMateDemo } from "./landing-mate-demo";
 import { LandingMenu } from "./landing-menu";
 
@@ -255,7 +256,10 @@ export function LandingHome({
                     data-free-lines={packHasPlayableFreeLines(pack) ? "true" : "false"}
                     onClick={() => onOpenPack(pack.id)}
                   >
-                    <span className="landing-pack-name">{openNowTitle(pack)}</span>
+                    <span className="maker-badge-row">
+                      <span className="landing-pack-name">{openNowTitle(pack)}</span>
+                      <MakerBadge />
+                    </span>
                     <span className="landing-pack-price" data-open-pack-price={pack.id}>
                       {priceLabel(pack)}
                     </span>

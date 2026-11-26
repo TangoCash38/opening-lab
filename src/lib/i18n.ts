@@ -11,6 +11,7 @@ import {
 import { COACH_CAPTIONS, COACH_UI } from "./coach-i18n";
 import { LANDING_COPY } from "./landing-copy";
 import { CLASSIC_COPY } from "./classic-copy";
+import { MAKER_BADGE_COPY } from "./maker-badge-copy";
 import { PUZZLE_COPY } from "./puzzle-copy";
 import { VOICE_COPY } from "./voice-copy";
 
@@ -2897,6 +2898,7 @@ function withCoachCopy(lang: Lang, base: Dict): Dict {
     ...(COACH_CAPTIONS[lang] ?? {}),
     ...(PUZZLE_COPY[lang] ?? {}),
     ...(CLASSIC_COPY[lang] ?? {}),
+    ...(MAKER_BADGE_COPY[lang] ?? {}),
   };
 }
 

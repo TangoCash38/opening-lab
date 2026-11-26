@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import type { CreatorHue } from "@/data/creator-packs-demo";
 import { fetchCreatorCatalogue, type CataloguePack } from "@/lib/creator-packs-client";
 import { CreatorAvatar } from "./creator-packs-frame";
+import { MakerBadge } from "./maker-badge";
 
 function hueFor(name: string): CreatorHue {
   const hues: CreatorHue[] = ["accent", "gold", "success"];
@@ -65,7 +66,10 @@ export function CreatorPacksBrowse() {
               </span>
             </Link>
             <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }} className="creator-pack-open">
-              <span className="creator-pack-name">{pack.name}</span>
+              <span className="maker-badge-row">
+                <span className="creator-pack-name">{pack.name}</span>
+                <MakerBadge name={pack.creatorName} />
+              </span>
               <span className="creator-pack-meta">
                 <span className="creator-pack-price">{pack.priceLabel}</span>
                 <span className="creator-pack-badge">{pack.badge}</span>
