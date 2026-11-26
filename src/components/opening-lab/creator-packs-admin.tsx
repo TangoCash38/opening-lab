@@ -7,6 +7,7 @@ import {
   type AdminSale,
 } from "@/lib/creator-packs-client";
 import { formatSharePounds } from "@/lib/creator-packs-payout";
+import { MakerBadge } from "./maker-badge";
 import { CreatorPackStatus, CreatorPayoutBadge } from "./creator-packs-status";
 
 export function CreatorPacksAdmin() {
@@ -111,7 +112,10 @@ export function CreatorPacksAdmin() {
       <div className="creator-packs-grid">
         {packs.map((pack) => (
           <article key={pack.id} className="creator-pack-card" data-creator-admin-pack={pack.id}>
-            <span className="creator-pack-name">{pack.name}</span>
+            <div className="maker-badge-row">
+              <span className="creator-pack-name">{pack.name}</span>
+              <MakerBadge name={pack.creatorName} />
+            </div>
             <span className="creator-pack-bio">
               {pack.creatorName} · {pack.lineCount} {pack.lineCount === 1 ? "line" : "lines"}
             </span>

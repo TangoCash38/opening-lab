@@ -14,6 +14,7 @@ import { ChessPiece, pieceName } from "./chess-pieces";
 import { CreatorSetupBoard } from "./creator-packs-setup-board";
 import { CreatorPromoteNote } from "./creator-packs-promote";
 import { CreatorPackStatus } from "./creator-packs-status";
+import { MakerBadge } from "./maker-badge";
 import { CreatorPackStudy } from "./creator-packs-study";
 
 type Side = "w" | "b";
@@ -174,6 +175,7 @@ export function CreatorPacksEditor() {
   const [linkError, setLinkError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<{ id: string; name: string; suggestedPrice: string } | null>(null);
   const [payoutsReady, setPayoutsReady] = useState(false);
+  const [makerName, setMakerName] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [blurb, setBlurb] = useState("");
   const [accepted, setAccepted] = useState(false);
@@ -183,6 +185,7 @@ export function CreatorPacksEditor() {
     void fetchCreatorMine().then((result) => {
       if (cancelled || !result.ok) return;
       setPayoutsReady(result.desk.profile?.payoutsReady === true);
+      setMakerName(result.desk.profile?.displayName ?? "");
     });
     return () => {
       cancelled = true;
@@ -1106,7 +1109,10 @@ export function CreatorPacksEditor() {
           </p>
           <p className="creator-packs-note">Opening Lab saves the pack for review. You can open it from your packs.</p>
           <article className="creator-pack-card" data-creator-own-pack={submitted.id}>
-            <span className="creator-pack-name">{submitted.name}</span>
+            <div className="maker-badge-row">
+              <span className="creator-pack-name">{submitted.name}</span>
+              {makerName ? <MakerBadge name={makerName} /> : null}
+            </div>
             <span className="creator-pack-meta">
               <span className="creator-pack-price">{submitted.suggestedPrice}</span>
               <CreatorPackStatus status="review" />

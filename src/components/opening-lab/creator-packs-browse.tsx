@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import type { CreatorHue } from "@/data/creator-packs-demo";
 import { fetchCreatorCatalogue, type CataloguePack } from "@/lib/creator-packs-client";
 import { CreatorAvatar } from "./creator-packs-frame";
+import { MakerBadge } from "./maker-badge";
 
 function hueFor(name: string): CreatorHue {
   const hues: CreatorHue[] = ["accent", "gold", "success"];
@@ -36,8 +37,8 @@ export function CreatorPacksBrowse() {
     <div data-creator-packs-browse>
       <h1 className="creator-packs-title">Creator packs</h1>
       <p className="creator-packs-lede">
-        Coaches and players publish a pack under their name. Opening Lab reviews it, then sets the price. The first
-        line is free to try.
+        Coaches and players publish a pack under their name and set its price. Opening Lab reviews every pack before
+        it goes on sale. The first line is free to try.
       </p>
       {error ? (
         <p className="creator-packs-error" role="alert">
@@ -65,7 +66,10 @@ export function CreatorPacksBrowse() {
               </span>
             </Link>
             <Link to="/creator-packs/pack/$packId" params={{ packId: pack.id }} className="creator-pack-open">
-              <span className="creator-pack-name">{pack.name}</span>
+              <span className="maker-badge-row">
+                <span className="creator-pack-name">{pack.name}</span>
+                <MakerBadge name={pack.creatorName} />
+              </span>
               <span className="creator-pack-meta">
                 <span className="creator-pack-price">{pack.priceLabel}</span>
                 <span className="creator-pack-badge">{pack.badge}</span>
