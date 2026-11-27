@@ -329,26 +329,57 @@ export async function getCheckoutSession(request: Request): Promise<Response> {
   });
 }
 
+/**
+ * Platform events and connected-account events are signed with different
+ * destination secrets. Try each configured secret, platform first.
+ */
+function eventSignedByAnySecret(
+  raw: string,
+  signature: string | null,
+  secrets: readonly string[],
+): { ok: true; event: Stripe.Event } | { ok: false; response: Response } {
+  if (!signature) {
+    return { ok: false, response: new Response("Missing signature", { status: 400 }) };
+  }
+  for (const secret of secrets) {
+    try {
+      return { ok: true, event: Stripe.webhooks.constructEvent(raw, signature, secret) };
+    } catch {
+      // This destination secret did not sign the payload.
+    }
+  }
+  return { ok: false, response: new Response("Invalid signature", { status: 400 }) };
+}
+
 export async function handleStripeWebhook(request: Request): Promise<Response> {
   const raw = await request.text();
   const webhookSecret = env("STRIPE_WEBHOOK_SECRET");
+  const connectWebhookSecret = env("STRIPE_CONNECT_WEBHOOK_SECRET");
   let event: Stripe.Event | null = null;
 
   const isProduction =
     process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
 
   if (!webhookSecret) {
-    // Never accept unsigned raw JSON in production.
-    if (isProduction) {
-      console.error("[stripe] STRIPE_WEBHOOK_SECRET missing in production");
-      return new Response("Webhook secret not configured", { status: 500 });
+    if (!connectWebhookSecret) {
+      // Never accept unsigned raw JSON in production.
+      if (isProduction) {
+        console.error("[stripe] STRIPE_WEBHOOK_SECRET missing in production");
+        return new Response("Webhook secret not configured", { status: 500 });
+      }
+      try {
+        event = JSON.parse(raw) as Stripe.Event;
+      } catch {
+        return json({ received: true });
+      }
+    } else {
+      const verified = eventSignedByAnySecret(raw, request.headers.get("stripe-signature"), [
+        connectWebhookSecret,
+      ]);
+      if (!verified.ok) return verified.response;
+      event = verified.event;
     }
-    try {
-      event = JSON.parse(raw) as Stripe.Event;
-    } catch {
-      return json({ received: true });
-    }
-  } else {
+  } else if (!connectWebhookSecret) {
     const signature = request.headers.get("stripe-signature");
     if (!signature) {
       return new Response("Missing signature", { status: 400 });
@@ -358,6 +389,13 @@ export async function handleStripeWebhook(request: Request): Promise<Response> {
     } catch {
       return new Response("Invalid signature", { status: 400 });
     }
+  } else {
+    const verified = eventSignedByAnySecret(raw, request.headers.get("stripe-signature"), [
+      webhookSecret,
+      connectWebhookSecret,
+    ]);
+    if (!verified.ok) return verified.response;
+    event = verified.event;
   }
 
   if (event?.type === "checkout.session.completed") {
